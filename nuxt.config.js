@@ -1,9 +1,11 @@
-import dotenv from '@nuxtjs/dotenv';
 import colors from 'vuetify/es5/util/colors';
 
 export default {
   server: {
     port: 8000,
+  },
+  publicRuntimeConfig: {
+    baseURL: process.env.BASE_URL,
   },
   /*
    ** Nuxt rendering mode
