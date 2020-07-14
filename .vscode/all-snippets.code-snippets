@@ -1,0 +1,8 @@
+{
+  "Add webpack chunk name component": {
+    "scope": "javascript,typescript",
+    "prefix": "chunkname",
+    "body": ["${1}, () => import(/* webpackChunkName: 'element-ui-${2}' */ 'element-ui/lib/${3}')"],
+    "description": "Webpack chunk"
+  }
+}
