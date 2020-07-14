@@ -3,6 +3,7 @@
 [![Vuetify](https://img.shields.io/badge/vuetify-2.3.4-orange.svg)](https://tailwindcss.com/)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/2c912cafb0684f13b0f7c89f519a85ce)](https://www.codacy.com/gh/Olympus-Team/OKRs-enterprise-frontend?utm_source=github.com&utm_medium=referral&utm_content=Olympus-Team/OKRs-enterprise-frontend&utm_campaign=Badge_Grade)
 [![DeepScan grade](https://deepscan.io/api/teams/7726/projects/12863/branches/205412/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=7726&pid=12863&bid=205412)
+[![codecov](https://codecov.io/gh/Olympus-Team/OKRs-enterprise-frontend/branch/develop/graph/badge.svg)](https://codecov.io/gh/Olympus-Team/OKRs-enterprise-frontend)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![Contributors](https://img.shields.io/github/contributors/Olympus-Team/OKRs-enterprise-frontend?color=%237159c1&logoColor=%237159c1&style=flat)](https://github.com/Olympus-Team/OKRs-enterprise-frontend/graphs/contributors)
 ![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)
