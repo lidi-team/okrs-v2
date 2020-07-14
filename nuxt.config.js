@@ -1,12 +1,10 @@
 import dotenv from '@nuxtjs/dotenv';
 import colors from 'vuetify/es5/util/colors';
-// const env = dotenv.config().parsed;
 
 export default {
   server: {
     port: 8000,
   },
-  // env,
   /*
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
