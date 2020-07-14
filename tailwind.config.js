@@ -1,11 +1,20 @@
 /*
  ** TailwindCSS Configuration File
- **
- ** Docs: https://tailwindcss.com/docs/configuration
  ** Default: https://github.com/tailwindcss/tailwindcss/blob/master/stubs/defaultConfig.stub.js
+ ** Official Docs: https://tailwindcss.com/docs/configuration
+ ** Full implement example: https://github.com/trungk18/jira-clone-angular/blob/master/frontend/tailwind.config.js
  */
 module.exports = {
+  prefix: '',
+  important: false,
+  separator: ':',
   theme: {
+    screens: {
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+    },
     extend: {
       spacing: {
         '1/2': '50%',
@@ -42,12 +51,9 @@ module.exports = {
   purge: {
     // Learn more on https://tailwindcss.com/docs/controlling-file-size/#removing-unused-css
     enabled: process.env.NODE_ENV === 'production',
-    content: [
-      'components/**/*.vue',
-      'layouts/**/*.vue',
-      'pages/**/*.vue',
-      'plugins/**/*.js',
-      'nuxt.config.js',
-    ],
+    content: ['components/**/*.vue', 'layouts/**/*.vue', 'pages/**/*.vue', 'plugins/**/*.js', 'nuxt.config.js'],
+    // options: {
+    //   whitelistPatterns: [/^font/, /^cursor/, /^pl-/, /^px-/, /^pr-/, /^ml-/, /^mx-/, /^mr-/, /^mb-/, /^mt-/, /^ng-/],
+    // },
   },
-}
+};
