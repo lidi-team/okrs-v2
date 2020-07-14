@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors';
+import pureCssConfig from './purecss.config';
 
 export default {
   server: {
@@ -57,6 +58,7 @@ export default {
     '@nuxtjs/stylelint-module',
     ['@nuxtjs/vuetify', { treeShake: true }],
     '@nuxtjs/tailwindcss',
+    ['nuxt-purgecss', { pureCssConfig }],
   ],
   tailwindcss: {
     configPath: './tailwind.config.js',
@@ -99,6 +101,19 @@ export default {
    ** See https://nuxtjs.org/api/configuration-build/
    */
   build: {
+    analyze: true,
     extractCSS: true,
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          styles: {
+            name: 'styles',
+            test: /\.(css|vue)$/,
+            chunks: 'all',
+            enforce: true,
+          },
+        },
+      },
+    },
   },
 };
