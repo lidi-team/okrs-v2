@@ -14,6 +14,7 @@
     "lint:file": "ls-lint",
     "lint": "yarn lint:js && yarn lint:style",
     "test": "jest --passWithNoTests",
+    "test:unit:debug": "node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand",
     "test:cov": "jest --coverage --passWithNoTests",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
