@@ -1,0 +1,11 @@
+ls:
+  .d.ts: point.case
+
+  scripts:
+    .js: camelCase
+
+ignore:
+  - node_modules
+  - .git
+  - .github
+  - .vscode
