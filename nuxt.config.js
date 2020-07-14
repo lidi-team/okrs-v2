@@ -1,12 +1,12 @@
-import dotenv from '@nuxtjs/dotenv'
-import colors from 'vuetify/es5/util/colors'
-const env = dotenv.config().parsed
+import dotenv from '@nuxtjs/dotenv';
+import colors from 'vuetify/es5/util/colors';
+// const env = dotenv.config().parsed;
 
 export default {
   server: {
-    port: 8000, // default: 3000
+    port: 8000,
   },
-  env,
+  // env,
   /*
    ** Nuxt rendering mode
    ** See https://nuxtjs.org/api/configuration-mode
@@ -54,7 +54,6 @@ export default {
    */
   buildModules: [
     '@nuxt/typescript-build',
-    // Doc: https://github.com/nuxt-community/stylelint-module
     '@nuxtjs/stylelint-module',
     ['@nuxtjs/vuetify', { treeShake: true }],
     '@nuxtjs/tailwindcss',
@@ -68,11 +67,7 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [
-    // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios',
-    '@nuxtjs/pwa',
-  ],
+  modules: ['@nuxtjs/axios', '@nuxtjs/pwa'],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
@@ -83,7 +78,7 @@ export default {
    ** https://github.com/nuxt-community/vuetify-module
    */
   vuetify: {
-    customVariables: ['~/assets/variables.scss'],
+    customVariables: ['@/assets/variables.scss'],
     theme: {
       dark: true,
       themes: {
@@ -103,5 +98,7 @@ export default {
    ** Build configuration
    ** See https://nuxtjs.org/api/configuration-build/
    */
-  build: {},
-}
+  build: {
+    extractCSS: true,
+  },
+};
