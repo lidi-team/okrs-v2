@@ -1,0 +1,16 @@
+{
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "christian-kohler.path-intellisense",
+    "CoenraadS.bracket-pair-colorizer",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "drKnoxy.eslint-disable-snippets",
+    "dsznajder.es7-react-js-snippets",
+    "eamodio.gitlens",
+    "heybourn.headwind",
+    "hollowtree.vue-snippets",
+    "redhat.vscode-yaml",
+    "vuetifyjs.vuetify-vscode"
+  ]
+}
