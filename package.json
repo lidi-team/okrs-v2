@@ -1,26 +1,25 @@
 {
-  "name": "FlameOKRs-enterprise-frontend",
+  "name": "flame-okrs-enterprise-frontend",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "nuxt",
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",
+    "analyze": "nuxt-ts build --analyzer",
     "export": "nuxt-ts export",
     "serve": "nuxt-ts serve",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
+    "lint:file": "ls-lint",
     "lint": "yarn lint:js && yarn lint:style",
-    "test": "jest"
+    "test": "jest --passWithNoTests",
+    "test:cov": "jest --coverage --passWithNoTests",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
   },
-  "lint-staged": {
-    "*.{js,vue}": "eslint",
-    "*.{css,vue}": "stylelint"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
+  "gitHooks": {
+    "pre-commit": "ls-lint && cross-env PRE_COMMIT=true lint-staged",
+    "commit-msg": "node scripts/verifyCommitMsg.js"
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^0.4.10",
@@ -29,6 +28,7 @@
     "nuxt": "^2.13.0"
   },
   "devDependencies": {
+    "@ls-lint/ls-lint": "^1.9.0",
     "@nuxt/typescript-build": "^1.0.3",
     "@nuxtjs/dotenv": "^1.4.1",
     "@nuxtjs/eslint-config": "^3.0.0",
@@ -37,22 +37,28 @@
     "@nuxtjs/stylelint-module": "^4.0.0",
     "@nuxtjs/tailwindcss": "^2.0.0",
     "@nuxtjs/vuetify": "^1.11.2",
+    "@types/jest": "^26.0.4",
     "@vue/test-utils": "^1.0.3",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.0.1",
+    "chalk": "^4.1.0",
+    "cross-env": "^7.0.2",
     "eslint": "^7.2.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-nuxt": "^1.0.0",
     "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
+    "imagemin-lint-staged": "^0.4.0",
     "jest": "^26.0.1",
     "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
     "stylelint": "^13.6.1",
     "stylelint-config-prettier": "^8.0.1",
     "stylelint-config-standard": "^20.0.0",
+    "stylelint-scss": "^3.18.0",
     "ts-jest": "^26.1.0",
-    "vue-jest": "^3.0.4"
+    "vue-jest": "^3.0.4",
+    "yorkie": "^2.0.0"
   }
 }
