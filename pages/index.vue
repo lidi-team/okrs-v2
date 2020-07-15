@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <div>
-      <logo />
       <h1 class="title">
         okrs-enterprise-frontend
         {{ $config.baseURL }}
@@ -17,13 +16,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import Logo from '~/components/Logo.vue';
 
-export default Vue.extend({
-  components: {
-    Logo,
-  },
-});
+export default Vue.extend({});
 </script>
 
 <style>
