@@ -1,5 +1,5 @@
 import { NuxtConfig } from '@nuxt/types';
-// import { Configuration as WebpackConfig } from 'webpack';
+import { Configuration as WebpackConfig } from 'webpack';
 import pureCssConfig from './purecss.config';
 import accessEnv from './utils/accessEnv';
 
@@ -87,12 +87,6 @@ const nuxtConfig: NuxtConfig = {
   // },
   build: {
     // analyze: true,
-    // babel: {
-    //   plugins: [
-    //     ['@babel/plugin-proposal-decorators', { legacy: true }],
-    //     ['@babel/plugin-proposal-class-properties', { loose: true }],
-    //   ],
-    // },
     extractCSS: true,
     optimization: {
       splitChunks: {
@@ -112,6 +106,11 @@ const nuxtConfig: NuxtConfig = {
       minify: {
         collapseWhitespace: true,
         removeComments: true,
+      },
+    },
+    babel: {
+      presets({ isServer }) {
+        return [['@nuxt/babel-preset-app', { loose: true }]];
       },
     },
     extend(config: any, _: any) {},
