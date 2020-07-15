@@ -51,7 +51,14 @@ const nuxtConfig: NuxtConfig = {
    * @description Plugins to load before mounting the App
    * @docs https://nuxtjs.org/guide/plugins
    */
-  plugins: ['@/plugins/element-ui.ts', '@/plugins/vue-fragment.ts'],
+  plugins: [
+    {
+      src: '@/plugins/element-ui.ts',
+    },
+    {
+      src: '@/plugins/vue-fragment.ts',
+    },
+  ],
   /*
    ** Nuxt.js dev-modules
    */
@@ -75,9 +82,9 @@ const nuxtConfig: NuxtConfig = {
    * @description Build configuration
    * @docs https://nuxtjs.org/api/configuration-build/
    */
-  router: {
-    prefetchLinks: false,
-  },
+  // router: {
+  //   prefetchLinks: false,
+  // },
   build: {
     // analyze: true,
     // babel: {
