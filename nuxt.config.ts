@@ -1,7 +1,9 @@
+import { NuxtConfig } from '@nuxt/types';
+// import { Configuration as WebpackConfig } from 'webpack';
 import pureCssConfig from './purecss.config';
 import accessEnv from './utils/accessEnv';
 
-export default {
+const nuxtConfig: NuxtConfig = {
   server: {
     port: accessEnv('PORT'),
   },
@@ -49,12 +51,7 @@ export default {
    * @description Plugins to load before mounting the App
    * @docs https://nuxtjs.org/guide/plugins
    */
-  plugins: ['@/plugins/element-ui'],
-  /**
-   * @description Auto import components
-   * @docs https://nuxtjs.org/api/configuration-components
-   */
-  components: true,
+  plugins: ['@/plugins/element-ui.ts', '@/plugins/vue-fragment.ts'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -78,8 +75,17 @@ export default {
    * @description Build configuration
    * @docs https://nuxtjs.org/api/configuration-build/
    */
+  router: {
+    prefetchLinks: false,
+  },
   build: {
     // analyze: true,
+    // babel: {
+    //   plugins: [
+    //     ['@babel/plugin-proposal-decorators', { legacy: true }],
+    //     ['@babel/plugin-proposal-class-properties', { loose: true }],
+    //   ],
+    // },
     extractCSS: true,
     optimization: {
       splitChunks: {
@@ -93,8 +99,21 @@ export default {
         },
       },
     },
+    // fixed netlify deploy
+    // https://github.com/nuxt/nuxt.js/issues/5800#issuecomment-597009572
+    html: {
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+      },
+    },
+    extend(config: any, _: any) {},
   },
-  typescript: {
-    typeCheck: false,
+  watchers: {
+    webpack: {
+      poll: true,
+    },
   },
 };
+
+export default nuxtConfig;

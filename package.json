@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "nuxt-ts",
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",
     "analyze": "nuxt build --analyze",
@@ -19,15 +19,17 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "gitHooks": {
-    "pre-commit": "ls-lint && cross-env PRE_COMMIT=true lint-staged",
+    "pre-commit": "ls-lint && lint-staged",
     "commit-msg": "node scripts/verifyCommitMsg.js"
   },
   "dependencies": {
+    "@nuxt/types": "^2.13.3",
     "@nuxt/typescript-runtime": "^0.4.10",
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
     "element-ui": "^2.13.2",
-    "nuxt": "^2.13.0"
+    "nuxt": "2.13.3",
+    "vue-fragment": "^1.5.1"
   },
   "devDependencies": {
     "@ls-lint/ls-lint": "^1.9.0",
@@ -61,6 +63,7 @@
     "stylelint-config-standard": "^20.0.0",
     "stylelint-scss": "^3.18.0",
     "ts-jest": "^26.1.0",
+    "typescript": "3.9.6",
     "vue-jest": "^3.0.4",
     "yorkie": "^2.0.0"
   }
