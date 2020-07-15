@@ -1,5 +1,6 @@
 import { NuxtConfig } from '@nuxt/types';
 import { Configuration as WebpackConfig } from 'webpack';
+import { NuxtRouteConfig } from '@nuxt/types/config/router';
 import pureCssConfig from './purecss.config';
 import accessEnv from './utils/accessEnv';
 
@@ -113,7 +114,10 @@ const nuxtConfig: NuxtConfig = {
         return [['@nuxt/babel-preset-app', { loose: true }]];
       },
     },
-    extend(config: any, _: any) {},
+    extend(config: WebpackConfig, _: any) {},
+  },
+  router: {
+    extendRoutes(routes: NuxtRouteConfig, resolve: any): void {},
   },
   watchers: {
     webpack: {
