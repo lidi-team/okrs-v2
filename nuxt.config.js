@@ -1,25 +1,31 @@
 import pureCssConfig from './purecss.config';
+import accessEnv from './utils/accessEnv';
 
 export default {
   server: {
-    port: 8000,
+    port: accessEnv('PORT'),
   },
+  /**
+   * @description Passing dynamic config and environment variables to the nuxt context
+   * @docs https://nuxtjs.org/api/configuration-runtime-config#-code-publicruntimeconfig-code-
+   */
   publicRuntimeConfig: {
-    baseURL: process.env.BASE_URL,
+    baseURL: accessEnv('BASE_URL'),
+    port: accessEnv('PORT'),
   },
-  /*
-   ** Nuxt rendering mode
-   ** See https://nuxtjs.org/api/configuration-mode
+  /**
+   * @description Nuxt rendering mode
+   * @docs https://nuxtjs.org/api/configuration-mode
    */
   mode: 'spa',
-  /*
-   ** Nuxt target
-   ** See https://nuxtjs.org/api/configuration-target
+  /**
+   * @description Nuxt target
+   * @docs https://nuxtjs.org/api/configuration-target
    */
-  target: 'server',
-  /*
-   ** Headers of the page
-   ** See https://nuxtjs.org/api/configuration-head
+  target: 'static',
+  /**
+   * @description Headers of the page
+   * @docs https://nuxtjs.org/api/configuration-head
    */
   head: {
     titleTemplate: '%s - ' + process.env.npm_package_name,
@@ -39,14 +45,14 @@ export default {
    ** Global CSS
    */
   css: [],
-  /*
-   ** Plugins to load before mounting the App
-   ** https://nuxtjs.org/guide/plugins
+  /**
+   * @description Plugins to load before mounting the App
+   * @docs https://nuxtjs.org/guide/plugins
    */
   plugins: ['@/plugins/element-ui'],
-  /*
-   ** Auto import components
-   ** See https://nuxtjs.org/api/configuration-components
+  /**
+   * @description Auto import components
+   * @docs https://nuxtjs.org/api/configuration-components
    */
   components: true,
   /*
@@ -63,14 +69,14 @@ export default {
    ** Nuxt.js modules
    */
   modules: ['@nuxtjs/axios', '@nuxtjs/pwa'],
-  /*
-   ** Axios module configuration
-   ** See https://axios.nuxtjs.org/options
+  /**
+   * @description Axios module configuration
+   * @docs https://axios.nuxtjs.org/options
    */
   axios: {},
-  /*
-   ** Build configuration
-   ** See https://nuxtjs.org/api/configuration-build/
+  /**
+   * @description Build configuration
+   * @docs https://nuxtjs.org/api/configuration-build/
    */
   build: {
     // analyze: true,

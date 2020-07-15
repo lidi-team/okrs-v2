@@ -1,8 +1,8 @@
 {
-  "Add webpack chunk name component": {
+  "Add webpack chunk name component to Vue Component": {
     "scope": "javascript,typescript",
     "prefix": "chunkname",
-    "body": ["${1}, () => import(/* webpackChunkName: 'element-ui-${2}' */ 'element-ui/lib/${3}')"],
+    "body": ["Vue.component(elComponent.${1}, () => import(/* webpackChunkName: 'element-ui-${2}' */ 'element-ui/lib/${3}'));"],
     "description": "Webpack chunk"
   }
 }
