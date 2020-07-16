@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="container p-20 m-40 rounded shadow">
     <span class="flex-auto text-3xl">Đăng nhập hoặc đăng ký</span>
-    <el-form ref="loginForm" :model="loginForm" :rules="rules" status-icon label-width="120px">
+    <el-form ref="loginForm" :model="loginForm" :rules="rules" status-icon label-width="120px" label-position="top">
       <el-form-item prop="email" label="Tên đăng nhập">
         <el-input v-model="loginForm.email" placeholder="Tên đăng nhập hoặc email"></el-input>
       </el-form-item>

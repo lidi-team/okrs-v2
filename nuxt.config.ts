@@ -65,12 +65,6 @@ const nuxtConfig: NuxtConfig = {
    ** Nuxt.js dev-modules
    */
   buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module', '@nuxtjs/tailwindcss', ['nuxt-purgecss', { pureCssConfig }]],
-  tailwindcss: {
-    configPath: './tailwind.config.js',
-    cssPath: '@/assets/css/tailwind.css',
-    purgeCSSInDev: false,
-    exposeConfig: false,
-  },
   /*
    ** Nuxt.js modules
    */
