@@ -1,6 +1,5 @@
 [![NuxtJs](https://img.shields.io/badge/nuxt-2.13.0-brightgreen.svg)](https://nuxtjs.org/)
-[![TailwindCSS](https://img.shields.io/badge/tailwind-1.4.6-blueviolet.svg)](https://tailwindcss.com/)
-[![Element UI](https://img.shields.io/badge/elementui-2.13.2-orange.svg)](https://tailwindcss.com/)
+[![Element UI](https://img.shields.io/badge/elementui-2.13.2-orange.svg)](https://element.eleme.io/#/en-US)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/2c912cafb0684f13b0f7c89f519a85ce)](https://www.codacy.com/gh/Olympus-Team/OKRs-enterprise-frontend?utm_source=github.com&utm_medium=referral&utm_content=Olympus-Team/OKRs-enterprise-frontend&utm_campaign=Badge_Grade)
 [![DeepScan grade](https://deepscan.io/api/teams/7726/projects/12863/branches/205412/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=7726&pid=12863&bid=205412)
 [![codecov](https://codecov.io/gh/Olympus-Team/OKRs-enterprise-frontend/branch/develop/graph/badge.svg)](https://codecov.io/gh/Olympus-Team/OKRs-enterprise-frontend)
