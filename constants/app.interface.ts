@@ -9,7 +9,7 @@ export interface FormRules {
   type?: dataType;
   required?: true | false;
   message?: string;
-  validator?: void;
+  validator?: any;
   trigger: ruleTrigger;
   min?: number;
   max?: number;
