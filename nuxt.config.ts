@@ -1,6 +1,7 @@
 import { NuxtConfig } from '@nuxt/types';
 import { Configuration as WebpackConfig } from 'webpack';
 import { NuxtRouteConfig } from '@nuxt/types/config/router';
+import StylelintWebpackPlugin from 'stylelint-webpack-plugin';
 import pureCssConfig from './purecss.config';
 import accessEnv from './utils/accessEnv';
 
@@ -114,10 +115,31 @@ const nuxtConfig: NuxtConfig = {
         return [['@nuxt/babel-preset-app', { loose: true }]];
       },
     },
-    extend(config: WebpackConfig, _: any) {},
+    extend(config: WebpackConfig, { isDev, isClient }: any) {
+      if (isDev && isClient && config.module) {
+        // Enabling eslint:
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|ts|vue)$/u,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/u,
+        });
+
+        if (config.plugins) {
+          // Enabling stylelint:
+          config.plugins.push(
+            new StylelintWebpackPlugin({
+              files: '**/*.{vue,scss,css}',
+            }),
+          );
+        }
+      }
+    },
   },
   router: {
-    extendRoutes(routes: NuxtRouteConfig, resolve: any): void {},
+    extendRoutes(routes: NuxtRouteConfig[], resolve: any): void {
+      const indexRoute = routes.find((r) => r.name === 'index');
+    },
   },
   watchers: {
     webpack: {

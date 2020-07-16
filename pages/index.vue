@@ -17,7 +17,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-import BaseButton from '@/components/shared/BaseButton.vue';
+import BaseButton from '@/components/shared/base/BaseButton.vue';
 @Component<Boss>({
   name: 'Base-component',
   components: {

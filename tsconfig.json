@@ -9,9 +9,10 @@
     "sourceMap": true,
     "strict": true,
     "noEmit": true,
-    "noImplicitThis": true,
+    "noImplicitThis": false,
     "noImplicitAny": false,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"]

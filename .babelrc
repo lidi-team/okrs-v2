@@ -18,6 +18,12 @@
             "libraryName": "element-ui",
             "styleLibraryName": "theme-chalk"
           }
+        ],
+        [
+          "dynamic-import-node",
+          {
+            "noInterop": true
+          }
         ]
       ]
     }

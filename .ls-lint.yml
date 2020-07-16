@@ -3,7 +3,10 @@ ls:
 
   scripts:
     .js: camelCase
-
+  types:
+    .ts: point.case
+  components:
+    .vue: PascalCase
 ignore:
   - node_modules
   - .git
