@@ -11,7 +11,7 @@ module.exports = {
   rules: {
     'at-rule-no-unknown': tailwindRules,
     'scss/at-rule-no-unknown': tailwindRules,
-    'selector-pseudo-element-colon-notation': 'double',
+    'selector-pseudo-element-colon-notation': 'single',
     'comment-empty-line-before': 'never',
   },
 };

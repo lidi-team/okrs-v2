@@ -6,13 +6,13 @@ codecov:
 coverage:
   round: up
   precision: 2
-  range: "70...100"
+  range: '70...100'
 parsers:
   javascript:
     enable_partials: yes
 
 comment:
-  layout: "reach, diff, flags, files"
+  layout: 'reach, diff, flags, files'
   behavior: default
   require_changes: true
   after_n_builds: 5

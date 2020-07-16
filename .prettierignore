@@ -1,1 +1,5 @@
 .github/commit-convention.md
+node_modules
+coverage
+dist
+.nuxt

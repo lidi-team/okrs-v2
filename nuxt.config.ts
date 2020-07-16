@@ -1,7 +1,11 @@
+import { NuxtConfig } from '@nuxt/types';
+import { Configuration as WebpackConfig } from 'webpack';
+import { NuxtRouteConfig } from '@nuxt/types/config/router';
+import StylelintWebpackPlugin from 'stylelint-webpack-plugin';
 import pureCssConfig from './purecss.config';
 import accessEnv from './utils/accessEnv';
 
-export default {
+const nuxtConfig: NuxtConfig = {
   server: {
     port: accessEnv('PORT'),
   },
@@ -49,12 +53,14 @@ export default {
    * @description Plugins to load before mounting the App
    * @docs https://nuxtjs.org/guide/plugins
    */
-  plugins: ['@/plugins/element-ui'],
-  /**
-   * @description Auto import components
-   * @docs https://nuxtjs.org/api/configuration-components
-   */
-  components: true,
+  plugins: [
+    {
+      src: '@/plugins/element-ui.ts',
+    },
+    {
+      src: '@/plugins/vue-fragment.ts',
+    },
+  ],
   /*
    ** Nuxt.js dev-modules
    */
@@ -78,6 +84,9 @@ export default {
    * @description Build configuration
    * @docs https://nuxtjs.org/api/configuration-build/
    */
+  // router: {
+  //   prefetchLinks: false,
+  // },
   build: {
     // analyze: true,
     extractCSS: true,
@@ -93,8 +102,50 @@ export default {
         },
       },
     },
+    // fixed netlify deploy
+    // https://github.com/nuxt/nuxt.js/issues/5800#issuecomment-597009572
+    html: {
+      minify: {
+        collapseWhitespace: true,
+        removeComments: true,
+      },
+    },
+    babel: {
+      presets({ isServer }) {
+        return [['@nuxt/babel-preset-app', { loose: true }]];
+      },
+    },
+    extend(config: WebpackConfig, { isDev, isClient }: any) {
+      if (isDev && isClient && config.module) {
+        // Enabling eslint:
+        config.module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|ts|vue)$/u,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/u,
+        });
+
+        if (config.plugins) {
+          // Enabling stylelint:
+          config.plugins.push(
+            new StylelintWebpackPlugin({
+              files: '**/*.{vue,scss,css}',
+            }),
+          );
+        }
+      }
+    },
   },
-  typescript: {
-    typeCheck: false,
+  router: {
+    extendRoutes(routes: NuxtRouteConfig[], resolve: any): void {
+      const indexRoute = routes.find((r) => r.name === 'index');
+    },
+  },
+  watchers: {
+    webpack: {
+      poll: true,
+    },
   },
 };
+
+export default nuxtConfig;
