@@ -1,15 +1,14 @@
 <template>
-  <div class="container p-20 m-40 rounded shadow">
-    <span class="flex-auto text-3xl">Đăng nhập hoặc đăng ký</span>
+  <div class="form">
+    <span class="form__title">Đăng nhập hoặc đăng ký</span>
     <el-form ref="loginForm" :model="loginForm" :rules="rules" status-icon label-width="120px" label-position="top">
-      <el-form-item prop="email" label="Tên đăng nhập">
-        <el-input v-model="loginForm.email" placeholder="Tên đăng nhập hoặc email"></el-input>
+      <el-form-item class="form" prop="email" label="Tên đăng nhập">
+        <el-input v-model="loginForm.email" class="form__input" placeholder="Tên đăng nhập hoặc email"></el-input>
       </el-form-item>
       <el-form-item prop="password" label="Mật khẩu">
         <el-input v-model="loginForm.password" show-password placeholder="Nhật mật khẩu"></el-input>
       </el-form-item>
     </el-form>
-    <el-button type="primary">Hello</el-button>
   </div>
 </template>
 
@@ -51,3 +50,12 @@ export default class Login extends Vue {
   };
 }
 </script>
+
+<style lang="scss" scoped>
+.form {
+  color: red;
+  &__title {
+    border: 10px;
+  }
+}
+</style>

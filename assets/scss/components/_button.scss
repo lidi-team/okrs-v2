@@ -1,0 +1,58 @@
+.button {
+  border: 1px solid $green-lighter;
+  color: $white;
+  display: block;
+  font-family: $font-family-base;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+  transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
+
+  &:not([disabled]):hover {
+    background: $white;
+    border-color: $green-lighter;
+    color: #7ed321;
+  }
+
+  @include m('small') {
+    background: linear-gradient(90deg, $green-lighter 0%, rgba(66, 147, 33, 0.59) 100%);
+    background-color: $green-light;
+    border-radius: 35px;
+    box-shadow: 0 2px 4px 0 rgba(126, 211, 33, 0.43);
+    font-size: $font-size-base;
+    max-width: 122px;
+    padding: 6px 12px;
+  }
+
+  @include m('base') {
+    background: linear-gradient(90deg, $green-lighter 0%, rgba(66, 147, 33, 0.59) 100%);
+    background-color: $green-light;
+    border-radius: 17px;
+    box-shadow: 0 2px 4px 0 rgba(126, 211, 33, 0.43);
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    max-width: 132px;
+    padding: 10px 20px;
+  }
+
+  @include m('medium') {
+    background: linear-gradient(90deg, $green-lighter 0%, rgba(66, 147, 33, 0.59) 100%);
+    background-color: $green-light;
+    border-radius: 35px;
+    font-size: $font-size-medium;
+    max-width: 181px;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px 0 rgba(126, 211, 33, 0.43);
+  }
+
+  @include m('large') {
+    background: linear-gradient(138.73deg, $green-lighter 0%, rgba(66, 147, 33, 0.59) 100%);
+    background-color: $green-light;
+    border-radius: 26px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    max-width: 342px;
+    padding: 14px 28px;
+  }
+}

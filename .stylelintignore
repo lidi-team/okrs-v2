@@ -2,3 +2,5 @@ node_modules/
 .nuxt
 coverage
 dist
+assets/scss
+assets/variables.scss

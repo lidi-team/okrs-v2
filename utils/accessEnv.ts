@@ -3,7 +3,7 @@
 // caching the values improves performance - accessing process.env many times is bad
 const cache = {};
 
-const accessEnv = (key, defaultValue = null) => {
+const accessEnv = (key: string, defaultValue?: number | string | boolean | null): any => {
   if (!(key in process.env)) {
     if (defaultValue) return defaultValue;
     throw new Error(`${key} not found in process.env!`);

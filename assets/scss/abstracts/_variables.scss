@@ -1,0 +1,56 @@
+// ======================================================
+// Abstracts :: Variables
+// ======================================================
+
+// Color
+$black: #000;
+$black-light: #1b1b1b;
+$black-lighter: #3b3b3b;
+$white: #fff;
+$gray: #4a4a4a;
+$gray-light: #5a5a5a;
+$gray-lighter: #6e6e6e;
+$gray-lightest: #9b9b9b;
+$gray-lightest-2: #d8d8d8;
+$grey: #f2f8ec;
+$grey-light: #f8f8f8;
+$grey-lighter: #f3f3f3;
+$grey-lightest: #fefefe;
+$grey-dark: #dadada;
+$green: #7ed321;
+$green-light: #86c432;
+$green-lighter: #b4ec51;
+$green-dark: #417505;
+$green-darker: #429321;
+$bd-gray: #e6e6e6;
+
+// Fonts
+// >> Font-family
+$font-family-base: 'Merriweather', 'serif';
+$font-family-base1: 'Hiragino Sans', 'Noto Sans Japanese', 'Yu Gothic', 'Meiryo',
+  'Hiragino Kaku Gothic Pro', '游ゴシック', 'メイリオ', 'MS ゴシック', 'sans-serif';
+// >> Font-size
+$font-size-extra-small: 10px;
+$font-size-small: 12px;
+$font-size-base: 14px;
+$font-size-medium: 16px;
+$font-size-large: 18px;
+// >> Font-weight
+$font-weight-light: 300;
+$font-weight-base: 400;
+$font-weight-medium: 600;
+$font-weight-bold: 700;
+
+// Borders
+$border-radius-small: 2px;
+$border-radius-base: 4px;
+$border-radius-medium: 8px;
+$border-radius-large: 24px;
+
+// z-index
+$z-indexes: (
+  base: 1,
+  under: -1,
+  modal: 1001,
+  sidebar: 1000,
+);

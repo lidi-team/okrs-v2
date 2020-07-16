@@ -64,7 +64,7 @@ const nuxtConfig: NuxtConfig = {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module', '@nuxtjs/tailwindcss', ['nuxt-purgecss', { pureCssConfig }]],
+  buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module', ['nuxt-purgecss', { pureCssConfig }]],
   /*
    ** Nuxt.js modules
    */
