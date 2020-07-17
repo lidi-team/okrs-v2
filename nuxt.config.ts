@@ -4,15 +4,15 @@ import pureCssConfig from './purecss.config';
 
 const nuxtConfig: NuxtConfig = {
   server: {
-    port: process.env.PORT,
+    port: process.env.port,
   },
   /**
    * @description Passing dynamic config and environment variables to the nuxt context
    * @docs https://nuxtjs.org/api/configuration-runtime-config#-code-publicruntimeconfig-code-
    */
   publicRuntimeConfig: {
-    baseURL: process.env.BASE_URL,
-    port: process.env.PORT,
+    baseURL: process.env.baseURL,
+    port: process.env.port,
   },
   /**
    * @description Nuxt rendering mode
@@ -52,16 +52,26 @@ const nuxtConfig: NuxtConfig = {
    */
   plugins: [
     {
-      src: '@/plugins/element-ui.ts',
+      src: '@/plugins/element-ui',
     },
     {
-      src: '@/plugins/vue-fragment.ts',
+      src: '@/plugins/vue-fragment',
     },
   ],
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', ['nuxt-purgecss', { pureCssConfig }]],
+  buildModules: ['@nuxt/typescript-build', '@nuxt/components', ['nuxt-purgecss', { pureCssConfig }]],
+  /**
+   * @description Config all components in app
+   * @docs https://github.com/nuxt/components
+   */
+  components: [
+    '~/components',
+    { path: '~/components/common', prefix: 'base' },
+    { path: '~/components/account', prefix: 'account' },
+    { path: '~/components/okrs', prefix: '' },
+  ],
   /*
    ** Nuxt.js modules
    */
