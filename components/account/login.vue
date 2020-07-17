@@ -25,10 +25,10 @@ import { Component, Vue, Provide } from 'nuxt-property-decorator';
 import { Form as LoginForm } from 'element-ui';
 import { LoginDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
-@Component<LoginPage>({
+@Component<AccountLogin>({
   name: 'Login',
 })
-export default class LoginPage extends Vue {
+export default class AccountLogin extends Vue {
   @Provide() public loginForm: LoginDTO = {
     email: '',
     password: '',

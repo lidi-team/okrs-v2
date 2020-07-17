@@ -1,21 +1,18 @@
 import { NuxtConfig } from '@nuxt/types';
 import { Configuration as WebpackConfig } from 'webpack';
-import { NuxtRouteConfig } from '@nuxt/types/config/router';
-import StylelintWebpackPlugin from 'stylelint-webpack-plugin';
 import pureCssConfig from './purecss.config';
-import accessEnv from './utils/accessEnv';
 
 const nuxtConfig: NuxtConfig = {
   server: {
-    port: accessEnv('PORT'),
+    port: process.env.PORT,
   },
   /**
    * @description Passing dynamic config and environment variables to the nuxt context
    * @docs https://nuxtjs.org/api/configuration-runtime-config#-code-publicruntimeconfig-code-
    */
   publicRuntimeConfig: {
-    baseURL: accessEnv('BASE_URL'),
-    port: accessEnv('PORT'),
+    baseURL: process.env.BASE_URL,
+    port: process.env.PORT,
   },
   /**
    * @description Nuxt rendering mode
@@ -119,11 +116,6 @@ const nuxtConfig: NuxtConfig = {
           exclude: /(node_modules)/u,
         });
       }
-    },
-  },
-  router: {
-    extendRoutes(routes: NuxtRouteConfig[], resolve: any): void {
-      const indexRoute = routes.find((r) => r.name === 'index');
     },
   },
   watchers: {
