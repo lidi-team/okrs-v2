@@ -1,4 +1,4 @@
-import { Map, FormRule, ConfigMaps } from './app.interface';
+import { FormRule, ConfigMaps } from './app.interface';
 
 export type dataType =
   | 'string'
