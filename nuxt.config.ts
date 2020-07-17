@@ -64,7 +64,7 @@ const nuxtConfig: NuxtConfig = {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxtjs/stylelint-module', ['nuxt-purgecss', { pureCssConfig }]],
+  buildModules: ['@nuxt/typescript-build', ['nuxt-purgecss', { pureCssConfig }]],
   /*
    ** Nuxt.js modules
    */
@@ -118,15 +118,6 @@ const nuxtConfig: NuxtConfig = {
           loader: 'eslint-loader',
           exclude: /(node_modules)/u,
         });
-
-        if (config.plugins) {
-          // Enabling stylelint:
-          config.plugins.push(
-            new StylelintWebpackPlugin({
-              files: '**/*.{vue,scss,css}',
-            }),
-          );
-        }
       }
     },
   },
