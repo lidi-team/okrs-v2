@@ -8,6 +8,11 @@
       <el-form-item prop="password" label="Mật khẩu">
         <el-input v-model="loginForm.password" show-password placeholder="Nhật mật khẩu"></el-input>
       </el-form-item>
+      <el-container>
+        <el-row type="flex" class="row-bg" align="middle" justify="center">
+          <el-col :span="6"><div class="grid-content bg-purple-light">Hello it's me!</div></el-col>
+        </el-row>
+      </el-container>
     </el-form>
   </div>
 </template>
