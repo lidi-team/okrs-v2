@@ -20,6 +20,7 @@ import 'element-ui/lib/theme-chalk/table.css';
 import 'element-ui/lib/theme-chalk/table-column.css';
 import 'element-ui/lib/theme-chalk/tab-pane.css';
 import 'element-ui/lib/theme-chalk/tabs.css';
+import 'element-ui/lib/theme-chalk/checkbox.css';
 import { elComponent } from '@/constants/app.enum';
 
 Vue.component(elComponent.ElRow, () => import(/* webpackChunkName: 'element-ui-form-row' */ 'element-ui/lib/row'));
@@ -41,6 +42,7 @@ Vue.component(elComponent.ElTable, () => import(/* webpackChunkName: 'element-ui
 Vue.component(elComponent.ElTableColumn, () => import(/* webpackChunkName: 'element-ui-form-table-column' */ 'element-ui/lib/table-column'));
 Vue.component(elComponent.ElTable, () => import(/* webpackChunkName: 'element-ui-form-tab-pane' */ 'element-ui/lib/tab-pane'));
 Vue.component(elComponent.ElTabs, () => import(/* webpackChunkName: 'element-ui-form-tabs' */ 'element-ui/lib/tabs'));
+Vue.component(elComponent.ElCheckbox, () => import(/* webpackChunkName: 'element-ui-checkbox' */ 'element-ui/lib/checkbox'));
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$confirm = MessageBox.confirm;
