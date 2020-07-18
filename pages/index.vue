@@ -1,7 +1,7 @@
 <template>
-  <page>
+  <div>
     Hello mọi người 💕
-  </page>
+  </div>
 </template>
 
 <script lang="ts">
