@@ -7,34 +7,32 @@ $black: #000;
 $black-light: #1b1b1b;
 $black-lighter: #3b3b3b;
 $white: #fff;
-$gray: #4a4a4a;
-$gray-light: #5a5a5a;
-$gray-lighter: #6e6e6e;
-$gray-lightest: #9b9b9b;
-$gray-lightest-2: #d8d8d8;
-$grey: #f2f8ec;
-$grey-light: #f8f8f8;
-$grey-lighter: #f3f3f3;
-$grey-lightest: #fefefe;
-$grey-dark: #dadada;
-$green: #7ed321;
-$green-light: #86c432;
-$green-lighter: #b4ec51;
-$green-dark: #417505;
-$green-darker: #429321;
-$bd-gray: #e6e6e6;
+$neutral-primary-0: #f4f6f8;
+$neutral-primary-1: #919eab;
+$neutral-primary-2: #637381;
+$neutral-primary-3: #454f5b;
+$neutral-primary-4: #212b36;
+$purple-primary-1: #f6f0fd;
+$purple-primary-2: #e3d0ff;
+$purple-primary-3: #9c6ade;
+$purple-primary-4: #50248f;
+$purple-primary-5: #230051;
+$purple-primary-6: #50495a;
 
 // Fonts
 // >> Font-family
 $font-family-base: 'Merriweather', 'serif';
-$font-family-base1: 'Hiragino Sans', 'Noto Sans Japanese', 'Yu Gothic', 'Meiryo',
-  'Hiragino Kaku Gothic Pro', '游ゴシック', 'メイリオ', 'MS ゴシック', 'sans-serif';
-// >> Font-size
-$font-size-extra-small: 10px;
-$font-size-small: 12px;
-$font-size-base: 14px;
-$font-size-medium: 16px;
-$font-size-large: 18px;
+// >> Font Size
+$text-xs: 0.75rem;
+$text-sm: 0.875rem;
+$text-base: 1rem; // 16px
+$text-lg: 1.125rem;
+$text-xl: 1.25rem;
+$text-2xl: 1.5rem;
+$text-3xl: 1.875rem;
+$text-4xl: 2.25rem;
+$text-5xl: 3rem;
+$text-6xl: 4rem;
 // >> Font-weight
 $font-weight-light: 300;
 $font-weight-base: 400;
@@ -47,10 +45,14 @@ $border-radius-base: 4px;
 $border-radius-medium: 8px;
 $border-radius-large: 24px;
 
-// z-index
-$z-indexes: (
-  base: 1,
-  under: -1,
-  modal: 1001,
-  sidebar: 1000,
-);
+// Unit extends Tailwind
+$unit-0: 0;
+$unit-1: 0.25rem;
+$unit-2: 0.5rem;
+$unit-3: 0.75rem;
+$unit-4: 1rem;
+$unit-5: 1.25rem;
+$unit-6: 1.5rem;
+$unit-8: 2rem;
+$unit-10: 2.5rem;
+$unit-12: 3rem;
