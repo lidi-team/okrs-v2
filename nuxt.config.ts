@@ -1,5 +1,4 @@
 import { NuxtConfig } from '@nuxt/types';
-import { NuxtRouteConfig } from '@nuxt/types/config/router';
 import { Configuration as WebpackConfig } from 'webpack';
 import pureCssConfig from './purecss.config';
 
