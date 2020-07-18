@@ -1,12 +1,13 @@
 <template>
-  <div class="form">
-    <span class="form__title">Đăng nhập hoặc đăng ký</span>
+  <div class="form" justify="center">
+    <h2 class="form__title">Đăng nhập hoặc đăng ký</h2>
     <el-form
       ref="loginForm"
       :model="loginForm"
       :rules="rules"
-      status-icon
-      label-width="120px"
+      :status-icon="false"
+      :hide-required-asterisk="false"
+      label-width="150px"
       label-position="top"
       @submit.native.prevent="handleSubmit"
     >
@@ -17,6 +18,10 @@
         <el-input v-model="loginForm.password" show-password placeholder="Nhật mật khẩu"></el-input>
       </el-form-item>
     </el-form>
+    <el-button class="el-button--purple el-button--small">Hello</el-button>
+    <el-button class="el-button--purple el-button--base">Hello</el-button>
+    <el-button class="el-button--purple el-button--medium">Hello</el-button>
+    <el-button class="el-button--purple el-button--large">Hello</el-button>
   </div>
 </template>
 
@@ -56,10 +61,13 @@ export default class AccountLogin extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/main.scss';
 .form {
   color: red;
   &__title {
     border: 10px;
+    padding: $unit-10;
+    font-size: $text-6xl;
   }
 }
 </style>

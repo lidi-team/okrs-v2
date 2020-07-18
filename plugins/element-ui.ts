@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { Loading, MessageBox, Message } from 'element-ui';
+import 'element-ui/lib/theme-chalk/display.css';
 import 'element-ui/lib/theme-chalk/row.css';
 import 'element-ui/lib/theme-chalk/col.css';
 import 'element-ui/lib/theme-chalk/container.css';
