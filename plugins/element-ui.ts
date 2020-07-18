@@ -1,5 +1,6 @@
 import Vue from 'vue';
-import { Loading } from 'element-ui';
+import { Loading, MessageBox, Message } from 'element-ui';
+import 'element-ui/lib/theme-chalk/display.css';
 import 'element-ui/lib/theme-chalk/row.css';
 import 'element-ui/lib/theme-chalk/col.css';
 import 'element-ui/lib/theme-chalk/container.css';
@@ -7,6 +8,18 @@ import 'element-ui/lib/theme-chalk/button.css';
 import 'element-ui/lib/theme-chalk/input.css';
 import 'element-ui/lib/theme-chalk/form.css';
 import 'element-ui/lib/theme-chalk/form-item.css';
+import 'element-ui/lib/theme-chalk/step.css';
+import 'element-ui/lib/theme-chalk/steps.css';
+import 'element-ui/lib/theme-chalk/pagination.css';
+import 'element-ui/lib/theme-chalk/date-picker.css';
+import 'element-ui/lib/theme-chalk/dropdown.css';
+import 'element-ui/lib/theme-chalk/dropdown-item.css';
+import 'element-ui/lib/theme-chalk/dropdown-menu.css';
+import 'element-ui/lib/theme-chalk/tree.css';
+import 'element-ui/lib/theme-chalk/table.css';
+import 'element-ui/lib/theme-chalk/table-column.css';
+import 'element-ui/lib/theme-chalk/tab-pane.css';
+import 'element-ui/lib/theme-chalk/tabs.css';
 import { elComponent } from '@/constants/app.enum';
 
 Vue.component(elComponent.ElRow, () => import(/* webpackChunkName: 'element-ui-form-row' */ 'element-ui/lib/row'));
@@ -16,5 +29,19 @@ Vue.component(elComponent.ElButton, () => import(/* webpackChunkName: 'element-u
 Vue.component(elComponent.ElInput, () => import(/* webpackChunkName: 'element-ui-input' */ 'element-ui/lib/input'));
 Vue.component(elComponent.ElForm, () => import(/* webpackChunkName: 'element-ui-form' */ 'element-ui/lib/form'));
 Vue.component(elComponent.ElFormItem, () => import(/* webpackChunkName: 'element-ui-form-item' */ 'element-ui/lib/form-item'));
+Vue.component(elComponent.ElStep, () => import(/* webpackChunkName: 'element-ui-form-step' */ 'element-ui/lib/step'));
+Vue.component(elComponent.ElSteps, () => import(/* webpackChunkName: 'element-ui-form-steps' */ 'element-ui/lib/steps'));
+Vue.component(elComponent.ElPagination, () => import(/* webpackChunkName: 'element-ui-form-pagination' */ 'element-ui/lib/pagination'));
+Vue.component(elComponent.ElDatePicker, () => import(/* webpackChunkName: 'element-ui-form-date-picker' */ 'element-ui/lib/date-picker'));
+Vue.component(elComponent.ElDropdown, () => import(/* webpackChunkName: 'element-ui-form-dropdown' */ 'element-ui/lib/dropdown'));
+Vue.component(elComponent.ElDropdownItem, () => import(/* webpackChunkName: 'element-ui-form-dropdown-item' */ 'element-ui/lib/dropdown-item'));
+Vue.component(elComponent.ElDropdownMenu, () => import(/* webpackChunkName: 'element-ui-form-dropdown-menu' */ 'element-ui/lib/dropdown-menu'));
+Vue.component(elComponent.ElTree, () => import(/* webpackChunkName: 'element-ui-form-tree' */ 'element-ui/lib/tree'));
+Vue.component(elComponent.ElTable, () => import(/* webpackChunkName: 'element-ui-form-table' */ 'element-ui/lib/table'));
+Vue.component(elComponent.ElTableColumn, () => import(/* webpackChunkName: 'element-ui-form-table-column' */ 'element-ui/lib/table-column'));
+Vue.component(elComponent.ElTable, () => import(/* webpackChunkName: 'element-ui-form-tab-pane' */ 'element-ui/lib/tab-pane'));
+Vue.component(elComponent.ElTabs, () => import(/* webpackChunkName: 'element-ui-form-tabs' */ 'element-ui/lib/tabs'));
 
 Vue.prototype.$loading = Loading.service;
+Vue.prototype.$confirm = MessageBox.confirm;
+Vue.prototype.$message = Message;

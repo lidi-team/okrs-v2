@@ -1,16 +1,23 @@
-import { dataType, ruleTrigger } from './app.type';
+import { dataType, ruleTrigger, Validator, PromiseValidtor } from './app.type';
 
 export interface LoginDTO {
   email: string;
   password: string;
 }
 
-export interface FormRules {
+export interface Map<T> {
+  key: string;
+  name: T;
+}
+
+export interface ConfigMaps<T> extends Record<string, T> {}
+
+export interface FormRule {
   type?: dataType;
   required?: true | false;
   message?: string;
-  validator?: any;
-  trigger: ruleTrigger;
+  validator?: Validator | PromiseValidtor;
+  trigger?: ruleTrigger;
   min?: number;
   max?: number;
 }
