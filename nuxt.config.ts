@@ -112,7 +112,7 @@ const nuxtConfig: NuxtConfig = {
       },
     },
     babel: {
-      presets({ isServer }) {
+      presets() {
         return [['@nuxt/babel-preset-app', { loose: true }]];
       },
     },

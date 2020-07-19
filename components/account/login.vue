@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Provide, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Provide } from 'nuxt-property-decorator';
 import { Form as LoginForm } from 'element-ui';
 import { LoginDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
