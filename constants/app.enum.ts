@@ -20,4 +20,5 @@ export enum elComponent {
   ElTabPane = 'ElTabPane',
   ElCheckbox = 'ElCheckbox',
   ElIcon = 'ElIcon',
+  ElDialog = 'ElDialog',
 }

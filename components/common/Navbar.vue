@@ -25,7 +25,7 @@
             <nuxt-link to="/">
               <el-dropdown-item><fa icon="user-circle" class="item__icon" />Thông tin tài khoản</el-dropdown-item>
             </nuxt-link>
-            <nuxt-link to="/">
+            <nuxt-link to="/quan-ly/nhan-su">
               <el-dropdown-item><fa icon="user-friends" class="item__icon" />Quản lý nhân sự</el-dropdown-item>
             </nuxt-link>
             <el-dropdown-item divided><fa icon="power-off" class="item__icon" />Đăng xuất</el-dropdown-item>
@@ -38,7 +38,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-@Component({
+@Component<Navbar>({
   name: 'Navbar',
 })
 export default class Navbar extends Vue {
@@ -150,6 +150,8 @@ export default class Navbar extends Vue {
 }
 
 .nuxt-link-exact-active {
-  text-decoration: none;
+  .el-dropdown-menu__item {
+    background-color: $purple-primary-0;
+  }
 }
 </style>

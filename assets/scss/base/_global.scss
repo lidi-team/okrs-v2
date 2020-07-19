@@ -13,13 +13,9 @@ img {
 }
 
 a {
-  &:hover,
-  &:focus,
-  &:active {
-    outline: 0;
-    box-shadow: none;
-    text-decoration: none;
-  }
+  outline: 0;
+  box-shadow: none;
+  text-decoration: none;
 }
 
 input,
