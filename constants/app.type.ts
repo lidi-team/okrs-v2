@@ -1,4 +1,4 @@
-import { FormRule, ConfigMaps } from './app.interface';
+import { FormRule, ConfigMaps, LoginDTO } from './app.interface';
 
 export type dataType =
   | 'string'
@@ -21,3 +21,5 @@ export type PromiseValidtor = (rule: any, value: any, callback: (message?: strin
 export type Maps<T> = ConfigMaps<T>;
 export type Rule = FormRule;
 export type Rules = Maps<FormRule[]>;
+
+export type ForgotPasswordDTO = Omit<LoginDTO, 'password'>;
