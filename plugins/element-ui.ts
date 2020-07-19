@@ -18,6 +18,7 @@ import 'element-ui/lib/theme-chalk/table.css';
 import 'element-ui/lib/theme-chalk/table-column.css';
 import 'element-ui/lib/theme-chalk/tab-pane.css';
 import 'element-ui/lib/theme-chalk/tabs.css';
+import 'element-ui/lib/theme-chalk/checkbox.css';
 import 'element-ui/lib/theme-chalk/form.css';
 import 'element-ui/lib/theme-chalk/input.css';
 import 'element-ui/lib/theme-chalk/icon.css';
@@ -42,6 +43,7 @@ Vue.component(elComponent.ElTable, () => import(/* webpackChunkName: 'element-ui
 Vue.component(elComponent.ElTableColumn, () => import(/* webpackChunkName: 'element-ui-form-table-column' */ 'element-ui/lib/table-column'));
 Vue.component(elComponent.ElTable, () => import(/* webpackChunkName: 'element-ui-form-tab-pane' */ 'element-ui/lib/tab-pane'));
 Vue.component(elComponent.ElTabs, () => import(/* webpackChunkName: 'element-ui-form-tabs' */ 'element-ui/lib/tabs'));
+Vue.component(elComponent.ElCheckbox, () => import(/* webpackChunkName: 'element-ui-checkbox' */ 'element-ui/lib/checkbox'));
 Vue.component(elComponent.ElIcon, () => import(/* webpackChunkName: 'element-ui-icon' */ 'element-ui/lib/icon'));
 
 Vue.prototype.$loading = Loading.service;

@@ -18,5 +18,6 @@ export enum elComponent {
   ElTableColumn = 'ElTableColumn',
   ElTabs = 'ElTabs',
   ElTabPane = 'ElTabPane',
+  ElCheckbox = 'ElCheckbox',
   ElIcon = 'ElIcon',
 }

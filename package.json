@@ -18,16 +18,16 @@
     "lint:eslint": "eslint --fix --cache --ext .ts,.js,.vue --ignore-path .gitignore .",
     "lint:eslint:fix": "eslint --ext .ts,.js,.vue --ignore-path .gitignore . ",
     "lint:prettier": "prettier --write --loglevel warn .",
-    "lint:css": "stylelint **/*.{vue,scss,css}",
     "test": "run-s test:unit lint",
     "test:unit": "cross-env NODE_ENV=test jest --passWithNoTests",
     "test:unit:debug": "cross-env NODE_ENV=test node --inspect-brk ./node_modules/jest/bin/jest.js --no-cache --runInBand",
     "test:cov": "cross-env NODE_ENV=test jest --coverage --passWithNoTests",
     "test:e2e": " cross-env NODE_ENV=test jest --config ./test/jest-e2e.json"
   },
-  "gitHooks": {
-    "pre-commit": "ls-lint && lint-staged",
-    "commit-msg": "node scripts/verifyCommitMsg.js"
+  "husky": {
+    "hooks": {
+      "pre-commit": "cross-env PRE_COMMIT=true ls-lint && lint-staged"
+    }
   },
   "dependencies": {
     "@nuxt/types": "^2.13.3",
@@ -75,7 +75,6 @@
     "ts-jest": "^26.1.0",
     "ts-loader": "^8.0.1",
     "typescript": "3.9.6",
-    "vue-jest": "^3.0.4",
-    "yorkie": "^2.0.0"
+    "vue-jest": "^3.0.4"
   }
 }
