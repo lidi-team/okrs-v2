@@ -41,11 +41,11 @@ const nuxtConfig: NuxtConfig = {
       },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css?family=Merriweather:400,400i,700,700i&display=swap&subset=vietnamese',
       },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     ],
   },
   /*
