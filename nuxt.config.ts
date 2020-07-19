@@ -40,12 +40,18 @@ const nuxtConfig: NuxtConfig = {
         content: process.env.npm_package_description || '',
       },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      {
+        rel: 'stylesheet',
+        href: 'https://fonts.googleapis.com/css?family=Merriweather:400,400i,700,700i&display=swap&subset=vietnamese',
+      },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+    ],
   },
   /*
    ** Global CSS
    */
-  css: ['@/assets/css/resetCss.css'],
+  css: ['@/assets/scss/main.scss', '@/assets/css/resetCss.css'],
   /**
    * @description Plugins to load before mounting the App
    * @docs https://nuxtjs.org/guide/plugins
@@ -61,7 +67,20 @@ const nuxtConfig: NuxtConfig = {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxt/components', ['nuxt-purgecss', { pureCssConfig }]],
+  buildModules: [
+    '@nuxt/typescript-build',
+    '@nuxt/components',
+    ['nuxt-purgecss', { pureCssConfig }],
+    [
+      '@nuxtjs/fontawesome',
+      {
+        component: 'fa',
+        icons: {
+          solid: true,
+        },
+      },
+    ],
+  ],
   /**
    * @description Config all components in app
    * @docs https://github.com/nuxt/components
