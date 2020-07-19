@@ -1,19 +1,17 @@
 import Vue from 'vue';
 import { Loading, MessageBox, Message } from 'element-ui';
 import 'element-ui/lib/theme-chalk/display.css';
-import 'element-ui/lib/theme-chalk/row.css';
+import { elComponent } from '@/constants/app.enum';
+import 'element-ui/lib/theme-chalk/button.css';
 import 'element-ui/lib/theme-chalk/col.css';
 import 'element-ui/lib/theme-chalk/container.css';
-import 'element-ui/lib/theme-chalk/button.css';
-import 'element-ui/lib/theme-chalk/input.css';
-import 'element-ui/lib/theme-chalk/form.css';
+import 'element-ui/lib/theme-chalk/dropdown-item.css';
+import 'element-ui/lib/theme-chalk/dropdown.css';
 import 'element-ui/lib/theme-chalk/form-item.css';
 import 'element-ui/lib/theme-chalk/step.css';
 import 'element-ui/lib/theme-chalk/steps.css';
 import 'element-ui/lib/theme-chalk/pagination.css';
 import 'element-ui/lib/theme-chalk/date-picker.css';
-import 'element-ui/lib/theme-chalk/dropdown.css';
-import 'element-ui/lib/theme-chalk/dropdown-item.css';
 import 'element-ui/lib/theme-chalk/dropdown-menu.css';
 import 'element-ui/lib/theme-chalk/tree.css';
 import 'element-ui/lib/theme-chalk/table.css';
@@ -21,7 +19,10 @@ import 'element-ui/lib/theme-chalk/table-column.css';
 import 'element-ui/lib/theme-chalk/tab-pane.css';
 import 'element-ui/lib/theme-chalk/tabs.css';
 import 'element-ui/lib/theme-chalk/checkbox.css';
-import { elComponent } from '@/constants/app.enum';
+import 'element-ui/lib/theme-chalk/form.css';
+import 'element-ui/lib/theme-chalk/input.css';
+import 'element-ui/lib/theme-chalk/icon.css';
+import 'element-ui/lib/theme-chalk/row.css';
 
 Vue.component(elComponent.ElRow, () => import(/* webpackChunkName: 'element-ui-form-row' */ 'element-ui/lib/row'));
 Vue.component(elComponent.ElCol, () => import(/* webpackChunkName: 'element-ui-form-col' */ 'element-ui/lib/col'));
@@ -43,6 +44,7 @@ Vue.component(elComponent.ElTableColumn, () => import(/* webpackChunkName: 'elem
 Vue.component(elComponent.ElTable, () => import(/* webpackChunkName: 'element-ui-form-tab-pane' */ 'element-ui/lib/tab-pane'));
 Vue.component(elComponent.ElTabs, () => import(/* webpackChunkName: 'element-ui-form-tabs' */ 'element-ui/lib/tabs'));
 Vue.component(elComponent.ElCheckbox, () => import(/* webpackChunkName: 'element-ui-checkbox' */ 'element-ui/lib/checkbox'));
+Vue.component(elComponent.ElIcon, () => import(/* webpackChunkName: 'element-ui-icon' */ 'element-ui/lib/icon'));
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$confirm = MessageBox.confirm;
