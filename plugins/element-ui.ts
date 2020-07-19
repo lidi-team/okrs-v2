@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { Loading, MessageBox, Message } from 'element-ui';
+import 'element-ui/lib/theme-chalk/loading.css';
 import 'element-ui/lib/theme-chalk/display.css';
 import { elComponent } from '@/constants/app.enum';
 import 'element-ui/lib/theme-chalk/button.css';
@@ -48,6 +49,8 @@ Vue.component(elComponent.ElCheckbox, () => import(/* webpackChunkName: 'element
 Vue.component(elComponent.ElIcon, () => import(/* webpackChunkName: 'element-ui-icon' */ 'element-ui/lib/icon'));
 Vue.component(elComponent.ElDialog, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/dialog'));
 
+Vue.use(Loading.directive);
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$confirm = MessageBox.confirm;
+Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$message = Message;
