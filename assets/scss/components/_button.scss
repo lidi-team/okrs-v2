@@ -32,25 +32,21 @@
 .el-button {
   @include m('small') {
     font-size: $text-xs;
-    max-width: 5.5rem; // 88px
     padding: 0.4375rem 0.75rem;
   }
 
   @include m('base') {
     font-size: $text-base;
-    max-width: 6.9375rem; // 111px
     padding: 0.4375rem 0.75rem;
   }
 
   @include m('medium') {
     font-size: $text-xl;
-    max-width: 8.875rem; // 142px
     padding: 0.75rem 0.75rem;
   }
 
   @include m('large') {
     font-size: $text-2xl;
-    max-width: 19.25rem; // 308px$unit-$unit-10
     padding: 0.875rem 0.75rem;
   }
 }
