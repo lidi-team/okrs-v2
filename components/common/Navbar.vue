@@ -16,7 +16,7 @@
         </el-dropdown>
         <el-dropdown class="side-right__item item" trigger="click">
           <div class="item__wrapper">
-            <img src="https://avatars3.githubusercontent.com/u/23659823?s=40&v=4" class="item__avatar" />
+            <img src="https://avatars3.githubusercontent.com/u/23659823?s=40&v=4" alt="avatar" class="item__avatar" />
             <div class="item__info info">
               <span class="info__name">Đỗ Quang Hiệp<i class="el-icon-caret-bottom" /></span><span class="info__role">Admin</span>
             </div>
@@ -28,9 +28,7 @@
             <nuxt-link to="/">
               <el-dropdown-item><fa icon="user-friends" class="item__icon" />Quản lý nhân sự</el-dropdown-item>
             </nuxt-link>
-            <el-dropdown-item divided>
-              <span style="display: block;">Log out</span>
-            </el-dropdown-item>
+            <el-dropdown-item divided><fa icon="power-off" class="item__icon" />Đăng xuất</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -140,6 +138,9 @@ export default class Navbar extends Vue {
     font-size: $text-xs;
     font-weight: $font-weight-light;
   }
+}
+.el-dropdown-menu__item {
+  font-size: $text-sm;
 }
 
 .el-dropdown-menu__item:focus,
