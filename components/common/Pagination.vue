@@ -38,12 +38,12 @@ export default class Pagination extends Vue {
     this.$emit('update:page', value);
   }
 
-  get pageSize() {
-    return this.limit;
-  }
-
   set pageSize(value) {
     this.$emit('update:limit', value);
+  }
+
+  get pageSize() {
+    return this.limit;
   }
 
   handleSizeChange(value: number) {
