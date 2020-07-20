@@ -16,7 +16,7 @@
           <el-input v-model="loginForm.email" class="login__form__email" placeholder="Tên đăng nhập hoặc email"></el-input>
         </el-form-item>
         <el-form-item prop="password" label="Mật khẩu">
-          <el-input v-model="loginForm.password" type="password" class="login__form__password" placeholder="Nhật mật khẩu"></el-input>
+          <el-input v-model="loginForm.password" type="password" class="login__form__password" placeholder="Nhập mật khẩu"></el-input>
         </el-form-item>
         <el-row type="flex" justify="space-between">
           <el-col :span="12">

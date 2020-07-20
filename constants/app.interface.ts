@@ -4,6 +4,13 @@ export interface LoginDTO {
   email: string;
   password: string;
 }
+
+export interface ResetPasswordDTO {
+  newPassword?: string;
+  matchPassword?: string;
+  token?: string;
+}
+
 export interface Map<T> {
   key: string;
   name: T;
