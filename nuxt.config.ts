@@ -70,6 +70,7 @@ const nuxtConfig: NuxtConfig = {
   buildModules: [
     '@nuxt/typescript-build',
     '@nuxt/components',
+    'nuxt-clipboard2',
     ['nuxt-purgecss', { pureCssConfig }],
     [
       '@nuxtjs/fontawesome',

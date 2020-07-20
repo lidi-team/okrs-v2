@@ -5,7 +5,7 @@
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="manage-employee__content">
         <head-employee @search="handleSearch($event)" />
-        <component :is="currentTabComponent" :table-data="tableData" />
+        <component :is="currentTabComponent" :loading="loading" :table-data="tableData" />
         <base-pagination class="manage-employee__pagination" :total="100" page.sync="5" limit.sync="20" @pagination="handlePagination($event)" />
       </div>
     </el-tabs>
@@ -45,6 +45,8 @@ export default class ManageEmployee extends Vue {
   ];
 
   private search: string = '';
+
+  private loading: boolean = false;
 
   private handleSearch(textSearch: string) {
     this.search = textSearch;
