@@ -27,17 +27,12 @@
           </el-col>
         </el-row>
 
-        <el-row type="flex" justify="space-between">
+        <el-row class="fpass__form__button" type="flex" justify="space-between">
           <el-col :span="12">
-            <el-button class="el-button el-button--white el-button--medium" @click="returnLoginPage">Quay lại</el-button>
+            <el-button class="el-button el-button--white el-button--medium" @click="returnLoginPage">Quay lại trang chủ</el-button>
           </el-col>
           <el-col :span="12">
-            <el-button
-              :loading="loading"
-              class="el-button el-button--purple el-button--medium"
-              @click="handleForgotPasswordForm('forgotPasswordForm')"
-              >Gửi</el-button
-            >
+            <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handleForgotPasswordForm">Gửi</el-button>
           </el-col>
         </el-row>
       </el-form>
@@ -46,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
 import { Form as ForgotPasswordForm } from 'element-ui';
 import { Maps, Rule, ForgotPasswordDTO } from '@/constants/app.type';
 @Component<ForgotPassword>({
@@ -62,15 +57,16 @@ export default class ForgotPassword extends Vue {
     this.$router.push('/dang-nhap');
   }
 
-  public handleForgotPasswordForm(formName: string): void {
-    const fPassForm = this.$refs[formName] as ForgotPasswordForm;
+  @Emit('submit')
+  public handleForgotPasswordForm(): ForgotPasswordDTO {
+    const fPassForm = this.$refs.forgotPasswordForm as ForgotPasswordForm;
+    let result: any;
     fPassForm.validate((isValid) => {
       if (isValid) {
-        this.$emit('submit', this.forgotPasswordForm);
-      } else {
-        return false;
+        result = this.forgotPasswordForm;
       }
     });
+    return result;
   }
 
   public rules: Maps<Rule[]> = {
@@ -86,7 +82,7 @@ export default class ForgotPassword extends Vue {
 @import '@/assets/scss/main.scss';
 .wrap-fpass-form {
   .fpass__form {
-    box-shadow: 0px 1px 3px rgba(63, 63, 68, 0.15), 0px 0px 0px rgba(63, 63, 68, 0.05);
+    box-shadow: $box-shadow-default;
     border-radius: $border-radius-base;
     padding: $unit-12;
     &__title {
@@ -98,16 +94,25 @@ export default class ForgotPassword extends Vue {
     &__warning {
       font-size: $unit-2;
     }
-  }
-  .el-col {
-    font-size: 0.875rem;
-    &:first-child {
-      color: #f56c6c;
-      padding-right: $unit-6;
+    &__button {
+      .el-col {
+        &:nth-child(2) {
+          text-align: right;
+        }
+      }
     }
   }
-  .el-button {
-    margin-top: $unit-10;
+  .el-row {
+    .el-col {
+      font-size: 0.875rem;
+      &:first-child {
+        color: #f56c6c;
+        padding-right: $unit-6;
+      }
+    }
   }
+}
+.el-button {
+  margin-top: $unit-10;
 }
 </style>

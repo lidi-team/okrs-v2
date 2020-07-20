@@ -16,7 +16,13 @@
           <el-input v-model="loginForm.email" class="login__form__email" placeholder="Tên đăng nhập hoặc email"></el-input>
         </el-form-item>
         <el-form-item prop="password" label="Mật khẩu">
-          <el-input v-model="loginForm.password" type="password" class="login__form__password" placeholder="Nhập mật khẩu"></el-input>
+          <el-input
+            v-model="loginForm.password"
+            type="password"
+            class="login__form__password"
+            placeholder="Nhập mật khẩu"
+            @keyup.enter.native="handleSubmit"
+          ></el-input>
         </el-form-item>
         <el-row type="flex" justify="space-between">
           <el-col :span="12">
@@ -26,14 +32,14 @@
             <nuxt-link class="login__form__link" to="/quen-mat-khauw">Quên mật khẩu ?</nuxt-link>
           </el-col>
         </el-row>
-        <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleSubmit('loginForm')">Đăng nhập</el-button>
+        <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleSubmit">Đăng nhập</el-button>
       </el-form>
     </div>
   </el-row>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
 import { Form as LoginForm } from 'element-ui';
 import { LoginDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
@@ -56,15 +62,16 @@ export default class AccountLogin extends Vue {
     password: [{ required: true, message: 'Vui lòng nhập mật khẩu' }],
   };
 
-  public handleSubmit(formName: string): void {
-    const theForm = this.$refs[formName] as LoginForm;
-    theForm.validate((valid) => {
-      if (valid) {
-        this.$emit('submit', this.loginForm);
-      } else {
-        return false;
+  @Emit('submit')
+  private handleSubmit(): LoginDTO {
+    const theForm = this.$refs.loginForm as LoginForm;
+    let result: any;
+    theForm.validate((isValid) => {
+      if (isValid) {
+        result = this.loginForm;
       }
     });
+    return result;
   }
 }
 </script>
@@ -72,12 +79,12 @@ export default class AccountLogin extends Vue {
 <style lang="scss">
 @import '@/assets/scss/main.scss';
 .wrap-login-form {
-  padding: $unit-5 $unit-12 $unit-12 $unit-12;
-  box-shadow: 0px 1px 3px rgba(63, 63, 68, 0.15), 0px 0px 0px rgba(63, 63, 68, 0.05);
+  padding: $unit-12;
+  box-shadow: $box-shadow-default;
   .login__form {
     &__title {
       border: 10px;
-      padding: $unit-10 0 $unit-10 0;
+      padding: 0 0 $unit-10 0;
       font-size: 1.75rem;
       color: $neutral-primary-4;
     }
@@ -113,6 +120,7 @@ export default class AccountLogin extends Vue {
   .el-button {
     margin-top: $unit-10;
     font-size: $unit-5;
+    width: 100%;
   }
 }
 </style>

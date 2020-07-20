@@ -4,7 +4,7 @@
       <img src="@/assets/images/account/tiny-forgot-password.png" alt="login image" />
     </el-col>
     <el-col :span="8">
-      <account-forgot-password :loading="loading" class="account-forgot-password" @submit="handleSubmit" />
+      <account-forgot-password :send-email="sendEmail" :loading="loading" class="account-forgot-password" @submit="handleSubmit" />
     </el-col>
   </el-row>
 </template>
@@ -17,13 +17,14 @@ import { ForgotPasswordDTO } from '@/constants/app.type';
 })
 export default class ForgotPasswordPage extends Vue {
   private loading: boolean = false;
+  private sendEmail: boolean = false;
 
   public handleSubmit({ email }: ForgotPasswordDTO): void {
     this.loading = true;
     setTimeout(() => {
       try {
         if (email) {
-          alert(email);
+          this.$message.success(email);
         } else {
           this.$message.warning('Xãy ra lỗi ở quên password');
         }
@@ -31,6 +32,7 @@ export default class ForgotPasswordPage extends Vue {
         this.$message.warning(error.message);
       }
       this.loading = false;
+      this.sendEmail = !this.sendEmail;
     }, 300);
   }
 }
