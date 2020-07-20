@@ -1,4 +1,4 @@
-import { dataType, ruleTrigger, Validator, PromiseValidtor } from './app.type';
+import { dataType, ruleTrigger, Validator, PromiseValidtor, UserRole } from './app.type';
 
 export interface LoginDTO {
   email: string;
@@ -28,7 +28,10 @@ export interface FormRule {
   max?: number;
 }
 
-export interface LoadingObject {
-  start(): void;
-  finish(): void;
+export interface IUserState {
+  token: string;
+  name: string;
+  avatar: string;
+  role: UserRole;
+  email: string;
 }

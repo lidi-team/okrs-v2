@@ -13,6 +13,7 @@
     "noImplicitThis": false,
     "noImplicitAny": false,
     "experimentalDecorators": true,
+    // "importHelpers": true,
     "emitDecoratorMetadata": true,
     "baseUrl": ".",
     "paths": {

@@ -20,6 +20,7 @@ export default class LoginPage extends Vue {
 
   public handleSubmit({ email, password }: LoginDTO): void {
     this.loading = true;
+
     setTimeout(() => {
       try {
         if (email && password) {
