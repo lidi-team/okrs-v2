@@ -23,7 +23,7 @@ export default class LoginPage extends Vue {
     setTimeout(() => {
       try {
         if (email && password) {
-          alert(email + '  ' + password);
+          this.$message.success(email + '  ' + password);
         } else {
           this.$message.warning('A dau xanh no');
         }

@@ -95,8 +95,8 @@ export default class ResetPassword extends Vue {
   private handleSubmit(): ResetPasswordDTO {
     const theForm = this.$refs.resetPasswordForm as resetPasswordForm;
     let result: any;
-    theForm.validate((valid) => {
-      if (valid) {
+    theForm.validate((isValid) => {
+      if (isValid) {
         this.resetPasswordForm.token = this.$route.query.token as string;
         result = this.resetPasswordForm;
       }
@@ -111,7 +111,7 @@ export default class ResetPassword extends Vue {
 .reset-password-form {
   flex-direction: column;
   padding: $unit-12;
-  box-shadow: 0px 1px 3px rgba(63, 63, 68, 0.15), 0px 0px 0px rgba(63, 63, 68, 0.05);
+  box-shadow: $box-shadow-default;
   @include breakpoint-down(phone) {
   }
   &__title {

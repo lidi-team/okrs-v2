@@ -11,8 +11,8 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier'],
   // add your custom rules here
   rules: {
-    '@typescript-eslint/no-unused-vars': 1,
-    'no-unused-vars': 1,
+    '@typescript-eslint/no-unused-vars': 0,
+    'no-unused-vars': 0,
     'no-console': 0,
     'standard/no-callback-literal': 0,
   },
