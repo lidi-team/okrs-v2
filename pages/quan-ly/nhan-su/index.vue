@@ -16,6 +16,7 @@ import { Component, Vue } from 'nuxt-property-decorator';
 import EmployeePending from '@/components/manage/employee/EmployeePending.vue';
 import EmployeeActive from '@/components/manage/employee/EmployeeActive.vue';
 import EmployeeDeactive from '@/components/manage/employee/EmployeeDeactive.vue';
+import { UserStatus } from '@/constants/app.enum';
 @Component<ManageEmployee>({
   name: 'ManageEmployee',
 })
@@ -53,21 +54,21 @@ export default class ManageEmployee extends Vue {
     console.log(pagination);
   }
 
-  private currentTab: string = 'Hoạt động';
-  private tabs: Array<string> = ['Hoạt động', 'Đang chờ', 'Không hoạt động'];
+  private currentTab: string = UserStatus.Active;
+  private tabs: string[] = [...Object.values(UserStatus)];
   private handleClick(currentTab: string) {
-    this.$router.push(`?tab=${currentTab === 'Hoạt động' ? 'active' : currentTab === 'Đang chờ' ? 'pending' : 'deactive'}`);
+    this.$router.push(`?tab=${currentTab === UserStatus.Active ? 'active' : currentTab === UserStatus.Pending ? 'pending' : 'deactive'}`);
   }
 
   private get currentTabComponent() {
     if (this.$route.query.tab === 'deactive') {
-      this.currentTab = 'Không hoạt động';
+      this.currentTab = UserStatus.Inactive;
       return EmployeeDeactive;
     } else if (this.$route.query.tab === 'pending') {
-      this.currentTab = 'Đang chờ';
+      this.currentTab = UserStatus.Pending;
       return EmployeePending;
     } else {
-      this.currentTab = 'Hoạt động';
+      this.currentTab = UserStatus.Active;
       return EmployeeActive;
     }
   }

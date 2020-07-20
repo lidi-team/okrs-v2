@@ -22,3 +22,9 @@ export enum elComponent {
   ElIcon = 'ElIcon',
   ElDialog = 'ElDialog',
 }
+
+export enum UserStatus {
+  Active = 'Hoạt động',
+  Inactive = 'Không hoạt động',
+  Pending = 'Đang chờ',
+}
