@@ -4,24 +4,17 @@
       <img src="@/assets/images/account/tiny-login.png" alt="login image" />
     </el-col>
     <el-col :span="8">
-      <account-login :loading="loading" class="account-login" @submit="handleSubmit" />
+      <account-login class="account-login" />
     </el-col>
   </el-row>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-import { LoginDTO } from '@/constants/app.interface';
 @Component<LoginPage>({
   name: 'LoginPage',
 })
-export default class LoginPage extends Vue {
-  private loading: boolean = false;
-
-  public handleSubmit(): void {
-    this.loading = true;
-  }
-}
+export default class LoginPage extends Vue {}
 </script>
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';

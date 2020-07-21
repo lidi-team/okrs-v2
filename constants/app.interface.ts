@@ -49,10 +49,6 @@ export interface FormRule {
 export interface AuthResponse {
   token: string;
 }
-export interface AuthState {
-  token: string | undefined;
-  role: UserRole;
-}
 
 export interface UserState {
   fullName: string;

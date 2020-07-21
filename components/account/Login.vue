@@ -13,7 +13,14 @@
         @submit.native.prevent="handleSubmit"
       >
         <el-form-item prop="email" label="Tên đăng nhập">
-          <el-input ref="email" v-model="loginForm.email" class="login__form__email" placeholder="Tên đăng nhập hoặc email"></el-input>
+          <el-input
+            ref="email"
+            v-model="loginForm.email"
+            class="login__form__email"
+            placeholder="Tên đăng nhập hoặc email"
+            tabindex="1"
+            autocomplete="on"
+          ></el-input>
         </el-form-item>
         <el-tooltip v-model="capsTooltip" content="Đang bật Caps Lock" placement="right" manual>
           <el-form-item prop="password" label="Mật khẩu">
@@ -23,9 +30,11 @@
               type="password"
               class="login__form__password"
               placeholder="Nhập mật khẩu"
+              tabindex="2"
+              autocomplete="on"
               @keyup.native="checkCapslock"
               @blur="capsTooltip = false"
-              @keyup.enter.native="handleSubmit"
+              @keyup.enter.native="handleLogin"
             ></el-input>
           </el-form-item>
         </el-tooltip>
@@ -37,7 +46,7 @@
             <nuxt-link class="login__form__link" to="/quen-mat-khauw">Quên mật khẩu ?</nuxt-link>
           </el-col>
         </el-row>
-        <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleSubmit">Đăng nhập</el-button>
+        <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleLogin">Đăng nhập</el-button>
       </el-form>
     </div>
   </el-row>
@@ -45,22 +54,15 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
-import { Form as LoginForm, Input } from 'element-ui';
+import { Form as LoginForm } from 'element-ui';
 import { LoginDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
-import AuthModule from '@/store/modules/auth';
+// import { AuthModule } from '@/store/modules/auth';
 @Component<AccountLogin>({
   name: 'Login',
-  mounted() {
-    if (this.loginForm.username === '') {
-      (this.$refs.username as Input).focus();
-    } else if (this.loginForm.password === '') {
-      (this.$refs.password as Input).focus();
-    }
-  },
 })
 export default class AccountLogin extends Vue {
-  @Prop({ default: false }) public loading!: boolean;
+  private loading: boolean = false;
   private rememberPassword: boolean = false;
   private capsTooltip = false;
   public loginForm: LoginDTO = {
@@ -81,13 +83,12 @@ export default class AccountLogin extends Vue {
     this.capsTooltip = key !== null && key.length === 1 && key >= 'A' && key <= 'Z';
   }
 
-  @Emit('submit')
-  private handleSubmit(): any {
-    const theForm = this.$refs.loginForm as LoginForm;
-    theForm.validate(async (isValid) => {
+  private handleLogin(): any {
+    (this.$refs.loginForm as LoginForm).validate((isValid: boolean) => {
       if (isValid) {
         this.loading = true;
-        await AuthModule.login(this.loginForm);
+        console.log('Hello');
+        // await AuthModule.login(this.loginForm);
         setTimeout(() => {
           this.loading = false;
         }, 300);
@@ -144,6 +145,10 @@ export default class AccountLogin extends Vue {
     margin-top: $unit-10;
     font-size: $unit-5;
     width: 100%;
+  }
+  .el-tooltip__popper .is-dark {
+    background: $purple-primary-4;
+    color: white;
   }
 }
 </style>

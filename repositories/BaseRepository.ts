@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { Message, MessageBox } from 'element-ui';
-import AuthModule from '@/store/modules/auth';
 
 const service = axios.create({
   baseURL: process.env.baseAPI, // url = base url + request url
@@ -12,10 +11,10 @@ const service = axios.create({
 service.interceptors.request.use(
   (config) => {
     // Add Bearer token's header to every request
-    if (AuthModule.token !== undefined) {
-      config.headers.Authorization = AuthModule.token;
-      return config;
-    }
+    // if (AuthModule.token !== undefined) {
+    //   config.headers.Authorization = AuthModule.token;
+    //   return config;
+    // }
     return config;
   },
   (error) => {
@@ -47,7 +46,7 @@ service.interceptors.response.use(
           cancelButtonText: '取消',
           type: 'warning',
         }).then(() => {
-          AuthModule.resetToken();
+          // AuthModule.resetToken();
           location.reload(); // To prevent bugs from vue-router
         });
       }
