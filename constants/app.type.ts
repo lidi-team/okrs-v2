@@ -1,4 +1,4 @@
-import { FormRule, ConfigMaps, LoginDTO } from './app.interface';
+import { FormRule, ConfigMaps, LoginDTO, IUserState } from './app.interface';
 
 export type dataType =
   | 'string'

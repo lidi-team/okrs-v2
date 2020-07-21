@@ -5,6 +5,17 @@ export interface LoginDTO {
   password: string;
 }
 
+export interface RegisterDTO {
+  email: string;
+  password: string;
+  fullName: string;
+  avatarUrl: string;
+  gender?: number;
+  roleId?: number;
+  teamId?: number;
+  jobPositionId?: number;
+}
+
 export interface ResetPasswordDTO {
   newPassword?: string;
   matchPassword?: string;
@@ -28,10 +39,11 @@ export interface FormRule {
   max?: number;
 }
 
-export interface IUserState {
-  token: string;
-  name: string;
-  avatar: string;
+export interface UserState {
+  token: string | undefined;
   role: UserRole;
-  email: string;
+}
+
+export interface AuthResponse {
+  token: string;
 }

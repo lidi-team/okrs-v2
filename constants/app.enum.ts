@@ -28,3 +28,8 @@ export enum UserStatus {
   Inactive = 'Không hoạt động',
   Pending = 'Đang chờ',
 }
+
+export enum ResourcesEnpoint {
+  Auth = 'auth',
+  Users = 'users',
+}
