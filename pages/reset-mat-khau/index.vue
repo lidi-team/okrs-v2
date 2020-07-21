@@ -18,12 +18,12 @@ import { ResetPasswordDTO } from '@/constants/app.interface';
 export default class ResetPasswordPage extends Vue {
   private loading: boolean = false;
 
-  public handleSubmit({ newPassword, matchPassword, token }: ResetPasswordDTO): void {
+  public handleSubmit({ email }: ResetPasswordDTO): void {
     this.loading = true;
     setTimeout(() => {
       try {
-        if (newPassword && matchPassword && token) {
-          this.$message.success(newPassword + token);
+        if (email) {
+          this.$message.success(email);
         } else {
           this.$message.error('Đã xảy ra lỗi');
         }

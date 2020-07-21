@@ -13,17 +13,22 @@
         @submit.native.prevent="handleSubmit"
       >
         <el-form-item prop="email" label="Tên đăng nhập">
-          <el-input v-model="loginForm.email" class="login__form__email" placeholder="Tên đăng nhập hoặc email"></el-input>
+          <el-input ref="email" v-model="loginForm.email" class="login__form__email" placeholder="Tên đăng nhập hoặc email"></el-input>
         </el-form-item>
-        <el-form-item prop="password" label="Mật khẩu">
-          <el-input
-            v-model="loginForm.password"
-            type="password"
-            class="login__form__password"
-            placeholder="Nhập mật khẩu"
-            @keyup.enter.native="handleSubmit"
-          ></el-input>
-        </el-form-item>
+        <el-tooltip v-model="capsTooltip" content="Đang bật Caps Lock" placement="right" manual>
+          <el-form-item prop="password" label="Mật khẩu">
+            <el-input
+              ref="password"
+              v-model="loginForm.password"
+              type="password"
+              class="login__form__password"
+              placeholder="Nhập mật khẩu"
+              @keyup.native="checkCapslock"
+              @blur="capsTooltip = false"
+              @keyup.enter.native="handleSubmit"
+            ></el-input>
+          </el-form-item>
+        </el-tooltip>
         <el-row type="flex" justify="space-between">
           <el-col :span="12">
             <el-checkbox v-model="rememberPassword" class="login__form__checkbox">Ghi nhớ mật khẩu</el-checkbox>
@@ -40,15 +45,24 @@
 
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
-import { Form as LoginForm } from 'element-ui';
+import { Form as LoginForm, Input } from 'element-ui';
 import { LoginDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
+import AuthModule from '@/store/modules/auth';
 @Component<AccountLogin>({
   name: 'Login',
+  mounted() {
+    if (this.loginForm.username === '') {
+      (this.$refs.username as Input).focus();
+    } else if (this.loginForm.password === '') {
+      (this.$refs.password as Input).focus();
+    }
+  },
 })
 export default class AccountLogin extends Vue {
   @Prop({ default: false }) public loading!: boolean;
   private rememberPassword: boolean = false;
+  private capsTooltip = false;
   public loginForm: LoginDTO = {
     email: '',
     password: '',
@@ -62,16 +76,25 @@ export default class AccountLogin extends Vue {
     password: [{ required: true, message: 'Vui lòng nhập mật khẩu' }],
   };
 
+  private checkCapslock(e: KeyboardEvent) {
+    const { key } = e;
+    this.capsTooltip = key !== null && key.length === 1 && key >= 'A' && key <= 'Z';
+  }
+
   @Emit('submit')
-  private handleSubmit(): LoginDTO {
+  private handleSubmit(): any {
     const theForm = this.$refs.loginForm as LoginForm;
-    let result: any;
-    theForm.validate((isValid) => {
+    theForm.validate(async (isValid) => {
       if (isValid) {
-        result = this.loginForm;
+        this.loading = true;
+        await AuthModule.login(this.loginForm);
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
+      } else {
+        return false;
       }
     });
-    return result;
   }
 }
 </script>

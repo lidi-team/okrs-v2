@@ -18,21 +18,8 @@ import { LoginDTO } from '@/constants/app.interface';
 export default class LoginPage extends Vue {
   private loading: boolean = false;
 
-  public handleSubmit({ email, password }: LoginDTO): void {
+  public handleSubmit(): void {
     this.loading = true;
-
-    setTimeout(() => {
-      try {
-        if (email && password) {
-          this.$message.success(email + '  ' + password);
-        } else {
-          this.$message.warning('A dau xanh no');
-        }
-      } catch (error) {
-        this.$message.warning(error.message);
-      }
-      this.loading = false;
-    }, 300);
   }
 }
 </script>

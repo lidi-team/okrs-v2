@@ -21,6 +21,7 @@ export enum elComponent {
   ElCheckbox = 'ElCheckbox',
   ElIcon = 'ElIcon',
   ElDialog = 'ElDialog',
+  ElTooltip = 'ElTooltip',
 }
 
 export enum UserStatus {

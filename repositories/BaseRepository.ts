@@ -3,7 +3,7 @@ import { Message, MessageBox } from 'element-ui';
 import AuthModule from '@/store/modules/auth';
 
 const service = axios.create({
-  baseURL: this.$config.baseAPI, // url = base url + request url
+  baseURL: process.env.baseAPI, // url = base url + request url
   timeout: 5000,
   // withCredentials: true // send cookies when cross-domain requests
 });
