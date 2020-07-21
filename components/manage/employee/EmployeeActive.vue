@@ -1,13 +1,27 @@
 <template>
   <fragment>
-    <el-table v-loading="loading" class="employee-active" :data="tableData" style="width: 100%;">
-      <el-table-column prop="date" label="Date" width="180"></el-table-column>
-      <el-table-column prop="name" label="Name" width="180"></el-table-column>
-      <el-table-column prop="address" label="Address"></el-table-column>
+    <el-table v-loading="loading" empty-text="Không có dữ liệu" class="employee-active" :data="tableData" style="width: 100%;">
+      <el-table-column prop="fullName" label="Tên đầy đủ" width="250"></el-table-column>
+      <el-table-column prop="email" label="Email" width="250"></el-table-column>
+      <el-table-column label="Phòng ban" width="180">
+        <template slot-scope="{ row }">
+          <span>{{ row.team.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Vị trí công việc" width="250">
+        <template slot-scope="{ row }">
+          <span>{{ row.jobPosition.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="role" label="Vai trò" width="180">
+        <template slot-scope="{ row }">
+          <span>{{ row.role.name }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="Thao tác" align="center" width="150">
         <template slot-scope="{ row }">
           <el-tooltip class="employee-active__icon" content="Sửa" placement="top">
-            <i class="el-icon-edit" @click="handleUpdate(row)"></i>
+            <i class="el-icon-edit" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
           <el-tooltip class="employee-active__icon" content="Xóa" placement="top">
             <i class="el-icon-delete" @click="handleDelete(row)"></i>
@@ -27,12 +41,27 @@
     >
       <el-row :gutter="10">
         <el-col :span="24">
-          <el-form ref="updateEmployeeForm" :model="tempUpdateUser" label-position="left" label-width="20%" style="width: 100%;">
-            <div class="update-employee__item item">
-              <div class="item__right">
-                {{ tempUpdateUser }}
-              </div>
-            </div>
+          <el-form
+            ref="updateEmployeeForm"
+            :hide-required-asterisk="false"
+            :status-icon="true"
+            :rules="rules"
+            :model="tempUpdateUser"
+            label-position="left"
+            label-width="20%"
+            style="width: 100%;"
+          >
+            <el-form-item label="Tên đầy đủ:" prop="fullName" class="custom-label">
+              <el-input
+                v-model="tempUpdateUser.fullName"
+                placeholder="Nhập tiêu đề"
+                :disabled="true"
+                @keyup.enter.native="handleUpdate(tempUpdateUser)"
+              />
+            </el-form-item>
+            <el-form-item label="Email:" class="custom-label" prop="email">
+              <el-input v-model="tempUpdateUser.email" placeholder="Nhập email" :disabled="true" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
+            </el-form-item>
           </el-form>
         </el-col>
       </el-row>
@@ -40,8 +69,8 @@
         <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">
           Hủy
         </el-button>
-        <el-button class="el-button--purple el-button--modal" type="primary" @click="handleCloseDialog">
-          Xác nhận
+        <el-button class="el-button--purple el-button--modal" @click="handleUpdate(tempUpdateUser)">
+          Cập nhật
         </el-button>
       </span>
     </el-dialog>
@@ -50,6 +79,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Form } from 'element-ui';
+import { Maps, Rule } from '@/constants/app.type';
 @Component<EmployeeActive>({
   name: 'EmployeeActive',
 })
@@ -59,9 +90,20 @@ export default class EmployeeActive extends Vue {
   private dialogUpdateVisible: boolean = false;
   private tempUpdateUser: object = {};
 
-  private handleUpdate(row: object) {
-    this.tempUpdateUser = Object.assign(this.tempUpdateUser, row);
+  public rules: Maps<Rule[]> = {};
+
+  private handleOpenDialogUpdate(row: object) {
+    this.tempUpdateUser = Object.assign({}, row);
     this.dialogUpdateVisible = true;
+  }
+
+  private handleUpdate(tempUpdateUser: object) {
+    const updateUserForm = this.$refs.updateEmployeeForm as Form;
+    updateUserForm.validate((isValid) => {
+      if (isValid) {
+        console.log('xxx');
+      }
+    });
   }
 
   private handleCloseDialog() {

@@ -29,3 +29,7 @@ export enum UserStatus {
   Pending = 'Đang chờ',
   Inactive = 'Không hoạt động',
 }
+
+export enum ResourcesEnpoint {
+  Users = 'users',
+}

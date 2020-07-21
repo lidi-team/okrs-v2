@@ -17,33 +17,34 @@ import EmployeePending from '@/components/manage/employee/EmployeePending.vue';
 import EmployeeActive from '@/components/manage/employee/EmployeeActive.vue';
 import EmployeeDeactive from '@/components/manage/employee/EmployeeDeactive.vue';
 import { UserStatus } from '@/constants/app.enum';
+import { ParamsUser } from '@/constants/app.interface';
+import UserRepository from '@/repositories/UserRepository';
+
 @Component<ManageEmployee>({
   name: 'ManageEmployee',
+  async asyncData({ params }) {
+    const paramsUser: ParamsUser = {
+      status: 1,
+      text: '',
+      page: 1,
+      limit: 20,
+    };
+    try {
+      const listUsers = await UserRepository.get(paramsUser);
+      return {
+        tableData: listUsers.data.data.items,
+      };
+    } catch (error) {
+      this.$notify({
+        title: 'Status',
+        message: 'Có lỗi xảy ra',
+        type: 'error',
+        duration: 1000,
+      });
+    }
+  },
 })
 export default class ManageEmployee extends Vue {
-  private tableData: Array<Object> = [
-    {
-      date: '2016-05-03',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      date: '2016-05-02',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      date: '2016-05-04',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      date: '2016-05-01',
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-  ];
-
   private search: string = '';
 
   private loading: boolean = false;

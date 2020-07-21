@@ -32,3 +32,10 @@ export interface LoadingObject {
   start(): void;
   finish(): void;
 }
+
+export interface ParamsUser {
+  status?: number;
+  text?: string;
+  page?: number;
+  limit?: number;
+}
