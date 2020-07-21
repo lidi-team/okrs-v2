@@ -17,9 +17,12 @@ export interface RegisterDTO {
 }
 
 export interface ResetPasswordDTO {
-  newPassword?: string;
-  matchPassword?: string;
-  token?: string;
+  email: string;
+}
+
+export interface ResetPasswordActionDTO {
+  newPassword: string;
+  token: string;
 }
 
 export interface Map<T> {
@@ -39,11 +42,18 @@ export interface FormRule {
   max?: number;
 }
 
-export interface UserState {
+/**
+ * Store
+ */
+
+export interface AuthResponse {
+  token: string;
+}
+export interface AuthState {
   token: string | undefined;
   role: UserRole;
 }
 
-export interface AuthResponse {
-  token: string;
+export interface UserState {
+  fullName: string;
 }
