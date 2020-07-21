@@ -1,47 +1,18 @@
-import { VuexModule, Module, Action, Mutation, getModule } from 'nuxt-property-decorator';
-import { getToken, setToken, removeToken } from '@/utils/cookies';
-import { IUserState } from '@/constants/app.interface';
+import { VuexModule, Module, Action, Mutation, getModule } from 'vuex-module-decorators';
+import { getTokenCookies, setTokenCookies, removeTokenCookies } from '@/utils/cookies';
+import { AuthState, LoginDTO, UserState } from '@/constants/app.interface';
 import { UserRole } from '@/constants/app.type';
 import store from '@/store';
-@Module({ name: 'user', dynamic: true, store })
-class User extends VuexModule implements IUserState {
-  public token!: string;
-  public name!: string;
-  public avatar!: string;
-  public role!: UserRole;
-  public email!: string;
+import AuthRepository from '@/repositories/AuthRepository';
 
-  // @Mutation
-  // private setToken(token: string) {
-  //   this.token = token;
-  // }
+@Module({ stateFactory: true, dynamic: true, store })
+class UserModule extends VuexModule implements UserState {
+  public fullName!: string;
 
-  // @Mutation
-  // private setName(name: string) {
-  //   this.name = name;
-  // }
-
-  // @Mutation
-  // private setAvatar(avatar: string) {
-  //   this.avatar = avatar;
-  // }
-
-  // @Mutation
-  // private setRole(role: UserRole) {
-  //   this.role = role;
-  // }
-
-  // @Mutation
-  // private setEmail(email: string) {
-  //   this.email = email;
-  // }
-
-  // @Action
-  // public resetToken() {
-  //   removeToken();
-  //   this.setToken('');
-  //   this.setRole(null);
-  // }
+  @Mutation
+  private setFullName(fullName: string) {
+    this.fullName = fullName;
+  }
 }
 
-export default getModule(User);
+export default getModule(UserModule);
