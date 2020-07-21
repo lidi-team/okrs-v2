@@ -23,12 +23,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item prop="matchPassword" label="Nhập lại mật khẩu mới">
-          <el-input
-            v-model="resetPasswordForm.matchPassword"
-            type="password"
-            class="reset-password-form__input__match-password"
-            placeholder="Nhập mật khẩu"
-          ></el-input>
+          <el-input v-model="matchPassword" type="password" class="reset-password-form__input__match-password" placeholder="Nhập mật khẩu"></el-input>
         </el-form-item>
       </div>
       <el-row type="flex" justify="space-between" class="reset-password-form__button">
@@ -46,18 +41,19 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
 import { Form as resetPasswordForm } from 'element-ui';
-import { ResetPasswordDTO } from '@/constants/app.interface';
+import { ResetPasswordActionDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<ResetPassword>({
   name: 'ResetPassword',
 })
 export default class ResetPassword extends Vue {
   @Prop({ default: false }) public loading!: boolean;
+  private matchPassword: string = '';
+
   watchQuery: string[] = ['token'];
 
-  public resetPasswordForm: ResetPasswordDTO = {
+  public resetPasswordForm: ResetPasswordActionDTO = {
     newPassword: '',
-    matchPassword: '',
     token: '',
   };
 
@@ -92,7 +88,7 @@ export default class ResetPassword extends Vue {
   }
 
   @Emit('submit')
-  private handleSubmit(): ResetPasswordDTO {
+  private handleSubmit(): ResetPasswordActionDTO {
     const theForm = this.$refs.resetPasswordForm as resetPasswordForm;
     let result: any;
     theForm.validate((isValid) => {
