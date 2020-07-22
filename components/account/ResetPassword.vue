@@ -11,7 +11,7 @@
       :hide-required-asterisk="false"
       label-width="150px"
       label-position="top"
-      @submit.native.prevent="handleSubmit"
+      @submit.native.prevent="handleResetPasswordForm"
     >
       <div class="reset-password-form__input">
         <el-form-item prop="newPassword" label="Mật khẩu mới">
@@ -26,12 +26,14 @@
           <el-input v-model="matchPassword" type="password" class="reset-password-form__input__match-password" placeholder="Nhập mật khẩu"></el-input>
         </el-form-item>
       </div>
-      <el-row type="flex" justify="space-between" class="reset-password-form__button">
-        <el-col :span="12">
-          <el-button class="el-button el-button--white el-button--medium" @click="returnLoginPage">Quay lại trang chủ</el-button>
+      <el-row class="reset-password-form__action" type="flex" justify="space-between">
+        <el-col :span="24">
+          <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handleResetPasswordForm">
+            Đổi mật khẩu
+          </el-button>
         </el-col>
-        <el-col :span="12">
-          <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handleSubmit">Đổi mật khẩu</el-button>
+        <el-col :span="24">
+          <nuxt-link to="/dang-nhap"><strong>Quay lại trang</strong> <span class="reset-password-form__action--login">Đăng nhập</span></nuxt-link>
         </el-col>
       </el-row>
     </el-form>
@@ -39,9 +41,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
-import { Form as resetPasswordForm } from 'element-ui';
-import { ResetPasswordActionDTO } from '@/constants/app.interface';
+import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Form } from 'element-ui';
+import { ResetPasswordDTO, ResetPasswordActionDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<ResetPassword>({
   name: 'ResetPassword',
@@ -83,21 +85,12 @@ export default class ResetPassword extends Vue {
     return callback();
   }
 
-  private returnLoginPage(): void {
-    this.$router.push('/dang-nhap');
-  }
-
-  @Emit('submit')
-  private handleSubmit(): ResetPasswordActionDTO {
-    const theForm = this.$refs.resetPasswordForm as resetPasswordForm;
-    let result: any;
-    theForm.validate((isValid) => {
+  private handleResetPasswordForm(): void {
+    (this.$refs.resetPasswordForm as Form).validate((isValid) => {
       if (isValid) {
         this.resetPasswordForm.token = this.$route.query.token as string;
-        result = this.resetPasswordForm;
       }
     });
-    return result;
   }
 }
 </script>
@@ -122,8 +115,12 @@ export default class ResetPassword extends Vue {
     &__match-password {
     }
   }
-  &__button {
+  &__action {
     margin-top: $unit-10;
+    flex-direction: column;
+    &--login {
+      color: $blue-primary-2;
+    }
   }
   .el-form-item {
     &:first-child {
@@ -141,11 +138,20 @@ export default class ResetPassword extends Vue {
   }
   .el-row {
     .el-col:nth-child(2) {
-      text-align: right;
+      a {
+        text-decoration: none;
+        color: $neutral-primary-4;
+      }
+      text-align: center;
+      &:nth-child(2) {
+        padding-top: $unit-4;
+        font-size: 0.875rem;
+      }
     }
   }
 }
 .el-button {
   font-size: $unit-5;
+  width: 100%;
 }
 </style>
