@@ -13,17 +13,31 @@
         @submit.native.prevent="handleSubmit"
       >
         <el-form-item prop="email" label="Tên đăng nhập">
-          <el-input v-model="loginForm.email" class="login__form__email" placeholder="Tên đăng nhập hoặc email"></el-input>
-        </el-form-item>
-        <el-form-item prop="password" label="Mật khẩu">
           <el-input
-            v-model="loginForm.password"
-            type="password"
-            class="login__form__password"
-            placeholder="Nhập mật khẩu"
-            @keyup.enter.native="handleSubmit"
+            ref="email"
+            v-model="loginForm.email"
+            class="login__form__email"
+            placeholder="Tên đăng nhập hoặc email"
+            tabindex="1"
+            autocomplete="on"
           ></el-input>
         </el-form-item>
+        <el-tooltip v-model="capsTooltip" content="Đang bật Caps Lock" placement="right" manual>
+          <el-form-item prop="password" label="Mật khẩu">
+            <el-input
+              ref="password"
+              v-model="loginForm.password"
+              type="password"
+              class="login__form__password"
+              placeholder="Nhập mật khẩu"
+              tabindex="2"
+              autocomplete="on"
+              @keyup.native="checkCapslock"
+              @blur="capsTooltip = false"
+              @keyup.enter.native="handleLogin"
+            ></el-input>
+          </el-form-item>
+        </el-tooltip>
         <el-row type="flex" justify="space-between">
           <el-col :span="12">
             <el-checkbox v-model="rememberPassword" class="login__form__checkbox">Ghi nhớ mật khẩu</el-checkbox>
@@ -32,7 +46,7 @@
             <nuxt-link class="login__form__link" to="/quen-mat-khauw">Quên mật khẩu ?</nuxt-link>
           </el-col>
         </el-row>
-        <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleSubmit">Đăng nhập</el-button>
+        <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleLogin">Đăng nhập</el-button>
       </el-form>
     </div>
   </el-row>
@@ -41,14 +55,18 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
 import { Form as LoginForm } from 'element-ui';
+import { authEnpoint } from '../../constants/app.constant';
 import { LoginDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
+import { ResourcesEnpoint } from '@/constants/app.enum';
+// import { AuthModule } from '@/store/modules/auth';
 @Component<AccountLogin>({
   name: 'Login',
 })
 export default class AccountLogin extends Vue {
-  @Prop({ default: false }) public loading!: boolean;
+  private loading: boolean = false;
   private rememberPassword: boolean = false;
+  private capsTooltip = false;
   public loginForm: LoginDTO = {
     email: '',
     password: '',
@@ -62,16 +80,23 @@ export default class AccountLogin extends Vue {
     password: [{ required: true, message: 'Vui lòng nhập mật khẩu' }],
   };
 
-  @Emit('submit')
-  private handleSubmit(): LoginDTO {
-    const theForm = this.$refs.loginForm as LoginForm;
-    let result: any;
-    theForm.validate((isValid) => {
+  private checkCapslock(e: KeyboardEvent) {
+    const { key } = e;
+    this.capsTooltip = key !== null && key.length === 1 && key >= 'A' && key <= 'Z';
+  }
+
+  private handleLogin(): any {
+    (this.$refs.loginForm as LoginForm).validate(async (isValid: boolean) => {
       if (isValid) {
-        result = this.loginForm;
+        this.loading = true;
+        await this.$store.dispatch('auth/login', this.loginForm);
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
+      } else {
+        return false;
       }
     });
-    return result;
   }
 }
 </script>
@@ -121,6 +146,10 @@ export default class AccountLogin extends Vue {
     margin-top: $unit-10;
     font-size: $unit-5;
     width: 100%;
+  }
+  .el-tooltip__popper .is-dark {
+    background: $purple-primary-4;
+    color: white;
   }
 }
 </style>

@@ -1,30 +1,28 @@
-import { dataType, ruleTrigger, Validator, PromiseValidtor, Gender } from './app.type';
+import { dataType, ruleTrigger, Validator, PromiseValidtor, UserRole } from './app.type';
 
 export interface LoginDTO {
   email: string;
   password: string;
 }
 
-export interface ResetPasswordDTO {
-  newPassword?: string;
-  matchPassword?: string;
-  token?: string;
-}
-
-export interface ProfileDTO {
-  avatar: string;
-  fullname: string;
-  role: string;
-  gender: Gender;
+export interface RegisterDTO {
   email: string;
-  dob: Date | '';
-  department: string;
-  position: string;
+  password: string;
+  fullName: string;
+  avatarUrl?: string;
+  gender?: number;
+  roleId?: number;
+  teamId?: number;
+  jobPositionId?: number;
 }
 
-export interface SelectDTO {
-  label: string;
-  value: string;
+export interface ResetPasswordDTO {
+  email: string;
+}
+
+export interface ResetPasswordActionDTO {
+  newPassword: string;
+  token: string;
 }
 
 export interface Map<T> {
@@ -44,7 +42,17 @@ export interface FormRule {
   max?: number;
 }
 
-export interface LoadingObject {
-  start(): void;
-  finish(): void;
+/**
+ * Store
+ */
+
+export interface AuthResponse {
+  token: string;
+}
+
+export interface UserInfo {
+  name: string;
+  role?: UserRole;
+  avatar?: string | null;
+  gravatar?: string | null;
 }

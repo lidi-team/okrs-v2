@@ -20,13 +20,19 @@ export enum elComponent {
   ElTabPane = 'ElTabPane',
   ElCheckbox = 'ElCheckbox',
   ElIcon = 'ElIcon',
-  ElRadio = 'ElRadio',
   ElDialog = 'ElDialog',
-  ElAvatar = 'ElAvatar',
+  ElTooltip = 'ElTooltip',
 }
 
 export enum UserStatus {
   Active = 'Hoạt động',
   Inactive = 'Không hoạt động',
   Pending = 'Đang chờ',
+}
+
+export enum ResourcesEnpoint {
+  Auth = 'auth',
+  Users = 'users',
+  ResetPassword = 'reset_password',
+  Me = 'me',
 }
