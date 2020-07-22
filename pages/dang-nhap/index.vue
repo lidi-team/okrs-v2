@@ -24,7 +24,7 @@
                 class="login__form__email"
                 placeholder="Tên đăng nhập hoặc email"
                 tabindex="1"
-                autocomplete="on"
+                auto-complete="one"
               ></el-input>
             </el-form-item>
             <el-tooltip v-model="capsTooltip" content="Đang bật Caps Lock" placement="right" manual>
@@ -36,7 +36,7 @@
                   class="login__form__password"
                   placeholder="Nhập mật khẩu"
                   tabindex="2"
-                  autocomplete="on"
+                  auto-complete="one"
                   @keyup.native="checkCapslock"
                   @blur="capsTooltip = false"
                   @keyup.enter.native="handleLogin"

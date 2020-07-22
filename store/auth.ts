@@ -1,9 +1,7 @@
-import { GetterTree, ActionTree, MutationTree, ActionContext } from 'vuex';
-import axios, { AxiosResponse } from 'axios';
-import { getTokenCookies, removeTokenCookies, setTokenCookies } from '@/utils/cookies';
-import { LoginDTO, RegisterDTO, UserInfo, AuthResponse } from '@/constants/app.interface';
+import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
+import { LoginDTO, RegisterDTO, UserInfo } from '@/constants/app.interface';
 import AuthRepository from '@/repositories/AuthRepository';
-import { authEnpoint } from '@/constants/app.constant';
+import { getTokenCookies, removeTokenCookies, setTokenCookies } from '@/utils/cookies';
 
 export enum AuthMutation {
   SET_TOKEN = 'setToken',
@@ -27,7 +25,6 @@ export const state = (): AuthState => ({
   user: {
     name: '',
     role: null,
-    avatar: null,
     gravatar: null,
   },
 });
@@ -49,16 +46,14 @@ export const actions: AuthActions<AuthState, RootState> = {
     await AuthRepository.register({ email, password, fullName });
   },
   async login({ commit }, { email, password }: LoginDTO): Promise<void> {
-    let token;
-    try {
-      // const { data } = await AuthRepository.login({ email, password });
-      const { data } = await axios.create({ baseURL: process.env.asdasd }).post<AuthResponse>(authEnpoint.login, { email, password });
-      token = data.token;
-    } catch (error) {
-      console.log(error);
-    }
-    commit(AuthMutation.SET_TOKEN, token);
-    setTokenCookies(token);
+    const { data } = await AuthRepository.login({ email, password });
+    commit(AuthMutation.SET_TOKEN, data.data.token);
+    commit(AuthMutation.SET_USER, {
+      name: data.data.user.name,
+      role: data.data.user.role,
+      gravatar: data.data.user.gravatar,
+    });
+    setTokenCookies(data.data.token);
   },
   async logout({ commit, state }) {
     if (state.token === '') {
