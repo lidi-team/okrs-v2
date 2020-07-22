@@ -1,8 +1,30 @@
-import { dataType, ruleTrigger, Validator, PromiseValidtor } from './app.type';
+import { dataType, ruleTrigger, Validator, PromiseValidtor, Gender } from './app.type';
 
 export interface LoginDTO {
   email: string;
   password: string;
+}
+
+export interface ResetPasswordDTO {
+  newPassword?: string;
+  matchPassword?: string;
+  token?: string;
+}
+
+export interface ProfileDTO {
+  avatar: string;
+  fullname: string;
+  role: string;
+  gender: Gender;
+  email: string;
+  dob: Date | '';
+  department: string;
+  position: string;
+}
+
+export interface SelectDTO {
+  label: string;
+  value: string;
 }
 
 export interface Map<T> {

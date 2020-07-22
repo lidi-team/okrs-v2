@@ -24,7 +24,7 @@ $red-primary-1: #ff0064;
 
 // Fonts
 // >> Font-family
-$font-family-base: 'Merriweather', 'serif';
+$font-family-base: 'Arial', sans-serif;
 // >> Font Size
 $text-xs: 0.75rem;
 $text-sm: 0.875rem;
@@ -59,3 +59,14 @@ $unit-6: 1.5rem;
 $unit-8: 2rem;
 $unit-10: 2.5rem;
 $unit-12: 3rem;
+$unit-16: 4rem;
+$unit-20: 5rem;
+$unit-24: 6rem;
+$unit-32: 8rem;
+$unit-40: 10rem;
+$unit-48: 12rem;
+$unit-56: 14rem;
+$unit-64: 16rem;
+
+// Box-shadow
+$box-shadow-default: 0px 1px 3px rgba(63, 63, 68, 0.15), 0px 0px 0px rgba(63, 63, 68, 0.05);

@@ -91,6 +91,7 @@ const nuxtConfig: NuxtConfig = {
     { path: '~/components/account', prefix: 'account' },
     { path: '~/components/profile', prefix: 'profile' },
     { path: '~/components/okrs', prefix: '' },
+    { path: '~/components/manage', prefix: '' },
   ],
   /*
    ** Nuxt.js modules
@@ -132,7 +133,7 @@ const nuxtConfig: NuxtConfig = {
       },
     },
     babel: {
-      presets({ isServer }) {
+      presets() {
         return [['@nuxt/babel-preset-app', { loose: true }]];
       },
     },

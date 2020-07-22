@@ -18,6 +18,15 @@ export enum elComponent {
   ElTableColumn = 'ElTableColumn',
   ElTabs = 'ElTabs',
   ElTabPane = 'ElTabPane',
+  ElCheckbox = 'ElCheckbox',
   ElIcon = 'ElIcon',
   ElRadio = 'ElRadio',
+  ElDialog = 'ElDialog',
+  ElAvatar = 'ElAvatar',
+}
+
+export enum UserStatus {
+  Active = 'Hoạt động',
+  Inactive = 'Không hoạt động',
+  Pending = 'Đang chờ',
 }
