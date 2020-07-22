@@ -1,7 +1,9 @@
 import { GetterTree, ActionTree, MutationTree, ActionContext } from 'vuex';
+import axios, { AxiosResponse } from 'axios';
 import { getTokenCookies, removeTokenCookies, setTokenCookies } from '@/utils/cookies';
-import { LoginDTO, RegisterDTO, UserInfo } from '@/constants/app.interface';
+import { LoginDTO, RegisterDTO, UserInfo, AuthResponse } from '@/constants/app.interface';
 import AuthRepository from '@/repositories/AuthRepository';
+import { authEnpoint } from '@/constants/app.constant';
 
 export enum AuthMutation {
   SET_TOKEN = 'setToken',
@@ -43,6 +45,21 @@ export const mutations: MutationTree<RootState> = {
 };
 
 export const actions: AuthActions<AuthState, RootState> = {
+  async register({ commit }, { email, password, fullName }: RegisterDTO): Promise<void> {
+    await AuthRepository.register({ email, password, fullName });
+  },
+  async login({ commit }, { email, password }: LoginDTO): Promise<void> {
+    let token;
+    try {
+      // const { data } = await AuthRepository.login({ email, password });
+      const { data } = await axios.create({ baseURL: process.env.asdasd }).post<AuthResponse>(authEnpoint.login, { email, password });
+      token = data.token;
+    } catch (error) {
+      console.log(error);
+    }
+    commit(AuthMutation.SET_TOKEN, token);
+    setTokenCookies(token);
+  },
   async logout({ commit, state }) {
     if (state.token === '') {
       throw new Error(`Can't not logout: token is undifined`);
@@ -52,14 +69,6 @@ export const actions: AuthActions<AuthState, RootState> = {
     setTokenCookies('');
     commit(AuthMutation.SET_TOKEN, '');
     commit(AuthMutation.SET_USER, null);
-  },
-  async login({ commit }, { email, password }: LoginDTO): Promise<void> {
-    const { data } = await AuthRepository.login({ email, password });
-    commit(AuthMutation.SET_TOKEN, data.token);
-    setTokenCookies(data.token);
-  },
-  async register({ commit }, { email, password, fullName }: RegisterDTO): Promise<void> {
-    await AuthRepository.register({ email, password, fullName });
   },
   changePassword({ commit }, data: any) {},
   updateProfile({ commit }, data: any) {},

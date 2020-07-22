@@ -55,13 +55,13 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
 import { Form as LoginForm } from 'element-ui';
-import { authEnpoint } from '../../constants/app.constant';
 import { LoginDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
+import { authEnpoint } from '@/constants/app.constant';
 import { ResourcesEnpoint } from '@/constants/app.enum';
-// import { AuthModule } from '@/store/modules/auth';
 @Component<AccountLogin>({
   name: 'Login',
+  middleware: ['isAuthenticated'],
 })
 export default class AccountLogin extends Vue {
   private loading: boolean = false;
@@ -89,7 +89,7 @@ export default class AccountLogin extends Vue {
     (this.$refs.loginForm as LoginForm).validate(async (isValid: boolean) => {
       if (isValid) {
         this.loading = true;
-        await this.$store.dispatch('auth/login', this.loginForm);
+        await this.$store.dispatch(authEnpoint.login, this.loginForm);
         setTimeout(() => {
           this.loading = false;
         }, 300);

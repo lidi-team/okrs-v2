@@ -3,27 +3,30 @@ import { Message, MessageBox } from 'element-ui';
 import { getTokenCookies } from '@/utils/cookies';
 
 const service = axios.create({
-  baseURL: process.env.baseAPI, // url = base url + request url
+  baseURL: process.env.aasdsd, // url = base url + request url
   timeout: 5000,
+  // headers: {
+  //   Authorization:
+  // }
   // withCredentials: true // send cookies when cross-domain requests
 });
 
 // Request interceptors
-service.interceptors.request.use(
-  (config) => {
-    // Add Bearer token's header to every request
-    if (getTokenCookies() !== null) {
-      config.headers.Authorization = getTokenCookies();
-      return config;
-    }
-    return config;
-  },
-  (error) => {
-    Promise.reject(error);
-  },
-);
+// service.interceptors.request.use(
+//   (config) => {
+//     // Add Bearer token's header to every request
+//     if (getTokenCookies() !== null) {
+//       config.headers.Authorization = getTokenCookies();
+//       return config;
+//     }
+//     return config;
+//   },
+//   (error) => {
+//     Promise.reject(error);
+//   },
+// );
 
-// Response interceptors
+// // Response interceptors
 // service.interceptors.response.use(
 //   (response) => {
 //     // Some example codes here:
