@@ -43,6 +43,7 @@ Vue.component(elComponent.ElTableColumn, () => import(/* webpackChunkName: 'elem
 Vue.component(elComponent.ElTable, () => import(/* webpackChunkName: 'element-ui-form-tab-pane' */ 'element-ui/lib/tab-pane'));
 Vue.component(elComponent.ElTabs, () => import(/* webpackChunkName: 'element-ui-form-tabs' */ 'element-ui/lib/tabs'));
 Vue.component(elComponent.ElIcon, () => import(/* webpackChunkName: 'element-ui-icon' */ 'element-ui/lib/icon'));
+Vue.component(elComponent.ElRadio, () => import(/* webpackChunkName: 'element-ui-icon' */ 'element-ui/lib/radio'));
 
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$confirm = MessageBox.confirm;
