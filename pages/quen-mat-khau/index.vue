@@ -11,7 +11,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-import { ForgotPasswordDTO } from '@/constants/app.type';
 @Component<ForgotPasswordPage>({
   name: 'ForgotPasswordPage',
 })

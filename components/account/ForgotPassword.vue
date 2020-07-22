@@ -56,8 +56,9 @@ export default class ForgotPassword extends Vue {
   };
 
   public handleForgotPasswordForm(): void {
-    (this.$refs.forgotPasswordForm as Form).validate((isValid) => {
+    (this.$refs.forgotPasswordForm as Form).validate(async (isValid) => {
       if (isValid) {
+        await this.$store.dispatch('', this.forgotPasswordForm.email);
       }
     });
   }
