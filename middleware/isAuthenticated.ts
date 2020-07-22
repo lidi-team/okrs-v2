@@ -1,12 +1,24 @@
 import { Middleware, Context } from '@nuxt/types';
-import { AuthState } from '@/store/auth';
+import { getTokenCookie } from '@/utils/cookies';
+import { AuthMutation } from '@/store/auth';
+import UserRepository from '@/repositories/UserRepository';
+import { UserInfo } from '@/constants/app.interface';
 
-const authenticatedMiddleware: Middleware = ({ redirect, store }: Context, __: Function) => {
-  const auth = store.state as AuthState;
-  if (!auth.token) {
-    return redirect('/login');
+const authenticatedMiddleware: Middleware = async ({ redirect, store }: Context, __: Function) => {
+  // if (!store.getters) {
+  const token = getTokenCookie();
+  if (!token) {
+    return redirect('/dang-nhap');
   } else {
-    return redirect('/dashboard');
+    store.commit('auth/setToken', token);
+    try {
+      const { data } = await UserRepository.me();
+      store.commit(AuthMutation.SET_USER, data.data.user);
+    } catch (error) {
+      store.dispatch('auth/clear');
+      return redirect('/');
+    }
+    // }
   }
 };
 

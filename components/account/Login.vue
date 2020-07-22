@@ -19,7 +19,7 @@
             class="login__form__email"
             placeholder="Tên đăng nhập hoặc email"
             tabindex="1"
-            auto-complete="one"
+            auto-complete="on"
           ></el-input>
         </el-form-item>
         <el-tooltip v-model="capsTooltip" content="Đang bật Caps Lock" placement="right" manual>
@@ -31,7 +31,7 @@
               class="login__form__password"
               placeholder="Nhập mật khẩu"
               tabindex="2"
-              auto-complete="one"
+              auto-complete="on"
               @keyup.native="checkCapslock"
               @blur="capsTooltip = false"
               @keyup.enter.native="handleLogin"
@@ -88,6 +88,7 @@ export default class LoginSComponent extends Vue {
       if (isValid) {
         this.loading = true;
         await this.$store.dispatch(authEnpoint.login, this.loginForm);
+        this.$router.push('/');
         setTimeout(() => {
           this.loading = false;
         }, 300);

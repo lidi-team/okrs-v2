@@ -58,3 +58,9 @@ export interface UserInfo {
   role: UserRole;
   gravatar?: string | null;
 }
+
+export interface PromiseUserInfo {
+  data: {
+    user: UserInfo;
+  };
+}

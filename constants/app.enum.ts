@@ -34,5 +34,4 @@ export enum ResourcesEnpoint {
   Auth = 'auth',
   Users = 'users',
   ResetPassword = 'reset_password',
-  Me = 'me',
 }

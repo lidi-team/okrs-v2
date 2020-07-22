@@ -6,9 +6,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator';
-@Component<Layout>({
-  name: 'Layout',
-  middleware: 'isAuthenticated',
+@Component<EmptyLayout>({
+  name: 'EmptyLayout',
 })
-export default class Layout extends Vue {}
+export default class EmptyLayout extends Vue {}
 </script>

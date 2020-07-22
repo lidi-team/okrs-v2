@@ -13,6 +13,8 @@
 import { Component, Vue } from 'nuxt-property-decorator';
 @Component<LoginPage>({
   name: 'LoginPage',
+  middleware: 'isGuest',
+  layout: 'empty',
 })
 export default class LoginPage extends Vue {}
 </script>

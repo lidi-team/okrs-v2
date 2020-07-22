@@ -1,7 +1,7 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
 import { LoginDTO, RegisterDTO, UserInfo } from '@/constants/app.interface';
 import AuthRepository from '@/repositories/AuthRepository';
-import { getTokenCookies, removeTokenCookies, setTokenCookies } from '@/utils/cookies';
+import { getTokenCookie, removeTokenCookie, setTokenCookie } from '@/utils/cookies';
 
 export enum AuthMutation {
   SET_TOKEN = 'setToken',
@@ -18,10 +18,11 @@ export interface AuthActions<S, R> extends ActionTree<S, R> {
   register(context: ActionContext<S, R>, credentials: RegisterDTO): Promise<void>;
   updateProfile(context: ActionContext<S, R>, data: any);
   changePassword(context: ActionContext<S, R>, newPassword: string);
+  clear(context: ActionContext<S, R>);
 }
 
 export const state = (): AuthState => ({
-  token: getTokenCookies(),
+  token: getTokenCookie(),
   user: {
     name: '',
     role: null,
@@ -46,25 +47,32 @@ export const actions: AuthActions<AuthState, RootState> = {
     await AuthRepository.register({ email, password, fullName });
   },
   async login({ commit }, { email, password }: LoginDTO): Promise<void> {
-    const { data } = await AuthRepository.login({ email, password });
-    commit(AuthMutation.SET_TOKEN, data.data.token);
-    commit(AuthMutation.SET_USER, {
-      name: data.data.user.name,
-      role: data.data.user.role,
-      gravatar: data.data.user.gravatar,
-    });
-    setTokenCookies(data.data.token);
+    try {
+      const { data } = await AuthRepository.login({ email, password });
+      commit(AuthMutation.SET_TOKEN, data.data.token);
+      commit(AuthMutation.SET_USER, {
+        name: data.data.user.name,
+        role: data.data.user.role,
+        gravatar: data.data.user.gravatar,
+      });
+      setTokenCookie(data.data.token);
+    } catch (error) {}
   },
   async logout({ commit, state }) {
     if (state.token === '') {
       throw new Error(`Can't not logout: token is undifined`);
     }
     await AuthRepository.logout();
-    removeTokenCookies();
-    setTokenCookies('');
+    removeTokenCookie();
+    setTokenCookie('');
     commit(AuthMutation.SET_TOKEN, '');
     commit(AuthMutation.SET_USER, null);
   },
   changePassword({ commit }, data: any) {},
   updateProfile({ commit }, data: any) {},
+  clear({ commit }) {
+    commit(AuthMutation.SET_TOKEN, '');
+    commit(AuthMutation.SET_USER, null);
+    removeTokenCookie();
+  },
 };

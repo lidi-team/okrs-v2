@@ -71,6 +71,7 @@ const nuxtConfig: NuxtConfig = {
   buildModules: [
     '@nuxt/typescript-build',
     '@nuxt/components',
+    '@nuxtjs/dotenv',
     ['nuxt-purgecss', { pureCssConfig }],
     [
       '@nuxtjs/fontawesome',
