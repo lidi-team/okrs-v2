@@ -4,9 +4,15 @@
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="manage-employee__content">
-        <head-employee @search="handleSearch($event)" />
+        <head-employee :text="paramsUser.text" @name="paramsUser.text = $event" @search="handleSearch($event)" />
         <component :is="currentTabComponent" :loading="loading" :table-data="tableData" />
-        <base-pagination class="manage-employee__pagination" :total="100" page.sync="5" limit.sync="20" @pagination="handlePagination($event)" />
+        <base-pagination
+          class="manage-employee__pagination"
+          :total="meta.totalItems"
+          :page.sync="meta.currentPage"
+          :limit.sync="meta.itemsPerPage"
+          @pagination="handlePagination($event)"
+        />
       </div>
     </el-tabs>
   </div>
@@ -22,17 +28,26 @@ import UserRepository from '@/repositories/UserRepository';
 
 @Component<ManageEmployee>({
   name: 'ManageEmployee',
-  async asyncData({ params }) {
+  watchQuery: ['tab', 'text', 'page'],
+  async asyncData({ query }) {
     const paramsUser: ParamsUser = {
-      status: 1,
-      text: '',
-      page: 1,
-      limit: 20,
+      status: query.tab === 'deactive' ? -1 : query.tab === 'pending' ? 0 : 1,
+      text: query.text ? String(query.text) : '',
+      page: query.page ? Number(query.page) : 1,
+      limit: 10,
     };
     try {
-      const listUsers = await UserRepository.get(paramsUser);
+      const { data } = await UserRepository.get(paramsUser);
       return {
-        tableData: listUsers.data.data.items,
+        tableData: data.data.items,
+        meta: data.data.meta,
+        paramsUser: {
+          status: query.tab === 'deactive' ? -1 : query.tab === 'pending' ? 0 : 1,
+          text: query.text ? String(query.text) : '',
+          page: query.page ? Number(query.page) : 1,
+          limit: 10,
+        },
+        currentTab: query.tab === 'deactive' ? UserStatus.Inactive : query.tab === 'pending' ? UserStatus.Pending : UserStatus.Active,
       };
     } catch (error) {
       this.$notify({
@@ -45,33 +60,43 @@ import UserRepository from '@/repositories/UserRepository';
   },
 })
 export default class ManageEmployee extends Vue {
-  private search: string = '';
+  private tableData: Array<object> = [];
+  private paramsUser: ParamsUser = {
+    status: 1,
+    text: '',
+    page: 1,
+    limit: 20,
+  };
+
+  private meta: object = {};
 
   private loading: boolean = false;
 
   private handleSearch(textSearch: string) {
-    this.search = textSearch;
+    const tab = this.$route.query.tab === undefined ? 'active' : this.$route.query.tab;
+    this.$router.push(`?tab=${tab}&text=${textSearch}`);
   }
 
-  private handlePagination(pagination: object) {
-    console.log(pagination);
+  private handlePagination(pagination: any) {
+    const tab = this.$route.query.tab === undefined ? 'active' : this.$route.query.tab;
+    this.$route.query.text === undefined
+      ? this.$router.push(`?tab=${tab}&page=${pagination.page}`)
+      : this.$router.push(`?tab=${tab}&text=${this.$route.query.text}&page=${pagination.page}`);
   }
 
-  private currentTab: string = UserStatus.Active;
+  private currentTab: any = null;
   private tabs: string[] = [...Object.values(UserStatus)];
   private handleClick(currentTab: string) {
+    this.paramsUser.text = '';
     this.$router.push(`?tab=${currentTab === UserStatus.Active ? 'active' : currentTab === UserStatus.Pending ? 'pending' : 'deactive'}`);
   }
 
   private get currentTabComponent() {
     if (this.$route.query.tab === 'deactive') {
-      this.currentTab = UserStatus.Inactive;
       return EmployeeDeactive;
     } else if (this.$route.query.tab === 'pending') {
-      this.currentTab = UserStatus.Pending;
       return EmployeePending;
     } else {
-      this.currentTab = UserStatus.Active;
       return EmployeeActive;
     }
   }

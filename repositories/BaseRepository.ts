@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Message, MessageBox } from 'element-ui';
 
-const baseURL = `${process.env.baseURL}/api/v1`;
+const baseURL = `${process.env.baseAPI}/api/v1`;
 
 const service = axios.create({
   baseURL, // url = base url + request url

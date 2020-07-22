@@ -2,13 +2,13 @@
   <div class="header-employee">
     <div class="header-employee__left">
       <el-input
-        v-model="search"
+        v-model="text"
         class="header-employee__input"
         placeholder="Từ khoá tìm kiếm"
         prefix-icon="el-icon-search"
-        @keyup.enter.native="handleSearch(search)"
+        @keyup.enter.native="handleSearch(text)"
       />
-      <el-button class="el-button--white el-button--small el-button--search" @click="handleSearch(search)">Tìm kiếm</el-button>
+      <el-button class="el-button--white el-button--small el-button--search" @click="handleSearch(text)">Tìm kiếm</el-button>
     </div>
     <div class="header-employee__right">
       <el-button class="el-button--purple el-button--small el-button--invite" icon="el-icon-plus" @click="showInviteDialog">Mời thành viên</el-button>
@@ -31,13 +31,14 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, Watch, PropSync } from 'nuxt-property-decorator';
 @Component<HeadEmployee>({
   name: 'HeadEmployee',
 })
 export default class HeadEmployee extends Vue {
   [x: string]: any;
-  private search: string = '';
+  @PropSync('text', { type: String }) syncedText!: string;
+  private searchText: string = '';
   private linkInvite: string = 'link';
   private showInvite: boolean = false;
   private handleSearch(value: string) {
