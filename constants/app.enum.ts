@@ -33,5 +33,6 @@ export enum UserStatus {
 export enum ResourcesEnpoint {
   Auth = 'auth',
   Users = 'users',
-  ResetPassword = '/api/v1/reset_password',
+  ResetPassword = 'reset_password',
+  Me = 'me',
 }

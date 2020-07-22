@@ -1,30 +1,34 @@
 import { AxiosResponse } from 'axios';
 import RepositoryService from './BaseRepository';
-import { ResourcesEnpoint } from '@/constants/app.enum';
 import { AuthResponse, RegisterDTO, LoginDTO, ResetPasswordActionDTO } from '@/constants/app.interface';
+import { authEnpoint } from '@/constants/app.constant';
 
 export default class AuthRepository {
   public static register(credentials: RegisterDTO): Promise<AxiosResponse<AuthResponse>> {
-    return RepositoryService.post<AuthResponse>(`${ResourcesEnpoint.Auth}/register`, credentials);
+    return RepositoryService.post<AuthResponse>(authEnpoint.register, credentials);
   }
 
   public static login(credentials: LoginDTO): Promise<AxiosResponse<AuthResponse>> {
-    return RepositoryService.post<AuthResponse>(`${ResourcesEnpoint.Auth}/login`, credentials);
+    return RepositoryService.post<AuthResponse>(authEnpoint.login, credentials);
+  }
+
+  public static logout(): Promise<AxiosResponse<void>> {
+    return RepositoryService.post(authEnpoint.logout);
   }
 
   public static sendMailToResetPassword(email: string): Promise<AxiosResponse<void>> {
-    return RepositoryService.post<void>(`${ResourcesEnpoint.ResetPassword}`, email);
+    return RepositoryService.post<void>(authEnpoint.resetPassword, email);
   }
 
   public static resetPasswordWithToken(data: ResetPasswordActionDTO) {
-    return RepositoryService.put(`${ResourcesEnpoint.ResetPassword}`, data);
+    return RepositoryService.put(authEnpoint.resetPassword, data);
   }
 
   public static verifyLinkInvite(token: string) {
-    return RepositoryService.get(`${ResourcesEnpoint.Auth}/verification/${token}`);
+    return RepositoryService.get(`/verification/${token}`);
   }
 
   public static generateLinkInivte() {
-    return RepositoryService.get(`${ResourcesEnpoint.Auth}/link-invite`);
+    return RepositoryService.get(`/link-invite`);
   }
 }

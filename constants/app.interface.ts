@@ -9,7 +9,7 @@ export interface RegisterDTO {
   email: string;
   password: string;
   fullName: string;
-  avatarUrl: string;
+  avatarUrl?: string;
   gender?: number;
   roleId?: number;
   teamId?: number;
@@ -50,6 +50,9 @@ export interface AuthResponse {
   token: string;
 }
 
-export interface UserState {
-  fullName: string;
+export interface UserInfo {
+  name: string;
+  role?: UserRole;
+  avatar?: string | null;
+  gravatar?: string | null;
 }
