@@ -29,6 +29,7 @@ import 'element-ui/lib/theme-chalk/tabs.css';
 import 'element-ui/lib/theme-chalk/tree.css';
 import 'element-ui/lib/theme-chalk/radio.css';
 import 'element-ui/lib/theme-chalk/avatar.css';
+import 'element-ui/lib/theme-chalk/upload.css';
 
 Vue.component(elComponent.ElRow, () => import(/* webpackChunkName: 'element-ui-form-row' */ 'element-ui/lib/row'));
 Vue.component(elComponent.ElCol, () => import(/* webpackChunkName: 'element-ui-form-col' */ 'element-ui/lib/col'));
@@ -54,6 +55,7 @@ Vue.component(elComponent.ElIcon, () => import(/* webpackChunkName: 'element-ui-
 Vue.component(elComponent.ElRadio, () => import(/* webpackChunkName: 'element-ui-icon' */ 'element-ui/lib/radio'));
 Vue.component(elComponent.ElDialog, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/dialog'));
 Vue.component(elComponent.ElAvatar, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/avatar'));
+Vue.component(elComponent.ElUpload, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/upload'));
 
 Vue.use(Loading.directive);
 Vue.prototype.$loading = Loading.service;

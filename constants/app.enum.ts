@@ -24,6 +24,7 @@ export enum elComponent {
   ElTooltip = 'ElTooltip',
   ElAvatar = 'ElAvatar',
   ElRadio = 'ElRadio',
+  ElUpload = 'ElUpload',
 }
 
 export enum UserStatus {

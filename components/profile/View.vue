@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="wrap-profile">
     <h2>Thông tin tài khoản của bạn</h2>
     <el-form ref="profileForm" :model="profileForm" :status-icon="false" :hide-required-asterisk="false" label-width="150px" label-position="top">
       <el-row class="profile">
@@ -7,6 +7,18 @@
           <el-avatar :size="120" src="https://empty">
             <img :src="profileForm.avatar" />
           </el-avatar>
+          <el-upload
+            class="upload-demo"
+            action="https://jsonplaceholder.typicode.com/posts/"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :before-remove="beforeRemove"
+            multiple
+            :limit="3"
+            :on-exceed="handleExceed"
+          >
+            <el-button size="small" type="primary" class="el-button--margin el-button--white el-button--avatar">Cập nhật avatar</el-button>
+          </el-upload>
           <p class="profile-common__name">{{ profileForm.fullname }}</p>
           <p class="profile-common__role">{{ profileForm.role }}</p>
         </el-col>
@@ -65,56 +77,79 @@ export default class ViewProfile extends Vue {
     department: 'IT Department',
     position: 'IT System Developer',
   };
+
+  private handleRemove(file, fileList): any {
+    console.log(file, fileList);
+  }
+
+  private handlePreview(file): any {
+    console.log(file);
+  }
+
+  private handleExceed(files, fileList): any {
+    this.$message.warning(`The limit is 3, you selected ${files.length} files this time, add up to ${files.length + fileList.length} totally`);
+  }
+
+  private beforeRemove(file, fileList): any {
+    return this.$confirm(`Cancel the transfert of ${file.name} ?`);
+  }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/assets/scss/main.scss';
-.container {
+.wrap-profile {
   padding: $unit-8 $unit-64 $unit-10 $unit-10;
-}
-.profile {
-  background: $white;
-  box-shadow: $box-shadow-default;
-  margin-top: $unit-8;
-  padding: $unit-12 $unit-20;
-  border-radius: $border-radius-base;
-}
-.profile-common {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
-  &__name {
-    font-weight: bold;
-    color: $purple-primary-4;
-    font-size: $unit-5;
-    padding: $unit-4;
+  .profile {
+    background: $white;
+    box-shadow: $box-shadow-default;
+    margin-top: $unit-8;
+    padding: $unit-12 $unit-20;
+    border-radius: $border-radius-base;
   }
-  &__role {
-    font-weight: lighter;
-    text-transform: uppercase;
-    font-size: $unit-4;
-  }
-}
-.info {
-  /* width: 100%; */
-  &__title {
-    padding-bottom: $unit-4;
-  }
-  &__row {
+  .profile-common {
     display: flex;
-    .el-form-item {
-      width: 100%;
-      &:first-child {
-        margin-right: $unit-8;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+    &__name {
+      font-weight: bold;
+      color: $purple-primary-4;
+      font-size: $unit-5;
+      padding: $unit-4;
+    }
+    &__role {
+      font-weight: lighter;
+      text-transform: uppercase;
+      font-size: $unit-4;
+    }
+  }
+  .info {
+    /* width: 100%; */
+    &__title {
+      padding-bottom: $unit-4;
+    }
+    &__row {
+      display: flex;
+      .el-form-item {
+        width: 100%;
+        &:first-child {
+          margin-right: $unit-8;
+        }
       }
     }
   }
-}
-.info-attribute {
-  &__label {
-    color: red;
+  .info-attribute {
+    &__label {
+      color: red;
+    }
+  }
+  .el-button--update {
+    margin-top: $unit-10;
+  }
+  .el-button--avatar {
+    margin-top: $unit-4;
+    margin-bottom: $unit-4;
   }
 }
 </style>
