@@ -18,7 +18,7 @@
           <el-input v-model="forgotPasswordForm.email" class="fpass__form__email" placeholder="Tên đăng nhập hoặc email"></el-input>
         </el-form-item>
         <el-row type="flex" justify="space-between" class="fpass__form__warning">
-          <el-col :span="1">(*)</el-col>
+          <el-col :span="1" class="fpass__form__warning--star">(*)</el-col>
           <el-col :span="23">
             <p>
               <strong>Quên mật khẩu ?</strong> Điền email liên kết với tài khoản của bạn. Chúng tôi sẽ gửi đến địa chỉ email đó một link liên kết giúp
@@ -27,12 +27,14 @@
           </el-col>
         </el-row>
 
-        <el-row class="fpass__form__button" type="flex" justify="space-between">
-          <el-col :span="12">
-            <el-button class="el-button el-button--white el-button--medium" @click="returnLoginPage">Quay lại trang chủ</el-button>
+        <el-row class="fpass__form__action" type="flex" justify="space-between">
+          <el-col :span="24">
+            <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handleForgotPasswordForm">
+              Lấy lại mật khẩu
+            </el-button>
           </el-col>
-          <el-col :span="12">
-            <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handleForgotPasswordForm">Gửi</el-button>
+          <el-col :span="24">
+            <nuxt-link to="/dang-nhap"><strong>Quay lại trang</strong> <span class="fpass__form__action--login">Đăng nhập</span></nuxt-link>
           </el-col>
         </el-row>
       </el-form>
@@ -41,8 +43,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
-import { Form as ForgotPasswordForm } from 'element-ui';
+import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Form } from 'element-ui';
 import { Maps, Rule, ForgotPasswordDTO } from '@/constants/app.type';
 @Component<ForgotPassword>({
   name: 'Login',
@@ -53,20 +55,12 @@ export default class ForgotPassword extends Vue {
     email: '',
   };
 
-  private returnLoginPage(): void {
-    this.$router.push('/dang-nhap');
-  }
-
-  @Emit('submit')
-  public handleForgotPasswordForm(): ForgotPasswordDTO {
-    const fPassForm = this.$refs.forgotPasswordForm as ForgotPasswordForm;
-    let result: any;
-    fPassForm.validate((isValid) => {
+  public handleForgotPasswordForm(): void {
+    (this.$refs.forgotPasswordForm as Form).validate(async (isValid) => {
       if (isValid) {
-        result = this.forgotPasswordForm;
+        await this.$store.dispatch('', this.forgotPasswordForm.email);
       }
     });
-    return result;
   }
 
   public rules: Maps<Rule[]> = {
@@ -93,11 +87,23 @@ export default class ForgotPassword extends Vue {
     }
     &__warning {
       font-size: $unit-2;
+      &--star {
+        padding-right: $unit-6;
+      }
     }
-    &__button {
+    &__action {
+      flex-direction: column;
+      &--login {
+        color: $blue-primary-2;
+      }
       .el-col {
+        a {
+          text-decoration: none;
+          color: $neutral-primary-4;
+        }
+        text-align: center;
         &:nth-child(2) {
-          text-align: right;
+          padding-top: $unit-4;
         }
       }
     }
@@ -107,12 +113,12 @@ export default class ForgotPassword extends Vue {
       font-size: 0.875rem;
       &:first-child {
         color: #f56c6c;
-        padding-right: $unit-6;
       }
     }
   }
 }
 .el-button {
   margin-top: $unit-10;
+  width: 100%;
 }
 </style>
