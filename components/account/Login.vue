@@ -53,8 +53,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
-import { Form as LoginForm } from 'element-ui';
+import { Component, Vue } from 'vue-property-decorator';
+import { Form as LoginForm, Message } from 'element-ui';
 import { LoginDTO } from '@/constants/app.interface';
 import { authEnpoint } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
@@ -87,11 +87,36 @@ export default class LoginSComponent extends Vue {
     (this.$refs.loginForm as LoginForm).validate(async (isValid: boolean) => {
       if (isValid) {
         this.loading = true;
-        await this.$store.dispatch(authEnpoint.login, this.loginForm);
-        this.$router.push('/');
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
+        await this.$store.dispatch(authEnpoint.login, this.loginForm).then(
+          (response) => {
+            console.log(response);
+
+            Message({
+              message: 'Đăng nhập thành công',
+              type: 'success',
+              duration: 5 * 1000,
+            });
+            this.$router.push('/');
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+            return response.data;
+          },
+          (error) => {
+            console.log(error);
+            console.log(error.message);
+            const message = error.message === 'Network Error' ? 'Lỗi kết nối' : error.message;
+            Message({
+              message,
+              type: 'error',
+              duration: 5 * 1000,
+            });
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+            return Promise.reject(error);
+          },
+        );
       } else {
         return false;
       }

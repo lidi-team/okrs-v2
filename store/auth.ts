@@ -1,4 +1,5 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
+import { Message } from 'element-ui';
 import { LoginDTO, RegisterDTO, UserInfo } from '@/constants/app.interface';
 import AuthRepository from '@/repositories/AuthRepository';
 import { getTokenCookie, removeTokenCookie, setTokenCookie } from '@/utils/cookies';
@@ -56,7 +57,11 @@ export const actions: AuthActions<AuthState, RootState> = {
         gravatar: data.data.user.gravatar,
       });
       setTokenCookie(data.data.token);
-    } catch (error) {}
+    } catch (error) {
+      if (error === 'Network Error') {
+        Message.error('Xảy ra lỗi về kết nối');
+      }
+    }
   },
   async logout({ commit, state }) {
     if (state.token === '') {

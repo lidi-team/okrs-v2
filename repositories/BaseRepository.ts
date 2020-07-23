@@ -1,10 +1,34 @@
 import axios from 'axios';
+import { Message } from 'element-ui';
 import { getTokenCookie } from '@/utils/cookies';
 
 export const unAuthenticatedservice = axios.create({
   baseURL: `${process.env.baseAPI}`,
   timeout: 5000,
 });
+
+// unAuthenticatedservice.interceptors.response.use(
+//   (response) => {
+//     if (response.status === 401) {
+//       Message({
+//         message: 'Sai thông tin tài khoản',
+//         type: 'error',
+//         duration: 5 * 1000,
+//       });
+//     } else {
+//       return response.data;
+//     }
+//   },
+//   (error) => {
+//     const message = error.message === 'Network Error' ? 'Lỗi kết nối' : error.message;
+//     Message({
+//       message,
+//       type: 'error',
+//       duration: 5 * 1000,
+//     });
+//     return Promise.reject(error);
+//   },
+// );
 
 export const authenticatedService = axios.create({
   baseURL: `${process.env.baseAPI}/api/v1`,

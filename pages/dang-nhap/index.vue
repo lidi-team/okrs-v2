@@ -10,10 +10,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 @Component<LoginPage>({
   name: 'LoginPage',
-  middleware: 'isGuest',
+  // middleware: 'isGuest',
   layout: 'empty',
 })
 export default class LoginPage extends Vue {}

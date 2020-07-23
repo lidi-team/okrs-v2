@@ -43,7 +43,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { Maps, Rule, ForgotPasswordDTO } from '@/constants/app.type';
 @Component<ForgotPassword>({

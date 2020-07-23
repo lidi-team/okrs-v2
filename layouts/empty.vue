@@ -5,7 +5,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 @Component<EmptyLayout>({
   name: 'EmptyLayout',
 })
