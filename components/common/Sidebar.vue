@@ -69,7 +69,7 @@
   </el-row>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { LinkName } from '@/constants/app.interface';
 @Component<SideBar>({
   name: 'SideBar',

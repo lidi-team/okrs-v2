@@ -9,11 +9,9 @@ export interface RegisterDTO {
   email: string;
   password: string;
   fullName: string;
-  avatarUrl?: string;
-  gender?: number;
-  roleId?: number;
-  teamId?: number;
-  jobPositionId?: number;
+  gender: boolean | null;
+  teamId: number | null;
+  jobPositionId: number | null;
 }
 
 export interface ResetPasswordDTO {

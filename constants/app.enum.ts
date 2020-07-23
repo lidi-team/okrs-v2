@@ -23,6 +23,8 @@ export enum elComponent {
   ElDialog = 'ElDialog',
   ElAutocomplete = 'ElAutocomplete',
   ElTooltip = 'ElTooltip',
+  ElSelect = 'ElSelect',
+  ElOption = 'ElOption',
 }
 
 export enum UserStatus {

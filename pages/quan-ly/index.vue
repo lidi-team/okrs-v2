@@ -33,7 +33,7 @@
   </admin-slot>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 
 @Component<ManageSettingPage>({ name: 'ManageSettingPage', layout: 'Authenticated' })
