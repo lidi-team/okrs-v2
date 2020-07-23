@@ -4,5 +4,19 @@
     "prefix": "chunkname",
     "body": ["Vue.component(elComponent.${1}, () => import(/* webpackChunkName: 'element-ui-${2}' */ 'element-ui/lib/${3}'));"],
     "description": "Webpack chunk"
+  },
+  "Init template vue component typescript": {
+    "scope": "vue",
+    "prefix": "vuets",
+    "body": [
+      "<template><fragment></fragment></template> <script lang=${1}> import { Component, Vue } from 'nuxt-property-decorator'; @Component<${2}>({ name: '${2}', }) export default class ${2} extends Vue { } </script><style lang=${3} scoped></style>"
+    ],
+    "description": "Vue component typescript"
+  },
+  "Init slot": {
+    "scope": "vue",
+    "prefix": "slotname",
+    "body": ["<slot name=${1} />"],
+    "description": "init slot vue"
   }
 }

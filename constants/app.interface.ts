@@ -32,3 +32,8 @@ export interface LoadingObject {
   start(): void;
   finish(): void;
 }
+
+export interface LinkName {
+  link: string;
+  name: string;
+}
