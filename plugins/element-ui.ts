@@ -28,6 +28,7 @@ import 'element-ui/lib/theme-chalk/table.css';
 import 'element-ui/lib/theme-chalk/tabs.css';
 import 'element-ui/lib/theme-chalk/tree.css';
 import 'element-ui/lib/theme-chalk/autocomplete.css';
+import 'element-ui/lib/theme-chalk/tooltip.css';
 
 Vue.component(elComponent.ElRow, () => import(/* webpackChunkName: 'element-ui-form-row' */ 'element-ui/lib/row'));
 Vue.component(elComponent.ElCol, () => import(/* webpackChunkName: 'element-ui-form-col' */ 'element-ui/lib/col'));
@@ -52,6 +53,7 @@ Vue.component(elComponent.ElCheckbox, () => import(/* webpackChunkName: 'element
 Vue.component(elComponent.ElIcon, () => import(/* webpackChunkName: 'element-ui-icon' */ 'element-ui/lib/icon'));
 Vue.component(elComponent.ElDialog, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/dialog'));
 Vue.component(elComponent.ElAutocomplete, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/autocomplete'));
+Vue.component(elComponent.ElTooltip, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/tooltip'));
 
 Vue.use(Loading.directive);
 Vue.prototype.$loading = Loading.service;

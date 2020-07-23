@@ -6,8 +6,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-@Component<Layout>({
-  name: 'Layout',
+@Component<EmptyLayout>({
+  name: 'EmptyLayout',
 })
-export default class Layout extends Vue {}
+export default class EmptyLayout extends Vue {}
 </script>

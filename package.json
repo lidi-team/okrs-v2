@@ -34,11 +34,13 @@
     "@nuxtjs/axios": "^5.11.0",
     "@nuxtjs/pwa": "^3.0.0-beta.20",
     "element-ui": "^2.13.2",
+    "js-cookie": "^2.2.1",
     "node-sass": "^4.14.1",
     "nuxt": "2.13.3",
-    "nuxt-property-decorator": "^2.7.2",
     "sass-loader": "^9.0.2",
-    "vue-fragment": "^1.5.1"
+    "vue-fragment": "^1.5.1",
+    "vue-property-decorator": "^9.0.0",
+    "vuex-module-decorators": "^0.17.0"
   },
   "devDependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
@@ -52,6 +54,7 @@
     "@nuxtjs/eslint-module": "^2.0.0",
     "@nuxtjs/fontawesome": "^1.1.2",
     "@types/jest": "^26.0.4",
+    "@types/js-cookie": "^2.2.6",
     "@vue/test-utils": "^1.0.3",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.1.0",

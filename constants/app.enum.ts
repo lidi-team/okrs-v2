@@ -22,6 +22,7 @@ export enum elComponent {
   ElIcon = 'ElIcon',
   ElDialog = 'ElDialog',
   ElAutocomplete = 'ElAutocomplete',
+  ElTooltip = 'ElTooltip',
 }
 
 export enum UserStatus {
@@ -44,4 +45,10 @@ export enum AdminTabsEn {
   JobPosition = 'quan-ly-vi-tri-cong-viec',
   EvaluationCriterial = 'quan-ly-tieu-chi-danh-gia',
   MeasureUnit = 'quan-ly-don-vi-do-luong',
+}
+
+export enum ResourcesEnpoint {
+  Auth = 'auth',
+  Users = 'users',
+  ResetPassword = 'reset_password',
 }
