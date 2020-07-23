@@ -17,7 +17,7 @@ updates:
       - dependency-name: '@nuxtjs/pwa'
       - dependency-name: 'vue-fragment'
       - dependency-name: '@nuxtjs/axios'
-      - dependency-name: 'nuxt-property-decorator'
+      - dependency-name: 'vue-property-decorator'
       - dependency-name: '@nuxt/typescript-runtime'
     labels:
       - 'dependencies'

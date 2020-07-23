@@ -29,8 +29,8 @@ export enum elComponent {
 
 export enum UserStatus {
   Active = 'Hoạt động',
-  Inactive = 'Không hoạt động',
   Pending = 'Đang chờ',
+  Inactive = 'Không hoạt động',
 }
 
 export enum ResourcesEnpoint {

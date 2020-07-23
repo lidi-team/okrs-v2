@@ -37,7 +37,7 @@
             </div>
             <div class="info__row">
               <el-form-item prop="email" label="Email" class="info-attribute__label">
-                <el-input v-model="profileForm.email" placeholder="Nhập email"></el-input>
+                <el-input v-model="profileForm.email" :disabled="true" placeholder="Nhập email"></el-input>
               </el-form-item>
               <el-form-item prop="dob" label="Ngày sinh">
                 <el-date-picker v-model="profileForm.dob" type="date" placeholder="Pick a day"></el-date-picker>
@@ -61,7 +61,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Provide } from 'nuxt-property-decorator';
+import { Component, Vue, Provide } from 'vue-property-decorator';
 import { ProfileDTO, SelectDTO } from '@/constants/app.interface';
 @Component<ViewProfile>({
   name: 'ViewProfile',
@@ -72,7 +72,7 @@ export default class ViewProfile extends Vue {
     fullname: 'Nguyễn Phương Hồng Thủy',
     role: 'admin',
     gender: 'Nam',
-    email: '',
+    email: 'bacodekiller@gmail.com',
     dob: '',
     department: 'IT Department',
     position: 'IT System Developer',

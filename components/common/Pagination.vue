@@ -56,8 +56,15 @@ export default class Pagination extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import '@/assets/scss/main.scss';
 .pagination-container.hidden {
   display: none;
+}
+.el-pagination.is-background .el-pager li:not(.disabled).active {
+  background-color: $purple-primary-5;
+}
+.el-pagination.is-background .el-pager li:not(.active):hover {
+  color: $purple-primary-5;
 }
 </style>

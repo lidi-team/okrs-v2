@@ -63,12 +63,27 @@ export interface FormRule {
  */
 
 export interface AuthResponse {
-  token: string;
+  data: {
+    token: string;
+    user: UserInfo;
+  };
 }
 
 export interface UserInfo {
   name: string;
-  role?: UserRole;
-  avatar?: string | null;
+  role: UserRole;
   gravatar?: string | null;
+}
+
+export interface PromiseUserInfo {
+  data: {
+    user: UserInfo;
+  };
+}
+
+export interface ParamsUser {
+  status?: number;
+  text?: string;
+  page?: number;
+  limit?: number;
 }

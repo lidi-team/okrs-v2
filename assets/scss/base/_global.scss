@@ -71,3 +71,81 @@ button:focus {
     opacity: 1;
   }
 }
+
+// ======================================================
+// Custom global element-ui
+// ======================================================
+
+// Dialog
+.el-dialog__header {
+  padding: $unit-4 $unit-5;
+  border-bottom: 1px solid #dfe3e8;
+  border-radius: $border-radius-base $border-radius-base 0px 0px;
+
+  .el-dialog__title {
+    font-size: $text-xl;
+    font-weight: $font-weight-light;
+    display: block;
+    line-height: 2.5rem;
+  }
+}
+.el-dialog__footer {
+  padding: 10px 20px;
+  border-top: 1px solid #dfe3e8;
+  border-radius: 0px 0px $border-radius-base $border-radius-base;
+}
+
+.el-button {
+  &--modal {
+    padding-top: $unit-3;
+    padding-bottom: $unit-3;
+    font-size: $text-sm;
+  }
+}
+
+.el-dialog__headerbtn .el-dialog__close:hover {
+  color: $purple-primary-5;
+}
+// End Dialog
+
+// Message Box
+.el-message-box__btns {
+  .el-button--default {
+    background: $white;
+    border: 1px solid $purple-primary-5;
+    color: $purple-primary-5;
+    border-radius: $border-radius-base;
+
+    &:not([disabled]):hover,
+    &:not([disabled]):focus {
+      background: $purple-primary-5;
+      border-color: $purple-primary-5;
+      color: $white;
+    }
+  }
+
+  .el-button--primary {
+    background: $purple-primary-5;
+    border: 1px solid $purple-primary-5;
+    border-radius: $border-radius-base;
+    color: $white;
+
+    &:not([disabled]):hover,
+    &:not([disabled]):focus {
+      background: $purple-primary-4;
+      border-color: $purple-primary-4;
+      color: $white;
+    }
+  }
+}
+.el-message-box__headerbtn .el-message-box__close:hover {
+  color: $purple-primary-5;
+}
+// End Message Box
+
+// El Input
+.el-input.is-active .el-input__inner,
+.el-input__inner:focus {
+  border-color: $purple-primary-5;
+}
+// End El Input

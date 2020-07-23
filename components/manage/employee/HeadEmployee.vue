@@ -2,13 +2,13 @@
   <div class="header-employee">
     <div class="header-employee__left">
       <el-input
-        v-model="search"
+        v-model="text"
         class="header-employee__input"
         placeholder="Từ khoá tìm kiếm"
         prefix-icon="el-icon-search"
-        @keyup.enter.native="handleSearch(search)"
+        @keyup.enter.native="handleSearch(text)"
       />
-      <el-button class="el-button--white el-button--small el-button--search" @click="handleSearch(search)">Tìm kiếm</el-button>
+      <el-button class="el-button--white el-button--small el-button--search" @click="handleSearch(text)">Tìm kiếm</el-button>
     </div>
     <div class="header-employee__right">
       <el-button class="el-button--purple el-button--small el-button--invite" icon="el-icon-plus" @click="showInviteDialog">Mời thành viên</el-button>
@@ -17,24 +17,29 @@
     <el-dialog class="dialog-invite" title="Thêm thành viên" :visible.sync="showInvite">
       <el-row :gutter="10" class="dialog-invite__content content">
         <el-col :xs="24" :md="4"><span class="content__name">Đường dẫn</span></el-col>
-        <el-col :xs="24" :md="16"><el-input value="test" :readonly="true" autocomplete="off" /></el-col>
+        <el-col :xs="24" :md="16"><el-input :value="linkInvite" :readonly="true" autocomplete="off" /></el-col>
         <el-col :xs="24" :md="4"
-          ><el-button class="el-button--white el-button--small el-button--copy" icon="el-icon-copy-document">Sao chép</el-button></el-col
+          ><el-button class="el-button--white el-button--small el-button--copy" icon="el-icon-copy-document" @click="doCopy"
+            >Sao chép</el-button
+          ></el-col
         >
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="el-button--purple el-button--invite" @click="showInvite = false">Confirm</el-button>
+        <el-button class="el-button--purple el-button--modal" @click="showInvite = false">Xong</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, Watch, PropSync } from 'vue-property-decorator';
 @Component<HeadEmployee>({
   name: 'HeadEmployee',
 })
 export default class HeadEmployee extends Vue {
-  private search: string = '';
+  [x: string]: any;
+  @PropSync('text', { type: String }) syncedText!: string;
+  private searchText: string = '';
+  private linkInvite: string = 'link';
   private showInvite: boolean = false;
   private handleSearch(value: string) {
     if (value.trim() !== '') {
@@ -44,6 +49,16 @@ export default class HeadEmployee extends Vue {
 
   private showInviteDialog() {
     this.showInvite = true;
+  }
+
+  private doCopy() {
+    this.$copyText(this.linkInvite);
+    this.$notify({
+      title: 'Status',
+      message: `Copy link thành công`,
+      type: 'success',
+      duration: 1000,
+    });
   }
 }
 </script>
@@ -81,25 +96,6 @@ export default class HeadEmployee extends Vue {
       }
     }
   }
-
-  .el-dialog__header {
-    padding: $unit-4 $unit-5;
-    border-bottom: 1px solid #dfe3e8;
-    border-radius: $border-radius-base $border-radius-base 0px 0px;
-
-    .el-dialog__title {
-      font-size: $text-xl;
-      font-weight: $font-weight-light;
-      display: block;
-      line-height: 2.5rem;
-    }
-  }
-  .el-dialog__footer {
-    padding: 10px 20px;
-    border-top: 1px solid #dfe3e8;
-    border-radius: 0px 0px $border-radius-base $border-radius-base;
-  }
-
   .dialog-invite {
     &__content {
       display: flex;
