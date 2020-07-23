@@ -1,10 +1,12 @@
-import RepositoryService from './BaseRepository';
+import { AxiosResponse } from 'axios';
+import { authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
-import { ParamsUser } from '@/constants/app.interface';
+import { PromiseUserInfo } from '@/constants/app.interface';
 
 export default class UserRepository {
-  public static get(params: ParamsUser) {
-    const query = { params };
-    return RepositoryService.get(`${ResourcesEnpoint.Users}`, query);
+  public static me(): Promise<AxiosResponse<PromiseUserInfo>> {
+    return authenticatedService.get<PromiseUserInfo>(`${ResourcesEnpoint.Users}/me`);
   }
+
+  public static changePassword(oldPassword: string, newPassword: string) {}
 }

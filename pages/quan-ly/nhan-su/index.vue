@@ -18,13 +18,13 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'nuxt-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import EmployeePending from '@/components/manage/employee/EmployeePending.vue';
 import EmployeeActive from '@/components/manage/employee/EmployeeActive.vue';
 import EmployeeDeactive from '@/components/manage/employee/EmployeeDeactive.vue';
 import { UserStatus } from '@/constants/app.enum';
 import { ParamsUser } from '@/constants/app.interface';
-import UserRepository from '@/repositories/UserRepository';
+import EmployeeRepository from '@/repositories/EmployeeRepository';
 
 @Component<ManageEmployee>({
   name: 'ManageEmployee',
@@ -37,7 +37,7 @@ import UserRepository from '@/repositories/UserRepository';
       limit: 10,
     };
     try {
-      const { data } = await UserRepository.get(paramsUser);
+      const { data } = await EmployeeRepository.get(paramsUser);
       return {
         tableData: data.data.items,
         meta: data.data.meta,

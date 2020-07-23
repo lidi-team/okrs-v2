@@ -13,17 +13,31 @@
         @submit.native.prevent="handleSubmit"
       >
         <el-form-item prop="email" label="Tên đăng nhập">
-          <el-input v-model="loginForm.email" class="login__form__email" placeholder="Tên đăng nhập hoặc email"></el-input>
-        </el-form-item>
-        <el-form-item prop="password" label="Mật khẩu">
           <el-input
-            v-model="loginForm.password"
-            type="password"
-            class="login__form__password"
-            placeholder="Nhập mật khẩu"
-            @keyup.enter.native="handleSubmit"
+            ref="email"
+            v-model="loginForm.email"
+            class="login__form__email"
+            placeholder="Tên đăng nhập hoặc email"
+            tabindex="1"
+            auto-complete="on"
           ></el-input>
         </el-form-item>
+        <el-tooltip v-model="capsTooltip" content="Đang bật Caps Lock" placement="right" manual>
+          <el-form-item prop="password" label="Mật khẩu">
+            <el-input
+              ref="password"
+              v-model="loginForm.password"
+              type="password"
+              class="login__form__password"
+              placeholder="Nhập mật khẩu"
+              tabindex="2"
+              auto-complete="on"
+              @keyup.native="checkCapslock"
+              @blur="capsTooltip = false"
+              @keyup.enter.native="handleLogin"
+            ></el-input>
+          </el-form-item>
+        </el-tooltip>
         <el-row type="flex" justify="space-between">
           <el-col :span="12">
             <el-checkbox v-model="rememberPassword" class="login__form__checkbox">Ghi nhớ mật khẩu</el-checkbox>
@@ -32,23 +46,25 @@
             <nuxt-link class="login__form__link" to="/quen-mat-khauw">Quên mật khẩu ?</nuxt-link>
           </el-col>
         </el-row>
-        <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleSubmit">Đăng nhập</el-button>
+        <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleLogin">Đăng nhập</el-button>
       </el-form>
     </div>
   </el-row>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit } from 'nuxt-property-decorator';
-import { Form as LoginForm } from 'element-ui';
+import { Component, Vue } from 'vue-property-decorator';
+import { Form as LoginForm, Message } from 'element-ui';
 import { LoginDTO } from '@/constants/app.interface';
+import { authEnpoint } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
-@Component<AccountLogin>({
-  name: 'Login',
+@Component<LoginSComponent>({
+  name: 'LoginSComponent',
 })
-export default class AccountLogin extends Vue {
-  @Prop({ default: false }) public loading!: boolean;
+export default class LoginSComponent extends Vue {
+  private loading: boolean = false;
   private rememberPassword: boolean = false;
+  private capsTooltip = false;
   public loginForm: LoginDTO = {
     email: '',
     password: '',
@@ -62,21 +78,53 @@ export default class AccountLogin extends Vue {
     password: [{ required: true, message: 'Vui lòng nhập mật khẩu' }],
   };
 
-  @Emit('submit')
-  private handleSubmit(): LoginDTO {
-    const theForm = this.$refs.loginForm as LoginForm;
-    let result: any;
-    theForm.validate((isValid) => {
+  private checkCapslock(e: KeyboardEvent) {
+    const { key } = e;
+    this.capsTooltip = key !== null && key.length === 1 && key >= 'A' && key <= 'Z';
+  }
+
+  private handleLogin(): any {
+    (this.$refs.loginForm as LoginForm).validate(async (isValid: boolean) => {
       if (isValid) {
-        result = this.loginForm;
+        this.loading = true;
+        await this.$store.dispatch(authEnpoint.login, this.loginForm).then(
+          (response) => {
+            console.log(response);
+
+            Message({
+              message: 'Đăng nhập thành công',
+              type: 'success',
+              duration: 5 * 1000,
+            });
+            this.$router.push('/');
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+            return response.data;
+          },
+          (error) => {
+            console.log(error);
+            console.log(error.message);
+            const message = error.message === 'Network Error' ? 'Lỗi kết nối' : error.message;
+            Message({
+              message,
+              type: 'error',
+              duration: 5 * 1000,
+            });
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+            return Promise.reject(error);
+          },
+        );
+      } else {
+        return false;
       }
     });
-    return result;
   }
 }
 </script>
-
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .wrap-login-form {
   padding: $unit-12;
@@ -121,6 +169,10 @@ export default class AccountLogin extends Vue {
     margin-top: $unit-10;
     font-size: $unit-5;
     width: 100%;
+  }
+  .el-tooltip__popper .is-dark {
+    background: $purple-primary-4;
+    color: white;
   }
 }
 </style>

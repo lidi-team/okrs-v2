@@ -31,7 +31,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Watch, PropSync } from 'nuxt-property-decorator';
+import { Component, Vue, Prop, Watch, PropSync } from 'vue-property-decorator';
 @Component<HeadEmployee>({
   name: 'HeadEmployee',
 })
@@ -96,7 +96,6 @@ export default class HeadEmployee extends Vue {
       }
     }
   }
-
   .dialog-invite {
     &__content {
       display: flex;

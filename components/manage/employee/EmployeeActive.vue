@@ -66,20 +66,16 @@
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">
-          Hủy
-        </el-button>
-        <el-button class="el-button--purple el-button--modal" @click="handleUpdate(tempUpdateUser)">
-          Cập nhật
-        </el-button>
+        <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
+        <el-button class="el-button--purple el-button--modal" @click="handleUpdate(tempUpdateUser)">Cập nhật</el-button>
       </span>
     </el-dialog>
     <!-- end update user dialog -->
   </fragment>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
 import { Form } from 'element-ui';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<EmployeeActive>({
   name: 'EmployeeActive',
