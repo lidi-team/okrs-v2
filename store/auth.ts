@@ -16,9 +16,9 @@ export interface AuthActions<S, R> extends ActionTree<S, R> {
   logout(context: ActionContext<S, R>): Promise<void>;
   login(context: ActionContext<S, R>, credentials: LoginDTO): Promise<void>;
   register(context: ActionContext<S, R>, credentials: RegisterDTO): Promise<void>;
-  updateProfile(context: ActionContext<S, R>, data: any);
-  changePassword(context: ActionContext<S, R>, newPassword: string);
-  clear(context: ActionContext<S, R>);
+  updateProfile(context: ActionContext<S, R>, data: any): Promise<void>;
+  changePassword(context: ActionContext<S, R>, newPassword: string): Promise<void>;
+  clear(context: ActionContext<S, R>): void;
 }
 
 export const state = (): AuthState => ({
@@ -68,8 +68,8 @@ export const actions: AuthActions<AuthState, RootState> = {
     commit(AuthMutation.SET_TOKEN, '');
     commit(AuthMutation.SET_USER, null);
   },
-  changePassword({ commit }, data: any) {},
-  updateProfile({ commit }, data: any) {},
+  async changePassword({ commit }, data: any) {},
+  async updateProfile({ commit }, data: any) {},
   clear({ commit }) {
     commit(AuthMutation.SET_TOKEN, '');
     commit(AuthMutation.SET_USER, null);

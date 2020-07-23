@@ -1,5 +1,4 @@
 import jsCookie from 'js-cookie';
-import cookie from 'cookie';
 
 // User token default
 const tokenKey = 'X-Token';

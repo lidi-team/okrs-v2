@@ -43,7 +43,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'nuxt-property-decorator';
 import { Form } from 'element-ui';
-import { ResetPasswordDTO, ResetPasswordActionDTO } from '@/constants/app.interface';
+import { ResetPasswordActionDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<ResetPassword>({
   name: 'ResetPassword',

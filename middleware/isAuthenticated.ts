@@ -2,7 +2,6 @@ import { Middleware, Context } from '@nuxt/types';
 import { getTokenCookie } from '@/utils/cookies';
 import { AuthMutation } from '@/store/auth';
 import UserRepository from '@/repositories/UserRepository';
-import { UserInfo } from '@/constants/app.interface';
 
 const authenticatedMiddleware: Middleware = async ({ redirect, store }: Context, __: Function) => {
   // if (!store.getters) {
