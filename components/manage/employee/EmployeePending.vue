@@ -8,7 +8,7 @@
   </fragment>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 @Component<EmployeePending>({
   name: 'EmployeePending',
 })

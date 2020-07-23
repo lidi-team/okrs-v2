@@ -23,12 +23,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item prop="matchPassword" label="Nhập lại mật khẩu mới">
-          <el-input
-            v-model="resetPasswordForm.matchPassword"
-            type="password"
-            class="reset-password-form__input__match-password"
-            placeholder="Nhập mật khẩu"
-          ></el-input>
+          <el-input v-model="matchPassword" type="password" class="reset-password-form__input__match-password" placeholder="Nhập mật khẩu"></el-input>
         </el-form-item>
       </div>
       <el-row class="reset-password-form__action" type="flex" justify="space-between">
@@ -46,20 +41,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from 'nuxt-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
-import { ResetPasswordDTO } from '@/constants/app.interface';
+import { ResetPasswordActionDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<ResetPassword>({
   name: 'ResetPassword',
 })
 export default class ResetPassword extends Vue {
   @Prop({ default: false }) public loading!: boolean;
+  private matchPassword: string = '';
+
   watchQuery: string[] = ['token'];
 
-  public resetPasswordForm: ResetPasswordDTO = {
+  public resetPasswordForm: ResetPasswordActionDTO = {
     newPassword: '',
-    matchPassword: '',
     token: '',
   };
 

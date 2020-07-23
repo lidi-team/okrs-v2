@@ -13,6 +13,7 @@ const nuxtConfig: NuxtConfig = {
   publicRuntimeConfig: {
     baseURL: process.env.baseURL,
     port: process.env.port,
+    baseAPI: process.env.baseAPI,
   },
   /**
    * @description Nuxt rendering mode
@@ -70,6 +71,7 @@ const nuxtConfig: NuxtConfig = {
   buildModules: [
     '@nuxt/typescript-build',
     '@nuxt/components',
+    '@nuxtjs/dotenv',
     ['nuxt-purgecss', { pureCssConfig }],
     [
       '@nuxtjs/fontawesome',
