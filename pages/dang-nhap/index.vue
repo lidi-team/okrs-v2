@@ -1,9 +1,9 @@
 <template>
   <el-row class="login-page" type="flex" justify="center" align="center">
-    <el-col :span="8">
+    <el-col :span="8" class="login-page__image">
       <img src="@/assets/images/account/tiny-login.png" alt="login image" />
     </el-col>
-    <el-col :span="8">
+    <el-col :span="7">
       <account-login />
     </el-col>
   </el-row>
@@ -22,5 +22,8 @@ export default class LoginPage extends Vue {}
 @import '@/assets/scss/main.scss';
 .login-page {
   padding-top: $unit-12;
+  &__image {
+    align-self: center;
+  }
 }
 </style>
