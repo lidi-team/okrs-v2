@@ -28,9 +28,8 @@
             <nuxt-link to="/quan-ly/nhan-su">
               <el-dropdown-item><fa icon="user-friends" class="item__icon" /><span>Quản lý nhân sự</span></el-dropdown-item>
             </nuxt-link>
-            <el-dropdown-item>
-              <!-- <div @click="displayDialogChangePassword"> -->
-              <div @click="dialogVisible = true">
+            <nuxt-link to="/doi-mat-khau">
+              <el-dropdown-item>
                 <svg class="item__icon" width="14" height="14" viewBox="0 0 14 14" fill="#637381" xmlns="http://www.w3.org/2000/svg">
                   <path
                     fill-rule="evenodd"
@@ -39,16 +38,8 @@
                     fill="#637381"
                   /></svg
                 ><span>Đổi mật khẩu</span>
-              </div>
-              <!-- <account-change-password-dialog :dialog-visible="changePasswordDialogVisible" /> -->
-              <el-dialog title="Tips" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-                <span>This is a message</span>
-                <span slot="footer" class="dialog-footer">
-                  <el-button @click="dialogVisible = false">Cancel</el-button>
-                  <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
-                </span>
-              </el-dialog>
-            </el-dropdown-item>
+              </el-dropdown-item>
+            </nuxt-link>
             <el-dropdown-item divided><fa icon="power-off" class="item__icon" /><span>Đăng xuất</span></el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>

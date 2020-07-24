@@ -1,6 +1,8 @@
 <template>
-  <!-- update user password dialog -->
-  <el-dialog :before-close="handleCloseDialog" :visible.sync="dialogVisible" :center="true" width="30%" class="change-password" title="Đổi mật khẩu">
+  <el-row class="change-password" type="flex" justify="center">
+    <div class="change-password__title">
+      <span>Đổi mật khẩu</span>
+    </div>
     <el-form
       ref="changePasswordForm"
       class="change-password__form"
@@ -40,17 +42,16 @@
       </div>
       <el-row class="change-password__form__action" type="flex" justify="space-between">
         <el-col :span="24">
-          <el-button class="el-button el-button--white el-button--medium" @click="handleCloseDialog">Hủy</el-button>
+          <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handleResetPasswordForm">
+            Đổi mật khẩu
+          </el-button>
         </el-col>
         <el-col :span="24">
-          <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handlechangePasswordForm(changePasswordForm)"
-            >Đổi mật khẩu</el-button
-          >
+          <nuxt-link to="/"><strong>Quay lại trang </strong><span class="change-password__form__action--dashboard">Dashboard</span></nuxt-link>
         </el-col>
       </el-row>
     </el-form>
-  </el-dialog>
-  <!-- End update user password dialog -->
+  </el-row>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
@@ -58,12 +59,8 @@ import { Maps, Rule } from '@/constants/app.type';
 import { ChangePasswordDTO } from '@/constants/app.interface';
 @Component<ChangePasswordDialog>({
   name: 'ChangePasswordDialog',
-  updated() {
-    console.log('Updated' + this.dialogVisible);
-  },
 })
 export default class ChangePasswordDialog extends Vue {
-  @Prop({ type: Boolean, required: true, default: false }) dialogVisible!: boolean;
   private loading: boolean = false;
   private changePasswordForm: ChangePasswordDTO = {
     oldPassword: '',
@@ -98,13 +95,47 @@ export default class ChangePasswordDialog extends Vue {
     return callback();
   }
 
-  private handlechangePasswordForm(changePasswordForm: ChangePasswordDTO): void {}
-  private handleCloseDialog() {
-    this.dialogVisible = false;
+  private handlechangePasswordForm(): void {
+    console.log(this.changePasswordForm);
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+@import '@/assets/scss/main.scss';
 .change-password {
+  flex-direction: column;
+  padding: $unit-12;
+  box-shadow: $box-shadow-default;
+  background-color: $white;
+  &__title {
+    text-align: center;
+    border: 10px;
+    padding: 0 0 $unit-8 0;
+    font-size: 1.75rem;
+    color: $neutral-primary-4;
+  }
+  &__form {
+    &__action {
+      flex-direction: column;
+      text-align: center;
+      a {
+        color: $neutral-primary-4;
+        padding-top: $unit-4;
+      }
+      &--dashboard {
+        color: $blue-primary-2;
+      }
+    }
+  }
+  .el-row {
+    .el-col:nth-child(2) {
+      margin-top: $unit-4;
+    }
+  }
+  .el-button {
+    margin-top: $unit-10;
+    font-size: $unit-5;
+    width: 100%;
+  }
 }
 </style>
