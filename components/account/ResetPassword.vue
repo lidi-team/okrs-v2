@@ -47,6 +47,11 @@ import { ResetPasswordDTO, ResetPasswordActionDTO } from '@/constants/app.interf
 import { Maps, Rule } from '@/constants/app.type';
 @Component<ResetPassword>({
   name: 'ResetPassword',
+  beforeRouteEnter({ query }, from, next) {
+    console.log(query);
+    // const token = localStorage.getItem('tweetr-token')
+    // return token ? next() : next('/login')
+  },
 })
 export default class ResetPassword extends Vue {
   @Prop({ default: false }) public loading!: boolean;

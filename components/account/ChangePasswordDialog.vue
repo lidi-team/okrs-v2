@@ -1,5 +1,6 @@
 <template>
-  <el-dialog class="change-password" title="Đổi mật khẩu" :visible.sync="centerDialogVisible" width="30%" center>
+  <!-- update user password dialog -->
+  <el-dialog :before-close="handleCloseDialog" :visible.sync="dialogVisible" :center="true" width="30%" class="change-password" title="Đổi mật khẩu">
     <el-form
       ref="changePasswordForm"
       class="change-password__form"
@@ -30,7 +31,7 @@
         </el-form-item>
         <el-form-item prop="matchPassword" label="Nhập lại mật khẩu mới">
           <el-input
-            v-model="chagePasswordForm.matchPassword"
+            v-model="changePasswordForm.matchPassword"
             type="password"
             class="change-password__form__input__match-password"
             placeholder="Nhập mật khẩu"
@@ -39,26 +40,32 @@
       </div>
       <el-row class="change-password__form__action" type="flex" justify="space-between">
         <el-col :span="24">
-          <el-button el-button el-button--white el-button--medium @click="centerDialogVisible = false">Hủy</el-button>
+          <el-button class="el-button el-button--white el-button--medium" @click="handleCloseDialog">Hủy</el-button>
         </el-col>
         <el-col :span="24">
-          <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="centerDialogVisible = false">
-            Đổi mật khẩu
-          </el-button>
+          <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handlechangePasswordForm(changePasswordForm)"
+            >Đổi mật khẩu</el-button
+          >
         </el-col>
       </el-row>
     </el-form>
   </el-dialog>
+  <!-- End update user password dialog -->
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Maps, Rule } from '@/constants/app.type';
 import { ChangePasswordDTO } from '@/constants/app.interface';
-@Component<ChangePasswordDialog>({ name: 'ChangePasswordDialog' })
+@Component<ChangePasswordDialog>({
+  name: 'ChangePasswordDialog',
+  updated() {
+    console.log('Updated' + this.dialogVisible);
+  },
+})
 export default class ChangePasswordDialog extends Vue {
-  @Prop({ default: false, required: true }) public centerDialogVisible!: boolean;
+  @Prop({ type: Boolean, required: true, default: false }) dialogVisible!: boolean;
   private loading: boolean = false;
-  private chagePasswordForm: ChangePasswordDTO = {
+  private changePasswordForm: ChangePasswordDTO = {
     oldPassword: '',
     newPassword: '',
     matchPassword: '',
@@ -85,13 +92,19 @@ export default class ChangePasswordDialog extends Vue {
   }
 
   private validateMatchPassword(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
-    if (value !== this.chagePasswordForm.newPassword) {
+    if (value !== this.changePasswordForm.newPassword) {
       return callback('Không trùng với mật khẩu mới');
     }
     return callback();
   }
 
-  private handlechangePasswordForm(): void {}
+  private handlechangePasswordForm(changePasswordForm: ChangePasswordDTO): void {}
+  private handleCloseDialog() {
+    this.dialogVisible = false;
+  }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.change-password {
+}
+</style>

@@ -28,16 +28,26 @@
             <nuxt-link to="/quan-ly/nhan-su">
               <el-dropdown-item><fa icon="user-friends" class="item__icon" /><span>Quản lý nhân sự</span></el-dropdown-item>
             </nuxt-link>
-            <el-dropdown-item @click="changePassword">
-              <svg class="item__icon" width="14" height="14" viewBox="0 0 14 14" fill="#637381" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M4.80751 5.10075C7.41584 4.58409 9.74918 6.09242 10.5408 8.33409H17.4992C18.4158 8.33409 19.1658 9.08409 19.1658 10.0008C19.1658 10.9174 18.4158 11.6674 17.4992 11.6674V13.3341C17.4992 14.2508 16.7492 15.0008 15.8325 15.0008C14.9158 15.0008 14.1658 14.2508 14.1658 13.3341V11.6674H10.5408C9.85751 13.6091 8.00751 15.0008 5.83251 15.0008C2.71584 15.0008 0.265843 12.1424 0.949177 8.91742C1.34918 7.00909 2.89918 5.48409 4.80751 5.10075ZM4.16583 10.0008C4.16583 10.9174 4.91583 11.6674 5.8325 11.6674C6.74917 11.6674 7.49917 10.9174 7.49917 10.0008C7.49917 9.08411 6.74917 8.33411 5.8325 8.33411C4.91583 8.33411 4.16583 9.08411 4.16583 10.0008Z"
-                  fill="#637381"
-                /></svg
-              ><span>Đổi mật khẩu</span>
-              <account-change-password-dialog :center-dialog-visible="centerDialogVisible" />
+            <el-dropdown-item>
+              <!-- <div @click="displayDialogChangePassword"> -->
+              <div @click="dialogVisible = true">
+                <svg class="item__icon" width="14" height="14" viewBox="0 0 14 14" fill="#637381" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M4.80751 5.10075C7.41584 4.58409 9.74918 6.09242 10.5408 8.33409H17.4992C18.4158 8.33409 19.1658 9.08409 19.1658 10.0008C19.1658 10.9174 18.4158 11.6674 17.4992 11.6674V13.3341C17.4992 14.2508 16.7492 15.0008 15.8325 15.0008C14.9158 15.0008 14.1658 14.2508 14.1658 13.3341V11.6674H10.5408C9.85751 13.6091 8.00751 15.0008 5.83251 15.0008C2.71584 15.0008 0.265843 12.1424 0.949177 8.91742C1.34918 7.00909 2.89918 5.48409 4.80751 5.10075ZM4.16583 10.0008C4.16583 10.9174 4.91583 11.6674 5.8325 11.6674C6.74917 11.6674 7.49917 10.9174 7.49917 10.0008C7.49917 9.08411 6.74917 8.33411 5.8325 8.33411C4.91583 8.33411 4.16583 9.08411 4.16583 10.0008Z"
+                    fill="#637381"
+                  /></svg
+                ><span>Đổi mật khẩu</span>
+              </div>
+              <!-- <account-change-password-dialog :dialog-visible="changePasswordDialogVisible" /> -->
+              <el-dialog title="Tips" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+                <span>This is a message</span>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="dialogVisible = false">Cancel</el-button>
+                  <el-button type="primary" @click="dialogVisible = false">Confirm</el-button>
+                </span>
+              </el-dialog>
             </el-dropdown-item>
             <el-dropdown-item divided><fa icon="power-off" class="item__icon" /><span>Đăng xuất</span></el-dropdown-item>
           </el-dropdown-menu>
@@ -49,12 +59,27 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { ChangePasswordDTO } from '../../constants/app.interface';
 @Component<Navbar>({
   name: 'Navbar',
 })
 export default class Navbar extends Vue {
-  private centerDialogVisible: boolean = false;
+  private dialogVisible: boolean = false;
+  private changePasswordDialogVisible: boolean = false;
+  private show: boolean = true;
+
+  private displayDialogChangePassword(): void {
+    console.log(this.changePasswordDialogVisible);
+    this.changePasswordDialogVisible = true;
+    console.log(this.changePasswordDialogVisible);
+  }
+
+  private handleClose(done) {
+    this.$confirm('Are you sure to close this dialog?')
+      .then((_) => {
+        done();
+      })
+      .catch((_) => {});
+  }
 }
 </script>
 
