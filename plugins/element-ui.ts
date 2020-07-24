@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import { Loading, MessageBox, Message, Notification } from 'element-ui';
-import lang from 'element-ui/lib/locale/lang/vi';
+import vietnameseLang from 'element-ui/lib/locale/lang/vi';
 import locale from 'element-ui/lib/locale';
 import { elComponent } from '@/constants/app.enum';
 import 'element-ui/lib/theme-chalk/button.css';
@@ -40,7 +40,7 @@ import 'element-ui/lib/theme-chalk/option.css';
 import 'element-ui/lib/theme-chalk/radio-group.css';
 
 // configure language
-locale.use(lang);
+locale.use(vietnameseLang);
 
 // import dynamic components
 Vue.component(elComponent.ElRow, () => import(/* webpackChunkName: 'element-ui-form-row' */ 'element-ui/lib/row'));
