@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import { Loading, MessageBox, Message, Notification } from 'element-ui';
+import vietnameseLang from 'element-ui/lib/locale/lang/vi';
+import locale from 'element-ui/lib/locale';
 import { elComponent } from '@/constants/app.enum';
 import 'element-ui/lib/theme-chalk/button.css';
 import 'element-ui/lib/theme-chalk/checkbox.css';
@@ -35,9 +37,12 @@ import 'element-ui/lib/theme-chalk/upload.css';
 import 'element-ui/lib/theme-chalk/tooltip.css';
 import 'element-ui/lib/theme-chalk/select.css';
 import 'element-ui/lib/theme-chalk/option.css';
-
 import 'element-ui/lib/theme-chalk/radio-group.css';
 
+// configure language
+locale.use(vietnameseLang);
+
+// import dynamic components
 Vue.component(elComponent.ElRow, () => import(/* webpackChunkName: 'element-ui-form-row' */ 'element-ui/lib/row'));
 Vue.component(elComponent.ElCol, () => import(/* webpackChunkName: 'element-ui-form-col' */ 'element-ui/lib/col'));
 Vue.component(elComponent.ElContainer, () => import(/* webpackChunkName: 'element-ui-form-col' */ 'element-ui/lib/container'));
@@ -70,6 +75,7 @@ Vue.component(elComponent.ElAvatar, () => import(/* webpackChunkName: 'element-u
 Vue.component(elComponent.ElUpload, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/upload'));
 Vue.component(elComponent.ElTooltip, () => import(/* webpackChunkName: 'element-ui-tooltip' */ 'element-ui/lib/tooltip'));
 
+// import prototype Vue
 Vue.use(Loading.directive);
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$confirm = MessageBox.confirm;
