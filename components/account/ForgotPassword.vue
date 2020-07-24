@@ -79,6 +79,7 @@ export default class ForgotPassword extends Vue {
     box-shadow: $box-shadow-default;
     border-radius: $border-radius-base;
     padding: $unit-12;
+    background-color: $white;
     &__title {
       text-align: center;
       font-size: 1.75rem;

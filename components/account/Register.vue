@@ -1,0 +1,137 @@
+<template>
+  <el-row class="register-form" type="flex" justify="center">
+    <div class="register-form__title">
+      <span>Yêu cầu tham gia Capi Creative Design</span>
+    </div>
+    <el-form
+      ref="registerForm"
+      :model="registerForm"
+      :rules="rules"
+      :status-icon="true"
+      label-width="150px"
+      label-position="top"
+      class="register-form__input"
+      @submit.native.prevent="handleRegisterForm"
+    >
+      <el-form-item prop="email" label="Email">
+        <el-input v-model="registerForm.email" class="register-form__input__email" placeholder="Nhập email"></el-input>
+      </el-form-item>
+      <el-form-item prop="password" label="Mật khẩu">
+        <el-input v-model="registerForm.password" class="register-form__input__password" placeholder="Nhập mật khẩu"></el-input>
+      </el-form-item>
+      <el-form-item prop="fullName" label="Họ và Tên">
+        <el-input v-model="registerForm.fullName" class="register-form__input__full-name" placeholder="Nhập họ tên"></el-input>
+      </el-form-item>
+      <el-form-item prop="gender" label="Giới tính" class="register-form__input__gender">
+        <el-radio-group v-model="registerForm.gender">
+          <el-radio :label="true">Nam</el-radio>
+          <el-radio :label="false">Nữ</el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item prop="teamId" label="Phòng ban" class="register-form__input__team">
+        <el-select v-model="registerForm.teamId" placeholder="Chọn phòng ban" :no-data-text="noDataText">
+          <el-option v-for="i in listTeam" :key="i.lable" :label="i.lable" :value="i.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item prop="jobPositionId" label="Vị trí" class="register-form__input__job-position">
+        <el-select v-model="registerForm.jobPositionId" placeholder="Chọn vị trí" :no-data-text="noDataText">
+          <el-option v-for="i in listJobPosition" :key="i.lable" :label="i.lable" :value="i.value"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleRegisterForm">Gửi yêu cầu</el-button>
+    </el-form>
+  </el-row>
+</template>
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import { RegisterDTO, RegisterOption } from '@/constants/app.interface';
+import { Maps, Rule } from '@/constants/app.type';
+@Component<RegisterComponent>({
+  name: 'RegisterComponent',
+  mounted() {
+    /**
+     * Call API
+     */
+    // Verify the token on link with middleware
+    // Fetch Team and Position
+  },
+})
+export default class RegisterComponent extends Vue {
+  private loading: boolean = false;
+  private rememberPassword: boolean = false;
+  private capsTooltip = false;
+  private listTeam: RegisterOption[] = [];
+  private listJobPosition: RegisterOption[] = [];
+  private noDataText: string = 'Không có dữ liệu';
+
+  private registerForm: RegisterDTO = {
+    email: '',
+    password: '',
+    fullName: '',
+    gender: true,
+    teamId: null,
+    jobPositionId: null,
+    token: '',
+  };
+
+  private rules: Maps<Rule[]> = {
+    email: [
+      { required: true, message: 'Vui lòng nhập địa chỉ email', trigger: 'blur' },
+      { type: 'email', message: 'Vui lòng nhập đúng địa chỉ email', trigger: 'blur' },
+    ],
+    password: [{ required: true, message: 'Vui lòng nhập mật khẩu' }],
+    fullName: [{ required: true, message: 'Vui lòng nhập họ tên' }],
+    teamId: [{ required: true, message: 'Vui lòng chọn phòng ban' }],
+    jobPositionId: [{ required: true, message: 'Vui lòng chọn vị trí công việc' }],
+  };
+
+  private handleRegisterForm(): void {
+    console.log(this.registerForm);
+    if (this.$route.query.token) {
+      this.registerForm.token = this.$route.query.token as string;
+    }
+    // Send form with API
+  }
+}
+</script>
+<style lang="scss">
+@import '@/assets/scss/main.scss';
+.register-form {
+  flex-direction: column;
+  padding: $unit-8 $unit-12 $unit-12 $unit-12;
+  background-color: $white;
+  box-shadow: $box-shadow-default;
+  &__title {
+    text-align: center;
+    border: 10px;
+    padding: 0 0 $unit-5 0;
+    font-size: 1.75rem;
+    color: $neutral-primary-4;
+  }
+  &__input {
+    &__gender {
+      margin-bottom: -$unit-3;
+      .el-form-item__label {
+        margin-bottom: -$unit-3;
+      }
+    }
+  }
+  .el-form-item {
+    margin-top: -$unit-3;
+    &__label {
+      padding: 0;
+      &:nth-child(2) {
+        margin-bottom: -$unit-3;
+      }
+    }
+  }
+  .el-button {
+    margin-top: $unit-10;
+    font-size: $unit-5;
+    width: 100%;
+  }
+  .el-select {
+    width: 100%;
+  }
+}
+</style>

@@ -101,6 +101,7 @@ export default class ResetPassword extends Vue {
   flex-direction: column;
   padding: $unit-12;
   box-shadow: $box-shadow-default;
+  background-color: $white;
   @include breakpoint-down(phone) {
   }
   &__title {
