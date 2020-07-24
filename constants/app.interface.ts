@@ -45,6 +45,12 @@ export interface ResetPasswordActionDTO {
   token: string;
 }
 
+export interface ChangePasswordDTO {
+  oldPassword: string;
+  newPassword: string;
+  matchPassword: string;
+}
+
 export interface Map<T> {
   key: string;
   name: T;
