@@ -43,7 +43,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
-import { ResetPasswordActionDTO } from '@/constants/app.interface';
+import { ResetPasswordDTO, ResetPasswordActionDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<ResetPassword>({
   name: 'ResetPassword',
@@ -150,9 +150,9 @@ export default class ResetPassword extends Vue {
       }
     }
   }
-}
-.el-button {
-  font-size: $unit-5;
-  width: 100%;
+  .el-button {
+    font-size: $unit-5;
+    width: 100%;
+  }
 }
 </style>

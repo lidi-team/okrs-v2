@@ -13,14 +13,7 @@
         @submit.native.prevent="handleSubmit"
       >
         <el-form-item prop="email" label="Tên đăng nhập">
-          <el-input
-            ref="email"
-            v-model="loginForm.email"
-            class="login__form__email"
-            placeholder="Tên đăng nhập hoặc email"
-            tabindex="1"
-            auto-complete="on"
-          ></el-input>
+          <el-input ref="email" v-model="loginForm.email" class="login__form__email" placeholder="Tên đăng nhập hoặc email" tabindex="1"></el-input>
         </el-form-item>
         <el-tooltip v-model="capsTooltip" content="Đang bật Caps Lock" placement="right" manual>
           <el-form-item prop="password" label="Mật khẩu">
@@ -31,11 +24,20 @@
               class="login__form__password"
               placeholder="Nhập mật khẩu"
               tabindex="2"
-              auto-complete="on"
-              @keyup.native="checkCapslock"
               @blur="capsTooltip = false"
               @keyup.enter.native="handleLogin"
             ></el-input>
+            <!-- <el-input
+              ref="password"
+              v-model="loginForm.password"
+              type="password"
+              class="login__form__password"
+              placeholder="Nhập mật khẩu"
+              tabindex="2"
+              @keyup.native="checkCapslock"
+              @blur="capsTooltip = false"
+              @keyup.enter.native="handleLogin"
+            ></el-input> -->
           </el-form-item>
         </el-tooltip>
         <el-row type="flex" justify="space-between">
@@ -78,10 +80,10 @@ export default class LoginSComponent extends Vue {
     password: [{ required: true, message: 'Vui lòng nhập mật khẩu' }],
   };
 
-  private checkCapslock(e: KeyboardEvent) {
-    const { key } = e;
-    this.capsTooltip = key !== null && key.length === 1 && key >= 'A' && key <= 'Z';
-  }
+  // private checkCapslock(e: KeyboardEvent) {
+  //   const { key } = e;
+  //   this.capsTooltip = key !== null && key.length === 1 && key >= 'A' && key <= 'Z';
+  // }
 
   private handleLogin(): any {
     (this.$refs.loginForm as LoginForm).validate(async (isValid: boolean) => {

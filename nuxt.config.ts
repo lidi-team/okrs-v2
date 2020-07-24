@@ -72,6 +72,7 @@ const nuxtConfig: NuxtConfig = {
     '@nuxt/typescript-build',
     '@nuxt/components',
     '@nuxtjs/dotenv',
+    'nuxt-clipboard2',
     ['nuxt-purgecss', { pureCssConfig }],
     [
       '@nuxtjs/fontawesome',
@@ -91,6 +92,7 @@ const nuxtConfig: NuxtConfig = {
     '~/components',
     { path: '~/components/common', prefix: 'base' },
     { path: '~/components/account', prefix: 'account' },
+    { path: '~/components/profile', prefix: 'profile' },
     { path: '~/components/okrs', prefix: '' },
     { path: '~/components/manage', prefix: '' },
   ],

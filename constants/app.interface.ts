@@ -1,4 +1,4 @@
-import { dataType, ruleTrigger, Validator, PromiseValidtor, UserRole } from './app.type';
+import { dataType, ruleTrigger, Validator, PromiseValidtor, UserRole, Gender } from './app.type';
 
 export interface LoginDTO {
   email: string;
@@ -18,6 +18,22 @@ export interface RegisterDTO {
 export interface RegisterOption {
   lable?: string;
   value?: number;
+}
+
+export interface ProfileDTO {
+  avatar: string;
+  fullname: string;
+  role: string;
+  gender: Gender;
+  email: string;
+  dob: Date | '';
+  department: string;
+  position: string;
+}
+
+export interface SelectDTO {
+  label: string;
+  value: string;
 }
 
 export interface ResetPasswordDTO {
@@ -72,4 +88,10 @@ export interface PromiseUserInfo {
 export interface LinkName {
   link: string;
   name: string;
+}
+export interface ParamsUser {
+  status?: number;
+  text?: string;
+  page?: number;
+  limit?: number;
 }

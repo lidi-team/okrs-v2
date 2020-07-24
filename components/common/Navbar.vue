@@ -22,7 +22,7 @@
             </div>
           </div>
           <el-dropdown-menu slot="dropdown">
-            <nuxt-link to="/">
+            <nuxt-link to="/thong-tin-tai-khoan">
               <el-dropdown-item><fa icon="user-circle" class="item__icon" />Thông tin tài khoản</el-dropdown-item>
             </nuxt-link>
             <nuxt-link to="/quan-ly/nhan-su">

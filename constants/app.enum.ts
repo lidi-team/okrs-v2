@@ -26,13 +26,15 @@ export enum elComponent {
   ElSelect = 'ElSelect',
   ElOption = 'ElOption',
   ElRadioGroup = 'ElRadioGroup',
+  ElAvatar = 'ElAvatar',
   ElRadio = 'ElRadio',
+  ElUpload = 'ElUpload',
 }
 
 export enum UserStatus {
   Active = 'Hoạt động',
-  Inactive = 'Không hoạt động',
   Pending = 'Đang chờ',
+  Inactive = 'Không hoạt động',
 }
 
 export enum AdminTabsVn {
@@ -55,4 +57,5 @@ export enum ResourcesEnpoint {
   Auth = 'auth',
   Users = 'users',
   ResetPassword = 'reset_password',
+  Me = 'me',
 }
