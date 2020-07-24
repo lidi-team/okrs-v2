@@ -44,8 +44,8 @@ export const mutations: MutationTree<RootState> = {
 };
 
 export const actions: AuthActions<AuthState, RootState> = {
-  async register({ commit }, { email, password, fullName }: RegisterDTO): Promise<void> {
-    await AuthRepository.register({ email, password, fullName });
+  async register({ commit }, credentials: RegisterDTO): Promise<void> {
+    await AuthRepository.register(credentials);
   },
   async login({ commit }, { email, password }: LoginDTO): Promise<void> {
     try {

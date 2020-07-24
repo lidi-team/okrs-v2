@@ -31,6 +31,8 @@ import 'element-ui/lib/theme-chalk/autocomplete.css';
 import 'element-ui/lib/theme-chalk/tooltip.css';
 import 'element-ui/lib/theme-chalk/select.css';
 import 'element-ui/lib/theme-chalk/option.css';
+import 'element-ui/lib/theme-chalk/radio.css';
+import 'element-ui/lib/theme-chalk/radio-group.css';
 
 Vue.component(elComponent.ElRow, () => import(/* webpackChunkName: 'element-ui-form-row' */ 'element-ui/lib/row'));
 Vue.component(elComponent.ElCol, () => import(/* webpackChunkName: 'element-ui-form-col' */ 'element-ui/lib/col'));
@@ -58,6 +60,8 @@ Vue.component(elComponent.ElAutocomplete, () => import(/* webpackChunkName: 'ele
 Vue.component(elComponent.ElTooltip, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/tooltip'));
 Vue.component(elComponent.ElSelect, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/select'));
 Vue.component(elComponent.ElOption, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/option'));
+Vue.component(elComponent.ElRadioGroup, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/radio-group'));
+Vue.component(elComponent.ElRadio, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/radio'));
 
 Vue.use(Loading.directive);
 Vue.prototype.$loading = Loading.service;

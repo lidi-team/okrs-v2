@@ -43,7 +43,7 @@
             <el-checkbox v-model="rememberPassword" class="login__form__checkbox">Ghi nhớ mật khẩu</el-checkbox>
           </el-col>
           <el-col :span="12">
-            <nuxt-link class="login__form__link" to="/quen-mat-khauw">Quên mật khẩu ?</nuxt-link>
+            <nuxt-link class="login__form__link" to="/quen-mat-khau">Quên mật khẩu ?</nuxt-link>
           </el-col>
         </el-row>
         <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleLogin">Đăng nhập</el-button>

@@ -12,6 +12,12 @@ export interface RegisterDTO {
   gender: boolean | null;
   teamId: number | null;
   jobPositionId: number | null;
+  token: string | null;
+}
+
+export interface RegisterOption {
+  lable?: string;
+  value?: number;
 }
 
 export interface ResetPasswordDTO {
