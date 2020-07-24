@@ -1,56 +1,48 @@
 <template>
-  <el-row class="wrap-login-form" type="flex" justify="center">
-    <div class="login__form">
-      <span class="login__form__title">Đăng nhập hoặc đăng ký</span>
-      <el-form
-        ref="loginForm"
-        :model="loginForm"
-        :rules="rules"
-        :status-icon="true"
-        :hide-required-asterisk="false"
-        label-width="150px"
-        label-position="top"
-        @submit.native.prevent="handleSubmit"
-      >
-        <el-form-item prop="email" label="Tên đăng nhập">
-          <el-input ref="email" v-model="loginForm.email" class="login__form__email" placeholder="Tên đăng nhập hoặc email" tabindex="1"></el-input>
-        </el-form-item>
-        <el-tooltip v-model="capsTooltip" content="Đang bật Caps Lock" placement="right" manual>
-          <el-form-item prop="password" label="Mật khẩu">
-            <el-input
-              ref="password"
-              v-model="loginForm.password"
-              type="password"
-              class="login__form__password"
-              placeholder="Nhập mật khẩu"
-              tabindex="2"
-              @blur="capsTooltip = false"
-              @keyup.enter.native="handleLogin"
-            ></el-input>
-            <!-- <el-input
-              ref="password"
-              v-model="loginForm.password"
-              type="password"
-              class="login__form__password"
-              placeholder="Nhập mật khẩu"
-              tabindex="2"
-              @keyup.native="checkCapslock"
-              @blur="capsTooltip = false"
-              @keyup.enter.native="handleLogin"
-            ></el-input> -->
-          </el-form-item>
-        </el-tooltip>
-        <el-row type="flex" justify="space-between">
-          <el-col :span="12">
-            <el-checkbox v-model="rememberPassword" class="login__form__checkbox">Ghi nhớ mật khẩu</el-checkbox>
-          </el-col>
-          <el-col :span="12">
-            <nuxt-link class="login__form__link" to="/quen-mat-khau">Quên mật khẩu ?</nuxt-link>
-          </el-col>
-        </el-row>
-        <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleLogin">Đăng nhập</el-button>
-      </el-form>
+  <el-row class="login-form" type="flex" justify="center">
+    <div class="login-form__title">
+      <span>Đăng nhập Capi Creative Design</span>
     </div>
+    <el-form
+      ref="loginForm"
+      :model="loginForm"
+      :rules="rules"
+      :status-icon="true"
+      :hide-required-asterisk="false"
+      label-width="150px"
+      label-position="top"
+      @submit.native.prevent="handleSubmit"
+    >
+      <el-form-item prop="email" label="Email">
+        <el-input ref="email" v-model="loginForm.email" class="login-form__email" placeholder="Nhập địa chỉ email" tabindex="1"></el-input>
+      </el-form-item>
+      <el-tooltip v-model="capsTooltip" content="Đang bật Caps Lock" placement="right" manual>
+        <el-form-item prop="password" label="Mật khẩu">
+          <el-input
+            ref="password"
+            v-model="loginForm.password"
+            type="password"
+            class="login-form__password"
+            placeholder="Nhập mật khẩu"
+            tabindex="2"
+            @blur="capsTooltip = false"
+            @keyup.enter.native="handleLogin"
+          ></el-input>
+          <!-- <el-input
+              @blur="capsTooltip = false"
+            ></el-input> -->
+        </el-form-item>
+      </el-tooltip>
+      <el-row type="flex" justify="space-between">
+        <el-col :span="12">
+          <el-checkbox v-model="rememberPassword" class="login-form__checkbox">Ghi nhớ mật khẩu</el-checkbox>
+        </el-col>
+        <el-col :span="12">
+          <nuxt-link class="login-form__link" to="/quen-mat-khau">Quên mật khẩu ?</nuxt-link>
+        </el-col>
+      </el-row>
+      <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleLogin">Đăng nhập</el-button>
+    </el-form>
   </el-row>
 </template>
 
@@ -80,8 +72,8 @@ export default class LoginSComponent extends Vue {
     password: [{ required: true, message: 'Vui lòng nhập mật khẩu' }],
   };
 
-  // private checkCapslock(e: KeyboardEvent) {
-  //   const { key } = e;
+  // private checkCapslock(event: KeyboardEvent) {
+  //   const { key } = event;
   //   this.capsTooltip = key !== null && key.length === 1 && key >= 'A' && key <= 'Z';
   // }
 
@@ -126,45 +118,46 @@ export default class LoginSComponent extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/assets/scss/main.scss';
-.wrap-login-form {
+.login-form {
+  flex-direction: column;
   padding: $unit-12;
   box-shadow: $box-shadow-default;
-  .login__form {
-    &__title {
-      border: 10px;
-      padding: 0 0 $unit-10 0;
-      font-size: 1.75rem;
-      color: $neutral-primary-4;
-    }
-    &__checkbox {
-      font-weight: $font-weight-base;
-    }
-    &__link {
-      font-size: 0.875rem;
-      color: #2d9cdb;
-      font-weight: $font-weight-base;
-    }
+  background-color: $white;
+  &__title {
+    text-align: center;
+    border: 10px;
+    padding: 0 0 $unit-2 0;
+    font-size: 1.75rem;
+    color: $neutral-primary-4;
+  }
+  &__checkbox {
+    font-weight: $font-weight-base;
+  }
+  &__link {
+    font-size: 0.875rem;
+    color: #2d9cdb;
+    font-weight: $font-weight-base;
+  }
 
-    .el-form-item {
-      &:first-child {
-        margin-top: $unit-4;
-      }
-      &__label {
-        color: $neutral-primary-4;
-        padding-bottom: $unit-1;
-      }
-      .el-input__inner {
-        &::placeholder {
-          color: $neutral-primary-1;
-        }
+  .el-form-item {
+    &:first-child {
+      margin-top: $unit-4;
+    }
+    &__label {
+      color: $neutral-primary-4;
+      padding-bottom: $unit-1;
+    }
+    .el-input__inner {
+      &::placeholder {
+        color: $neutral-primary-1;
       }
     }
-    .el-row {
-      .el-col:nth-child(2) {
-        text-align: right;
-      }
+  }
+  .el-row {
+    .el-col:nth-child(2) {
+      text-align: right;
     }
   }
   .el-button {
