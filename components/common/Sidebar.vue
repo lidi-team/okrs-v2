@@ -70,7 +70,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { LinkName } from '@/constants/app.interface';
 @Component<SideBar>({
   name: 'SideBar',
 })

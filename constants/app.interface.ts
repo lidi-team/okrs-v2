@@ -85,10 +85,6 @@ export interface PromiseUserInfo {
   };
 }
 
-export interface LinkName {
-  link: string;
-  name: string;
-}
 export interface ParamsUser {
   status?: number;
   text?: string;
