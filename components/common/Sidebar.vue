@@ -1,38 +1,38 @@
 <template>
   <el-row class="sidebar" type="flex" justify="start" align="center">
-    <nuxt-link to="#" class="sidebar__link">
+    <nuxt-link to="/" :class="['sidebar__link']">
       <div class="sidebar__link__tab">
         <Dashboard class="sidebar__link__tab__icon" />
         <span>Dashboard</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="#" class="sidebar__link">
+    <nuxt-link to="checkin" :class="['sidebar__link']">
       <div class="sidebar__link__tab">
         <Checkin class="sidebar__link__tab__icon" />
         <span>Check-in</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="#" class="sidebar__link">
+    <nuxt-link to="OKRs" :class="['sidebar__link']">
       <div class="sidebar__link__tab">
         <OKRs class="sidebar__link__tab__icon" />
         <span>OKRs</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="#" class="sidebar__link">
+    <nuxt-link to="CFRs" :class="['sidebar__link']">
       <div class="sidebar__link__tab">
         <CFRs class="sidebar__link__tab__icon" />
         <span>CFRs</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="#" class="sidebar__link">
+    <nuxt-link to="cai-dat-cong-ty" :class="['sidebar__link']">
       <div v-if="userRole === 'ADMIN'" class="sidebar__link__tab">
         <Setting class="sidebar__link__tab__icon" />
-        <span>Cài đặt công ty</span>
+        <p>Cài đặt</p>
+        <p>công ty</p>
       </div>
     </nuxt-link>
 
     <!-- Start Role Permission action -->
-
     <div v-if="userRole === 'HR'" class="sidebar__link__tab">
       <human-resources class="sidebar__link__tab__icon" />
       <span>Quản lý nhân sự</span>
@@ -42,7 +42,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { SidebarTabs } from '@/constants/app.enum';
 import Dashboard from '@/assets/images/common/dashboard.svg';
 import CFRs from '@/assets/images/common/cfrs.svg';
 import Checkin from '@/assets/images/common/checkin.svg';
@@ -61,8 +60,7 @@ import HumanResources from '@/assets/images/common/nhan-su.svg';
   },
 })
 export default class SideBar extends Vue {
-  private userRole = 'ADMIN';
-  private currentTab = SidebarTabs.Dashboar;
+  private userRole: string = 'ADMIN';
 }
 </script>
 <style lang="scss" scoped>
@@ -74,25 +72,18 @@ export default class SideBar extends Vue {
   color: $purple-primary-2;
   box-shadow: $box-shadow-default;
   background-color: $white;
+  .nuxt-link-exact-active {
+    @include sidebar-hover;
+  }
   &__link {
-    width: 60%;
+    width: 70%;
     align-self: center;
     color: $purple-primary-2;
     margin-top: $unit-8;
     padding: $unit-4;
     transition: all 0.2s ease-in-out;
     &:hover {
-      transform: scale(1.005);
-      box-shadow: $box-shadow-default;
-      border-radius: $border-radius-large;
-      background-color: $purple-primary-2;
-      color: $purple-primary-4;
-      g {
-        fill-opacity: 1;
-      }
-      path {
-        fill-opacity: 1;
-      }
+      @include sidebar-hover;
     }
     &__tab {
       display: flex;

@@ -201,3 +201,17 @@ $breakpoints: (
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+@mixin sidebar-hover {
+  transform: scale(1.005);
+  box-shadow: $box-shadow-default;
+  border-radius: $border-radius-large;
+  background-color: $purple-primary-2;
+  color: $purple-primary-4;
+  g {
+    fill-opacity: 1;
+  }
+  path {
+    fill-opacity: 1;
+  }
+}
