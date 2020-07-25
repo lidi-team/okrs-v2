@@ -54,7 +54,7 @@
   </el-row>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { Maps, Rule } from '@/constants/app.type';
 import { ChangePasswordDTO } from '@/constants/app.interface';
 @Component<ChangePasswordDialog>({
