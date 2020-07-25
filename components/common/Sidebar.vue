@@ -76,12 +76,12 @@ export default class SideBar extends Vue {
     @include sidebar-hover;
   }
   &__link {
-    width: 70%;
+    width: 60%;
     align-self: center;
     color: $purple-primary-2;
-    margin-top: $unit-8;
-    padding: $unit-4;
+    padding: $unit-3;
     transition: all 0.2s ease-in-out;
+    margin: $unit-4 0 0 0;
     &:hover {
       @include sidebar-hover;
     }
@@ -90,8 +90,12 @@ export default class SideBar extends Vue {
       flex-direction: column;
       align-items: center;
       text-align: center;
-      span {
-        font-size: $unit-5;
+      span,
+      p {
+        font-size: $unit-4;
+      }
+      &__icon {
+        @include size($unit-10, $unit-10);
       }
     }
   }
