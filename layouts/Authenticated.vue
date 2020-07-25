@@ -1,11 +1,11 @@
 <template>
   <fragment>
     <base-navbar />
-    <el-row type="flex" justify="space-between">
-      <el-col :span="4">
+    <el-row type="flex" class="authenticated-screen">
+      <el-col :span="3" class="authenticated-screen__sidebard">
         <base-sidebar />
       </el-col>
-      <el-col :span="18">
+      <el-col :span="21" class="authenticated-screen__app">
         <nuxt />
       </el-col>
     </el-row>
@@ -18,4 +18,8 @@ import { Component, Vue } from 'vue-property-decorator';
 })
 export default class OkrsLayout extends Vue {}
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.authenticated-screen {
+  height: 93vh;
+}
+</style>

@@ -36,8 +36,8 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 
-@Component<ManageSettingPage>({ name: 'ManageSettingPage', layout: 'Authenticated' })
-export default class ManageSettingPage extends Vue {
+@Component<SettingCompanyPage>({ name: 'SettingCompanyPage', layout: 'Authenticated' })
+export default class SettingCompanyPage extends Vue {
   private tabs: string[] = [...Object.values(AdminTabsVn)];
   private textSearchPlaceHolder = 'Tìm kiếm something';
   private textSearch: string = '';
@@ -81,9 +81,8 @@ export default class ManageSettingPage extends Vue {
   }
 
   private querySearchAsync(queryString, cb) {
-    const tableData = this.tableData;
-    const results = queryString ? tableData.filter(this.createFilter(queryString)) : tableData;
-
+    // const tableData = this.tableData;
+    // const results = queryString ? tableData.filter(this.createFilter(queryString)) : tableData;
     // clearTimeout(this.timeout);
     // this.timeout = setTimeout(() => {
     //   cb(results);
