@@ -1,7 +1,7 @@
 <template>
   <admin-slot class="admin">
     <template #top>
-      <el-row type="flex" justify="space-between">
+      <el-row type="flex" justify="space-between" class="admin__top">
         <el-col :span="10">
           <div class="admin-top__left">
             <el-autocomplete
@@ -20,14 +20,16 @@
       </el-row>
     </template>
     <template #tab>
-      <el-tabs v-model="currentTab" @tabs-click="changeTab(currentTab)">
+      <el-tabs v-model="currentTab" class="admin__tab" @tabs-click="changeTab(currentTab)">
         <el-tab-pane v-for="tab in tabs" :key="tab.date" :label="tab" :name="tab" :lazy="true"></el-tab-pane>
       </el-tabs>
     </template>
     <template #table>
-      <component :is="currentTabComponent" :tab-data="tableData" />
-      <div v-if="tableData.length > 0">
-        <base-pagination :total="100" page.sync="5" limit.sync="20" @pagination="handlePagination($event)" />
+      <div class="admin_table">
+        <component :is="currentTabComponent" :tab-data="tableData" />
+        <div v-if="tableData.length > 0">
+          <base-pagination :total="100" page.sync="5" limit.sync="20" @pagination="handlePagination($event)" />
+        </div>
       </div>
     </template>
   </admin-slot>
@@ -114,3 +116,15 @@ export default class SettingCompanyPage extends Vue {
 }
 </script>
 <style lang="ts" scoped></style>
+<style lang="scss" scoped>
+@import '@/assets/scss/main.scss';
+.admin {
+  margin-left: $unit-9;
+  &__top {
+    margin: $unit-8 0 $unit-8 0;
+  }
+  &__table {
+    margin: $unit-4 0 0 0;
+  }
+}
+</style>
