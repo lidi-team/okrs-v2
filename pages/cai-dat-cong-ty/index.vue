@@ -81,9 +81,8 @@ export default class SettingCompanyPage extends Vue {
   }
 
   private querySearchAsync(queryString, cb) {
-    const tableData = this.tableData;
-    const results = queryString ? tableData.filter(this.createFilter(queryString)) : tableData;
-
+    // const tableData = this.tableData;
+    // const results = queryString ? tableData.filter(this.createFilter(queryString)) : tableData;
     // clearTimeout(this.timeout);
     // this.timeout = setTimeout(() => {
     //   cb(results);

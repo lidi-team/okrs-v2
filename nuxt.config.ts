@@ -139,17 +139,19 @@ const nuxtConfig: NuxtConfig = {
         return [['@nuxt/babel-preset-app', { loose: true }]];
       },
     },
-    extend(config: any, { isDev, isClient }: any) {
-      const svgRule = config.module!.rules.find((rule) => rule.test!.test('.svg'));
-      svgRule.test = /\.(png|jpe?g|gif|webp)$/;
+    extend({ module }: any, { isDev, isClient }: any): any {
+      if (module !== undefined) {
+        const svgRule = module.rules.find((rule) => rule.test.test('.svg'));
+        svgRule.test = /\.(png|jpe?g|gif|webp)$/;
 
-      config.module!.rules.push({
-        test: /\.svg$/,
-        use: ['babel-loader', 'vue-svg-loader'],
-      });
-      if (isDev && isClient && config.module) {
+        module.rules.push({
+          test: /\.svg$/,
+          use: ['babel-loader', 'vue-svg-loader'],
+        });
+      }
+      if (isDev && isClient && module) {
         // Enabling eslint:
-        config.module.rules.push({
+        module.rules.push({
           enforce: 'pre',
           test: /\.(js|ts|vue)$/u,
           loader: 'eslint-loader',
