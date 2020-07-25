@@ -12,7 +12,7 @@
       :hide-required-asterisk="false"
       label-width="150px"
       label-position="top"
-      @submit.native.prevent="handlechangePasswordForm"
+      @submit.native.prevent="handleChangePasswordForm"
     >
       <div class="change-password__form__input">
         <el-form-item prop="oldPassword" label="Mật khẩu cũ">
@@ -42,7 +42,7 @@
       </div>
       <el-row class="change-password__form__action" type="flex" justify="space-between">
         <el-col :span="24">
-          <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handleResetPasswordForm">
+          <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handleChangePasswordForm">
             Đổi mật khẩu
           </el-button>
         </el-col>
@@ -110,7 +110,7 @@ export default class ChangePasswordDialog extends Vue {
   &__title {
     text-align: center;
     border: 10px;
-    padding: 0 0 $unit-8 0;
+    padding: 0 0 $unit-6 0;
     font-size: 1.75rem;
     color: $neutral-primary-4;
   }
@@ -133,7 +133,7 @@ export default class ChangePasswordDialog extends Vue {
     }
   }
   .el-button {
-    margin-top: $unit-10;
+    margin-top: $unit-6;
     font-size: $unit-5;
     width: 100%;
   }
