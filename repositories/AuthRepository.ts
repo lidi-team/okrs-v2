@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { unAuthenticatedservice } from './BaseRepository';
+import { unAuthenticatedservice, authenticatedService } from './BaseRepository';
 import { AuthResponse, RegisterDTO, LoginDTO, ResetPasswordActionDTO } from '@/constants/app.interface';
 import { authEnpoint } from '@/constants/app.constant';
 
@@ -29,6 +29,6 @@ export default class AuthRepository {
   }
 
   public static generateLinkInivte() {
-    return unAuthenticatedservice.get(`/link-invite`);
+    return authenticatedService.get(authEnpoint.generateLink);
   }
 }

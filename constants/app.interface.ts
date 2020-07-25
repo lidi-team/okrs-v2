@@ -5,6 +5,16 @@ export interface LoginDTO {
   password: string;
 }
 
+export interface EmployeeDTO {
+  id?: number;
+  fullName: string;
+  email: string;
+  roleId: number;
+  teamId: number;
+  jobPositionId: number;
+  isLeader: boolean;
+}
+
 export interface RegisterDTO {
   email: string;
   password: string;
@@ -90,4 +100,10 @@ export interface ParamsUser {
   text?: string;
   page?: number;
   limit?: number;
+}
+
+export interface ParamsTeam {
+  page?: number;
+  limit?: number;
+  text?: string;
 }

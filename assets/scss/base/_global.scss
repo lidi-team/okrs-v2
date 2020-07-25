@@ -149,3 +149,21 @@ button:focus {
   border-color: $purple-primary-5;
 }
 // End El Input
+
+// El Form Rules
+
+// change red star validate to the back
+.custom-label {
+  .el-form-item__label {
+    &::before {
+      display: none;
+    }
+    &::after {
+      content: '*';
+      color: #ff4949;
+      margin-left: 4px;
+    }
+  }
+}
+
+// End ElForm Rules
