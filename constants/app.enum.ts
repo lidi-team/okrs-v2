@@ -53,6 +53,15 @@ export enum AdminTabsEn {
   MeasureUnit = 'quan-ly-don-vi-do-luong',
 }
 
+export enum SidebarTabs {
+  Dashboar = 'Dashboard',
+  Checkin = 'Checkin',
+  OKRs = 'OKRs',
+  CFRs = 'CFRs',
+  SettingCompany = 'Cài đặt công ty',
+  ManageHumanResources = 'Quản lý nhân sự',
+}
+
 export enum ResourcesEnpoint {
   Auth = 'auth',
   Users = 'users',

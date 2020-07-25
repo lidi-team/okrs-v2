@@ -56,7 +56,7 @@ export default class Navbar extends Vue {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 60px;
+  height: 7vh;
   padding: 0 $unit-10 0 $unit-5;
   background-color: $purple-primary-5;
 

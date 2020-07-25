@@ -1,5 +1,4 @@
 import { NuxtConfig } from '@nuxt/types';
-// import { Configuration as WebpackConfig } from 'webpack';
 import pureCssConfig from './purecss.config';
 
 const nuxtConfig: NuxtConfig = {
@@ -142,7 +141,6 @@ const nuxtConfig: NuxtConfig = {
     },
     extend(config: any, { isDev, isClient }: any) {
       const svgRule = config.module!.rules.find((rule) => rule.test!.test('.svg'));
-
       svgRule.test = /\.(png|jpe?g|gif|webp)$/;
 
       config.module!.rules.push({
