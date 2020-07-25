@@ -1,5 +1,5 @@
 <template>
-  <el-row class="sidebar" type="flex" justify="start" align="center">
+  <!-- <el-row class="sidebar" type="flex" justify="start" align="center">
     <el-col :span="24" class="sidebar__top">
       <el-row>
         <div class="sidebar__top__content">
@@ -66,10 +66,22 @@
         <span>Cài đặt công ty</span>
       </div>
     </el-col>
-  </el-row>
+  </el-row> -->
+  <el-tabs tab-position="left" style="height: 200px;">
+    <el-tab-pane label="User">User</el-tab-pane>
+    <el-tab-pane label="Config">Config</el-tab-pane>
+    <el-tab-pane label="Role">Role</el-tab-pane>
+    <el-tab-pane label="Task">Task</el-tab-pane>
+  </el-tabs>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+// import Dashboard from '@/assets/images/common/dashboard.svg';
+// import CFRs from '@/assets/images/common/cfrs.svg';
+// import Checkin from '@/assets/images/common/checkin.svg';
+// import OKRs from '@/assets/images/common/okrs.svg';
+// import Setting from '@/assets/images/common/setting.svg';
+// import HumanResources from '@/assets/images/common/nhan-su.svg';
 @Component<SideBar>({
   name: 'SideBar',
 })

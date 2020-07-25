@@ -1,5 +1,5 @@
 import { NuxtConfig } from '@nuxt/types';
-import { Configuration as WebpackConfig } from 'webpack';
+// import { Configuration as WebpackConfig } from 'webpack';
 import pureCssConfig from './purecss.config';
 
 const nuxtConfig: NuxtConfig = {
@@ -140,7 +140,15 @@ const nuxtConfig: NuxtConfig = {
         return [['@nuxt/babel-preset-app', { loose: true }]];
       },
     },
-    extend(config: WebpackConfig, { isDev, isClient }: any) {
+    extend(config: any, { isDev, isClient }: any) {
+      const svgRule = config.module!.rules.find((rule) => rule.test!.test('.svg'));
+
+      svgRule.test = /\.(png|jpe?g|gif|webp)$/;
+
+      config.module!.rules.push({
+        test: /\.svg$/,
+        use: ['babel-loader', 'vue-svg-loader'],
+      });
       if (isDev && isClient && config.module) {
         // Enabling eslint:
         config.module.rules.push({
