@@ -60,4 +60,5 @@ export enum ResourcesEnpoint {
   Me = 'me',
   Job = 'jobs',
   Team = 'teams',
+  Role = 'roles',
 }

@@ -13,6 +13,7 @@ export interface EmployeeDTO {
   teamId: number;
   jobPositionId: number;
   isLeader: boolean;
+  isActive?: boolean;
 }
 
 export interface RegisterDTO {

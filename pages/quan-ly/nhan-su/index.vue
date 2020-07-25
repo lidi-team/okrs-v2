@@ -5,7 +5,15 @@
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="manage-employee__content">
         <head-employee :link-invite="linkInvite" :text.sync="paramsUser.text" @name="paramsUser.text = $event" @search="handleSearch($event)" />
-        <component :is="currentTabComponent" :get-list-users="getListUsers" :teams="teams" :jobs="jobs" :loading="loading" :table-data="tableData" />
+        <component
+          :is="currentTabComponent"
+          :get-list-users="getListUsers"
+          :teams="teams"
+          :roles="roles"
+          :jobs="jobs"
+          :loading="loading"
+          :table-data="tableData"
+        />
         <base-pagination
           class="manage-employee__pagination"
           :total="meta.totalItems"
@@ -28,6 +36,7 @@ import EmployeeRepository from '@/repositories/EmployeeRepository';
 import AuthRepository from '@/repositories/AuthRepository';
 import TeamRepository from '@/repositories/TeamRepository';
 import JobRepository from '@/repositories/JobRepository';
+import RoleRepository from '@/repositories/RoleRepository';
 
 @Component<ManageEmployee>({
   name: 'ManageEmployee',
@@ -76,9 +85,15 @@ export default class ManageEmployee extends Vue {
 
   private async getDataCommons() {
     try {
-      const [teams, jobs, link] = await Promise.all([TeamRepository.get(), JobRepository.get(), AuthRepository.generateLinkInivte()]);
-      this.teams = teams.data.data.items;
+      const [teams, jobs, roles, link] = await Promise.all([
+        TeamRepository.get(),
+        JobRepository.get(),
+        RoleRepository.get(),
+        AuthRepository.generateLinkInivte(),
+      ]);
+      this.teams = teams.data.data;
       this.jobs = jobs.data.data;
+      this.roles = roles.data.data;
       this.linkInvite = link.data.data.url;
     } catch (error) {
       this.$notify({
