@@ -67,6 +67,10 @@ export default class Navbar extends Vue {
     console.log(this.changePasswordDialogVisible);
   }
 
+  // private moveToAdminSetting() {
+  //   this.$router.push('/admin/cai-dat');
+  // }
+
   private handleClose(done) {
     this.$confirm('Are you sure to close this dialog?')
       .then((_) => {

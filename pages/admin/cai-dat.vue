@@ -45,7 +45,6 @@ import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 
 @Component<SettingCompanyPage>({
   name: 'SettingCompanyPage',
-  layout: 'Authenticated',
   watchQuery: ['tab', 'text', 'page'],
   async asyncData({ query }) {},
 })
