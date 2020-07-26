@@ -1,7 +1,7 @@
-import jsCookie from 'js-cookie';
+import Cookies from 'js-cookie';
 
 // User token default
-const tokenKey = 'X-Token';
-export const getTokenCookie = (): string => jsCookie.get(tokenKey) as string;
-export const setTokenCookie = (token: string): string | undefined => jsCookie.set(tokenKey, token);
-export const removeTokenCookie = (): void => jsCookie.remove(tokenKey);
+const tokenKey = 'token';
+export const getTokenCookie = (): string => Cookies.get(tokenKey) as string;
+export const setTokenCookie = (token: string): string | undefined => Cookies.set(tokenKey, token);
+export const removeTokenCookie = (): void => Cookies.remove(tokenKey);

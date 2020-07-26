@@ -30,12 +30,12 @@
       </el-form-item>
       <el-form-item prop="teamId" label="Phòng ban" class="register-form__input__team">
         <el-select v-model="registerForm.teamId" placeholder="Chọn phòng ban" :no-data-text="noDataText">
-          <el-option v-for="i in listTeam" :key="i.lable" :label="i.lable" :value="i.value"></el-option>
+          <el-option v-for="item in teams" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item prop="jobPositionId" label="Vị trí" class="register-form__input__job-position">
         <el-select v-model="registerForm.jobPositionId" placeholder="Chọn vị trí" :no-data-text="noDataText">
-          <el-option v-for="i in listJobPosition" :key="i.lable" :label="i.lable" :value="i.value"></el-option>
+          <el-option v-for="item in jobs" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleRegisterForm">Gửi yêu cầu</el-button>
@@ -43,25 +43,25 @@
   </el-row>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import { RegisterDTO, RegisterOption } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
+import AuthRepository from '@/repositories/AuthRepository';
+import TeamRepository from '@/repositories/TeamRepository';
+import JobRepository from '@/repositories/JobRepository';
 @Component<RegisterComponent>({
   name: 'RegisterComponent',
-  mounted() {
-    /**
-     * Call API
-     */
-    // Verify the token on link with middleware
-    // Fetch Team and Position
+  created() {
+    this.getDataCommons();
   },
 })
 export default class RegisterComponent extends Vue {
+  @Prop(String) token!: string;
+  private teams: Array<object> = [];
+  private jobs: Array<object> = [];
   private loading: boolean = false;
   private rememberPassword: boolean = false;
   private capsTooltip = false;
-  private listTeam: RegisterOption[] = [];
-  private listJobPosition: RegisterOption[] = [];
   private noDataText: string = 'Không có dữ liệu';
 
   private registerForm: RegisterDTO = {
@@ -71,26 +71,50 @@ export default class RegisterComponent extends Vue {
     gender: true,
     teamId: null,
     jobPositionId: null,
-    token: '',
+    token: this.token,
   };
+
+  private async getDataCommons() {
+    try {
+      const [teams, jobs] = await Promise.all([TeamRepository.get(), JobRepository.get()]);
+      this.teams = teams.data.data;
+      this.jobs = jobs.data.data;
+    } catch (error) {
+      this.$notify({
+        title: 'Status',
+        message: 'Có lỗi xảy ra',
+        type: 'error',
+        duration: 1000,
+      });
+    }
+  }
 
   private rules: Maps<Rule[]> = {
     email: [
       { required: true, message: 'Vui lòng nhập địa chỉ email', trigger: 'blur' },
       { type: 'email', message: 'Vui lòng nhập đúng địa chỉ email', trigger: 'blur' },
     ],
-    password: [{ required: true, message: 'Vui lòng nhập mật khẩu' }],
+    password: [
+      { required: true, message: 'Vui lòng nhập mật khẩu' },
+      { validator: this.validatePassword, trigger: 'blur' },
+    ],
     fullName: [{ required: true, message: 'Vui lòng nhập họ tên' }],
     teamId: [{ required: true, message: 'Vui lòng chọn phòng ban' }],
     jobPositionId: [{ required: true, message: 'Vui lòng chọn vị trí công việc' }],
   };
 
-  private handleRegisterForm(): void {
-    console.log(this.registerForm);
+  private validatePassword(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    const valid: boolean = /^(?=.*\d)[0-9a-zA-Z]{8,}$/.test(value);
+    if (!valid) {
+      return callback('Mật khẩu chứ ít nhất 8 ký tự và 1 chữ số');
+    }
+    return callback();
+  }
+
+  private handleRegisterForm() {
     if (this.$route.query.token) {
       this.registerForm.token = this.$route.query.token as string;
     }
-    // Send form with API
   }
 }
 </script>
