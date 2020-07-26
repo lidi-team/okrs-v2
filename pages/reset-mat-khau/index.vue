@@ -37,6 +37,7 @@ import AuthRepository from '@/repositories/AuthRepository';
       redirect('/dang-nhap');
     }
   },
+  layout: 'empty',
 })
 export default class ResetPasswordPage extends Vue {}
 </script>

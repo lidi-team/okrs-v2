@@ -6,25 +6,25 @@
         <span>Dashboard</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="checkin" :class="['sidebar__link']">
+    <nuxt-link to="/checkin" :class="['sidebar__link']">
       <div class="sidebar__link__tab">
         <Checkin class="sidebar__link__tab__icon" />
         <span>Check-in</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="OKRs" :class="['sidebar__link']">
+    <nuxt-link to="/OKRs" :class="['sidebar__link']">
       <div class="sidebar__link__tab">
         <OKRs class="sidebar__link__tab__icon" />
         <span>OKRs</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="CFRs" :class="['sidebar__link']">
+    <nuxt-link to="/CFRs" :class="['sidebar__link']">
       <div class="sidebar__link__tab">
         <CFRs class="sidebar__link__tab__icon" />
         <span>CFRs</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="cai-dat-cong-ty" :class="['sidebar__link']">
+    <nuxt-link to="/admin/cai-dat" :class="['sidebar__link']">
       <div v-if="userRole === 'ADMIN'" class="sidebar__link__tab">
         <Setting class="sidebar__link__tab__icon" />
         <p>Cài đặt</p>

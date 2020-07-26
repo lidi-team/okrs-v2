@@ -94,6 +94,7 @@ const nuxtConfig: NuxtConfig = {
     { path: '~/components/profile', prefix: 'profile' },
     { path: '~/components/okrs', prefix: '' },
     { path: '~/components/manage', prefix: '' },
+    { path: '~/components/admin', prefix: 'manage' },
   ],
   /*
    ** Nuxt.js modules
