@@ -2,18 +2,20 @@
   <admin-slot class="admin">
     <template #top>
       <el-row type="flex" justify="space-between" class="admin__top">
-        <el-col :span="10">
-          <div class="admin-top__left">
+        <el-col :span="16">
+          <div class="admin__top__left">
             <el-autocomplete
               v-model="textSearch"
+              class="admin__top__left--input"
+              prefix-icon="el-icon-search"
               :fetch-suggestions="querySearchAsync"
               :placeholder="textSearchPlaceHolder"
               @select="handleSelect"
             ></el-autocomplete>
           </div>
         </el-col>
-        <el-col :span="10">
-          <div class="admin-top__right">
+        <el-col :span="8">
+          <div class="admin__top__right">
             <el-button class="el-button--purple el-button--small el-button--invite" icon="el-icon-plus">Thêm mới</el-button>
           </div>
         </el-col>
@@ -122,9 +124,20 @@ export default class SettingCompanyPage extends Vue {
   margin-left: $unit-9;
   &__top {
     margin: $unit-8 0 $unit-8 0;
+    &__left {
+      &--input {
+        width: calc(100vw * 5 / 24);
+      }
+    }
+    &__right {
+      height: 100%;
+    }
   }
   &__table {
     margin: $unit-4 0 0 0;
+  }
+  .el-button {
+    height: 100%;
   }
 }
 </style>
