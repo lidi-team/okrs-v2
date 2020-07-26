@@ -54,7 +54,8 @@ import { Maps, Rule } from '@/constants/app.type';
   },
 })
 export default class ResetPassword extends Vue {
-  @Prop({ default: false }) public loading!: boolean;
+  @Prop(String) token!: string;
+  private loading: boolean = false;
   private matchPassword: string = '';
 
   watchQuery: string[] = ['token'];

@@ -1,6 +1,6 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
 import { Message } from 'element-ui';
-import { LoginDTO, RegisterDTO, UserInfo } from '@/constants/app.interface';
+import { LoginDTO, RegisterDTO } from '@/constants/app.interface';
 import AuthRepository from '@/repositories/AuthRepository';
 import { getTokenCookie, removeTokenCookie, setTokenCookie } from '@/utils/cookies';
 
@@ -9,13 +9,13 @@ export enum AuthMutation {
   SET_USER = 'setUser',
 }
 export interface AuthState {
-  token: string;
-  user: UserInfo | null;
+  token: any;
+  user: any;
 }
 
 export interface AuthActions<S, R> extends ActionTree<S, R> {
   logout(context: ActionContext<S, R>): Promise<void>;
-  login(context: ActionContext<S, R>, credentials: LoginDTO): Promise<void>;
+  login(context: ActionContext<S, R>, credentials: LoginDTO);
   register(context: ActionContext<S, R>, credentials: RegisterDTO): Promise<void>;
   updateProfile(context: ActionContext<S, R>, data: any): Promise<void>;
   changePassword(context: ActionContext<S, R>, newPassword: string): Promise<void>;
@@ -23,12 +23,8 @@ export interface AuthActions<S, R> extends ActionTree<S, R> {
 }
 
 export const state = (): AuthState => ({
-  token: getTokenCookie(),
-  user: {
-    name: '',
-    role: null,
-    gravatar: null,
-  },
+  token: null,
+  user: null,
 });
 
 export type RootState = ReturnType<typeof state>;
@@ -40,38 +36,33 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   [AuthMutation.SET_TOKEN]: (state, token: string) => (state.token = token),
-  [AuthMutation.SET_USER]: (state, user: UserInfo) => (state.user = user),
+  [AuthMutation.SET_USER]: (state, user: any) => (state.user = user),
 };
 
 export const actions: AuthActions<AuthState, RootState> = {
   async register({ commit }, credentials: RegisterDTO): Promise<void> {
     await AuthRepository.register(credentials);
   },
-  async login({ commit }, { email, password }: LoginDTO): Promise<void> {
+  async login({ commit }, { email, password }: LoginDTO) {
     try {
       const { data } = await AuthRepository.login({ email, password });
       commit(AuthMutation.SET_TOKEN, data.data.token);
-      commit(AuthMutation.SET_USER, {
-        name: data.data.user.name,
-        role: data.data.user.role,
-        gravatar: data.data.user.gravatar,
-      });
+      commit(AuthMutation.SET_USER, data.data.user);
       setTokenCookie(data.data.token);
+      return data.data.user;
     } catch (error) {
-      if (error === 'Network Error') {
-        Message.error('Xảy ra lỗi về kết nối');
-      }
+      return false;
     }
   },
-  async logout({ commit, state }) {
-    if (state.token === '') {
-      throw new Error(`Can't not logout: token is undifined`);
+  async logout({ commit }) {
+    try {
+      await AuthRepository.logout();
+      removeTokenCookie();
+      commit(AuthMutation.SET_TOKEN, null);
+      commit(AuthMutation.SET_USER, null);
+    } catch (error) {
+      console.log(error);
     }
-    await AuthRepository.logout();
-    removeTokenCookie();
-    setTokenCookie('');
-    commit(AuthMutation.SET_TOKEN, '');
-    commit(AuthMutation.SET_USER, null);
   },
   async changePassword({ commit }, data: any) {},
   async updateProfile({ commit }, data: any) {},

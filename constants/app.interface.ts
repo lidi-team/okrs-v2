@@ -5,6 +5,10 @@ export interface LoginDTO {
   password: string;
 }
 
+export interface MailResetPassDTO {
+  email: string;
+}
+
 export interface EmployeeDTO {
   id?: number;
   fullName: string;
@@ -82,26 +86,6 @@ export interface FormRule {
 /**
  * Store
  */
-
-export interface AuthResponse {
-  data: {
-    token: string;
-    user: UserInfo;
-  };
-}
-
-export interface UserInfo {
-  name: string;
-  role: UserRole;
-  gravatar?: string | null;
-}
-
-export interface PromiseUserInfo {
-  data: {
-    user: UserInfo;
-  };
-}
-
 export interface ParamsUser {
   status?: number;
   text?: string;

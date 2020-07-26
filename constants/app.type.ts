@@ -23,5 +23,4 @@ export type Rule = FormRule;
 export type Rules = Maps<FormRule[]>;
 export type Gender = 'Nam' | 'Nữ' | 'Khác';
 
-export type ForgotPasswordDTO = Omit<LoginDTO, 'password'>;
 export type UserRole = 'Admin' | 'HR' | 'Staff' | null;

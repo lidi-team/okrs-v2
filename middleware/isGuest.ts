@@ -1,11 +1,8 @@
-import { Middleware, Context } from '@nuxt/types';
 import { getTokenCookie } from '@/utils/cookies';
 
-const isGuestMiddleware: Middleware = ({ redirect, store }: Context, __: Function) => {
+export default function ({ redirect }) {
   const token = getTokenCookie();
   if (token) {
     return redirect('/');
   }
-};
-
-export default isGuestMiddleware;
+}

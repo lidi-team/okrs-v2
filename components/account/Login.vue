@@ -81,38 +81,11 @@ export default class LoginSComponent extends Vue {
     (this.$refs.loginForm as LoginForm).validate(async (isValid: boolean) => {
       if (isValid) {
         this.loading = true;
-        await this.$store.dispatch(authEnpoint.login, this.loginForm).then(
-          (response) => {
-            console.log(response);
-
-            Message({
-              message: 'Đăng nhập thành công',
-              type: 'success',
-              duration: 5 * 1000,
-            });
-            this.$router.push('/');
-            setTimeout(() => {
-              this.loading = false;
-            }, 300);
-            return response.data;
-          },
-          (error) => {
-            console.log(error);
-            console.log(error.message);
-            const message = error.message === 'Network Error' ? 'Lỗi kết nối' : error.message;
-            Message({
-              message,
-              type: 'error',
-              duration: 5 * 1000,
-            });
-            setTimeout(() => {
-              this.loading = false;
-            }, 300);
-            return Promise.reject(error);
-          },
-        );
-      } else {
-        return false;
+        const user = await this.$store.dispatch('auth/login', this.loginForm);
+        this.loading = false;
+        if (user) {
+          this.$router.push('/');
+        }
       }
     });
   }

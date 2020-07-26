@@ -3,7 +3,7 @@
     <div class="header__logo">
       <nuxt-link to="/"><img src="~/assets/images/common/logo.png" alt="logo" /></nuxt-link>
     </div>
-    <div class="header__info side-right">
+    <div v-if="profile !== null" class="header__info side-right">
       <div class="side-right__list">
         <el-dropdown class="side-right__item" trigger="click">
           <i class="el-icon-message-solid"></i>
@@ -16,9 +16,10 @@
         </el-dropdown>
         <el-dropdown class="side-right__item item" trigger="click">
           <div class="item__wrapper">
-            <img src="https://avatars3.githubusercontent.com/u/23659823?s=40&v=4" alt="avatar" class="item__avatar" />
+            <img :src="profile.image_url" alt="avatar" class="item__avatar" />
             <div class="item__info info">
-              <span class="info__name">Đỗ Quang Hiệp<i class="el-icon-caret-bottom" /></span><span class="info__role">Admin</span>
+              <span class="info__name">{{ profile.name }}<i class="el-icon-caret-bottom" /></span
+              ><span class="info__role">{{ profile.role_name }}</span>
             </div>
           </div>
           <el-dropdown-menu slot="dropdown">
@@ -40,7 +41,9 @@
                 ><span>Đổi mật khẩu</span>
               </el-dropdown-item>
             </nuxt-link>
-            <el-dropdown-item divided><fa icon="power-off" class="item__icon" /><span>Đăng xuất</span></el-dropdown-item>
+            <el-dropdown-item divided
+              ><div @click="logout()"><fa icon="power-off" class="item__icon" /><span>Đăng xuất</span></div></el-dropdown-item
+            >
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -50,26 +53,23 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { mapGetters } from 'vuex';
 @Component<Navbar>({
   name: 'Navbar',
+  computed: {
+    ...mapGetters({
+      profile: 'auth/user',
+    }),
+  },
 })
 export default class Navbar extends Vue {
   private dialogVisible: boolean = false;
   private changePasswordDialogVisible: boolean = false;
   private show: boolean = true;
 
-  private displayDialogChangePassword(): void {
-    console.log(this.changePasswordDialogVisible);
-    this.changePasswordDialogVisible = true;
-    console.log(this.changePasswordDialogVisible);
-  }
-
-  private handleClose(done) {
-    this.$confirm('Are you sure to close this dialog?')
-      .then((_) => {
-        done();
-      })
-      .catch((_) => {});
+  private async logout() {
+    await this.$store.dispatch('auth/logout');
+    this.$router.push('/dang-nhap');
   }
 }
 </script>
@@ -85,7 +85,7 @@ export default class Navbar extends Vue {
   justify-content: space-between;
   align-items: center;
   height: 7vh;
-  padding: 0 $unit-10 0 $unit-5;
+  padding: $unit-6 $unit-10 $unit-6 $unit-5;
   background-color: $purple-primary-5;
 
   @include breakpoint-down(phone) {

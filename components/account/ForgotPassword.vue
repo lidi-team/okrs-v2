@@ -45,20 +45,41 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
-import { Maps, Rule, ForgotPasswordDTO } from '@/constants/app.type';
+import { Maps, Rule } from '@/constants/app.type';
+import AuthRepository from '@/repositories/AuthRepository';
+import { MailResetPassDTO } from '@/constants/app.interface';
 @Component<ForgotPassword>({
   name: 'Login',
 })
 export default class ForgotPassword extends Vue {
-  @Prop({ default: false }) public loading!: boolean;
-  public forgotPasswordForm: ForgotPasswordDTO = {
+  private loading: boolean = false;
+  private forgotPasswordForm: MailResetPassDTO = {
     email: '',
   };
 
-  public handleForgotPasswordForm(): void {
+  private handleForgotPasswordForm(): void {
     (this.$refs.forgotPasswordForm as Form).validate(async (isValid) => {
       if (isValid) {
-        await this.$store.dispatch('', this.forgotPasswordForm.email);
+        try {
+          this.loading = true;
+          await AuthRepository.sendMailToResetPassword(this.forgotPasswordForm);
+          this.loading = false;
+          this.$notify({
+            title: 'Status',
+            type: 'success',
+            message: 'Đã gửi yêu cầu. Vui lòng kiểm tra email của bạn',
+            duration: 1000,
+          });
+          this.$router.push('/dang-nhap');
+        } catch (error) {
+          this.loading = false;
+          this.$notify({
+            title: 'Status',
+            type: 'error',
+            message: 'Có lỗi xảy ra',
+            duration: 1000,
+          });
+        }
       }
     });
   }
