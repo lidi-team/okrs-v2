@@ -13,7 +13,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 @Component<LoginPage>({
   name: 'LoginPage',
-  // middleware: 'isGuest',
   layout: 'empty',
 })
 export default class LoginPage extends Vue {}
