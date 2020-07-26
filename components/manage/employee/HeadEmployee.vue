@@ -2,13 +2,13 @@
   <div class="header-employee">
     <div class="header-employee__left">
       <el-input
-        v-model="text"
+        v-model="syncedText"
         class="header-employee__input"
         placeholder="Từ khoá tìm kiếm"
         prefix-icon="el-icon-search"
-        @keyup.enter.native="handleSearch(text)"
+        @keyup.enter.native="handleSearch(syncedText)"
       />
-      <el-button class="el-button--white el-button--small el-button--search" @click="handleSearch(text)">Tìm kiếm</el-button>
+      <el-button class="el-button--white el-button--small el-button--search" @click="handleSearch(syncedText)">Tìm kiếm</el-button>
     </div>
     <div class="header-employee__right">
       <el-button class="el-button--purple el-button--small el-button--invite" icon="el-icon-plus" @click="showInviteDialog">Mời thành viên</el-button>
@@ -38,8 +38,8 @@ import { Component, Vue, Prop, Watch, PropSync } from 'vue-property-decorator';
 export default class HeadEmployee extends Vue {
   [x: string]: any;
   @PropSync('text', { type: String }) syncedText!: string;
+  @Prop(String) linkInvite!: string;
   private searchText: string = '';
-  private linkInvite: string = 'link';
   private showInvite: boolean = false;
   private handleSearch(value: string) {
     if (value.trim() !== '') {

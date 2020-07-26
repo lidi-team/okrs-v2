@@ -67,4 +67,7 @@ export enum ResourcesEnpoint {
   Users = 'users',
   ResetPassword = 'reset_password',
   Me = 'me',
+  Job = 'jobs',
+  Team = 'teams',
+  Role = 'roles',
 }
