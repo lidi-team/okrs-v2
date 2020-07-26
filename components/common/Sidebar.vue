@@ -24,7 +24,7 @@
         <span>CFRs</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="cai-dat-cong-ty" :class="['sidebar__link']">
+    <nuxt-link to="admin/cai-dat" :class="['sidebar__link']">
       <div v-if="userRole === 'ADMIN'" class="sidebar__link__tab">
         <Setting class="sidebar__link__tab__icon" />
         <p>Cài đặt</p>

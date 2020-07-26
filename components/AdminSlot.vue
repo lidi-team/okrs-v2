@@ -1,9 +1,8 @@
 <template>
-  <fragment>
+  <div>
     <slot name="top"></slot>
     <slot name="tab"></slot>
-    <slot name="table"></slot>
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
