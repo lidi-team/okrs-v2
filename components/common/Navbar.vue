@@ -25,6 +25,9 @@
             <nuxt-link to="/thong-tin-tai-khoan">
               <el-dropdown-item><fa icon="user-circle" class="item__icon" /><span>Thông tin tài khoản</span></el-dropdown-item>
             </nuxt-link>
+            <nuxt-link to="/admin/cai-dat">
+              <el-dropdown-item><i class="el-icon-s-tools item__icon"></i><span>Cài đặt công ty</span></el-dropdown-item>
+            </nuxt-link>
             <nuxt-link to="/quan-ly/nhan-su">
               <el-dropdown-item><fa icon="user-friends" class="item__icon" /><span>Quản lý nhân sự</span></el-dropdown-item>
             </nuxt-link>

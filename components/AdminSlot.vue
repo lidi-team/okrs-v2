@@ -2,7 +2,6 @@
   <div>
     <slot name="top"></slot>
     <slot name="tab"></slot>
-    <slot name="table"></slot>
   </div>
 </template>
 <script lang="ts">
