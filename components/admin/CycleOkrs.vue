@@ -1,11 +1,18 @@
 <template>
   <fragment>
     <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="cycle-okrs">
-      <el-table-column prop="id" label="STT" width="50"></el-table-column>
-      <el-table-column prop="name" label="Tên" width="200"></el-table-column>
-      <el-table-column prop="startDate" label="Ngày bắt đầu" width="250"></el-table-column>
-      <el-table-column prop="endDate" label="Ngày kết đầu" width="250"></el-table-column>
-      <el-table-column label="Thao tác" align="center" width="150">
+      <el-table-column prop="name" label="Tên chu kỳ"></el-table-column>
+      <el-table-column label="Ngày bắt đầu">
+        <template slot-scope="{ row }">
+          <span>{{ dateParser(row.startDate) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Ngày kết đầu">
+        <template slot-scope="{ row }">
+          <span>{{ dateParser(row.endDate) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Thao tác" align="center">
         <template slot-scope="{ row }">
           <el-tooltip class="cycle-okrs__icon" content="Sửa" placement="top">
             <i class="el-icon-edit" @click="handleOpenDialogUpdate(row)"></i>
@@ -16,11 +23,19 @@
         </template>
       </el-table-column>
     </el-table>
-    <base-pagination class="admin__tab__table__pagination" :total="100" page.sync="5" limit.sync="20" @pagination="handlePagination($event)" />
+    <base-pagination
+      class="admin__tab__table__pagination"
+      :total="total"
+      page.sync="page"
+      limit.sync="limit"
+      @pagination="handlePagination($event)"
+    />
   </fragment>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import vi from 'date-fns/locale/vi';
+import { format } from 'date-fns';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<ManageCycleOkrs>({ name: 'ManageCycleOkrs' })
 export default class ManageCycleOkrs extends Vue {
@@ -36,6 +51,10 @@ export default class ManageCycleOkrs extends Vue {
 
   private handleOpenDialogUpdate(row: object): void {}
   private handleDelete(row: object): void {}
+  private dateParser(date: string, dateFormat: string = 'dd-MM-yyyy'): string {
+    const tempDate = new Date(date);
+    return format(tempDate, dateFormat);
+  }
 }
 </script>
 <style lang="scss" scoped>

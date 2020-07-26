@@ -1,8 +1,7 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
-import { Message } from 'element-ui';
 import { LoginDTO, RegisterDTO } from '@/constants/app.interface';
 import AuthRepository from '@/repositories/AuthRepository';
-import { getTokenCookie, removeTokenCookie, setTokenCookie } from '@/utils/cookies';
+import { removeTokenCookie, setTokenCookie } from '@/utils/cookies';
 
 export enum AuthMutation {
   SET_TOKEN = 'setToken',

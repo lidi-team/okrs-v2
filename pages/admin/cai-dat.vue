@@ -24,7 +24,7 @@
       </el-row>
     </template>
     <template #tab>
-      <el-tabs v-model="currentTab" class="admin__tab" @tab-click="changeTabs(currentTab)">
+      <el-tabs v-model="currentTab" class="admin__tab" @tab-click="switchTabs(currentTab)">
         <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab" :lazy="true" />
         <div class="admin__tab__table">
           <component :is="currentTabComponent" :table-data="tableData" />
@@ -36,53 +36,53 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Context } from '@nuxt/types';
+import { Notification } from 'element-ui';
 import ManageCycleOkrs from '@/components/admin/CycleOkrs.vue';
 import ManageEvaluationCriteria from '@/components/admin/EvaluationCriteria.vue';
 import ManageJobPosition from '@/components/admin/JobPosition.vue';
 import ManageMeasureUnit from '@/components/admin/MeasureUnit.vue';
 import ManageDepartment from '@/components/admin/Department.vue';
 import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
+import CycleRepository from '@/repositories/CycleRepository';
 
 @Component<SettingCompanyPage>({
   name: 'SettingCompanyPage',
-  watchQuery: ['tab', 'text', 'page'],
-  async asyncData({ query }) {},
+  watchQuery: ['tab'],
+  async asyncData({ query }: Context) {
+    if (query.tab === AdminTabsEn.CycleOKR) {
+      try {
+        const { data } = await CycleRepository.getCycles();
+        return {
+          tableData: Object.freeze(data.data),
+        };
+      } catch (error) {
+        Notification({
+          title: 'Status',
+          message: 'Có lỗi xảy ra bất ngờ 🥳',
+          type: 'error',
+          duration: 2000,
+        });
+      }
+    }
+  },
 })
 export default class SettingCompanyPage extends Vue {
+  private currentTab: string =
+    this.$route.query.tab === AdminTabsEn.MeasureUnit
+      ? AdminTabsVn.MeasureUnit
+      : this.$route.query.tab === AdminTabsEn.EvaluationCriterial
+      ? AdminTabsVn.EvaluationCriterial
+      : this.$route.query.tab === AdminTabsEn.JobPosition
+      ? AdminTabsVn.JobPosition
+      : this.$route.query.tab === AdminTabsEn.Department
+      ? AdminTabsVn.Department
+      : AdminTabsVn.CycleOKR;
+
   private tabs: string[] = [...Object.values(AdminTabsVn)];
   private textSearch: string = '';
-  private adminTopObject: any = {
-    buttonName: '',
-    textPlaceholder: '',
-  };
 
-  private currentTab: any = null;
-  private timeout: number = 1000;
-
-  public tableData: Object[] = [
-    {
-      id: 1,
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      id: 1,
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      id: 1,
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-    {
-      id: 1,
-      name: 'Tom',
-      address: 'No. 189, Grove St, Los Angeles',
-    },
-  ];
-
-  private changeTabs(currentTab: string) {
+  private switchTabs(currentTab: string) {
     this.$router.push(
       `?tab=${
         currentTab === AdminTabsVn.CycleOKR
@@ -93,7 +93,7 @@ export default class SettingCompanyPage extends Vue {
           ? AdminTabsEn.JobPosition
           : currentTab === AdminTabsVn.EvaluationCriterial
           ? AdminTabsEn.EvaluationCriterial
-          : AdminTabsEn.JobPosition
+          : AdminTabsEn.MeasureUnit
       }`,
     );
   }
@@ -102,16 +102,12 @@ export default class SettingCompanyPage extends Vue {
     if (this.$route.query.tab === undefined || this.$route.query.tab === AdminTabsEn.CycleOKR) {
       return ManageCycleOkrs;
     } else if (this.$route.query.tab === AdminTabsEn.Department) {
-      // this.currentTab = AdminTabsVn.Department;
       return ManageDepartment;
     } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
-      // this.currentTab = AdminTabsVn.JobPosition;
       return ManageJobPosition;
     } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
-      // this.currentTab = AdminTabsVn.EvaluationCriterial;
       return ManageEvaluationCriteria;
     } else {
-      // this.currentTab = AdminTabsVn.MeasureUnit;
       return ManageMeasureUnit;
     }
   }
