@@ -8,7 +8,15 @@ export default class CycleRepository {
     return authenticatedService.get(`${ResourcesEnpoint.CycleOKRs}`);
   }
 
-  public static postCycle(cycleOkrs: CycleDTO): Promise<AxiosResponse<void>> {
-    return authenticatedService.post(`${ResourcesEnpoint.CycleOKRs}`, cycleOkrs);
+  public static getCurrentCycle(): Promise<AxiosResponse<any>> {
+    return authenticatedService.get(`${ResourcesEnpoint.CycleOKRs}?status=current`);
+  }
+
+  public static updateCycle(payload: CycleDTO): Promise<AxiosResponse<any>> {
+    return authenticatedService.put(`${ResourcesEnpoint.CycleOKRs}/${payload.id}`, payload);
+  }
+
+  public static postCycle(payload: CycleDTO): Promise<AxiosResponse<void>> {
+    return authenticatedService.post(`${ResourcesEnpoint.CycleOKRs}`, payload);
   }
 }
