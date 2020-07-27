@@ -20,13 +20,13 @@ import AuthRepository from '@/repositories/AuthRepository';
   async asyncData({ query, redirect }) {
     if (query.token) {
       try {
-        await AuthRepository.verifyLinkInvite(query.token);
+        await AuthRepository.verifyResetPassword(query.token);
         return {
           token: query.token,
         };
       } catch (error) {
         Notification({
-          title: 'Status',
+          title: 'Trạng thái',
           message: 'Token không chính xác. Vui lòng kiểm tra lại',
           type: 'error',
           duration: 2000,

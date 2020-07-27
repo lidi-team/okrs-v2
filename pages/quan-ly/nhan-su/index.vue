@@ -74,12 +74,7 @@ export default class ManageEmployee extends Vue {
       this.meta = data.data.meta;
       this.loading = false;
     } catch (error) {
-      this.$notify({
-        title: 'Status',
-        message: 'Có lỗi xảy ra',
-        type: 'error',
-        duration: 1000,
-      });
+      this.loading = false;
     }
   }
 
@@ -95,14 +90,7 @@ export default class ManageEmployee extends Vue {
       this.jobs = jobs.data.data;
       this.roles = roles.data.data;
       this.linkInvite = link.data.data.url;
-    } catch (error) {
-      this.$notify({
-        title: 'Status',
-        message: 'Có lỗi xảy ra',
-        type: 'error',
-        duration: 1000,
-      });
-    }
+    } catch (error) {}
   }
 
   private handleSearch(textSearch: string) {

@@ -65,19 +65,19 @@ export default class ForgotPassword extends Vue {
           await AuthRepository.sendMailToResetPassword(this.forgotPasswordForm);
           this.loading = false;
           this.$notify({
-            title: 'Status',
+            title: 'Trạng thái',
             type: 'success',
             message: 'Đã gửi yêu cầu. Vui lòng kiểm tra email của bạn',
-            duration: 1000,
+            duration: 2000,
           });
           this.$router.push('/dang-nhap');
         } catch (error) {
           this.loading = false;
           this.$notify({
-            title: 'Status',
+            title: 'Trạng thái',
             type: 'error',
             message: 'Có lỗi xảy ra',
-            duration: 1000,
+            duration: 2000,
           });
         }
       }

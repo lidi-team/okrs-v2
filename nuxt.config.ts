@@ -51,7 +51,7 @@ const nuxtConfig: NuxtConfig = {
   /*
    ** Global CSS
    */
-  css: ['@/assets/scss/main.scss', '@/assets/css/resetCss.css'],
+  css: ['@/assets/scss/base/_global.scss', '@/assets/css/resetCss.css'],
   /**
    * @description Plugins to load before mounting the App
    * @docs https://nuxtjs.org/guide/plugins

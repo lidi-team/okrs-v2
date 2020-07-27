@@ -24,7 +24,7 @@ export default class Layout extends Vue {}
 @import '@/assets/scss/main.scss';
 $bg-gray-common: #e5e5e5;
 .authenticated-screen {
-  min-height: 92vh;
+  height: 92vh;
   &__app {
     background-color: $bg-gray-common;
     min-height: calc(100vh - 60px);

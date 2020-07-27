@@ -1,8 +1,8 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
-import { Message } from 'element-ui';
+import { logErrorLogin } from '@/constants/app.logerror';
 import { LoginDTO, RegisterDTO } from '@/constants/app.interface';
 import AuthRepository from '@/repositories/AuthRepository';
-import { getTokenCookie, removeTokenCookie, setTokenCookie } from '@/utils/cookies';
+import { removeTokenCookie, setTokenCookie } from '@/utils/cookies';
 
 export enum AuthMutation {
   SET_TOKEN = 'setToken',
@@ -51,6 +51,7 @@ export const actions: AuthActions<AuthState, RootState> = {
       setTokenCookie(data.data.token);
       return data.data.user;
     } catch (error) {
+      logErrorLogin(error);
       return false;
     }
   },
@@ -60,9 +61,7 @@ export const actions: AuthActions<AuthState, RootState> = {
       removeTokenCookie();
       commit(AuthMutation.SET_TOKEN, null);
       commit(AuthMutation.SET_USER, null);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   },
   async changePassword({ commit }, data: any) {},
   async updateProfile({ commit }, data: any) {},

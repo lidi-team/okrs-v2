@@ -14,16 +14,21 @@
       @submit.native.prevent="handleResetPasswordForm"
     >
       <div class="reset-password-form__input">
-        <el-form-item prop="newPassword" label="Mật khẩu mới">
+        <el-form-item prop="password" class="custom-label" label="Mật khẩu mới">
           <el-input
-            v-model="resetPasswordForm.newPassword"
+            v-model="resetPasswordForm.password"
             type="password"
             class="reset-password-form__input__new-password"
             placeholder="Nhập mật khẩu"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="matchPassword" label="Nhập lại mật khẩu mới">
-          <el-input v-model="matchPassword" type="password" class="reset-password-form__input__match-password" placeholder="Nhập mật khẩu"></el-input>
+        <el-form-item prop="matchPassword" class="custom-label" label="Nhập lại mật khẩu mới">
+          <el-input
+            v-model="resetPasswordForm.matchPassword"
+            type="password"
+            class="reset-password-form__input__match-password"
+            placeholder="Nhập mật khẩu"
+          ></el-input>
         </el-form-item>
       </div>
       <el-row class="reset-password-form__action" type="flex" justify="space-between">
@@ -44,29 +49,23 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { ResetPasswordDTO, ResetPasswordActionDTO } from '@/constants/app.interface';
+import AuthRepository from '@/repositories/AuthRepository';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<ResetPassword>({
   name: 'ResetPassword',
-  beforeRouteEnter({ query }, from, next) {
-    console.log(query);
-    // const token = localStorage.getItem('tweetr-token')
-    // return token ? next() : next('/login')
-  },
 })
 export default class ResetPassword extends Vue {
   @Prop(String) token!: string;
   private loading: boolean = false;
-  private matchPassword: string = '';
-
-  watchQuery: string[] = ['token'];
 
   public resetPasswordForm: ResetPasswordActionDTO = {
-    newPassword: '',
-    token: '',
+    password: '',
+    matchPassword: '',
+    token: this.token,
   };
 
   private rules: Maps<Rule[]> = {
-    newPassword: [
+    password: [
       { required: true, message: 'Vui lòng nhập mật khẩu mới', trigger: 'blur' },
       { validator: this.validatePassword, trigger: ['blur', 'change'] },
     ],
@@ -85,16 +84,37 @@ export default class ResetPassword extends Vue {
   }
 
   private validateMatchPassword(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
-    if (value !== this.resetPasswordForm.newPassword) {
+    if (value !== this.resetPasswordForm.password) {
       return callback('Không trùng với mật khẩu mới');
     }
     return callback();
   }
 
   private handleResetPasswordForm(): void {
-    (this.$refs.resetPasswordForm as Form).validate((isValid) => {
+    (this.$refs.resetPasswordForm as Form).validate(async (isValid) => {
       if (isValid) {
-        this.resetPasswordForm.token = this.$route.query.token as string;
+        try {
+          this.loading = true;
+          delete this.resetPasswordForm.matchPassword;
+          await AuthRepository.resetPasswordWithToken(this.resetPasswordForm).then((res: any) => {
+            this.$notify({
+              title: 'Trạng thái',
+              message: 'Đổi mật khẩu thành công',
+              type: 'success',
+              duration: 2000,
+            });
+          });
+          this.$router.push('/dang-nhap');
+          this.loading = false;
+        } catch (error) {
+          this.loading = false;
+          this.$notify({
+            title: 'Trạng thái',
+            message: 'Có lỗi xảy ra',
+            type: 'error',
+            duration: 2000,
+          });
+        }
       }
     });
   }

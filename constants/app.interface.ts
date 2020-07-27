@@ -18,11 +18,13 @@ export interface EmployeeDTO {
   jobPositionId: number;
   isLeader: boolean;
   isActive?: boolean;
+  isApproved?: boolean;
 }
 
 export interface RegisterDTO {
   email: string;
   password: string;
+  matchPassword?: string;
   fullName: string;
   gender: boolean | null;
   teamId: number | null;
@@ -56,7 +58,8 @@ export interface ResetPasswordDTO {
 }
 
 export interface ResetPasswordActionDTO {
-  newPassword: string;
+  password: string;
+  matchPassword?: string;
   token: string;
 }
 

@@ -19,6 +19,9 @@
       <el-form-item prop="password" label="Mật khẩu">
         <el-input v-model="registerForm.password" class="register-form__input__password" placeholder="Nhập mật khẩu"></el-input>
       </el-form-item>
+      <el-form-item prop="matchPassword" label="Nhập lại mật khẩu">
+        <el-input v-model="registerForm.matchPassword" class="register-form__input" placeholder="Nhập lại mật khẩu"></el-input>
+      </el-form-item>
       <el-form-item prop="fullName" label="Họ và Tên">
         <el-input v-model="registerForm.fullName" class="register-form__input__full-name" placeholder="Nhập họ tên"></el-input>
       </el-form-item>
@@ -68,6 +71,7 @@ export default class RegisterComponent extends Vue {
   private registerForm: RegisterDTO = {
     email: '',
     password: '',
+    matchPassword: '',
     fullName: '',
     gender: true,
     teamId: null,
@@ -82,10 +86,10 @@ export default class RegisterComponent extends Vue {
       this.jobs = jobs.data.data;
     } catch (error) {
       this.$notify({
-        title: 'Status',
+        title: 'Trạng thái',
         message: 'Có lỗi xảy ra',
         type: 'error',
-        duration: 1000,
+        duration: 2000,
       });
     }
   }
@@ -97,7 +101,11 @@ export default class RegisterComponent extends Vue {
     ],
     password: [
       { required: true, message: 'Vui lòng nhập mật khẩu' },
-      { validator: this.validatePassword, trigger: 'blur' },
+      { validator: this.validatePassword, trigger: ['blur', 'change'] },
+    ],
+    matchPassword: [
+      { required: true, message: 'Vui lòng nhập lại mật khẩu' },
+      { validator: this.validateMatchPassword, trigger: ['blur', 'change'] },
     ],
     fullName: [{ required: true, message: 'Vui lòng nhập họ tên' }],
     teamId: [{ required: true, message: 'Vui lòng chọn phòng ban' }],
@@ -112,26 +120,36 @@ export default class RegisterComponent extends Vue {
     return callback();
   }
 
+  private validateMatchPassword(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    if (value !== this.registerForm.password) {
+      return callback('Không trùng với mật khẩu');
+    }
+    return callback();
+  }
+
   private handleRegisterForm() {
     (this.$refs.registerForm as Form).validate(async (isValid: boolean) => {
       if (isValid) {
         try {
           this.loading = true;
+          delete this.registerForm.matchPassword;
           await AuthRepository.register(this.registerForm).then((res: any) => {
             this.$notify({
-              title: 'Status',
+              title: 'Trạng thái',
               message: 'Gửi yêu cầu đăng ký thành công',
               type: 'success',
-              duration: 1000,
+              duration: 2000,
             });
           });
+          this.$router.push('/dang-nhap');
           this.loading = false;
         } catch (error) {
+          this.loading = false;
           this.$notify({
-            title: 'Status',
+            title: 'Trạng thái',
             message: 'Có lỗi xảy ra',
             type: 'error',
-            duration: 1000,
+            duration: 2000,
           });
         }
       }
