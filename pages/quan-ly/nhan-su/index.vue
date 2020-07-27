@@ -74,12 +74,7 @@ export default class ManageEmployee extends Vue {
       this.meta = data.data.meta;
       this.loading = false;
     } catch (error) {
-      this.$notify({
-        title: 'Status',
-        message: 'Có lỗi xảy ra',
-        type: 'error',
-        duration: 1000,
-      });
+      this.loading = false;
     }
   }
 
@@ -95,14 +90,7 @@ export default class ManageEmployee extends Vue {
       this.jobs = jobs.data.data;
       this.roles = roles.data.data;
       this.linkInvite = link.data.data.url;
-    } catch (error) {
-      this.$notify({
-        title: 'Status',
-        message: 'Có lỗi xảy ra',
-        type: 'error',
-        duration: 1000,
-      });
-    }
+    } catch (error) {}
   }
 
   private handleSearch(textSearch: string) {
@@ -141,10 +129,9 @@ export default class ManageEmployee extends Vue {
 
 <style lang="scss">
 @import '@/assets/scss/main.scss';
-$bg-gray-employee: #e5e5e5;
 .manage-employee {
-  padding: $unit-10 $unit-8;
-  background-color: $bg-gray-employee;
+  height: 100%;
+  padding: $unit-10 $unit-8 0 $unit-10;
   .el-tabs__nav-wrap::after {
     background-color: $neutral-primary-0;
   }

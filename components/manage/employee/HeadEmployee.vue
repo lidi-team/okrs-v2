@@ -54,10 +54,10 @@ export default class HeadEmployee extends Vue {
   private doCopy() {
     this.$copyText(this.linkInvite);
     this.$notify({
-      title: 'Status',
+      title: 'Trạng thái',
       message: `Copy link thành công`,
       type: 'success',
-      duration: 1000,
+      duration: 2000,
     });
   }
 }

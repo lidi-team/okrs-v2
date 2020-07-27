@@ -1,8 +1,8 @@
-import { authenticatedService } from './BaseRepository';
+import { unAuthenticatedservice } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
 
 export default class TeamRepository {
   public static get() {
-    return authenticatedService.get(`${ResourcesEnpoint.Team}`);
+    return unAuthenticatedservice.get(`${ResourcesEnpoint.Team}`);
   }
 }

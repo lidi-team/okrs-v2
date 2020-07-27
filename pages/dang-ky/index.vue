@@ -28,7 +28,7 @@ import AuthRepository from '@/repositories/AuthRepository';
         };
       } catch (error) {
         Notification({
-          title: 'Status',
+          title: 'Trạng thái',
           message: 'Token không chính xác. Vui lòng kiểm tra lại',
           type: 'error',
           duration: 2000,

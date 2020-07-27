@@ -184,7 +184,7 @@ export default class EmployeePending extends Vue {
     teamId: 0,
     jobPositionId: 0,
     isLeader: false,
-    isActive: false,
+    isApproved: true,
   };
 
   private handleApproveAll() {
@@ -196,21 +196,14 @@ export default class EmployeePending extends Vue {
       try {
         await EmployeeRepository.approveAll(this.id).then((res: any) => {
           this.$notify({
-            title: 'Status',
+            title: 'Trạng thái',
             message: 'Thành công',
             type: 'success',
-            duration: 1000,
+            duration: 2000,
           });
         });
         this.getListUsers();
-      } catch (error) {
-        this.$notify({
-          title: 'Status',
-          message: 'Có lỗi xảy ra',
-          type: 'error',
-          duration: 1000,
-        });
-      }
+      } catch (error) {}
     });
   }
 
@@ -228,7 +221,7 @@ export default class EmployeePending extends Vue {
       teamId: row.team.id,
       jobPositionId: row.jobPosition.id,
       isLeader: false,
-      isActive: row.isActive,
+      isApproved: true,
     };
     this.dialogUpdateVisible = true;
   }
@@ -245,20 +238,20 @@ export default class EmployeePending extends Vue {
           try {
             await EmployeeRepository.update(tempUpdateUser).then((res: any) => {
               this.$notify({
-                title: 'Status',
+                title: 'Trạng thái',
                 message: 'Thành công',
                 type: 'success',
-                duration: 1000,
+                duration: 2000,
               });
             });
             this.getListUsers();
             this.dialogUpdateVisible = false;
           } catch (error) {
             this.$notify({
-              title: 'Status',
+              title: 'Trạng thái',
               message: 'Lỗi hệ thống',
               type: 'error',
-              duration: 1000,
+              duration: 2000,
             });
           }
         });
@@ -281,21 +274,14 @@ export default class EmployeePending extends Vue {
       try {
         await EmployeeRepository.delete(row.id).then((res: any) => {
           this.$notify({
-            title: 'Status',
+            title: 'Trạng thái',
             message: 'Thành công',
             type: 'success',
-            duration: 1000,
+            duration: 2000,
           });
         });
         this.getListUsers();
-      } catch (error) {
-        this.$notify({
-          title: 'Status',
-          message: 'Có lỗi xảy ra',
-          type: 'error',
-          duration: 1000,
-        });
-      }
+      } catch (error) {}
     });
   }
 }
