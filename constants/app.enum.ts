@@ -70,4 +70,5 @@ export enum ResourcesEnpoint {
   Job = 'jobs',
   Team = 'teams',
   Role = 'roles',
+  CycleOKRs = 'cycles',
 }

@@ -151,5 +151,11 @@ export default class ViewProfile extends Vue {
     margin-top: $unit-4;
     margin-bottom: $unit-4;
   }
+  .el-form-item {
+    &__label {
+      font-size: 14px;
+      line-height: 14px;
+    }
+  }
 }
 </style>
