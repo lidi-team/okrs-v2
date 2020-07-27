@@ -14,7 +14,7 @@
         label-position="top"
         @submit.native.prevent="handleForgotPasswordForm"
       >
-        <el-form-item prop="email" label="Email liên kết">
+        <el-form-item prop="email" label="Email liên kết" class="custom-label">
           <el-input v-model="forgotPasswordForm.email" class="fpass__form__email" placeholder="Tên đăng nhập hoặc email"></el-input>
         </el-form-item>
         <el-row type="flex" justify="space-between" class="fpass__form__warning">

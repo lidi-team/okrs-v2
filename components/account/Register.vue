@@ -13,10 +13,10 @@
       class="register-form__input"
       @submit.native.prevent="handleRegisterForm"
     >
-      <el-form-item prop="email" label="Email">
+      <el-form-item prop="email" label="Email" class="custom-label">
         <el-input v-model="registerForm.email" class="register-form__input__email" placeholder="Nhập email"></el-input>
       </el-form-item>
-      <el-form-item prop="password" label="Mật khẩu">
+      <el-form-item prop="password" label="Mật khẩu" class="custom-label">
         <el-input v-model="registerForm.password" class="register-form__input__password" placeholder="Nhập mật khẩu"></el-input>
       </el-form-item>
       <el-form-item prop="matchPassword" label="Nhập lại mật khẩu">
@@ -25,18 +25,18 @@
       <el-form-item prop="fullName" label="Họ và Tên">
         <el-input v-model="registerForm.fullName" class="register-form__input__full-name" placeholder="Nhập họ tên"></el-input>
       </el-form-item>
-      <el-form-item prop="gender" label="Giới tính" class="register-form__input__gender">
+      <el-form-item prop="gender" label="Giới tính" class="register-form__input__gender custom-label">
         <el-radio-group v-model="registerForm.gender">
           <el-radio :label="true">Nam</el-radio>
           <el-radio :label="false">Nữ</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item prop="teamId" label="Phòng ban" class="register-form__input__team">
+      <el-form-item prop="teamId" label="Phòng ban" class="register-form__input__team custom-label">
         <el-select v-model="registerForm.teamId" placeholder="Chọn phòng ban" :no-data-text="noDataText">
           <el-option v-for="item in teams" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
-      <el-form-item prop="jobPositionId" label="Vị trí" class="register-form__input__job-position">
+      <el-form-item prop="jobPositionId" label="Vị trí" class="register-form__input__job-position custom-label">
         <el-select v-model="registerForm.jobPositionId" placeholder="Chọn vị trí" :no-data-text="noDataText">
           <el-option v-for="item in jobs" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>

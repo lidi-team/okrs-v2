@@ -15,7 +15,7 @@
       @submit.native.prevent="handleChangePasswordForm"
     >
       <div class="change-password__form__input">
-        <el-form-item prop="oldPassword" label="Mật khẩu cũ">
+        <el-form-item prop="oldPassword" label="Mật khẩu cũ" class="custom-label">
           <el-input
             v-model="changePasswordForm.oldPassword"
             type="password"
@@ -23,7 +23,7 @@
             placeholder="Nhập mật khẩu cũ"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="newPassword" label="Mật khẩu mới">
+        <el-form-item prop="newPassword" label="Mật khẩu mới" class="custom-label">
           <el-input
             v-model="changePasswordForm.newPassword"
             type="password"
@@ -31,7 +31,7 @@
             placeholder="Nhập mật khẩu"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="matchPassword" label="Nhập lại mật khẩu mới">
+        <el-form-item prop="matchPassword" label="Nhập lại mật khẩu mới" class="custom-label">
           <el-input
             v-model="changePasswordForm.matchPassword"
             type="password"

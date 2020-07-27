@@ -69,6 +69,12 @@ export interface ChangePasswordDTO {
   matchPassword: string;
 }
 
+export interface CycleDTO {
+  id?: number | any;
+  name?: string | any;
+  startDate?: Date | string | any;
+  endDate?: Date | string | any;
+}
 export interface Map<T> {
   key: string;
   name: T;
