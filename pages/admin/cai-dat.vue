@@ -50,11 +50,12 @@ import CycleRepository from '@/repositories/CycleRepository';
   name: 'SettingCompanyPage',
   watchQuery: ['tab'],
   async asyncData({ query }: Context) {
-    if (query.tab === AdminTabsEn.CycleOKR) {
+    if (query.tab === AdminTabsEn.CycleOKR || query.tab === undefined) {
       try {
         const { data } = await CycleRepository.getCycles();
+        const tableData = Object.freeze(data.data);
         return {
-          tableData: Object.freeze(data.data),
+          tableData,
         };
       } catch (error) {
         Notification({
