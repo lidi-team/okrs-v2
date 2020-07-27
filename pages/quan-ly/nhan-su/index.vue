@@ -141,10 +141,9 @@ export default class ManageEmployee extends Vue {
 
 <style lang="scss">
 @import '@/assets/scss/main.scss';
-$bg-gray-employee: #e5e5e5;
 .manage-employee {
-  padding: $unit-10 $unit-8;
-  background-color: $bg-gray-employee;
+  height: 100%;
+  padding: $unit-10 $unit-8 0 $unit-10;
   .el-tabs__nav-wrap::after {
     background-color: $neutral-primary-0;
   }

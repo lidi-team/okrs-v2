@@ -44,6 +44,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Form } from 'element-ui';
 import { RegisterDTO, RegisterOption } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import AuthRepository from '@/repositories/AuthRepository';
@@ -112,9 +113,29 @@ export default class RegisterComponent extends Vue {
   }
 
   private handleRegisterForm() {
-    if (this.$route.query.token) {
-      this.registerForm.token = this.$route.query.token as string;
-    }
+    (this.$refs.registerForm as Form).validate(async (isValid: boolean) => {
+      if (isValid) {
+        try {
+          this.loading = true;
+          await AuthRepository.register(this.registerForm).then((res: any) => {
+            this.$notify({
+              title: 'Status',
+              message: 'Gửi yêu cầu đăng ký thành công',
+              type: 'success',
+              duration: 1000,
+            });
+          });
+          this.loading = false;
+        } catch (error) {
+          this.$notify({
+            title: 'Status',
+            message: 'Có lỗi xảy ra',
+            type: 'error',
+            duration: 1000,
+          });
+        }
+      }
+    });
   }
 }
 </script>
