@@ -14,7 +14,7 @@
       @submit.native.prevent="handleResetPasswordForm"
     >
       <div class="reset-password-form__input">
-        <el-form-item prop="newPassword" label="Mật khẩu mới">
+        <el-form-item prop="newPassword" label="Mật khẩu mới" class="custom-label">
           <el-input
             v-model="resetPasswordForm.newPassword"
             type="password"
@@ -22,7 +22,7 @@
             placeholder="Nhập mật khẩu"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="matchPassword" label="Nhập lại mật khẩu mới">
+        <el-form-item prop="matchPassword" label="Nhập lại mật khẩu mới" class="custom-label">
           <el-input v-model="matchPassword" type="password" class="reset-password-form__input__match-password" placeholder="Nhập mật khẩu"></el-input>
         </el-form-item>
       </div>
