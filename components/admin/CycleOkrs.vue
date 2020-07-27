@@ -18,7 +18,7 @@
             <i class="el-icon-edit" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
           <el-tooltip class="cycle-okrs__icon" content="Xóa" placement="top">
-            <i class="el-icon-delete" @click="deleteCycle(row)"></i>
+            <i class="el-icon-delete" @click="delete row"></i>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -140,7 +140,7 @@ export default class ManageCycleOkrs extends Vue {
             startDate: formatDateToYYYY(this.temporaryUpdateCycle.startDate),
             endDate: formatDateToYYYY(this.temporaryUpdateCycle.endDate),
           };
-          await CycleRepository.updateCycle(tempCycle).then((res) => {
+          await CycleRepository.update(tempCycle).then((res) => {
             this.$notify({
               title: 'Status',
               message: 'Cập nhật thành công',
@@ -162,7 +162,7 @@ export default class ManageCycleOkrs extends Vue {
     });
   }
 
-  private deleteCycle(row: CycleDTO): void {
+  private delete(row: CycleDTO): void {
     this.$confirm(`Bạn có chắc chắn muốn xóa chu kỳ ${row.name}?`, {
       confirmButtonText: 'Đồng ý',
       cancelButtonText: 'Hủy bỏ',
@@ -170,7 +170,7 @@ export default class ManageCycleOkrs extends Vue {
     }).then(async () => {
       try {
         const rowName = row.name;
-        await CycleRepository.deleteCycle(row.id).then((res) => {
+        await CycleRepository.delete(row.id).then((res) => {
           this.$notify({
             title: 'Status',
             message: `Xóa thánh công chu kỳ ${rowName}`,

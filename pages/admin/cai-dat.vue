@@ -99,7 +99,7 @@ import { compareTwoDate, formatDateToYYYY } from '@/utils/dateParser';
   async asyncData({ query }: Context) {
     if (query.tab === AdminTabsEn.CycleOKR || query.tab === undefined) {
       try {
-        const { data } = await CycleRepository.getCycles();
+        const { data } = await CycleRepository.get();
         const tableData = Object.freeze(data.data);
         return {
           tableData,
@@ -252,7 +252,7 @@ export default class SettingCompanyPage extends Vue {
           startDate: formatDateToYYYY(this.temCreateCycle.startDate),
           endDate: formatDateToYYYY(this.temCreateCycle.endDate),
         };
-        await CycleRepository.postCycle(tempCycle).then((res) => {
+        await CycleRepository.post(tempCycle).then((res) => {
           this.$notify({
             title: 'Status',
             message: `Tạo mới thành công chu kỳ ${res.data.data.name}`,
