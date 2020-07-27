@@ -17,6 +17,9 @@
           <el-tooltip class="cycle-okrs__icon" content="Sửa" placement="top">
             <i class="el-icon-edit" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
+          <el-tooltip class="cycle-okrs__icon" content="Xóa" placement="top">
+            <i class="el-icon-delete" @click="deleteCycle(row)"></i>
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
@@ -64,7 +67,7 @@
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-        <el-button class="el-button--purple el-button--modal" @click="handleUpdate">Cập nhật</el-button>
+        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="handleUpdate">Cập nhật</el-button>
       </span>
     </el-dialog>
   </fragment>
@@ -156,6 +159,33 @@ export default class ManageCycleOkrs extends Vue {
           });
         }
       });
+    });
+  }
+
+  private deleteCycle(row: CycleDTO): void {
+    this.$confirm(`Bạn có chắc chắn muốn xóa chu kỳ ${row.name}?`, {
+      confirmButtonText: 'Đồng ý',
+      cancelButtonText: 'Hủy bỏ',
+      type: 'warning',
+    }).then(async () => {
+      try {
+        const rowName = row.name;
+        await CycleRepository.deleteCycle(row.id).then((res) => {
+          this.$notify({
+            title: 'Status',
+            message: `Xóa thánh công chu kỳ ${rowName}`,
+            type: 'success',
+            duration: 1000,
+          });
+        });
+      } catch (error) {
+        this.$notify({
+          title: 'Lỗi',
+          message: `Lỗi ${error.message}`,
+          type: 'error',
+          duration: 1000,
+        });
+      }
     });
   }
 

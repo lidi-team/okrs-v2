@@ -16,7 +16,11 @@ export default class CycleRepository {
     return authenticatedService.put(`${ResourcesEnpoint.CycleOKRs}/${payload.id}`, payload);
   }
 
-  public static postCycle(payload: CycleDTO): Promise<AxiosResponse<void>> {
+  public static postCycle(payload: CycleDTO): Promise<AxiosResponse<any>> {
     return authenticatedService.post(`${ResourcesEnpoint.CycleOKRs}`, payload);
+  }
+
+  public static deleteCycle(id: number): Promise<AxiosResponse<any>> {
+    return authenticatedService.delete(`${ResourcesEnpoint.CycleOKRs}/${id}`);
   }
 }
