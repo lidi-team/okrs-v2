@@ -41,6 +41,7 @@ button:focus {
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
   border: solid 3px transparent;
+  background-color: $purple-primary-5;
 }
 
 @-webkit-keyframes fadein {
