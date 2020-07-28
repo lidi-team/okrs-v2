@@ -116,20 +116,6 @@ export default class SettingCompanyPage extends Vue {
       this.adminParams.page = 1;
       this.$router.push(`?tab=${AdminTabsEn.MeasureUnit}`);
     }
-
-    // this.$router.push(
-    //   `?tab=${
-    //     currentTab === AdminTabsVn.CycleOKR
-    //       ? AdminTabsEn.CycleOKR
-    //       : currentTab === AdminTabsVn.Department
-    //       ? AdminTabsEn.Department
-    //       : currentTab === AdminTabsVn.JobPosition
-    //       ? AdminTabsEn.JobPosition
-    //       : currentTab === AdminTabsVn.EvaluationCriterial
-    //       ? AdminTabsEn.EvaluationCriterial
-    //       : AdminTabsEn.MeasureUnit
-    //   }`,
-    // );
   }
 
   private addNew() {
