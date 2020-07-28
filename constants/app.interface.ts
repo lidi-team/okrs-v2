@@ -71,6 +71,7 @@ export interface MeasureUnitDTO {
 }
 
 export interface EvaluationCriteriorDTTO {
+  id?: number | any;
   content: string;
   numberOfStar: number;
   type: EvaluationCriteriaEnum;

@@ -27,31 +27,33 @@
           <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab" :lazy="true" />
           <div class="admin__tab__table">
             <component :is="currentTabComponent" :table-data="tableData" :loading="loading" />
-            <!--  :loading="loading" :total="total" :limit="limit" :page="page" -->
+            <!--  :total="total" :limit="limit" :page="page" -->
           </div>
         </el-tabs>
       </template>
     </admin-slot>
     <new-cycle-okrs-dialog v-if="topChange.tab === 1" :cycle-visible-dialog.sync="cycleVisibleDialog" />
     <new-department-dialog v-if="topChange.tab === 2" :team-visible-dialog.sync="teamVisibleDialog" />
-    <new-job-dialog v-if="topChange.tab === 3" :job-visible-dialog.sync="teamVisibleDialog" />
-    <new-criteria-dialog v-if="topChange.tab === 4" :criteria-visible-dialog.sync="teamVisibleDialog" />
-    <new-unit-dialog v-if="topChange.tab === 5" :unit-visible-dialog.sync="teamVisibleDialog" />
+    <new-job-dialog v-if="topChange.tab === 3" :job-visible-dialog.sync="jobVisibleDialog" />
+    <new-criteria-dialog v-if="topChange.tab === 4" :criteria-visible-dialog.sync="criteriaVisibleDialog" />
+    <new-unit-dialog v-if="topChange.tab === 5" :unit-visible-dialog.sync="unitVisibleDialog" />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Context } from '@nuxt/types';
 import { Notification } from 'element-ui';
+import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 import ManageCycleOkrs from '@/components/admin/CycleOkrs.vue';
-import ManageEvaluationCriteria from '@/components/admin/EvaluationCriteria.vue';
 import ManageMeasureUnit from '@/components/admin/MeasureUnit.vue';
 import ManageDepartment from '@/components/admin/Department.vue';
-import TeamRepository from '@/repositories/TeamRepository';
+import ManageEvaluationCriteria from '@/components/admin/EvaluationCriteria.vue';
 import ManageJobPosition from '@/components/admin/JobPosition.vue';
+import TeamRepository from '@/repositories/TeamRepository';
 import CycleRepository from '@/repositories/CycleRepository';
-import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 import JobRepository from '@/repositories/JobRepository';
+import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
+import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 
 @Component<SettingCompanyPage>({
   name: 'SettingCompanyPage',
@@ -62,10 +64,13 @@ import JobRepository from '@/repositories/JobRepository';
 export default class SettingCompanyPage extends Vue {
   private tableData: any[] = [];
   private loading: boolean = false;
-  private cycleVisibleDialog: boolean = false;
-  private teamVisibleDialog: boolean = false;
   private tabs: string[] = [...Object.values(AdminTabsVn)];
   private textSearch: string = '';
+  private cycleVisibleDialog: boolean = false;
+  private teamVisibleDialog: boolean = false;
+  private jobVisibleDialog: boolean = false;
+  private criteriaVisibleDialog: boolean = false;
+  private unitVisibleDialog: boolean = false;
 
   private currentTab: string =
     this.$route.query.tab === AdminTabsEn.MeasureUnit
@@ -99,6 +104,12 @@ export default class SettingCompanyPage extends Vue {
       this.cycleVisibleDialog = true;
     } else if (this.topChange.tab === 2) {
       this.teamVisibleDialog = true;
+    } else if (this.topChange.tab === 3) {
+      this.jobVisibleDialog = true;
+    } else if (this.topChange.tab === 4) {
+      this.criteriaVisibleDialog = true;
+    } else {
+      this.unitVisibleDialog = true;
     }
   }
 
@@ -136,6 +147,34 @@ export default class SettingCompanyPage extends Vue {
     } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
       try {
         const { data } = await JobRepository.get();
+        this.tableData = data.data;
+        this.loading = false;
+      } catch (error) {
+        Notification({
+          title: 'Status',
+          message: error.message,
+          type: 'error',
+          duration: 2000,
+        });
+        this.loading = false;
+      }
+    } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
+      try {
+        const { data } = await EvaluationCriteriaRepository.get();
+        this.tableData = data.data;
+        this.loading = false;
+      } catch (error) {
+        Notification({
+          title: 'Status',
+          message: error.message,
+          type: 'error',
+          duration: 2000,
+        });
+        this.loading = false;
+      }
+    } else {
+      try {
+        const { data } = await MeasureUnitRepository.get();
         this.tableData = data.data;
         this.loading = false;
       } catch (error) {
