@@ -11,7 +11,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Notification } from 'element-ui';
 import AuthRepository from '@/repositories/AuthRepository';
 import { logErrorResetPassword } from '@/constants/app.logerror';
 @Component<ResetPasswordPage>({
