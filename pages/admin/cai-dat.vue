@@ -9,9 +9,7 @@
                 v-model="textSearch"
                 class="admin__top__left--input"
                 prefix-icon="el-icon-search"
-                :fetch-suggestions="querySearchAsync"
                 :placeholder="topChange.textPlaceholder"
-                @select="handleSelect"
               ></el-autocomplete>
             </div>
           </el-col>
@@ -34,14 +32,13 @@
         </el-tabs>
       </template>
     </admin-slot>
-    <cycle-okrs-dialog :cycle-visible-dialog.sync="cycleVisibleDialog" />
+    <cycle-okrs-dialog v-if="topChange.tab === 1" :cycle-visible-dialog.sync="cycleVisibleDialog" />
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Context } from '@nuxt/types';
-import { Notification, Form } from 'element-ui';
-import { CycleDTO } from '@/constants/app.interface';
+import { Notification } from 'element-ui';
 import ManageCycleOkrs from '@/components/admin/CycleOkrs.vue';
 import ManageEvaluationCriteria from '@/components/admin/EvaluationCriteria.vue';
 import ManageJobPosition from '@/components/admin/JobPosition.vue';
@@ -49,32 +46,20 @@ import ManageMeasureUnit from '@/components/admin/MeasureUnit.vue';
 import ManageDepartment from '@/components/admin/Department.vue';
 import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 import CycleRepository from '@/repositories/CycleRepository';
-import { Maps, Rule } from '@/constants/app.type';
-import { compareTwoDate, formatDateToYYYY } from '@/utils/dateParser';
 
 @Component<SettingCompanyPage>({
   name: 'SettingCompanyPage',
-  watchQuery: ['tab'],
-  async asyncData({ query }: Context) {
-    if (query.tab === AdminTabsEn.CycleOKR || query.tab === undefined) {
-      try {
-        const { data } = await CycleRepository.get();
-        const tableData = Object.freeze(data.data);
-        return {
-          tableData,
-        };
-      } catch (error) {
-        Notification({
-          title: 'Status',
-          message: 'Có lỗi xảy ra bất ngờ 🥳',
-          type: 'error',
-          duration: 2000,
-        });
-      }
-    }
+  created() {
+    this.getListData();
   },
 })
 export default class SettingCompanyPage extends Vue {
+  private tableData: any[] = [];
+  private loading: boolean = false;
+  private cycleVisibleDialog: boolean = false;
+  private tabs: string[] = [...Object.values(AdminTabsVn)];
+  private textSearch: string = '';
+
   private currentTab: string =
     this.$route.query.tab === AdminTabsEn.MeasureUnit
       ? AdminTabsVn.MeasureUnit
@@ -85,9 +70,6 @@ export default class SettingCompanyPage extends Vue {
       : this.$route.query.tab === AdminTabsEn.Department
       ? AdminTabsVn.Department
       : AdminTabsVn.CycleOKR;
-
-  private tabs: string[] = [...Object.values(AdminTabsVn)];
-  private textSearch: string = '';
 
   private switchTabs(currentTab: string) {
     this.$router.push(
@@ -105,11 +87,30 @@ export default class SettingCompanyPage extends Vue {
     );
   }
 
-  private cycleVisibleDialog: boolean = false;
-
   private addNew() {
-    if (this.$route.query.tab === AdminTabsEn.CycleOKR) {
+    if (this.topChange.tab === 1) {
       this.cycleVisibleDialog = true;
+    }
+  }
+
+  @Watch('$route.query')
+  private async getListData() {
+    this.loading = true;
+    if (this.$route.query.tab === AdminTabsEn.CycleOKR || this.$route.query.tab === undefined) {
+      try {
+        let { data } = await CycleRepository.get();
+        data = Object.freeze(data.data);
+        this.tableData = data;
+        this.loading = false;
+      } catch (error) {
+        Notification({
+          title: 'Status',
+          message: error.message,
+          type: 'error',
+          duration: 2000,
+        });
+        this.loading = false;
+      }
     }
   }
 
@@ -132,47 +133,33 @@ export default class SettingCompanyPage extends Vue {
       return {
         buttonName: 'chu kỳ',
         textPlaceholder: 'Tìm kiếm chu kỳ',
+        tab: 1,
       };
     } else if (this.$route.query.tab === AdminTabsEn.Department) {
       return {
         buttonName: 'phòng ban',
         textPlaceholder: 'Tìm kiếm phòng ban',
+        tab: 2,
       };
     } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
       return {
         buttonName: 'vị trí công việc',
         textPlaceholder: 'Tìm kiếm vị trí công việc',
+        tab: 3,
       };
     } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
       return {
         buttonName: 'tiêu chí đánh giá',
         textPlaceholder: 'Tìm kiếm tiêu chí đánh giá',
+        tab: 4,
       };
     } else {
       return {
         buttonName: 'đơn vị đo lường',
         textPlaceholder: 'Tìm kiếm đơn vị đo lường',
+        tab: 5,
       };
     }
-  }
-
-  private querySearchAsync(queryString, cb) {
-    // const tableData = this.tableData;
-    // const results = queryString ? tableData.filter(this.createFilter(queryString)) : tableData;
-    // clearTimeout(this.timeout);
-    // this.timeout = setTimeout(() => {
-    //   cb(results);
-    // }, 3000 * Math.random());
-  }
-
-  private createFilter(queryString) {
-    return (link) => {
-      return link.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
-    };
-  }
-
-  private handleSelect() {
-    console.log(this.textSearch);
   }
 }
 </script>

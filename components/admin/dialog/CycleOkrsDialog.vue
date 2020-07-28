@@ -36,12 +36,12 @@
     </el-row>
     <span slot="footer">
       <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-      <el-button class="el-button--purple el-button--modal" @click="createCycleOkrs">Thêm mới</el-button>
+      <el-button :loading="loading" class="el-button--purple el-button--modal" @click="createCycleOkrs">Thêm mới</el-button>
     </span>
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
+import { Component, Vue, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { CycleDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
@@ -49,9 +49,6 @@ import { compareTwoDate, formatDateToYYYY } from '@/utils/dateParser';
 import CycleRepository from '@/repositories/CycleRepository';
 @Component<CycleOkrsDialog>({
   name: 'CycleOkrsDialog',
-  updated() {
-    console.log(this.cycleVisibleDialog);
-  },
 })
 export default class CycleOkrsDialog extends Vue {
   @PropSync('cycleVisibleDialog', { type: Boolean, required: true }) public syncCycleDialog!: boolean;
@@ -60,8 +57,8 @@ export default class CycleOkrsDialog extends Vue {
   private dateFormat: string = 'dd/MM/yyyy';
   private temCreateCycle: CycleDTO = {
     name: '',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: null,
+    endDate: null,
   };
 
   private rules: Maps<Rule[]> = {
@@ -96,8 +93,8 @@ export default class CycleOkrsDialog extends Vue {
   };
 
   private createCycleOkrs() {
+    this.loading = true;
     (this.$refs.temCreateCycle as Form).validate(async (isValid) => {
-      this.loading = true;
       try {
         const tempCycle: CycleDTO = {
           name: this.temCreateCycle.name,
@@ -109,7 +106,7 @@ export default class CycleOkrsDialog extends Vue {
             title: 'Status',
             message: `Tạo mới thành công chu kỳ ${res.data.data.name}`,
             type: 'success',
-            duration: 1000,
+            duration: 2000,
           });
         });
         this.loading = false;
@@ -119,7 +116,7 @@ export default class CycleOkrsDialog extends Vue {
           title: 'Lỗi',
           message: `Lỗi ${error.message}`,
           type: 'error',
-          duration: 1000,
+          duration: 2000,
         });
         this.loading = false;
       }
