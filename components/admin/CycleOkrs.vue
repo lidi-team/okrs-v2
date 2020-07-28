@@ -9,7 +9,7 @@
       </el-table-column>
       <el-table-column label="Ngày kết thúc">
         <template v-slot="{ row }">
-          <span>{{ dateParser(row.endDate) }}</span>
+          <span>{{ row.endDate }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
@@ -78,7 +78,7 @@ import { Form } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
 import { CycleDTO } from '@/constants/app.interface';
 import CycleRepository from '@/repositories/CycleRepository';
-import { formtDateToDD, formatDateToYYYY, compareTwoDate } from '@/utils/dateParser';
+import { formtDateToDD, formatDateToYYYY, compareTwoDate, parseToDate } from '@/utils/dateParser';
 
 @Component<ManageCycleOkrs>({ name: 'ManageCycleOkrs' })
 export default class ManageCycleOkrs extends Vue {
