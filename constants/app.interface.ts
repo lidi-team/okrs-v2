@@ -50,16 +50,21 @@ export interface ProfileDTO {
 }
 
 export interface TeamDTO {
-  name: string;
-  description: string;
+  id?: number | any;
+  name?: string;
+  description?: string;
+  updatedAt?: Date | null | string;
 }
 
 export interface JobPositionDTO {
-  name: string;
-  description: string;
+  id?: number | any;
+  name?: string;
+  description?: string;
+  updatedAt?: Date | null | string;
 }
 
-export interface MeasureUnitDTP {
+export interface MeasureUnitDTO {
+  id?: number | any;
   preset: string;
   type: string;
   index: number;
