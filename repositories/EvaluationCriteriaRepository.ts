@@ -1,12 +1,12 @@
 import { AxiosResponse } from 'axios';
-import { unAuthenticatedservice, authenticatedService } from './BaseRepository';
+import { authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
 import { EvaluationCriteriorDTTO, AdminParams } from '@/constants/app.interface';
 
 export default class EvaluationCriteriorRepository {
   public static get(params: AdminParams) {
     const query = { params };
-    return unAuthenticatedservice.get(`${ResourcesEnpoint.EvaluationCriterial}`, query);
+    return authenticatedService.get(`${ResourcesEnpoint.EvaluationCriterial}`, query);
   }
 
   public static update(payload: EvaluationCriteriorDTTO): Promise<AxiosResponse<any>> {

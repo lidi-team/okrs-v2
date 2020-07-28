@@ -6,7 +6,7 @@ import { JobPositionDTO, AdminParams } from '@/constants/app.interface';
 export default class JobRepository {
   public static get(params: AdminParams) {
     const query = { params };
-    return unAuthenticatedservice.get(`${ResourcesEnpoint.Job}`, query);
+    return authenticatedService.get(`${ResourcesEnpoint.Job}`, query);
   }
 
   public static update(payload: JobPositionDTO): Promise<AxiosResponse<any>> {
