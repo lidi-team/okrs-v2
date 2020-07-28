@@ -1,5 +1,6 @@
 import { NuxtConfig } from '@nuxt/types';
 import pureCssConfig from './purecss.config';
+import globalCss from './css.config';
 
 const nuxtConfig: NuxtConfig = {
   server: {
@@ -51,7 +52,7 @@ const nuxtConfig: NuxtConfig = {
   /*
    ** Global CSS
    */
-  css: ['@/assets/scss/base/_global.scss', '@/assets/css/resetCss.css'],
+  css: globalCss,
   /**
    * @description Plugins to load before mounting the App
    * @docs https://nuxtjs.org/guide/plugins

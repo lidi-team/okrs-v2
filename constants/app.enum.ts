@@ -72,3 +72,8 @@ export enum ResourcesEnpoint {
   Role = 'roles',
   CycleOKRs = 'cycles',
 }
+
+export enum EvaluationCriteriaEnum {
+  MEMBER_TO_LEADER = 'MEMBER_TO_LEADER',
+  LEADER_TO_MEMBER = 'LEADER_TO_MEMBER',
+}
