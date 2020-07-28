@@ -1,11 +1,12 @@
 import { AxiosResponse } from 'axios';
 import { unAuthenticatedservice, authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
-import { MeasureUnitDTO } from '@/constants/app.interface';
+import { MeasureUnitDTO, AdminParams } from '@/constants/app.interface';
 
 export default class MeasureUnitRepository {
-  public static get() {
-    return unAuthenticatedservice.get(`${ResourcesEnpoint.MeasureUnit}`);
+  public static get(params: AdminParams) {
+    const query = { params };
+    return unAuthenticatedservice.get(`${ResourcesEnpoint.MeasureUnit}`, query);
   }
 
   public static update(payload: MeasureUnitDTO): Promise<AxiosResponse<any>> {

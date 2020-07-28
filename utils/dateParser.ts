@@ -1,7 +1,7 @@
 import { format, parse, compareDesc } from 'date-fns';
 
 export const parseToDate = (date: string): Date => {
-  return parse(date, 'yyyy/MM/dd', new Date());
+  return parse(date, 'dd/MM/yyyy', new Date());
 };
 
 export const formtDateToDD = (date: string, dateFormat: string = 'dd/MM/yyyy'): string => {

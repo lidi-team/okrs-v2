@@ -1,11 +1,12 @@
 import { AxiosResponse } from 'axios';
 import { unAuthenticatedservice, authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
-import { JobPositionDTO } from '@/constants/app.interface';
+import { JobPositionDTO, AdminParams } from '@/constants/app.interface';
 
 export default class JobRepository {
-  public static get() {
-    return unAuthenticatedservice.get(`${ResourcesEnpoint.Job}`);
+  public static get(params: AdminParams) {
+    const query = { params };
+    return unAuthenticatedservice.get(`${ResourcesEnpoint.Job}`, query);
   }
 
   public static update(payload: JobPositionDTO): Promise<AxiosResponse<any>> {

@@ -1,11 +1,12 @@
 import { AxiosResponse } from 'axios';
 import { authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
-import { CycleDTO } from '@/constants/app.interface';
+import { CycleDTO, AdminParams } from '@/constants/app.interface';
 
 export default class CycleRepository {
-  public static get(): Promise<AxiosResponse<any>> {
-    return authenticatedService.get(`${ResourcesEnpoint.CycleOKRs}`);
+  public static get(params: AdminParams): Promise<AxiosResponse<any>> {
+    const query = { params };
+    return authenticatedService.get(`${ResourcesEnpoint.CycleOKRs}`, query);
   }
 
   public static getCurrentCycle(): Promise<AxiosResponse<any>> {

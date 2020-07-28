@@ -1,5 +1,5 @@
 import { dataType, ruleTrigger, Validator, PromiseValidtor, Gender } from './app.type';
-import { EvaluationCriteriaEnum } from './app.enum';
+import { EvaluationCriteriaEnum, AdminTabsEn } from './app.enum';
 
 export interface LoginDTO {
   email: string;
@@ -131,8 +131,23 @@ export interface ParamsUser {
   limit?: number;
 }
 
+export interface AdminParams {
+  tab?: string;
+  text?: string;
+  page?: number;
+  limit?: number;
+}
+
 export interface ParamsTeam {
   page?: number;
   limit?: number;
   text?: string;
+}
+
+export interface MetaPagination {
+  totalItems?: number | any;
+  itemCount?: number | any;
+  itemsPerPage?: number | string | any;
+  totalPages?: number | any;
+  currentPage?: number | string | any;
 }

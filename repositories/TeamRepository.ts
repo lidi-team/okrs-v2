@@ -1,11 +1,12 @@
 import { AxiosResponse } from 'axios';
 import { unAuthenticatedservice, authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
-import { TeamDTO } from '@/constants/app.interface';
+import { TeamDTO, AdminParams } from '@/constants/app.interface';
 
 export default class TeamRepository {
-  public static get() {
-    return unAuthenticatedservice.get(`${ResourcesEnpoint.Team}`);
+  public static get(params: AdminParams) {
+    const query = { params };
+    return unAuthenticatedservice.get(`${ResourcesEnpoint.Team}`, query);
   }
 
   public static update(payload: TeamDTO): Promise<AxiosResponse<any>> {
