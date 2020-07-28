@@ -183,5 +183,33 @@ button:focus {
 .el-checkbox__input.is-checked + .el-checkbox__label {
   color: $purple-primary-5;
 }
-
 // End El checkbox
+
+// El Select
+.el-select .el-input.is-focus .el-input__inner {
+  border-color: $purple-primary-5;
+}
+
+.el-select .el-input__inner:focus {
+  border-color: $purple-primary-5;
+}
+
+.el-select-dropdown__item.selected {
+  color: $purple-primary-5;
+}
+// End El Select
+
+// El Radio Button
+.el-radio__input.is-checked + .el-radio__label {
+  color: $purple-primary-5;
+}
+
+.el-radio__inner:hover {
+  border-color: $purple-primary-5;
+}
+
+.el-radio__input.is-checked .el-radio__inner {
+  border-color: $purple-primary-5;
+  background: $purple-primary-5;
+}
+// End El Radio Button
