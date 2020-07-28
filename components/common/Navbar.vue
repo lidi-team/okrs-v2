@@ -16,10 +16,10 @@
         </el-dropdown>
         <el-dropdown class="side-right__item item" trigger="click">
           <div class="item__wrapper">
-            <img :src="profile.image_url" alt="avatar" class="item__avatar" />
+            <img :src="profile.imageUrl" alt="avatar" class="item__avatar" />
             <div class="item__info info">
-              <span class="info__name">{{ profile.name }}<i class="el-icon-caret-bottom" /></span
-              ><span class="info__role">{{ profile.role_name }}</span>
+              <span class="info__name">{{ profile.fullName }}<i class="el-icon-caret-bottom" /></span
+              ><span class="info__role">{{ profile.role.name }}</span>
             </div>
           </div>
           <el-dropdown-menu slot="dropdown">

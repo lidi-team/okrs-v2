@@ -5,6 +5,7 @@ import UserRepository from '@/repositories/UserRepository';
 export default async function ({ redirect, store }) {
   const token = getTokenCookie();
   if (!token) {
+    store.dispatch('auth/clear');
     return redirect('/dang-nhap');
   } else {
     store.commit('auth/setToken', token);
@@ -13,7 +14,7 @@ export default async function ({ redirect, store }) {
       store.commit(`auth/${AuthMutation.SET_USER}`, data.data);
     } catch (error) {
       store.dispatch('auth/clear');
-      return redirect('/');
+      return redirect('/dang-nhap');
     }
   }
 }

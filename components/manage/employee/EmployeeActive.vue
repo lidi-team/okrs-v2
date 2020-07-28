@@ -216,21 +216,16 @@ export default class EmployeeActive extends Vue {
           try {
             await EmployeeRepository.update(tempUpdateUser).then((res: any) => {
               this.$notify({
-                title: 'Status',
+                title: 'Trạng thái',
                 message: 'Thành công',
                 type: 'success',
-                duration: 1000,
+                duration: 2000,
               });
             });
             this.getListUsers();
             this.dialogUpdateVisible = false;
           } catch (error) {
-            this.$notify({
-              title: 'Status',
-              message: 'Lỗi hệ thống',
-              type: 'error',
-              duration: 1000,
-            });
+            this.dialogUpdateVisible = false;
           }
         });
       }
@@ -262,21 +257,14 @@ export default class EmployeeActive extends Vue {
       try {
         await EmployeeRepository.update(this.tempUpdateUser).then((res: any) => {
           this.$notify({
-            title: 'Status',
+            title: 'Trạng thái',
             message: 'Thành công',
             type: 'success',
-            duration: 1000,
+            duration: 2000,
           });
         });
         this.getListUsers();
-      } catch (error) {
-        this.$notify({
-          title: 'Status',
-          message: 'Có lỗi xảy ra',
-          type: 'error',
-          duration: 1000,
-        });
-      }
+      } catch (error) {}
     });
   }
 }

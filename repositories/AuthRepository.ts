@@ -28,6 +28,10 @@ export default class AuthRepository {
     return unAuthenticatedservice.get(`auth/verification/${token}`);
   }
 
+  public static verifyResetPassword(token) {
+    return unAuthenticatedservice.get(`${authEnpoint.resetPassword}/${token}`);
+  }
+
   public static generateLinkInivte() {
     return authenticatedService.get(authEnpoint.generateLink);
   }

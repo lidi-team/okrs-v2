@@ -1,4 +1,9 @@
 export default [
+  // Custom Css
+  '@/assets/scss/base/_global.scss',
+  '@/assets/css/resetCss.css',
+
+  // Element UI Css
   '@/node_modules/element-ui/packages/theme-chalk/src/button.scss',
   '@/node_modules/element-ui/packages/theme-chalk/src/checkbox.scss',
   '@/node_modules/element-ui/packages/theme-chalk/src/col.scss',
@@ -34,6 +39,4 @@ export default [
   '@/node_modules/element-ui/packages/theme-chalk/src/select.scss',
   '@/node_modules/element-ui/packages/theme-chalk/src/option.scss',
   '@/node_modules/element-ui/packages/theme-chalk/src/radio-group.scss',
-  '@/assets/scss/main.scss',
-  '@/assets/css/resetCss.css',
 ];
