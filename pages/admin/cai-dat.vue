@@ -32,7 +32,11 @@
         </el-tabs>
       </template>
     </admin-slot>
-    <cycle-okrs-dialog v-if="topChange.tab === 1" :cycle-visible-dialog.sync="cycleVisibleDialog" />
+    <new-cycle-okrs-dialog v-if="topChange.tab === 1" :cycle-visible-dialog.sync="cycleVisibleDialog" />
+    <new-department-dialog v-if="topChange.tab === 2" :team-visible-dialog.sync="teamVisibleDialog" />
+    <new-job-dialog v-if="topChange.tab === 3" :job-visible-dialog.sync="teamVisibleDialog" />
+    <new-criteria-dialog v-if="topChange.tab === 4" :criteria-visible-dialog.sync="teamVisibleDialog" />
+    <new-unit-dialog v-if="topChange.tab === 5" :unit-visible-dialog.sync="teamVisibleDialog" />
   </div>
 </template>
 <script lang="ts">
@@ -41,11 +45,13 @@ import { Context } from '@nuxt/types';
 import { Notification } from 'element-ui';
 import ManageCycleOkrs from '@/components/admin/CycleOkrs.vue';
 import ManageEvaluationCriteria from '@/components/admin/EvaluationCriteria.vue';
-import ManageJobPosition from '@/components/admin/JobPosition.vue';
 import ManageMeasureUnit from '@/components/admin/MeasureUnit.vue';
 import ManageDepartment from '@/components/admin/Department.vue';
-import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
+import TeamRepository from '@/repositories/TeamRepository';
+import ManageJobPosition from '@/components/admin/JobPosition.vue';
 import CycleRepository from '@/repositories/CycleRepository';
+import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
+import JobRepository from '@/repositories/JobRepository';
 
 @Component<SettingCompanyPage>({
   name: 'SettingCompanyPage',
@@ -57,6 +63,7 @@ export default class SettingCompanyPage extends Vue {
   private tableData: any[] = [];
   private loading: boolean = false;
   private cycleVisibleDialog: boolean = false;
+  private teamVisibleDialog: boolean = false;
   private tabs: string[] = [...Object.values(AdminTabsVn)];
   private textSearch: string = '';
 
@@ -90,6 +97,8 @@ export default class SettingCompanyPage extends Vue {
   private addNew() {
     if (this.topChange.tab === 1) {
       this.cycleVisibleDialog = true;
+    } else if (this.topChange.tab === 2) {
+      this.teamVisibleDialog = true;
     }
   }
 
@@ -98,9 +107,36 @@ export default class SettingCompanyPage extends Vue {
     this.loading = true;
     if (this.$route.query.tab === AdminTabsEn.CycleOKR || this.$route.query.tab === undefined) {
       try {
-        let { data } = await CycleRepository.get();
-        data = Object.freeze(data.data);
-        this.tableData = data;
+        const { data } = await CycleRepository.get();
+        this.tableData = data.data;
+        this.loading = false;
+      } catch (error) {
+        Notification({
+          title: 'Status',
+          message: error.message,
+          type: 'error',
+          duration: 2000,
+        });
+        this.loading = false;
+      }
+    } else if (this.$route.query.tab === AdminTabsEn.Department) {
+      try {
+        const { data } = await TeamRepository.get();
+        this.tableData = data.data;
+        this.loading = false;
+      } catch (error) {
+        Notification({
+          title: 'Status',
+          message: error.message,
+          type: 'error',
+          duration: 2000,
+        });
+        this.loading = false;
+      }
+    } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
+      try {
+        const { data } = await JobRepository.get();
+        this.tableData = data.data;
         this.loading = false;
       } catch (error) {
         Notification({

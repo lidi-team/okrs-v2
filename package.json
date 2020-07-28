@@ -15,7 +15,7 @@
     "serve": "nuxt-ts serve",
     "lint": "run-s lint:*",
     "lint:files": "ls-lint",
-    "lint:eslint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
+    "lint:eslint": "eslint --cache --ext .ts,.js,.vue --ignore-path .gitignore .",
     "lint:prettier": "prettier --write --loglevel warn .",
     "test": "run-s test:unit lint",
     "test:unit": "cross-env NODE_ENV=test jest --passWithNoTests",
