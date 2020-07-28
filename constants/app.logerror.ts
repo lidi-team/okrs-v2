@@ -43,3 +43,67 @@ export const logErrorLogin = (error: any) => {
       });
   }
 };
+
+export const logErrorRegister = (error: any) => {
+  switch (error.response.data.statusCode) {
+    case 432:
+      Notification({
+        title: 'Trạng thái',
+        message: 'Email đã tồn tại',
+        type: 'error',
+        duration: 2000,
+      });
+      break;
+    case 413:
+      Notification({
+        title: 'Trạng thái',
+        message: 'Token không chính xác',
+        type: 'error',
+        duration: 2000,
+      });
+      break;
+    case 414:
+      Notification({
+        title: 'Trạng thái',
+        message: 'Token đã hết hạn',
+        type: 'error',
+        duration: 2000,
+      });
+      break;
+    default:
+      Notification({
+        title: 'Trạng thái',
+        message: 'Có lỗi xảy ra',
+        type: 'error',
+        duration: 2000,
+      });
+  }
+};
+
+export const logErrorResetPassword = (error: any) => {
+  switch (error.response.data.statusCode) {
+    case 413:
+      Notification({
+        title: 'Trạng thái',
+        message: 'Token không chính xác',
+        type: 'error',
+        duration: 2000,
+      });
+      break;
+    case 414:
+      Notification({
+        title: 'Trạng thái',
+        message: 'Token đã hết hạn',
+        type: 'error',
+        duration: 2000,
+      });
+      break;
+    default:
+      Notification({
+        title: 'Trạng thái',
+        message: 'Có lỗi xảy ra',
+        type: 'error',
+        duration: 2000,
+      });
+  }
+};

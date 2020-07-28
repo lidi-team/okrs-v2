@@ -87,9 +87,9 @@ export interface ResetPasswordActionDTO {
 }
 
 export interface ChangePasswordDTO {
-  oldPassword: string;
+  password: string;
   newPassword: string;
-  matchPassword: string;
+  matchPassword?: string;
 }
 
 export interface CycleDTO {

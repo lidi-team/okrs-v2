@@ -11,8 +11,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Notification } from 'element-ui';
 import AuthRepository from '@/repositories/AuthRepository';
+import { logErrorResetPassword } from '@/constants/app.logerror';
 @Component<ResetPasswordPage>({
   name: 'ResetPasswordPage',
   middleware: 'isGuest',
@@ -25,12 +25,7 @@ import AuthRepository from '@/repositories/AuthRepository';
           token: query.token,
         };
       } catch (error) {
-        Notification({
-          title: 'Trạng thái',
-          message: 'Token không chính xác. Vui lòng kiểm tra lại',
-          type: 'error',
-          duration: 2000,
-        });
+        logErrorResetPassword(error);
         redirect('/dang-nhap');
       }
     } else {

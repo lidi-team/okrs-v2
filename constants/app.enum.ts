@@ -71,6 +71,7 @@ export enum ResourcesEnpoint {
   Team = 'teams',
   Role = 'roles',
   CycleOKRs = 'cycles',
+  MetaData = 'meta_data',
 }
 
 export enum EvaluationCriteriaEnum {

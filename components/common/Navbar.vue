@@ -29,7 +29,7 @@
             <nuxt-link to="/admin/cai-dat">
               <el-dropdown-item><i class="el-icon-s-tools item__icon"></i><span>Cài đặt công ty</span></el-dropdown-item>
             </nuxt-link>
-            <nuxt-link to="/quan-ly/nhan-su">
+            <nuxt-link v-if="profile.role.name === 'HR' || profile.role.name === 'ADMIN'" to="/quan-ly/nhan-su">
               <el-dropdown-item><fa icon="user-friends" class="item__icon" /><span>Quản lý nhân sự</span></el-dropdown-item>
             </nuxt-link>
             <nuxt-link to="/doi-mat-khau">
