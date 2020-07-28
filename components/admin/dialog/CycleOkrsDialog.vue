@@ -1,15 +1,15 @@
 <template>
   <el-dialog
     title="Thêm mới chu kỳ"
-    :visible.sync="cycleVisibleDialog"
+    :visible.sync="syncCycleDialog"
     width="30%"
     placement="center"
     :before-close="handleCloseDialog"
-    class="dialog-cycle-okrs"
+    class="dialog-cycle-okrs fdsfsdf"
   >
     <el-row>
       <el-col :span="24">
-        <el-form ref="temCreateCycle" :model="temCreateCycle">
+        <el-form ref="temCreateCycle" :model="temCreateCycle" :rules="rules">
           <el-form-item label="Tên chu kỳ" prop="name" class="custom-label" label-width="120px">
             <el-input v-model="temCreateCycle.name" placeholder="Nhập tên chu kỳ" />
           </el-form-item>
@@ -36,7 +36,7 @@
     </el-row>
     <span slot="footer">
       <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-      <el-button class="el-button--purple el-button--modal" @click="handeCreate">Thêm mới</el-button>
+      <el-button class="el-button--purple el-button--modal" @click="createCycleOkrs">Thêm mới</el-button>
     </span>
   </el-dialog>
 </template>
@@ -45,7 +45,8 @@ import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { CycleDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
-import { compareTwoDate } from '@/utils/dateParser';
+import { compareTwoDate, formatDateToYYYY } from '@/utils/dateParser';
+import CycleRepository from '@/repositories/CycleRepository';
 @Component<CycleOkrsDialog>({
   name: 'CycleOkrsDialog',
   updated() {
@@ -53,22 +54,9 @@ import { compareTwoDate } from '@/utils/dateParser';
   },
 })
 export default class CycleOkrsDialog extends Vue {
-  @Prop({ type: Boolean, required: true, default: false }) private cycleVisibleDialog!: boolean;
+  @PropSync('cycleVisibleDialog', { type: Boolean, required: true }) public syncCycleDialog!: boolean;
 
-  get isCycleVisibleDialog() {
-    return this.cycleVisibleDialog;
-  }
-
-  set isCycleVisibleDialog(value) {
-    this.$emit('update:cycleVisibleDialog', value);
-  }
-
-  private handleVisible() {
-    this.$emit('umbalaVisible', this.isCycleVisibleDialog);
-  }
-
-  // get
-
+  private loading: boolean = false;
   private dateFormat: string = 'dd/MM/yyyy';
   private temCreateCycle: CycleDTO = {
     name: '',
@@ -95,11 +83,52 @@ export default class CycleOkrsDialog extends Vue {
     return callback();
   }
 
-  private handeCreate() {}
+  private cycleRulesForm: Maps<Rule[]> = {
+    name: [
+      { type: 'string', required: true, message: 'Vui lòng nhập tên chu kỳ', trigger: 'blur' },
+      { min: 3, message: 'Tên chu kỳ chứa ít nhất 3 ký tự' },
+    ],
+    startDate: [{ required: true, message: 'Vui lòng chọn ngày bắt đầu', trigger: 'blur' }],
+    endDate: [
+      { required: true, message: 'Vui lòng chọn ngày kết thúc', trigger: 'blur' },
+      { validator: this.validateEndDate, trigger: ['blur', 'change'] },
+    ],
+  };
+
+  private createCycleOkrs() {
+    (this.$refs.temCreateCycle as Form).validate(async (isValid) => {
+      this.loading = true;
+      try {
+        const tempCycle: CycleDTO = {
+          name: this.temCreateCycle.name,
+          startDate: formatDateToYYYY(this.temCreateCycle.startDate),
+          endDate: formatDateToYYYY(this.temCreateCycle.endDate),
+        };
+        await CycleRepository.post(tempCycle).then((res) => {
+          this.$notify({
+            title: 'Status',
+            message: `Tạo mới thành công chu kỳ ${res.data.data.name}`,
+            type: 'success',
+            duration: 1000,
+          });
+        });
+        this.loading = false;
+        this.syncCycleDialog = false;
+      } catch (error) {
+        this.$notify({
+          title: 'Lỗi',
+          message: `Lỗi ${error.message}`,
+          type: 'error',
+          duration: 1000,
+        });
+        this.loading = false;
+      }
+    });
+  }
 
   private handleCloseDialog() {
     (this.$refs.temCreateCycle as Form).clearValidate();
-    this.cycleVisibleDialog = false;
+    this.syncCycleDialog = false;
   }
 }
 </script>

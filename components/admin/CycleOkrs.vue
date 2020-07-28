@@ -18,7 +18,7 @@
             <i class="el-icon-edit" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
           <el-tooltip class="cycle-okrs__icon" content="Xóa" placement="top">
-            <i class="el-icon-delete" @click="delete row"></i>
+            <i class="el-icon-delete" @click="deleteRow(row)"></i>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -162,7 +162,7 @@ export default class ManageCycleOkrs extends Vue {
     });
   }
 
-  private delete(row: CycleDTO): void {
+  private deleteRow(row: CycleDTO): void {
     this.$confirm(`Bạn có chắc chắn muốn xóa chu kỳ ${row.name}?`, {
       confirmButtonText: 'Đồng ý',
       cancelButtonText: 'Hủy bỏ',
