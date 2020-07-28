@@ -40,6 +40,7 @@ import RoleRepository from '@/repositories/RoleRepository';
 
 @Component<ManageEmployee>({
   name: 'ManageEmployee',
+  middleware: 'employeesPage',
   created() {
     this.getListUsers();
     this.getDataCommons();
@@ -81,8 +82,8 @@ export default class ManageEmployee extends Vue {
   private async getDataCommons() {
     try {
       const [teams, jobs, roles, link] = await Promise.all([
-        TeamRepository.get(),
-        JobRepository.get(),
+        TeamRepository.getMetaData(),
+        JobRepository.getMetaData(),
         RoleRepository.get(),
         AuthRepository.generateLinkInivte(),
       ]);

@@ -13,6 +13,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Notification } from 'element-ui';
 import AuthRepository from '@/repositories/AuthRepository';
+import { logErrorRegister } from '@/constants/app.logerror';
 
 @Component<LoginPage>({
   name: 'LoginPage',
@@ -27,12 +28,7 @@ import AuthRepository from '@/repositories/AuthRepository';
           token: query.token,
         };
       } catch (error) {
-        Notification({
-          title: 'Trạng thái',
-          message: 'Token không chính xác. Vui lòng kiểm tra lại',
-          type: 'error',
-          duration: 2000,
-        });
+        logErrorRegister(error);
         redirect('/dang-nhap');
       }
     } else {

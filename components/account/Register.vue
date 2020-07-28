@@ -49,6 +49,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { RegisterDTO, RegisterOption } from '@/constants/app.interface';
+import { logErrorRegister } from '@/constants/app.logerror';
 import { Maps, Rule } from '@/constants/app.type';
 import AuthRepository from '@/repositories/AuthRepository';
 import TeamRepository from '@/repositories/TeamRepository';
@@ -81,7 +82,7 @@ export default class RegisterComponent extends Vue {
 
   private async getDataCommons() {
     try {
-      const [teams, jobs] = await Promise.all([TeamRepository.get(), JobRepository.get()]);
+      const [teams, jobs] = await Promise.all([TeamRepository.getMetaData(), JobRepository.getMetaData()]);
       this.teams = teams.data.data;
       this.jobs = jobs.data.data;
     } catch (error) {
@@ -145,12 +146,7 @@ export default class RegisterComponent extends Vue {
           this.loading = false;
         } catch (error) {
           this.loading = false;
-          this.$notify({
-            title: 'Trạng thái',
-            message: 'Có lỗi xảy ra',
-            type: 'error',
-            duration: 2000,
-          });
+          logErrorRegister(error);
         }
       }
     });

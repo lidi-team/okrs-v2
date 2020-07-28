@@ -168,3 +168,20 @@ button:focus {
 }
 
 // End ElForm Rules
+
+// El checkbox
+.el-checkbox__input.is-checked .el-checkbox__inner,
+.el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: $purple-primary-5;
+  border-color: $purple-primary-5;
+}
+
+.el-checkbox__input.is-focus .el-checkbox__inner {
+  border-color: $purple-primary-5;
+}
+
+.el-checkbox__input.is-checked + .el-checkbox__label {
+  color: $purple-primary-5;
+}
+
+// End El checkbox
