@@ -25,13 +25,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <base-pagination
-      class="admin__tab__table__pagination"
-      :total="total"
-      page.sync="page"
-      limit.sync="limit"
-      @pagination="handlePagination($event)"
-    />
+    <base-pagination class="pagination-bottom" :total="total" :page.sync="syncPage" :limit.sync="syncLimit" @pagination="handlePagination($event)" />
     <el-dialog
       title="Cập nhật chu kỳ"
       :visible.sync="dialogUpdateVisible"
@@ -75,8 +69,9 @@
   </fragment>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { AdminTabsEn } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 import { CycleDTO } from '@/constants/app.interface';
 import CycleRepository from '@/repositories/CycleRepository';
@@ -86,10 +81,9 @@ import { formtDateToDD, formatDateToYYYY, compareTwoDate, parseToDate } from '@/
 export default class ManageCycleOkrs extends Vue {
   @Prop(Array) public tableData!: Object[];
   @Prop(Boolean) public loading!: boolean;
-  @Prop(Function) public getListCycles!: Function;
-  @Prop() public total!: number;
-  @Prop() public page!: number;
-  @Prop() public limit!: number;
+  @Prop({ type: Number, required: true }) public total!: number;
+  @PropSync('page', { type: Number, required: true }) public syncPage!: number;
+  @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
 
   private dateFormat: string = 'dd/MM/yyyy';
   private dialogUpdateVisible: boolean = false;
@@ -196,6 +190,11 @@ export default class ManageCycleOkrs extends Vue {
     this.dialogUpdateVisible = false;
   }
 
+  private handlePagination(pagination: any) {
+    const tabNow = this.$route.query.tab === undefined ? AdminTabsEn.CycleOKR : this.$route.query.tab;
+    this.$router.push(`?tab=${tabNow}&page=${pagination.page}`);
+  }
+
   private dateParser(date: string): string {
     return formtDateToDD(date);
   }
@@ -205,6 +204,9 @@ export default class ManageCycleOkrs extends Vue {
 @import '@/assets/scss/main.scss';
 .cycle-okrs {
   width: 100%;
+}
+.pagination-bottom {
+  margin-top: 2rem;
 }
 .cycle-okrs-dialog {
   .el-date-editor.el-input {

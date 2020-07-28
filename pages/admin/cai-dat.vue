@@ -26,8 +26,14 @@
         <el-tabs v-model="currentTab" class="admin__tab" @tab-click="switchTabs(currentTab)">
           <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab" :lazy="true" />
           <div class="admin__tab__table">
-            <component :is="currentTabComponent" :table-data="tableData" :loading="loading" />
-            <!--  :total="total" :limit="limit" :page="page" -->
+            <component
+              :is="currentTabComponent"
+              :table-data="tableData"
+              :loading="loading"
+              :total="totalItems"
+              :page.sync="adminParams.page"
+              :limit.sync="adminParams.limit"
+            />
           </div>
         </el-tabs>
       </template>
@@ -43,6 +49,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Context } from '@nuxt/types';
 import { Notification } from 'element-ui';
+import { pageLimit } from '@/constants/app.constant';
 import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 import ManageCycleOkrs from '@/components/admin/CycleOkrs.vue';
 import ManageMeasureUnit from '@/components/admin/MeasureUnit.vue';
@@ -54,6 +61,7 @@ import CycleRepository from '@/repositories/CycleRepository';
 import JobRepository from '@/repositories/JobRepository';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
+import { AdminParams } from '@/constants/app.interface';
 
 @Component<SettingCompanyPage>({
   name: 'SettingCompanyPage',
@@ -63,6 +71,9 @@ import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepos
 })
 export default class SettingCompanyPage extends Vue {
   private tableData: any[] = [];
+  private metaPagination: object = {};
+  private totalItems: number = 1;
+
   private loading: boolean = false;
   private tabs: string[] = [...Object.values(AdminTabsVn)];
   private textSearch: string = '';
@@ -83,20 +94,42 @@ export default class SettingCompanyPage extends Vue {
       ? AdminTabsVn.Department
       : AdminTabsVn.CycleOKR;
 
+  private adminParams: AdminParams = {
+    page: this.$route.query.page ? Number(this.$route.query.page) : 1,
+    limit: pageLimit,
+  };
+
   private switchTabs(currentTab: string) {
-    this.$router.push(
-      `?tab=${
-        currentTab === AdminTabsVn.CycleOKR
-          ? AdminTabsEn.CycleOKR
-          : currentTab === AdminTabsVn.Department
-          ? AdminTabsEn.Department
-          : currentTab === AdminTabsVn.JobPosition
-          ? AdminTabsEn.JobPosition
-          : currentTab === AdminTabsVn.EvaluationCriterial
-          ? AdminTabsEn.EvaluationCriterial
-          : AdminTabsEn.MeasureUnit
-      }`,
-    );
+    if (currentTab === AdminTabsVn.CycleOKR) {
+      this.adminParams.page = 1;
+      this.$router.push(`?tab=${AdminTabsEn.CycleOKR}`);
+    } else if (currentTab === AdminTabsVn.Department) {
+      this.adminParams.page = 1;
+      this.$router.push(`?tab=${AdminTabsEn.Department}`);
+    } else if (currentTab === AdminTabsVn.JobPosition) {
+      this.adminParams.page = 1;
+      this.$router.push(`?tab=${AdminTabsEn.JobPosition}`);
+    } else if (currentTab === AdminTabsVn.EvaluationCriterial) {
+      this.adminParams.page = 1;
+      this.$router.push(`?tab=${AdminTabsEn.EvaluationCriterial}`);
+    } else {
+      this.adminParams.page = 1;
+      this.$router.push(`?tab=${AdminTabsEn.MeasureUnit}`);
+    }
+
+    // this.$router.push(
+    //   `?tab=${
+    //     currentTab === AdminTabsVn.CycleOKR
+    //       ? AdminTabsEn.CycleOKR
+    //       : currentTab === AdminTabsVn.Department
+    //       ? AdminTabsEn.Department
+    //       : currentTab === AdminTabsVn.JobPosition
+    //       ? AdminTabsEn.JobPosition
+    //       : currentTab === AdminTabsVn.EvaluationCriterial
+    //       ? AdminTabsEn.EvaluationCriterial
+    //       : AdminTabsEn.MeasureUnit
+    //   }`,
+    // );
   }
 
   private addNew() {
@@ -118,8 +151,9 @@ export default class SettingCompanyPage extends Vue {
     this.loading = true;
     if (this.$route.query.tab === AdminTabsEn.CycleOKR || this.$route.query.tab === undefined) {
       try {
-        const { data } = await CycleRepository.get();
-        this.tableData = data.data;
+        const { data } = await CycleRepository.get(this.adminParams);
+        this.tableData = data.data.items;
+        this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
         Notification({
@@ -132,8 +166,9 @@ export default class SettingCompanyPage extends Vue {
       }
     } else if (this.$route.query.tab === AdminTabsEn.Department) {
       try {
-        const { data } = await TeamRepository.get();
-        this.tableData = data.data;
+        const { data } = await TeamRepository.get(this.adminParams);
+        this.tableData = data.data.items;
+        this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
         Notification({
@@ -146,8 +181,10 @@ export default class SettingCompanyPage extends Vue {
       }
     } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
       try {
-        const { data } = await JobRepository.get();
-        this.tableData = data.data;
+        this.adminParams.page = 1;
+        const { data } = await JobRepository.get(this.adminParams);
+        this.tableData = data.data.items;
+        this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
         Notification({
@@ -160,8 +197,10 @@ export default class SettingCompanyPage extends Vue {
       }
     } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
       try {
-        const { data } = await EvaluationCriteriaRepository.get();
-        this.tableData = data.data;
+        this.adminParams.page = 1;
+        const { data } = await EvaluationCriteriaRepository.get(this.adminParams);
+        this.tableData = data.data.items;
+        this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
         Notification({
@@ -174,8 +213,10 @@ export default class SettingCompanyPage extends Vue {
       }
     } else {
       try {
-        const { data } = await MeasureUnitRepository.get();
-        this.tableData = data.data;
+        this.adminParams.page = 1;
+        const { data } = await MeasureUnitRepository.get(this.adminParams);
+        this.tableData = data.data.items;
+        this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
         Notification({

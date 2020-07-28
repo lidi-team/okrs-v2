@@ -79,20 +79,20 @@ export default class RegisterComponent extends Vue {
     token: this.token,
   };
 
-  private async getDataCommons() {
-    try {
-      const [teams, jobs] = await Promise.all([TeamRepository.get(), JobRepository.get()]);
-      this.teams = teams.data.data;
-      this.jobs = jobs.data.data;
-    } catch (error) {
-      this.$notify({
-        title: 'Trạng thái',
-        message: 'Có lỗi xảy ra',
-        type: 'error',
-        duration: 2000,
-      });
-    }
-  }
+  // private async getDataCommons() {
+  //   try {
+  //     const [teams, jobs] = await Promise.all([TeamRepository.get(this.paramsUser), JobRepository.get()]);
+  //     this.teams = teams.data.data;
+  //     this.jobs = jobs.data.data;
+  //   } catch (error) {
+  //     this.$notify({
+  //       title: 'Trạng thái',
+  //       message: 'Có lỗi xảy ra',
+  //       type: 'error',
+  //       duration: 2000,
+  //     });
+  //   }
+  // }
 
   private rules: Maps<Rule[]> = {
     email: [

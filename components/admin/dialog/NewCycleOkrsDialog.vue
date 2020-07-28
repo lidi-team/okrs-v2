@@ -98,6 +98,7 @@ export default class CycleOkrsDialog extends Vue {
           });
         });
         this.loading = false;
+        this.clearForm();
         this.syncCycleDialog = false;
       } catch (error) {
         this.$notify({
@@ -114,6 +115,12 @@ export default class CycleOkrsDialog extends Vue {
   private handleCloseDialog() {
     (this.$refs.temCreateCycle as Form).clearValidate();
     this.syncCycleDialog = false;
+  }
+
+  private clearForm(): void {
+    this.temCreateCycle.name = '';
+    this.temCreateCycle.startDate = null;
+    this.temCreateCycle.endDate = null;
   }
 }
 </script>
