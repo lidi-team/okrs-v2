@@ -4,7 +4,9 @@
       <el-table-column prop="name" label="Tên chu kỳ"></el-table-column>
       <el-table-column label="Ngày bắt đầu">
         <template v-slot="{ row }">
-          <span>{{ dateParser(row.startDate) }}</span>
+          <!-- Nếu convert như thế này thì sẽ bị lỗi :)) Méo hiểu -->
+          <!-- <span>{{ dateParser(row.startDate) }}</span> -->
+          <span>{{ row.startDate }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Ngày kết thúc">
@@ -93,8 +95,8 @@ export default class ManageCycleOkrs extends Vue {
   private dialogUpdateVisible: boolean = false;
   private temporaryUpdateCycle: CycleDTO = {
     name: '',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: null,
+    endDate: null,
   };
 
   private rules: Maps<Rule[]> = {
