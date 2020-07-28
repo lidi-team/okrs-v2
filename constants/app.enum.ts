@@ -73,6 +73,7 @@ export enum ResourcesEnpoint {
   CycleOKRs = 'cycles',
   EvaluationCriterial = 'evaluation_criterias',
   MeasureUnit = 'measure_units',
+  MetaData = 'meta_data',
 }
 
 export enum EvaluationCriteriaEnum {

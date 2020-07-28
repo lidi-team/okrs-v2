@@ -41,6 +41,7 @@ import { pageLimit } from '@/constants/app.constant';
 
 @Component<ManageEmployee>({
   name: 'ManageEmployee',
+  middleware: 'employeesPage',
   created() {
     this.getListUsers();
     this.getDataCommons();
@@ -82,8 +83,8 @@ export default class ManageEmployee extends Vue {
   private async getDataCommons() {
     try {
       const [teams, jobs, roles, link] = await Promise.all([
-        TeamRepository.get(this.paramsUser),
-        JobRepository.get(this.paramsUser),
+        TeamRepository.getMetaData(),
+        JobRepository.getMetaData(),
         RoleRepository.get(),
         AuthRepository.generateLinkInivte(),
       ]);

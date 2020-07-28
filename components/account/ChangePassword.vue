@@ -12,12 +12,12 @@
       :hide-required-asterisk="false"
       label-width="150px"
       label-position="top"
-      @submit.native.prevent="handleChangePasswordForm"
+      @submit.native.prevent="handleUpdatePasswordForm"
     >
       <div class="change-password__form__input">
-        <el-form-item prop="oldPassword" label="Mật khẩu cũ" class="custom-label">
+        <el-form-item prop="password" label="Mật khẩu cũ" class="custom-label">
           <el-input
-            v-model="changePasswordForm.oldPassword"
+            v-model="changePasswordForm.password"
             type="password"
             class="change-password__form__input__old-password"
             placeholder="Nhập mật khẩu cũ"
@@ -42,7 +42,7 @@
       </div>
       <el-row class="change-password__form__action" type="flex" justify="space-between">
         <el-col :span="24">
-          <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handleChangePasswordForm">
+          <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handleUpdatePasswordForm">
             Đổi mật khẩu
           </el-button>
         </el-col>
@@ -55,21 +55,24 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Form } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
 import { ChangePasswordDTO } from '@/constants/app.interface';
+import UserRepository from '@/repositories/UserRepository';
+
 @Component<ChangePasswordDialog>({
   name: 'ChangePasswordDialog',
 })
 export default class ChangePasswordDialog extends Vue {
   private loading: boolean = false;
   private changePasswordForm: ChangePasswordDTO = {
-    oldPassword: '',
+    password: '',
     newPassword: '',
     matchPassword: '',
   };
 
   private rules: Maps<Rule[]> = {
-    oldPassword: [{ required: true, message: 'Vui lòng nhập mật khẩu cũ', trigger: 'blur' }],
+    password: [{ required: true, message: 'Vui lòng nhập mật khẩu cũ', trigger: 'blur' }],
     newPassword: [
       { required: true, message: 'Vui lòng nhập mật khẩu mới', trigger: 'blur' },
       { validator: this.validatePassword, trigger: ['blur', 'change'] },
@@ -84,6 +87,8 @@ export default class ChangePasswordDialog extends Vue {
     const valid: boolean = /^(?=.*\d)[0-9a-zA-Z]{8,}$/.test(value);
     if (!valid) {
       return callback('Mật khẩu chứ ít nhất 8 ký tự và 1 chữ số');
+    } else if (value === this.changePasswordForm.password) {
+      return callback('Mật khẩu mới không được giống với mật khẩu cũ');
     }
     return callback();
   }
@@ -95,8 +100,34 @@ export default class ChangePasswordDialog extends Vue {
     return callback();
   }
 
-  private handlechangePasswordForm(): void {
-    console.log(this.changePasswordForm);
+  private handleUpdatePasswordForm(): void {
+    (this.$refs.changePasswordForm as Form).validate(async (isValid) => {
+      if (isValid) {
+        try {
+          this.loading = true;
+          delete this.changePasswordForm.matchPassword;
+          await UserRepository.changePassword(this.changePasswordForm);
+          this.loading = false;
+          this.$notify({
+            title: 'Trạng thái',
+            type: 'success',
+            message: 'Đổi mật khẩu thành công',
+            duration: 2000,
+          });
+          this.$router.push('/');
+        } catch (error) {
+          this.loading = false;
+          if (error.response.data.statusCode === 409) {
+            this.$notify({
+              title: 'Trạng thái',
+              message: 'Mât khẩu không chính xác',
+              type: 'error',
+              duration: 2000,
+            });
+          }
+        }
+      }
+    });
   }
 }
 </script>

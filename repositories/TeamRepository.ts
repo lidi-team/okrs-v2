@@ -20,4 +20,8 @@ export default class TeamRepository {
   public static delete(id: number): Promise<AxiosResponse<any>> {
     return authenticatedService.delete(`${ResourcesEnpoint.Team}/${id}`);
   }
+
+  public static getMetaData() {
+    return unAuthenticatedservice.get(`${ResourcesEnpoint.MetaData}/teams`);
+  }
 }

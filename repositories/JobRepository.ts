@@ -20,4 +20,8 @@ export default class JobRepository {
   public static delete(id: number): Promise<AxiosResponse<any>> {
     return authenticatedService.delete(`${ResourcesEnpoint.Job}/${id}`);
   }
+
+  public static getMetaData() {
+    return unAuthenticatedservice.get(`${ResourcesEnpoint.MetaData}/job_positions`);
+  }
 }
