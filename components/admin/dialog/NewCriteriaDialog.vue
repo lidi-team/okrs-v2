@@ -57,13 +57,21 @@ export default class CriteriaDialog extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    content: [
-      { type: 'string', required: true, message: 'Vui lòng nhập tên tiêu chí', trigger: 'blur' },
-      { min: 3, message: 'Tên tiêu chí chứa ít nhất 3 ký tự' },
-    ],
+    content: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }],
     numberOfStar: [{ type: 'number', required: true, message: 'Số sao phải là 1 số nguyên', trigger: 'blur' }],
     type: [{ type: 'string', required: true, message: 'Vui lòng chọn kiểu của tiêu chí', trigger: 'blur' }],
   };
+
+  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    const isEmpty = (value: string) => !value.trim().length;
+    if (value.length === 0) {
+      return callback('Vui lòng nhập tên tiêu chí');
+    }
+    if (isEmpty(value)) {
+      return callback('Tên tiêu chí không được chỉ chứa dấu cách');
+    }
+    return callback();
+  }
 
   private createEvaluationCriteria() {
     this.loading = true;

@@ -83,11 +83,19 @@ export default class ManageDepartment extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    name: [
-      { type: 'string', required: true, message: 'Vui lòng nhập tên phòng ban', trigger: 'blur' },
-      { min: 3, message: 'Tên phòng ban chứa ít nhất 3 ký tự' },
-    ],
+    name: [{ validator: this.sanitizeInput, trigger: 'change' }],
   };
+
+  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    const isEmpty = (value: string) => !value.trim().length;
+    if (value.length === 0) {
+      return callback('Vui lòng nhập tên phòng ban');
+    }
+    if (isEmpty(value)) {
+      return callback('Tên phòng ban không được chỉ chứa dấu cách');
+    }
+    return callback();
+  }
 
   private handleOpenDialogUpdate(row: TeamDTO): void {
     this.tempUpdateTeam = {

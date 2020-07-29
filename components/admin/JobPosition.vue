@@ -81,11 +81,19 @@ export default class ManageJobPosition extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    name: [
-      { type: 'string', required: true, message: 'Vui lòng nhập vị trí', trigger: 'blur' },
-      { min: 3, message: 'Tên vị trí chứa ít nhất 3 ký tự' },
-    ],
+    name: [{ validator: this.sanitizeInput, trigger: 'change' }],
   };
+
+  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    const isEmpty = (value: string) => !value.trim().length;
+    if (value.length === 0) {
+      return callback('Vui lòng nhập tên vị trí');
+    }
+    if (isEmpty(value)) {
+      return callback('Tên vị trí không được chỉ chứa dấu cách');
+    }
+    return callback();
+  }
 
   private handleOpenDialogUpdate(row: JobPositionDTO): void {
     this.tempUpdateJob = {

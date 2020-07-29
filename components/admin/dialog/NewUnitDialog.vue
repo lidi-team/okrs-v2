@@ -43,11 +43,19 @@ export default class MeasureUnitDialog extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    type: [
-      { type: 'string', required: true, message: 'Vui lòng nhập tên đơn vị', trigger: 'blur' },
-      { min: 3, message: 'Tên đơn vị chứa ít nhất 3 ký tự', trigger: 'change' },
-    ],
+    type: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }],
   };
+
+  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    const isEmpty = (value: string) => !value.trim().length;
+    if (value.length === 0) {
+      return callback('Vui lòng nhập tên đơn vị');
+    }
+    if (isEmpty(value)) {
+      return callback('Tên đơn vị không được chỉ chứa dấu cách');
+    }
+    return callback();
+  }
 
   private createTeam() {
     this.loading = true;

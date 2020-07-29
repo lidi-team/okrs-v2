@@ -74,9 +74,20 @@ export default class ManageMeasureUnit extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    type: [{ type: 'string', required: true, message: 'Vui lòng nhập tên đơn vị', trigger: 'blur' }],
+    type: [{ validator: this.sanitizeInput, trigger: 'change' }],
     index: [{ type: 'number', min: 1, required: true, message: 'Thứ tự phải là 1 số nguyên không âm', trigger: 'blur' }],
   };
+
+  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    const isEmpty = (value: string) => !value.trim().length;
+    if (value.length === 0) {
+      return callback('Vui lòng nhập tên đơn vị');
+    }
+    if (isEmpty(value)) {
+      return callback('Tên đơn vị không được chỉ chứa dấu cách');
+    }
+    return callback();
+  }
 
   private handleOpenDialogUpdate(row: MeasureUnitDTO): void {
     this.tempUpdateUnit = {
