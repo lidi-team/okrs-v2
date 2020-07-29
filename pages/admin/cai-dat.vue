@@ -67,6 +67,7 @@ import { AdminParams } from '@/constants/app.interface';
   created() {
     this.getListData();
   },
+  middleware: ['isAdmin'],
 })
 export default class SettingCompanyPage extends Vue {
   private tableData: any[] = [];
