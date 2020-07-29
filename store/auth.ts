@@ -1,6 +1,6 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
 import { logErrorLogin } from '@/constants/app.logerror';
-import { LoginDTO, RegisterDTO } from '@/constants/app.interface';
+import { LoginDTO } from '@/constants/app.interface';
 import AuthRepository from '@/repositories/AuthRepository';
 import { removeTokenCookie, setTokenCookie } from '@/utils/cookies';
 
@@ -16,10 +16,8 @@ export interface AuthState {
 export interface AuthActions<S, R> extends ActionTree<S, R> {
   logout(context: ActionContext<S, R>): Promise<void>;
   login(context: ActionContext<S, R>, credentials: LoginDTO);
-  register(context: ActionContext<S, R>, credentials: RegisterDTO): Promise<void>;
   updateProfile(context: ActionContext<S, R>, data: any): Promise<void>;
   changePassword(context: ActionContext<S, R>, newPassword: string): Promise<void>;
-  clear(context: ActionContext<S, R>): void;
 }
 
 export const state = (): AuthState => ({
@@ -40,9 +38,6 @@ export const mutations: MutationTree<RootState> = {
 };
 
 export const actions: AuthActions<AuthState, RootState> = {
-  async register({ commit }, credentials: RegisterDTO): Promise<void> {
-    await AuthRepository.register(credentials);
-  },
   async login({ commit }, { email, password }: LoginDTO) {
     try {
       const { data } = await AuthRepository.login({ email, password });
@@ -65,9 +60,4 @@ export const actions: AuthActions<AuthState, RootState> = {
   },
   async changePassword({ commit }, data: any) {},
   async updateProfile({ commit }, data: any) {},
-  clear({ commit }) {
-    commit(AuthMutation.SET_TOKEN, '');
-    commit(AuthMutation.SET_USER, null);
-    removeTokenCookie();
-  },
 };
