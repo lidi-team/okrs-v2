@@ -48,7 +48,6 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Context } from '@nuxt/types';
-import { Notification } from 'element-ui';
 import { pageLimit } from '@/constants/app.constant';
 import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 import ManageCycleOkrs from '@/components/admin/CycleOkrs.vue';
@@ -142,10 +141,9 @@ export default class SettingCompanyPage extends Vue {
         this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
-        Notification({
-          title: 'Status',
+        this.$notify.error({
+          title: 'Lỗi',
           message: error.message,
-          type: 'error',
           duration: 2000,
         });
         this.loading = false;
@@ -157,10 +155,9 @@ export default class SettingCompanyPage extends Vue {
         this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
-        Notification({
-          title: 'Status',
+        this.$notify.error({
+          title: 'Lỗi',
           message: error.message,
-          type: 'error',
           duration: 2000,
         });
         this.loading = false;
@@ -173,10 +170,9 @@ export default class SettingCompanyPage extends Vue {
         this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
-        Notification({
-          title: 'Status',
+        this.$notify.error({
+          title: 'Lỗi',
           message: error.message,
-          type: 'error',
           duration: 2000,
         });
         this.loading = false;
@@ -189,10 +185,9 @@ export default class SettingCompanyPage extends Vue {
         this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
-        Notification({
-          title: 'Status',
+        this.$notify.error({
+          title: 'Lỗi',
           message: error.message,
-          type: 'error',
           duration: 2000,
         });
         this.loading = false;
@@ -205,10 +200,9 @@ export default class SettingCompanyPage extends Vue {
         this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
-        Notification({
-          title: 'Status',
+        this.$notify.error({
+          title: 'Lỗi',
           message: error.message,
-          type: 'error',
           duration: 2000,
         });
         this.loading = false;

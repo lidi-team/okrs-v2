@@ -46,24 +46,37 @@ export default class TeamDialog extends Vue {
 
   private createTeam() {
     this.loading = true;
-    (this.$refs.tempCreateDepartment as Form).validate(async (isValid) => {
-      try {
-        await TeamRepository.post(this.tempCreateDepartment).then((res) => {
-          this.$notify({
-            title: 'Status',
-            message: `Tạo mới thành công chu kỳ ${res.data.data.name}`,
-            type: 'success',
+    (this.$refs.tempCreateDepartment as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
+      if (isValid) {
+        try {
+          await TeamRepository.post(this.tempCreateDepartment).then((res) => {
+            this.$notify.success({
+              title: 'Trạng thái',
+              message: `Tạo phòng ban mới thành công`,
+              duration: 2000,
+            });
+          });
+          this.clearForm();
+          this.loading = false;
+          this.syncTeamDialog = false;
+        } catch (error) {
+          this.$notify.error({
+            title: 'Lỗi',
+            message: `${error.message}`,
             duration: 2000,
           });
-        });
-        this.loading = false;
-        this.syncTeamDialog = false;
-      } catch (error) {
-        this.$notify({
-          title: 'Lỗi',
-          message: `Lỗi ${error.message}`,
-          type: 'error',
-          duration: 2000,
+          this.loading = false;
+        }
+      }
+      if (invalidatedFields) {
+        Object.entries(invalidatedFields).forEach((field: any) => {
+          setTimeout(() => {
+            this.$notify.error({
+              title: 'Lỗi',
+              message: `${field[1][0].message}`,
+              duration: 2000,
+            });
+          }, 300);
         });
         this.loading = false;
       }
@@ -73,6 +86,11 @@ export default class TeamDialog extends Vue {
   private handleCloseDialog() {
     (this.$refs.tempCreateDepartment as Form).clearValidate();
     this.syncTeamDialog = false;
+  }
+
+  private clearForm(): void {
+    this.tempCreateDepartment.name = '';
+    this.tempCreateDepartment.description = '';
   }
 }
 </script>

@@ -19,7 +19,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <base-pagination :total="total" page.sync="page" limit.sync="limit" @pagination="handlePagination($event)" />
+    <base-pagination class="pagination-bottom" :total="total" page.sync="page" limit.sync="limit" @pagination="handlePagination($event)" />
     <el-dialog
       title="Cập nhật phòng ban"
       :visible.sync="dialogUpdateVisible"
@@ -35,14 +35,20 @@
               <el-input v-model="tempUpdateTeam.name" placeholder="Nhập tên phòng ban" @keyup.enter.native="handleUpdate(tempUpdateTeam)" />
             </el-form-item>
             <el-form-item label="Mô tả" label-width="120px">
-              <el-input v-model="tempUpdateTeam.description" placeholder="Nhập mô tả" @keyup.enter.native="handleUpdate(tempUpdateTeam)" />
+              <el-input
+                v-model="tempUpdateTeam.description"
+                type="textarea"
+                :autosize="autoSizeConfig"
+                placeholder="Nhập mô tả"
+                @keyup.enter.native="handleUpdate(tempUpdateTeam)"
+              />
             </el-form-item>
           </el-form>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="handleUpdate">Cập nhật</el-button>
+        <el-button class="el-button--purple el-button--modal" @click="handleUpdate">Cập nhật</el-button>
       </span>
     </el-dialog>
   </fragment>
@@ -55,7 +61,9 @@ import { TeamDTO } from '@/constants/app.interface';
 import TeamRepository from '@/repositories/TeamRepository';
 import { formtDateToDD } from '@/utils/dateParser';
 
-@Component<ManageDepartment>({ name: 'ManageDepartment' })
+@Component<ManageDepartment>({
+  name: 'ManageDepartment',
+})
 export default class ManageDepartment extends Vue {
   @Prop(Array) public tableData!: Object[];
   @Prop(Boolean) public loading!: boolean;
@@ -63,6 +71,7 @@ export default class ManageDepartment extends Vue {
   @Prop() public page!: number;
   @Prop() public limit!: number;
 
+  private autoSizeConfig = { minRows: 2, maxRows: 4 };
   private dateFormat: string = 'dd/MM/yyyy';
   private dialogUpdateVisible: boolean = false;
   private tempUpdateTeam: TeamDTO = {
@@ -88,31 +97,42 @@ export default class ManageDepartment extends Vue {
   }
 
   private handleUpdate(): void {
-    (this.$refs.tempUpdateTeam as Form).validate((isValid) => {
-      this.$confirm(`Bạn có chắc chắn muốn cập nhật phòng ban này không?`, {
-        confirmButtonText: 'Đồng ý',
-        cancelButtonText: 'Hủy bỏ',
-        type: 'warning',
-      }).then(async () => {
-        try {
-          await TeamRepository.update(this.tempUpdateTeam).then((res) => {
-            this.$notify({
-              title: 'Status',
-              message: 'Cập nhật thành công',
-              type: 'success',
+    (this.$refs.tempUpdateTeam as Form).validate((isValid: boolean, invalidatedFields: object) => {
+      if (isValid) {
+        this.$confirm(`Bạn có chắc chắn muốn cập nhật phòng ban này không?`, {
+          confirmButtonText: 'Đồng ý',
+          cancelButtonText: 'Hủy bỏ',
+          type: 'warning',
+        }).then(async () => {
+          try {
+            await TeamRepository.update(this.tempUpdateTeam).then((res) => {
+              this.$notify.success({
+                title: 'Trạng thái',
+                message: 'Cập nhật phòng ban thành công',
+                duration: 2000,
+              });
+            });
+            this.dialogUpdateVisible = false;
+          } catch (error) {
+            this.$notify.error({
+              title: 'Lỗi',
+              message: `${error.message}`,
               duration: 2000,
             });
-          });
-          this.dialogUpdateVisible = false;
-        } catch (error) {
-          this.$notify({
-            title: 'Lỗi',
-            message: `Lỗi ${error.message}`,
-            type: 'error',
-            duration: 2000,
-          });
-        }
-      });
+          }
+        });
+      }
+      if (invalidatedFields) {
+        Object.entries(invalidatedFields).forEach((field: any) => {
+          setTimeout(() => {
+            this.$notify.error({
+              title: 'Lỗi',
+              message: `${field[1][0].message}`,
+              duration: 2000,
+            });
+          }, 300);
+        });
+      }
     });
   }
 
@@ -125,18 +145,16 @@ export default class ManageDepartment extends Vue {
       try {
         const rowName = row.name;
         await TeamRepository.delete(row.id).then((res) => {
-          this.$notify({
-            title: 'Status',
-            message: `Xóa thánh công chu kỳ ${rowName}`,
-            type: 'success',
+          this.$notify.success({
+            title: 'Trạng thái',
+            message: `Xóa phòng ban công`,
             duration: 1000,
           });
         });
       } catch (error) {
-        this.$notify({
+        this.$notify.error({
           title: 'Lỗi',
-          message: `Lỗi ${error.message}`,
-          type: 'error',
+          message: `${error.message}`,
           duration: 1000,
         });
       }
@@ -157,5 +175,8 @@ export default class ManageDepartment extends Vue {
 @import '@/assets/scss/main.scss';
 .team-admin {
   width: 100%;
+}
+.pagination-bottom {
+  margin-top: 2rem;
 }
 </style>

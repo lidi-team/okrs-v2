@@ -98,9 +98,9 @@ export default class ManageCycleOkrs extends Vue {
       { type: 'string', required: true, message: 'Vui lòng nhập tên chu kỳ', trigger: 'blur' },
       { min: 3, message: 'Tên chu kỳ chứa ít nhất 3 ký tự' },
     ],
-    startDate: [{ required: true, message: 'Vui lòng chọn ngày bắt đầu', trigger: 'blur' }],
+    startDate: [{ required: true, message: 'Vui lòng chọn ngày bắt đầu', trigger: ['blur', 'change'] }],
     endDate: [
-      { required: true, message: 'Vui lòng chọn ngày kết thúc', trigger: 'blur' },
+      { required: true, message: 'Vui lòng chọn ngày kết thúc', trigger: ['blur', 'change'] },
       { validator: this.validateEndDate, trigger: ['blur', 'change'] },
     ],
   };
@@ -123,38 +123,48 @@ export default class ManageCycleOkrs extends Vue {
   }
 
   private handleUpdate(): void {
-    (this.$refs.temporaryUpdateCycleForm as Form).validate((isValid) => {
-      this.$confirm(`Bạn có chắc chắn muốn cập nhật cycle này không?`, {
-        confirmButtonText: 'Đồng ý',
-        cancelButtonText: 'Hủy bỏ',
-        type: 'warning',
-      }).then(async () => {
-        try {
-          const tempCycle: CycleDTO = {
-            id: this.temporaryUpdateCycle.id,
-            name: this.temporaryUpdateCycle.name,
-            startDate: formatDateToYYYY(this.temporaryUpdateCycle.startDate),
-            endDate: formatDateToYYYY(this.temporaryUpdateCycle.endDate),
-          };
-          await CycleRepository.update(tempCycle).then((res) => {
-            this.$notify({
-              title: 'Status',
-              message: 'Cập nhật thành công',
-              type: 'success',
+    (this.$refs.temporaryUpdateCycleForm as Form).validate((isValid: boolean, invalidatedFields: object) => {
+      if (isValid) {
+        this.$confirm(`Bạn có chắc chắn muốn cập nhật chu kỳ này không?`, {
+          confirmButtonText: 'Đồng ý',
+          cancelButtonText: 'Hủy bỏ',
+          type: 'warning',
+        }).then(async () => {
+          try {
+            const tempCycle: CycleDTO = {
+              id: this.temporaryUpdateCycle.id,
+              name: this.temporaryUpdateCycle.name,
+              startDate: formatDateToYYYY(this.temporaryUpdateCycle.startDate),
+              endDate: formatDateToYYYY(this.temporaryUpdateCycle.endDate),
+            };
+            await CycleRepository.update(tempCycle).then((res) => {
+              this.$notify.success({
+                title: 'Trạng thái',
+                message: 'Cập nhật chu kỳ thành công',
+                duration: 1000,
+              });
+            });
+            this.dialogUpdateVisible = false;
+          } catch (error) {
+            this.$notify.error({
+              title: 'Lỗi',
+              message: `${error.message}`,
               duration: 1000,
             });
-          });
-          // this.getListCycles();
-          this.dialogUpdateVisible = false;
-        } catch (error) {
-          this.$notify({
-            title: 'Lỗi',
-            message: `Lỗi ${error.message}`,
-            type: 'error',
-            duration: 1000,
-          });
-        }
-      });
+          }
+        });
+      }
+      if (invalidatedFields) {
+        Object.entries(invalidatedFields).forEach((field: any) => {
+          setTimeout(() => {
+            this.$notify.error({
+              title: 'Lỗi',
+              message: `${field[1][0].message}`,
+              duration: 2000,
+            });
+          }, 300);
+        });
+      }
     });
   }
 
@@ -167,18 +177,16 @@ export default class ManageCycleOkrs extends Vue {
       try {
         const rowName = row.name;
         await CycleRepository.delete(row.id).then((res) => {
-          this.$notify({
-            title: 'Status',
-            message: `Xóa thánh công chu kỳ ${rowName}`,
-            type: 'success',
+          this.$notify.success({
+            title: 'Trạng thái',
+            message: `Xóa chu kỳ thành công`,
             duration: 1000,
           });
         });
       } catch (error) {
-        this.$notify({
+        this.$notify.error({
           title: 'Lỗi',
-          message: `Lỗi ${error.message}`,
-          type: 'error',
+          message: `${error.message}`,
           duration: 1000,
         });
       }
