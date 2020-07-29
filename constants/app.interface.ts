@@ -1,5 +1,5 @@
 import { dataType, ruleTrigger, Validator, PromiseValidtor, Gender } from './app.type';
-import { EvaluationCriteriaEnum, AdminTabsEn } from './app.enum';
+import { EvaluationCriteriaEnum } from './app.enum';
 
 export interface LoginDTO {
   email: string;

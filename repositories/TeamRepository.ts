@@ -4,7 +4,7 @@ import { ResourcesEnpoint } from '@/constants/app.enum';
 import { TeamDTO, AdminParams } from '@/constants/app.interface';
 
 export default class TeamRepository {
-  public static get(params: AdminParams) {
+  public static get(params: AdminParams): Promise<AxiosResponse<any>> {
     const query = { params };
     return authenticatedService.get(`${ResourcesEnpoint.Team}`, query);
   }

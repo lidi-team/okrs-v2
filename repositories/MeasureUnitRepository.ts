@@ -4,7 +4,7 @@ import { ResourcesEnpoint } from '@/constants/app.enum';
 import { MeasureUnitDTO, AdminParams } from '@/constants/app.interface';
 
 export default class MeasureUnitRepository {
-  public static get(params: AdminParams) {
+  public static get(params: AdminParams): Promise<AxiosResponse<any>> {
     const query = { params };
     return authenticatedService.get(`${ResourcesEnpoint.MeasureUnit}`, query);
   }

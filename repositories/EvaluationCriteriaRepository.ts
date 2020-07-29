@@ -4,7 +4,7 @@ import { ResourcesEnpoint } from '@/constants/app.enum';
 import { EvaluationCriteriorDTO, AdminParams } from '@/constants/app.interface';
 
 export default class EvaluationCriteriorRepository {
-  public static get(params: AdminParams) {
+  public static get(params: AdminParams): Promise<AxiosResponse<any>> {
     const query = { params };
     return authenticatedService.get(`${ResourcesEnpoint.EvaluationCriterial}`, query);
   }
