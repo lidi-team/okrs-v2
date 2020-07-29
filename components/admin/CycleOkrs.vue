@@ -2,14 +2,11 @@
   <fragment>
     <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="cycle-okrs">
       <el-table-column prop="name" label="Tên chu kỳ"></el-table-column>
-      <el-table-column label="Ngày bắt đầu">
-        <template v-slot="{ row }">
-          <span>{{ dateParser(row.startDate) }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column prop="startDate" label="Ngày bắt đầu" />
+      <!-- <el-table-column prop="startDate" label="Ngày bắt đầu" :formatter="formatter" /> -->
       <el-table-column label="Ngày kết thúc">
         <template v-slot="{ row }">
-          <span>{{ dateParser(row.endDate) }}</span>
+          <span>{{ row.endDate }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
@@ -23,13 +20,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <base-pagination
-      class="admin__tab__table__pagination"
-      :total="total"
-      page.sync="page"
-      limit.sync="limit"
-      @pagination="handlePagination($event)"
-    />
+    <base-pagination class="pagination-bottom" :total="total" :page.sync="syncPage" :limit.sync="syncLimit" @pagination="handlePagination($event)" />
     <el-dialog
       title="Cập nhật chu kỳ"
       :visible.sync="dialogUpdateVisible"
@@ -73,28 +64,28 @@
   </fragment>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { AdminTabsEn } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 import { CycleDTO } from '@/constants/app.interface';
 import CycleRepository from '@/repositories/CycleRepository';
-import { formtDateToDD, formatDateToYYYY, compareTwoDate } from '@/utils/dateParser';
+import { formatDateToDD, formatDateToYYYY, compareTwoDate } from '@/utils/dateParser';
 
 @Component<ManageCycleOkrs>({ name: 'ManageCycleOkrs' })
 export default class ManageCycleOkrs extends Vue {
   @Prop(Array) public tableData!: Object[];
   @Prop(Boolean) public loading!: boolean;
-  @Prop(Function) public getListCycles!: Function;
-  @Prop() public total!: number;
-  @Prop() public page!: number;
-  @Prop() public limit!: number;
+  @Prop({ type: Number, required: true }) public total!: number;
+  @PropSync('page', { type: Number, required: true }) public syncPage!: number;
+  @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
 
   private dateFormat: string = 'dd/MM/yyyy';
   private dialogUpdateVisible: boolean = false;
   private temporaryUpdateCycle: CycleDTO = {
     name: '',
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: null,
+    endDate: null,
   };
 
   private rules: Maps<Rule[]> = {
@@ -102,9 +93,9 @@ export default class ManageCycleOkrs extends Vue {
       { type: 'string', required: true, message: 'Vui lòng nhập tên chu kỳ', trigger: 'blur' },
       { min: 3, message: 'Tên chu kỳ chứa ít nhất 3 ký tự' },
     ],
-    startDate: [{ required: true, message: 'Vui lòng chọn ngày bắt đầu', trigger: 'blur' }],
+    startDate: [{ required: true, message: 'Vui lòng chọn ngày bắt đầu', trigger: ['blur', 'change'] }],
     endDate: [
-      { required: true, message: 'Vui lòng chọn ngày kết thúc', trigger: 'blur' },
+      { required: true, message: 'Vui lòng chọn ngày kết thúc', trigger: ['blur', 'change'] },
       { validator: this.validateEndDate, trigger: ['blur', 'change'] },
     ],
   };
@@ -120,45 +111,55 @@ export default class ManageCycleOkrs extends Vue {
     this.temporaryUpdateCycle = {
       id: row.id,
       name: row.name,
-      startDate: formtDateToDD(row.startDate),
-      endDate: formtDateToDD(row.endDate),
+      startDate: formatDateToDD(row.startDate),
+      endDate: formatDateToDD(row.endDate),
     };
     this.dialogUpdateVisible = true;
   }
 
   private handleUpdate(): void {
-    (this.$refs.temporaryUpdateCycleForm as Form).validate((isValid) => {
-      this.$confirm(`Bạn có chắc chắn muốn cập nhật cycle này không?`, {
-        confirmButtonText: 'Đồng ý',
-        cancelButtonText: 'Hủy bỏ',
-        type: 'warning',
-      }).then(async () => {
-        try {
-          const tempCycle: CycleDTO = {
-            id: this.temporaryUpdateCycle.id,
-            name: this.temporaryUpdateCycle.name,
-            startDate: formatDateToYYYY(this.temporaryUpdateCycle.startDate),
-            endDate: formatDateToYYYY(this.temporaryUpdateCycle.endDate),
-          };
-          await CycleRepository.update(tempCycle).then((res) => {
-            this.$notify({
-              title: 'Status',
-              message: 'Cập nhật thành công',
-              type: 'success',
+    (this.$refs.temporaryUpdateCycleForm as Form).validate((isValid: boolean, invalidatedFields: object) => {
+      if (isValid) {
+        this.$confirm(`Bạn có chắc chắn muốn cập nhật chu kỳ này không?`, {
+          confirmButtonText: 'Đồng ý',
+          cancelButtonText: 'Hủy bỏ',
+          type: 'warning',
+        }).then(async () => {
+          try {
+            const tempCycle: CycleDTO = {
+              id: this.temporaryUpdateCycle.id,
+              name: this.temporaryUpdateCycle.name,
+              startDate: formatDateToYYYY(this.temporaryUpdateCycle.startDate),
+              endDate: formatDateToYYYY(this.temporaryUpdateCycle.endDate),
+            };
+            await CycleRepository.update(tempCycle).then((res) => {
+              this.$notify.success({
+                title: 'Trạng thái',
+                message: 'Cập nhật chu kỳ thành công',
+                duration: 1000,
+              });
+            });
+            this.dialogUpdateVisible = false;
+          } catch (error) {
+            this.$notify.error({
+              title: 'Lỗi',
+              message: `${error.message}`,
               duration: 1000,
             });
-          });
-          // this.getListCycles();
-          this.dialogUpdateVisible = false;
-        } catch (error) {
-          this.$notify({
-            title: 'Lỗi',
-            message: `Lỗi ${error.message}`,
-            type: 'error',
-            duration: 1000,
-          });
-        }
-      });
+          }
+        });
+      }
+      if (invalidatedFields) {
+        Object.entries(invalidatedFields).forEach((field: any) => {
+          setTimeout(() => {
+            this.$notify.error({
+              title: 'Lỗi',
+              message: `${field[1][0].message}`,
+              duration: 2000,
+            });
+          }, 300);
+        });
+      }
     });
   }
 
@@ -169,20 +170,17 @@ export default class ManageCycleOkrs extends Vue {
       type: 'warning',
     }).then(async () => {
       try {
-        const rowName = row.name;
         await CycleRepository.delete(row.id).then((res) => {
-          this.$notify({
-            title: 'Status',
-            message: `Xóa thánh công chu kỳ ${rowName}`,
-            type: 'success',
+          this.$notify.success({
+            title: 'Trạng thái',
+            message: `Xóa chu kỳ thành công`,
             duration: 1000,
           });
         });
       } catch (error) {
-        this.$notify({
+        this.$notify.error({
           title: 'Lỗi',
-          message: `Lỗi ${error.message}`,
-          type: 'error',
+          message: `${error.message}`,
           duration: 1000,
         });
       }
@@ -194,8 +192,13 @@ export default class ManageCycleOkrs extends Vue {
     this.dialogUpdateVisible = false;
   }
 
-  private dateParser(date: string): string {
-    return formtDateToDD(date);
+  private handlePagination(pagination: any) {
+    const tabNow = this.$route.query.tab === undefined ? AdminTabsEn.CycleOKR : this.$route.query.tab;
+    this.$router.push(`?tab=${tabNow}&page=${pagination.page}`);
+  }
+
+  private formatter(row, column, cellValue, index) {
+    return formatDateToDD(cellValue);
   }
 }
 </script>
@@ -203,6 +206,9 @@ export default class ManageCycleOkrs extends Vue {
 @import '@/assets/scss/main.scss';
 .cycle-okrs {
   width: 100%;
+}
+.pagination-bottom {
+  margin-top: 2rem;
 }
 .cycle-okrs-dialog {
   .el-date-editor.el-input {

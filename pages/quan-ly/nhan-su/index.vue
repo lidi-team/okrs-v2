@@ -37,6 +37,7 @@ import AuthRepository from '@/repositories/AuthRepository';
 import TeamRepository from '@/repositories/TeamRepository';
 import JobRepository from '@/repositories/JobRepository';
 import RoleRepository from '@/repositories/RoleRepository';
+import { pageLimit } from '@/constants/app.constant';
 
 @Component<ManageEmployee>({
   name: 'ManageEmployee',
@@ -56,7 +57,7 @@ export default class ManageEmployee extends Vue {
     status: this.$route.query.tab === 'deactive' ? -1 : this.$route.query.tab === 'pending' ? 0 : 1,
     text: this.$route.query.text ? String(this.$route.query.text) : '',
     page: this.$route.query.page ? Number(this.$route.query.page) : 1,
-    limit: 10,
+    limit: pageLimit,
   };
 
   private currentTab: string =

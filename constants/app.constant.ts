@@ -7,3 +7,5 @@ export const authEnpoint = {
   logout: `${ResourcesEnpoint.Users}/me/logout`,
   resetPassword: `${ResourcesEnpoint.ResetPassword}`,
 };
+
+export const pageLimit = 10;

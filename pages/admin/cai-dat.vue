@@ -3,7 +3,7 @@
     <admin-slot class="admin">
       <template #top>
         <el-row type="flex" justify="space-between" class="admin__top">
-          <el-col :span="16">
+          <el-col :span="17">
             <div class="admin__top__left">
               <el-autocomplete
                 v-model="textSearch"
@@ -13,7 +13,7 @@
               ></el-autocomplete>
             </div>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="7">
             <div class="admin__top__right">
               <el-button class="el-button--purple el-button--small el-button--invite" icon="el-icon-plus" @click="addNew">
                 Thêm mới {{ topChange.buttonName }}
@@ -26,26 +26,41 @@
         <el-tabs v-model="currentTab" class="admin__tab" @tab-click="switchTabs(currentTab)">
           <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab" :lazy="true" />
           <div class="admin__tab__table">
-            <component :is="currentTabComponent" :table-data="tableData" :loading="loading" />
-            <!--  :loading="loading" :total="total" :limit="limit" :page="page" -->
+            <component
+              :is="currentTabComponent"
+              :table-data="tableData"
+              :loading="loading"
+              :total="totalItems"
+              :page.sync="adminParams.page"
+              :limit.sync="adminParams.limit"
+            />
           </div>
         </el-tabs>
       </template>
     </admin-slot>
-    <cycle-okrs-dialog v-if="topChange.tab === 1" :cycle-visible-dialog.sync="cycleVisibleDialog" />
+    <new-cycle-okrs-dialog v-if="topChange.tab === 1" :cycle-visible-dialog.sync="cycleVisibleDialog" />
+    <new-department-dialog v-if="topChange.tab === 2" :team-visible-dialog.sync="teamVisibleDialog" />
+    <new-job-dialog v-if="topChange.tab === 3" :job-visible-dialog.sync="jobVisibleDialog" />
+    <new-criteria-dialog v-if="topChange.tab === 4" :criteria-visible-dialog.sync="criteriaVisibleDialog" />
+    <new-unit-dialog v-if="topChange.tab === 5" :unit-visible-dialog.sync="unitVisibleDialog" />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Context } from '@nuxt/types';
-import { Notification } from 'element-ui';
+import { pageLimit } from '@/constants/app.constant';
+import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 import ManageCycleOkrs from '@/components/admin/CycleOkrs.vue';
-import ManageEvaluationCriteria from '@/components/admin/EvaluationCriteria.vue';
-import ManageJobPosition from '@/components/admin/JobPosition.vue';
 import ManageMeasureUnit from '@/components/admin/MeasureUnit.vue';
 import ManageDepartment from '@/components/admin/Department.vue';
-import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
+import ManageEvaluationCriteria from '@/components/admin/EvaluationCriteria.vue';
+import ManageJobPosition from '@/components/admin/JobPosition.vue';
+import TeamRepository from '@/repositories/TeamRepository';
 import CycleRepository from '@/repositories/CycleRepository';
+import JobRepository from '@/repositories/JobRepository';
+import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
+import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
+import { AdminParams } from '@/constants/app.interface';
 
 @Component<SettingCompanyPage>({
   name: 'SettingCompanyPage',
@@ -55,10 +70,17 @@ import CycleRepository from '@/repositories/CycleRepository';
 })
 export default class SettingCompanyPage extends Vue {
   private tableData: any[] = [];
+  private metaPagination: object = {};
+  private totalItems: number = 1;
+
   private loading: boolean = false;
-  private cycleVisibleDialog: boolean = false;
   private tabs: string[] = [...Object.values(AdminTabsVn)];
   private textSearch: string = '';
+  private cycleVisibleDialog: boolean = false;
+  private teamVisibleDialog: boolean = false;
+  private jobVisibleDialog: boolean = false;
+  private criteriaVisibleDialog: boolean = false;
+  private unitVisibleDialog: boolean = false;
 
   private currentTab: string =
     this.$route.query.tab === AdminTabsEn.MeasureUnit
@@ -71,25 +93,41 @@ export default class SettingCompanyPage extends Vue {
       ? AdminTabsVn.Department
       : AdminTabsVn.CycleOKR;
 
+  private adminParams: AdminParams = {
+    page: this.$route.query.page ? Number(this.$route.query.page) : 1,
+    limit: pageLimit,
+  };
+
   private switchTabs(currentTab: string) {
-    this.$router.push(
-      `?tab=${
-        currentTab === AdminTabsVn.CycleOKR
-          ? AdminTabsEn.CycleOKR
-          : currentTab === AdminTabsVn.Department
-          ? AdminTabsEn.Department
-          : currentTab === AdminTabsVn.JobPosition
-          ? AdminTabsEn.JobPosition
-          : currentTab === AdminTabsVn.EvaluationCriterial
-          ? AdminTabsEn.EvaluationCriterial
-          : AdminTabsEn.MeasureUnit
-      }`,
-    );
+    if (currentTab === AdminTabsVn.CycleOKR) {
+      this.adminParams.page = 1;
+      this.$router.push(`?tab=${AdminTabsEn.CycleOKR}`);
+    } else if (currentTab === AdminTabsVn.Department) {
+      this.adminParams.page = 1;
+      this.$router.push(`?tab=${AdminTabsEn.Department}`);
+    } else if (currentTab === AdminTabsVn.JobPosition) {
+      this.adminParams.page = 1;
+      this.$router.push(`?tab=${AdminTabsEn.JobPosition}`);
+    } else if (currentTab === AdminTabsVn.EvaluationCriterial) {
+      this.adminParams.page = 1;
+      this.$router.push(`?tab=${AdminTabsEn.EvaluationCriterial}`);
+    } else {
+      this.adminParams.page = 1;
+      this.$router.push(`?tab=${AdminTabsEn.MeasureUnit}`);
+    }
   }
 
   private addNew() {
     if (this.topChange.tab === 1) {
       this.cycleVisibleDialog = true;
+    } else if (this.topChange.tab === 2) {
+      this.teamVisibleDialog = true;
+    } else if (this.topChange.tab === 3) {
+      this.jobVisibleDialog = true;
+    } else if (this.topChange.tab === 4) {
+      this.criteriaVisibleDialog = true;
+    } else {
+      this.unitVisibleDialog = true;
     }
   }
 
@@ -98,15 +136,70 @@ export default class SettingCompanyPage extends Vue {
     this.loading = true;
     if (this.$route.query.tab === AdminTabsEn.CycleOKR || this.$route.query.tab === undefined) {
       try {
-        let { data } = await CycleRepository.get();
-        data = Object.freeze(data.data);
-        this.tableData = data;
+        const { data } = await CycleRepository.get(this.adminParams);
+        this.tableData = data.data.items;
+        this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
-        Notification({
-          title: 'Status',
+        this.$notify.error({
+          title: 'Lỗi',
           message: error.message,
-          type: 'error',
+          duration: 2000,
+        });
+        this.loading = false;
+      }
+    } else if (this.$route.query.tab === AdminTabsEn.Department) {
+      try {
+        const { data } = await TeamRepository.get(this.adminParams);
+        this.tableData = data.data.items;
+        this.totalItems = data.data.meta.totalItems;
+        this.loading = false;
+      } catch (error) {
+        this.$notify.error({
+          title: 'Lỗi',
+          message: error.message,
+          duration: 2000,
+        });
+        this.loading = false;
+      }
+    } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
+      try {
+        const { data } = await JobRepository.get(this.adminParams);
+        this.tableData = data.data.items;
+        this.totalItems = data.data.meta.totalItems;
+        this.loading = false;
+      } catch (error) {
+        this.$notify.error({
+          title: 'Lỗi',
+          message: error.message,
+          duration: 2000,
+        });
+        this.loading = false;
+      }
+    } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
+      try {
+        const { data } = await EvaluationCriteriaRepository.get(this.adminParams);
+        this.tableData = data.data.items;
+        this.totalItems = data.data.meta.totalItems;
+        this.loading = false;
+      } catch (error) {
+        this.$notify.error({
+          title: 'Lỗi',
+          message: error.message,
+          duration: 2000,
+        });
+        this.loading = false;
+      }
+    } else {
+      try {
+        const { data } = await MeasureUnitRepository.get(this.adminParams);
+        this.tableData = data.data.items;
+        this.totalItems = data.data.meta.totalItems;
+        this.loading = false;
+      } catch (error) {
+        this.$notify.error({
+          title: 'Lỗi',
+          message: error.message,
           duration: 2000,
         });
         this.loading = false;
@@ -143,19 +236,19 @@ export default class SettingCompanyPage extends Vue {
       };
     } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
       return {
-        buttonName: 'vị trí công việc',
+        buttonName: 'vị trí',
         textPlaceholder: 'Tìm kiếm vị trí công việc',
         tab: 3,
       };
     } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
       return {
-        buttonName: 'tiêu chí đánh giá',
+        buttonName: 'tiêu chí',
         textPlaceholder: 'Tìm kiếm tiêu chí đánh giá',
         tab: 4,
       };
     } else {
       return {
-        buttonName: 'đơn vị đo lường',
+        buttonName: 'đơn vị',
         textPlaceholder: 'Tìm kiếm đơn vị đo lường',
         tab: 5,
       };

@@ -50,25 +50,31 @@ export interface ProfileDTO {
 }
 
 export interface TeamDTO {
-  name: string;
-  description: string;
+  id?: number | any;
+  name?: string;
+  description?: string;
+  updatedAt?: Date | null | string;
 }
 
 export interface JobPositionDTO {
-  name: string;
-  description: string;
+  id?: number | any;
+  name?: string;
+  description?: string;
+  updatedAt?: Date | null | string;
 }
 
-export interface MeasureUnitDTP {
+export interface MeasureUnitDTO {
+  id?: number | any;
   preset: string;
   type: string;
   index: number;
 }
 
-export interface EvaluationCriteriorDTTO {
+export interface EvaluationCriteriorDTO {
+  id?: number | any;
   content: string;
   numberOfStar: number;
-  type: EvaluationCriteriaEnum;
+  type: EvaluationCriteriaEnum | any;
 }
 
 export interface SelectDTO {
@@ -125,8 +131,23 @@ export interface ParamsUser {
   limit?: number;
 }
 
+export interface AdminParams {
+  tab?: string;
+  text?: string;
+  page?: number;
+  limit?: number;
+}
+
 export interface ParamsTeam {
   page?: number;
   limit?: number;
   text?: string;
+}
+
+export interface MetaPagination {
+  totalItems?: number | any;
+  itemCount?: number | any;
+  itemsPerPage?: number | string | any;
+  totalPages?: number | any;
+  currentPage?: number | string | any;
 }

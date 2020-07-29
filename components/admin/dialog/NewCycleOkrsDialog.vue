@@ -5,7 +5,7 @@
     width="30%"
     placement="center"
     :before-close="handleCloseDialog"
-    class="dialog-cycle-okrs fdsfsdf"
+    class="dialog-cycle-okrs"
   >
     <el-row>
       <el-col :span="24">
@@ -80,43 +80,44 @@ export default class CycleOkrsDialog extends Vue {
     return callback();
   }
 
-  private cycleRulesForm: Maps<Rule[]> = {
-    name: [
-      { type: 'string', required: true, message: 'Vui lòng nhập tên chu kỳ', trigger: 'blur' },
-      { min: 3, message: 'Tên chu kỳ chứa ít nhất 3 ký tự' },
-    ],
-    startDate: [{ required: true, message: 'Vui lòng chọn ngày bắt đầu', trigger: 'blur' }],
-    endDate: [
-      { required: true, message: 'Vui lòng chọn ngày kết thúc', trigger: 'blur' },
-      { validator: this.validateEndDate, trigger: ['blur', 'change'] },
-    ],
-  };
-
   private createCycleOkrs() {
     this.loading = true;
-    (this.$refs.temCreateCycle as Form).validate(async (isValid) => {
-      try {
-        const tempCycle: CycleDTO = {
-          name: this.temCreateCycle.name,
-          startDate: formatDateToYYYY(this.temCreateCycle.startDate),
-          endDate: formatDateToYYYY(this.temCreateCycle.endDate),
-        };
-        await CycleRepository.post(tempCycle).then((res) => {
-          this.$notify({
-            title: 'Status',
-            message: `Tạo mới thành công chu kỳ ${res.data.data.name}`,
-            type: 'success',
+    (this.$refs.temCreateCycle as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
+      if (isValid) {
+        try {
+          const tempCycle: CycleDTO = {
+            name: this.temCreateCycle.name,
+            startDate: formatDateToYYYY(this.temCreateCycle.startDate),
+            endDate: formatDateToYYYY(this.temCreateCycle.endDate),
+          };
+          await CycleRepository.post(tempCycle).then((res) => {
+            this.$notify.success({
+              title: 'Trạng thái',
+              message: `Tạo chu kỳ mới thành công`,
+              duration: 2000,
+            });
+          });
+          this.loading = false;
+          this.clearForm();
+          this.syncCycleDialog = false;
+        } catch (error) {
+          this.$notify.error({
+            title: 'Lỗi',
+            message: `Lỗi ${error.message}`,
             duration: 2000,
           });
-        });
-        this.loading = false;
-        this.syncCycleDialog = false;
-      } catch (error) {
-        this.$notify({
-          title: 'Lỗi',
-          message: `Lỗi ${error.message}`,
-          type: 'error',
-          duration: 2000,
+          this.loading = false;
+        }
+      }
+      if (invalidatedFields) {
+        Object.entries(invalidatedFields).forEach((field: any) => {
+          setTimeout(() => {
+            this.$notify.error({
+              title: 'Lỗi',
+              message: `${field[1][0].message}`,
+              duration: 2000,
+            });
+          }, 300);
         });
         this.loading = false;
       }
@@ -126,6 +127,12 @@ export default class CycleOkrsDialog extends Vue {
   private handleCloseDialog() {
     (this.$refs.temCreateCycle as Form).clearValidate();
     this.syncCycleDialog = false;
+  }
+
+  private clearForm(): void {
+    this.temCreateCycle.name = '';
+    this.temCreateCycle.startDate = null;
+    this.temCreateCycle.endDate = null;
   }
 }
 </script>
