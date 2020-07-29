@@ -17,12 +17,12 @@
         <el-input v-model="registerForm.email" class="register-form__input__email" placeholder="Nhập email"></el-input>
       </el-form-item>
       <el-form-item prop="password" label="Mật khẩu" class="custom-label">
-        <el-input v-model="registerForm.password" class="register-form__input__password" placeholder="Nhập mật khẩu"></el-input>
+        <el-input v-model="registerForm.password" type="password" class="register-form__input__password" placeholder="Nhập mật khẩu"></el-input>
       </el-form-item>
-      <el-form-item prop="matchPassword" label="Nhập lại mật khẩu">
-        <el-input v-model="registerForm.matchPassword" class="register-form__input" placeholder="Nhập lại mật khẩu"></el-input>
+      <el-form-item prop="matchPassword" label="Nhập lại mật khẩu" class="custom-label">
+        <el-input v-model="registerForm.matchPassword" type="password" class="register-form__input" placeholder="Nhập lại mật khẩu"></el-input>
       </el-form-item>
-      <el-form-item prop="fullName" label="Họ và Tên">
+      <el-form-item prop="fullName" label="Họ và Tên" class="custom-label">
         <el-input v-model="registerForm.fullName" class="register-form__input__full-name" placeholder="Nhập họ tên"></el-input>
       </el-form-item>
       <el-form-item prop="gender" label="Giới tính" class="register-form__input__gender custom-label">
