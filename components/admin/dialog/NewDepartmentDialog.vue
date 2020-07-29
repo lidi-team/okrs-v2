@@ -19,7 +19,7 @@
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import TeamRepository from '@/repositories/TeamRepository';
 import { TeamDTO } from '@/constants/app.interface';
@@ -28,6 +28,7 @@ import { Maps, Rule } from '@/constants/app.type';
   name: 'TeamDialog',
 })
 export default class TeamDialog extends Vue {
+  @Prop(Function) public reloadData!: Function;
   @PropSync('teamVisibleDialog', { type: Boolean, required: true }) public syncTeamDialog!: boolean;
 
   private autoSizeConfig = { minRows: 2, maxRows: 4 };
@@ -59,6 +60,7 @@ export default class TeamDialog extends Vue {
           });
           this.clearForm();
           this.loading = false;
+          this.reloadData();
           this.syncTeamDialog = false;
         } catch (error) {
           this.$notify.error({

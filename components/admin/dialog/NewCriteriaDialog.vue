@@ -31,7 +31,7 @@
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { EvaluationCriteriorDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
@@ -41,6 +41,7 @@ import { EvaluationCriteriaEnum } from '@/constants/app.enum';
   name: 'CriteriaDialog',
 })
 export default class CriteriaDialog extends Vue {
+  @Prop(Function) public reloadData!: Function;
   @PropSync('criteriaVisibleDialog', { type: Boolean, required: true }) public syncCriteriaDialog!: boolean;
 
   private typeCriterias: object[] = [
@@ -78,6 +79,7 @@ export default class CriteriaDialog extends Vue {
           });
           this.loading = false;
           this.clearForm();
+          this.reloadData();
           this.syncCriteriaDialog = false;
         } catch (error) {
           this.$notify.error({

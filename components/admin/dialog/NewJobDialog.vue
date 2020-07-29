@@ -19,7 +19,7 @@
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { TeamDTO } from '@/constants/app.interface';
 import JobRepository from '@/repositories/JobRepository';
@@ -28,6 +28,7 @@ import { Maps, Rule } from '@/constants/app.type';
   name: 'JobDialog',
 })
 export default class JobDialog extends Vue {
+  @Prop(Function) public reloadData!: Function;
   @PropSync('jobVisibleDialog', { type: Boolean, required: true }) public syncJobDialog!: boolean;
 
   private autoSizeConfig = { minRows: 2, maxRows: 4 };
@@ -59,6 +60,7 @@ export default class JobDialog extends Vue {
           });
           this.clearForm();
           this.loading = false;
+          this.reloadData();
           this.syncJobDialog = false;
         } catch (error) {
           this.$notify.error({

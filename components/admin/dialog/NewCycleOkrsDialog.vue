@@ -41,7 +41,7 @@
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { CycleDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
@@ -51,6 +51,7 @@ import CycleRepository from '@/repositories/CycleRepository';
   name: 'CycleOkrsDialog',
 })
 export default class CycleOkrsDialog extends Vue {
+  @Prop(Function) public reloadData!: Function;
   @PropSync('cycleVisibleDialog', { type: Boolean, required: true }) public syncCycleDialog!: boolean;
 
   private loading: boolean = false;
@@ -99,6 +100,7 @@ export default class CycleOkrsDialog extends Vue {
           });
           this.loading = false;
           this.clearForm();
+          this.reloadData();
           this.syncCycleDialog = false;
         } catch (error) {
           this.$notify.error({

@@ -80,6 +80,7 @@ import StarIcon from '@/assets/images/common/star.svg';
 export default class ManageEvaluationCriteria extends Vue {
   @Prop(Array) public tableData!: Object[];
   @Prop(Boolean) public loading!: boolean;
+  @Prop(Function) public reloadData!: Function;
   @Prop({ type: Number, required: true }) public total!: number;
   @PropSync('page', { type: Number, required: true }) public syncPage!: number;
   @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
@@ -132,6 +133,7 @@ export default class ManageEvaluationCriteria extends Vue {
                 duration: 2000,
               });
             });
+            this.reloadData();
             this.dialogUpdateVisible = false;
           } catch (error) {
             this.$notify.error({
@@ -170,6 +172,7 @@ export default class ManageEvaluationCriteria extends Vue {
             duration: 1000,
           });
         });
+        this.reloadData();
       } catch (error) {
         this.$notify.error({
           title: 'Lỗi',

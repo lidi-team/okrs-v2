@@ -22,7 +22,7 @@
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 import { MeasureUnitDTO } from '@/constants/app.interface';
@@ -31,6 +31,7 @@ import { Maps, Rule } from '@/constants/app.type';
   name: 'MeasureUnitDialog',
 })
 export default class MeasureUnitDialog extends Vue {
+  @Prop(Function) public reloadData!: Function;
   @PropSync('unitVisibleDialog', { type: Boolean, required: true }) public syncMeasureUnitDialog!: boolean;
 
   private loading: boolean = false;
@@ -62,6 +63,7 @@ export default class MeasureUnitDialog extends Vue {
           });
           this.clearForm();
           this.loading = false;
+          this.reloadData();
           this.syncMeasureUnitDialog = false;
         } catch (error) {
           this.$notify.error({
