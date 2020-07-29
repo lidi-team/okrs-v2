@@ -164,7 +164,6 @@ export default class SettingCompanyPage extends Vue {
       }
     } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
       try {
-        this.adminParams.page = 1;
         const { data } = await JobRepository.get(this.adminParams);
         this.tableData = data.data.items;
         this.totalItems = data.data.meta.totalItems;
@@ -179,7 +178,6 @@ export default class SettingCompanyPage extends Vue {
       }
     } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
       try {
-        this.adminParams.page = 1;
         const { data } = await EvaluationCriteriaRepository.get(this.adminParams);
         this.tableData = data.data.items;
         this.totalItems = data.data.meta.totalItems;
@@ -194,7 +192,6 @@ export default class SettingCompanyPage extends Vue {
       }
     } else {
       try {
-        this.adminParams.page = 1;
         const { data } = await MeasureUnitRepository.get(this.adminParams);
         this.tableData = data.data.items;
         this.totalItems = data.data.meta.totalItems;

@@ -4,14 +4,10 @@
       <el-table-column prop="content" label="Tiêu chí đánh giá"></el-table-column>
       <el-table-column label="Số sao">
         <template v-slot="{ row }">
-          <span>{{ row.numberOfStar }} ⭐️</span>
+          <span>{{ row.numberOfStar }} <star-icon /></span>
         </template>
       </el-table-column>
-      <el-table-column label="Kiểu">
-        <template v-slot="{ row }">
-          <span>{{ row.type === LEADER_TO_MEMBER ? 'Sếp đánh giá nhân viên' : 'Nhân viên đánh giá sếp' }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column prop="type" label="Kiểu" :formatter="typeFormatter" />
       <el-table-column label="Ngày cập nhật">
         <template v-slot="{ row }">
           <span>{{ row.updatedAt }}</span>
@@ -28,7 +24,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <base-pagination class="pagination-bottom" :total="total" page.sync="page" limit.sync="limit" @pagination="handlePagination($event)" />
+    <base-pagination class="pagination-bottom" :total="total" :page.sync="syncPage" :limit.sync="syncLimit" @pagination="handlePagination($event)" />
     <el-dialog
       title="Cập nhật tiêu chí"
       :visible.sync="dialogUpdateVisible"
@@ -50,7 +46,7 @@
                 @keyup.enter.native="handleUpdate(tempUpdateCriteria)"
               />
             </el-form-item>
-            <el-form-item prop="type" label="Kiểu" class="custom_label" label-width="120px">
+            <el-form-item prop="type" label="Kiểu" class="custom-label" label-width="120px">
               <el-select v-model="tempUpdateCriteria.type" placeholder="Chọn kiểu">
                 <el-option v-for="item in typeCriterias" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
@@ -66,23 +62,27 @@
   </fragment>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
 import { EvaluationCriteriorDTO } from '@/constants/app.interface';
-import { formtDateToDD } from '@/utils/dateParser';
-import { EvaluationCriteriaEnum } from '@/constants/app.enum';
+import { formatDateToDD } from '@/utils/dateParser';
+import { EvaluationCriteriaEnum, AdminTabsEn } from '@/constants/app.enum';
 import EvaluationCriteriorRepository from '@/repositories/EvaluationCriteriaRepository';
+import StarIcon from '@/assets/images/common/star.svg';
 
 @Component<ManageEvaluationCriteria>({
   name: 'ManageEvaluationCriteria',
+  components: {
+    StarIcon,
+  },
 })
 export default class ManageEvaluationCriteria extends Vue {
   @Prop(Array) public tableData!: Object[];
   @Prop(Boolean) public loading!: boolean;
-  @Prop() public total!: number;
-  @Prop() public page!: number;
-  @Prop() public limit!: number;
+  @Prop({ type: Number, required: true }) public total!: number;
+  @PropSync('page', { type: Number, required: true }) public syncPage!: number;
+  @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
 
   private typeCriterias: object[] = [
     { label: 'Sếp đánh giá nhân viên', value: EvaluationCriteriaEnum.LEADER_TO_MEMBER },
@@ -102,8 +102,8 @@ export default class ManageEvaluationCriteria extends Vue {
       { type: 'string', required: true, message: 'Vui lòng nhập tên tiêu chí', trigger: 'blur' },
       { min: 3, message: 'Tên tiêu chí chứa ít nhất 3 ký tự' },
     ],
-    numberOfStar: [{ type: 'number', required: true, message: 'Số sao phải là 1 số nguyên', trigger: 'blur' }],
-    type: [{ type: 'string', required: true, message: 'Vui lòng chọn kiểu của tiêu chí', trigger: 'blur' }],
+    numberOfStar: [{ type: 'number', min: 1, required: true, message: 'Số sao phải là 1 số nguyên không âm', trigger: 'blur' }],
+    type: [{ type: 'string', required: true, message: 'Vui lòng chọn kiểu của tiêu chí', trigger: 'change' }],
   };
 
   private handleOpenDialogUpdate(row: EvaluationCriteriorDTO): void {
@@ -180,14 +180,21 @@ export default class ManageEvaluationCriteria extends Vue {
     });
   }
 
+  private handlePagination(pagination: any) {
+    this.$router.push(`?tab=${AdminTabsEn.EvaluationCriterial}&page=${pagination.page}`);
+  }
+
   private handleCloseDialog(): void {
     (this.$refs.tempUpdateCriteria as Form).clearValidate();
     this.dialogUpdateVisible = false;
   }
 
-  private dateParser(date: string): string {
-    return formtDateToDD(date);
+  private typeFormatter(row, column, cellValue, index) {
+    return cellValue === EvaluationCriteriaEnum.LEADER_TO_MEMBER ? 'Sếp đánh giá nhân viên' : 'Nhân viên đánh giá sếp';
   }
+  // private dateParser(date: string): string {
+  //   return formatDateToDD(date);
+  // }
 }
 </script>
 <style lang="scss">
@@ -197,5 +204,10 @@ export default class ManageEvaluationCriteria extends Vue {
 }
 .pagination-bottom {
   margin-top: 2rem;
+}
+.criteria-admin-dialog {
+  .el-select {
+    width: 100%;
+  }
 }
 </style>
