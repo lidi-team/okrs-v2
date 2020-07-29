@@ -40,7 +40,7 @@ export default class TeamDialog extends Vue {
   private rules: Maps<Rule[]> = {
     name: [
       { type: 'string', required: true, message: 'Vui lòng nhập tên phòng ban', trigger: 'blur' },
-      { min: 3, message: 'Tên phòng ban chứa ít nhất 2 ký tự', trigger: 'change' },
+      { min: 3, message: 'Tên phòng ban chứa ít nhất 3 ký tự', trigger: 'change' },
     ],
   };
 

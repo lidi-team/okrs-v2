@@ -152,6 +152,12 @@ button:focus {
 }
 // End El Input
 
+// El textaria
+.el-textarea.is-active .el-textarea__inner,
+.el-textarea__inner:focus {
+  border-color: $purple-primary-5;
+}
+
 // El Form Rules
 
 // change red star validate to the back

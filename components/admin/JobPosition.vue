@@ -35,7 +35,13 @@
               <el-input v-model="tempUpdateJob.name" placeholder="Nhập tên vị trí" @keyup.enter.native="handleUpdate(tempUpdateJob)" />
             </el-form-item>
             <el-form-item label="Mô tả" label-width="120px">
-              <el-input v-model="tempUpdateJob.description" placeholder="Nhập mô tả" @keyup.enter.native="handleUpdate(tempUpdateJob)" />
+              <el-input
+                v-model="tempUpdateJob.description"
+                type="textarea"
+                :autosize="autoSizeConfig"
+                placeholder="Nhập mô tả"
+                @keyup.enter.native="handleUpdate(tempUpdateJob)"
+              />
             </el-form-item>
           </el-form>
         </el-col>
@@ -63,6 +69,7 @@ export default class ManageJobPosition extends Vue {
   @Prop() public page!: number;
   @Prop() public limit!: number;
 
+  private autoSizeConfig = { minRows: 2, maxRows: 4 };
   private dateFormat: string = 'dd/MM/yyyy';
   private dialogUpdateVisible: boolean = false;
   private tempUpdateJob: JobPositionDTO = {
@@ -88,31 +95,42 @@ export default class ManageJobPosition extends Vue {
   }
 
   private handleUpdate(): void {
-    (this.$refs.tempUpdateJob as Form).validate((isValid) => {
-      this.$confirm(`Bạn có chắc chắn muốn cập nhật vị trí này không?`, {
-        confirmButtonText: 'Đồng ý',
-        cancelButtonText: 'Hủy bỏ',
-        type: 'warning',
-      }).then(async () => {
-        try {
-          await JobRepository.update(this.tempUpdateJob).then((res) => {
-            this.$notify({
-              title: 'Status',
-              message: 'Cập nhật thành công',
-              type: 'success',
+    (this.$refs.tempUpdateJob as Form).validate((isValid: boolean, invalidatedFields: object) => {
+      if (isValid) {
+        this.$confirm(`Bạn có chắc chắn muốn cập nhật vị trí này không?`, {
+          confirmButtonText: 'Đồng ý',
+          cancelButtonText: 'Hủy bỏ',
+          type: 'warning',
+        }).then(async () => {
+          try {
+            await JobRepository.update(this.tempUpdateJob).then((res) => {
+              this.$notify.success({
+                title: 'Trạng thái',
+                message: 'Cập nhật vị trí thành công',
+                duration: 2000,
+              });
+            });
+            this.dialogUpdateVisible = false;
+          } catch (error) {
+            this.$notify.error({
+              title: 'Lỗi',
+              message: `${error.message}`,
               duration: 2000,
             });
-          });
-          this.dialogUpdateVisible = false;
-        } catch (error) {
-          this.$notify({
-            title: 'Lỗi',
-            message: `Lỗi ${error.message}`,
-            type: 'error',
-            duration: 2000,
-          });
-        }
-      });
+          }
+        });
+      }
+      if (invalidatedFields) {
+        Object.entries(invalidatedFields).forEach((field: any) => {
+          setTimeout(() => {
+            this.$notify.error({
+              title: 'Lỗi',
+              message: `${field[1][0].message}`,
+              duration: 2000,
+            });
+          }, 300);
+        });
+      }
     });
   }
 
@@ -125,18 +143,16 @@ export default class ManageJobPosition extends Vue {
       try {
         const rowName = row.name;
         await JobRepository.delete(row.id).then((res) => {
-          this.$notify({
-            title: 'Status',
-            message: `Xóa thánh công chu kỳ ${rowName}`,
-            type: 'success',
+          this.$notify.success({
+            title: 'Trạng thái',
+            message: `Xóa vị trí thành công`,
             duration: 1000,
           });
         });
       } catch (error) {
-        this.$notify({
+        this.$notify.error({
           title: 'Lỗi',
-          message: `Lỗi ${error.message}`,
-          type: 'error',
+          message: `${error.message}`,
           duration: 1000,
         });
       }

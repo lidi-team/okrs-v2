@@ -70,11 +70,11 @@ export interface MeasureUnitDTO {
   index: number;
 }
 
-export interface EvaluationCriteriorDTTO {
+export interface EvaluationCriteriorDTO {
   id?: number | any;
   content: string;
   numberOfStar: number;
-  type: EvaluationCriteriaEnum;
+  type: EvaluationCriteriaEnum | any;
 }
 
 export interface SelectDTO {
