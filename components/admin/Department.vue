@@ -19,7 +19,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <base-pagination class="pagination-bottom" :total="total" page.sync="page" limit.sync="limit" @pagination="handlePagination($event)" />
+    <base-pagination class="pagination-bottom" :total="total" :page.sync="syncPage" :limit.sync="syncLimit" @pagination="handlePagination($event)" />
     <el-dialog
       title="Cập nhật phòng ban"
       :visible.sync="dialogUpdateVisible"
@@ -54,12 +54,13 @@
   </fragment>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
 import { TeamDTO } from '@/constants/app.interface';
 import TeamRepository from '@/repositories/TeamRepository';
-import { formtDateToDD } from '@/utils/dateParser';
+import { formatDateToDD } from '@/utils/dateParser';
+import { AdminTabsEn } from '@/constants/app.enum';
 
 @Component<ManageDepartment>({
   name: 'ManageDepartment',
@@ -67,9 +68,9 @@ import { formtDateToDD } from '@/utils/dateParser';
 export default class ManageDepartment extends Vue {
   @Prop(Array) public tableData!: Object[];
   @Prop(Boolean) public loading!: boolean;
-  @Prop() public total!: number;
-  @Prop() public page!: number;
-  @Prop() public limit!: number;
+  @Prop({ type: Number, required: true }) public total!: number;
+  @PropSync('page', { type: Number, required: true }) public syncPage!: number;
+  @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
 
   private autoSizeConfig = { minRows: 2, maxRows: 4 };
   private dateFormat: string = 'dd/MM/yyyy';
@@ -143,7 +144,6 @@ export default class ManageDepartment extends Vue {
       type: 'warning',
     }).then(async () => {
       try {
-        const rowName = row.name;
         await TeamRepository.delete(row.id).then((res) => {
           this.$notify.success({
             title: 'Trạng thái',
@@ -161,14 +161,18 @@ export default class ManageDepartment extends Vue {
     });
   }
 
+  private handlePagination(pagination: any) {
+    this.$router.push(`?tab=${AdminTabsEn.Department}&page=${pagination.page}`);
+  }
+
   private handleCloseDialog(): void {
     (this.$refs.tempUpdateTeam as Form).clearValidate();
     this.dialogUpdateVisible = false;
   }
 
-  private dateParser(date: string): string {
-    return formtDateToDD(date);
-  }
+  // private dateParser(date: string): string {
+  //   return formatDateToDD(date);
+  // }
 }
 </script>
 <style lang="scss">

@@ -4,9 +4,9 @@ export const parseToDate = (date: string): Date => {
   return parse(date, 'dd/MM/yyyy', new Date());
 };
 
-export const formtDateToDD = (date: string, dateFormat: string = 'dd/MM/yyyy'): string => {
-  const tempDate = new Date(date);
-  return format(tempDate, dateFormat);
+export const formatDateToDD = (date: string, dateFormat: string = 'dd/MM/yyyy'): string => {
+  const newDate = new Date(date);
+  return format(newDate, dateFormat);
 };
 
 export const formatDateToYYYY = (date: string): string => {

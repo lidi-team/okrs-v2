@@ -2,13 +2,8 @@
   <fragment>
     <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="cycle-okrs">
       <el-table-column prop="name" label="Tên chu kỳ"></el-table-column>
-      <el-table-column label="Ngày bắt đầu">
-        <template v-slot="{ row }">
-          <!-- Nếu convert như thế này thì sẽ bị lỗi :)) Méo hiểu -->
-          <!-- <span>{{ dateParser(row.startDate) }}</span> -->
-          <span>{{ row.startDate }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column prop="startDate" label="Ngày bắt đầu" />
+      <!-- <el-table-column prop="startDate" label="Ngày bắt đầu" :formatter="formatter" /> -->
       <el-table-column label="Ngày kết thúc">
         <template v-slot="{ row }">
           <span>{{ row.endDate }}</span>
@@ -75,7 +70,7 @@ import { AdminTabsEn } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 import { CycleDTO } from '@/constants/app.interface';
 import CycleRepository from '@/repositories/CycleRepository';
-import { formtDateToDD, formatDateToYYYY, compareTwoDate, parseToDate } from '@/utils/dateParser';
+import { formatDateToDD, formatDateToYYYY, compareTwoDate } from '@/utils/dateParser';
 
 @Component<ManageCycleOkrs>({ name: 'ManageCycleOkrs' })
 export default class ManageCycleOkrs extends Vue {
@@ -116,8 +111,8 @@ export default class ManageCycleOkrs extends Vue {
     this.temporaryUpdateCycle = {
       id: row.id,
       name: row.name,
-      startDate: formtDateToDD(row.startDate),
-      endDate: formtDateToDD(row.endDate),
+      startDate: formatDateToDD(row.startDate),
+      endDate: formatDateToDD(row.endDate),
     };
     this.dialogUpdateVisible = true;
   }
@@ -175,7 +170,6 @@ export default class ManageCycleOkrs extends Vue {
       type: 'warning',
     }).then(async () => {
       try {
-        const rowName = row.name;
         await CycleRepository.delete(row.id).then((res) => {
           this.$notify.success({
             title: 'Trạng thái',
@@ -203,8 +197,8 @@ export default class ManageCycleOkrs extends Vue {
     this.$router.push(`?tab=${tabNow}&page=${pagination.page}`);
   }
 
-  private dateParser(date: string): string {
-    return formtDateToDD(date);
+  private formatter(row, column, cellValue, index) {
+    return formatDateToDD(cellValue);
   }
 }
 </script>
