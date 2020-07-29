@@ -7,7 +7,11 @@
           <span>{{ row.numberOfStar }} ⭐️</span>
         </template>
       </el-table-column>
-      <el-table-column prop="type" label="Kiểu"></el-table-column>
+      <el-table-column label="Kiểu">
+        <template v-slot="{ row }">
+          <span>{{ row.type === LEADER_TO_MEMBER ? 'Sếp đánh giá nhân viên' : 'Nhân viên đánh giá sếp' }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="Ngày cập nhật">
         <template v-slot="{ row }">
           <span>{{ row.updatedAt }}</span>
@@ -46,7 +50,7 @@
                 @keyup.enter.native="handleUpdate(tempUpdateCriteria)"
               />
             </el-form-item>
-            <el-form-item prop="type" label="Kiểu" class="custom_label">
+            <el-form-item prop="type" label="Kiểu" class="custom_label" label-width="120px">
               <el-select v-model="tempUpdateCriteria.type" placeholder="Chọn kiểu">
                 <el-option v-for="item in typeCriterias" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
@@ -82,7 +86,7 @@ export default class ManageEvaluationCriteria extends Vue {
 
   private typeCriterias: object[] = [
     { label: 'Sếp đánh giá nhân viên', value: EvaluationCriteriaEnum.LEADER_TO_MEMBER },
-    { label: 'nhân viên đánh giá sếp', value: EvaluationCriteriaEnum.MEMBER_TO_LEADER },
+    { label: 'Nhân viên đánh giá sếp', value: EvaluationCriteriaEnum.MEMBER_TO_LEADER },
   ];
 
   private dateFormat: string = 'dd/MM/yyyy';
