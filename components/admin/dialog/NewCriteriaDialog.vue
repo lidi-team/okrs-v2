@@ -35,7 +35,6 @@ import { Component, Vue, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { EvaluationCriteriorDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
-import { compareTwoDate, formatDateToYYYY } from '@/utils/dateParser';
 import CriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 @Component<CriteriaDialog>({

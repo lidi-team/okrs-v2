@@ -52,7 +52,7 @@ import { Form } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { formatDateToDD } from '@/utils/dateParser';
-import { EvaluationCriteriaEnum, AdminTabsEn } from '@/constants/app.enum';
+import { AdminTabsEn } from '@/constants/app.enum';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 
 @Component<ManageMeasureUnit>({
