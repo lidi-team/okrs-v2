@@ -7,7 +7,7 @@
             <el-input v-model="tempCreateJob.name" placeholder="Nhập tên vị trí" />
           </el-form-item>
           <el-form-item label="Mô tả" label-width="120px">
-            <el-input v-model="tempCreateJob.description" placeholder="Nhập mô tả" />
+            <el-input v-model="tempCreateJob.description" type="textarea" :autosize="autoSizeConfig" placeholder="Nhập mô tả" />
           </el-form-item>
         </el-form>
       </el-col>
@@ -30,6 +30,7 @@ import { Maps, Rule } from '@/constants/app.type';
 export default class JobDialog extends Vue {
   @PropSync('jobVisibleDialog', { type: Boolean, required: true }) public syncJobDialog!: boolean;
 
+  private autoSizeConfig = { minRows: 2, maxRows: 4 };
   private loading: boolean = false;
   private dateFormat: string = 'dd/MM/yyyy';
   private tempCreateJob: TeamDTO = {

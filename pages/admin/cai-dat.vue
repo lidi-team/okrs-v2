@@ -3,7 +3,7 @@
     <admin-slot class="admin">
       <template #top>
         <el-row type="flex" justify="space-between" class="admin__top">
-          <el-col :span="16">
+          <el-col :span="17">
             <div class="admin__top__left">
               <el-autocomplete
                 v-model="textSearch"
@@ -13,7 +13,7 @@
               ></el-autocomplete>
             </div>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="7">
             <div class="admin__top__right">
               <el-button class="el-button--purple el-button--small el-button--invite" icon="el-icon-plus" @click="addNew">
                 Thêm mới {{ topChange.buttonName }}
@@ -236,19 +236,19 @@ export default class SettingCompanyPage extends Vue {
       };
     } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
       return {
-        buttonName: 'vị trí công việc',
+        buttonName: 'vị trí',
         textPlaceholder: 'Tìm kiếm vị trí công việc',
         tab: 3,
       };
     } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
       return {
-        buttonName: 'tiêu chí đánh giá',
+        buttonName: 'tiêu chí',
         textPlaceholder: 'Tìm kiếm tiêu chí đánh giá',
         tab: 4,
       };
     } else {
       return {
-        buttonName: 'đơn vị đo lường',
+        buttonName: 'đơn vị',
         textPlaceholder: 'Tìm kiếm đơn vị đo lường',
         tab: 5,
       };

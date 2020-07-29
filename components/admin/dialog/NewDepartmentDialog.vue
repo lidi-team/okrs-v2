@@ -7,7 +7,7 @@
             <el-input v-model="tempCreateDepartment.name" placeholder="Nhập tên phòng ban" />
           </el-form-item>
           <el-form-item label="Mô tả" label-width="120px">
-            <el-input v-model="tempCreateDepartment.description" placeholder="Nhập mô tả" />
+            <el-input v-model="tempCreateDepartment.description" type="textarea" :autosize="autoSizeConfig" placeholder="Nhập mô tả" />
           </el-form-item>
         </el-form>
       </el-col>
@@ -30,6 +30,7 @@ import { Maps, Rule } from '@/constants/app.type';
 export default class TeamDialog extends Vue {
   @PropSync('teamVisibleDialog', { type: Boolean, required: true }) public syncTeamDialog!: boolean;
 
+  private autoSizeConfig = { minRows: 2, maxRows: 4 };
   private loading: boolean = false;
   private dateFormat: string = 'dd/MM/yyyy';
   private tempCreateDepartment: TeamDTO = {
