@@ -43,6 +43,7 @@
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { notifyAction } from '@/constants/app.notify';
 import { CycleDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import { compareTwoDate, formatDateToYYYY } from '@/utils/dateParser';
@@ -100,36 +101,20 @@ export default class CycleOkrsDialog extends Vue {
             endDate: formatDateToYYYY(this.temCreateCycle.endDate),
           };
           await CycleRepository.post(tempCycle).then((res) => {
-            this.$notify.success({
-              title: 'Trạng thái',
-              message: `Tạo chu kỳ mới thành công`,
-              duration: 2000,
-            });
+            notifyAction('', 'success', { action: 'create', name: 'chu kỳ' });
           });
           this.loading = false;
           this.clearForm();
           this.reloadData();
           this.syncCycleDialog = false;
         } catch (error) {
-          this.$notify.error({
-            title: 'Lỗi',
-            message: `Lỗi ${error.message}`,
-            duration: 2000,
-          });
           this.loading = false;
         }
       }
       if (invalidatedFields) {
-        Object.entries(invalidatedFields).forEach((field: any) => {
-          setTimeout(() => {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${field[1][0].message}`,
-              duration: 2000,
-            });
-          }, 300);
-        });
-        this.loading = false;
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }

@@ -24,6 +24,7 @@
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { notifyAction } from '@/constants/app.notify';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
@@ -63,36 +64,20 @@ export default class MeasureUnitDialog extends Vue {
       if (isValid) {
         try {
           await MeasureUnitRepository.post(this.tempCreateUnit).then((res) => {
-            this.$notify.success({
-              title: 'Trạng thái',
-              message: `Tạo đơn vị mới thành công`,
-              duration: 2000,
-            });
+            notifyAction('', 'success', { action: 'create', name: 'đơn vị' });
           });
           this.clearForm();
           this.loading = false;
           this.reloadData();
           this.syncMeasureUnitDialog = false;
         } catch (error) {
-          this.$notify.error({
-            title: 'Lỗi',
-            message: `${error.message}`,
-            duration: 2000,
-          });
           this.loading = false;
         }
       }
       if (invalidatedFields) {
-        Object.entries(invalidatedFields).forEach((field: any) => {
-          setTimeout(() => {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${field[1][0].message}`,
-              duration: 2000,
-            });
-          }, 300);
-        });
-        this.loading = false;
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }

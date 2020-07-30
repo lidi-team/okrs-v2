@@ -64,9 +64,9 @@
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { notifyAction } from '@/constants/app.notify';
 import { Maps, Rule } from '@/constants/app.type';
 import { EvaluationCriteriorDTO } from '@/constants/app.interface';
-import { formatDateToDD } from '@/utils/dateParser';
 import { EvaluationCriteriaEnum, AdminTabsEn } from '@/constants/app.enum';
 import EvaluationCriteriorRepository from '@/repositories/EvaluationCriteriaRepository';
 import StarIcon from '@/assets/images/common/star.svg';
@@ -135,32 +135,11 @@ export default class ManageEvaluationCriteria extends Vue {
         }).then(async () => {
           try {
             await EvaluationCriteriorRepository.update(this.tempUpdateCriteria).then((res) => {
-              this.$notify.success({
-                title: 'Trạng thái',
-                message: 'Cập nhật tiêu chí thành công',
-                duration: 2000,
-              });
+              notifyAction('', 'success', { action: 'update', name: 'tiêu chí' });
             });
             this.reloadData();
             this.dialogUpdateVisible = false;
-          } catch (error) {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${error.message}`,
-              duration: 2000,
-            });
-          }
-        });
-      }
-      if (invalidatedFields) {
-        Object.entries(invalidatedFields).forEach((field: any) => {
-          setTimeout(() => {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${field[1][0].message}`,
-              duration: 2000,
-            });
-          }, 300);
+          } catch (error) {}
         });
       }
     });
@@ -174,20 +153,10 @@ export default class ManageEvaluationCriteria extends Vue {
     }).then(async () => {
       try {
         await EvaluationCriteriorRepository.delete(row.id).then((res) => {
-          this.$notify.success({
-            title: 'Trạng thái',
-            message: `Xóa tiêu chí công`,
-            duration: 1000,
-          });
+          notifyAction('', 'success', { action: 'delete', name: 'tiêu chí' });
         });
         this.reloadData();
-      } catch (error) {
-        this.$notify.error({
-          title: 'Lỗi',
-          message: `${error.message}`,
-          duration: 1000,
-        });
-      }
+      } catch (error) {}
     });
   }
 
@@ -203,9 +172,6 @@ export default class ManageEvaluationCriteria extends Vue {
   private typeFormatter(row, column, cellValue, index) {
     return cellValue === EvaluationCriteriaEnum.LEADER_TO_MEMBER ? 'Sếp đánh giá nhân viên' : 'Nhân viên đánh giá sếp';
   }
-  // private dateParser(date: string): string {
-  //   return formatDateToDD(date);
-  // }
 }
 </script>
 <style lang="scss">

@@ -59,6 +59,7 @@ import { Form } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
 import { ChangePasswordDTO } from '@/constants/app.interface';
 import UserRepository from '@/repositories/UserRepository';
+import { notifyAction } from '@/constants/app.notify';
 
 @Component<ChangePasswordDialog>({
   name: 'ChangePasswordDialog',
@@ -108,22 +109,12 @@ export default class ChangePasswordDialog extends Vue {
           delete this.changePasswordForm.matchPassword;
           await UserRepository.changePassword(this.changePasswordForm);
           this.loading = false;
-          this.$notify({
-            title: 'Trạng thái',
-            type: 'success',
-            message: 'Đổi mật khẩu thành công',
-            duration: 2000,
-          });
+          notifyAction('Đổi mật khẩu thành công', 'success');
           this.$router.push('/');
         } catch (error) {
           this.loading = false;
           if (error.response.data.statusCode === 409) {
-            this.$notify({
-              title: 'Trạng thái',
-              message: 'Mât khẩu không chính xác',
-              type: 'error',
-              duration: 2000,
-            });
+            notifyAction('Mât khẩu không chính xác', 'error');
           }
         }
       }

@@ -69,6 +69,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { notifyAction } from '@/constants/app.notify';
 import { AdminTabsEn } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 import { CycleDTO } from '@/constants/app.interface';
@@ -147,32 +148,11 @@ export default class ManageCycleOkrs extends Vue {
               endDate: formatDateToYYYY(this.temporaryUpdateCycle.endDate),
             };
             await CycleRepository.update(tempCycle).then((res) => {
-              this.$notify.success({
-                title: 'Trạng thái',
-                message: 'Cập nhật chu kỳ thành công',
-                duration: 1000,
-              });
+              notifyAction('', 'success', { action: 'update', name: 'chu kỳ' });
             });
             this.reloadData();
             this.dialogUpdateVisible = false;
-          } catch (error) {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${error.message}`,
-              duration: 1000,
-            });
-          }
-        });
-      }
-      if (invalidatedFields) {
-        Object.entries(invalidatedFields).forEach((field: any) => {
-          setTimeout(() => {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${field[1][0].message}`,
-              duration: 2000,
-            });
-          }, 300);
+          } catch (error) {}
         });
       }
     });
@@ -186,20 +166,10 @@ export default class ManageCycleOkrs extends Vue {
     }).then(async () => {
       try {
         await CycleRepository.delete(row.id).then((res) => {
-          this.$notify.success({
-            title: 'Trạng thái',
-            message: `Xóa chu kỳ thành công`,
-            duration: 1000,
-          });
+          notifyAction('', 'success', { action: 'delete', name: 'chu kỳ' });
         });
         this.reloadData();
-      } catch (error) {
-        this.$notify.error({
-          title: 'Lỗi',
-          message: `${error.message}`,
-          duration: 1000,
-        });
-      }
+      } catch (error) {}
     });
   }
 

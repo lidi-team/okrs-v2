@@ -6,7 +6,7 @@
           <el-form-item label="Tên vị trí" prop="name" class="custom-label" label-width="120px">
             <el-input v-model="tempCreateJob.name" placeholder="Nhập tên vị trí" />
           </el-form-item>
-          <el-form-item label="Mô tả" label-width="120px">
+          <el-form-item label="Mô tả" prop="description" label-width="120px">
             <el-input v-model="tempCreateJob.description" type="textarea" :autosize="autoSizeConfig" placeholder="Nhập mô tả" />
           </el-form-item>
         </el-form>
@@ -21,6 +21,7 @@
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { notifyAction } from '@/constants/app.notify';
 import { TeamDTO } from '@/constants/app.interface';
 import JobRepository from '@/repositories/JobRepository';
 import { Maps, Rule } from '@/constants/app.type';
@@ -41,6 +42,7 @@ export default class JobDialog extends Vue {
 
   private rules: Maps<Rule[]> = {
     name: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }],
+    description: [{ type: 'string', max: 255, message: 'Mô tả phòng ban không được quá 255 ký tự' }],
   };
 
   private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
@@ -60,36 +62,20 @@ export default class JobDialog extends Vue {
       if (isValid) {
         try {
           await JobRepository.post(this.tempCreateJob).then((res) => {
-            this.$notify.success({
-              title: 'Trạng thái',
-              message: `Tạo vị trí mới thành công`,
-              duration: 2000,
-            });
+            notifyAction('', 'success', { action: 'create', name: 'vị trí' });
           });
           this.clearForm();
           this.loading = false;
           this.reloadData();
           this.syncJobDialog = false;
         } catch (error) {
-          this.$notify.error({
-            title: 'Lỗi',
-            message: `${error.message}`,
-            duration: 2000,
-          });
           this.loading = false;
         }
       }
       if (invalidatedFields) {
-        Object.entries(invalidatedFields).forEach((field: any) => {
-          setTimeout(() => {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${field[1][0].message}`,
-              duration: 2000,
-            });
-          }, 300);
-        });
-        this.loading = false;
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }

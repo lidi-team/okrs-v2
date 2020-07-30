@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { Notification } from 'element-ui';
 import { getTokenCookie } from '@/utils/cookies';
+import { notifyAction } from '@/constants/app.notify';
 
 export const unAuthenticatedservice = axios.create({
   baseURL: `${process.env.baseAPI}/api/v1`,
@@ -32,32 +32,20 @@ authenticatedService.interceptors.response.use(
   (error) => {
     switch (error.response.data.statusCode) {
       case 401:
-        Notification.error({
-          title: 'Trạng thái',
-          message: 'Phiên hoạt động đã hết. Vui lòng đăng nhập lại',
-          duration: 2000,
-        });
+        notifyAction('Phiên hoạt động đã hết. Vui lòng đăng nhập lại', 'error');
         break;
       case 403:
-        Notification.error({
-          title: 'Trạng thái',
-          message: 'Bạn không có quyền truy cập vào khu vực này',
-          duration: 2000,
-        });
+        notifyAction('Bạn không có quyền truy cập vào khu vực này', 'error');
+        break;
+      case 440: // error already exist instance
+        notifyAction(error.response.data.message, 'error');
+        break;
+      case 490: // DB logic error
+        notifyAction(error.response.data.message, 'error');
         break;
       case 500:
-        Notification.error({
-          title: 'Trạng thái',
-          message: 'Có lỗi xảy ra',
-          duration: 2000,
-        });
+        notifyAction('Có lỗi xảy ra', 'error');
         break;
-      default:
-        Notification.error({
-          title: 'Trạng thái',
-          message: 'Có lỗi xảy ra',
-          duration: 2000,
-        });
     }
     return Promise.reject(error);
   },

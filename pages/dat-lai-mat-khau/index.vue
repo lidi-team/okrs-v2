@@ -12,7 +12,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import AuthRepository from '@/repositories/AuthRepository';
-import { logErrorResetPassword } from '@/constants/app.logerror';
+import { notifyErrorResetPassword } from '@/constants/app.notify';
 @Component<ResetPasswordPage>({
   name: 'ResetPasswordPage',
   middleware: 'isGuest',
@@ -25,7 +25,7 @@ import { logErrorResetPassword } from '@/constants/app.logerror';
           token: query.token,
         };
       } catch (error) {
-        logErrorResetPassword(error);
+        notifyErrorResetPassword(error);
         redirect('/dang-nhap');
       }
     } else {

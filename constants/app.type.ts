@@ -24,3 +24,5 @@ export type Rules = Maps<FormRule[]>;
 export type Gender = 'Nam' | 'Nữ' | 'Khác';
 
 export type UserRole = 'Admin' | 'HR' | 'Staff' | null;
+export type NotifyAction = 'create' | 'update' | 'delete';
+export type NotifyType = 'success' | 'warning' | 'info' | 'error';
