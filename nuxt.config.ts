@@ -164,11 +164,6 @@ const nuxtConfig: NuxtConfig = {
       }
     },
   },
-  watchers: {
-    webpack: {
-      poll: true,
-    },
-  },
 };
 
 export default nuxtConfig;
