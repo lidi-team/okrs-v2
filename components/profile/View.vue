@@ -27,7 +27,7 @@
             @crop-upload-fail="cropUploadFail"
           ></my-upload>
           <el-avatar :size="120">
-            <img :src="avatarUrl" />
+            <img :src="avatarUrl" alt="avatar" />
           </el-avatar>
           <el-button size="small" type="primary" class="el-button--margin el-button--white el-button--avatar" @click="toggleShow"
             >Cập nhật avatar</el-button
@@ -95,10 +95,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Provide, Watch } from 'vue-property-decorator';
+import { Component, Vue, Provide } from 'vue-property-decorator';
 import myUpload from 'vue-image-crop-upload';
 import { Form } from 'element-ui';
-import { ProfileDTO, SelectDTO } from '@/constants/app.interface';
+import { ProfileDTO } from '@/constants/app.interface';
 import UserRepository from '@/repositories/UserRepository';
 import { Maps, Rule } from '@/constants/app.type';
 import { AuthMutation } from '@/store/auth';
