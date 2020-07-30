@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import { notifyAction } from '@/constants/app.notify';
 import { ResetPasswordDTO, ResetPasswordActionDTO } from '@/constants/app.interface';
 import AuthRepository from '@/repositories/AuthRepository';

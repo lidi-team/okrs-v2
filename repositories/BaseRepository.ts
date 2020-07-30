@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Notification } from 'element-ui';
 import { getTokenCookie } from '@/utils/cookies';
 import { notifyAction } from '@/constants/app.notify';
 
