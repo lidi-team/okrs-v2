@@ -32,34 +32,30 @@ authenticatedService.interceptors.response.use(
   (error) => {
     switch (error.response.data.statusCode) {
       case 401:
-        Notification({
+        Notification.error({
           title: 'Trạng thái',
           message: 'Phiên hoạt động đã hết. Vui lòng đăng nhập lại',
-          type: 'error',
           duration: 2000,
         });
         break;
       case 403:
-        Notification({
+        Notification.error({
           title: 'Trạng thái',
           message: 'Bạn không có quyền truy cập vào khu vực này',
-          type: 'error',
           duration: 2000,
         });
         break;
       case 500:
-        Notification({
+        Notification.error({
           title: 'Trạng thái',
           message: 'Có lỗi xảy ra',
-          type: 'error',
           duration: 2000,
         });
         break;
       default:
-        Notification({
+        Notification.error({
           title: 'Trạng thái',
           message: 'Có lỗi xảy ra',
-          type: 'error',
           duration: 2000,
         });
     }
