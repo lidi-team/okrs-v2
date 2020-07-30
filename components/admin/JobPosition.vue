@@ -34,7 +34,7 @@
             <el-form-item label="Tên vị trí" prop="name" class="custom-label" label-width="120px">
               <el-input v-model="tempUpdateJob.name" placeholder="Nhập tên vị trí" @keyup.enter.native="handleUpdate(tempUpdateJob)" />
             </el-form-item>
-            <el-form-item label="Mô tả" label-width="120px">
+            <el-form-item label="Mô tả" prop="description" label-width="120px">
               <el-input
                 v-model="tempUpdateJob.description"
                 type="textarea"
@@ -56,10 +56,10 @@
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { notifyAction } from '@/constants/app.notify';
 import { Maps, Rule } from '@/constants/app.type';
 import { JobPositionDTO } from '@/constants/app.interface';
 import JobRepository from '@/repositories/JobRepository';
-import { formatDateToDD } from '@/utils/dateParser';
 import { AdminTabsEn } from '@/constants/app.enum';
 
 @Component<ManageJobPosition>({ name: 'ManageJobPosition' })
@@ -82,6 +82,7 @@ export default class ManageJobPosition extends Vue {
 
   private rules: Maps<Rule[]> = {
     name: [{ validator: this.sanitizeInput, trigger: 'change' }],
+    description: [{ type: 'string', max: 255, message: 'Mô tả vị trí không được quá 255 ký tự' }],
   };
 
   private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
@@ -114,32 +115,11 @@ export default class ManageJobPosition extends Vue {
         }).then(async () => {
           try {
             await JobRepository.update(this.tempUpdateJob).then((res) => {
-              this.$notify.success({
-                title: 'Trạng thái',
-                message: 'Cập nhật vị trí thành công',
-                duration: 2000,
-              });
+              notifyAction('', 'success', { action: 'update', name: 'vị trí' });
             });
             this.reloadData();
             this.dialogUpdateVisible = false;
-          } catch (error) {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${error.message}`,
-              duration: 2000,
-            });
-          }
-        });
-      }
-      if (invalidatedFields) {
-        Object.entries(invalidatedFields).forEach((field: any) => {
-          setTimeout(() => {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${field[1][0].message}`,
-              duration: 2000,
-            });
-          }, 300);
+          } catch (error) {}
         });
       }
     });
@@ -153,20 +133,10 @@ export default class ManageJobPosition extends Vue {
     }).then(async () => {
       try {
         await JobRepository.delete(row.id).then((res) => {
-          this.$notify.success({
-            title: 'Trạng thái',
-            message: `Xóa vị trí thành công`,
-            duration: 1000,
-          });
+          notifyAction('', 'success', { action: 'delete', name: 'vị trí' });
         });
         this.reloadData();
-      } catch (error) {
-        this.$notify.error({
-          title: 'Lỗi',
-          message: `${error.message}`,
-          duration: 1000,
-        });
-      }
+      } catch (error) {}
     });
   }
 
@@ -178,10 +148,6 @@ export default class ManageJobPosition extends Vue {
     (this.$refs.tempUpdateJob as Form).clearValidate();
     this.dialogUpdateVisible = false;
   }
-
-  // private dateParser(date: string): string {
-  //   return formatDateToDD(date);
-  // }
 }
 </script>
 <style lang="scss">

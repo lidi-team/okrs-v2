@@ -33,6 +33,7 @@
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { notifyAction } from '@/constants/app.notify';
 import { EvaluationCriteriorDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import CriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
@@ -79,36 +80,20 @@ export default class CriteriaDialog extends Vue {
       if (isValid) {
         try {
           await CriteriaRepository.post(this.tempCreateCriteria).then((res) => {
-            this.$notify.success({
-              title: 'Trạng thái',
-              message: `Tạo tiêu chí mới thành công`,
-              duration: 2000,
-            });
+            notifyAction('', 'success', { action: 'create', name: 'tiêu chí' });
           });
           this.loading = false;
           this.clearForm();
           this.reloadData();
           this.syncCriteriaDialog = false;
         } catch (error) {
-          this.$notify.error({
-            title: 'Lỗi',
-            message: `Lỗi ${error.message}`,
-            duration: 2000,
-          });
           this.loading = false;
         }
       }
       if (invalidatedFields) {
-        Object.entries(invalidatedFields).forEach((field: any) => {
-          setTimeout(() => {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${field[1][0].message}`,
-              duration: 2000,
-            });
-          }, 300);
-        });
-        this.loading = false;
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }
