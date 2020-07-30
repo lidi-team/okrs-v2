@@ -1,4 +1,4 @@
-import { dataType, ruleTrigger, Validator, PromiseValidtor, Gender } from './app.type';
+import { dataType, ruleTrigger, Validator, PromiseValidtor, Gender, NotifyAction } from './app.type';
 import { EvaluationCriteriaEnum } from './app.enum';
 
 export interface LoginDTO {
@@ -150,4 +150,9 @@ export interface MetaPagination {
   itemsPerPage?: number | string | any;
   totalPages?: number | any;
   currentPage?: number | string | any;
+}
+
+export interface notifyActionSuccess {
+  action: NotifyAction;
+  name: string;
 }

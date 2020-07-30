@@ -1,5 +1,5 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
-import { logErrorLogin } from '@/constants/app.logerror';
+import { notifyErrorLogin } from '@/constants/app.notify';
 import { LoginDTO } from '@/constants/app.interface';
 import AuthRepository from '@/repositories/AuthRepository';
 import { removeTokenCookie, setTokenCookie } from '@/utils/cookies';
@@ -46,7 +46,7 @@ export const actions: AuthActions<AuthState, RootState> = {
       setTokenCookie(data.data.token);
       return data.data.user;
     } catch (error) {
-      logErrorLogin(error);
+      notifyErrorLogin(error);
       return false;
     }
   },

@@ -49,7 +49,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { RegisterDTO, RegisterOption } from '@/constants/app.interface';
-import { logErrorRegister } from '@/constants/app.logerror';
+import { notifyErrorRegister, notifyAction } from '@/constants/app.notify';
 import { Maps, Rule } from '@/constants/app.type';
 import AuthRepository from '@/repositories/AuthRepository';
 import TeamRepository from '@/repositories/TeamRepository';
@@ -86,12 +86,7 @@ export default class RegisterComponent extends Vue {
       this.teams = teams.data.data;
       this.jobs = jobs.data.data;
     } catch (error) {
-      this.$notify({
-        title: 'Trạng thái',
-        message: 'Có lỗi xảy ra',
-        type: 'error',
-        duration: 2000,
-      });
+      notifyAction('Có lỗi xảy ra', 'error');
     }
   }
 
@@ -135,18 +130,13 @@ export default class RegisterComponent extends Vue {
           this.loading = true;
           delete this.registerForm.matchPassword;
           await AuthRepository.register(this.registerForm).then((res: any) => {
-            this.$notify({
-              title: 'Trạng thái',
-              message: 'Gửi yêu cầu đăng ký thành công',
-              type: 'success',
-              duration: 2000,
-            });
+            notifyAction('Gửi yêu cầu đăng ký thành công', 'success');
           });
           this.$router.push('/dang-nhap');
           this.loading = false;
         } catch (error) {
           this.loading = false;
-          logErrorRegister(error);
+          notifyErrorRegister(error);
         }
       }
     });

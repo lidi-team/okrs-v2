@@ -34,7 +34,7 @@
             <el-form-item label="Tên phòng ban" prop="name" class="custom-label" label-width="120px">
               <el-input v-model="tempUpdateTeam.name" placeholder="Nhập tên phòng ban" @keyup.enter.native="handleUpdate(tempUpdateTeam)" />
             </el-form-item>
-            <el-form-item label="Mô tả" label-width="120px">
+            <el-form-item label="Mô tả" prop="description" label-width="120px">
               <el-input
                 v-model="tempUpdateTeam.description"
                 type="textarea"
@@ -56,10 +56,10 @@
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { notifyAction } from '@/constants/app.notify';
 import { Maps, Rule } from '@/constants/app.type';
 import { TeamDTO } from '@/constants/app.interface';
 import TeamRepository from '@/repositories/TeamRepository';
-import { formatDateToDD } from '@/utils/dateParser';
 import { AdminTabsEn } from '@/constants/app.enum';
 
 @Component<ManageDepartment>({
@@ -84,6 +84,7 @@ export default class ManageDepartment extends Vue {
 
   private rules: Maps<Rule[]> = {
     name: [{ validator: this.sanitizeInput, trigger: 'change' }],
+    description: [{ type: 'string', max: 255, message: 'Mô tả phòng ban không được quá 255 ký tự' }],
   };
 
   private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
@@ -116,32 +117,11 @@ export default class ManageDepartment extends Vue {
         }).then(async () => {
           try {
             await TeamRepository.update(this.tempUpdateTeam).then((res) => {
-              this.$notify.success({
-                title: 'Trạng thái',
-                message: 'Cập nhật phòng ban thành công',
-                duration: 2000,
-              });
+              notifyAction('', 'success', { action: 'update', name: 'phòng ban' });
             });
             this.reloadData();
             this.dialogUpdateVisible = false;
-          } catch (error) {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${error.message}`,
-              duration: 2000,
-            });
-          }
-        });
-      }
-      if (invalidatedFields) {
-        Object.entries(invalidatedFields).forEach((field: any) => {
-          setTimeout(() => {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${field[1][0].message}`,
-              duration: 2000,
-            });
-          }, 300);
+          } catch (error) {}
         });
       }
     });
@@ -155,20 +135,10 @@ export default class ManageDepartment extends Vue {
     }).then(async () => {
       try {
         await TeamRepository.delete(row.id).then((res) => {
-          this.$notify.success({
-            title: 'Trạng thái',
-            message: `Xóa phòng ban công`,
-            duration: 1000,
-          });
+          notifyAction('', 'success', { action: 'delete', name: 'phòng ban' });
         });
         this.reloadData();
-      } catch (error) {
-        this.$notify.error({
-          title: 'Lỗi',
-          message: `${error.message}`,
-          duration: 1000,
-        });
-      }
+      } catch (error) {}
     });
   }
 
@@ -180,10 +150,6 @@ export default class ManageDepartment extends Vue {
     (this.$refs.tempUpdateTeam as Form).clearValidate();
     this.dialogUpdateVisible = false;
   }
-
-  // private dateParser(date: string): string {
-  //   return formatDateToDD(date);
-  // }
 }
 </script>
 <style lang="scss">

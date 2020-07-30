@@ -167,11 +167,6 @@ export default class SettingCompanyPage extends Vue {
         this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
-        this.$notify.error({
-          title: 'Lỗi',
-          message: error.message,
-          duration: 2000,
-        });
         this.loading = false;
       }
     } else if (this.$route.query.tab === AdminTabsEn.Department) {
@@ -181,11 +176,6 @@ export default class SettingCompanyPage extends Vue {
         this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
-        this.$notify.error({
-          title: 'Lỗi',
-          message: error.message,
-          duration: 2000,
-        });
         this.loading = false;
       }
     } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
@@ -195,11 +185,6 @@ export default class SettingCompanyPage extends Vue {
         this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
-        this.$notify.error({
-          title: 'Lỗi',
-          message: error.message,
-          duration: 2000,
-        });
         this.loading = false;
       }
     } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
@@ -209,11 +194,6 @@ export default class SettingCompanyPage extends Vue {
         this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
-        this.$notify.error({
-          title: 'Lỗi',
-          message: error.message,
-          duration: 2000,
-        });
         this.loading = false;
       }
     } else {
@@ -223,11 +203,6 @@ export default class SettingCompanyPage extends Vue {
         this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
-        this.$notify.error({
-          title: 'Lỗi',
-          message: error.message,
-          duration: 2000,
-        });
         this.loading = false;
       }
     }

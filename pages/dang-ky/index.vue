@@ -12,7 +12,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import AuthRepository from '@/repositories/AuthRepository';
-import { logErrorRegister } from '@/constants/app.logerror';
+import { notifyErrorRegister } from '@/constants/app.notify';
 
 @Component<LoginPage>({
   name: 'LoginPage',
@@ -27,7 +27,7 @@ import { logErrorRegister } from '@/constants/app.logerror';
           token: query.token,
         };
       } catch (error) {
-        logErrorRegister(error);
+        notifyErrorRegister(error);
         redirect('/dang-nhap');
       }
     } else {

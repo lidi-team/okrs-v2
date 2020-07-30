@@ -49,9 +49,9 @@
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { notifyAction } from '@/constants/app.notify';
 import { Maps, Rule } from '@/constants/app.type';
 import { MeasureUnitDTO } from '@/constants/app.interface';
-import { formatDateToDD } from '@/utils/dateParser';
 import { AdminTabsEn } from '@/constants/app.enum';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 
@@ -109,32 +109,11 @@ export default class ManageMeasureUnit extends Vue {
         }).then(async () => {
           try {
             await MeasureUnitRepository.update(this.tempUpdateUnit).then((res) => {
-              this.$notify.success({
-                title: 'Trạng thái',
-                message: 'Cập nhật đơn vị thành công',
-                duration: 2000,
-              });
+              notifyAction('', 'success', { action: 'update', name: 'đơn vị' });
             });
             this.reloadData();
             this.dialogUpdateVisible = false;
-          } catch (error) {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${error.message}`,
-              duration: 2000,
-            });
-          }
-        });
-      }
-      if (invalidatedFields) {
-        Object.entries(invalidatedFields).forEach((field: any) => {
-          setTimeout(() => {
-            this.$notify.error({
-              title: 'Lỗi',
-              message: `${field[1][0].message}`,
-              duration: 2000,
-            });
-          }, 300);
+          } catch (error) {}
         });
       }
     });
@@ -148,20 +127,10 @@ export default class ManageMeasureUnit extends Vue {
     }).then(async () => {
       try {
         await MeasureUnitRepository.delete(row.id).then((res) => {
-          this.$notify.success({
-            title: 'Trạng thái',
-            message: `Xóa đơn vị công`,
-            duration: 1000,
-          });
+          notifyAction('', 'success', { action: 'delete', name: 'đơn vị' });
         });
         this.reloadData();
-      } catch (error) {
-        this.$notify.error({
-          title: 'Lỗi',
-          message: `${error.message}`,
-          duration: 1000,
-        });
-      }
+      } catch (error) {}
     });
   }
 

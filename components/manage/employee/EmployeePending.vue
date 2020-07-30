@@ -161,6 +161,7 @@
 <script lang="ts">
 import { Form } from 'element-ui';
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { notifyAction } from '@/constants/app.notify';
 import { EmployeeDTO } from '@/constants/app.interface';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 @Component<EmployeePending>({
@@ -195,12 +196,7 @@ export default class EmployeePending extends Vue {
     }).then(async () => {
       try {
         await EmployeeRepository.approveAll(this.id).then((res: any) => {
-          this.$notify({
-            title: 'Trạng thái',
-            message: 'Thành công',
-            type: 'success',
-            duration: 2000,
-          });
+          notifyAction('Thành công', 'success');
         });
         this.getListUsers();
       } catch (error) {}
@@ -237,23 +233,11 @@ export default class EmployeePending extends Vue {
         }).then(async () => {
           try {
             await EmployeeRepository.update(tempUpdateUser).then((res: any) => {
-              this.$notify({
-                title: 'Trạng thái',
-                message: 'Thành công',
-                type: 'success',
-                duration: 2000,
-              });
+              notifyAction('Thành công', 'success');
             });
             this.getListUsers();
             this.dialogUpdateVisible = false;
-          } catch (error) {
-            this.$notify({
-              title: 'Trạng thái',
-              message: 'Lỗi hệ thống',
-              type: 'error',
-              duration: 2000,
-            });
-          }
+          } catch (error) {}
         });
       }
     });
@@ -273,12 +257,7 @@ export default class EmployeePending extends Vue {
     }).then(async () => {
       try {
         await EmployeeRepository.delete(row.id).then((res: any) => {
-          this.$notify({
-            title: 'Trạng thái',
-            message: 'Thành công',
-            type: 'success',
-            duration: 2000,
-          });
+          notifyAction('', 'success', { action: 'delete', name: 'thành viên' });
         });
         this.getListUsers();
       } catch (error) {}

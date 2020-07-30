@@ -45,6 +45,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { notifyAction } from '@/constants/app.notify';
 import { Maps, Rule } from '@/constants/app.type';
 import AuthRepository from '@/repositories/AuthRepository';
 import { MailResetPassDTO } from '@/constants/app.interface';
@@ -64,21 +65,10 @@ export default class ForgotPassword extends Vue {
           this.loading = true;
           await AuthRepository.sendMailToResetPassword(this.forgotPasswordForm);
           this.loading = false;
-          this.$notify({
-            title: 'Trạng thái',
-            type: 'success',
-            message: 'Đã gửi yêu cầu. Vui lòng kiểm tra email của bạn',
-            duration: 2000,
-          });
+          notifyAction('Đã gửi yêu cầu. Vui lòng kiểm tra email của bạn', 'success');
           this.$router.push('/dang-nhap');
         } catch (error) {
           this.loading = false;
-          this.$notify({
-            title: 'Trạng thái',
-            type: 'error',
-            message: 'Có lỗi xảy ra',
-            duration: 2000,
-          });
         }
       }
     });
