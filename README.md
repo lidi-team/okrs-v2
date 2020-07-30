@@ -1,4 +1,4 @@
-[![NuxtJs](https://img.shields.io/badge/nuxt-2.13.0-brightgreen.svg)](https://nuxtjs.org/)
+[![NuxtJs](https://img.shields.io/badge/nuxt-2.13.3-brightgreen.svg)](https://nuxtjs.org/)
 [![Element UI](https://img.shields.io/badge/elementui-2.13.2-orange.svg)](https://element.eleme.io/#/en-US)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/2c912cafb0684f13b0f7c89f519a85ce)](https://www.codacy.com/gh/Olympus-Team/OKRs-enterprise-frontend?utm_source=github.com&utm_medium=referral&utm_content=Olympus-Team/OKRs-enterprise-frontend&utm_campaign=Badge_Grade)
 [![DeepScan grade](https://deepscan.io/api/teams/7726/projects/12863/branches/205412/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=7726&pid=12863&bid=205412)
@@ -6,13 +6,11 @@
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 [![Dependabot](https://flat.badgen.net/dependabot/nestjsx/nestjs-config?icon=dependabot)](https://dependabot.com/)
 [![Contributors](https://img.shields.io/github/contributors/Olympus-Team/OKRs-enterprise-frontend?color=%237159c1&logoColor=%237159c1&style=flat)](https://github.com/Olympus-Team/OKRs-enterprise-frontend/graphs/contributors)
-![Open Source Love](https://badges.frapsoft.com/os/v1/open-source.svg?v=102)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/Olympus-Team/OKRs-enterprise-frontend)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
 <h2 align="center">
-Tool OKRs - NuxtJs + Vuex + Vuetify + TailwindCSS 
+Tool OKRs - NuxtJs + Vuex + Element UI
 </h2>
 
 <p align="center">Code 1 app nhỏ nhắn xinh xắn nhưng không hề đáng yêu về tool OKRs cho các Start Up nhỏ sử dụng! Ai có đóng góp gì thì mong các bạn tạo issue để cải thiện hơn ạ 🥳</p>
@@ -29,21 +27,30 @@ Tool OKRs - NuxtJs + Vuex + Vuetify + TailwindCSS
 
 ## OKRs Enterprise Frontend
 
-### Build Setup
+### Cách chạy project
+
+#### Yêu cầu trước khi chạy
+
+1. [Clone repo của Backend về](https://github.com/Olympus-Team/OKRs-enterprise-api)
+2. Làm theo các hướng dẫn của bên Backend để setup DB các thứ
+3. Copy file
 
 ```bash
-# install dependencies
-$ yarn install
-
-# serve with hot reload at localhost:3000
-$ yarn dev
-
-# build for production and launch server
-$ yarn build
-$ yarn start
-
-# generate static project
-$ yarn generate
+# Copy .env theo .env.example
+# Cài đặt dependencies
+cp .env.example .env
+yarn install
 ```
 
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+4. Chạy Frontend theo các comman options ở dưới
+
+```bash
+# Dev với HRM(hot reload replacement) ở localhost:8080
+
+yarn dev
+
+# Build ra cho production
+# host mặc định đang là 3000 --> Có thể config ở script: https://nuxtjs.org/faq/host-port/#configure-in-nuxtconfigjs
+
+yarn start
+```
