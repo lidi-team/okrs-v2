@@ -1,4 +1,4 @@
-import { dataType, ruleTrigger, Validator, PromiseValidtor, Gender } from './app.type';
+import { dataType, ruleTrigger, Validator, PromiseValidtor } from './app.type';
 import { EvaluationCriteriaEnum } from './app.enum';
 
 export interface LoginDTO {
@@ -39,12 +39,11 @@ export interface RegisterOption {
 }
 
 export interface ProfileDTO {
-  avatar: string;
-  fullname: string;
+  avatar: any;
   role: string;
-  gender: Gender;
-  email: string;
-  dob: Date | '';
+  fullName: string;
+  gender: boolean;
+  dateOfBirth: Date | '';
   department: string;
   position: string;
 }

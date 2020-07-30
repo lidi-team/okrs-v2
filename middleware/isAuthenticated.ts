@@ -9,12 +9,14 @@ export default async function ({ redirect, store }) {
     return redirect('/dang-nhap');
   } else {
     store.commit('auth/setToken', token);
-    try {
-      const { data } = await UserRepository.me();
-      store.commit(`auth/${AuthMutation.SET_USER}`, data.data);
-    } catch (error) {
-      store.dispatch('auth/clear');
-      return redirect('/dang-nhap');
+    if (store.state.auth.user === null) {
+      try {
+        const { data } = await UserRepository.me();
+        store.commit(`auth/${AuthMutation.SET_USER}`, data.data);
+      } catch (error) {
+        store.dispatch('auth/clear');
+        return redirect('/dang-nhap');
+      }
     }
   }
 }

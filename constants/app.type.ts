@@ -21,6 +21,5 @@ export type PromiseValidtor = (rule: any, value: any, callback: (message?: strin
 export type Maps<T> = ConfigMaps<T>;
 export type Rule = FormRule;
 export type Rules = Maps<FormRule[]>;
-export type Gender = 'Nam' | 'Nữ' | 'Khác';
 
 export type UserRole = 'Admin' | 'HR' | 'Staff' | null;
