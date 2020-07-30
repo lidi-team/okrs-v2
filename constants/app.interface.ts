@@ -39,7 +39,6 @@ export interface RegisterOption {
 }
 
 export interface ProfileDTO {
-  avatar: any;
   role: string;
   fullName: string;
   gender: boolean;

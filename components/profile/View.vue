@@ -1,6 +1,6 @@
 <template>
-  <div class="wrap-profile">
-    <h2>Thông tin tài khoản của bạn {{ profileForm.avatar }}</h2>
+  <div v-loading.fullscreen.lock="loading" class="wrap-profile">
+    <h2>Thông tin tài khoản của bạn</h2>
     <el-form
       ref="updateProfileForm"
       :model="profileForm"
@@ -12,12 +12,26 @@
     >
       <el-row class="profile">
         <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="profile-common">
+          <my-upload
+            v-model="show"
+            field="file"
+            :width="300"
+            :height="300"
+            lang-type="en"
+            url="http://localhost:3000/api/v1/users/upload_avatar"
+            :headers="headers"
+            method="PUT"
+            img-format="png"
+            @crop-success="cropSuccess"
+            @crop-upload-success="cropUploadSuccess"
+            @crop-upload-fail="cropUploadFail"
+          ></my-upload>
           <el-avatar :size="120">
-            <img :src="profileForm.avatar" />
+            <img :src="avatarUrl" />
           </el-avatar>
-          <el-upload class="upload-demo" :multiple="false" :show-file-list="false" :on-success="handleAvatarSuccess">
-            <el-button size="small" type="primary" class="el-button--margin el-button--white el-button--avatar">Cập nhật avatar</el-button>
-          </el-upload>
+          <el-button size="small" type="primary" class="el-button--margin el-button--white el-button--avatar" @click="toggleShow"
+            >Cập nhật avatar</el-button
+          >
           <p class="profile-common__name">{{ profileForm.fullName }}</p>
           <p class="profile-common__role">{{ profileForm.role }}</p>
         </el-col>
@@ -47,7 +61,13 @@
                 </el-col>
                 <el-col :sm="24" :md="12">
                   <el-form-item prop="dateOfBirth" label="Ngày sinh">
-                    <el-date-picker v-model="profileForm.dateOfBirth" type="date" placeholder="Chọn ngày sinh"></el-date-picker>
+                    <el-date-picker
+                      v-model="profileForm.dateOfBirth"
+                      format="dd-MM-yyyy"
+                      :picker-options="pickerOptions"
+                      type="date"
+                      placeholder="Chọn ngày sinh"
+                    ></el-date-picker>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -66,7 +86,7 @@
                 ></el-col>
               </el-row>
             </div>
-            <el-button class="el-button el-button--purple el-button--update">Cập nhật</el-button>
+            <el-button class="el-button el-button--purple el-button--update" @click="updateProfile">Cập nhật</el-button>
           </div>
         </el-col>
       </el-row>
@@ -76,18 +96,64 @@
 
 <script lang="ts">
 import { Component, Vue, Provide, Watch } from 'vue-property-decorator';
+import myUpload from 'vue-image-crop-upload';
+import { Form } from 'element-ui';
 import { ProfileDTO, SelectDTO } from '@/constants/app.interface';
 import UserRepository from '@/repositories/UserRepository';
 import { Maps, Rule } from '@/constants/app.type';
+import { AuthMutation } from '@/store/auth';
+import { getTokenCookie } from '@/utils/cookies';
 @Component<ViewProfile>({
   name: 'ViewProfile',
+  components: {
+    myUpload,
+  },
   created() {
     this.getProfile();
   },
 })
 export default class ViewProfile extends Vue {
+  private loading: boolean = false;
+  private show: boolean = false;
+  private avatarUrl: string = '';
+  private headers = { Authorization: `Bearer ${getTokenCookie()}` };
+
+  private toggleShow() {
+    this.show = !this.show;
+  }
+
+  private pickerOptions: any = {
+    disabledDate(time) {
+      return time.getTime() > Date.now();
+    },
+  };
+
+  private cropSuccess(imgDataUrl: string, field: string) {
+    this.avatarUrl = imgDataUrl;
+  }
+
+  private async cropUploadSuccess(jsonData: any, field: string) {
+    const { data } = await UserRepository.me();
+    this.$store.commit(`auth/${AuthMutation.SET_USER}`, data.data);
+    this.show = false;
+    this.$notify({
+      title: 'Trạng thái',
+      message: 'Cập nhật avatar thành công',
+      type: 'success',
+      duration: 2000,
+    });
+  }
+
+  private cropUploadFail(status: boolean, field: string) {
+    this.$notify({
+      title: 'Trạng thái',
+      message: 'Có lỗi xảy ra',
+      type: 'error',
+      duration: 2000,
+    });
+  }
+
   private profileForm: ProfileDTO = {
-    avatar: '',
     role: '',
     fullName: '',
     gender: true,
@@ -98,9 +164,10 @@ export default class ViewProfile extends Vue {
 
   private async getProfile(force?: boolean) {
     try {
+      this.loading = true;
       const temp = await UserRepository.me();
+      this.avatarUrl = temp.data.data.imageUrl;
       this.profileForm = {
-        avatar: temp.data.data.imageUrl,
         role: temp.data.data.role.name,
         fullName: temp.data.data.fullName,
         gender: temp.data.data.gender,
@@ -108,28 +175,38 @@ export default class ViewProfile extends Vue {
         department: temp.data.data.team.name,
         position: temp.data.data.jobPosition.name,
       };
-    } catch (error) {}
+      this.loading = false;
+    } catch (error) {
+      this.loading = false;
+    }
+  }
+
+  private updateProfile() {
+    (this.$refs.updateProfileForm as Form).validate(async (isValid) => {
+      if (isValid) {
+        try {
+          this.loading = true;
+          await UserRepository.update(this.profileForm);
+          this.$notify({
+            title: 'Trạng thái',
+            type: 'success',
+            message: 'Cập nhật thông tin cá nhân thành công',
+            duration: 2000,
+          });
+          const { data } = await UserRepository.me();
+          this.$store.commit(`auth/${AuthMutation.SET_USER}`, data.data);
+          this.loading = false;
+        } catch (error) {
+          this.loading = false;
+        }
+      }
+    });
   }
 
   private rules: Maps<Rule[]> = {
     fullName: [{ required: true, message: 'Vui lòng nhập tên của bạn', trigger: 'blur' }],
-    dateOfBirth: [
-      { required: false, message: 'Vui lòng chọn ngày sinh', trigger: 'change' },
-      { validator: this.validateDate, trigger: ['blur', 'change'] },
-    ],
+    dateOfBirth: [{ required: false, message: 'Vui lòng chọn ngày sinh', trigger: 'change' }],
   };
-
-  private validateDate(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
-    if (value <= new Date()) {
-      return callback('Ngày sinh không hợp lệ');
-    }
-    return callback();
-  }
-
-  private handleAvatarSuccess(res, file) {
-    console.log(file.raw);
-    this.profileForm.avatar = URL.createObjectURL(file.raw);
-  }
 }
 </script>
 
