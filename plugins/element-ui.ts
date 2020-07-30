@@ -36,14 +36,14 @@ import 'element-ui/lib/theme-chalk/tabs.css';
 import 'element-ui/lib/theme-chalk/tree.css';
 import 'element-ui/lib/theme-chalk/autocomplete.css';
 import 'element-ui/lib/theme-chalk/radio.css';
+import 'element-ui/lib/theme-chalk/radio-group.css';
 import 'element-ui/lib/theme-chalk/avatar.css';
 import 'element-ui/lib/theme-chalk/upload.css';
 import 'element-ui/lib/theme-chalk/tooltip.css';
 import 'element-ui/lib/theme-chalk/select.css';
 import 'element-ui/lib/theme-chalk/option.css';
-import 'element-ui/lib/theme-chalk/radio-group.css';
 
-// configure language
+// configure default language
 locale.use(vietnameseLang);
 
 // import dynamic components
@@ -68,15 +68,15 @@ Vue.component(elComponent.ElTabPane, () => import(/* webpackChunkName: 'element-
 Vue.component(elComponent.ElTabs, () => import(/* webpackChunkName: 'element-ui-form-tabs' */ 'element-ui/lib/tabs'));
 Vue.component(elComponent.ElCheckbox, () => import(/* webpackChunkName: 'element-ui-checkbox' */ 'element-ui/lib/checkbox'));
 Vue.component(elComponent.ElIcon, () => import(/* webpackChunkName: 'element-ui-icon' */ 'element-ui/lib/icon'));
-Vue.component(elComponent.ElRadio, () => import(/* webpackChunkName: 'element-ui-icon' */ 'element-ui/lib/radio'));
+Vue.component(elComponent.ElRadio, () => import(/* webpackChunkName: 'element-ui-radio' */ 'element-ui/lib/radio'));
+Vue.component(elComponent.ElRadioGroup, () => import(/* webpackChunkName: 'element-radio-group' */ 'element-ui/lib/radio-group'));
 Vue.component(elComponent.ElDialog, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/dialog'));
-Vue.component(elComponent.ElAutocomplete, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/autocomplete'));
-Vue.component(elComponent.ElTooltip, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/tooltip'));
-Vue.component(elComponent.ElSelect, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/select'));
-Vue.component(elComponent.ElOption, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/option'));
-Vue.component(elComponent.ElRadioGroup, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/radio-group'));
-Vue.component(elComponent.ElAvatar, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/avatar'));
-Vue.component(elComponent.ElUpload, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/upload'));
+Vue.component(elComponent.ElAutocomplete, () => import(/* webpackChunkName: 'element-ui-autocomplete' */ 'element-ui/lib/autocomplete'));
+Vue.component(elComponent.ElTooltip, () => import(/* webpackChunkName: 'element-ui-tooltip' */ 'element-ui/lib/tooltip'));
+Vue.component(elComponent.ElSelect, () => import(/* webpackChunkName: 'element-ui-select' */ 'element-ui/lib/select'));
+Vue.component(elComponent.ElOption, () => import(/* webpackChunkName: 'element-ui-option' */ 'element-ui/lib/option'));
+Vue.component(elComponent.ElAvatar, () => import(/* webpackChunkName: 'element-ui-avatar' */ 'element-ui/lib/avatar'));
+Vue.component(elComponent.ElUpload, () => import(/* webpackChunkName: 'element-ui-upload' */ 'element-ui/lib/upload'));
 Vue.component(elComponent.ElTooltip, () => import(/* webpackChunkName: 'element-ui-tooltip' */ 'element-ui/lib/tooltip'));
 
 // import prototype Vue

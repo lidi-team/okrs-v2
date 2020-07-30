@@ -24,24 +24,27 @@
         <span>CFRs</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="/admin/cai-dat" :class="['sidebar__link']">
-      <div v-if="userRole === 'ADMIN'" class="sidebar__link__tab">
+    <!-- Start Role Permission action -->
+    <nuxt-link v-if="user.role.name === 'ADMIN'" to="/admin/cai-dat" :class="['sidebar__link']">
+      <div class="sidebar__link__tab">
         <Setting class="sidebar__link__tab__icon" />
         <p>Cài đặt</p>
         <p>công ty</p>
       </div>
     </nuxt-link>
-
-    <!-- Start Role Permission action -->
-    <div v-if="userRole === 'HR'" class="sidebar__link__tab">
-      <human-resources class="sidebar__link__tab__icon" />
-      <span>Quản lý nhân sự</span>
-    </div>
+    <nuxt-link v-if="user.role.name === 'HR'" to="/quan-ly/nhan-su" :class="['sidebar__link']">
+      <div class="sidebar__link__tab">
+        <human-resources class="sidebar__link__tab__icon" />
+        <span>Quản lý nhân sự</span>
+      </div>
+    </nuxt-link>
     <!-- End Role Permission action -->
   </el-row>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { mapGetters } from 'vuex';
+import { RootState } from '@/store/auth';
 import Dashboard from '@/assets/images/common/dashboard.svg';
 import CFRs from '@/assets/images/common/cfrs.svg';
 import Checkin from '@/assets/images/common/checkin.svg';
@@ -58,10 +61,13 @@ import HumanResources from '@/assets/images/common/nhan-su.svg';
     Setting,
     HumanResources,
   },
+  computed: {
+    ...mapGetters({
+      user: 'auth/user',
+    }),
+  },
 })
-export default class SideBar extends Vue {
-  private userRole: string = 'ADMIN';
-}
+export default class SideBar extends Vue {}
 </script>
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';

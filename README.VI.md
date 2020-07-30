@@ -13,11 +13,11 @@
 Tool OKRs - NuxtJs + Vuex + Element UI
 </h2>
 
-<p align="center">Code 1 beautiful and small app but it's not cute about OKRs Tool for the small and medium start-up use! We welcome to you creating the issues or PR to improve it 🥳.</p>
+<p align="center">Code 1 app nhỏ nhắn xinh xắn nhưng không hề đáng yêu về tool OKRs cho các Start Up nhỏ sử dụng! Ai có đóng góp gì thì mong các bạn tạo issue để cải thiện hơn ạ 🥳</p>
 
 <hr>
 
-## Members
+## Thành viên
 
 | [<img src="https://avatars1.githubusercontent.com/u/24296018?s=460&u=6575a1785649a40e12d9593c46178b8fa36c3c9d&v=4" width="60px;"/>](https://github.com/harrytran998) | [<img src="https://avatars1.githubusercontent.com/u/23659823?s=400&u=ce4b4205be4e2b4e949eea9e36612b9d7daade53&v=4" width="60px;"/>](https://github.com/bacodekiller) |
 | :------------------------------------------------------------------------------------------------------------------------------------------------------------------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -27,28 +27,28 @@ Tool OKRs - NuxtJs + Vuex + Element UI
 
 ## OKRs Enterprise Frontend
 
-### How to run this project?
+### Cách chạy project
 
-#### Prerequisites
+#### Yêu cầu trước khi chạy
 
-1. [Clone repo of Backend](https://github.com/Olympus-Team/OKRs-enterprise-api)
-2. Follow the steps on Backend to run that
-3. Copy file .env và install the dependencies
+1. [Clone repo của Backend về](https://github.com/Olympus-Team/OKRs-enterprise-api)
+2. Làm theo các hướng dẫn của bên Backend để setup DB các thứ
+3. Copy file .env và cài đặt các gói dependencies
 
 ```bash
 cp .env.development .env
 yarn install
 ```
 
-4. Run Frontend following the comman options bellow
+4. Chạy Frontend theo các comman options ở dưới
 
 ```bash
-# Dev with HRM(hot reload replacement) in localhost:8080
+# Dev với HRM(hot reload replacement) ở localhost:8080
 
 yarn dev
 
-# Build for production
-# Default host 3000 is --> you can config that in script: https://nuxtjs.org/faq/host-port/#configure-in-nuxtconfigjs
+# Build ra cho production
+# host mặc định đang là 3000 --> Có thể config ở script: https://nuxtjs.org/faq/host-port/#configure-in-nuxtconfigjs
 
 yarn start
 ```

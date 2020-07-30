@@ -63,6 +63,9 @@ const nuxtConfig: NuxtConfig = {
     {
       src: '@/plugins/vue-fragment',
     },
+    {
+      src: '@/plugins/vue-filter-date',
+    },
   ],
   /*
    ** Nuxt.js dev-modules
@@ -159,11 +162,6 @@ const nuxtConfig: NuxtConfig = {
           exclude: /(node_modules)/u,
         });
       }
-    },
-  },
-  watchers: {
-    webpack: {
-      poll: true,
     },
   },
 };

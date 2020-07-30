@@ -10,6 +10,9 @@
                 class="admin__top__left--input"
                 prefix-icon="el-icon-search"
                 :placeholder="topChange.textPlaceholder"
+                :fetch-suggestions="querySearch"
+                :trigger-on-focus="false"
+                @select="handleSelectItem"
               ></el-autocomplete>
             </div>
           </el-col>
@@ -29,6 +32,7 @@
             <component
               :is="currentTabComponent"
               :table-data="tableData"
+              :reload-data="getListData"
               :loading="loading"
               :total="totalItems"
               :page.sync="adminParams.page"
@@ -38,11 +42,11 @@
         </el-tabs>
       </template>
     </admin-slot>
-    <new-cycle-okrs-dialog v-if="topChange.tab === 1" :cycle-visible-dialog.sync="cycleVisibleDialog" />
-    <new-department-dialog v-if="topChange.tab === 2" :team-visible-dialog.sync="teamVisibleDialog" />
-    <new-job-dialog v-if="topChange.tab === 3" :job-visible-dialog.sync="jobVisibleDialog" />
-    <new-criteria-dialog v-if="topChange.tab === 4" :criteria-visible-dialog.sync="criteriaVisibleDialog" />
-    <new-unit-dialog v-if="topChange.tab === 5" :unit-visible-dialog.sync="unitVisibleDialog" />
+    <new-cycle-okrs-dialog v-if="topChange.tab === 1" :cycle-visible-dialog.sync="cycleVisibleDialog" :reload-data="getListData" />
+    <new-department-dialog v-if="topChange.tab === 2" :team-visible-dialog.sync="teamVisibleDialog" :reload-data="getListData" />
+    <new-job-dialog v-if="topChange.tab === 3" :job-visible-dialog.sync="jobVisibleDialog" :reload-data="getListData" />
+    <new-criteria-dialog v-if="topChange.tab === 4" :criteria-visible-dialog.sync="criteriaVisibleDialog" :reload-data="getListData" />
+    <new-unit-dialog v-if="topChange.tab === 5" :unit-visible-dialog.sync="unitVisibleDialog" :reload-data="getListData" />
   </div>
 </template>
 <script lang="ts">
@@ -67,6 +71,7 @@ import { AdminParams } from '@/constants/app.interface';
   created() {
     this.getListData();
   },
+  middleware: ['isAdmin'],
 })
 export default class SettingCompanyPage extends Vue {
   private tableData: any[] = [];
@@ -81,6 +86,27 @@ export default class SettingCompanyPage extends Vue {
   private jobVisibleDialog: boolean = false;
   private criteriaVisibleDialog: boolean = false;
   private unitVisibleDialog: boolean = false;
+  private timeout: any = null;
+
+  private querySearch(queryString: string, callback) {
+    const link = this.tableData;
+    let results: readonly any[] = queryString ? link.filter(this.createFilter(queryString)) : link;
+    results = Object.freeze(results);
+    results = results.map((data) => data.name);
+    console.log(results);
+    // call callback function to return suggestions
+    callback(results);
+  }
+
+  private createFilter(queryString: any) {
+    return (dataTable: any) => {
+      return dataTable.name.toLowerCase().includes(queryString.toLowerCase()) === true;
+    };
+  }
+
+  private handleSelectItem(item) {
+    console.log(item);
+  }
 
   private currentTab: string =
     this.$route.query.tab === AdminTabsEn.MeasureUnit
@@ -137,7 +163,7 @@ export default class SettingCompanyPage extends Vue {
     if (this.$route.query.tab === AdminTabsEn.CycleOKR || this.$route.query.tab === undefined) {
       try {
         const { data } = await CycleRepository.get(this.adminParams);
-        this.tableData = data.data.items;
+        this.tableData = Object.freeze(data.data.items);
         this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {

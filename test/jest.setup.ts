@@ -2,9 +2,13 @@ import path from 'path';
 import Vue from 'vue';
 import { elComponent } from '@/constants/app.enum';
 
+/**
+ * Import all the conditions to run test with jest
+ */
 export default ['@/components/account/Login.vue'].forEach((path) => {
-  const componentName = path.match(/(\w*)\.vue$/) as Array<string>;
+  const componentName = path.match(/(\w*)\.vue$/) as string[];
   let prefix;
+  // import dynamic Element UI components
   Vue.component(elComponent.ElRow, () => import(/* webpackChunkName: 'element-ui-form-row' */ 'element-ui/lib/row'));
   Vue.component(elComponent.ElCol, () => import(/* webpackChunkName: 'element-ui-form-col' */ 'element-ui/lib/col'));
   Vue.component(elComponent.ElContainer, () => import(/* webpackChunkName: 'element-ui-form-col' */ 'element-ui/lib/container'));
@@ -26,10 +30,23 @@ export default ['@/components/account/Login.vue'].forEach((path) => {
   Vue.component(elComponent.ElTabs, () => import(/* webpackChunkName: 'element-ui-form-tabs' */ 'element-ui/lib/tabs'));
   Vue.component(elComponent.ElCheckbox, () => import(/* webpackChunkName: 'element-ui-checkbox' */ 'element-ui/lib/checkbox'));
   Vue.component(elComponent.ElIcon, () => import(/* webpackChunkName: 'element-ui-icon' */ 'element-ui/lib/icon'));
+  Vue.component(elComponent.ElRadio, () => import(/* webpackChunkName: 'element-ui-radio' */ 'element-ui/lib/radio'));
+  Vue.component(elComponent.ElRadioGroup, () => import(/* webpackChunkName: 'element-radio-group' */ 'element-ui/lib/radio-group'));
   Vue.component(elComponent.ElDialog, () => import(/* webpackChunkName: 'element-ui-dialog' */ 'element-ui/lib/dialog'));
+  Vue.component(elComponent.ElAutocomplete, () => import(/* webpackChunkName: 'element-ui-autocomplete' */ 'element-ui/lib/autocomplete'));
+  Vue.component(elComponent.ElTooltip, () => import(/* webpackChunkName: 'element-ui-tooltip' */ 'element-ui/lib/tooltip'));
+  Vue.component(elComponent.ElSelect, () => import(/* webpackChunkName: 'element-ui-select' */ 'element-ui/lib/select'));
+  Vue.component(elComponent.ElOption, () => import(/* webpackChunkName: 'element-ui-option' */ 'element-ui/lib/option'));
+  Vue.component(elComponent.ElAvatar, () => import(/* webpackChunkName: 'element-ui-avatar' */ 'element-ui/lib/avatar'));
+  Vue.component(elComponent.ElUpload, () => import(/* webpackChunkName: 'element-ui-upload' */ 'element-ui/lib/upload'));
+  Vue.component(elComponent.ElTooltip, () => import(/* webpackChunkName: 'element-ui-tooltip' */ 'element-ui/lib/tooltip'));
 
   if (path.startsWith('@/components/account')) {
     prefix = 'Account';
+  } else if (path.startsWith('@/components/profile')) {
+    prefix = 'Profile';
+  } else if (path.startsWith('@/components/common')) {
+    prefix = 'Base';
   } else {
     prefix = '';
   }

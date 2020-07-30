@@ -10,6 +10,9 @@ module.exports = {
     '^.+\\.js$': 'babel-jest',
     '.*\\.(vue)$': 'vue-jest',
   },
+  /**
+   * Import all the conditions to run test with the @nuxt/components
+   */
   setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],
   collectCoverage: true,
   collectCoverageFrom: ['<rootDir>/components/**/*.vue', '<rootDir>/pages/**/*.vue'],
