@@ -17,7 +17,7 @@ Tool OKRs - NuxtJs + Vuex + Element UI
 
 <hr>
 
-## Thành viên
+## Members
 
 | [<img src="https://avatars1.githubusercontent.com/u/24296018?s=460&u=6575a1785649a40e12d9593c46178b8fa36c3c9d&v=4" width="60px;"/>](https://github.com/harrytran998) | [<img src="https://avatars1.githubusercontent.com/u/23659823?s=400&u=ce4b4205be4e2b4e949eea9e36612b9d7daade53&v=4" width="60px;"/>](https://github.com/bacodekiller) |
 | :------------------------------------------------------------------------------------------------------------------------------------------------------------------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
