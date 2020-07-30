@@ -10,6 +10,9 @@
                 class="admin__top__left--input"
                 prefix-icon="el-icon-search"
                 :placeholder="topChange.textPlaceholder"
+                :fetch-suggestions="querySearch"
+                :trigger-on-focus="false"
+                @select="handleSelectItem"
               ></el-autocomplete>
             </div>
           </el-col>
@@ -83,6 +86,27 @@ export default class SettingCompanyPage extends Vue {
   private jobVisibleDialog: boolean = false;
   private criteriaVisibleDialog: boolean = false;
   private unitVisibleDialog: boolean = false;
+  private timeout: any = null;
+
+  private querySearch(queryString: string, callback) {
+    const link = this.tableData;
+    let results: readonly any[] = queryString ? link.filter(this.createFilter(queryString)) : link;
+    results = Object.freeze(results);
+    results = results.map((data) => data.name);
+    console.log(results);
+    // call callback function to return suggestions
+    callback(results);
+  }
+
+  private createFilter(queryString: any) {
+    return (dataTable: any) => {
+      return dataTable.name.toLowerCase().includes(queryString.toLowerCase()) === true;
+    };
+  }
+
+  private handleSelectItem(item) {
+    console.log(item);
+  }
 
   private currentTab: string =
     this.$route.query.tab === AdminTabsEn.MeasureUnit
@@ -139,7 +163,7 @@ export default class SettingCompanyPage extends Vue {
     if (this.$route.query.tab === AdminTabsEn.CycleOKR || this.$route.query.tab === undefined) {
       try {
         const { data } = await CycleRepository.get(this.adminParams);
-        this.tableData = data.data.items;
+        this.tableData = Object.freeze(data.data.items);
         this.totalItems = data.data.meta.totalItems;
         this.loading = false;
       } catch (error) {
