@@ -2,11 +2,14 @@
   <fragment>
     <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="cycle-okrs">
       <el-table-column prop="name" label="Tên chu kỳ"></el-table-column>
-      <el-table-column prop="startDate" label="Ngày bắt đầu" />
-      <!-- <el-table-column prop="startDate" label="Ngày bắt đầu" :formatter="formatter" /> -->
+      <el-table-column label="Ngày bắt đầu">
+        <template v-slot="{ row }">
+          <span>{{ new Date(row.startDate) | dateFormat('DD/MM/YYYY') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="Ngày kết thúc">
         <template v-slot="{ row }">
-          <span>{{ row.endDate }}</span>
+          <span>{{ new Date(row.endDate) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
@@ -72,7 +75,9 @@ import { CycleDTO } from '@/constants/app.interface';
 import CycleRepository from '@/repositories/CycleRepository';
 import { formatDateToDD, formatDateToYYYY, compareTwoDate } from '@/utils/dateParser';
 
-@Component<ManageCycleOkrs>({ name: 'ManageCycleOkrs' })
+@Component<ManageCycleOkrs>({
+  name: 'ManageCycleOkrs',
+})
 export default class ManageCycleOkrs extends Vue {
   @Prop(Array) public tableData!: Object[];
   @Prop(Boolean) public loading!: boolean;
@@ -206,10 +211,6 @@ export default class ManageCycleOkrs extends Vue {
   private handlePagination(pagination: any) {
     const tabNow = this.$route.query.tab === undefined ? AdminTabsEn.CycleOKR : this.$route.query.tab;
     this.$router.push(`?tab=${tabNow}&page=${pagination.page}`);
-  }
-
-  private formatter(row, column, cellValue, index) {
-    return formatDateToDD(cellValue);
   }
 }
 </script>

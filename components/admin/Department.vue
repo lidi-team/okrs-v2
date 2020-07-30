@@ -5,7 +5,7 @@
       <el-table-column prop="description" label="Mô tả"></el-table-column>
       <el-table-column label="Ngày cập nhật">
         <template v-slot="{ row }">
-          <span>{{ row.updatedAt }}</span>
+          <span>{{ new Date(row.updatedAt) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
