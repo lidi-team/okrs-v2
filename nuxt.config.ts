@@ -63,6 +63,9 @@ const nuxtConfig: NuxtConfig = {
     {
       src: '@/plugins/vue-fragment',
     },
+    {
+      src: '@/plugins/vue-filter-date',
+    },
   ],
   /*
    ** Nuxt.js dev-modules

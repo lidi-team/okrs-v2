@@ -22,7 +22,7 @@
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 import { MeasureUnitDTO } from '@/constants/app.interface';
@@ -31,6 +31,7 @@ import { Maps, Rule } from '@/constants/app.type';
   name: 'MeasureUnitDialog',
 })
 export default class MeasureUnitDialog extends Vue {
+  @Prop(Function) public reloadData!: Function;
   @PropSync('unitVisibleDialog', { type: Boolean, required: true }) public syncMeasureUnitDialog!: boolean;
 
   private loading: boolean = false;
@@ -42,11 +43,19 @@ export default class MeasureUnitDialog extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    type: [
-      { type: 'string', required: true, message: 'Vui lòng nhập tên đơn vị', trigger: 'blur' },
-      { min: 3, message: 'Tên đơn vị chứa ít nhất 3 ký tự', trigger: 'change' },
-    ],
+    type: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }],
   };
+
+  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    const isEmpty = (value: string) => !value.trim().length;
+    if (value.length === 0) {
+      return callback('Vui lòng nhập tên đơn vị');
+    }
+    if (isEmpty(value)) {
+      return callback('Tên đơn vị không được chỉ chứa dấu cách');
+    }
+    return callback();
+  }
 
   private createTeam() {
     this.loading = true;
@@ -62,6 +71,7 @@ export default class MeasureUnitDialog extends Vue {
           });
           this.clearForm();
           this.loading = false;
+          this.reloadData();
           this.syncMeasureUnitDialog = false;
         } catch (error) {
           this.$notify.error({
