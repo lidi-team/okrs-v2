@@ -154,3 +154,8 @@ export interface notifyActionSuccess {
   action: NotifyAction;
   name: string;
 }
+
+export interface SelectOptionDTO {
+  label: string;
+  value: any;
+}
