@@ -53,7 +53,7 @@ import CycleRepository from '@/repositories/CycleRepository';
 })
 export default class CycleOkrsDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
-  @PropSync('cycleVisibleDialog', { type: Boolean, required: true }) public syncCycleDialog!: boolean;
+  @PropSync('visibleDialog', { type: Boolean, required: true }) public syncCycleDialog!: boolean;
 
   private loading: boolean = false;
   private dateFormat: string = 'dd/MM/yyyy';

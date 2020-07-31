@@ -16,8 +16,7 @@ export interface AuthState {
 export interface AuthActions<S, R> extends ActionTree<S, R> {
   logout(context: ActionContext<S, R>): Promise<void>;
   login(context: ActionContext<S, R>, credentials: LoginDTO);
-  updateProfile(context: ActionContext<S, R>, data: any): Promise<void>;
-  changePassword(context: ActionContext<S, R>, newPassword: string): Promise<void>;
+  clear(context: ActionContext<S, R>): void;
 }
 
 export const state = (): AuthState => ({
@@ -42,7 +41,6 @@ export const actions: AuthActions<AuthState, RootState> = {
     try {
       const { data } = await AuthRepository.login({ email, password });
       commit(AuthMutation.SET_TOKEN, data.data.token);
-      commit(AuthMutation.SET_USER, data.data.user);
       setTokenCookie(data.data.token);
       return data.data.user;
     } catch (error) {
@@ -58,6 +56,9 @@ export const actions: AuthActions<AuthState, RootState> = {
       commit(AuthMutation.SET_USER, null);
     } catch (error) {}
   },
-  async changePassword({ commit }, data: any) {},
-  async updateProfile({ commit }, data: any) {},
+  clear({ commit }) {
+    commit(AuthMutation.SET_TOKEN, '');
+    commit(AuthMutation.SET_USER, null);
+    removeTokenCookie();
+  },
 };

@@ -1,9 +1,9 @@
 <template>
   <el-row class="change-password-page" type="flex" justify="center" align="center">
-    <el-col :span="8" class="change-password-page__image">
+    <el-col :xs="24" :sm="24" :md="8" :lg="8" class="change-password-page__image">
       <img src="@/assets/images/account/tiny-change-password.png" alt="login image" />
     </el-col>
-    <el-col :span="7">
+    <el-col :xs="24" :sm="24" :md="7" :lg="7">
       <account-change-password />
     </el-col>
   </el-row>
@@ -17,6 +17,20 @@ export default class ChangePasswordPage extends Vue {}
 @import '@/assets/scss/main.scss';
 .change-password-page {
   padding-top: calc(100vh * (2 / 24));
+  @include breakpoint-down(phone) {
+    flex-direction: column;
+    padding: 0;
+    &__image {
+      display: flex;
+      justify-content: center;
+      margin-right: 0 !important;
+      margin-left: 0 !important;
+      img {
+        padding: $unit-4;
+        width: inherit;
+      }
+    }
+  }
   &__image {
     align-self: center;
     margin-right: $unit-6;

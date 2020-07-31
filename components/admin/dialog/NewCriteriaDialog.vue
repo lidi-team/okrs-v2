@@ -43,7 +43,7 @@ import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 })
 export default class CriteriaDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
-  @PropSync('criteriaVisibleDialog', { type: Boolean, required: true }) public syncCriteriaDialog!: boolean;
+  @PropSync('visibleDialog', { type: Boolean, required: true }) public syncCriteriaDialog!: boolean;
 
   private typeCriterias: object[] = [
     { label: 'Sếp đánh giá nhân viên', value: EvaluationCriteriaEnum.LEADER_TO_MEMBER },

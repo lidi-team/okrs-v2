@@ -5,14 +5,13 @@ import { notifyActionSuccess } from './app.interface';
 export const notifyAction = (message: string, type: NotifyType, notifyAction?: notifyActionSuccess) => {
   Notification({
     title: 'Trạng thái',
-    message:
-      notifyAction?.action === 'create'
-        ? `Tạo ${notifyAction.name} mới thành công`
-        : notifyAction?.action === 'update'
-        ? `Cập nhật ${notifyAction.name} thành công`
-        : notifyAction?.action === 'delete'
-        ? `Xóa ${notifyAction.name} thành công`
-        : message,
+    message: !notifyAction
+      ? message
+      : notifyAction?.action === 'create'
+      ? `Tạo ${notifyAction.name} mới thành công`
+      : notifyAction?.action === 'update'
+      ? `Cập nhật ${notifyAction.name} thành công`
+      : `Xóa ${notifyAction.name} thành công`,
     type,
     duration: 2000,
   });

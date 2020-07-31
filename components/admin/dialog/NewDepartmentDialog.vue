@@ -30,7 +30,7 @@ import { Maps, Rule } from '@/constants/app.type';
 })
 export default class TeamDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
-  @PropSync('teamVisibleDialog', { type: Boolean, required: true }) public syncTeamDialog!: boolean;
+  @PropSync('visibleDialog', { type: Boolean, required: true }) public syncTeamDialog!: boolean;
 
   private autoSizeConfig = { minRows: 2, maxRows: 4 };
   private loading: boolean = false;

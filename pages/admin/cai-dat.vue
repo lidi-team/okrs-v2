@@ -42,29 +42,29 @@
         </el-tabs>
       </template>
     </admin-slot>
-    <new-cycle-okrs-dialog v-if="topChange.tab === 1" :cycle-visible-dialog.sync="cycleVisibleDialog" :reload-data="getListData" />
-    <new-department-dialog v-if="topChange.tab === 2" :team-visible-dialog.sync="teamVisibleDialog" :reload-data="getListData" />
-    <new-job-dialog v-if="topChange.tab === 3" :job-visible-dialog.sync="jobVisibleDialog" :reload-data="getListData" />
-    <new-criteria-dialog v-if="topChange.tab === 4" :criteria-visible-dialog.sync="criteriaVisibleDialog" :reload-data="getListData" />
-    <new-unit-dialog v-if="topChange.tab === 5" :unit-visible-dialog.sync="unitVisibleDialog" :reload-data="getListData" />
+    <component :is="currentDialogComponent" :visible-dialog.sync="visibleDialog" :reload-data="getListData" />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { Context } from '@nuxt/types';
-import { pageLimit } from '@/constants/app.constant';
-import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 import ManageCycleOkrs from '@/components/admin/CycleOkrs.vue';
 import ManageMeasureUnit from '@/components/admin/MeasureUnit.vue';
 import ManageDepartment from '@/components/admin/Department.vue';
 import ManageEvaluationCriteria from '@/components/admin/EvaluationCriteria.vue';
 import ManageJobPosition from '@/components/admin/JobPosition.vue';
+import NewCycleOkrsDialog from '@/components/admin/dialog/NewCycleOkrsDialog.vue';
+import NewUnitDialog from '@/components/admin/dialog/NewUnitDialog.vue';
+import NewDepartmentDialog from '@/components/admin/dialog/NewDepartmentDialog.vue';
+import NewCriteriaDialog from '@/components/admin/dialog/NewCriteriaDialog.vue';
+import NewJobDialog from '@/components/admin/dialog/NewJobDialog.vue';
 import TeamRepository from '@/repositories/TeamRepository';
 import CycleRepository from '@/repositories/CycleRepository';
 import JobRepository from '@/repositories/JobRepository';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import { AdminParams } from '@/constants/app.interface';
+import { pageLimit } from '@/constants/app.constant';
+import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 
 @Component<SettingCompanyPage>({
   name: 'SettingCompanyPage',
@@ -81,11 +81,7 @@ export default class SettingCompanyPage extends Vue {
   private loading: boolean = false;
   private tabs: string[] = [...Object.values(AdminTabsVn)];
   private textSearch: string = '';
-  private cycleVisibleDialog: boolean = false;
-  private teamVisibleDialog: boolean = false;
-  private jobVisibleDialog: boolean = false;
-  private criteriaVisibleDialog: boolean = false;
-  private unitVisibleDialog: boolean = false;
+  private visibleDialog: boolean = false;
   private timeout: any = null;
 
   private querySearch(queryString: string, callback) {
@@ -144,17 +140,7 @@ export default class SettingCompanyPage extends Vue {
   }
 
   private addNew() {
-    if (this.topChange.tab === 1) {
-      this.cycleVisibleDialog = true;
-    } else if (this.topChange.tab === 2) {
-      this.teamVisibleDialog = true;
-    } else if (this.topChange.tab === 3) {
-      this.jobVisibleDialog = true;
-    } else if (this.topChange.tab === 4) {
-      this.criteriaVisibleDialog = true;
-    } else {
-      this.unitVisibleDialog = true;
-    }
+    this.visibleDialog = true;
   }
 
   @Watch('$route.query')
@@ -219,6 +205,20 @@ export default class SettingCompanyPage extends Vue {
       return ManageEvaluationCriteria;
     } else {
       return ManageMeasureUnit;
+    }
+  }
+
+  private get currentDialogComponent() {
+    if (this.topChange.tab === 1) {
+      return NewCycleOkrsDialog;
+    } else if (this.topChange.tab === 2) {
+      return NewDepartmentDialog;
+    } else if (this.topChange.tab === 3) {
+      return NewJobDialog;
+    } else if (this.topChange.tab === 4) {
+      return NewCriteriaDialog;
+    } else {
+      return NewUnitDialog;
     }
   }
 

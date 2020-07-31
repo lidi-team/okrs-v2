@@ -16,23 +16,18 @@
       <el-form-item prop="email" label="Email" class="custom-label">
         <el-input ref="email" v-model="loginForm.email" class="login-form__email" placeholder="Nhập địa chỉ email" tabindex="1"></el-input>
       </el-form-item>
-      <el-tooltip v-model="capsTooltip" content="Đang bật Caps Lock" placement="right" manual>
-        <el-form-item prop="password" label="Mật khẩu" class="custom-label">
-          <el-input
-            ref="password"
-            v-model="loginForm.password"
-            type="password"
-            class="login-form__password"
-            placeholder="Nhập mật khẩu"
-            tabindex="2"
-            @blur="capsTooltip = false"
-            @keyup.enter.native="handleLogin"
-          ></el-input>
-          <!-- <el-input
-              @blur="capsTooltip = false"
-            ></el-input> -->
-        </el-form-item>
-      </el-tooltip>
+      <el-form-item prop="password" label="Mật khẩu" class="custom-label">
+        <el-input
+          ref="password"
+          v-model="loginForm.password"
+          type="password"
+          class="login-form__password"
+          placeholder="Nhập mật khẩu"
+          tabindex="2"
+          @blur="capsTooltip = false"
+          @keyup.enter.native="handleLogin"
+        ></el-input>
+      </el-form-item>
       <el-row type="flex" justify="space-between">
         <el-col :span="12">
           <el-checkbox v-model="rememberPassword" class="login-form__checkbox">Ghi nhớ mật khẩu</el-checkbox>
@@ -58,7 +53,6 @@ import { Maps, Rule } from '@/constants/app.type';
 export default class LoginSComponent extends Vue {
   private loading: boolean = false;
   private rememberPassword: boolean = false;
-  private capsTooltip = false;
   public loginForm: LoginDTO = {
     email: '',
     password: '',
@@ -71,11 +65,6 @@ export default class LoginSComponent extends Vue {
     ],
     password: [{ required: true, message: 'Vui lòng nhập mật khẩu' }],
   };
-
-  // private checkCapslock(event: KeyboardEvent) {
-  //   const { key } = event;
-  //   this.capsTooltip = key !== null && key.length === 1 && key >= 'A' && key <= 'Z';
-  // }
 
   private handleLogin(): any {
     (this.$refs.loginForm as LoginForm).validate(async (isValid: boolean) => {

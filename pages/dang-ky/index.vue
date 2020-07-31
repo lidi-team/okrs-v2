@@ -1,9 +1,9 @@
 <template>
   <el-row class="register-page" type="flex" justify="center" align="center">
-    <el-col :span="8" class="register-page__image">
+    <el-col :xs="24" :sm="24" :md="8" :lg="8" class="register-page__image">
       <img src="@/assets/images/account/tiny-register.png" alt="register image" />
     </el-col>
-    <el-col :span="7">
+    <el-col :xs="24" :sm="24" :md="7" :lg="7">
       <account-register :token="token" />
     </el-col>
   </el-row>
@@ -42,6 +42,10 @@ export default class LoginPage extends Vue {}
 .register-page {
   padding-top: $unit-12;
   align-content: center;
+  @include breakpoint-down(phone) {
+    flex-direction: column;
+    padding: 0;
+  }
   &__image {
     align-self: center;
   }
