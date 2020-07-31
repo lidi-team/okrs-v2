@@ -18,7 +18,7 @@
             :width="300"
             :height="300"
             lang-type="en"
-            url="http://localhost:3000/api/v1/users/upload_avatar"
+            :url="url"
             :headers="headers"
             method="PUT"
             img-format="png"
@@ -42,8 +42,9 @@
               <el-row class="info__row--custom" :gutter="20">
                 <el-col :sm="24" :md="12">
                   <el-form-item class="custome-label" prop="fullName" label="Họ và tên">
-                    <el-input v-model="profileForm.fullName" placeholder="Nhập vào họ và tên"></el-input> </el-form-item
-                ></el-col>
+                    <el-input v-model="profileForm.fullName" placeholder="Nhập vào họ và tên"></el-input>
+                  </el-form-item>
+                </el-col>
                 <el-col :sm="24" :md="12">
                   <el-form-item prop="gender" label="Giới tính">
                     <el-radio v-model="profileForm.gender" :label="true">Nam</el-radio>
@@ -82,8 +83,9 @@
                 </el-col>
                 <el-col :sm="24" :md="12">
                   <el-form-item prop="position" label="Vị trí">
-                    <el-input v-model="profileForm.position" disabled placeholder="Hiển thị vị trí"></el-input> </el-form-item
-                ></el-col>
+                    <el-input v-model="profileForm.position" disabled placeholder="Hiển thị vị trí"></el-input>
+                  </el-form-item>
+                </el-col>
               </el-row>
             </div>
             <el-button class="el-button el-button--purple el-button--update" @click="updateProfile">Cập nhật</el-button>
@@ -114,6 +116,7 @@ import { getTokenCookie } from '@/utils/cookies';
 })
 export default class ViewProfile extends Vue {
   private loading: boolean = false;
+  private url: string = `${process.env.baseAPI}/api/v1/users/upload_avatar`;
   private show: boolean = false;
   private avatarUrl: string = '';
   private headers = { Authorization: `Bearer ${getTokenCookie()}` };
@@ -156,6 +159,7 @@ export default class ViewProfile extends Vue {
   private profileForm: ProfileDTO = {
     role: '',
     fullName: '',
+    email: '',
     gender: true,
     dateOfBirth: '',
     department: '',
@@ -170,6 +174,7 @@ export default class ViewProfile extends Vue {
       this.profileForm = {
         role: temp.data.data.role.name,
         fullName: temp.data.data.fullName,
+        email: temp.data.data.email,
         gender: temp.data.data.gender,
         dateOfBirth: temp.data.data.dateOfBirth,
         department: temp.data.data.team.name,

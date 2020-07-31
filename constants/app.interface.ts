@@ -41,6 +41,7 @@ export interface RegisterOption {
 export interface ProfileDTO {
   role: string;
   fullName: string;
+  email: string;
   gender: boolean;
   dateOfBirth: Date | '';
   department: string;
