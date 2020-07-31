@@ -33,7 +33,7 @@ import { Maps, Rule } from '@/constants/app.type';
 })
 export default class MeasureUnitDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
-  @PropSync('unitVisibleDialog', { type: Boolean, required: true }) public syncMeasureUnitDialog!: boolean;
+  @PropSync('visibleDialog', { type: Boolean, required: true }) public syncMeasureUnitDialog!: boolean;
 
   private loading: boolean = false;
   private dateFormat: string = 'dd/MM/yyyy';

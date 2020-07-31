@@ -1,12 +1,9 @@
 import { Middleware } from '@nuxt/types';
 
 const isAdminMiddleware: Middleware = ({ redirect, store }) => {
-  try {
-    const userRole = store.getters['auth/user'].role.name;
-    if (userRole !== 'ADMIN') {
-      redirect('/');
-    }
-  } catch (error) {}
+  if (store.state.auth.user.role.name !== 'ADMIN') {
+    redirect('/');
+  }
 };
 
 export default isAdminMiddleware;

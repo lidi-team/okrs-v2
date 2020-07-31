@@ -30,7 +30,7 @@ import { Maps, Rule } from '@/constants/app.type';
 })
 export default class JobDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
-  @PropSync('jobVisibleDialog', { type: Boolean, required: true }) public syncJobDialog!: boolean;
+  @PropSync('visibleDialog', { type: Boolean, required: true }) public syncJobDialog!: boolean;
 
   private autoSizeConfig = { minRows: 2, maxRows: 4 };
   private loading: boolean = false;

@@ -3,7 +3,7 @@
     <div class="header__logo">
       <nuxt-link to="/"><img src="~/assets/images/common/logo.png" alt="logo" /></nuxt-link>
     </div>
-    <div v-if="profile !== null" class="header__info side-right">
+    <div v-if="user !== null" class="header__info side-right">
       <div class="side-right__list">
         <el-dropdown class="side-right__item" trigger="click">
           <i class="el-icon-message-solid"></i>
@@ -16,20 +16,20 @@
         </el-dropdown>
         <el-dropdown class="side-right__item item" trigger="click">
           <div class="item__wrapper">
-            <img :src="profile.imageUrl" alt="avatar" class="item__avatar" />
+            <img :src="user.imageUrl" alt="avatar" class="item__avatar" />
             <div class="item__info info">
-              <span class="info__name">{{ profile.fullName }}<i class="el-icon-caret-bottom" /></span
-              ><span class="info__role">{{ profile.role.name }}</span>
+              <span class="info__name">{{ user.fullName }}<i class="el-icon-caret-bottom" /></span
+              ><span class="info__role">{{ user.role.name }}</span>
             </div>
           </div>
           <el-dropdown-menu slot="dropdown">
             <nuxt-link to="/thong-tin-tai-khoan">
               <el-dropdown-item><fa icon="user-circle" class="item__icon" /><span>Thông tin tài khoản</span></el-dropdown-item>
             </nuxt-link>
-            <nuxt-link v-if="profile.role.name === 'ADMIN'" to="/admin/cai-dat">
+            <nuxt-link v-if="user.role.name === 'ADMIN'" to="/admin/cai-dat">
               <el-dropdown-item><i class="el-icon-s-tools item__icon"></i><span>Cài đặt công ty</span></el-dropdown-item>
             </nuxt-link>
-            <nuxt-link v-if="profile.role.name === 'HR' || profile.role.name === 'ADMIN'" to="/quan-ly/nhan-su">
+            <nuxt-link v-if="user.role.name === 'HR' || user.role.name === 'ADMIN'" to="/quan-ly/nhan-su">
               <el-dropdown-item><fa icon="user-friends" class="item__icon" /><span>Quản lý nhân sự</span></el-dropdown-item>
             </nuxt-link>
             <nuxt-link to="/doi-mat-khau">
@@ -61,7 +61,7 @@ import { mapGetters } from 'vuex';
   name: 'Navbar',
   computed: {
     ...mapGetters({
-      profile: 'auth/user',
+      user: 'auth/user',
     }),
   },
 })
