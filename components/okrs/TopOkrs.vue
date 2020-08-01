@@ -1,11 +1,11 @@
 <template>
-  <el-row type="flex" justify="space-between">
+  <el-row class="top-okrs" type="flex" justify="space-between">
     <el-col :span="12">
-      <el-select v-model="value" filterable placeholder="Chọn chu kỳ">
-        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
-      </el-select>
+      <base-top-search-cycle :text-cycle="textCycle" :text-place-holder="textPlaceHolder" :text-search="textSearch" />
     </el-col>
-    <el-col :span="12"></el-col>
+    <el-col :span="6">
+      <el-button class="el-button el-button--purple el-button-medium" @click="addNewOKRs">Thêm mới OKRs</el-button>
+    </el-col>
   </el-row>
 </template>
 <script lang="ts">
@@ -14,6 +14,16 @@ import { SelectOptionDTO } from '@/constants/app.interface';
 @Component<TopOKRsComponent>({ name: 'TopOKRsComponent' })
 export default class TopOKRsComponent extends Vue {
   @Prop({ required: true }) private cycleOkrsSelect!: SelectOptionDTO[];
+  @Prop(String) private textPlaceHolder!: string;
+  @Prop(String) private textSearch!: string;
+
+  private addNewOKRs() {
+    console.log('ADD new OKRs');
+  }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '@/assets/scss/main.scss';
+.top-okrs {
+}
+</style>

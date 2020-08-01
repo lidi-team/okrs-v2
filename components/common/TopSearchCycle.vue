@@ -17,6 +17,14 @@ export default class TopSearchCycle extends Vue {
   @Prop({ required: true }) private textCycle!: string;
   @Prop({ required: true }) private textPlaceHolder!: string;
   @Prop({ required: true }) private textSearch!: string;
+
+  private querySearch() {
+    console.log('Query Search');
+  }
+
+  private handleSelect() {
+    console.log('Select otpion');
+  }
 }
 </script>
 <style lang="scss" scoped></style>
