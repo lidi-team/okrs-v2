@@ -42,8 +42,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { Form } from 'element-ui';
-import { notifyAction } from '@/constants/app.notify';
+import { Form, Notification } from 'element-ui';
+
+import { notificationConfig } from '../../../constants/app.constant';
 import { CycleDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import { compareTwoDate, formatDateToYYYY } from '@/utils/dateParser';
@@ -101,7 +102,10 @@ export default class CycleOkrsDialog extends Vue {
             endDate: formatDateToYYYY(this.temCreateCycle.endDate),
           };
           await CycleRepository.post(tempCycle).then((res) => {
-            notifyAction('', 'success', { action: 'create', name: 'chu kỳ' });
+            Notification.success({
+              ...notificationConfig,
+              message: 'Tạo chu kỳ mới thành công',
+            });
           });
           this.loading = false;
           this.clearForm();

@@ -9,3 +9,8 @@ export const authEnpoint = {
 };
 
 export const pageLimit = 10;
+
+export const notificationConfig = {
+  title: 'Trạng thái',
+  duration: 2000,
+};
