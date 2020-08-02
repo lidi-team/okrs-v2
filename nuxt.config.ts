@@ -1,5 +1,4 @@
 import { NuxtConfig } from '@nuxt/types';
-import pureCssConfig from './purecss.config';
 
 const nuxtConfig: NuxtConfig = {
   server: {
@@ -75,7 +74,7 @@ const nuxtConfig: NuxtConfig = {
     '@nuxt/components',
     '@nuxtjs/dotenv',
     'nuxt-clipboard2',
-    ['nuxt-purgecss', { pureCssConfig }],
+    // 'nuxt-purgecss',
     [
       '@nuxtjs/fontawesome',
       {
@@ -86,6 +85,7 @@ const nuxtConfig: NuxtConfig = {
       },
     ],
   ],
+  // purgeCSS: pureCssConfig,
   /**
    * @description Config all components in app
    * @docs https://github.com/nuxt/components
