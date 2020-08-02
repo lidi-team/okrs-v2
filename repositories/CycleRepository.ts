@@ -10,7 +10,7 @@ export default class CycleRepository {
   }
 
   public static getCurrentCycle(): Promise<AxiosResponse<any>> {
-    return authenticatedService.get(`${ResourcesEnpoint.CycleOKRs}?status=current`);
+    return authenticatedService.get(`${ResourcesEnpoint.CycleOKRs}/current`);
   }
 
   public static update(payload: CycleDTO): Promise<AxiosResponse<any>> {
