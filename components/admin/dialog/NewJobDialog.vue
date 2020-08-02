@@ -20,8 +20,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { Form } from 'element-ui';
-import { notifyAction } from '@/constants/app.notify';
+import { Form, Notification } from 'element-ui';
+
+import { notificationConfig } from '../../../constants/app.constant';
 import { TeamDTO } from '@/constants/app.interface';
 import JobRepository from '@/repositories/JobRepository';
 import { Maps, Rule } from '@/constants/app.type';
@@ -62,7 +63,10 @@ export default class JobDialog extends Vue {
       if (isValid) {
         try {
           await JobRepository.post(this.tempCreateJob).then((res) => {
-            notifyAction('', 'success', { action: 'create', name: 'vị trí' });
+            Notification.success({
+              ...notificationConfig,
+              message: 'Tạo vị trí mới thành công',
+            });
           });
           this.clearForm();
           this.loading = false;

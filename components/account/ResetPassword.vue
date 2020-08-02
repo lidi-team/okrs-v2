@@ -47,8 +47,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Form } from 'element-ui';
-import { notifyAction } from '@/constants/app.notify';
+import { Form, Notification } from 'element-ui';
+
+import { notificationConfig } from '../../constants/app.constant';
 import { ResetPasswordDTO, ResetPasswordActionDTO } from '@/constants/app.interface';
 import AuthRepository from '@/repositories/AuthRepository';
 import { Maps, Rule } from '@/constants/app.type';
@@ -98,7 +99,10 @@ export default class ResetPassword extends Vue {
           this.loading = true;
           delete this.resetPasswordForm.matchPassword;
           await AuthRepository.resetPasswordWithToken(this.resetPasswordForm).then((res: any) => {
-            notifyAction('Đổi mật khẩu thành công', 'success');
+            Notification.success({
+              ...notificationConfig,
+              message: 'Gửi yêu cầu đăng ký thành công',
+            });
           });
           this.$router.push('/dang-nhap');
           this.loading = false;

@@ -23,5 +23,3 @@ export type Rule = FormRule;
 export type Rules = Maps<FormRule[]>;
 
 export type UserRole = 'Admin' | 'HR' | 'Staff' | null;
-export type NotifyAction = 'create' | 'update' | 'delete';
-export type NotifyType = 'success' | 'warning' | 'info' | 'error';

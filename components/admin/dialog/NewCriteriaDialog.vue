@@ -32,8 +32,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { Form } from 'element-ui';
-import { notifyAction } from '@/constants/app.notify';
+import { Form, Notification } from 'element-ui';
+
+import { notificationConfig } from '../../../constants/app.constant';
 import { EvaluationCriteriorDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import CriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
@@ -80,7 +81,10 @@ export default class CriteriaDialog extends Vue {
       if (isValid) {
         try {
           await CriteriaRepository.post(this.tempCreateCriteria).then((res) => {
-            notifyAction('', 'success', { action: 'create', name: 'tiêu chí' });
+            Notification.success({
+              ...notificationConfig,
+              message: 'Tạo tiêu chí mới thành công',
+            });
           });
           this.loading = false;
           this.clearForm();

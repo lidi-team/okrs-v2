@@ -55,11 +55,11 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Form } from 'element-ui';
+import { Form, Notification } from 'element-ui';
+import { notificationConfig } from '../../constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { ChangePasswordDTO } from '@/constants/app.interface';
 import UserRepository from '@/repositories/UserRepository';
-import { notifyAction } from '@/constants/app.notify';
 
 @Component<ChangePasswordDialog>({
   name: 'ChangePasswordDialog',
@@ -109,12 +109,18 @@ export default class ChangePasswordDialog extends Vue {
           delete this.changePasswordForm.matchPassword;
           await UserRepository.changePassword(this.changePasswordForm);
           this.loading = false;
-          notifyAction('Đổi mật khẩu thành công', 'success');
+          Notification.success({
+            ...notificationConfig,
+            message: 'Đổi mật khẩu thành công',
+          });
           this.$router.push('/');
         } catch (error) {
           this.loading = false;
           if (error.response.data.statusCode === 409) {
-            notifyAction('Mât khẩu không chính xác', 'error');
+            Notification.error({
+              ...notificationConfig,
+              message: 'Mât khẩu không chính xác',
+            });
           }
         }
       }
