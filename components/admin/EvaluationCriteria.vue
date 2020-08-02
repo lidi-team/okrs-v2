@@ -10,6 +10,7 @@
       <el-table-column prop="type" label="Kiểu" :formatter="typeFormatter" />
       <el-table-column label="Ngày cập nhật">
         <template v-slot="{ row }">
+          <!-- Vue Fileter Date Plugin -->
           <span>{{ new Date(row.updatedAt) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
       </el-table-column>

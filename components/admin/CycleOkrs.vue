@@ -4,6 +4,7 @@
       <el-table-column prop="name" label="Tên chu kỳ"></el-table-column>
       <el-table-column label="Ngày bắt đầu">
         <template v-slot="{ row }">
+          <!-- Vue Fileter Date Plugin -->
           <span>{{ new Date(row.startDate) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
       </el-table-column>
