@@ -44,8 +44,7 @@
     "vue-class-component": "^7.2.5",
     "vue-fragment": "^1.5.1",
     "vue-image-crop-upload": "^2.5.0",
-    "vue-property-decorator": "^9.0.0",
-    "vuex-module-decorators": "^0.17.0"
+    "vue-property-decorator": "^9.0.0"
   },
   "devDependencies": {
     "@fortawesome/free-brands-svg-icons": "^5.14.0",
@@ -76,7 +75,6 @@
     "jest": "^26.0.1",
     "lint-staged": "^10.2.11",
     "npm-run-all": "^4.1.5",
-    "nuxt-purgecss": "^1.0.0",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.1.0",
