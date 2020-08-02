@@ -47,9 +47,10 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Form } from 'element-ui';
+import { Form, Notification } from 'element-ui';
+import { notificationConfig } from '@/constants/app.constant';
 import { RegisterDTO, RegisterOption } from '@/constants/app.interface';
-import { notifyErrorRegister, notifyAction } from '@/constants/app.notify';
+import { notifyErrorRegister } from '@/constants/app.notify';
 import { Maps, Rule } from '@/constants/app.type';
 import AuthRepository from '@/repositories/AuthRepository';
 import TeamRepository from '@/repositories/TeamRepository';
@@ -85,9 +86,7 @@ export default class RegisterComponent extends Vue {
       const [teams, jobs] = await Promise.all([TeamRepository.getMetaData(), JobRepository.getMetaData()]);
       this.teams = teams.data.data;
       this.jobs = jobs.data.data;
-    } catch (error) {
-      notifyAction('Có lỗi xảy ra', 'error');
-    }
+    } catch (error) {}
   }
 
   private rules: Maps<Rule[]> = {
@@ -130,7 +129,10 @@ export default class RegisterComponent extends Vue {
           this.loading = true;
           delete this.registerForm.matchPassword;
           await AuthRepository.register(this.registerForm).then((res: any) => {
-            notifyAction('Gửi yêu cầu đăng ký thành công', 'success');
+            Notification.success({
+              ...notificationConfig,
+              message: 'Gửi yêu cầu đăng ký thành công',
+            });
           });
           this.$router.push('/dang-nhap');
           this.loading = false;

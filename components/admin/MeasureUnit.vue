@@ -48,8 +48,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
-import { Form } from 'element-ui';
-import { notifyAction } from '@/constants/app.notify';
+import { Form, Notification } from 'element-ui';
+
+import { notificationConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { AdminTabsEn } from '@/constants/app.enum';
@@ -109,7 +110,10 @@ export default class ManageMeasureUnit extends Vue {
         }).then(async () => {
           try {
             await MeasureUnitRepository.update(this.tempUpdateUnit).then((res) => {
-              notifyAction('', 'success', { action: 'update', name: 'đơn vị' });
+              Notification.success({
+                ...notificationConfig,
+                message: 'Cập nhật đơn vị thành công',
+              });
             });
             this.reloadData();
             this.dialogUpdateVisible = false;
@@ -127,7 +131,10 @@ export default class ManageMeasureUnit extends Vue {
     }).then(async () => {
       try {
         await MeasureUnitRepository.delete(row.id).then((res) => {
-          notifyAction('', 'success', { action: 'delete', name: 'đơn vị' });
+          Notification.success({
+            ...notificationConfig,
+            message: 'Xóa đơn vị thành công',
+          });
         });
         this.reloadData();
       } catch (error) {}

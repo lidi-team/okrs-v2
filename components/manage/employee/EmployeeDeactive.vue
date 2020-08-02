@@ -158,9 +158,10 @@
   </fragment>
 </template>
 <script lang="ts">
-import { Form } from 'element-ui';
+import { Form, Notification } from 'element-ui';
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { notifyAction } from '@/constants/app.notify';
+
+import { notificationConfig } from '../../../constants/app.constant';
 import { EmployeeDTO } from '@/constants/app.interface';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 @Component<EmployeeDeactive>({
@@ -211,7 +212,10 @@ export default class EmployeeDeactive extends Vue {
         }).then(async () => {
           try {
             await EmployeeRepository.update(tempUpdateUser).then((res: any) => {
-              notifyAction('', 'success', { action: 'update', name: 'thành viên' });
+              Notification.success({
+                ...notificationConfig,
+                message: 'Cập nhật thành viên thành công',
+              });
             });
             this.getListUsers();
             this.dialogUpdateVisible = false;

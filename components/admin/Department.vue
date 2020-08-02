@@ -55,8 +55,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
-import { Form } from 'element-ui';
-import { notifyAction } from '@/constants/app.notify';
+import { Form, Notification } from 'element-ui';
+
+import { notificationConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { TeamDTO } from '@/constants/app.interface';
 import TeamRepository from '@/repositories/TeamRepository';
@@ -117,7 +118,10 @@ export default class ManageDepartment extends Vue {
         }).then(async () => {
           try {
             await TeamRepository.update(this.tempUpdateTeam).then((res) => {
-              notifyAction('', 'success', { action: 'update', name: 'phòng ban' });
+              Notification.success({
+                ...notificationConfig,
+                message: 'Cập nhật phòng ban thành công',
+              });
             });
             this.reloadData();
             this.dialogUpdateVisible = false;
@@ -135,7 +139,10 @@ export default class ManageDepartment extends Vue {
     }).then(async () => {
       try {
         await TeamRepository.delete(row.id).then((res) => {
-          notifyAction('', 'success', { action: 'delete', name: 'phòng ban' });
+          Notification.success({
+            ...notificationConfig,
+            message: 'Xóa phòng ban thành công',
+          });
         });
         this.reloadData();
       } catch (error) {}

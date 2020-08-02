@@ -1,66 +1,86 @@
 import { Notification } from 'element-ui';
-import { NotifyType } from './app.type';
-import { notifyActionSuccess } from './app.interface';
-
-export const notifyAction = (message: string, type: NotifyType, notifyAction?: notifyActionSuccess) => {
-  Notification({
-    title: 'Trạng thái',
-    message: !notifyAction
-      ? message
-      : notifyAction?.action === 'create'
-      ? `Tạo ${notifyAction.name} mới thành công`
-      : notifyAction?.action === 'update'
-      ? `Cập nhật ${notifyAction.name} thành công`
-      : `Xóa ${notifyAction.name} thành công`,
-    type,
-    duration: 2000,
-  });
-};
+import { notificationConfig } from './app.constant';
 
 export const notifyErrorLogin = (error: any) => {
   switch (error.response.data.statusCode) {
     case 430:
-      notifyAction('Email không tồn tại', 'error');
+      Notification.error({
+        ...notificationConfig,
+        message: 'Email không tồn tại',
+      });
       break;
     case 409:
-      notifyAction('Mât khẩu không chính xác', 'error');
+      Notification.error({
+        ...notificationConfig,
+        message: 'Mât khẩu không chính xác',
+      });
       break;
     case 420:
-      notifyAction('Tài khoản của bạn đã bị khóa', 'error');
+      Notification.error({
+        ...notificationConfig,
+        message: 'Tài khoản của bạn đã bị khóa',
+      });
       break;
     case 422:
-      notifyAction('Tài khoản của bạn đang chờ phê duyệt', 'error');
+      Notification.error({
+        ...notificationConfig,
+        message: 'Tài khoản của bạn đang chờ phê duyệt',
+      });
       break;
     default:
-      notifyAction('Có lỗi xảy ra', 'error');
+      Notification.error({
+        ...notificationConfig,
+        message: 'Có lỗi xảy ra',
+      });
   }
 };
 
 export const notifyErrorRegister = (error: any) => {
   switch (error.response.data.statusCode) {
     case 432:
-      notifyAction('Email đã tồn tại', 'error');
+      Notification.error({
+        ...notificationConfig,
+        message: 'Email đã tồn tại',
+      });
       break;
     case 413:
-      notifyAction('Token không chính xác', 'error');
+      Notification.error({
+        ...notificationConfig,
+        message: 'Token không chính xác',
+      });
       break;
     case 414:
-      notifyAction('Token đã hết hạn', 'error');
+      Notification.error({
+        ...notificationConfig,
+        message: 'Token đã hết hạn',
+      });
       break;
     default:
-      notifyAction('Có lỗi xảy ra', 'error');
+      Notification.error({
+        ...notificationConfig,
+        message: 'Có lỗi xảy ra',
+      });
   }
 };
 
 export const notifyErrorResetPassword = (error: any) => {
   switch (error.response.data.statusCode) {
     case 413:
-      notifyAction('Token không chính xác', 'error');
+      Notification.error({
+        ...notificationConfig,
+        message: 'Token không chính xác',
+      });
       break;
     case 414:
-      notifyAction('Token đã hết hạn', 'error');
+      Notification.error({
+        ...notificationConfig,
+        message: 'Token đã hết hạn',
+      });
       break;
     default:
-      notifyAction('Có lỗi xảy ra', 'error');
+      Notification.error({
+        ...notificationConfig,
+        message: 'Có lỗi xảy ra',
+      });
   }
 };

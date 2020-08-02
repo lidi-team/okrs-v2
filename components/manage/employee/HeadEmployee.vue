@@ -32,7 +32,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch, PropSync } from 'vue-property-decorator';
-import { notifyAction } from '@/constants/app.notify';
+import { Notification } from 'element-ui';
+import { notificationConfig } from '../../../constants/app.constant';
+
 @Component<HeadEmployee>({
   name: 'HeadEmployee',
 })
@@ -54,7 +56,10 @@ export default class HeadEmployee extends Vue {
 
   private doCopy() {
     this.$copyText(this.linkInvite);
-    notifyAction('Copy link thành công', 'success');
+    Notification.success({
+      ...notificationConfig,
+      message: 'Copy link thành công',
+    });
   }
 }
 </script>

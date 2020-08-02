@@ -63,8 +63,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
-import { Form } from 'element-ui';
-import { notifyAction } from '@/constants/app.notify';
+import { Form, Notification } from 'element-ui';
+
+import { notificationConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { EvaluationCriteriorDTO, SelectOptionDTO } from '@/constants/app.interface';
 import { EvaluationCriteriaEnum, AdminTabsEn } from '@/constants/app.enum';
@@ -135,7 +136,10 @@ export default class ManageEvaluationCriteria extends Vue {
         }).then(async () => {
           try {
             await EvaluationCriteriorRepository.update(this.tempUpdateCriteria).then((res) => {
-              notifyAction('', 'success', { action: 'update', name: 'tiêu chí' });
+              Notification.success({
+                ...notificationConfig,
+                message: 'Cập nhật tiêu chí thành công',
+              });
             });
             this.reloadData();
             this.dialogUpdateVisible = false;
@@ -153,7 +157,10 @@ export default class ManageEvaluationCriteria extends Vue {
     }).then(async () => {
       try {
         await EvaluationCriteriorRepository.delete(row.id).then((res) => {
-          notifyAction('', 'success', { action: 'delete', name: 'tiêu chí' });
+          Notification.success({
+            ...notificationConfig,
+            message: 'Xóa tiêu chí thành công',
+          });
         });
         this.reloadData();
       } catch (error) {}

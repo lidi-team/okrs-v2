@@ -20,8 +20,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { Form } from 'element-ui';
-import { notifyAction } from '@/constants/app.notify';
+import { Form, Notification } from 'element-ui';
+
+import { notificationConfig } from '../../../constants/app.constant';
 import TeamRepository from '@/repositories/TeamRepository';
 import { TeamDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
@@ -62,7 +63,10 @@ export default class TeamDialog extends Vue {
       if (isValid) {
         try {
           await TeamRepository.post(this.tempCreateDepartment).then((res) => {
-            notifyAction('', 'success', { action: 'create', name: 'phòng ban' });
+            Notification.success({
+              ...notificationConfig,
+              message: 'Tạo phòng ban mới thành công',
+            });
           });
           this.loading = false;
           this.clearForm();

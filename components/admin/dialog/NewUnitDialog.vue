@@ -23,8 +23,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { Form } from 'element-ui';
-import { notifyAction } from '@/constants/app.notify';
+import { Form, Notification } from 'element-ui';
+
+import { notificationConfig } from '../../../constants/app.constant';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
@@ -64,7 +65,10 @@ export default class MeasureUnitDialog extends Vue {
       if (isValid) {
         try {
           await MeasureUnitRepository.post(this.tempCreateUnit).then((res) => {
-            notifyAction('', 'success', { action: 'create', name: 'đơn vị' });
+            Notification.success({
+              ...notificationConfig,
+              message: 'Tạo đơn vị mới thành công',
+            });
           });
           this.clearForm();
           this.loading = false;

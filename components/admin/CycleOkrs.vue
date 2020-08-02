@@ -68,8 +68,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
-import { Form } from 'element-ui';
-import { notifyAction } from '@/constants/app.notify';
+import { Form, Notification } from 'element-ui';
+
+import { notificationConfig } from '@/constants/app.constant';
 import { AdminTabsEn } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 import { CycleDTO } from '@/constants/app.interface';
@@ -148,7 +149,10 @@ export default class ManageCycleOkrs extends Vue {
               endDate: formatDateToYYYY(this.temporaryUpdateCycle.endDate),
             };
             await CycleRepository.update(tempCycle).then((res) => {
-              notifyAction('', 'success', { action: 'update', name: 'chu kỳ' });
+              Notification.success({
+                ...notificationConfig,
+                message: 'Cập nhật chu kỳ thành công',
+              });
             });
             this.reloadData();
             this.dialogUpdateVisible = false;
@@ -166,7 +170,10 @@ export default class ManageCycleOkrs extends Vue {
     }).then(async () => {
       try {
         await CycleRepository.delete(row.id).then((res) => {
-          notifyAction('', 'success', { action: 'delete', name: 'chu kỳ' });
+          Notification.success({
+            ...notificationConfig,
+            message: 'Xóa chu kỳ thành công',
+          });
         });
         this.reloadData();
       } catch (error) {}

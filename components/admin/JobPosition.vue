@@ -55,8 +55,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
-import { Form } from 'element-ui';
-import { notifyAction } from '@/constants/app.notify';
+import { Form, Notification } from 'element-ui';
+
+import { notificationConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { JobPositionDTO } from '@/constants/app.interface';
 import JobRepository from '@/repositories/JobRepository';
@@ -115,7 +116,10 @@ export default class ManageJobPosition extends Vue {
         }).then(async () => {
           try {
             await JobRepository.update(this.tempUpdateJob).then((res) => {
-              notifyAction('', 'success', { action: 'update', name: 'vị trí' });
+              Notification.success({
+                ...notificationConfig,
+                message: 'Cập nhật vị trí thành công',
+              });
             });
             this.reloadData();
             this.dialogUpdateVisible = false;
@@ -133,7 +137,10 @@ export default class ManageJobPosition extends Vue {
     }).then(async () => {
       try {
         await JobRepository.delete(row.id).then((res) => {
-          notifyAction('', 'success', { action: 'delete', name: 'vị trí' });
+          Notification.success({
+            ...notificationConfig,
+            message: 'Xóa vị trí thành công',
+          });
         });
         this.reloadData();
       } catch (error) {}
