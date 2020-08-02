@@ -1,13 +1,35 @@
 <template>
-  <fragment>
-    <top-okrs />
+  <div class="okrs-page">
+    <el-row class="okrs-page__top" type="flex" justify="space-between">
+      <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
+        <base-top-search-cycle
+          :text-cycle="textCycle"
+          :text-search-place-holder="textSearchPlaceHolder"
+          :text-search="textSearch"
+          :options="cycleOkrsSelect"
+        />
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="8" :lg="8" :span="6" class="okrs-page__top--button">
+        <el-button class="el-button el-button--purple el-button-medium" @click="addNewOKRs">Thêm mới OKRs</el-button>
+      </el-col>
+    </el-row>
     <item-okrs v-for="item in itemOKRsData" :key="item.textHeader" :text-header="item.textHeader" :table-data="item.tableData" />
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { SelectOptionDTO } from '@/constants/app.interface';
 @Component<OKRsPage>({ name: 'OKRsPage' })
 export default class OKRsPage extends Vue {
+  private cycleOkrsSelect: SelectOptionDTO[] = [];
+  private textSearchPlaceHolder: string = 'Tìm kiếm OKRs của';
+  private textSearch: string = '';
+  private textCycle: string = '';
+
+  private addNewOKRs() {
+    console.log('ADD new OKRs');
+  }
+
   private itemOKRsData: any[] = [
     { textHeader: 'OKRs toàn công ty', tableData: null },
     { textHeader: 'OKRs nhóm', tableData: null },
@@ -57,4 +79,19 @@ export default class OKRsPage extends Vue {
   ];
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+@import '@/assets/scss/main.scss';
+.okrs-page {
+  width: 85%;
+  &__top {
+    &--searching {
+      padding: $unit-7 0 $unit-4 0;
+    }
+    &--button {
+      display: flex;
+      justify-content: flex-end;
+      margin: $unit-7 0 $unit-4 0;
+    }
+  }
+}
+</style>

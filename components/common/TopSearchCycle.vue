@@ -6,24 +6,31 @@
       </el-select>
     </el-col>
     <el-col :span="12">
-      <el-autocomplete v-model="textSearch" :fetch-suggestions="querySearch" :placeholder="textPlaceHolder" @select="handleSelect"></el-autocomplete>
+      <el-autocomplete
+        v-model="textSearch"
+        :fetch-suggestions="querySearch"
+        :placeholder="textSearchPlaceholder"
+        @select="handleSelect"
+      ></el-autocomplete>
     </el-col>
   </el-row>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import { SelectOptionDTO } from '@/constants/app.interface';
 @Component<TopSearchCycle>({ name: 'TopSearchCycle' })
 export default class TopSearchCycle extends Vue {
-  @Prop({ required: true }) private textCycle!: string;
-  @Prop({ required: true }) private textPlaceHolder!: string;
-  @Prop({ required: true }) private textSearch!: string;
+  @Prop({ required: true, type: String }) private textCycle!: string;
+  @Prop({ required: true, type: String }) private textSearchPlaceholder!: string;
+  @Prop({ required: true, type: String }) private textSearch!: string;
+  @Prop({ required: true, type: Array }) private options!: SelectOptionDTO[];
 
   private querySearch() {
     console.log('Query Search');
   }
 
-  private handleSelect() {
-    console.log('Select otpion');
+  private handleSelect(item) {
+    console.log('Select ' + item);
   }
 }
 </script>
