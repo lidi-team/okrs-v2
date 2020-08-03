@@ -45,12 +45,12 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { RootState } from '@/store/auth';
-import Dashboard from '@/assets/images/common/dashboard.svg';
-import CFRs from '@/assets/images/common/cfrs.svg';
-import Checkin from '@/assets/images/common/checkin.svg';
-import OKRs from '@/assets/images/common/okrs.svg';
-import Setting from '@/assets/images/common/setting.svg';
-import HumanResources from '@/assets/images/common/nhan-su.svg';
+import Dashboard from '@/assets/images/common/sidebar/dashboard.svg';
+import CFRs from '@/assets/images/common/sidebar/cfrs.svg';
+import Checkin from '@/assets/images/common/sidebar/checkin.svg';
+import OKRs from '@/assets/images/common/sidebar/okrs.svg';
+import Setting from '@/assets/images/common/sidebar/setting.svg';
+import HumanResources from '@/assets/images/common/sidebar/nhan-su.svg';
 @Component<SideBar>({
   name: 'SideBar',
   components: {
