@@ -33,7 +33,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch, PropSync } from 'vue-property-decorator';
 import { Notification } from 'element-ui';
-import { notificationConfig } from '../../../constants/app.constant';
+import { notificationConfig } from '@/constants/app.constant';
 
 @Component<HeadEmployee>({
   name: 'HeadEmployee',

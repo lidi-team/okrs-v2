@@ -25,7 +25,7 @@
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 
-import { notificationConfig } from '../../../constants/app.constant';
+import { notificationConfig } from '@/constants/app.constant';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';

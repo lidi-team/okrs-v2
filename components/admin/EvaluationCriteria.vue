@@ -71,7 +71,7 @@ import { Maps, Rule } from '@/constants/app.type';
 import { EvaluationCriteriorDTO, SelectOptionDTO } from '@/constants/app.interface';
 import { EvaluationCriteriaEnum, AdminTabsEn } from '@/constants/app.enum';
 import EvaluationCriteriorRepository from '@/repositories/EvaluationCriteriaRepository';
-import StarIcon from '@/assets/images/common/star.svg';
+import StarIcon from '@/assets/images/admin/star.svg';
 
 @Component<ManageEvaluationCriteria>({
   name: 'ManageEvaluationCriteria',

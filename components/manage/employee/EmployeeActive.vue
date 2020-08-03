@@ -164,7 +164,7 @@
 import { Form, Notification } from 'element-ui';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
-import { notificationConfig } from '../../../constants/app.constant';
+import { notificationConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { EmployeeDTO } from '@/constants/app.interface';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
