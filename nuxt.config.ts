@@ -50,7 +50,7 @@ const nuxtConfig: NuxtConfig = {
   /*
    ** Global CSS
    */
-  css: ['@/assets/scss/base/_global.scss', '@/assets/css/resetCss.css'],
+  css: ['simplemde/dist/simplemde.min.css', 'highlight.js/styles/github.css', '@/assets/scss/base/_global.scss', '@/assets/css/resetCss.css'],
   /**
    * @description Plugins to load before mounting the App
    * @docs https://nuxtjs.org/guide/plugins
@@ -65,6 +65,8 @@ const nuxtConfig: NuxtConfig = {
     {
       src: '@/plugins/vue-filter-date',
     },
+    { src: '~/plugins/vue-simplemde' },
+    { src: '~/plugins/md-it' },
   ],
   /*
    ** Nuxt.js dev-modules
@@ -102,7 +104,7 @@ const nuxtConfig: NuxtConfig = {
   /*
    ** Nuxt.js modules
    */
-  modules: ['@nuxtjs/axios', '@nuxtjs/pwa'],
+  modules: ['@nuxtjs/markdownit', '@nuxtjs/axios', '@nuxtjs/pwa'],
   /**
    * @description Axios module configuration
    * @docs https://axios.nuxtjs.org/options

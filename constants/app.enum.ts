@@ -65,6 +65,7 @@ export enum SidebarTabs {
 export enum ResourcesEnpoint {
   Auth = 'auth',
   Users = 'users',
+  Lessons = 'lessons',
   ResetPassword = 'reset_password',
   Me = 'me',
   Job = 'jobs',

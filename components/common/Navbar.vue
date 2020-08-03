@@ -32,6 +32,9 @@
             <nuxt-link v-if="user.role.name === 'HR' || user.role.name === 'ADMIN'" to="/quan-ly/nhan-su">
               <el-dropdown-item><fa icon="user-friends" class="item__icon" /><span>Quản lý nhân sự</span></el-dropdown-item>
             </nuxt-link>
+            <nuxt-link v-if="user.role.name === 'HR' || user.role.name === 'ADMIN'" to="/bai-hoc-okrs">
+              <el-dropdown-item><i class="el-icon-notebook-1 item__icon"></i><span>Quản lý bài học OKRs</span></el-dropdown-item>
+            </nuxt-link>
             <nuxt-link to="/doi-mat-khau">
               <el-dropdown-item>
                 <svg class="item__icon" width="14" height="14" viewBox="0 0 14 14" fill="#637381" xmlns="http://www.w3.org/2000/svg">

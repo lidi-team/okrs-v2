@@ -52,8 +52,6 @@ export const actions: AuthActions<AuthState, RootState> = {
     try {
       await AuthRepository.logout();
       removeTokenCookie();
-      commit(AuthMutation.SET_TOKEN, null);
-      commit(AuthMutation.SET_USER, null);
     } catch (error) {}
   },
   clear({ commit }) {
