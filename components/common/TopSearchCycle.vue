@@ -52,7 +52,7 @@ export default class TopSearchCycle extends Vue {
         value: item.name,
       };
     });
-    this.syncTextCycle = this.options[0].value;
+    this.syncTextCycle = this.$store.state.cycle.cycle.name;
   }
 }
 </script>

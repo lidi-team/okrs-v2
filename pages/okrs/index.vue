@@ -8,7 +8,7 @@
         <el-button class="el-button el-button--purple el-button-medium" @click="addNewOKRs">Thêm mới OKRs</el-button>
       </el-col>
     </el-row>
-    <item-okrs v-for="item in itemOKRsData" :key="item.textHeader" :text-header="item.textHeader" :table-data="item.tableData" />
+    <item-okrs v-for="item in itemOKRsData" :key="item.textHeader" :text-header="item.textHeader" :table-data="item.tableData" :loading="loading" />
   </div>
 </template>
 <script lang="ts">
@@ -24,6 +24,7 @@ export default class OKRsPage extends Vue {
   private textSearchPlaceholder: string = 'Tìm kiếm OKRs của';
   private textSearch: string = '';
   private textCycle: string = '';
+  private loading: boolean = false;
 
   private addNewOKRs() {
     console.log('ADD new OKRs');
@@ -36,13 +37,17 @@ export default class OKRsPage extends Vue {
   ];
 
   private async getDashBoardOkrs() {
+    this.loading = true;
     try {
       const cycleId: number = +this.$store.state.cycle.cycle.id;
       const { data } = await OkrsRepository.getOkrsDashboard(cycleId);
       this.itemOKRsData[0].tableData = Object.freeze(data.data.root);
       this.itemOKRsData[1].tableData = Object.freeze(data.data.team);
       this.itemOKRsData[2].tableData = Object.freeze(data.data.personal);
-    } catch (error) {}
+      this.loading = false;
+    } catch (error) {
+      this.loading = false;
+    }
   }
 }
 </script>

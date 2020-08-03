@@ -2,57 +2,53 @@
   <fragment>
     <div class="item-okrs">
       <p class="item-okrs__header">{{ textHeader }}</p>
-      <el-row class="item-okrs__sub-header">
-        <el-col :xs="24" :sm="24" :md="8" :lg="8" class="item-okrs__sub-header--objective">Mục tiêu</el-col>
-        <el-col :xs="24" :sm="24" :md="8" :lg="8">
-          <el-row>
-            <el-col :xs="24" :sm="24" :md="12" :lg="12">Kết quả then chốt</el-col>
-            <el-col :xs="24" :sm="24" :md="12" :lg="12">Tiến độ</el-col>
-          </el-row>
-        </el-col>
-        <el-col :xs="24" :sm="24" :md="8" :lg="8">
-          <el-row>
-            <el-col :xs="24" :sm="24" :md="12" :lg="12">Thay đổi</el-col>
-            <el-col :xs="24" :sm="24" :md="12" :lg="12"></el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-      <el-table :data="tableData" class="item-okrs__content">
-        <el-table-column type="expand">
+      <el-table v-loading="loading" :data="tableData" header-row-class-name="item-okrs__table-header" style="width: 100%;">
+        <el-table-column type="expand" width="20">
           <template v-slot="{ row }">
-            <el-col :xs="24" :sm="24" :md="8" :lg="8" class="">{{ row.title }}</el-col>
-            <el-col :xs="24" :sm="24" :md="8" :lg="8">
-              <el-row>
-                <el-col :xs="24" :sm="24" :md="12" :lg="12">{{ row.keyResults.length }} kết quả</el-col>
-                <el-col :xs="24" :sm="24" :md="12" :lg="12">{{ row.progress }}</el-col>
-              </el-row>
-            </el-col>
-            <el-col :xs="24" :sm="24" :md="8" :lg="8">
-              <el-row>
-                <el-col :xs="24" :sm="24" :md="12" :lg="12">{{ (row.keyResults.valueObtained / row.keyResults.targetValue ) }}</el-col>
-                <el-col :xs="24" :sm="24" :md="12" :lg="12">:::</el-col>
-              </el-row>
-            </el-col>
+            <div v-for="objective in row.alignmentObjective" :key="objective.id" class="item-okrs__expand">
+              <div class="item-okrs__expand--objective">
+                <icon-ellipse />
+                <span>{{ objective.title }}</span>
+              </div>
+              <div class="item-okrs__expand--krs">{{ objective.keyResults.length }} kết quả</div>
+              <div class="item-okrs__expand--progress">
+                <el-progress :percentage="objective.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
+              </div>
+              <div class="item-okrs__expand--action">
+                <span>{{ changeValue(objective.keyResults) }}</span>
+                <el-tooltip content="Hành động" placement="top-end" effect="dark">
+                  <el-popover placement="top" trigger="click">
+                    <div class="item-okrs__expand--action__popover">
+                      <p>Xem chi tiết</p>
+                      <p>Cập nhật</p>
+                      <p>Liên kết</p>
+                      <p>Xóa</p>
+                    </div>
+                    <icon-setting slot="reference" />
+                  </el-popover>
+                </el-tooltip>
+              </div>
+            </div>
           </template>
         </el-table-column>
-        <el-table-column label="Mục tiêu">
+        <el-table-column label="Mục tiêu" width="400">
           <template v-slot="{ row }">
-            <p>{{ row.title }}</p>
+            <span>{{ row.title }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Kết quả then chốt">
+        <el-table-column label="Kết quả then chốt" width="200">
           <template v-slot="{ row }">
-            <span>{{ row.keyResults.length }}</span>
+            <span>{{ row.keyResults.length }} kết quả</span>
           </template>
         </el-table-column>
         <el-table-column label="Tiến độ">
           <template v-slot="{ row }">
-            <span>{{ row.progress }}</span>
+            <el-progress :percentage="row.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
           </template>
         </el-table-column>
-        <el-table-column label="Thay đổi">
+        <el-table-column label="Thay đổi" width="200">
           <template v-slot="{ row }">
-            <span>{{  (row.keyResults.valueObtained / row.keyResults.targetValue ) }}</span>
+            <span>{{ changeValue(row.keyResults) }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -61,18 +57,44 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import IconSetting from '@/assets/images/okrs/setting.svg';
+import IconEllipse from '@/assets/images/okrs/ellipse.svg';
 @Component<OKRsItem>({
   name: 'OKRsItem',
-  mounted() {
-    console.log(this.tableData);
+  components: {
+    IconSetting,
+    IconEllipse,
   },
 })
 export default class OKRsItem extends Vue {
   @Prop(String) private textHeader!: string;
-  @Prop(Array) public tableData!: Object[];
+  @Prop(Array) private tableData!: Object[];
+  @Prop(Boolean) readonly loading!: boolean;
+
+  private;
+  private customColors(percentage: number) {
+    if (percentage < 30) {
+      return '#e3d0ff';
+    } else if (percentage < 70) {
+      return '#9c6ade';
+    } else {
+      return '#50248f';
+    }
+  }
+
+  private openActionTooltip() {}
+
+  private changeValue(keyResults: any[]): any {
+    return keyResults.map((kr) => {
+      if (kr.valueObtained === 0) {
+        return 0;
+      }
+      return Math.floor(kr.valueObtained / kr.targetValue);
+    });
+  }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/assets/scss/main.scss';
 .item-okrs {
   background: $white;
@@ -85,12 +107,110 @@ export default class OKRsItem extends Vue {
     box-shadow: inset 0px -1px 0px #dfe3e8;
     border-radius: $border-radius-base $border-radius-base 0px 0px;
   }
+  &__expand {
+    display: flex;
+    padding-bottom: $unit-5;
+    &:last-child {
+      padding-bottom: 0;
+    }
+    &--objective {
+      width: 400px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      span {
+        padding-left: $unit-5;
+      }
+    }
+    &--krs {
+      width: 200px;
+    }
+    &--progress {
+      width: calc(100% - (400px + 200px + 150px + 50px));
+    }
+    &--action {
+      padding-left: $unit-10;
+      width: 200px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      svg {
+        margin-left: $unit-12;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+      &__popover {
+        cursor: pointer;
+        p {
+          padding-bottom: $unit-3;
+          &:last-child {
+            padding-bottom: 0;
+          }
+          &:hover {
+            background-color: $purple-primary-1;
+          }
+        }
+      }
+    }
+  }
   &__sub-header {
     padding-top: $unit-6;
     font-size: $text-base;
-    &--objective {
-      padding-left: $unit-10;
+  }
+  &__table-header {
+    > th {
+      font-weight: $font-weight-medium;
+      color: $neutral-primary-4;
+      padding-left: $unit-5;
+      // &:nth-child(2) {
+      // }
     }
+  }
+  .el-table__header-wrapper {
+    .el-table__header {
+      width: 100% !important;
+    }
+  }
+  .el-table__body-wrapper {
+    padding-left: $unit-5;
+    .el-table__body {
+      width: 100% !important;
+      .el-table__row {
+        > td {
+          &:nth-child(3) {
+            .cell {
+              color: $blue-primary-2;
+            }
+          }
+          &:nth-child(2) {
+            padding-right: $unit-5;
+          }
+          &:nth-child(5) {
+            padding-right: $unit-16;
+          }
+        }
+      }
+    }
+  }
+  .el-progress-bar {
+    &__outer {
+      background-color: $purple-primary-1;
+      border-radius: $border-radius-medium;
+      .el-progress-bar__inner {
+        border-radius: $border-radius-medium;
+      }
+    }
+  }
+  .el-icon-arrow-right {
+    color: $purple-primary-4;
+    font-weight: $font-weight-medium;
+  }
+  .el-progress {
+    width: $unit-40;
+  }
+  .el-table__expanded-cell {
+    padding: $unit-5 30px;
   }
 }
 </style>
