@@ -13,6 +13,7 @@
       <el-row class="profile">
         <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="profile-common">
           <my-upload
+            ref="uploader"
             v-model="show"
             field="file"
             :width="300"
@@ -123,6 +124,7 @@ export default class ViewProfile extends Vue {
 
   private toggleShow() {
     this.show = !this.show;
+    (this.$refs.uploader as any).setStep(1);
   }
 
   private pickerOptions: any = {
@@ -284,6 +286,14 @@ export default class ViewProfile extends Vue {
     &__label {
       font-size: 14px;
       line-height: 14px;
+    }
+  }
+}
+.vue-image-crop-upload {
+  .vicp-wrap {
+    @include breakpoint-down(phone) {
+      width: 90%;
+      height: 100vh;
     }
   }
 }
