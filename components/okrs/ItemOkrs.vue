@@ -12,10 +12,10 @@
               </div>
               <div class="item-okrs__expand--krs">{{ objective.keyResults.length }} kết quả</div>
               <div class="item-okrs__expand--progress">
-                <el-progress :percentage="objective.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
+                <el-progress :percentage="objectiveProgress(objective)" :color="customColors" :text-inside="true" :stroke-width="26" />
               </div>
               <div class="item-okrs__expand--action">
-                <span>{{ changeValue(objective.keyResults) }}</span>
+                <span :class="isUpValue(changeValue)">{{ changeValue }}%</span>
                 <el-tooltip content="Hành động" placement="top-end" effect="dark">
                   <el-popover placement="top" trigger="click">
                     <div class="item-okrs__expand--action__popover">
@@ -43,12 +43,13 @@
         </el-table-column>
         <el-table-column label="Tiến độ">
           <template v-slot="{ row }">
-            <el-progress :percentage="row.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
+            <el-progress :percentage="objectiveProgress(row)" :color="customColors" :text-inside="true" :stroke-width="26" />
           </template>
         </el-table-column>
         <el-table-column label="Thay đổi" width="200">
           <template v-slot="{ row }">
-            <span>{{ changeValue(row.keyResults) }}</span>
+            <!-- Đang tạm thời để đây-->
+            <span :class="isUpValue(row.progress + 4)">{{ row.progress + 4 }}%</span>
           </template>
         </el-table-column>
       </el-table>
@@ -71,7 +72,7 @@ export default class OKRsItem extends Vue {
   @Prop(Array) private tableData!: Object[];
   @Prop(Boolean) readonly loading!: boolean;
 
-  private;
+  private changeValue: number = 0;
   private customColors(percentage: number) {
     if (percentage < 30) {
       return '#e3d0ff';
@@ -82,16 +83,36 @@ export default class OKRsItem extends Vue {
     }
   }
 
-  private openActionTooltip() {}
-
-  private changeValue(keyResults: any[]): any {
-    return keyResults.map((kr) => {
-      if (kr.valueObtained === 0) {
-        return 0;
-      }
-      return Math.floor(kr.valueObtained / kr.targetValue);
-    });
+  private isUpValue(value): string {
+    return value > 0 ? 'item-okrs__expand--action--happy' : 'item-okrs__expand--action--sad';
   }
+
+  private objectiveProgress(objective: any): number {
+    const krs = objective.keyResults as Array<any>;
+    const krsProgress = krs
+      .map((kr) => {
+        return {
+          valueObtained: kr.valueObtained,
+          targetValue: kr.targetValue,
+        };
+      })
+      .reduce((accumulator, currentValue) => {
+        if (currentValue.valueObtained === 0) {
+          return accumulator;
+        }
+        return accumulator + Math.floor(currentValue.valueObtained / currentValue.targetValue);
+      }, 0);
+    return Math.floor(krsProgress / krs.length);
+  }
+
+  // private changeValue(keyResults: any[]): any {
+  //   return keyResults.map((kr) => {
+  //     if (kr.valueObtained === 0) {
+  //       return 0;
+  //     }
+  //     return Math.floor(kr.valueObtained / kr.targetValue);
+  //   });
+  // }
 }
 </script>
 <style lang="scss">
@@ -134,6 +155,12 @@ export default class OKRsItem extends Vue {
       display: flex;
       justify-content: flex-start;
       align-items: center;
+      &--happy {
+        color: $green-primary-1;
+      }
+      &--sad {
+        color: $red-primary-1;
+      }
       svg {
         margin-left: $unit-12;
         &:hover {
@@ -142,8 +169,11 @@ export default class OKRsItem extends Vue {
       }
       &__popover {
         cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         p {
-          padding-bottom: $unit-3;
+          padding: $unit-3 0 $unit-3 0;
           &:last-child {
             padding-bottom: 0;
           }
