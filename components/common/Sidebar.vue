@@ -12,7 +12,7 @@
         <span>Check-in</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="/OKRs" :class="['sidebar__link']">
+    <nuxt-link to="/OKRs" :class="['sidebar__link', { 'nuxt-link-exact-active': isOkrsActive }]">
       <div class="sidebar__link__tab">
         <OKRs class="sidebar__link__tab__icon" />
         <span>OKRs</span>
@@ -68,20 +68,16 @@ import HumanResources from '@/assets/images/common/sidebar/nhan-su.svg';
   },
 })
 export default class SideBar extends Vue {
+  private get isOkrsActive() {
+    return !!this.$route.path.startsWith('/OKRs');
+  }
+
   private get isSettingCompanyActive() {
-    if (this.$nuxt.$route.path === '/admin/cai-dat') {
-      return true;
-    } else {
-      return false;
-    }
+    return !!this.$route.path.startsWith('/admin/cai-dat');
   }
 
   private get isHRsActive() {
-    if (this.$nuxt.$route.path === '/quan-ly/nhan-su') {
-      return true;
-    } else {
-      return false;
-    }
+    return !!this.$route.path.startsWith('/quan-ly/nhan-su');
   }
 }
 </script>

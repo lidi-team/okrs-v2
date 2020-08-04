@@ -40,7 +40,7 @@
             </nuxt-link>
             <nuxt-link v-if="user.role.name === 'HR'" to="#">
               <el-dropdown-item>
-                <div class="item__div"><icon-lesson class="item__div--icon" /><span>Quản lý nhân sự</span></div>
+                <div class="item__div"><icon-lesson class="item__div--icon" /><span>Quản lý bài học</span></div>
               </el-dropdown-item>
             </nuxt-link>
             <nuxt-link to="/doi-mat-khau">
