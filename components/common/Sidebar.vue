@@ -25,14 +25,14 @@
       </div>
     </nuxt-link>
     <!-- Start Role Permission action -->
-    <nuxt-link v-if="user.role.name === 'ADMIN'" to="/admin/cai-dat" :class="['sidebar__link']">
+    <nuxt-link v-if="user.role.name === 'ADMIN'" to="/admin/cai-dat" :class="['sidebar__link', { 'nuxt-link-exact-active': isSettingCompanyActive }]">
       <div class="sidebar__link__tab">
         <Setting class="sidebar__link__tab__icon" />
         <p>Cài đặt</p>
         <p>công ty</p>
       </div>
     </nuxt-link>
-    <nuxt-link v-if="user.role.name === 'HR'" to="/quan-ly/nhan-su" :class="['sidebar__link']">
+    <nuxt-link v-if="user.role.name === 'HR'" to="/quan-ly/nhan-su" :class="['sidebar__link', { 'nuxt-link-exact-active': isHRsActive }]">
       <div class="sidebar__link__tab">
         <human-resources class="sidebar__link__tab__icon" />
         <span>Quản lý nhân sự</span>
@@ -67,7 +67,23 @@ import HumanResources from '@/assets/images/common/nhan-su.svg';
     }),
   },
 })
-export default class SideBar extends Vue {}
+export default class SideBar extends Vue {
+  private get isSettingCompanyActive() {
+    if (this.$nuxt.$route.path === '/admin/cai-dat') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  private get isHRsActive() {
+    if (this.$nuxt.$route.path === '/quan-ly/nhan-su') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
 </script>
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
