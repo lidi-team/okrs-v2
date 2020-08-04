@@ -8,7 +8,15 @@
         <el-button class="el-button el-button--purple el-button-medium" @click="addNewOKRs">Thêm mới OKRs</el-button>
       </el-col>
     </el-row>
-    <item-okrs v-for="item in itemOKRsData" :key="item.textHeader" :text-header="item.textHeader" :table-data="item.tableData" :loading="loading" />
+    <item-okrs
+      v-for="item in itemOKRsData"
+      :key="item.textHeader"
+      :text-header="item.textHeader"
+      :table-data="item.tableData"
+      :loading="loading"
+      :reload-data="getDashBoardOkrs"
+    />
+    <create-okrs-dialog :visible-dialog.sync="visibleCreateDialog" :reload-data="getDashBoardOkrs" />
   </div>
 </template>
 <script lang="ts">
@@ -25,9 +33,10 @@ export default class OKRsPage extends Vue {
   private textSearch: string = '';
   private textCycle: string = '';
   private loading: boolean = false;
+  private visibleCreateDialog = false;
 
   private addNewOKRs() {
-    console.log('ADD new OKRs');
+    this.visibleCreateDialog = true;
   }
 
   private itemOKRsData: any[] = [

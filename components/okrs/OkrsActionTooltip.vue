@@ -25,7 +25,7 @@ export default class OkrsActionTooltip extends Vue {
   @PropSync('visibleAlignDialog', { type: Boolean, required: true, default: false }) private syncVisibleAlignDialog!: boolean;
 
   private moveToDetailOkrsPage(id: number) {
-    this.$router.push(`/okrs/chi-tiet/${id}`);
+    this.$router.push(`/OKRs/chi-tiet/${id}`);
   }
 
   private openUpdateDialog() {

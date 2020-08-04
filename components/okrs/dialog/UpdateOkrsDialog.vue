@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Liên kết mục tiêu"
+    title="Cập nhật OKRs"
     :visible.sync="syncUpdateDialog"
     width="30%"
     placement="center"
@@ -10,8 +10,8 @@
     <el-row>
       <el-col :span="24">
         <el-form ref="tempUpdateOkrs" :model="tempUpdateOkrs" :rules="rules">
-          <el-form-item label="Tên tiêu chí" prop="content" class="custom-label" label-width="120px">
-            <el-input v-model="tempUpdateOkrs.content" placeholder="Nhập tên tiêu chí" />
+          <el-form-item label="Tên OKRs" prop="content" class="custom-label" label-width="120px">
+            <el-input v-model="tempUpdateOkrs.content" placeholder="Nhập tên OKRs" />
           </el-form-item>
         </el-form>
       </el-col>

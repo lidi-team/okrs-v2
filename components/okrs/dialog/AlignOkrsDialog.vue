@@ -10,8 +10,8 @@
     <el-row>
       <el-col :span="24">
         <el-form ref="tempAlignOkrs" :model="tempAlignOkrs" :rules="rules">
-          <el-form-item label="Tên tiêu chí" prop="content" class="custom-label" label-width="120px">
-            <el-input v-model="tempAlignOkrs.content" placeholder="Nhập tên tiêu chí" />
+          <el-form-item label="Tên mục tiêu" prop="content" class="custom-label" label-width="120px">
+            <el-input v-model="tempAlignOkrs.content" placeholder="Nhập tên mục tiêu" />
           </el-form-item>
         </el-form>
       </el-col>

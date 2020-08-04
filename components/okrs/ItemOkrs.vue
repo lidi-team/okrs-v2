@@ -12,11 +12,15 @@
               </div>
               <div class="item-okrs__expand--krs">{{ objective.keyResults.length }} kết quả</div>
               <div class="item-okrs__expand--progress">
-                <el-progress :percentage="objectiveProgress(objective)" :color="customColors" :text-inside="true" :stroke-width="26" />
+                <el-progress :percentage="objective.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
               </div>
               <div class="item-okrs__expand--action">
                 <span :class="isUpValue(changeValue)">{{ changeValue }}%</span>
-                <okrs-action-tooltip :visible-update-dialog.sync="visibleUpdateDialog" :visible-align-dialog.sync="visibleAlignDialog" />
+                <okrs-action-tooltip
+                  :okrs-id.sync="objective.id"
+                  :visible-update-dialog.sync="visibleUpdateDialog"
+                  :visible-align-dialog.sync="visibleAlignDialog"
+                />
               </div>
             </div>
           </template>
@@ -33,14 +37,18 @@
         </el-table-column>
         <el-table-column label="Tiến độ">
           <template v-slot="{ row }">
-            <el-progress :percentage="objectiveProgress(row)" :color="customColors" :text-inside="true" :stroke-width="26" />
+            <el-progress :percentage="row.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
           </template>
         </el-table-column>
         <el-table-column label="Thay đổi" width="200">
           <template v-slot="{ row }">
             <div class="item-okrs--row-change">
               <p :class="isUpValue(row.progress + 4)">{{ row.progress + 4 }}%</p>
-              <okrs-action-tooltip :visible-update-dialog.sync="visibleUpdateDialog" :visible-align-dialog.sync="visibleAlignDialog" />
+              <okrs-action-tooltip
+                :okrs-id.sync="row.id"
+                :visible-update-dialog.sync="visibleUpdateDialog"
+                :visible-align-dialog.sync="visibleAlignDialog"
+              />
             </div>
           </template>
         </el-table-column>
@@ -80,24 +88,6 @@ export default class OKRsItem extends Vue {
 
   private isUpValue(value): string {
     return value > 0 ? 'item-okrs__expand--action--happy' : 'item-okrs__expand--action--sad';
-  }
-
-  private objectiveProgress(objective: any): number {
-    const krs = objective.keyResults as Array<any>;
-    const krsProgress = krs
-      .map((kr) => {
-        return {
-          valueObtained: kr.valueObtained,
-          targetValue: kr.targetValue,
-        };
-      })
-      .reduce((accumulator, currentValue) => {
-        if (currentValue.valueObtained === 0) {
-          return accumulator;
-        }
-        return accumulator + Math.floor(currentValue.valueObtained / currentValue.targetValue);
-      }, 0);
-    return Math.floor((krsProgress * 100) / krs.length);
   }
 }
 </script>
