@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <div class="item-okrs">
       <p class="item-okrs__header">{{ textHeader }}</p>
       <el-table v-loading="loading" :data="tableData" header-row-class-name="item-okrs__table-header" style="width: 100%;">
@@ -16,17 +16,7 @@
               </div>
               <div class="item-okrs__expand--action">
                 <span :class="isUpValue(changeValue)">{{ changeValue }}%</span>
-                <el-tooltip content="Hành động" placement="top-end" effect="dark">
-                  <el-popover placement="top" trigger="click">
-                    <div class="item-okrs__expand--action__popover">
-                      <p>Xem chi tiết</p>
-                      <p>Cập nhật</p>
-                      <p>Liên kết</p>
-                      <p>Xóa</p>
-                    </div>
-                    <icon-setting slot="reference" />
-                  </el-popover>
-                </el-tooltip>
+                <okrs-action-tooltip :visible-update-dialog.sync="visibleUpdateDialog" :visible-align-dialog.sync="visibleAlignDialog" />
               </div>
             </div>
           </template>
@@ -48,22 +38,24 @@
         </el-table-column>
         <el-table-column label="Thay đổi" width="200">
           <template v-slot="{ row }">
-            <!-- Đang tạm thời để đây-->
-            <span :class="isUpValue(row.progress + 4)">{{ row.progress + 4 }}%</span>
+            <div class="item-okrs--row-change">
+              <p :class="isUpValue(row.progress + 4)">{{ row.progress + 4 }}%</p>
+              <okrs-action-tooltip :visible-update-dialog.sync="visibleUpdateDialog" :visible-align-dialog.sync="visibleAlignDialog" />
+            </div>
           </template>
         </el-table-column>
       </el-table>
     </div>
-  </fragment>
+    <update-okrs-dialog v-if="visibleUpdateDialog" :visible-dialog.sync="visibleUpdateDialog" />
+    <align-okrs-dialog v-if="visibleAlignDialog" :visible-dialog.sync="visibleAlignDialog" />
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import IconSetting from '@/assets/images/okrs/setting.svg';
 import IconEllipse from '@/assets/images/okrs/ellipse.svg';
 @Component<OKRsItem>({
   name: 'OKRsItem',
   components: {
-    IconSetting,
     IconEllipse,
   },
 })
@@ -71,6 +63,9 @@ export default class OKRsItem extends Vue {
   @Prop(String) private textHeader!: string;
   @Prop(Array) private tableData!: Object[];
   @Prop(Boolean) readonly loading!: boolean;
+
+  private visibleUpdateDialog: boolean = false;
+  private visibleAlignDialog: boolean = false;
 
   private changeValue: number = 0;
   private customColors(percentage: number) {
@@ -102,17 +97,8 @@ export default class OKRsItem extends Vue {
         }
         return accumulator + Math.floor(currentValue.valueObtained / currentValue.targetValue);
       }, 0);
-    return Math.floor(krsProgress / krs.length);
+    return Math.floor((krsProgress * 100) / krs.length);
   }
-
-  // private changeValue(keyResults: any[]): any {
-  //   return keyResults.map((kr) => {
-  //     if (kr.valueObtained === 0) {
-  //       return 0;
-  //     }
-  //     return Math.floor(kr.valueObtained / kr.targetValue);
-  //   });
-  // }
 }
 </script>
 <style lang="scss">
@@ -122,11 +108,17 @@ export default class OKRsItem extends Vue {
   color: $neutral-primary-4;
   margin-top: $unit-5;
   filter: drop-shadow(0px 0px 0px rgba(63, 63, 68, 0.05)), drop-shadow(0px 1px 3px rgba(63, 63, 68, 0.15));
+  border-radius: $border-radius-base;
   &__header {
     font-size: $text-2xl;
     padding: $unit-5 0 $unit-5 $unit-5;
     box-shadow: inset 0px -1px 0px #dfe3e8;
     border-radius: $border-radius-base $border-radius-base 0px 0px;
+  }
+  &--row-change {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
   }
   &__expand {
     display: flex;
@@ -161,27 +153,6 @@ export default class OKRsItem extends Vue {
       &--sad {
         color: $red-primary-1;
       }
-      svg {
-        margin-left: $unit-12;
-        &:hover {
-          cursor: pointer;
-        }
-      }
-      &__popover {
-        cursor: pointer;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        p {
-          padding: $unit-3 0 $unit-3 0;
-          &:last-child {
-            padding-bottom: 0;
-          }
-          &:hover {
-            background-color: $purple-primary-1;
-          }
-        }
-      }
     }
   }
   &__sub-header {
@@ -193,54 +164,58 @@ export default class OKRsItem extends Vue {
       font-weight: $font-weight-medium;
       color: $neutral-primary-4;
       padding-left: $unit-5;
-      // &:nth-child(2) {
-      // }
     }
   }
-  .el-table__header-wrapper {
-    .el-table__header {
-      width: 100% !important;
+  .el-table {
+    .cell {
+      white-space: unset;
     }
-  }
-  .el-table__body-wrapper {
-    padding-left: $unit-5;
-    .el-table__body {
-      width: 100% !important;
-      .el-table__row {
-        > td {
-          &:nth-child(3) {
-            .cell {
-              color: $blue-primary-2;
+    border-radius: $border-radius-base;
+    .el-table__header-wrapper {
+      .el-table__header {
+        width: 100% !important;
+      }
+    }
+    .el-table__body-wrapper {
+      padding-left: $unit-5;
+      .el-table__body {
+        width: 100% !important;
+        .el-table__row {
+          > td {
+            &:nth-child(3) {
+              .cell {
+                color: $blue-primary-2;
+              }
             }
-          }
-          &:nth-child(2) {
-            padding-right: $unit-5;
-          }
-          &:nth-child(5) {
-            padding-right: $unit-16;
+            &:nth-child(2) {
+              padding-right: $unit-5;
+            }
+            &:nth-child(5) {
+              padding-right: $unit-16;
+            }
           }
         }
       }
     }
-  }
-  .el-progress-bar {
-    &__outer {
-      background-color: $purple-primary-1;
-      border-radius: $border-radius-medium;
-      .el-progress-bar__inner {
+    .el-progress-bar {
+      &__outer {
+        background-color: $purple-primary-1;
         border-radius: $border-radius-medium;
+        .el-progress-bar__inner {
+          border-radius: $border-radius-medium;
+        }
       }
     }
-  }
-  .el-icon-arrow-right {
-    color: $purple-primary-4;
-    font-weight: $font-weight-medium;
-  }
-  .el-progress {
-    width: $unit-40;
-  }
-  .el-table__expanded-cell {
-    padding: $unit-5 30px;
+    .el-icon-arrow-right {
+      color: $purple-primary-4;
+      font-weight: $font-weight-medium;
+    }
+    .el-progress {
+      width: $unit-40;
+    }
+    .el-table__expanded-cell {
+      padding: $unit-5 30px;
+    }
   }
 }
 </style>
