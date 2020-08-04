@@ -1,11 +1,15 @@
 import { AxiosResponse } from 'axios';
 import { authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
-import { MeasureUnitDTO, AdminParams } from '@/constants/app.interface';
+import { MeasureUnitDTO, ParamsQuery } from '@/constants/app.interface';
 
 export default class OkrRepository {
   public static getDetailOkrs(id: number): Promise<AxiosResponse<any>> {
     return authenticatedService.get(`${ResourcesEnpoint.Objective}/${id}`);
+  }
+
+  public static getLeaderOkrs(params: ParamsQuery): Promise<AxiosResponse<any>> {
+    return authenticatedService.get(`${ResourcesEnpoint.Objective}/leader_okrs`, { params });
   }
 
   public static getOkrsDashboard(cycleId: number): Promise<AxiosResponse<any>> {

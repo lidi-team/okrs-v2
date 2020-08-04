@@ -5,8 +5,7 @@ import { TeamDTO, AdminParams } from '@/constants/app.interface';
 
 export default class TeamRepository {
   public static get(params: AdminParams): Promise<AxiosResponse<any>> {
-    const query = { params };
-    return authenticatedService.get(`${ResourcesEnpoint.Team}`, query);
+    return authenticatedService.get(`${ResourcesEnpoint.Team}`, { params });
   }
 
   public static update(payload: TeamDTO): Promise<AxiosResponse<any>> {
