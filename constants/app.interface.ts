@@ -10,6 +10,12 @@ export interface MailResetPassDTO {
   email: string;
 }
 
+export interface LessonDTO {
+  id?: number;
+  index: number;
+  title: string;
+  content: string;
+}
 export interface EmployeeDTO {
   id?: number;
   fullName: string;

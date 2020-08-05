@@ -43,6 +43,9 @@
                 <div class="item__div"><icon-lesson class="item__div--icon" /><span>Quản lý bài học</span></div>
               </el-dropdown-item>
             </nuxt-link>
+            <nuxt-link v-if="user.role.name === 'HR' || user.role.name === 'ADMIN'" to="/bai-hoc-okrs">
+              <el-dropdown-item><i class="el-icon-notebook-1 item__icon"></i><span>Quản lý bài học OKRs</span></el-dropdown-item>
+            </nuxt-link>
             <nuxt-link to="/doi-mat-khau">
               <el-dropdown-item>
                 <div class="item__div"><icon-password class="item__div--icon" /><span>Đổi mật khẩu</span></div>
@@ -88,7 +91,7 @@ export default class Navbar extends Vue {
 
   private async logout() {
     await this.$store.dispatch('auth/logout');
-    this.$router.push('/dang-nhap');
+    this.$router.push('/');
   }
 }
 </script>
