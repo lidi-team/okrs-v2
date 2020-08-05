@@ -76,6 +76,12 @@ export interface EvaluationCriteriorDTO {
   type: EvaluationCriteriaEnum | any;
 }
 
+export interface ObjectiveDTO {
+  title: string | null;
+  parentObjectiveId: number | null;
+  cycleId: number | null;
+}
+
 export interface SelectDTO {
   label: string;
   value: string;
