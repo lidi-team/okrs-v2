@@ -75,7 +75,7 @@ export default class Navbar extends Vue {
 
   private async logout() {
     await this.$store.dispatch('auth/logout');
-    this.$router.push('/dang-nhap');
+    this.$router.push('/');
   }
 }
 </script>

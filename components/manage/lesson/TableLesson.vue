@@ -19,7 +19,7 @@
       <el-table-column label="Thao tác" align="center" width="200">
         <template slot-scope="{ row }">
           <el-tooltip class="table-lesson__icon" content="Sửa" placement="top">
-            <i class="el-icon-edit"></i>
+            <i class="el-icon-edit" @click="handleUpdate(row)"></i>
           </el-tooltip>
           <el-tooltip class="table-lesson__icon" content="Xóa" placement="top">
             <i class="el-icon-delete" @click="handleDelete(row)"></i>
@@ -27,6 +27,13 @@
         </template>
       </el-table-column>
     </el-table>
+    <base-pagination
+      class="table-lesson__pagination"
+      :total="meta.totalItems"
+      :page.sync="paramsLesson.page"
+      :limit.sync="paramsLesson.limit"
+      @pagination="handlePagination"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -50,14 +57,25 @@ export default class TableLesson extends Vue {
   };
 
   private tableLesson: Array<object> = [];
+  private meta: Object = {};
 
   private handleSearch(text: string) {
     this.paramsLesson.page = 1;
     this.$router.push(`?text=${text}`);
   }
 
+  private handlePagination() {
+    this.$route.query.text === undefined
+      ? this.$router.push(`?page=${this.paramsLesson.page}`)
+      : this.$router.push(`?text=${this.$route.query.text}&page=${this.paramsLesson.page}`);
+  }
+
   private handleCreate() {
     this.$router.push('/bai-hoc-okrs/tao-moi');
+  }
+
+  private handleUpdate(row: any) {
+    this.$router.push(`bai-hoc-okrs/cap-nhat/${row.slug}`);
   }
 
   @Watch('$route.query')
@@ -65,7 +83,8 @@ export default class TableLesson extends Vue {
     try {
       this.loading = true;
       const tableLesson = await LessonRepository.get(this.paramsLesson);
-      this.tableLesson = tableLesson.data.data;
+      this.tableLesson = tableLesson.data.data.items;
+      this.meta = tableLesson.data.data.meta;
       this.loading = false;
     } catch (error) {
       this.loading = false;
@@ -126,6 +145,10 @@ export default class TableLesson extends Vue {
         }
       }
     }
+  }
+
+  &__pagination {
+    margin-top: $unit-8;
   }
   &__icon {
     cursor: pointer;

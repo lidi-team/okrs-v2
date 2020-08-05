@@ -8,10 +8,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
-import { notificationConfig } from '@/constants/app.constant';
-import { LessonDTO } from '@/constants/app.interface';
-import LessonRepository from '@/repositories/LessonRepository';
 @Component<ListLesson>({
   name: 'ListLesson',
 })

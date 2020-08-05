@@ -11,6 +11,8 @@ export interface MailResetPassDTO {
 }
 
 export interface LessonDTO {
+  id?: number;
+  index: number;
   title: string;
   content: string;
 }

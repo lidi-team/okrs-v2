@@ -113,6 +113,7 @@ export default class ChangePasswordDialog extends Vue {
             ...notificationConfig,
             message: 'Đổi mật khẩu thành công',
           });
+          this.$store.dispatch('auth/clear');
           this.$router.push('/');
         } catch (error) {
           this.loading = false;

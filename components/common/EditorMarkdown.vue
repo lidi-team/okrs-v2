@@ -2,7 +2,7 @@
   <div class="wrap-editor">
     <div class="wrap-editor__form">
       <h1 class="wrap-editor__title">
-        Thêm mới bài học OKR
+        {{ $nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi' ? 'Thêm mới bài học OKRs' : 'Cập nhật bài học OKRs' }}
       </h1>
       <el-row :gutter="10">
         <el-col :span="24">
@@ -37,11 +37,18 @@
             >
               <vue-simplemde ref="md" v-model="formLesson.content" :configs="config" preview-class="markdown-body" />
             </el-form-item>
+            <el-form-item label="Độ ưu tiến:" class="custom-label" prop="index">
+              <el-select v-model="formLesson.index" class="custom-label">
+                <el-option v-for="index in custom" :key="index" :label="index" :value="index" />
+              </el-select>
+            </el-form-item>
           </el-form>
         </el-col>
         <div class="wrap-editor__footer">
           <el-button class="el-button--white" @click="handleCancel">Hủy</el-button>
-          <el-button class="el-button--purple" @click="handleSubmit(formLesson)">Tạo bài</el-button>
+          <el-button class="el-button--purple" @click="handleSubmit(formLesson)">{{
+            $nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi' ? 'Tạo bài' : 'Cập nhật'
+          }}</el-button>
         </div>
       </el-row>
     </div>
@@ -57,11 +64,19 @@ import LessonRepository from '@/repositories/LessonRepository';
   name: 'EditorMarkdown',
 })
 export default class EditorMarkdown extends Vue {
-  @Prop({ default: undefined }) readonly post!: LessonDTO;
-  private formLesson: LessonDTO = {
+  @Prop({ default: undefined }) readonly post;
+  @Prop(Number) length!: number;
+
+  private formLesson = {
     title: this.post ? this.post.title : '',
     content: this.post ? this.post.content : '',
+    index: this.post ? this.post.index : this.custom,
   };
+
+  private get custom() {
+    let temp = this.length;
+    return this.post ? temp : ++temp;
+  }
 
   private config = {
     autofocus: true,
@@ -96,25 +111,43 @@ export default class EditorMarkdown extends Vue {
     ],
   };
 
-  private handleSubmit(formLesson: LessonDTO, type: string) {
+  private handleSubmit(formLesson: LessonDTO) {
     const editor = this.$refs.editorForm as Form;
     editor.validate((isValid) => {
       if (isValid) {
-        this.$confirm(`Bạn có chắc chắn muốn tạo bài viết này?`, {
-          confirmButtonText: 'Đồng ý',
-          cancelButtonText: 'Hủy bỏ',
-          type: 'warning',
-        }).then(async () => {
-          try {
-            await LessonRepository.create(formLesson).then((res: any) => {
-              Notification.success({
-                ...notificationConfig,
-                message: 'Tạo bài viết thành công',
+        if (this.$nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi') {
+          this.$confirm(`Bạn có chắc chắn muốn tạo bài viết này?`, {
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy bỏ',
+            type: 'warning',
+          }).then(async () => {
+            try {
+              await LessonRepository.create(formLesson).then((res: any) => {
+                Notification.success({
+                  ...notificationConfig,
+                  message: 'Tạo bài viết thành công',
+                });
+                this.$router.push('/bai-hoc-okrs');
               });
-              this.$router.push('/bai-hoc-okrs');
-            });
-          } catch (error) {}
-        });
+            } catch (error) {}
+          });
+        } else {
+          this.$confirm(`Bạn có chắc chắn muốn cập nhật bài viết này?`, {
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy bỏ',
+            type: 'warning',
+          }).then(async () => {
+            try {
+              await LessonRepository.update(formLesson, this.post.id).then((res: any) => {
+                Notification.success({
+                  ...notificationConfig,
+                  message: 'Cập nhật bài viết thành công',
+                });
+                this.$router.push('/bai-hoc-okrs');
+              });
+            } catch (error) {}
+          });
+        }
       }
     });
   }
