@@ -75,7 +75,7 @@ export default class TableLesson extends Vue {
   }
 
   private handleUpdate(row: any) {
-    this.$router.push(`bai-hoc-okrs/cap-nhat/${row.slug}`);
+    this.$router.push(`/bai-hoc-okrs/cap-nhat/${row.slug}`);
   }
 
   @Watch('$route.query')
