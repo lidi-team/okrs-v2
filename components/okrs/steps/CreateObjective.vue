@@ -1,17 +1,17 @@
 <template>
   <el-form ref="tempObjective" :model="tempObjective" :rules="rules" class="create-objective" label-position="top">
     <el-form-item prop="title" class="custom-label" label-width="120px">
-      <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="autoSizeConfig"> </el-input>
+      <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="autoSizeConfig"></el-input>
     </el-form-item>
     <div class="create-objective__select">
-      <el-form-item label="OKRs cấp trên" prop="parentObjective" class="custom-label" label-width="120px">
-        <el-select v-model="tempObjective.parentObjective" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn OKRs cấp trên">
-          <el-option v-for="itemOKRs in leaderOKRs" :key="itemOKRs.value" :label="item.label" :value="item.value" />
-        </el-select>
-      </el-form-item>
       <el-form-item label="Chu kỳ" prop="cycle" class="custom-label" label-width="120px">
         <el-select v-model="tempObjective.cycle" filterable no-match-text="Không tìm thấy chu kỳ" placeholder="Chọn chu kỳ">
           <el-option v-for="cycle in listCycles" :key="cycle.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="OKRs cấp trên" prop="parentObjective" class="custom-label" label-width="120px">
+        <el-select v-model="tempObjective.parentObjective" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn OKRs cấp trên">
+          <el-option v-for="itemOKRs in leaderOKRs" :key="itemOKRs.value" :label="item.label" :value="item.value" />
         </el-select>
       </el-form-item>
     </div>

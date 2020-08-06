@@ -41,9 +41,9 @@ export default class CreateOkrDialog extends Vue {
   }
 
   private handleCloseDialog() {
+    this.syncCreateOkrsDialog = false;
     (this.$refs.objective as CreateObjectiveStep).clearObjectiveForm();
     this.active = 0;
-    this.syncCreateOkrsDialog = false;
   }
 }
 </script>
