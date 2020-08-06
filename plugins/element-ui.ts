@@ -42,6 +42,7 @@ import 'element-ui/lib/theme-chalk/upload.css';
 import 'element-ui/lib/theme-chalk/tooltip.css';
 import 'element-ui/lib/theme-chalk/select.css';
 import 'element-ui/lib/theme-chalk/option.css';
+import 'element-ui/lib/theme-chalk/popover.css';
 
 // configure default language
 locale.use(vietnameseLang);
@@ -78,6 +79,8 @@ Vue.component(elComponent.ElOption, () => import(/* webpackChunkName: 'element-u
 Vue.component(elComponent.ElAvatar, () => import(/* webpackChunkName: 'element-ui-avatar' */ 'element-ui/lib/avatar'));
 Vue.component(elComponent.ElUpload, () => import(/* webpackChunkName: 'element-ui-upload' */ 'element-ui/lib/upload'));
 Vue.component(elComponent.ElTooltip, () => import(/* webpackChunkName: 'element-ui-tooltip' */ 'element-ui/lib/tooltip'));
+Vue.component(elComponent.ElProgress, () => import(/* webpackChunkName: 'element-ui-progress' */ 'element-ui/lib/progress'));
+Vue.component(elComponent.ElPopover, () => import(/* webpackChunkName: 'element-ui-popover' */ 'element-ui/lib/popover'));
 
 // import prototype Vue
 Vue.use(Loading.directive);

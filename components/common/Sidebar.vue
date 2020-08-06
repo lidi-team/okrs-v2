@@ -12,7 +12,7 @@
         <span>Check-in</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="/OKRs" :class="['sidebar__link']">
+    <nuxt-link to="/OKRs" :class="['sidebar__link', { 'nuxt-link-exact-active': isOkrsActive }]">
       <div class="sidebar__link__tab">
         <OKRs class="sidebar__link__tab__icon" />
         <span>OKRs</span>
@@ -45,12 +45,12 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { RootState } from '@/store/auth';
-import Dashboard from '@/assets/images/common/dashboard.svg';
-import CFRs from '@/assets/images/common/cfrs.svg';
-import Checkin from '@/assets/images/common/checkin.svg';
-import OKRs from '@/assets/images/common/okrs.svg';
-import Setting from '@/assets/images/common/setting.svg';
-import HumanResources from '@/assets/images/common/nhan-su.svg';
+import Dashboard from '@/assets/images/common/sidebar/dashboard.svg';
+import CFRs from '@/assets/images/common/sidebar/cfrs.svg';
+import Checkin from '@/assets/images/common/sidebar/checkin.svg';
+import OKRs from '@/assets/images/common/sidebar/okrs.svg';
+import Setting from '@/assets/images/common/sidebar/setting.svg';
+import HumanResources from '@/assets/images/common/sidebar/nhan-su.svg';
 @Component<SideBar>({
   name: 'SideBar',
   components: {
@@ -68,20 +68,16 @@ import HumanResources from '@/assets/images/common/nhan-su.svg';
   },
 })
 export default class SideBar extends Vue {
+  private get isOkrsActive() {
+    return !!this.$route.path.startsWith('/OKRs');
+  }
+
   private get isSettingCompanyActive() {
-    if (this.$nuxt.$route.path === '/admin/cai-dat') {
-      return true;
-    } else {
-      return false;
-    }
+    return !!this.$route.path.startsWith('/admin/cai-dat');
   }
 
   private get isHRsActive() {
-    if (this.$nuxt.$route.path === '/quan-ly/nhan-su') {
-      return true;
-    } else {
-      return false;
-    }
+    return !!this.$route.path.startsWith('/quan-ly/nhan-su');
   }
 }
 </script>
@@ -94,6 +90,7 @@ export default class SideBar extends Vue {
   color: $purple-primary-2;
   box-shadow: $box-shadow-default;
   background-color: $white;
+  margin-right: $unit-8;
   .nuxt-link-exact-active {
     @include sidebar-hover;
   }

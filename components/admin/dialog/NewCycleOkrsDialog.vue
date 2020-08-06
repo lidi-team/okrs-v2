@@ -44,7 +44,7 @@
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 
-import { notificationConfig } from '../../../constants/app.constant';
+import { notificationConfig } from '@/constants/app.constant';
 import { CycleDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import { compareTwoDate, formatDateToYYYY } from '@/utils/dateParser';

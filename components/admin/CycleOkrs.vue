@@ -4,6 +4,7 @@
       <el-table-column prop="name" label="Tên chu kỳ"></el-table-column>
       <el-table-column label="Ngày bắt đầu">
         <template v-slot="{ row }">
+          <!-- Vue Fileter Date Plugin -->
           <span>{{ new Date(row.startDate) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
       </el-table-column>
@@ -70,7 +71,7 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 
-import { notificationConfig } from '../../constants/app.constant';
+import { notificationConfig } from '@/constants/app.constant';
 import { AdminTabsEn } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 import { CycleDTO } from '@/constants/app.interface';

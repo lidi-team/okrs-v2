@@ -49,7 +49,7 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 
-import { notificationConfig } from '../../constants/app.constant';
+import { notificationConfig } from '@/constants/app.constant';
 import { ResetPasswordDTO, ResetPasswordActionDTO } from '@/constants/app.interface';
 import AuthRepository from '@/repositories/AuthRepository';
 import { Maps, Rule } from '@/constants/app.type';

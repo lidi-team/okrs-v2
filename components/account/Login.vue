@@ -14,12 +14,22 @@
       @submit.native.prevent="handleSubmit"
     >
       <el-form-item prop="email" label="Email" class="custom-label">
-        <el-input ref="email" v-model="loginForm.email" class="login-form__email" placeholder="Nhập địa chỉ email" tabindex="1"></el-input>
+        <el-input
+          ref="email"
+          v-model="loginForm.email"
+          name="email"
+          autocomplete="email"
+          class="login-form__email"
+          placeholder="Nhập địa chỉ email"
+          tabindex="1"
+        ></el-input>
       </el-form-item>
       <el-form-item prop="password" label="Mật khẩu" class="custom-label">
         <el-input
           ref="password"
           v-model="loginForm.password"
+          name="password"
+          autocomplete="password"
           type="password"
           class="login-form__password"
           placeholder="Nhập mật khẩu"

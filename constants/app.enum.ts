@@ -29,6 +29,8 @@ export enum elComponent {
   ElAvatar = 'ElAvatar',
   ElRadio = 'ElRadio',
   ElUpload = 'ElUpload',
+  ElProgress = 'ElProgress',
+  ElPopover = 'ElPopover',
 }
 
 export enum UserStatus {
@@ -75,6 +77,7 @@ export enum ResourcesEnpoint {
   EvaluationCriterial = 'evaluation_criterias',
   MeasureUnit = 'measure_units',
   MetaData = 'meta_data',
+  Objective = 'objectives',
 }
 
 export enum EvaluationCriteriaEnum {

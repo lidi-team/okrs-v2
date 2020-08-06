@@ -9,7 +9,7 @@
     "scope": "vue",
     "prefix": "vuets",
     "body": [
-      "<template><fragment></fragment></template> <script lang=${1}> import { Component, Vue } from 'vue-property-decorator'; @Component<${2}>({ name: '${2}', }) export default class ${2} extends Vue { } </script><style lang=${3} scoped></style>"
+      "<template></template> <script lang=${1}> import { Component, Vue } from 'vue-property-decorator'; @Component<${2}>({ name: '${2}', }) export default class ${2} extends Vue { } </script><style lang=${3} scoped></style>"
     ],
     "description": "Vue component typescript"
   },

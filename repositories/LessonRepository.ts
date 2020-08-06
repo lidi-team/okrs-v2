@@ -3,8 +3,7 @@ import { ResourcesEnpoint } from '@/constants/app.enum';
 import { LessonDTO } from '@/constants/app.interface';
 export default class LessonRepository {
   public static get(params: any) {
-    const query = { params };
-    return authenticatedService.get(`${ResourcesEnpoint.Lessons}`, query);
+    return authenticatedService.get(`${ResourcesEnpoint.Lessons}`, { params });
   }
 
   public static getPost(slug: string) {

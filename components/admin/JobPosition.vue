@@ -5,6 +5,7 @@
       <el-table-column prop="description" label="Mô tả"></el-table-column>
       <el-table-column label="Ngày cập nhật">
         <template v-slot="{ row }">
+          <!-- Vue Fileter Date Plugin -->
           <span>{{ new Date(row.updatedAt) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
       </el-table-column>
@@ -57,7 +58,7 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 
-import { notificationConfig } from '../../constants/app.constant';
+import { notificationConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { JobPositionDTO } from '@/constants/app.interface';
 import JobRepository from '@/repositories/JobRepository';

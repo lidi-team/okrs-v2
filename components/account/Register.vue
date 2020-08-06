@@ -48,7 +48,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
-import { notificationConfig } from '../../constants/app.constant';
+import { notificationConfig } from '@/constants/app.constant';
 import { RegisterDTO, RegisterOption } from '@/constants/app.interface';
 import { notifyErrorRegister } from '@/constants/app.notify';
 import { Maps, Rule } from '@/constants/app.type';

@@ -10,6 +10,7 @@
       <el-table-column prop="type" label="Kiểu" :formatter="typeFormatter" />
       <el-table-column label="Ngày cập nhật">
         <template v-slot="{ row }">
+          <!-- Vue Fileter Date Plugin -->
           <span>{{ new Date(row.updatedAt) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
       </el-table-column>
@@ -65,12 +66,12 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 
-import { notificationConfig } from '../../constants/app.constant';
+import { notificationConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
-import { EvaluationCriteriorDTO } from '@/constants/app.interface';
+import { EvaluationCriteriorDTO, SelectOptionDTO } from '@/constants/app.interface';
 import { EvaluationCriteriaEnum, AdminTabsEn } from '@/constants/app.enum';
 import EvaluationCriteriorRepository from '@/repositories/EvaluationCriteriaRepository';
-import StarIcon from '@/assets/images/common/star.svg';
+import StarIcon from '@/assets/images/admin/star.svg';
 
 @Component<ManageEvaluationCriteria>({
   name: 'ManageEvaluationCriteria',
@@ -86,7 +87,7 @@ export default class ManageEvaluationCriteria extends Vue {
   @PropSync('page', { type: Number, required: true }) public syncPage!: number;
   @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
 
-  private typeCriterias: object[] = [
+  private typeCriterias: SelectOptionDTO[] = [
     { label: 'Sếp đánh giá nhân viên', value: EvaluationCriteriaEnum.LEADER_TO_MEMBER },
     { label: 'Nhân viên đánh giá sếp', value: EvaluationCriteriaEnum.MEMBER_TO_LEADER },
   ];

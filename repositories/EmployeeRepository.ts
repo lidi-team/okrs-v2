@@ -4,8 +4,7 @@ import { ParamsUser, EmployeeDTO } from '@/constants/app.interface';
 
 export default class EmployeeRepository {
   public static get(params: ParamsUser) {
-    const query = { params };
-    return authenticatedService.get(`${ResourcesEnpoint.Users}`, query);
+    return authenticatedService.get(`${ResourcesEnpoint.Users}`, { params });
   }
 
   public static update(payload: EmployeeDTO) {
