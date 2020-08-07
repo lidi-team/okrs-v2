@@ -12,23 +12,15 @@
       <el-step title="Các kết quả then chốt"></el-step>
       <el-step title="Kết nối"></el-step>
     </el-steps>
-    <step-create-objective v-show="active === 0" ref="objective" />
-    <step-add-key-results v-show="active === 1" />
-    <step-add-align-objective v-show="active === 2" />
-    <span v-if="active !== 3" slot="footer" class="dcreate-okrs-dialog__footer">
-      <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-      <el-button class="el-button--purple el-button--modal" @click="next">Tiếp theo</el-button>
-    </span>
+    <step-create-objective v-if="active === 0" ref="objective" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" />
+    <step-add-key-results v-if="active === 1" ref="krs" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" />
+    <step-add-align-objective v-if="active === 2" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" />
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import CreateObjectiveStep from '../steps/CreateObjective.vue';
+import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
 @Component<CreateOkrDialog>({
   name: 'CreateOkrDialog',
-  mounted() {
-    console.log(this.$children);
-  },
 })
 export default class CreateOkrDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
@@ -36,15 +28,70 @@ export default class CreateOkrDialog extends Vue {
 
   private active: number = 0;
 
-  private next() {
-    if (this.active++ > 2) this.active = 0;
-  }
+  // @Watch('active')
+  // onActiveChange(active: number) {
+  //   if (active === 0) {
+  //     const objective = (this.$refs.objective as CreateObjectiveStep).tempObjective;
+  //     this.$store.commit('okrs/setObjective', objective);
+  //   }
+  // }
 
   private handleCloseDialog() {
     this.syncCreateOkrsDialog = false;
-    (this.$refs.objective as CreateObjectiveStep).clearObjectiveForm();
     this.active = 0;
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss">
+@import '@/assets/scss/main.scss';
+.create-okrs-dialog {
+  .el-steps {
+    padding: 0 $unit-5;
+    display: flex;
+    place-content: center;
+    .el-step {
+      margin-bottom: $unit-8;
+      padding-right: $unit-4;
+      display: flex;
+      flex-direction: column;
+      place-items: center;
+      &:first-child {
+        flex-basis: unset !important;
+      }
+      &:nth-child(2) {
+        flex-basis: 60% !important;
+      }
+      &__head {
+        width: unset;
+        .el-step__line {
+          top: $unit-4;
+          right: -$unit-48;
+          background-color: $purple-primary-4;
+          border-color: $purple-primary-4;
+        }
+        .el-step__icon {
+          @include size($unit-8, $unit-8);
+          background-color: $purple-primary-4;
+        }
+      }
+      &__main {
+        .el-step__title {
+          color: $purple-primary-3 !important;
+        }
+      }
+      .is-process {
+        color: $white;
+      }
+      .is-success {
+        border-color: $white;
+      }
+      .el-icon-check {
+        color: $white;
+      }
+    }
+  }
+  .el-dialog__body {
+    padding: 10px 0;
+  }
+}
+</style>
