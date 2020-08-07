@@ -8,8 +8,12 @@ export default class OkrRepository {
     return authenticatedService.get(`${ResourcesEnpoint.Objective}/${id}`);
   }
 
-  public static getLeaderOkrs(params: ParamsQuery): Promise<AxiosResponse<any>> {
-    return authenticatedService.get(`${ResourcesEnpoint.Objective}/leader_okrs`, { params });
+  public static getLeaderOkrs(cycleId: number): Promise<AxiosResponse<any>> {
+    return authenticatedService.get(`${ResourcesEnpoint.Objective}/team_leaders?cycleID=${cycleId}`);
+  }
+
+  public static getCurrentLeaderOkrs(): Promise<AxiosResponse<any>> {
+    return authenticatedService.get(`${ResourcesEnpoint.Objective}/current_team_leaders`);
   }
 
   public static getOkrsDashboard(cycleId: number): Promise<AxiosResponse<any>> {
