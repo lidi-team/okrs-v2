@@ -215,3 +215,10 @@ $breakpoints: (
     fill-opacity: 1;
   }
 }
+
+@mixin okrs-button-action {
+  display: flex;
+  place-content: center flex-end;
+  padding: 10px $unit-5 0 $unit-5;
+  border-top: 1px solid $gray-primary-1;
+}
