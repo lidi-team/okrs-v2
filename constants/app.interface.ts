@@ -88,6 +88,16 @@ export interface ObjectiveDTO {
   cycleId: number | null;
 }
 
+export interface KeyResultDTO {
+  content: string | null;
+  startValue: number | null;
+  targetvalue: number | null;
+  linkPlans?: string | null;
+  linkResults?: string | null;
+  objectiveId?: number | null;
+  measureUnitId: number;
+}
+
 export interface SelectDTO {
   label: string;
   value: string;

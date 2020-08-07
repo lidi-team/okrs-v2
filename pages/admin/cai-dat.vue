@@ -276,8 +276,6 @@ export default class SettingCompanyPage extends Vue {
   &__tab {
     margin: $unit-4 0 0 0;
     width: 80%;
-    &__table {
-    }
   }
   .el-button {
     height: 100%;

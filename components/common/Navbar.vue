@@ -69,6 +69,7 @@ import IconLesson from '@/assets/images/common/navbar/lesson-okrs.svg';
 import IconLogout from '@/assets/images/common/navbar/logout.svg';
 import IconProfile from '@/assets/images/common/navbar/profile.svg';
 import IconSetting from '@/assets/images/common/navbar/setting.svg';
+import { DispatchAction, GetterState } from '@/constants/app.enum';
 @Component<Navbar>({
   name: 'Navbar',
   components: {
@@ -80,7 +81,7 @@ import IconSetting from '@/assets/images/common/navbar/setting.svg';
   },
   computed: {
     ...mapGetters({
-      user: 'auth/user',
+      user: GetterState.USER,
     }),
   },
 })
@@ -90,7 +91,7 @@ export default class Navbar extends Vue {
   private show: boolean = true;
 
   private async logout() {
-    await this.$store.dispatch('auth/logout');
+    await this.$store.dispatch(DispatchAction.LOGOUT);
     this.$router.push('/');
   }
 }
