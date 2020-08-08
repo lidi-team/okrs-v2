@@ -12,9 +12,7 @@
     <el-table v-loading="loading" empty-text="Không có dữ liệu" class="table-lesson__content" :data="tableLesson" style="width: 100%;">
       <el-table-column label="Tiêu đề" width="650">
         <template slot-scope="{ row }">
-          <span @click="handleClickTitle(row.slug)">
-            {{ row.title }}
-          </span>
+          <span class="table-lesson__title" @click="handleClickTitle(row.slug)">{{ row.title }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Ngày tạo" width="200">
@@ -154,6 +152,14 @@ export default class TableLesson extends Vue {
           margin-top: $unit-2;
         }
       }
+    }
+  }
+
+  &__title {
+    cursor: pointer;
+    color: $purple-primary-4;
+    &:hover {
+      color: $purple-primary-3;
     }
   }
 
