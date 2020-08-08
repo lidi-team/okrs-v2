@@ -1,22 +1,28 @@
 <template>
   <div class="learn-lessons">
     <h1 class="learn-lessons__title">Học OKRs</h1>
-    <div class="learn-lessons__content">
-      <lesson-content :post="post" />
+    <div class="learn-lessons__list">
+      <lesson-list :posts="posts" :meta="meta" />
     </div>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import LessonRepository from '@/repositories/LessonRepository';
+import { pageLimit } from '@/constants/app.constant';
 @Component<LearnLesson>({
   name: 'LearnLesson',
-  watchQuery: ['baiviet'],
+  watchQuery: ['page'],
   async asyncData({ query }) {
     try {
-      const response = await LessonRepository.getPost(String(query.baiviet));
+      const params = {
+        limit: pageLimit,
+        page: query.page ? query.page : 1,
+      };
+      const response = await LessonRepository.get(params);
       return {
-        post: response.data.data,
+        posts: response.data.data.items,
+        meta: response.data.data.meta,
       };
     } catch (error) {}
   },
@@ -32,10 +38,6 @@ export default class LearnLesson extends Vue {}
   &__title {
     font-size: $text-2xl;
     padding-bottom: $unit-10;
-  }
-  &__content {
-    background-color: $white;
-    padding: $unit-8;
   }
 }
 </style>
