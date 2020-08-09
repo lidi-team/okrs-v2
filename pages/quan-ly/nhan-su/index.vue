@@ -134,21 +134,6 @@ export default class ManageEmployee extends Vue {
 .manage-employee {
   height: 100%;
   padding: $unit-10 $unit-8 0 $unit-10;
-  .el-tabs__nav-wrap::after {
-    background-color: $neutral-primary-0;
-  }
-  .el-tabs__item.is-active {
-    color: $purple-primary-4;
-  }
-  .el-tabs__active-bar {
-    background-color: $purple-primary-3;
-  }
-  .el-tabs__item:hover {
-    color: $purple-primary-4;
-  }
-  .el-tabs__item {
-    color: $neutral-primary-2;
-  }
   &__title {
     font-size: $text-2xl;
     padding-bottom: $unit-10;
