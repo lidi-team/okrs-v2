@@ -1,6 +1,7 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
 import { ObjectiveDTO, KeyResultDTO } from '@/constants/app.interface';
 import OkrRepository from '@/repositories/OkrsRepository';
+import UserRepository from '@/repositories/UserRepository';
 
 export enum OkrsMutation {
   SET_OBJECTIVE = 'setObjective',
@@ -45,8 +46,10 @@ export const mutations: MutationTree<RootState> = {
 export const actions: OKRsAction<OkrsState, RootState> = {
   async setCurrentLeader({ commit }) {
     try {
-      const { data } = await OkrRepository.getCurrentLeaderOkrs();
-      commit(OkrsMutation.SET_CURRENT_LEADER, Object.freeze(data.data));
+      const { data } = await UserRepository.me();
+      const userId = data.data.id;
+      const leaderOkrs = await OkrRepository.getLeaderOkrs(userId, 1);
+      commit(OkrsMutation.SET_CURRENT_LEADER, Object.freeze(leaderOkrs.data.data));
     } catch (error) {}
   },
 };

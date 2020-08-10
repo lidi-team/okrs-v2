@@ -2,7 +2,7 @@
   <el-dialog
     title="Thêm mới mục tiêu"
     :visible.sync="syncCreateOkrsDialog"
-    width="600px"
+    width="800px"
     placement="center"
     :before-close="handleCloseDialog"
     class="create-okrs-dialog"
@@ -27,14 +27,6 @@ export default class CreateOkrDialog extends Vue {
   @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncCreateOkrsDialog!: boolean;
 
   private active: number = 0;
-
-  // @Watch('active')
-  // onActiveChange(active: number) {
-  //   if (active === 0) {
-  //     const objective = (this.$refs.objective as CreateObjectiveStep).tempObjective;
-  //     this.$store.commit('okrs/setObjective', objective);
-  //   }
-  // }
 
   private handleCloseDialog() {
     this.syncCreateOkrsDialog = false;
@@ -65,7 +57,7 @@ export default class CreateOkrDialog extends Vue {
         width: unset;
         .el-step__line {
           top: $unit-4;
-          right: -$unit-48;
+          right: -$unit-60;
           background-color: $purple-primary-4;
           border-color: $purple-primary-4;
         }

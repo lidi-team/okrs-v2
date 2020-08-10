@@ -103,4 +103,5 @@ export enum MutationState {
   SET_USER = 'auth/setUser',
   SET_TOKEN = 'auth/setToken',
   SET_CURRENT_CYCLE = 'cycle/setCurrentCycle',
+  SET_OBJECTIVE = 'okrs/setObjective',
 }

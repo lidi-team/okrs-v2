@@ -89,12 +89,12 @@ export interface ObjectiveDTO {
 }
 
 export interface KeyResultDTO {
-  content: string | null;
-  startValue: number | null;
-  targetvalue: number | null;
-  linkPlans?: string | null;
-  linkResults?: string | null;
-  objectiveId?: number | null;
+  id?: number;
+  content: string;
+  startValue: number;
+  targetvalue: number;
+  linkPlans?: string;
+  linkResults?: string;
   measureUnitId: number;
 }
 
