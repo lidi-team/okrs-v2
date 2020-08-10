@@ -1,7 +1,9 @@
 <template>
   <div class="header">
     <div class="header__logo">
-      <nuxt-link to="/"><img src="@/assets/images/common/logo.png" alt="logo" /></nuxt-link>
+      <nuxt-link to="/">
+        <img src="@/assets/images/common/logo.png" alt="logo" />
+      </nuxt-link>
     </div>
     <div v-if="user !== null" class="header__info side-right">
       <div class="side-right__list">
@@ -18,41 +20,67 @@
           <div class="item__wrapper">
             <img :src="user.imageUrl" alt="avatar" class="item__avatar" />
             <div class="item__info info">
-              <span class="info__name">{{ user.fullName }}<i class="el-icon-caret-bottom" /></span
-              ><span class="info__role">{{ user.role.name }}</span>
+              <span class="info__name">
+                {{ user.fullName }}
+                <i class="el-icon-caret-bottom" />
+              </span>
+              <span class="info__role">{{ user.role.name }}</span>
             </div>
           </div>
           <el-dropdown-menu slot="dropdown">
             <nuxt-link to="/thong-tin-tai-khoan">
               <el-dropdown-item>
-                <div class="item__div"><icon-profile class="item__div--icon" /><span>Thông tin tài khoản</span></div>
+                <div class="item__div">
+                  <icon-profile class="item__div--icon" />
+                  <span>Thông tin tài khoản</span>
+                </div>
               </el-dropdown-item>
             </nuxt-link>
             <nuxt-link v-if="user.role.name === 'ADMIN'" to="/admin/cai-dat">
               <el-dropdown-item>
-                <div class="item__div"><icon-setting class="item__div--icon" /><span>Cài đặt công ty</span></div>
+                <div class="item__div">
+                  <icon-setting class="item__div--icon" />
+                  <span>Cài đặt công ty</span>
+                </div>
               </el-dropdown-item>
             </nuxt-link>
             <nuxt-link v-if="user.role.name === 'HR' || user.role.name === 'ADMIN'" to="/quan-ly/nhan-su">
               <el-dropdown-item>
-                <div class="item__div"><fa icon="user-friends" class="item__div--icon item__div--icon--hr" /><span>Quản lý nhân sự</span></div>
-              </el-dropdown-item>
-            </nuxt-link>
-            <nuxt-link v-if="user.role.name === 'HR'" to="#">
-              <el-dropdown-item>
-                <div class="item__div"><icon-lesson class="item__div--icon" /><span>Quản lý bài học</span></div>
+                <div class="item__div">
+                  <fa icon="user-friends" class="item__div--icon item__div--icon--hr" />
+                  <span>Quản lý nhân sự</span>
+                </div>
               </el-dropdown-item>
             </nuxt-link>
             <nuxt-link v-if="user.role.name === 'HR' || user.role.name === 'ADMIN'" to="/bai-hoc-okrs">
-              <el-dropdown-item><i class="el-icon-notebook-1 item__icon"></i><span>Quản lý bài học OKRs</span></el-dropdown-item>
+              <el-dropdown-item>
+                <div class="item__div">
+                  <icon-lesson class="item__div--icon" />
+                  <span>Quản lý bài học OKRs</span>
+                </div>
+              </el-dropdown-item>
+            </nuxt-link>
+            <nuxt-link to="/hoc-okrs">
+              <el-dropdown-item>
+                <div class="item__div">
+                  <icon-lesson class="item__div--icon" />
+                  <span>Bài học OKRs</span>
+                </div>
+              </el-dropdown-item>
             </nuxt-link>
             <nuxt-link to="/doi-mat-khau">
               <el-dropdown-item>
-                <div class="item__div"><icon-password class="item__div--icon" /><span>Đổi mật khẩu</span></div>
+                <div class="item__div">
+                  <icon-password class="item__div--icon" />
+                  <span>Đổi mật khẩu</span>
+                </div>
               </el-dropdown-item>
             </nuxt-link>
             <el-dropdown-item divided>
-              <div class="item__div" @click="logout()"><icon-logout class="item__div--icon" /><span>Đăng xuất</span></div>
+              <div class="item__div" @click="logout()">
+                <icon-logout class="item__div--icon" />
+                <span>Đăng xuất</span>
+              </div>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
