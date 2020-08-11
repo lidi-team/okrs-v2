@@ -11,31 +11,44 @@
     <div slot-scope="{}" class="tree-krs">
       <el-form ref="tempKeyResult" :model="tempKeyResult" :rules="rules" label-position="left">
         <el-form-item prop="content">
-          <el-input v-model="tempKeyResult.content" type="textarea" :autosize="autoSizeConfig" placeholder="Nhập tên tiêu chí" />
+          <el-input v-model="tempKeyResult.content" placeholder="Nhập kết quả then chốt" tabindex="1" />
         </el-form-item>
-        <div class="tree-krs__value">
-          <el-form-item prop="targetValue" label="Mục tiêu" class="custom-label">
-            <el-input v-model.number="tempKeyResult.targetValue" size="medium" placeholder="Nhập giá trị mục tiêu" class="custom-label" />
-          </el-form-item>
-          <el-form-item prop="unit" label="Đơn vị" class="custom-label">
-            <el-select
-              v-model.number="tempKeyResult.measureUnitId"
-              size="medium"
-              filterable
-              no-match-text="Không tìm thấy kết quả"
-              placeholder="Chọn đơn vị"
-            >
-              <el-option v-for="unit in units" :key="unit.id" :label="unit.type" :value="unit.id" />
-            </el-select>
-          </el-form-item>
-        </div>
-        <div class="tree-krs__links">
-          <el-form-item prop="linkPlans" label="Link kế hoạch" label-width="120px">
-            <el-input v-model.number="tempKeyResult.linkPlans" size="small" type="url" placeholder="Điền link kế hoạch " />
-          </el-form-item>
-          <el-form-item prop="linkResults" label="Link kết quả" label-width="120px">
-            <el-input v-model.number="tempKeyResult.linkResults" size="small" type="url" placeholder="Điền link kết quả" />
-          </el-form-item>
+        <div class="tree-krs__detail">
+          <div class="tree-krs__detail--value">
+            <el-row>
+              <el-col :span="8">
+                <el-form-item prop="unit" label="Đơn vị" class="custom-label" label-width="70px">
+                  <el-select
+                    v-model.number="tempKeyResult.measureUnitId"
+                    size="medium"
+                    filterable
+                    no-match-text="Không tìm thấy kết quả"
+                    placeholder="Chọn đơn vị"
+                  >
+                    <el-option v-for="unit in units" :key="unit.id" :label="unit.type" :value="unit.id" tabindex="3" />
+                  </el-select>
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item prop="startValue" label="Giá trị bắt đầu" label-width="100px">
+                  <el-input v-model.number="tempKeyResult.startValue" size="medium" tabindex="2" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="8">
+                <el-form-item prop="targetValue" label="Mục tiêu" class="custom-label" label-width="70px">
+                  <el-input v-model.number="tempKeyResult.targetValue" size="medium" tabindex="2" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </div>
+          <div class="tree-krs__detail--links">
+            <el-form-item prop="linkPlans" label="Link kế hoạch" label-width="100px">
+              <el-input v-model.number="tempKeyResult.linkPlans" size="small" type="url" placeholder="Điền link kế hoạch " />
+            </el-form-item>
+            <el-form-item prop="linkResults" label="Link kết quả" label-width="100px">
+              <el-input v-model.number="tempKeyResult.linkResults" size="small" type="url" placeholder="Điền link kết quả" />
+            </el-form-item>
+          </div>
         </div>
       </el-form>
     </div>
@@ -56,7 +69,7 @@ const id = 2;
   },
 })
 export default class TreeKrComponent extends Vue {
-  private defaultKrs: any[] = [{ content: '', startValue: 0, targetvalue: 1, measureUnitId: 1, linkPlans: '', linkResults: '' }];
+  private defaultKrs: KeyResultDTO[] = [{ content: '', startValue: 0, targetvalue: 1, measureUnitId: 1, linkPlans: '', linkResults: '' }];
   private defaultProps: object = {
     label: (data, node) => {
       console.log('content data' + data.content);
@@ -70,7 +83,6 @@ export default class TreeKrComponent extends Vue {
   };
 
   private units: any[] = [];
-  private autoSizeConfig = { minRows: 2, maxRows: 2 };
   private tempKeyResult: KeyResultDTO = {
     content: '',
     startValue: 0,
@@ -135,9 +147,8 @@ export default class TreeKrComponent extends Vue {
   }
 
   public clearObjectiveForm() {
-    (this.$refs.tempKeyResults as Form).clearValidate();
+    (this.$refs.tempKeyResult as Form).clearValidate();
     this.tempKeyResult.content = '';
-    this.tempKeyResult.startValue = 0;
     this.tempKeyResult.targetvalue = 1;
     this.tempKeyResult.linkPlans = '';
     this.tempKeyResult.linkResults = '';
@@ -151,6 +162,9 @@ export default class TreeKrComponent extends Vue {
   .el-tree-node {
     &__content {
       height: auto;
+      &:hover {
+        background-color: $purple-primary-1;
+      }
       .el-tree-node__expand-icon {
         font-size: $unit-5;
       }
@@ -158,23 +172,41 @@ export default class TreeKrComponent extends Vue {
   }
 }
 .tree-krs {
+  margin-top: $unit-8;
   width: 100%;
-  &__value {
+  form {
+    padding-right: $unit-8;
+  }
+  &__detail {
     display: flex;
-    place-content: center flex-start;
-    .el-form-item {
-      &:nth-child(2) {
-        padding-left: $unit-32;
+    flex-direction: column;
+    &--value {
+      display: flex;
+      flex-direction: row;
+      place-content: center space-between;
+      .el-row {
+        width: 100%;
+        .el-col {
+          &:nth-child(3) {
+            display: flex;
+            place-content: center flex-start;
+            .el-form-item {
+              width: 100%;
+            }
+          }
+        }
+        .el-form-item {
+          &:first-child {
+            width: 200px;
+          }
+        }
       }
     }
-  }
-  &__links {
-    display: flex;
-    place-content: center flex-start;
-    .el-form-item {
-      &:nth-child(2) {
-        padding-left: $unit-32;
-      }
+    &--links {
+      display: flex;
+      flex-direction: column;
+      place-content: center flex-start;
+      width: 100%;
     }
   }
 }

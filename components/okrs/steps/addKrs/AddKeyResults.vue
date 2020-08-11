@@ -2,8 +2,7 @@
   <div class="add-krs-step">
     <p class="add-krs-step__objective">{{ objectiveTitle }}</p>
     <template v-for="item in itemsKrs">
-      <component :is="item" :key="getKeyUpComponent(item)" />
-      <!-- <component :is="item" :key="item" :data="data" /> -->
+      <component :is="item" :key="getKeyUpComponent(item)" ref="krsComponent" />
     </template>
     <el-button class="el-button el-button--white el-button--small add-krs-step__button" @click="addNewKRs">
       <icon-add-krs />
@@ -16,14 +15,20 @@
         <span>{{ attention }}</span>
       </div>
     </div>
+    <div class="add-krs-step__action">
+      <el-button class="el-button--white el-button--modal" @click="closeKrsForm">Hủy</el-button>
+      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="nextStepThree">Tiếp theo</el-button>
+    </div>
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, PropSync } from 'vue-property-decorator';
+import { Form } from 'element-ui';
 import TreeKrComponent from './TreeKrComponent.vue';
 import IconAttention from '@/assets/images/okrs/attention.svg';
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
 import { KeyResultDTO } from '@/constants/app.interface';
+import { MutationState, DispatchAction } from '@/constants/app.enum';
 
 let componenKey = 0;
 
@@ -35,17 +40,56 @@ let componenKey = 0;
   },
   created() {
     this.objectiveTitle = this.$store.state.okrs.objective.title;
-    // this.data = JSON.parse(JSON.stringify(nodeData));
   },
 })
 export default class CreateObjectiveStep extends Vue {
+  @PropSync('active', Number) private syncActive!: number;
+  @PropSync('visibleDialog', Boolean) private syncVisibleDialog!: boolean;
+
+  private loading: boolean = false;
   private objectiveTitle: string = '';
   private itemsKrs: any[] = [TreeKrComponent];
   private attentionsText: string[] = ['Ít nhất phải có 2 kết quả then chốt', 'Không quá 5 kết quả then chốt cho 1 mục tiêu'];
-  // private data: any = null;
 
   private addNewKRs() {
     this.itemsKrs.push(TreeKrComponent);
+  }
+
+  private closeKrsForm() {
+    this.$confirm('Bạn có chắc chắn muốn thoát quá trình này không?', {
+      type: 'warning',
+      confirmButtonText: 'Đồng ý',
+      cancelButtonText: 'Hủy',
+    }).then(() => {
+      // (this.$refs.krsComponent as TreeKrComponent).clearObjectiveForm();
+      this.$store.commit(MutationState.SET_OBJECTIVE, null);
+      this.syncActive = 0;
+      this.syncVisibleDialog = false;
+    });
+  }
+
+  private nextStepThree() {
+    // let flagValidForms: number = 0;
+    this.loading = true;
+    // Check all tree validate
+    // this.itemsKrs.forEach((krsTree) => {
+    //   ((this.$refs.krsComponent as TreeKrComponent).$refs.tempKeyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
+    //     if (isValid) {
+    //       flagValidForms++;
+    //     }
+    //     if (invalidatedFields) {
+    //       setTimeout(() => {
+    //         this.loading = false;
+    //       }, 300);
+    //     }
+    //   });
+    // });
+    // if (flagValidForms === this.itemsKrs.length) {
+    // commit all krs to vuex
+    // Commit the okrs staffs
+    this.$store.dispatch(DispatchAction.STAFF_OKRS);
+    if (this.syncActive++ > 2) this.syncActive = 0;
+    this.loading = false;
   }
 
   private getKeyUpComponent(component) {
@@ -81,6 +125,7 @@ export default class CreateObjectiveStep extends Vue {
   &__attention {
     font-size: $unit-3;
     color: $neutral-primary-4;
+    padding-bottom: $unit-4;
     &--title {
       font-weight: $font-weight-medium;
     }
@@ -94,6 +139,12 @@ export default class CreateObjectiveStep extends Vue {
         }
       }
     }
+  }
+  &__action {
+    @include okrs-button-action;
+    width: 800px;
+    margin-left: -$unit-5;
+    padding-right: $unit-5;
   }
 }
 </style>

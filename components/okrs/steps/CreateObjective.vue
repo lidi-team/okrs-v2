@@ -5,12 +5,12 @@
         <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="autoSizeConfig"></el-input>
       </el-form-item>
       <div class="create-objective__select">
-        <el-form-item label="Chu kỳ" class="custom-label" label-width="120px">
+        <el-form-item prop="cycleId" label="Chu kỳ" class="custom-label" label-width="120px">
           <el-select v-model="tempObjective.cycleId" filterable no-match-text="Không tìm thấy chu kỳ" placeholder="Chọn chu kỳ">
             <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.name" :value="cycle.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="OKRs cấp trên" class="custom-label" label-width="120px">
+        <el-form-item prop="parentObjectiveId" label="OKRs cấp trên" class="custom-label" label-width="120px">
           <el-select
             v-model="tempObjective.parentObjectiveId"
             filterable
@@ -39,7 +39,7 @@ import OkrRepository from '@/repositories/OkrsRepository';
 import { DispatchAction, MutationState } from '@/constants/app.enum';
 @Component<CreateObjectiveStep>({
   name: 'CreateObjectiveStep',
-  mounted() {
+  created() {
     this.getListData();
     this.getLeaderOKrs();
   },
@@ -113,6 +113,8 @@ export default class CreateObjectiveStep extends Vue {
 
   private rules: Maps<Rule[]> = {
     title: [{ type: 'string', required: true, message: 'Vui lòng nhập mục tiêu', trigger: 'blur' }],
+    cycleId: [{ type: 'number', required: true, message: 'Vui lòng chọn chy kỳ', trigger: 'blur' }],
+    parentObjectiveId: [{ type: 'number', required: true, message: 'Vui lòng OKRs câp trên', trigger: ['blur', 'change'] }],
   };
 
   public closeObjectiveForm() {

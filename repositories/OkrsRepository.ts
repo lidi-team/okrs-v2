@@ -18,6 +18,10 @@ export default class OkrRepository {
     return authenticatedService.get(`${ResourcesEnpoint.Objective}/team_leaders?id=${id}&type=${type}`);
   }
 
+  public static getStaffOkrs(): Promise<AxiosResponse<any>> {
+    return authenticatedService.get(`${ResourcesEnpoint.Objective}/staffs`);
+  }
+
   public static getOkrsDashboard(cycleId: number): Promise<AxiosResponse<any>> {
     return authenticatedService.get(`${ResourcesEnpoint.Objective}/view_list?cycleId=${cycleId}`);
   }

@@ -10,7 +10,7 @@
     <el-steps :active="active" finish-status="success">
       <el-step title="Mục tiêu"> </el-step>
       <el-step title="Các kết quả then chốt"></el-step>
-      <el-step title="Kết nối"></el-step>
+      <el-step title="Liên kết chéo"></el-step>
     </el-steps>
     <step-create-objective v-if="active === 0" ref="objective" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" />
     <step-add-key-results v-if="active === 1" ref="krs" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" />
@@ -19,6 +19,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
+import { confirmWarningConfig } from '@/constants/app.constant';
 @Component<CreateOkrDialog>({
   name: 'CreateOkrDialog',
 })
@@ -29,8 +30,10 @@ export default class CreateOkrDialog extends Vue {
   private active: number = 0;
 
   private handleCloseDialog() {
-    this.syncCreateOkrsDialog = false;
-    this.active = 0;
+    this.$confirm('Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?', { ...confirmWarningConfig }).then(() => {
+      this.syncCreateOkrsDialog = false;
+      this.active = 0;
+    });
   }
 }
 </script>
@@ -57,7 +60,7 @@ export default class CreateOkrDialog extends Vue {
         width: unset;
         .el-step__line {
           top: $unit-4;
-          right: -$unit-60;
+          right: -$unit-64;
           background-color: $purple-primary-4;
           border-color: $purple-primary-4;
         }
