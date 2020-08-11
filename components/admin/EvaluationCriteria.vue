@@ -66,7 +66,7 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 
-import { notificationConfig } from '@/constants/app.constant';
+import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { EvaluationCriteriorDTO, SelectOptionDTO } from '@/constants/app.interface';
 import { EvaluationCriteriaEnum, AdminTabsEn } from '@/constants/app.enum';
@@ -131,9 +131,7 @@ export default class ManageEvaluationCriteria extends Vue {
     (this.$refs.tempUpdateCriteria as Form).validate((isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
         this.$confirm(`Bạn có chắc chắn muốn cập nhật tiêu chí này không?`, {
-          confirmButtonText: 'Đồng ý',
-          cancelButtonText: 'Hủy bỏ',
-          type: 'warning',
+          ...confirmWarningConfig,
         }).then(async () => {
           try {
             await EvaluationCriteriorRepository.update(this.tempUpdateCriteria).then((res) => {

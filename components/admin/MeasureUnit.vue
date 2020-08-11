@@ -50,7 +50,7 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 
-import { notificationConfig } from '@/constants/app.constant';
+import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { AdminTabsEn } from '@/constants/app.enum';
@@ -104,9 +104,7 @@ export default class ManageMeasureUnit extends Vue {
     (this.$refs.tempUpdateUnit as Form).validate((isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
         this.$confirm(`Bạn có chắc chắn muốn cập nhật đơn vị này không?`, {
-          confirmButtonText: 'Đồng ý',
-          cancelButtonText: 'Hủy bỏ',
-          type: 'warning',
+          ...confirmWarningConfig,
         }).then(async () => {
           try {
             await MeasureUnitRepository.update(this.tempUpdateUnit).then((res) => {

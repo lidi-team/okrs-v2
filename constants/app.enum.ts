@@ -93,6 +93,7 @@ export enum DispatchAction {
   LOGOUT = 'auth/logout',
   CLEAR = 'auth/clear',
   CURRENT_LEADER = 'okrs/setCurrentLeader',
+  STAFF_OKRS = 'okrs/setStaffOkrs',
 }
 
 export enum GetterState {

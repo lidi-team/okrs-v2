@@ -71,7 +71,7 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 
-import { notificationConfig } from '@/constants/app.constant';
+import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { AdminTabsEn } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 import { CycleDTO } from '@/constants/app.interface';
@@ -138,9 +138,7 @@ export default class ManageCycleOkrs extends Vue {
     (this.$refs.temporaryUpdateCycleForm as Form).validate((isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
         this.$confirm(`Bạn có chắc chắn muốn cập nhật chu kỳ này không?`, {
-          confirmButtonText: 'Đồng ý',
-          cancelButtonText: 'Hủy bỏ',
-          type: 'warning',
+          ...confirmWarningConfig,
         }).then(async () => {
           try {
             const tempCycle: CycleDTO = {
@@ -165,9 +163,7 @@ export default class ManageCycleOkrs extends Vue {
 
   private deleteRow(row: CycleDTO): void {
     this.$confirm(`Bạn có chắc chắn muốn xóa chu kỳ ${row.name}?`, {
-      confirmButtonText: 'Đồng ý',
-      cancelButtonText: 'Hủy bỏ',
-      type: 'warning',
+      ...confirmWarningConfig,
     }).then(async () => {
       try {
         await CycleRepository.delete(row.id).then((res) => {

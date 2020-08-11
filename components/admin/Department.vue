@@ -58,7 +58,7 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 
-import { notificationConfig } from '@/constants/app.constant';
+import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { TeamDTO } from '@/constants/app.interface';
 import TeamRepository from '@/repositories/TeamRepository';
@@ -113,9 +113,7 @@ export default class ManageDepartment extends Vue {
     (this.$refs.tempUpdateTeam as Form).validate((isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
         this.$confirm(`Bạn có chắc chắn muốn cập nhật phòng ban này không?`, {
-          confirmButtonText: 'Đồng ý',
-          cancelButtonText: 'Hủy bỏ',
-          type: 'warning',
+          ...confirmWarningConfig,
         }).then(async () => {
           try {
             await TeamRepository.update(this.tempUpdateTeam).then((res) => {
