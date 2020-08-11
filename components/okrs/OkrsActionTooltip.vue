@@ -19,13 +19,23 @@ import IconSetting from '@/assets/images/okrs/setting.svg';
   components: {
     IconSetting,
   },
+  // beforeUpdate() {
+  //   const popOvers = document.getElementsByClassName('el-popover el-popper');
+  //   for (let i = 0; i <= popOvers.length; i++) {
+  //     if (popOvers.item(i)) {
+  //       console.log(popOvers.item(i));
+  //       popOvers.item(i)!.setAttribute('style', `padding: unset; min-width: 120px;`);
+  //     }
+  //   }
+  // },
 })
 export default class OkrsActionTooltip extends Vue {
   @PropSync('visibleUpdateDialog', { type: Boolean, required: true, default: false }) private syncVisibleUpdateDialog!: boolean;
   @PropSync('visibleAlignDialog', { type: Boolean, required: true, default: false }) private syncVisibleAlignDialog!: boolean;
+  @PropSync('okrsId', { type: Number, required: true }) private syncOkrsId!: number;
 
-  private moveToDetailOkrsPage(id: number) {
-    this.$router.push(`/OKRs/chi-tiet/${id}`);
+  private moveToDetailOkrsPage() {
+    this.$router.push(`/OKRs/chi-tiet/${this.syncOkrsId}`);
   }
 
   private openUpdateDialog() {
@@ -68,13 +78,22 @@ export default class OkrsActionTooltip extends Vue {
     cursor: pointer;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    place-content: center;
+    text-align: center;
     p {
-      padding: $unit-3;
+      padding: $unit-2;
+      border-bottom: 1px solid $purple-primary-1;
+      &:last-child {
+        border-bottom: unset;
+      }
       &:hover {
         background-color: $purple-primary-1;
       }
     }
   }
+}
+.el-popover {
+  min-width: 120px !important;
+  padding: unset !important;
 }
 </style>

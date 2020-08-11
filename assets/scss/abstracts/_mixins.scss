@@ -222,3 +222,9 @@ $breakpoints: (
   padding: 10px $unit-5 0 $unit-5;
   border-top: 1px solid $gray-primary-1;
 }
+
+@mixin box-okrs-detail {
+  padding: $unit-5;
+  border-radius: $border-radius-base;
+  background-color: $white;
+}
