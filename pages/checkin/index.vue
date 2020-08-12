@@ -28,7 +28,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-import { TabCheckins, DispatchAction, GetterState } from '@/constants/app.enum';
+import { TabCheckins, GetterState } from '@/constants/app.enum';
 import MyOkrs from '@/components/checkin/MyOkrs.vue';
 import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
 import CycleRepository from '@/repositories/CycleRepository';
