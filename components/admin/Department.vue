@@ -132,9 +132,7 @@ export default class ManageDepartment extends Vue {
 
   private deleteRow(row: TeamDTO): void {
     this.$confirm(`Bạn có chắc chắn muốn xóa phòng ban ${row.name}?`, {
-      confirmButtonText: 'Đồng ý',
-      cancelButtonText: 'Hủy bỏ',
-      type: 'warning',
+      ...confirmWarningConfig,
     }).then(async () => {
       try {
         await TeamRepository.delete(row.id).then((res) => {

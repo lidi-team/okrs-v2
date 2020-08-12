@@ -14,6 +14,7 @@
 <script lang="ts">
 import { Component, Vue, PropSync } from 'vue-property-decorator';
 import IconSetting from '@/assets/images/okrs/setting.svg';
+import { confirmWarningConfig } from '@/constants/app.constant';
 @Component<OkrsActionTooltip>({
   name: 'OkrsActionTooltip',
   components: {
@@ -48,9 +49,7 @@ export default class OkrsActionTooltip extends Vue {
 
   private handleDeleteOKrs(id: number) {
     this.$confirm('Bạn có chắc chắn muốn xóa mục tiêu này?', {
-      confirmButtonText: 'Đồng ý',
-      cancelButtonText: 'Hủy bỏ',
-      type: 'warning',
+      ...confirmWarningConfig,
     }).then(async () => {
       // try {
       //   await EmployeeRepository.delete(row.id).then((res: any) => {

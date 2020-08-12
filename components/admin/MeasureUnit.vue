@@ -123,9 +123,7 @@ export default class ManageMeasureUnit extends Vue {
 
   private deleteRow(row: MeasureUnitDTO): void {
     this.$confirm(`Bạn có chắc chắn muốn xóa đơn vị ${row.type}?`, {
-      confirmButtonText: 'Đồng ý',
-      cancelButtonText: 'Hủy bỏ',
-      type: 'warning',
+      ...confirmWarningConfig,
     }).then(async () => {
       try {
         await MeasureUnitRepository.delete(row.id).then((res) => {

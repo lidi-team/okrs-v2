@@ -4,10 +4,6 @@ import { ResourcesEnpoint } from '@/constants/app.enum';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 
 export default class OkrRepository {
-  public static getDetailOkrs(id: number): Promise<AxiosResponse<any>> {
-    return authenticatedService.get(`${ResourcesEnpoint.Objective}/${id}`);
-  }
-
   /**
    * // When the type = 1(Current Cycle) --> Need to passs user ID
    * // When the type = 2(All Cycle) --> Need to pass the cycle id
@@ -20,6 +16,10 @@ export default class OkrRepository {
 
   public static getStaffOkrs(): Promise<AxiosResponse<any>> {
     return authenticatedService.get(`${ResourcesEnpoint.Objective}/staffs`);
+  }
+
+  public static getOkrsDetail(okrsId: number): Promise<AxiosResponse<any>> {
+    return authenticatedService.get(`${ResourcesEnpoint.Objective}/detail/${okrsId}`);
   }
 
   public static getOkrsDashboard(cycleId: number): Promise<AxiosResponse<any>> {

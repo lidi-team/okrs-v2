@@ -130,9 +130,7 @@ export default class ManageJobPosition extends Vue {
 
   private deleteRow(row: JobPositionDTO): void {
     this.$confirm(`Bạn có chắc chắn muốn xóa vị trí ${row.name}?`, {
-      confirmButtonText: 'Đồng ý',
-      cancelButtonText: 'Hủy bỏ',
-      type: 'warning',
+      ...confirmWarningConfig,
     }).then(async () => {
       try {
         await JobRepository.delete(row.id).then((res) => {

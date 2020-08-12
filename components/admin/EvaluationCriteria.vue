@@ -150,9 +150,7 @@ export default class ManageEvaluationCriteria extends Vue {
 
   private deleteRow(row: EvaluationCriteriorDTO): void {
     this.$confirm(`Bạn có chắc chắn muốn xóa tiêu chí ${row.content}?`, {
-      confirmButtonText: 'Đồng ý',
-      cancelButtonText: 'Hủy bỏ',
-      type: 'warning',
+      ...confirmWarningConfig,
     }).then(async () => {
       try {
         await EvaluationCriteriorRepository.delete(row.id).then((res) => {
