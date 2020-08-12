@@ -1,23 +1,22 @@
 import { getTokenCookie } from '@/utils/cookies';
-import { AuthMutation } from '@/store/auth';
-import { CycleMutation } from '@/store/cycle';
 import UserRepository from '@/repositories/UserRepository';
 import CycleRepository from '@/repositories/CycleRepository';
+import { DispatchAction, MutationState } from '@/constants/app.enum';
 
 export default async function ({ redirect, store }) {
   const token = getTokenCookie();
   if (!token) {
-    store.dispatch('auth/clear');
+    store.dispatch(DispatchAction.CLEAR);
     return redirect('/dang-nhap');
   } else {
-    store.commit('auth/setToken', token);
+    store.commit(MutationState.SET_TOKEN, token);
     if (store.state.auth.user === null) {
       try {
         const [user, cycle] = await Promise.all([UserRepository.me(), CycleRepository.getCurrentCycle()]);
-        store.commit(`cycle/${CycleMutation.SET_CURRENT_CYCLE}`, cycle.data.data);
-        store.commit(`auth/${AuthMutation.SET_USER}`, user.data.data);
+        store.commit(MutationState.SET_USER, user.data.data);
+        store.commit(MutationState.SET_CURRENT_CYCLE, cycle.data.data);
       } catch (error) {
-        store.dispatch('auth/clear');
+        store.dispatch(DispatchAction.CLEAR);
         return redirect('/dang-nhap');
       }
     }

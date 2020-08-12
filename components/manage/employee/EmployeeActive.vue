@@ -164,7 +164,7 @@
 import { Form, Notification } from 'element-ui';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
-import { notificationConfig } from '@/constants/app.constant';
+import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { EmployeeDTO } from '@/constants/app.interface';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
@@ -211,9 +211,7 @@ export default class EmployeeActive extends Vue {
     updateUserForm.validate((isValid) => {
       if (isValid) {
         this.$confirm(`Bạn có chắc chắn muốn cập nhật user này?`, {
-          confirmButtonText: 'Đồng ý',
-          cancelButtonText: 'Hủy bỏ',
-          type: 'warning',
+          ...confirmWarningConfig,
         }).then(async () => {
           try {
             await EmployeeRepository.update(tempUpdateUser).then((res: any) => {

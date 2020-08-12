@@ -57,6 +57,7 @@ import { Form as LoginForm, Message } from 'element-ui';
 import { LoginDTO } from '@/constants/app.interface';
 import { authEnpoint } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
+import { DispatchAction } from '@/constants/app.enum';
 @Component<LoginSComponent>({
   name: 'LoginSComponent',
 })
@@ -80,7 +81,7 @@ export default class LoginSComponent extends Vue {
     (this.$refs.loginForm as LoginForm).validate(async (isValid: boolean) => {
       if (isValid) {
         this.loading = true;
-        const user = await this.$store.dispatch('auth/login', this.loginForm);
+        const user = await this.$store.dispatch(DispatchAction.LOGIN, this.loginForm);
         this.loading = false;
         if (user) {
           this.$router.push('/');

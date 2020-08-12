@@ -21,11 +21,17 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { DispatchAction } from '@/constants/app.enum';
 import OkrsRepository from '@/repositories/OkrsRepository';
 @Component<OKRsPage>({
   name: 'OKRsPage',
   created() {
     this.getDashBoardOkrs();
+  },
+  mounted() {
+    if (!this.$store.state.okrs.currentLeader) {
+      this.$store.dispatch(DispatchAction.CURRENT_LEADER);
+    }
   },
 })
 export default class OKRsPage extends Vue {

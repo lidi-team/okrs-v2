@@ -58,7 +58,7 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 
-import { notificationConfig } from '@/constants/app.constant';
+import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { JobPositionDTO } from '@/constants/app.interface';
 import JobRepository from '@/repositories/JobRepository';
@@ -111,9 +111,7 @@ export default class ManageJobPosition extends Vue {
     (this.$refs.tempUpdateJob as Form).validate((isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
         this.$confirm(`Bạn có chắc chắn muốn cập nhật vị trí này không?`, {
-          confirmButtonText: 'Đồng ý',
-          cancelButtonText: 'Hủy bỏ',
-          type: 'warning',
+          ...confirmWarningConfig,
         }).then(async () => {
           try {
             await JobRepository.update(this.tempUpdateJob).then((res) => {
@@ -132,9 +130,7 @@ export default class ManageJobPosition extends Vue {
 
   private deleteRow(row: JobPositionDTO): void {
     this.$confirm(`Bạn có chắc chắn muốn xóa vị trí ${row.name}?`, {
-      confirmButtonText: 'Đồng ý',
-      cancelButtonText: 'Hủy bỏ',
-      type: 'warning',
+      ...confirmWarningConfig,
     }).then(async () => {
       try {
         await JobRepository.delete(row.id).then((res) => {

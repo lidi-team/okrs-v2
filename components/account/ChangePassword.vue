@@ -60,6 +60,7 @@ import { notificationConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { ChangePasswordDTO } from '@/constants/app.interface';
 import UserRepository from '@/repositories/UserRepository';
+import { DispatchAction } from '@/constants/app.enum';
 
 @Component<ChangePasswordDialog>({
   name: 'ChangePasswordDialog',
@@ -113,7 +114,7 @@ export default class ChangePasswordDialog extends Vue {
             ...notificationConfig,
             message: 'Đổi mật khẩu thành công',
           });
-          this.$store.dispatch('auth/clear');
+          this.$store.dispatch(DispatchAction.CLEAR);
           this.$router.push('/');
         } catch (error) {
           this.loading = false;

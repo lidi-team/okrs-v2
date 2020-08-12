@@ -106,6 +106,7 @@ import UserRepository from '@/repositories/UserRepository';
 import { Maps, Rule } from '@/constants/app.type';
 import { AuthMutation } from '@/store/auth';
 import { getTokenCookie } from '@/utils/cookies';
+import { MutationState } from '@/constants/app.enum';
 @Component<ViewProfile>({
   name: 'ViewProfile',
   components: {
@@ -139,7 +140,7 @@ export default class ViewProfile extends Vue {
 
   private async cropUploadSuccess(jsonData: any, field: string) {
     const { data } = await UserRepository.me();
-    this.$store.commit(`auth/${AuthMutation.SET_USER}`, data.data);
+    this.$store.commit(MutationState.SET_USER, data.data);
     this.show = false;
     this.$notify({
       title: 'Trạng thái',
@@ -201,7 +202,7 @@ export default class ViewProfile extends Vue {
             duration: 2000,
           });
           const { data } = await UserRepository.me();
-          this.$store.commit(`auth/${AuthMutation.SET_USER}`, data.data);
+          this.$store.commit(MutationState.SET_USER, data.data);
           this.loading = false;
         } catch (error) {
           this.loading = false;

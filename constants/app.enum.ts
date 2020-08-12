@@ -31,6 +31,7 @@ export enum elComponent {
   ElUpload = 'ElUpload',
   ElProgress = 'ElProgress',
   ElPopover = 'ElPopover',
+  ElPageHeader = 'ElPageHeader',
 }
 
 export enum UserStatus {
@@ -83,4 +84,26 @@ export enum ResourcesEnpoint {
 export enum EvaluationCriteriaEnum {
   MEMBER_TO_LEADER = 'MEMBER_TO_LEADER',
   LEADER_TO_MEMBER = 'LEADER_TO_MEMBER',
+}
+
+/**
+ * Vuex
+ */
+export enum DispatchAction {
+  LOGIN = 'auth/login',
+  LOGOUT = 'auth/logout',
+  CLEAR = 'auth/clear',
+  CURRENT_LEADER = 'okrs/setCurrentLeader',
+  STAFF_OKRS = 'okrs/setStaffOkrs',
+}
+
+export enum GetterState {
+  USER = 'auth/user',
+}
+
+export enum MutationState {
+  SET_USER = 'auth/setUser',
+  SET_TOKEN = 'auth/setToken',
+  SET_CURRENT_CYCLE = 'cycle/setCurrentCycle',
+  SET_OBJECTIVE = 'okrs/setObjective',
 }
