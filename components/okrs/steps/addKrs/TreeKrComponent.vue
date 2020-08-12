@@ -140,12 +140,6 @@ export default class TreeKrComponent extends Vue {
     return callback();
   }
 
-  private nodeExpand(node, openedNode, treeNode) {
-    console.log(node);
-    console.log(openedNode);
-    console.log(treeNode);
-  }
-
   public clearObjectiveForm() {
     (this.$refs.tempKeyResult as Form).clearValidate();
     this.tempKeyResult.content = '';
@@ -153,6 +147,12 @@ export default class TreeKrComponent extends Vue {
     this.tempKeyResult.linkPlans = '';
     this.tempKeyResult.linkResults = '';
     this.tempKeyResult.measureUnitId = 1;
+  }
+
+  private nodeExpand(node, openedNode, treeNode) {
+    console.log(node);
+    console.log(openedNode);
+    console.log(treeNode);
   }
 }
 </script>

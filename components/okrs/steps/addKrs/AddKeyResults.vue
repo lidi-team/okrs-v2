@@ -29,6 +29,7 @@ import IconAttention from '@/assets/images/okrs/attention.svg';
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
 import { KeyResultDTO } from '@/constants/app.interface';
 import { MutationState, DispatchAction } from '@/constants/app.enum';
+import { confirmWarningConfig } from '@/constants/app.constant';
 
 let componenKey = 0;
 
@@ -57,9 +58,7 @@ export default class CreateObjectiveStep extends Vue {
 
   private closeKrsForm() {
     this.$confirm('Bạn có chắc chắn muốn thoát quá trình này không?', {
-      type: 'warning',
-      confirmButtonText: 'Đồng ý',
-      cancelButtonText: 'Hủy',
+      ...confirmWarningConfig,
     }).then(() => {
       // (this.$refs.krsComponent as TreeKrComponent).clearObjectiveForm();
       this.$store.commit(MutationState.SET_OBJECTIVE, null);

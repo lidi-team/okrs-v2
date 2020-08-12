@@ -50,7 +50,7 @@
         </template>
       </div>
     </div>
-    <update-okrs-dialog :visible-dialog.sync="visibleDialog" :reload-data="reloadData" />
+    <update-okrs-dialog :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleDialog" :reload-data="reloadData" />
   </div>
 </template>
 <script lang="ts">
@@ -58,6 +58,7 @@ import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Notification } from 'element-ui';
 import OkrRepository from '@/repositories/OkrsRepository';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
+import { MutationState } from '@/constants/app.enum';
 @Component<OkrsDetailPage>({
   name: 'OkrsDetailPage',
   async asyncData({ params }) {
@@ -68,9 +69,14 @@ import { confirmWarningConfig, notificationConfig } from '@/constants/app.consta
       };
     } catch (error) {}
   },
+  created() {
+    // @ts-ignore
+    this.tempOkrs = this.objective;
+  },
 })
 export default class OkrsDetailPage extends Vue {
   private visibleDialog: boolean = false;
+  private tempOkrs: any = null;
 
   private goToOkrsDashboard() {
     this.$router.push('/OKRs');

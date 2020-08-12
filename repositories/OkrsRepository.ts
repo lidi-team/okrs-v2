@@ -26,8 +26,8 @@ export default class OkrRepository {
     return authenticatedService.get(`${ResourcesEnpoint.Objective}/view_list?cycleId=${cycleId}`);
   }
 
-  public static createOrUpdateOkrs(payload: MeasureUnitDTO): Promise<AxiosResponse<any>> {
-    return authenticatedService.put(`${ResourcesEnpoint.Objective}/${payload.id}`, payload);
+  public static createOrUpdateOkrs(payload: any): Promise<AxiosResponse<any>> {
+    return authenticatedService.post(`${ResourcesEnpoint.Objective}`, payload);
   }
 
   public static deleteKr(id: number): Promise<AxiosResponse<any>> {
