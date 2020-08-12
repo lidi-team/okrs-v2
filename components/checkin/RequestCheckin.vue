@@ -1,0 +1,50 @@
+<template>
+  <fragment>
+    <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="requestCheckin" style="width: 100%;">
+      <el-table-column label="Họ và tên" width="250">
+        <template slot-scope="{ row }">
+          <span v-if="row.objective">{{ row.objective.user.fullName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Mục tiêu" width="400">
+        <template slot-scope="{ row }">
+          <span v-if="row.objective">{{ row.objective.title }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Ngày" width="180">
+        <template slot-scope="{ row }">
+          <span>{{ new Date(row.checkinAt) | dateFormat('DD/MM/YYYY') }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Hành động" align="center" width="180">
+        <template>
+          <el-button class="el-button--purple el-button--checkin">Checkin</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </fragment>
+</template>
+
+<script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
+
+@Component<RequestCheckin>({
+  name: 'RequestCheckin',
+})
+export default class RequestCheckin extends Vue {
+  @Prop(Array) public tableData!: Object[];
+  @Prop(Boolean) readonly loading!: boolean;
+  @Prop(Function) readonly getListUsers;
+}
+</script>
+
+<style lang="scss" scoped>
+@import '@/assets/scss/main.scss';
+.requestCheckin {
+  .el-button {
+    &--checkin {
+      width: 100%;
+    }
+  }
+}
+</style>
