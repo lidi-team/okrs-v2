@@ -1,17 +1,17 @@
 <template>
   <fragment>
     <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="requestCheckin" style="width: 100%;">
-      <el-table-column label="Họ và tên" width="250">
+      <el-table-column label="Họ và tên" min-width="150">
         <template slot-scope="{ row }">
           <span v-if="row.objective">{{ row.objective.user.fullName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Mục tiêu" width="400">
+      <el-table-column label="Mục tiêu" min-width="150">
         <template slot-scope="{ row }">
           <span v-if="row.objective">{{ row.objective.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Ngày" width="180">
+      <el-table-column align="center" label="Ngày" min-width="150">
         <template slot-scope="{ row }">
           <span>{{ new Date(row.checkinAt) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
