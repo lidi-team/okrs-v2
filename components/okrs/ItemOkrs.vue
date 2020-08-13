@@ -54,7 +54,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <update-okrs-dialog v-if="visibleUpdateDialog" :visible-dialog.sync="visibleUpdateDialog" />
+    <!-- <update-okrs-dialog :visible-dialog.sync="visibleUpdateDialog" :reload-data="reloadData" /> -->
     <align-okrs-dialog v-if="visibleAlignDialog" :visible-dialog.sync="visibleAlignDialog" />
   </div>
 </template>

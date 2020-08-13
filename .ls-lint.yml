@@ -15,10 +15,10 @@ ls:
   plugins:
     .ts: kebab-case
   store:
-    .ts: kebab-case
+    .ts: camelCase
 
-  components:
-    .vue: PascalCase
+  # components:
+  #   .vue: PascalCase
   repositories:
     .ts: PascalCase
 

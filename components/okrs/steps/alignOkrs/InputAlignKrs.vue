@@ -25,7 +25,6 @@ export default class InputAlignOkrs extends Vue {
 
   private getStaffOkrs() {
     const items = this.$store.state.okrs.staffOkrs as any[];
-    console.log(items);
     items.forEach((item) => {
       this.itemsAlignOkrs.push(item);
     });

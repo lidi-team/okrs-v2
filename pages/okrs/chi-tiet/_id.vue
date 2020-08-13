@@ -1,5 +1,5 @@
 <template>
-  <div class="okrs-detail">
+  <div v-loading.fullscreen.lock="fullscreenLoading" class="okrs-detail">
     <el-page-header title="Okrs Dashboard" @back="goToOkrsDashboard" />
     <div class="okrs-detail--top-action">
       <span class="okrs-detail--top-action__title">Chi tiết mục tiêu</span>
@@ -18,9 +18,9 @@
         <span class="username">{{ objective.user.fullName }}</span>
         <span class="alignedWith">Liên kết tới</span>
         <span v-if="checkIsRootObjective(objective)" style="display: none;"></span>
-        <a v-else :href="`${$config.baseURL}/OKRs/chi-tiet/${objective.parentObjective.id}`" target="_blank" class="parentOkrs">
-          {{ objective.parentObjective.title }}
-        </a>
+        <a v-else :href="`${$config.baseURL}/OKRs/chi-tiet/${objective.parentObjective.id}`" target="_blank" class="parentOkrs">{{
+          objective.parentObjective.title
+        }}</a>
         <span v-if="checkIsRootObjective(objective)" class="alignedBy">Được liên kết với</span>
         <div v-if="objective.alignmentObjectives.length" class="list-aligned-okrs">
           <p v-for="item in objective.alignmentObjectives" :key="item.id" class="alignedOkrs">
@@ -38,19 +38,11 @@
         <span class="plan">Link kế hoạch</span>
         <span class="result">Link kết quả</span>
         <template v-for="kr in objective.keyResults">
-          <span :key="kr.id" class="kr-content">{{ kr.content }}</span>
-          <span :key="kr.id" class="kr-target">{{ kr.targetValue }}</span>
-          <span :key="kr.id" class="kr-start">{{ kr.startValue }}</span>
-          <span :key="kr.id" class="kr-obtained">{{ kr.valueObtained }}</span>
-          <span :key="kr.id" class="kr-progress">{{ kr.progress }}%</span>
-          <a v-if="kr.linkPlans" :key="kr.id" :href="kr.linkPlans" target="_blank" class="kr-plan">{{ kr.linkPlans }}</a>
-          <span v-else :key="kr.id" class="kr-plan">Chưa gắn link</span>
-          <a v-if="kr.linkResults" :key="kr.id" :href="kr.linkResults" target="_blank" class="kr-result">{{ kr.linkResults }}</a>
-          <span v-else :key="kr.id" class="kr-result">Chưa gắn link</span>
+          <grid-detail-okrs :key="kr.id" :key-result="kr" />
         </template>
       </div>
     </div>
-    <update-okrs-dialog :visible-dialog.sync="visibleDialog" :reload-data="reloadData" />
+    <update-okrs-dialog :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleDialog" :reload-data="reloadData" />
   </div>
 </template>
 <script lang="ts">
@@ -58,6 +50,7 @@ import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Notification } from 'element-ui';
 import OkrRepository from '@/repositories/OkrsRepository';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
+import { MutationState } from '@/constants/app.enum';
 @Component<OkrsDetailPage>({
   name: 'OkrsDetailPage',
   async asyncData({ params }) {
@@ -68,9 +61,16 @@ import { confirmWarningConfig, notificationConfig } from '@/constants/app.consta
       };
     } catch (error) {}
   },
+  created() {
+    this.tempOkrs = this.objective;
+  },
+  middleware: ['measureUnit'],
 })
 export default class OkrsDetailPage extends Vue {
   private visibleDialog: boolean = false;
+  private fullscreenLoading: boolean = false;
+
+  private tempOkrs: any = null;
 
   private goToOkrsDashboard() {
     this.$router.push('/OKRs');
@@ -94,7 +94,21 @@ export default class OkrsDetailPage extends Vue {
     });
   }
 
-  private reloadData() {}
+  private async reloadData() {
+    this.fullscreenLoading = true;
+    try {
+      const { data } = await OkrRepository.getOkrsDetail(+this.$route.params.id);
+      // @ts-ignore
+      this.objective = Object.freeze(data.data);
+      setTimeout(() => {
+        this.fullscreenLoading = false;
+      }, 300);
+    } catch (error) {
+      setTimeout(() => {
+        this.fullscreenLoading = false;
+      }, 300);
+    }
+  }
 
   /**
    * Just display 2 buttons(Update & delete) when this user own this OKRs
@@ -148,6 +162,7 @@ export default class OkrsDetailPage extends Vue {
       .username,
       .parentOkrs,
       .alignedOkrs {
+        color: $neutral-primary-2;
         font-size: 0.875rem;
       }
       .username {
@@ -228,6 +243,7 @@ export default class OkrsDetailPage extends Vue {
       }
       .kr-plan {
         @include truncate-oneline();
+        padding-right: $unit-4;
         color: $blue-primary-1;
       }
       .kr-result {
