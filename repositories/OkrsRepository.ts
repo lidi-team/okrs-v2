@@ -1,7 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
-import { MeasureUnitDTO } from '@/constants/app.interface';
 
 export default class OkrRepository {
   /**
@@ -10,8 +9,8 @@ export default class OkrRepository {
    * @param id { userId, cycleId }
    * @param type {1, 2}
    */
-  public static getLeaderOkrs(id: number, type: number): Promise<AxiosResponse<any>> {
-    return authenticatedService.get(`${ResourcesEnpoint.Objective}/team_leaders?id=${id}&type=${type}`);
+  public static getLeaderOkrs(userId: number, type: number): Promise<AxiosResponse<any>> {
+    return authenticatedService.get(`${ResourcesEnpoint.Objective}/team_leaders?userId=${userId}&type=${type}`);
   }
 
   public static getStaffOkrs(): Promise<AxiosResponse<any>> {

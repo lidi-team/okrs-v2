@@ -89,7 +89,6 @@ export default class SettingCompanyPage extends Vue {
     let results: readonly any[] = queryString ? link.filter(this.createFilter(queryString)) : link;
     results = Object.freeze(results);
     results = results.map((data) => data.name);
-    console.log(results);
     // call callback function to return suggestions
     callback(results);
   }

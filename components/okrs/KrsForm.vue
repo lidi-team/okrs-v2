@@ -1,13 +1,13 @@
 <template>
-  <fragment>
+  <div>
     <div class="control-collapse">
-      <div class="control-collapse__expand">
-        <span :class="['control-collapse__expand--caret', 'el-icon-caret-right', isExpanded ? 'expanded' : '']" @click="expandForm" />
+      <div class="control-collapse__expand" @click="expandForm">
+        <span :class="['control-collapse__expand--caret', 'el-icon-caret-right', isExpanded ? 'expanded' : '']" />
         <span class="control-collapse__expand--content">{{ keyResult.content }}</span>
       </div>
       <icon-delete class="control-collapse__delete" />
     </div>
-    <div class="content">
+    <div class="content-collapse" :style="isExpanded ? `max-height: ${scrollHeight}px` : 'max-height: 0'">
       <el-form ref="keyResult" :model="keyResult" :rules="rules" label-position="left" class="krs-form">
         <el-form-item prop="content">
           <el-input v-model="keyResult.content" placeholder="Nhập kết quả then chốt" tabindex="1" />
@@ -51,7 +51,7 @@
         </div>
       </el-form>
     </div>
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -68,23 +68,39 @@ import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
   created() {
     this.units = Object.freeze(this.$store.state.measureUnit.measureUnits);
   },
+  // updated()
 })
 export default class KrsForm extends Vue {
-  @Prop({ type: Object, required: true })
+  @Prop({
+    type: Object,
+    required: true,
+    default: () => ({
+      startValue: 0,
+      targetValue: 100,
+      content: 'Xin vui lòng nhập kết quả then chốt',
+      linkPlans: '',
+      linkResults: '',
+      measureUnitId: 1,
+    }),
+  })
   private temporaryKeyResult!: any;
 
   private isExpanded: boolean = false;
   private keyResult: any = this.temporaryKeyResult;
+  private scrollHeight: number = 0;
 
   private units: any[] = [];
 
   private rules: Maps<Rule[]> = {
     content: [
       { type: 'string', required: true, message: 'Vui lòng nhập kết quả then chốt', trigger: 'blur' },
-      { validator: this.validateContentKrs, trigger: 'change' },
+      { validator: this.validateContentKrs, trigger: 'blur' },
     ],
     unit: [{ type: 'string', required: true, message: 'Vui lòng chọn đơn vị tính', trigger: 'blur' }],
-    startValue: [{ validator: this.validateIsValidNumber, trigger: 'blur' }],
+    startValue: [
+      { validator: this.validateIsValidNumber, trigger: 'blur' },
+      { validator: this.validateStartValue, trigger: 'blur' },
+    ],
     targetValue: [
       { validator: this.validateIsValidNumber, trigger: 'blur' },
       { validator: this.validateTargetValue, trigger: 'blur' },
@@ -99,6 +115,13 @@ export default class KrsForm extends Vue {
     }
     if (value < 0) {
       return callback('Giá trị phải lớn hơn 0');
+    }
+    return callback();
+  }
+
+  private validateStartValue(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    if (value > this.keyResult.targetValue) {
+      return callback('Giá trị bắt đầu đang lớn hơn giá trị mục tiêu');
     }
     return callback();
   }
@@ -131,6 +154,9 @@ export default class KrsForm extends Vue {
 
   private expandForm() {
     this.isExpanded = !this.isExpanded;
+    const contents = document.getElementsByClassName('content-collapse');
+    // @ts-ignore
+    this.scrollHeight = contents.item(0).scrollHeight;
   }
 }
 </script>
@@ -138,18 +164,18 @@ export default class KrsForm extends Vue {
 @import '@/assets/scss/main.scss';
 .control-collapse {
   display: flex;
-  place-content: center flex-start;
+  place-content: center space-between;
   &__expand {
     display: flex;
+    &:hover {
+      cursor: pointer;
+    }
     &--caret {
       display: flex;
       align-self: center;
       margin-right: $unit-2;
       color: $neutral-primary-2;
       transition: transform 0.3s ease-in-out;
-      &:hover {
-        cursor: pointer;
-      }
     }
     &--content {
       color: $neutral-primary-4;
@@ -158,24 +184,40 @@ export default class KrsForm extends Vue {
     }
   }
   &__delete {
+    &:hover {
+      cursor: pointer;
+    }
   }
   .expanded {
     transform: rotate(90deg);
   }
 }
-
-.krs-form {
-  &__detail {
-    &--value {
-      .el-col {
-        &:not(:first-child) {
-          padding-left: $unit-4;
+.content-collapse {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+  background-color: #f1f1f1;
+  margin-top: $unit-3;
+  &:not(:last-child) {
+    margin-bottom: $unit-2;
+  }
+  border-radius: $border-radius-base;
+  background-color: $purple-primary-1;
+  .krs-form {
+    padding: $unit-4;
+    &__detail {
+      margin-bottom: -$unit-6;
+      &--value {
+        .el-col {
+          &:not(:first-child) {
+            padding-left: $unit-4;
+          }
         }
       }
     }
-  }
-  .el-form-item__label {
-    padding: 0;
+    .el-form-item__label {
+      padding: 0;
+    }
   }
 }
 </style>

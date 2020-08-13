@@ -70,18 +70,6 @@ const id = 2;
 })
 export default class TreeKrComponent extends Vue {
   private defaultKrs: KeyResultDTO[] = [{ content: '', startValue: 0, targetvalue: 1, measureUnitId: 1, linkPlans: '', linkResults: '' }];
-  private defaultProps: object = {
-    label: (data, node) => {
-      console.log('content data' + data.content);
-      return data.content;
-    },
-    isLeaf: (data, node) => {
-      console.log('Left');
-      console.log(node);
-      return node.level === 1;
-    },
-  };
-
   private units: any[] = [];
   private tempKeyResult: KeyResultDTO = {
     content: '',
@@ -147,12 +135,6 @@ export default class TreeKrComponent extends Vue {
     this.tempKeyResult.linkPlans = '';
     this.tempKeyResult.linkResults = '';
     this.tempKeyResult.measureUnitId = 1;
-  }
-
-  private nodeExpand(node, openedNode, treeNode) {
-    console.log(node);
-    console.log(openedNode);
-    console.log(treeNode);
   }
 }
 </script>

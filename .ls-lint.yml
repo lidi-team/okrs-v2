@@ -17,8 +17,8 @@ ls:
   store:
     .ts: camelCase
 
-  components:
-    .vue: PascalCase
+  # components:
+  #   .vue: PascalCase
   repositories:
     .ts: PascalCase
 

@@ -38,15 +38,6 @@
         <span class="plan">Link kế hoạch</span>
         <span class="result">Link kết quả</span>
         <template v-for="kr in objective.keyResults">
-          <!-- <span :key="kr.content.substring(0, 3)" class="kr-content">{{ kr.content }}</span>
-          <span :key="kr.content.substring(0, 3)" class="kr-target">{{ kr.targetValue }}</span>
-          <span :key="kr.content.substring(0, 3)" class="kr-start">{{ kr.startValue }}</span>
-          <span :key="kr.content.substring(0, 3)" class="kr-obtained">{{ kr.valueObtained }}</span>
-          <span :key="kr.content.substring(0, 3)" class="kr-progress">{{ kr.progress }}%</span>
-          <a v-if="kr.linkPlans" :key="kr.content.substring(0, 3)" :href="kr.linkPlans" target="_blank" class="kr-plan">{{ kr.linkPlans }}</a>
-          <span v-else :key="kr.content.substring(0, 3)" class="kr-plan">Chưa gắn link</span>
-          <a v-if="kr.linkResults" :key="kr.content.substring(0, 3)" :href="kr.linkResults" target="_blank" class="kr-result">{{ kr.linkResults }}</a>
-          <span v-else :key="kr.content.substring(0, 3)" class="kr-result">Chưa gắn link</span> -->
           <grid-detail-okrs :key="kr.id" :key-result="kr" />
         </template>
       </div>
