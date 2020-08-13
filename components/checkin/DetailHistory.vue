@@ -51,7 +51,6 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { statusCheckin } from '@/constants/app.constant';
-import CheckinRepository from '@/repositories/CheckinRepository';
 
 @Component<DetailHistory>({
   name: 'DetailHistory',
