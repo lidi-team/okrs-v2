@@ -40,6 +40,11 @@ export enum UserStatus {
   Inactive = 'Không hoạt động',
 }
 
+export enum TabCheckins {
+  MyOKRs = 'OKRs của tôi',
+  CheckinResquest = 'Yêu cầu Check-in',
+}
+
 export enum AdminTabsVn {
   CycleOKR = 'Quản lý chu kỳ',
   Department = 'Quản lý phòng ban',
@@ -79,6 +84,7 @@ export enum ResourcesEnpoint {
   MeasureUnit = 'measure_units',
   MetaData = 'meta_data',
   Objective = 'objectives',
+  Checkin = 'checkins',
 }
 
 export enum EvaluationCriteriaEnum {
