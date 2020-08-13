@@ -12,9 +12,13 @@
         <el-input v-model="tempObjective.title" placeholder="Nhập tên OKRs" />
       </el-form-item>
       <template v-for="kr in temporaryOkrs.keyResults">
-        <krs-form :key="kr.id" ref="krsForm" :temporary-key-result="kr" />
+        <krs-form :key="kr.content" ref="krsForm" :temporary-key-result="kr" />
       </template>
     </el-form>
+    <el-button class="el-button el-button--white el-button--small update-okrs__button" @click="addNewKRs">
+      <icon-add-krs />
+      <span>Thêm OKRs</span>
+    </el-button>
     <span slot="footer">
       <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
       <el-button class="el-button--purple el-button--modal" @click="updateOkrs">Cập nhật</el-button>
@@ -22,7 +26,7 @@
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
+import { Component, Vue, Prop, PropSync, Watch } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
 import OkrRepository from '@/repositories/OkrsRepository';
@@ -35,9 +39,9 @@ export default class UpdateOkrsDialog extends Vue {
   @PropSync('visibleDialog', { type: Boolean, required: true }) public syncUpdateDialog!: boolean;
   @Prop({ type: Object, required: true }) public temporaryOkrs!: any;
 
-  private tempObjective = {
-    id: this.temporaryOkrs.id,
-    title: this.temporaryOkrs.title,
+  private tempObjective: Object = {
+    id: JSON.parse(JSON.stringify(this.temporaryOkrs.id)),
+    title: JSON.parse(JSON.stringify(this.temporaryOkrs.title)),
   };
 
   private rules: Maps<Rule[]> = {
@@ -49,22 +53,23 @@ export default class UpdateOkrsDialog extends Vue {
     this.syncUpdateDialog = false;
   }
 
-  private updateOkrs() {
-    const payload: any = null;
+  private async updateOkrs() {
+    const payload: any = {};
     const krs: any[] = [];
     (this.$refs.krsForm as any).forEach((form) => {
       krs.push(Object.freeze(form.keyResult));
     });
     payload.objective = this.tempObjective;
-    console.log(this.tempObjective);
     payload.keyResult = krs;
-    console.log(krs);
-    // await OkrRepository.createOrUpdateOkrs(payload).then((res) => {
-    //   Notification.success({
-    //     ...notificationConfig,
-    //     message: 'Đổi mật khẩu thành công',
-    //   });
-    // });
+    await OkrRepository.createOrUpdateOkrs(payload).then(async (res) => {
+      await this.handleCloseDialog();
+      await this.reloadData();
+      await Notification.success({
+        ...notificationConfig,
+        message: 'Cập nhật OKRs thành công',
+      });
+    });
+    // window.location.reload(true);
   }
 }
 </script>
@@ -72,6 +77,23 @@ export default class UpdateOkrsDialog extends Vue {
 @import '@/assets/scss/main.scss';
 
 .update-okrs {
+  &__button {
+    margin: $unit-4 0 $unit-4 0;
+    span {
+      display: flex;
+      place-items: center;
+      &:hover {
+        svg {
+          path {
+            fill: $white;
+          }
+        }
+      }
+      span {
+        padding-left: $unit-1;
+      }
+    }
+  }
   .el-form-item__label {
     color: $neutral-primary-4;
     font-weight: $font-weight-medium;

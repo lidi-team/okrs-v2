@@ -13,22 +13,15 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync } from 'vue-property-decorator';
+import { Notification } from 'element-ui';
 import IconSetting from '@/assets/images/okrs/setting.svg';
-import { confirmWarningConfig } from '@/constants/app.constant';
+import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
+import OkrRepository from '@/repositories/OkrsRepository';
 @Component<OkrsActionTooltip>({
   name: 'OkrsActionTooltip',
   components: {
     IconSetting,
   },
-  // beforeUpdate() {
-  //   const popOvers = document.getElementsByClassName('el-popover el-popper');
-  //   for (let i = 0; i <= popOvers.length; i++) {
-  //     if (popOvers.item(i)) {
-  //       console.log(popOvers.item(i));
-  //       popOvers.item(i)!.setAttribute('style', `padding: unset; min-width: 120px;`);
-  //     }
-  //   }
-  // },
 })
 export default class OkrsActionTooltip extends Vue {
   @PropSync('visibleUpdateDialog', { type: Boolean, required: true, default: false }) private syncVisibleUpdateDialog!: boolean;
@@ -51,15 +44,15 @@ export default class OkrsActionTooltip extends Vue {
     this.$confirm('Bạn có chắc chắn muốn xóa mục tiêu này?', {
       ...confirmWarningConfig,
     }).then(async () => {
-      // try {
-      //   await EmployeeRepository.delete(row.id).then((res: any) => {
-      //     Notification.success({
-      //       ...notificationConfig,
-      //       message: 'Từ chối thành viên thành công',
-      //     });
-      //   });
-      //   this.getListUsers();
-      // } catch (error) {}
+      try {
+        await OkrRepository.deleteOkrs(+this.syncOkrsId).then((res: any) => {
+          Notification.success({
+            ...notificationConfig,
+            message: 'Xóa OKRs thành công',
+          });
+        });
+        // Reaload page
+      } catch (error) {}
     });
   }
 }
