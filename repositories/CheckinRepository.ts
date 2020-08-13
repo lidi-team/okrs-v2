@@ -9,4 +9,12 @@ export default class RoleRepository {
   public static getRequest(params) {
     return authenticatedService.get(`${ResourcesEnpoint.Checkin}/checkin_request`, { params });
   }
+
+  public static getHistory(id) {
+    return authenticatedService.get(`${ResourcesEnpoint.Checkin}/history/${id}`);
+  }
+
+  public static getHistoryDetail(id) {
+    return authenticatedService.get(`${ResourcesEnpoint.Checkin}/${id}`);
+  }
 }

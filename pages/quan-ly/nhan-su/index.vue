@@ -129,7 +129,7 @@ export default class ManageEmployee extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .manage-employee {
   height: 100%;
