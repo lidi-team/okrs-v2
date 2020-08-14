@@ -18,9 +18,9 @@
         <span class="username">{{ objective.user.fullName }}</span>
         <span class="alignedWith">Liên kết tới</span>
         <span v-if="checkIsRootObjective(objective)" style="display: none;"></span>
-        <a v-else :href="`${$config.baseURL}/OKRs/chi-tiet/${objective.parentObjective.id}`" target="_blank" class="parentOkrs">{{
-          objective.parentObjective.title
-        }}</a>
+        <a v-else :href="`${$config.baseURL}/OKRs/chi-tiet/${objective.parentObjective.id}`" target="_blank" class="parentOkrs">
+          {{ objective.parentObjective.title }}
+        </a>
         <span v-if="checkIsRootObjective(objective)" class="alignedBy">Được liên kết với</span>
         <div v-if="objective.alignmentObjectives.length" class="list-aligned-okrs">
           <p v-for="item in objective.alignmentObjectives" :key="item.id" class="alignedOkrs">
@@ -38,7 +38,7 @@
         <span class="plan">Link kế hoạch</span>
         <span class="result">Link kết quả</span>
         <template v-for="kr in objective.keyResults">
-          <grid-detail-okrs :key="kr.id" :key-result="kr" />
+          <grid-detail-okrs :key="kr.content.substring(0, 10)" :key-result="kr" />
         </template>
       </div>
     </div>
@@ -48,14 +48,14 @@
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Notification } from 'element-ui';
-import OkrRepository from '@/repositories/OkrsRepository';
+import OkrsRepository from '@/repositories/OkrsRepository';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import { MutationState } from '@/constants/app.enum';
 @Component<OkrsDetailPage>({
   name: 'OkrsDetailPage',
   async asyncData({ params }) {
     try {
-      const { data } = await OkrRepository.getOkrsDetail(+params.id);
+      const { data } = await OkrsRepository.getOkrsDetail(+params.id);
       return {
         objective: Object.freeze(data.data),
       };
@@ -83,7 +83,7 @@ export default class OkrsDetailPage extends Vue {
   private deleteOkrs(okrsId: number) {
     this.$confirm('Bạn có chắc chắn muốn xóa OKRs này không?', { ...confirmWarningConfig }).then(async () => {
       try {
-        await OkrRepository.deleteOkrs(okrsId).then((res) => {
+        await OkrsRepository.deleteOkrs(okrsId).then((res) => {
           Notification.success({
             ...notificationConfig,
             message: 'Xóa OKRs thành công',
@@ -97,7 +97,7 @@ export default class OkrsDetailPage extends Vue {
   private async reloadData() {
     this.fullscreenLoading = true;
     try {
-      const { data } = await OkrRepository.getOkrsDetail(+this.$route.params.id);
+      const { data } = await OkrsRepository.getOkrsDetail(+this.$route.params.id);
       // @ts-ignore
       this.objective = Object.freeze(data.data);
       setTimeout(() => {

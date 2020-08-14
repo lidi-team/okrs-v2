@@ -5,7 +5,7 @@
       <el-table v-loading="loading" :data="tableData" header-row-class-name="item-okrs__table-header" style="width: 100%;">
         <el-table-column type="expand" width="20">
           <template v-slot="{ row }">
-            <div v-for="objective in row.alignmentObjective" :key="objective.id" class="item-okrs__expand">
+            <div v-for="objective in row.childObjectives" :key="objective.id" class="item-okrs__expand">
               <div class="item-okrs__expand--objective">
                 <icon-ellipse />
                 <span>{{ objective.title }}</span>
@@ -14,7 +14,7 @@
               <div class="item-okrs__expand--progress">
                 <el-progress :percentage="objective.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
               </div>
-              <div class="item-okrs__expand--action">
+              <div class="item-okrs__expandid--action">
                 <span :class="isUpValue(changeValue)">{{ changeValue }}%</span>
                 <okrs-action-tooltip
                   :okrs-id.sync="objective.id"

@@ -9,7 +9,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import OkrRepository from '@/repositories/OkrsRepository';
+import OkrsRepository from '@/repositories/OkrsRepository';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<InputAlignOkrs>({
   name: 'InputAlignOkrs',

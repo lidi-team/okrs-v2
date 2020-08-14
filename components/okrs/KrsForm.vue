@@ -1,13 +1,27 @@
 <template>
-  <div>
-    <div class="control-collapse">
+  <div :id="indexKrForm">
+    <div :class="['control-collapse', hovering ? 'hovering' : '']" @mouseenter="hovering = true" @mouseleave="hovering = false">
       <div class="control-collapse__expand" @click="expandForm">
         <span :class="['control-collapse__expand--caret', 'el-icon-caret-right', isExpanded ? 'expanded' : '']" />
-        <span class="control-collapse__expand--content">{{ keyResult.content }}</span>
+        <span v-if="keyResult.content !== 'Xin vui lòng nhập kết quả then chốt'" class="control-collapse__expand--content">
+          {{ keyResult.content }}
+        </span>
+        <span v-else class="control-collapse__expand--content example">{{ keyResult.content }}</span>
       </div>
-      <icon-delete class="control-collapse__delete" />
+      <el-popover v-model="popoverVisisble" placement="top-start" width="200" trigger="click">
+        <div class="control-collapse__popover">
+          <p class="control-collapse__popover--title">Bạn muốn xóa KR này?</p>
+          <div class="control-collapse__popover--action">
+            <el-button class="el-button--white el-button--small" @click="popoverVisisble = false">Không</el-button>
+            <el-button class="el-button--purple el-button--small" @click="deleteKr(keyResult)">Xóa bỏ</el-button>
+          </div>
+        </div>
+        <el-tooltip slot="reference" content="Xóa" placement="right-start">
+          <icon-delete class="control-collapse__delete" />
+        </el-tooltip>
+      </el-popover>
     </div>
-    <div class="content-collapse" :style="isExpanded ? `max-height: ${scrollHeight}px` : 'max-height: 0'">
+    <div :class="['content-collapse', isExpanded ? 'margin-form' : '']" :style="isExpanded ? `max-height: ${scrollHeight}px` : 'max-height: 0'">
       <el-form ref="keyResult" :model="keyResult" :rules="rules" label-position="left" class="krs-form">
         <el-form-item prop="content">
           <el-input v-model="keyResult.content" placeholder="Nhập kết quả then chốt" tabindex="1" />
@@ -16,7 +30,7 @@
           <div class="krs-form__detail--value">
             <el-row>
               <el-col :span="7">
-                <el-form-item prop="unit" label="Đơn vị" class="custom-label" label-width="65px">
+                <el-form-item label="Đơn vị" class="custom-label" label-width="65px">
                   <el-select
                     v-model.number="keyResult.measureUnitId"
                     size="medium"
@@ -54,11 +68,13 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Form } from 'element-ui';
+import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
+import { Form, Notification } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
 import IconDelete from '@/assets/images/common/delete.svg';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
+import OkrsRepository from '@/repositories/OkrsRepository';
+import { notificationConfig } from '@/constants/app.constant';
 
 @Component<KrsForm>({
   name: 'KrsForm',
@@ -68,7 +84,9 @@ import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
   created() {
     this.units = Object.freeze(this.$store.state.measureUnit.measureUnits);
   },
-  // updated()
+  beforeMount() {
+    this.keyResult = this.temporaryKeyResult;
+  },
 })
 export default class KrsForm extends Vue {
   @Prop({
@@ -85,18 +103,56 @@ export default class KrsForm extends Vue {
   })
   private temporaryKeyResult!: any;
 
+  @Prop(Number) private indexKrForm!: number;
+
+  private hovering: boolean = false;
+  private popoverVisisble: boolean = false;
   private isExpanded: boolean = false;
-  private keyResult: any = this.temporaryKeyResult;
+  private keyResult: any = {};
   private scrollHeight: number = 0;
 
   private units: any[] = [];
+
+  private async deleteKr(keyResult: any): Promise<any> {
+    if (keyResult.id) {
+      try {
+        await OkrsRepository.deleteKr(keyResult.id).then((res) => {
+          if (res.data.statusCode === 404) {
+            Notification.success({
+              ...notificationConfig,
+              message: res.data.message,
+            });
+            this.popoverVisisble = false;
+          }
+          if (res.data.statusCode === 480) {
+            Notification.success({
+              ...notificationConfig,
+              message: res.data.message,
+            });
+            this.popoverVisisble = false;
+          }
+          if (res.data.statusCode === 200) {
+            Notification.success({
+              ...notificationConfig,
+              message: 'Xóa KR thành công',
+            });
+            this.popoverVisisble = false;
+          }
+          this.$emit('deleteKr', this.indexKrForm);
+        });
+      } catch (error) {}
+    } else {
+      this.popoverVisisble = false;
+      this.$emit('deleteKr', this.indexKrForm);
+    }
+  }
 
   private rules: Maps<Rule[]> = {
     content: [
       { type: 'string', required: true, message: 'Vui lòng nhập kết quả then chốt', trigger: 'blur' },
       { validator: this.validateContentKrs, trigger: 'blur' },
     ],
-    unit: [{ type: 'string', required: true, message: 'Vui lòng chọn đơn vị tính', trigger: 'blur' }],
+    // unit: [{ type: 'number', required: true, message: 'Vui lòng chọn đơn vị tính', trigger: 'change' }],
     startValue: [
       { validator: this.validateIsValidNumber, trigger: 'blur' },
       { validator: this.validateStartValue, trigger: 'blur' },
@@ -162,11 +218,24 @@ export default class KrsForm extends Vue {
 </script>
 <style lang="scss">
 @import '@/assets/scss/main.scss';
+.hovering {
+  background-color: $purple-primary-1;
+}
+.margin-form {
+  margin-bottom: $unit-4;
+}
 .control-collapse {
   display: flex;
   place-content: center space-between;
+  &:hover {
+    box-shadow: $box-shadow-default;
+  }
   &__expand {
     display: flex;
+    width: 100%;
+    .example {
+      color: $neutral-primary-2;
+    }
     &:hover {
       cursor: pointer;
     }
@@ -190,6 +259,17 @@ export default class KrsForm extends Vue {
   }
   .expanded {
     transform: rotate(90deg);
+  }
+  &__popover {
+    padding: $unit-2;
+    &--title {
+      text-align: center;
+      padding: $unit-4;
+    }
+    &--action {
+      display: flex;
+      place-content: center;
+    }
   }
 }
 .content-collapse {

@@ -16,7 +16,7 @@ import { Component, Vue, PropSync } from 'vue-property-decorator';
 import { Notification } from 'element-ui';
 import IconSetting from '@/assets/images/okrs/setting.svg';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
-import OkrRepository from '@/repositories/OkrsRepository';
+import OkrsRepository from '@/repositories/OkrsRepository';
 @Component<OkrsActionTooltip>({
   name: 'OkrsActionTooltip',
   components: {
@@ -45,7 +45,7 @@ export default class OkrsActionTooltip extends Vue {
       ...confirmWarningConfig,
     }).then(async () => {
       try {
-        await OkrRepository.deleteOkrs(+this.syncOkrsId).then((res: any) => {
+        await OkrsRepository.deleteOkrs(+this.syncOkrsId).then((res: any) => {
           Notification.success({
             ...notificationConfig,
             message: 'Xóa OKRs thành công',
