@@ -41,6 +41,12 @@ export enum UserStatus {
   Inactive = 'Không hoạt động',
 }
 
+export enum TabCFR {
+  Feedback = 'Danh sách chờ Feedback',
+  History = 'Lịch sử',
+  Rank = 'Bảng xếp hạng',
+}
+
 export enum TabCheckins {
   MyOKRs = 'OKRs của tôi',
   CheckinResquest = 'Yêu cầu Check-in',
@@ -85,8 +91,13 @@ export enum ResourcesEnpoint {
   MeasureUnit = 'measure_units',
   MetaData = 'meta_data',
   Objective = 'objectives',
-  Checkin = 'checkins',
   KeyResults = 'key_results',
+  Checkin = 'checkins',
+  Feedback = 'feedback',
+}
+
+export enum CFREnpoint {
+  ListWaiting = 'list_waiting',
 }
 
 export enum EvaluationCriteriaEnum {

@@ -101,6 +101,7 @@ const nuxtConfig: NuxtConfig = {
     { path: '~/components/okrs/steps', prefix: 'step' },
     { path: '~/components/manage', prefix: '' },
     { path: '~/components/admin', prefix: '' },
+    { path: '~/components/cfrs', prefix: 'cfrs' },
   ],
   /*
    ** Nuxt.js modules
@@ -120,7 +121,9 @@ const nuxtConfig: NuxtConfig = {
   // },
   build: {
     // analyze: true,
-    extractCSS: true,
+    extractCSS: {
+      ignoreOrder: true,
+    },
     optimization: {
       splitChunks: {
         cacheGroups: {
