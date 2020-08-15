@@ -10,7 +10,7 @@
             <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.name" :value="cycle.id" />
           </el-select>
         </el-form-item>
-        <el-form-item prop="parentObjectiveId" label="OKRs cấp trên" class="custom-label" label-width="120px">
+        <el-form-item v-if="!isRootObjective" prop="parentObjectiveId" label="OKRs cấp trên" class="custom-label" label-width="120px">
           <el-select
             v-model="tempObjective.parentObjectiveId"
             filterable
@@ -31,7 +31,7 @@
 </template>
 <script lang="ts">
 import { Form } from 'element-ui';
-import { Component, Vue, PropSync, Watch } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Watch, Prop } from 'vue-property-decorator';
 import { ObjectiveDTO, ParamsQuery } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import CycleRepository from '@/repositories/CycleRepository';
@@ -41,10 +41,13 @@ import { DispatchAction, MutationState } from '@/constants/app.enum';
   name: 'CreateObjectiveStep',
   created() {
     this.getListData();
-    this.getLeaderOKrs();
+    if (!this.isRootObjective) {
+      this.getLeaderOKrs();
+    }
   },
 })
 export default class CreateObjectiveStep extends Vue {
+  @Prop({ type: Boolean, default: false }) private isRootObjective!: boolean;
   @PropSync('active', Number) private syncActive!: number;
   @PropSync('visibleDialog', Boolean) private syncVisibleDialog!: boolean;
 
@@ -52,7 +55,7 @@ export default class CreateObjectiveStep extends Vue {
   private loadingSelect: boolean = false;
 
   public tempObjective: ObjectiveDTO = {
-    title: '',
+    title: !this.$store.state.okrs.objective ? '' : this.$store.state.okrs.objective.title,
     parentObjectiveId: null,
     cycleId: null,
   };
@@ -84,30 +87,31 @@ export default class CreateObjectiveStep extends Vue {
   private async getListData() {
     try {
       const { data } = await CycleRepository.get(this.listDataParams);
-      Object.freeze(data.data.items).forEach((item) => {
-        this.listCycles.push(item);
-      });
+      this.listCycles = Object.freeze(data.data.items);
+      // Set option cycles to defautl current cycle
       this.tempObjective.cycleId = this.$store.state.cycle.cycle.id;
     } catch (error) {}
   }
 
   @Watch('tempObjective.cycleId', { deep: true, immediate: true })
   private async getLeaderOKrs() {
-    this.loadingSelect = true;
-    try {
-      if (this.tempObjective.cycleId == null) {
-        this.tempObjective.cycleId = this.$store.state.cycle.cycle.id;
+    if (!this.isRootObjective) {
+      this.loadingSelect = true;
+      try {
+        if (this.tempObjective.cycleId == null) {
+          this.tempObjective.cycleId = this.$store.state.cycle.cycle.id;
+        }
+        const { data } = await OkrsRepository.getLeaderOkrs(Number(this.tempObjective.cycleId), 1);
+        if (this.leaderOKRs.length > 0) {
+          this.leaderOKRs = [];
+        }
+        Object.freeze(data.data).forEach((item) => {
+          this.leaderOKRs.push(item);
+        });
+        this.loadingSelect = false;
+      } catch (error) {
+        this.loadingSelect = false;
       }
-      const { data } = await OkrsRepository.getLeaderOkrs(Number(this.tempObjective.cycleId), 1);
-      if (this.leaderOKRs.length > 0) {
-        this.leaderOKRs = [];
-      }
-      Object.freeze(data.data).forEach((item) => {
-        this.leaderOKRs.push(item);
-      });
-      this.loadingSelect = false;
-    } catch (error) {
-      this.loadingSelect = false;
     }
   }
 
