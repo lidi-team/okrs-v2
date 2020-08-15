@@ -1,58 +1,48 @@
 <template>
-  <el-tree
-    :data="defaultKrs"
-    :props="defaultProps"
-    node-key="id"
-    :default-expand-all="false"
-    :expand-on-click-node="true"
-    :node-expand="nodeExpand"
-    icon-class="el-icon-caret-right"
-  >
-    <div slot-scope="{}" class="tree-krs">
-      <el-form ref="tempKeyResult" :model="tempKeyResult" :rules="rules" label-position="left">
-        <el-form-item prop="content">
-          <el-input v-model="tempKeyResult.content" placeholder="Nhập kết quả then chốt" tabindex="1" />
-        </el-form-item>
-        <div class="tree-krs__detail">
-          <div class="tree-krs__detail--value">
-            <el-row>
-              <el-col :span="8">
-                <el-form-item prop="unit" label="Đơn vị" class="custom-label" label-width="70px">
-                  <el-select
-                    v-model.number="tempKeyResult.measureUnitId"
-                    size="medium"
-                    filterable
-                    no-match-text="Không tìm thấy kết quả"
-                    placeholder="Chọn đơn vị"
-                  >
-                    <el-option v-for="unit in units" :key="unit.id" :label="unit.type" :value="unit.id" tabindex="3" />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item prop="startValue" label="Giá trị bắt đầu" label-width="100px">
-                  <el-input v-model.number="tempKeyResult.startValue" size="medium" tabindex="2" />
-                </el-form-item>
-              </el-col>
-              <el-col :span="8">
-                <el-form-item prop="targetValue" label="Mục tiêu" class="custom-label" label-width="70px">
-                  <el-input v-model.number="tempKeyResult.targetValue" size="medium" tabindex="2" />
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </div>
-          <div class="tree-krs__detail--links">
-            <el-form-item prop="linkPlans" label="Link kế hoạch" label-width="100px">
-              <el-input v-model.number="tempKeyResult.linkPlans" size="small" type="url" placeholder="Điền link kế hoạch " />
-            </el-form-item>
-            <el-form-item prop="linkResults" label="Link kết quả" label-width="100px">
-              <el-input v-model.number="tempKeyResult.linkResults" size="small" type="url" placeholder="Điền link kết quả" />
-            </el-form-item>
-          </div>
+  <div :class="['control-collapse', hovering ? 'hovering' : '']" @mouseenter="hovering = true" @mouseleave="hovering = false">
+    <el-form ref="tempKeyResult" :model="tempKeyResult" :rules="rules" label-position="left">
+      <el-form-item prop="content">
+        <el-input v-model="tempKeyResult.content" placeholder="Nhập kết quả then chốt" tabindex="1" />
+      </el-form-item>
+      <div class="tree-krs__detail">
+        <div class="tree-krs__detail--value">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item prop="unit" label="Đơn vị" class="custom-label" label-width="70px">
+                <el-select
+                  v-model.number="tempKeyResult.measureUnitId"
+                  size="medium"
+                  filterable
+                  no-match-text="Không tìm thấy kết quả"
+                  placeholder="Chọn đơn vị"
+                >
+                  <el-option v-for="unit in units" :key="unit.id" :label="unit.type" :value="unit.id" tabindex="3" />
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item prop="startValue" label="Giá trị bắt đầu" label-width="100px">
+                <el-input v-model.number="tempKeyResult.startValue" size="medium" tabindex="2" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item prop="targetValue" label="Mục tiêu" class="custom-label" label-width="70px">
+                <el-input v-model.number="tempKeyResult.targetValue" size="medium" tabindex="2" />
+              </el-form-item>
+            </el-col>
+          </el-row>
         </div>
-      </el-form>
-    </div>
-  </el-tree>
+        <div class="tree-krs__detail--links">
+          <el-form-item prop="linkPlans" label="Link kế hoạch" label-width="100px">
+            <el-input v-model.number="tempKeyResult.linkPlans" size="small" type="url" placeholder="Điền link kế hoạch " />
+          </el-form-item>
+          <el-form-item prop="linkResults" label="Link kết quả" label-width="100px">
+            <el-input v-model.number="tempKeyResult.linkResults" size="small" type="url" placeholder="Điền link kết quả" />
+          </el-form-item>
+        </div>
+      </div>
+    </el-form>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -69,12 +59,12 @@ const id = 2;
   },
 })
 export default class TreeKrComponent extends Vue {
-  private defaultKrs: KeyResultDTO[] = [{ content: '', startValue: 0, targetvalue: 1, measureUnitId: 1, linkPlans: '', linkResults: '' }];
+  private hovering: boolean = false;
   private units: any[] = [];
   private tempKeyResult: KeyResultDTO = {
-    content: '',
+    content: 'Vui lòng nhập kết quả then chốt',
     startValue: 0,
-    targetvalue: 1,
+    targetvalue: 100,
     measureUnitId: 1,
     linkPlans: '',
     linkResults: '',
@@ -140,19 +130,6 @@ export default class TreeKrComponent extends Vue {
 </script>
 <style lang="scss">
 @import '@/assets/scss/main.scss';
-.el-tree {
-  .el-tree-node {
-    &__content {
-      height: auto;
-      &:hover {
-        background-color: $purple-primary-1;
-      }
-      .el-tree-node__expand-icon {
-        font-size: $unit-5;
-      }
-    }
-  }
-}
 .tree-krs {
   margin-top: $unit-8;
   width: 100%;

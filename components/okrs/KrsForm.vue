@@ -3,8 +3,8 @@
     <div :class="['control-collapse', hovering ? 'hovering' : '']" @mouseenter="hovering = true" @mouseleave="hovering = false">
       <div class="control-collapse__expand" @click="expandForm">
         <span :class="['control-collapse__expand--caret', 'el-icon-caret-right', isExpanded ? 'expanded' : '']" />
-        <span v-if="keyResult.content !== 'Xin vui lòng nhập kết quả then chốt'" class="control-collapse__expand--content">
-          {{ keyResult.content }}
+        <span v-if="syncTempKr.content !== 'Xin vui lòng nhập kết quả then chốt'" class="control-collapse__expand--content">
+          {{ syncTempKr.content }}
         </span>
         <span v-else class="control-collapse__expand--content example">{{ keyResult.content }}</span>
       </div>
@@ -22,9 +22,9 @@
       </el-popover>
     </div>
     <div :class="['content-collapse', isExpanded ? 'margin-form' : '']" :style="isExpanded ? `max-height: ${scrollHeight}px` : 'max-height: 0'">
-      <el-form ref="keyResult" :model="keyResult" :rules="rules" label-position="left" class="krs-form">
+      <el-form ref="keyResult" :model="syncTempKr" :rules="rules" label-position="left" class="krs-form">
         <el-form-item prop="content">
-          <el-input v-model="keyResult.content" placeholder="Nhập kết quả then chốt" tabindex="1" />
+          <el-input v-model="syncTempKr.content" placeholder="Nhập kết quả then chốt" tabindex="1" />
         </el-form-item>
         <div class="krs-form__detail">
           <div class="krs-form__detail--value">
@@ -32,7 +32,7 @@
               <el-col :span="7">
                 <el-form-item label="Đơn vị" class="custom-label" label-width="65px">
                   <el-select
-                    v-model.number="keyResult.measureUnitId"
+                    v-model.number="syncTempKr.measureUnitId"
                     size="medium"
                     filterable
                     no-match-text="Không tìm thấy kết quả"
@@ -44,22 +44,22 @@
               </el-col>
               <el-col :span="7">
                 <el-form-item prop="startValue" label="Giá trị bắt đầu" label-width="100px">
-                  <el-input v-model.number="keyResult.startValue" size="medium" tabindex="2" />
+                  <el-input v-model.number="syncTempKr.startValue" size="medium" tabindex="2" />
                 </el-form-item>
               </el-col>
               <el-col :span="10">
                 <el-form-item prop="targetValue" label="Mục tiêu" class="custom-label" label-width="80px">
-                  <el-input v-model.number="keyResult.targetValue" size="medium" tabindex="2" />
+                  <el-input v-model.number="syncTempKr.targetValue" size="medium" tabindex="2" />
                 </el-form-item>
               </el-col>
             </el-row>
           </div>
           <div class="krs-form__detail--links">
             <el-form-item prop="linkPlans" label="Link kế hoạch" label-width="120px">
-              <el-input v-model.number="keyResult.linkPlans" size="small" type="url" placeholder="Điền link kế hoạch " />
+              <el-input v-model.number="syncTempKr.linkPlans" size="small" type="url" placeholder="Điền link kế hoạch " />
             </el-form-item>
             <el-form-item prop="linkResults" label="Link kết quả" label-width="120px">
-              <el-input v-model.number="keyResult.linkResults" size="small" type="url" placeholder="Điền link kết quả" />
+              <el-input v-model.number="syncTempKr.linkResults" size="small" type="url" placeholder="Điền link kết quả" />
             </el-form-item>
           </div>
         </div>
@@ -68,7 +68,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Emit } from 'vue-property-decorator';
+import { Component, Vue, Prop, Emit, PropSync } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
 import IconDelete from '@/assets/images/common/delete.svg';
@@ -84,12 +84,12 @@ import { notificationConfig } from '@/constants/app.constant';
   created() {
     this.units = Object.freeze(this.$store.state.measureUnit.measureUnits);
   },
-  beforeMount() {
-    this.keyResult = this.temporaryKeyResult;
-  },
+  // beforeMount() {
+  //   this.keyResult = this.syncTempKr;
+  // },
 })
 export default class KrsForm extends Vue {
-  @Prop({
+  @PropSync('keyResult', {
     type: Object,
     required: true,
     default: () => ({
@@ -101,19 +101,19 @@ export default class KrsForm extends Vue {
       measureUnitId: 1,
     }),
   })
-  private temporaryKeyResult!: any;
+  private syncTempKr!: any;
 
   @Prop(Number) private indexKrForm!: number;
 
   private hovering: boolean = false;
   private popoverVisisble: boolean = false;
   private isExpanded: boolean = false;
-  private keyResult: any = {};
+  // private keyResult: any = {};
   private scrollHeight: number = 0;
 
   private units: any[] = [];
 
-  private async deleteKr(keyResult: any): Promise<any> {
+  private async deleteKr(keyResult: any) {
     if (keyResult.id) {
       try {
         await OkrsRepository.deleteKr(keyResult.id).then((res) => {
@@ -176,7 +176,7 @@ export default class KrsForm extends Vue {
   }
 
   private validateStartValue(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
-    if (value > this.keyResult.targetValue) {
+    if (value > this.syncTempKr.targetValue) {
       return callback('Giá trị bắt đầu đang lớn hơn giá trị mục tiêu');
     }
     return callback();
@@ -186,7 +186,7 @@ export default class KrsForm extends Vue {
     if (value === 0) {
       return callback('Giá trị mục tiêu phải lớn hơn 0');
     }
-    if (value < this.keyResult.startValue) {
+    if (value < this.syncTempKr.startValue) {
       return callback('Giá trị mục tiêu phải lớn hơn bắt đầu');
     }
     return callback();
@@ -201,11 +201,11 @@ export default class KrsForm extends Vue {
 
   public clearForm() {
     (this.$refs.keyResult as Form).clearValidate();
-    this.keyResult.content = '';
-    this.keyResult.targetvalue = 1;
-    this.keyResult.linkPlans = '';
-    this.keyResult.linkResults = '';
-    this.keyResult.measureUnitId = 1;
+    this.syncTempKr.content = '';
+    this.syncTempKr.targetvalue = 1;
+    this.syncTempKr.linkPlans = '';
+    this.syncTempKr.linkResults = '';
+    this.syncTempKr.measureUnitId = 1;
   }
 
   private expandForm() {

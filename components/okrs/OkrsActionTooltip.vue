@@ -3,7 +3,7 @@
     <el-popover placement="top" trigger="click">
       <div class="okrs-tooltip__popover">
         <p @click="moveToDetailOkrsPage">Xem chi tiết</p>
-        <p @click="openUpdateDialog">Cập nhật</p>
+        <p v-if="checkDisplayUpdate(syncOkrsId)" @click="openUpdateDialog">Cập nhật</p>
         <p @click="openAlignDialog">Liên kết</p>
         <p @click="handleDeleteOKrs">Xóa</p>
       </div>
@@ -54,6 +54,12 @@ export default class OkrsActionTooltip extends Vue {
         // Reaload page
       } catch (error) {}
     });
+  }
+
+  private checkDisplayUpdate(okrsId: number) {
+    console.log(okrsId);
+    const userId = +this.$store.state.auth.user.id;
+    return userId === okrsId;
   }
 }
 </script>

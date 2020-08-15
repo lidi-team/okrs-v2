@@ -25,9 +25,7 @@ export default class InputAlignOkrs extends Vue {
 
   private getStaffOkrs() {
     const items = this.$store.state.okrs.staffOkrs as any[];
-    items.forEach((item) => {
-      this.itemsAlignOkrs.push(item);
-    });
+    this.itemsAlignOkrs = items;
   }
 
   private rules: Maps<Rule[]> = {
