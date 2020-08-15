@@ -1,6 +1,7 @@
 <template>
   <fragment>
-    <div v-loading="loading" class="historyDetail">
+    <slot name="chartCheckin" />
+    <div class="historyDetail">
       <el-table empty-text="Không có dữ liệu" class="historyDetail__form" :data="historyDetail.checkinDetails" style="width: 100%;">
         <el-table-column label="Kết quả chính" min-width="250">
           <template slot-scope="{ row }">
@@ -32,7 +33,7 @@
             <el-input v-model="row.plans" :readonly="true" type="textarea" :rows="4" placeholder="Nhập kế hoạch"> </el-input>
           </template>
         </el-table-column>
-        <el-table-column label="Độ tư tin" min-width="150">
+        <el-table-column label="Độ tự tin" min-width="150">
           <template v-slot="{ row }">
             <span :style="`color: ${customColors(row.confidentLevel)}`">{{
               row.confidentLevel === 1 ? 'Không ổn lắm' : row.confidentLevel === 2 ? 'Bình thường' : 'Ổn định'
@@ -57,7 +58,6 @@ import { statusCheckin } from '@/constants/app.constant';
 })
 export default class DetailHistory extends Vue {
   @Prop(Object) readonly historyDetail!: object;
-  @Prop(Boolean) readonly loading!: boolean;
   private status = statusCheckin;
   private customColors(confident) {
     return confident === 1 ? '#DE3618' : confident === 2 ? '#47C1BF' : '#50B83C';
@@ -71,6 +71,7 @@ export default class DetailHistory extends Vue {
   padding: $unit-8;
   &__footer {
     margin-top: $unit-4;
+    margin-bottom: $unit-4;
     float: right;
   }
 }
