@@ -80,7 +80,7 @@ export default class ChartCheckin extends Vue {
     const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
     valueAxis.min = 0;
 
-    function createSeries(this: any, field: string | undefined, name: string, color: string) {
+    function createSeries(this: any, field: string | undefined, color: string) {
       const series = chart.series.push(new am4charts.LineSeries());
       series.dataFields.valueY = field;
       series.dataFields.dateX = 'checkinAt';
@@ -97,7 +97,7 @@ export default class ChartCheckin extends Vue {
 
       return series;
     }
-    createSeries('progress', 'Theo ngày', '#9C6ADE');
+    createSeries('progress', '#9C6ADE');
 
     chart.cursor = new am4charts.XYCursor();
     chart.cursor.xAxis = dateAxis;
