@@ -86,6 +86,7 @@ export enum ResourcesEnpoint {
   MetaData = 'meta_data',
   Objective = 'objectives',
   Checkin = 'checkins',
+  KeyResults = 'key_results',
 }
 
 export enum EvaluationCriteriaEnum {

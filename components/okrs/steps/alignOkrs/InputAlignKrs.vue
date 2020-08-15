@@ -9,7 +9,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import OkrRepository from '@/repositories/OkrsRepository';
+import OkrsRepository from '@/repositories/OkrsRepository';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<InputAlignOkrs>({
   name: 'InputAlignOkrs',
@@ -25,9 +25,7 @@ export default class InputAlignOkrs extends Vue {
 
   private getStaffOkrs() {
     const items = this.$store.state.okrs.staffOkrs as any[];
-    items.forEach((item) => {
-      this.itemsAlignOkrs.push(item);
-    });
+    this.itemsAlignOkrs = items;
   }
 
   private rules: Maps<Rule[]> = {

@@ -18,9 +18,9 @@
         <span class="username">{{ objective.user.fullName }}</span>
         <span class="alignedWith">Liên kết tới</span>
         <span v-if="checkIsRootObjective(objective)" style="display: none;"></span>
-        <a v-else :href="`${$config.baseURL}/OKRs/chi-tiet/${objective.parentObjective.id}`" target="_blank" class="parentOkrs">{{
-          objective.parentObjective.title
-        }}</a>
+        <a v-else :href="`${$config.baseURL}/OKRs/chi-tiet/${objective.parentObjective.id}`" target="_blank" class="parentOkrs">
+          {{ objective.parentObjective.title }}
+        </a>
         <span v-if="checkIsRootObjective(objective)" class="alignedBy">Được liên kết với</span>
         <div v-if="objective.alignmentObjectives.length" class="list-aligned-okrs">
           <p v-for="item in objective.alignmentObjectives" :key="item.id" class="alignedOkrs">
@@ -30,32 +30,34 @@
         <p v-else class="alignedOkrs">Không có</p>
       </div>
       <div class="okrs-detail__content--detail">
-        <span class="content">Kết quả then chốt</span>
-        <span class="target">Mục tiêu</span>
-        <span class="start">Giá trị ban đầu</span>
-        <span class="obtained">Giá trị đạt được</span>
-        <span class="progress">Tiến độ</span>
-        <span class="plan">Link kế hoạch</span>
-        <span class="result">Link kết quả</span>
+        <div class="okrs-detail__content--detail__header">
+          <span class="content">Kết quả then chốt</span>
+          <span class="target">Mục tiêu</span>
+          <span class="start">Giá trị ban đầu</span>
+          <span class="obtained">Giá trị đạt được</span>
+          <span class="progress">Tiến độ</span>
+          <span class="plan">Link kế hoạch</span>
+          <span class="result">Link kết quả</span>
+        </div>
         <template v-for="kr in objective.keyResults">
-          <grid-detail-okrs :key="kr.id" :key-result="kr" />
+          <grid-detail-okrs :key="kr.content.substring(0, 10)" :key-result="kr" />
         </template>
       </div>
     </div>
-    <update-okrs-dialog :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleDialog" :reload-data="reloadData" />
+    <update-okrs-dialog :temporary-okrs.sync="tempOkrs" :visible-dialog.sync="visibleDialog" :reload-data="reloadData" />
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
 import { Notification } from 'element-ui';
-import OkrRepository from '@/repositories/OkrsRepository';
+import OkrsRepository from '@/repositories/OkrsRepository';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import { MutationState } from '@/constants/app.enum';
 @Component<OkrsDetailPage>({
   name: 'OkrsDetailPage',
   async asyncData({ params }) {
     try {
-      const { data } = await OkrRepository.getOkrsDetail(+params.id);
+      const { data } = await OkrsRepository.getOkrsDetail(+params.id);
       return {
         objective: Object.freeze(data.data),
       };
@@ -83,7 +85,7 @@ export default class OkrsDetailPage extends Vue {
   private deleteOkrs(okrsId: number) {
     this.$confirm('Bạn có chắc chắn muốn xóa OKRs này không?', { ...confirmWarningConfig }).then(async () => {
       try {
-        await OkrRepository.deleteOkrs(okrsId).then((res) => {
+        await OkrsRepository.deleteOkrs(okrsId).then((res) => {
           Notification.success({
             ...notificationConfig,
             message: 'Xóa OKRs thành công',
@@ -97,9 +99,11 @@ export default class OkrsDetailPage extends Vue {
   private async reloadData() {
     this.fullscreenLoading = true;
     try {
-      const { data } = await OkrRepository.getOkrsDetail(+this.$route.params.id);
+      const { data } = await OkrsRepository.getOkrsDetail(+this.$route.params.id);
       // @ts-ignore
       this.objective = Object.freeze(data.data);
+      // @ts-ignore
+      this.tempOkrs = this.objective;
       setTimeout(() => {
         this.fullscreenLoading = false;
       }, 300);
@@ -109,6 +113,11 @@ export default class OkrsDetailPage extends Vue {
       }, 300);
     }
   }
+
+  // @Watch('tempOkrs', { deep: true })
+  // private watchOkrsData(value) {
+  //   console.log(value);
+  // }
 
   /**
    * Just display 2 buttons(Update & delete) when this user own this OKRs
@@ -192,63 +201,44 @@ export default class OkrsDetailPage extends Vue {
     }
     &--detail {
       @include box-okrs-detail;
-      display: grid;
       margin-top: $unit-5;
-      grid-template-rows: auto;
-      row-gap: $unit-4;
-      grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr 1fr;
-      grid-template-areas:
-        'content target start obtained progress plan result'
-        'kr-content kr-target kr-start kr-obtained kr-progress kr-plan kr-result';
-      .content {
-        grid-area: content;
-      }
-      .target {
-        grid-area: target;
-      }
-      .start {
-        grid-area: start;
-      }
-      .obtained {
-        grid-area: obtained;
-      }
-      .progress {
-        grid-area: progress;
-      }
-      .plan {
-        grid-area: plan;
-      }
-      .result {
-        grid-area: result;
-      }
-      .content,
-      .target,
-      .start,
-      .obtained,
-      .progress,
-      .plan,
-      .result {
-        border-bottom: 1px solid $neutral-primary-0;
-        padding-bottom: $unit-3;
-      }
-      .kr-content,
-      .kr-target,
-      .kr-start,
-      .kr-obtained,
-      .kr-progress,
-      .kr-plan,
-      .kr-result {
-        font-size: 0.875rem;
-        color: $neutral-primary-3;
-      }
-      .kr-plan {
-        @include truncate-oneline();
-        padding-right: $unit-4;
-        color: $blue-primary-1;
-      }
-      .kr-result {
-        @include truncate-oneline();
-        color: $blue-primary-1;
+      &__header {
+        display: grid;
+        grid-template-rows: auto;
+        padding-bottom: $unit-4;
+        grid-template-columns: 4fr 1fr 1fr 1fr 1fr 1fr 1fr;
+        grid-template-areas: 'content target start obtained progress plan result';
+        .content {
+          grid-area: content;
+        }
+        .target {
+          grid-area: target;
+        }
+        .start {
+          grid-area: start;
+        }
+        .obtained {
+          grid-area: obtained;
+        }
+        .progress {
+          grid-area: progress;
+        }
+        .plan {
+          grid-area: plan;
+        }
+        .result {
+          grid-area: result;
+        }
+        .content,
+        .target,
+        .start,
+        .obtained,
+        .progress,
+        .plan,
+        .result {
+          border-bottom: 1px solid $neutral-primary-0;
+          padding-bottom: $unit-3;
+        }
       }
     }
   }

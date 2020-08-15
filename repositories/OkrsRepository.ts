@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
 
-export default class OkrRepository {
+export default class OkrsRepository {
   /**
    * // When the type = 1(Current Cycle) --> Need to passs user ID
    * // When the type = 2(All Cycle) --> Need to pass the cycle id
@@ -30,7 +30,7 @@ export default class OkrRepository {
   }
 
   public static deleteKr(id: number): Promise<AxiosResponse<any>> {
-    return authenticatedService.delete(`${ResourcesEnpoint.Objective}/${id}`);
+    return authenticatedService.delete(`${ResourcesEnpoint.KeyResults}/${id}`);
   }
 
   public static deleteOkrs(objectiveId: number): Promise<AxiosResponse<any>> {

@@ -11,26 +11,33 @@
       <el-form-item label="Mục tiêu" prop="title" class="custom-label" label-width="80px">
         <el-input v-model="tempObjective.title" placeholder="Nhập tên OKRs" />
       </el-form-item>
-      <template v-for="(item, index) in krFormItems">
-        <component :is="item" :key="item.name" ref="krsForm" :temporary-key-result="temporaryOkrs.keyResults[index]" />
-      </template>
     </el-form>
+    <div v-loading="formLoading">
+      <krs-form
+        v-for="(item, index) in krFormItems"
+        :key="index"
+        ref="krsForm"
+        :index-kr-form="index"
+        :key-result.sync="item"
+        @deleteKr="deleteKrForm($event)"
+      />
+    </div>
     <el-button class="el-button el-button--white el-button--small update-okrs__button" @click="addNewKRs">
       <icon-add-krs />
       <span>Thêm OKRs</span>
     </el-button>
     <span slot="footer">
       <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-      <el-button class="el-button--purple el-button--modal" @click="updateOkrs">Cập nhật</el-button>
+      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="updateOkrs">Cập nhật</el-button>
     </span>
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, PropSync, Watch } from 'vue-property-decorator';
+import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
 import { Maps, Rule } from '@/constants/app.type';
-import OkrRepository from '@/repositories/OkrsRepository';
+import OkrsRepository from '@/repositories/OkrsRepository';
 import { notificationConfig } from '@/constants/app.constant';
 import KrsForm from '@/components/okrs/KrsForm.vue';
 @Component<UpdateOkrsDialog>({
@@ -40,10 +47,7 @@ import KrsForm from '@/components/okrs/KrsForm.vue';
     KrsForm,
   },
   created() {
-    const krDataLength = this.temporaryOkrs.keyResults.length;
-    for (let i = 0; i < krDataLength; i++) {
-      this.krFormItems.push(KrsForm);
-    }
+    this.krFormItems = this.temporaryOkrs.keyResults;
   },
 })
 export default class UpdateOkrsDialog extends Vue {
@@ -51,11 +55,13 @@ export default class UpdateOkrsDialog extends Vue {
   @PropSync('visibleDialog', { type: Boolean, required: true }) public syncUpdateDialog!: boolean;
   @Prop({ type: Object, required: true }) public temporaryOkrs!: any;
 
-  private tempObjective: Object = {
+  private tempObjective: any = {
     id: JSON.parse(JSON.stringify(this.temporaryOkrs.id)),
     title: JSON.parse(JSON.stringify(this.temporaryOkrs.title)),
   };
 
+  private loading: boolean = false;
+  private formLoading: boolean = false;
   private krFormItems: any[] = [];
 
   private rules: Maps<Rule[]> = {
@@ -63,31 +69,88 @@ export default class UpdateOkrsDialog extends Vue {
   };
 
   private handleCloseDialog() {
+    this.tempObjective.title = JSON.parse(JSON.stringify(this.temporaryOkrs.title));
     (this.$refs.updateOkrsForm as Form).clearValidate();
+    const numberForms = this.krFormItems.length;
+    const form = this.$refs.krsForm;
+    for (let i = 0; i < numberForms; i++) {
+      if (!form[i].syncTempKr.id) {
+        this.krFormItems.pop();
+      }
+      (form[i].$refs.keyResult as Form).clearValidate();
+    }
     this.syncUpdateDialog = false;
+    this.reloadData();
+    this.krFormItems = this.temporaryOkrs.keyResults;
   }
 
   private addNewKRs() {
-    this.krFormItems.push(KrsForm);
+    this.formLoading = true;
+    this.krFormItems.push({
+      startValue: 0,
+      targetValue: 100,
+      content: 'Xin vui lòng nhập kết quả then chốt',
+      linkPlans: '',
+      linkResults: '',
+      measureUnitId: 1,
+    });
+    setTimeout(() => {
+      this.formLoading = false;
+    }, 500);
   }
 
-  private async updateOkrs() {
+  private deleteKrForm(indexForm: number) {
+    this.formLoading = true;
+    this.krFormItems.splice(indexForm, 1);
+    setTimeout(() => {
+      this.formLoading = false;
+    }, 300);
+  }
+
+  private updateOkrs() {
     const payload: any = {};
     const krs: any[] = [];
-    (this.$refs.krsForm as any).forEach((form) => {
-      krs.push(Object.freeze(form.keyResult));
+
+    this.loading = true;
+    (this.$refs.updateOkrsForm as Form).validate(async (isValid: boolean) => {
+      if (isValid) {
+        let validForm: number = 0;
+        (this.$refs.krsForm as any).forEach((form) => {
+          (form.$refs.keyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
+            if (isValid) {
+              validForm++;
+            }
+          });
+          krs.push(Object.freeze(form.syncTempKr));
+        });
+        if (validForm === krs.length) {
+          payload.objective = this.tempObjective;
+          payload.keyResult = krs;
+          try {
+            await OkrsRepository.createOrUpdateOkrs(payload).then(async (res) => {
+              this.loading = false;
+              this.handleCloseDialog();
+              await this.reloadData();
+              Notification.success({
+                ...notificationConfig,
+                message: 'Cập nhật OKRs thành công',
+              });
+            });
+          } catch (error) {
+            this.loading = false;
+          }
+        } else {
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
+          this.$message.error('Vui lòng nhập đúng các trường yêu cầu');
+        }
+      } else {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
+      }
     });
-    payload.objective = this.tempObjective;
-    payload.keyResult = krs;
-    await OkrRepository.createOrUpdateOkrs(payload).then(async (res) => {
-      await this.handleCloseDialog();
-      await this.reloadData();
-      await Notification.success({
-        ...notificationConfig,
-        message: 'Cập nhật OKRs thành công',
-      });
-    });
-    // window.location.reload(true);
   }
 }
 </script>

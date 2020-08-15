@@ -35,7 +35,7 @@ import { Component, Vue, PropSync, Watch } from 'vue-property-decorator';
 import { ObjectiveDTO, ParamsQuery } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import CycleRepository from '@/repositories/CycleRepository';
-import OkrRepository from '@/repositories/OkrsRepository';
+import OkrsRepository from '@/repositories/OkrsRepository';
 import { DispatchAction, MutationState } from '@/constants/app.enum';
 @Component<CreateObjectiveStep>({
   name: 'CreateObjectiveStep',
@@ -98,7 +98,7 @@ export default class CreateObjectiveStep extends Vue {
       if (this.tempObjective.cycleId == null) {
         this.tempObjective.cycleId = this.$store.state.cycle.cycle.id;
       }
-      const { data } = await OkrRepository.getLeaderOkrs(Number(this.tempObjective.cycleId), 1);
+      const { data } = await OkrsRepository.getLeaderOkrs(Number(this.tempObjective.cycleId), 1);
       if (this.leaderOKRs.length > 0) {
         this.leaderOKRs = [];
       }

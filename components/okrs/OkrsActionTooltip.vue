@@ -3,7 +3,7 @@
     <el-popover placement="top" trigger="click">
       <div class="okrs-tooltip__popover">
         <p @click="moveToDetailOkrsPage">Xem chi tiết</p>
-        <p @click="openUpdateDialog">Cập nhật</p>
+        <p v-if="checkDisplayUpdate(syncOkrsId)" @click="openUpdateDialog">Cập nhật</p>
         <p @click="openAlignDialog">Liên kết</p>
         <p @click="handleDeleteOKrs">Xóa</p>
       </div>
@@ -16,7 +16,7 @@ import { Component, Vue, PropSync } from 'vue-property-decorator';
 import { Notification } from 'element-ui';
 import IconSetting from '@/assets/images/okrs/setting.svg';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
-import OkrRepository from '@/repositories/OkrsRepository';
+import OkrsRepository from '@/repositories/OkrsRepository';
 @Component<OkrsActionTooltip>({
   name: 'OkrsActionTooltip',
   components: {
@@ -45,7 +45,7 @@ export default class OkrsActionTooltip extends Vue {
       ...confirmWarningConfig,
     }).then(async () => {
       try {
-        await OkrRepository.deleteOkrs(+this.syncOkrsId).then((res: any) => {
+        await OkrsRepository.deleteOkrs(+this.syncOkrsId).then((res: any) => {
           Notification.success({
             ...notificationConfig,
             message: 'Xóa OKRs thành công',
@@ -54,6 +54,12 @@ export default class OkrsActionTooltip extends Vue {
         // Reaload page
       } catch (error) {}
     });
+  }
+
+  private checkDisplayUpdate(okrsId: number) {
+    console.log(okrsId);
+    const userId = +this.$store.state.auth.user.id;
+    return userId === okrsId;
   }
 }
 </script>
