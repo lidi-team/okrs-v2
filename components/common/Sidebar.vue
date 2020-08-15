@@ -6,7 +6,7 @@
         <span>Dashboard</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="/checkin" :class="['sidebar__link']">
+    <nuxt-link to="/checkin" :class="['sidebar__link', { 'nuxt-link-exact-active': isCheckinActive }]">
       <div class="sidebar__link__tab">
         <Checkin class="sidebar__link__tab__icon" />
         <span>Check-in</span>
@@ -18,7 +18,7 @@
         <span>OKRs</span>
       </div>
     </nuxt-link>
-    <nuxt-link to="/CFRs" :class="['sidebar__link']">
+    <nuxt-link to="/CFRs" :class="['sidebar__link', { 'nuxt-link-exact-active': isCfrsActive }]">
       <div class="sidebar__link__tab">
         <CFRs class="sidebar__link__tab__icon" />
         <span>CFRs</span>
@@ -67,8 +67,19 @@ import { GetterState } from '@/constants/app.enum';
       user: GetterState.USER,
     }),
   },
+  updated() {
+    console.log(this.$route.path);
+  },
 })
 export default class SideBar extends Vue {
+  private get isCfrsActive() {
+    return !!this.$route.path.startsWith('/CFRs');
+  }
+
+  private get isCheckinActive() {
+    return !!this.$route.path.startsWith('/checkin');
+  }
+
   private get isOkrsActive() {
     return !!this.$route.path.startsWith('/OKRs');
   }
