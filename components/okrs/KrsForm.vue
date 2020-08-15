@@ -84,9 +84,6 @@ import { notificationConfig } from '@/constants/app.constant';
   created() {
     this.units = Object.freeze(this.$store.state.measureUnit.measureUnits);
   },
-  // beforeMount() {
-  //   this.keyResult = this.syncTempKr;
-  // },
 })
 export default class KrsForm extends Vue {
   @PropSync('keyResult', {
@@ -108,7 +105,6 @@ export default class KrsForm extends Vue {
   private hovering: boolean = false;
   private popoverVisisble: boolean = false;
   private isExpanded: boolean = false;
-  // private keyResult: any = {};
   private scrollHeight: number = 0;
 
   private units: any[] = [];
