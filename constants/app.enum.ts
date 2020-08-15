@@ -101,8 +101,8 @@ export enum DispatchAction {
   LOGIN = 'auth/login',
   LOGOUT = 'auth/logout',
   CLEAR = 'auth/clear',
-  CURRENT_LEADER = 'okrs/setCurrentLeader',
   STAFF_OKRS = 'okrs/setStaffOkrs',
+  CLEAR_OKRS = 'okrs/clearOkrs',
 }
 
 export enum GetterState {
@@ -114,6 +114,8 @@ export enum MutationState {
   SET_TOKEN = 'auth/setToken',
   SET_CURRENT_CYCLE = 'cycle/setCurrentCycle',
   SET_OBJECTIVE = 'okrs/setObjective',
+  SET_KR = 'okrs/setKeyResult',
+  CLEAR_KRS = 'okrs/clearKrs',
   SET_OKRS_DETAIL = 'okrs/setOkrsDetail',
   SET_MEASURE_UNITS = 'measureUnit/setMeasureUnits',
 }
