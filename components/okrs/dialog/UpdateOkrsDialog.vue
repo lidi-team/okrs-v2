@@ -19,6 +19,7 @@
         ref="krsForm"
         :index-kr-form="index"
         :key-result.sync="item"
+        :is-updating="true"
         @deleteKr="deleteKrForm($event)"
       />
     </div>
