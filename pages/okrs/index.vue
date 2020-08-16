@@ -56,11 +56,13 @@ export default class OKRsPage extends Vue {
       this.visibleCreateOkrsDialog = true;
       this.isCompanyOkrs = true;
     } else {
+      this.isCompanyOkrs = false;
       this.visibleCreateOkrsDialog = true;
     }
   }
 
   private addPersonalOkrs() {
+    this.isCompanyOkrs = false;
     this.visibleCreateOkrsDialog = true;
   }
 

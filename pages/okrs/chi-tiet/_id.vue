@@ -21,13 +21,13 @@
         <a v-else :href="`${$config.baseURL}/OKRs/chi-tiet/${objective.parentObjective.id}`" target="_blank" class="parentOkrs">
           {{ objective.parentObjective.title }}
         </a>
-        <span v-if="checkIsRootObjective(objective)" class="alignedBy">Được liên kết với</span>
+        <span v-if="!checkIsRootObjective(objective)" class="alignedBy">Được liên kết với</span>
         <div v-if="objective.alignmentObjectives.length" class="list-aligned-okrs">
           <p v-for="item in objective.alignmentObjectives" :key="item.id" class="alignedOkrs">
             <a :href="`${$config.baseURL}/OKRs/chi-tiet/${item.id}`" target="_blank">{{ item.title }}</a>
           </p>
         </div>
-        <p v-else class="alignedOkrs">Không có</p>
+        <p v-if="objective.alignmentObjectives.length === 0" class="alignedOkrs">Không có</p>
       </div>
       <div class="okrs-detail__content--detail">
         <div class="okrs-detail__content--detail__header">

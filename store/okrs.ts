@@ -37,14 +37,14 @@ export const mutations: MutationTree<RootState> = {
 };
 
 export interface OKRsAction<S, R> extends ActionTree<S, R> {
-  setStaffOkrs(context: ActionContext<S, R>): Promise<void>;
+  setStaffOkrs(context: ActionContext<S, R>, payload: any): Promise<void>;
   clearOkrs(context: ActionContext<S, R>): void;
 }
 
 export const actions: OKRsAction<OkrsState, RootState> = {
-  async setStaffOkrs({ commit }): Promise<void> {
+  async setStaffOkrs({ commit }, { cycleId, type }): Promise<void> {
     try {
-      const { data } = await OkrsRepository.getStaffOkrs();
+      const { data } = await OkrsRepository.getListOkrs(cycleId, type);
       commit(OkrsMutation.SET_STAFF_OKRS, Object.freeze(data.data));
     } catch (error) {}
   },

@@ -88,6 +88,7 @@ export default class AddAlignObjeciveStep extends Vue {
         alignObjectives.push(form.syncAlignOkrs.objectiveId);
       });
       if (validForm === alignObjectives.length) {
+        // add align OKRs ID
         payload.objective.alignObjectivesId = alignObjectives;
         console.log(payload);
         try {

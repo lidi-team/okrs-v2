@@ -69,7 +69,11 @@ export default class InputAlignOkrs extends Vue {
     width: 100%;
   }
   &__delete {
-    position: static;
+    &:hover {
+      cursor: pointer;
+    }
+    margin-right: -4.675rem;
+    margin-top: $unit-2;
   }
 }
 </style>
