@@ -10,20 +10,25 @@
     <el-steps :active="active" finish-status="success" :align-center="true">
       <el-step title="Mục tiêu"> </el-step>
       <el-step title="Các kết quả then chốt"></el-step>
+      <el-step v-if="!isCompanyOkrs" title="Liên kết mục tiêu"></el-step>
     </el-steps>
     <step-create-objective
       v-if="active === 0"
-      ref="objective"
       :active.sync="active"
       :visible-dialog.sync="syncCreateOkrsDialog"
       :is-root-objective="isRootObjective"
     />
     <step-add-key-results
       v-if="active === 1"
-      ref="krs"
       :active.sync="active"
       :visible-dialog.sync="syncCreateOkrsDialog"
       :is-root-objective="isRootObjective"
+      :reload-data="reloadData"
+    />
+    <step-add-align-objective
+      v-if="active === 2 && !isCompanyOkrs"
+      :active.sync="active"
+      :visible-dialog.sync="syncCreateOkrsDialog"
       :reload-data="reloadData"
     />
   </el-dialog>
@@ -37,6 +42,7 @@ import { DispatchAction } from '@/constants/app.enum';
 })
 export default class CreateCompanyOkrs extends Vue {
   @Prop(Function) public reloadData!: Function;
+  @Prop(Boolean) public isCompanyOkrs!: boolean;
   @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncCreateOkrsDialog!: boolean;
 
   private isRootObjective: boolean = true;

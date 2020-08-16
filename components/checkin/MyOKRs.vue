@@ -93,7 +93,7 @@ export default class MyOkrs extends Vue {
   @Prop(Function) readonly getListUsers;
 
   private status = statusCheckin;
-  private keyResults: object = {};
+  private keyResults: any = {};
   private showDialogKRs: boolean = false;
   private customColors(percentage: number) {
     if (percentage < 30) {

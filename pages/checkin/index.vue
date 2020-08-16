@@ -29,8 +29,8 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { TabCheckins, GetterState } from '@/constants/app.enum';
-import MyOkrs from '@/components/checkin/MyOkrs.vue';
 import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
+import MyOkrs from '@/components/checkin/MyOks.vue';
 import CycleRepository from '@/repositories/CycleRepository';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { SelectOptionDTO } from '@/constants/app.interface';
@@ -53,7 +53,7 @@ export default class CheckinPage extends Vue {
   private loading: boolean = false;
   private options: SelectOptionDTO[] = [];
   private idCycle: number = this.$store.state.cycle.cycle.id;
-  private meta: object = {};
+  private meta: any = {};
 
   private currentTab: string = this.$route.query.tab === 'request-checkin' ? TabCheckins.CheckinResquest : TabCheckins.MyOKRs;
   private paramsCheckin = {

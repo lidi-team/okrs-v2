@@ -5,7 +5,7 @@
         <base-top-search-cycle :text-cycle.sync="textCycle" :text-search.sync="textSearch" :text-search-placeholder="textSearchPlaceholder" />
       </el-col>
       <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
-        <el-button v-if="isNotAdminButton()" class="el-button el-button--purple el-button-medium" icon="el-icon-plus" @click="addNewOKRs">
+        <el-button v-if="isNotAdminButton()" class="el-button el-button--purple el-button-medium" icon="el-icon-plus" @click="addPersonalOkrs">
           Tạo OKRs
         </el-button>
         <el-dropdown v-else class="create-okr-dropdown" trigger="click" @command="handleCommand">
@@ -25,8 +25,12 @@
       :loading="loading"
       :reload-data="getDashBoardOkrs"
     />
-    <create-personal-okrs v-if="visiblePersonalDialog" :visible-dialog.sync="visiblePersonalDialog" :reload-data="getDashBoardOkrs" />
-    <create-company-okrs v-if="visibleCompanyDialog" :visible-dialog.sync="visibleCompanyDialog" :reload-data="getDashBoardOkrs" />
+    <create-okrs-dialog
+      v-if="visibleCreateOkrsDialog"
+      :is-company-okrs="isCompanyOkrs"
+      :visible-dialog.sync="visibleCreateOkrsDialog"
+      :reload-data="getDashBoardOkrs"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -44,15 +48,20 @@ export default class OKRsPage extends Vue {
   private textSearch: string = '';
   private textCycle: string = '';
   private loading: boolean = false;
-  private visiblePersonalDialog = false;
-  private visibleCompanyDialog = false;
+  private visibleCreateOkrsDialog = false;
+  private isCompanyOkrs: boolean = false;
 
   private handleCommand(command: string) {
-    if (command === 'personal') {
-      this.visiblePersonalDialog = true;
+    if (command === 'company') {
+      this.visibleCreateOkrsDialog = true;
+      this.isCompanyOkrs = true;
     } else {
-      this.visibleCompanyDialog = true;
+      this.visibleCreateOkrsDialog = true;
     }
+  }
+
+  private addPersonalOkrs() {
+    this.visibleCreateOkrsDialog = true;
   }
 
   private itemOKRsData: any[] = [
