@@ -12,17 +12,12 @@
       <el-step title="Các kết quả then chốt"></el-step>
       <el-step v-if="!isCompanyOkrs" title="Liên kết mục tiêu"></el-step>
     </el-steps>
-    <step-create-objective
-      v-if="active === 0"
-      :active.sync="active"
-      :visible-dialog.sync="syncCreateOkrsDialog"
-      :is-root-objective="isRootObjective"
-    />
+    <step-create-objective v-if="active === 0" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" :is-company-okrs="isCompanyOkrs" />
     <step-add-key-results
       v-if="active === 1"
       :active.sync="active"
       :visible-dialog.sync="syncCreateOkrsDialog"
-      :is-root-objective="isRootObjective"
+      :is-company-okrs="isCompanyOkrs"
       :reload-data="reloadData"
     />
     <step-add-align-objective
@@ -45,7 +40,6 @@ export default class CreateCompanyOkrs extends Vue {
   @Prop(Boolean) public isCompanyOkrs!: boolean;
   @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncCreateOkrsDialog!: boolean;
 
-  private isRootObjective: boolean = true;
   private active: number = 0;
 
   private handleCloseDialog() {
@@ -62,7 +56,7 @@ export default class CreateCompanyOkrs extends Vue {
 <style lang="scss">
 @import '@/assets/scss/main.scss';
 .el-steps {
-  padding-bottom: $unit-4;
+  padding-bottom: $unit-8;
 }
 .company-okrs {
   .el-step {
