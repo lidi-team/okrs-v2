@@ -92,7 +92,7 @@ export interface KeyResultDTO {
   id?: number;
   content: string;
   startValue: number;
-  targetvalue: number;
+  targetValue: number;
   linkPlans?: string;
   linkResults?: string;
   measureUnitId: number;

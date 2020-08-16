@@ -114,11 +114,6 @@ export default class OkrsDetailPage extends Vue {
     }
   }
 
-  // @Watch('tempOkrs', { deep: true })
-  // private watchOkrsData(value) {
-  //   console.log(value);
-  // }
-
   /**
    * Just display 2 buttons(Update & delete) when this user own this OKRs
    */
