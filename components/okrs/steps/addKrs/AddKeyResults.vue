@@ -24,7 +24,7 @@
     </div>
     <div class="add-krs-step__action">
       <el-button class="el-button--white el-button--modal" @click="backToStepOne">Quay lại</el-button>
-      <el-button v-if="!isRootObjective" class="el-button--purple el-button--modal" :loading="loading" @click="nextStepThree">Tiếp theo</el-button>
+      <el-button v-if="!isCompanyOkrs" class="el-button--purple el-button--modal" :loading="loading" @click="nextStepThree">Tiếp theo</el-button>
       <el-button v-else class="el-button--purple el-button--modal" :loading="loading" @click="createRootOkrs">Tạo OKRs</el-button>
     </div>
   </div>
@@ -34,7 +34,7 @@ import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 import IconAttention from '@/assets/images/okrs/attention.svg';
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
-import { KeyResultDTO } from '@/constants/app.interface';
+import { KeyResultDTO, PayloadOkrs } from '@/constants/app.interface';
 import { MutationState, DispatchAction } from '@/constants/app.enum';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import OkrsRepository from '@/repositories/OkrsRepository';
@@ -52,7 +52,7 @@ import OkrsRepository from '@/repositories/OkrsRepository';
 })
 export default class CreateObjectiveStep extends Vue {
   @Prop(Function) public reloadData!: Function;
-  @Prop({ type: Boolean, default: false }) private isRootObjective!: boolean;
+  @Prop({ type: Boolean, default: false }) private isCompanyOkrs!: boolean;
   @PropSync('active', Number) private syncActive!: number;
   @PropSync('visibleDialog', Boolean) private syncVisibleDialog!: boolean;
 
@@ -94,72 +94,97 @@ export default class CreateObjectiveStep extends Vue {
     let validForm: number = 0;
 
     this.loading = true;
-    (this.$refs.krsForm as any).forEach((form) => {
-      (form.$refs.keyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
-        if (isValid) {
-          validForm++;
-        }
-      });
-      krs.push(Object.freeze(form.syncTempKr));
-    });
-    if (validForm === krs.length) {
-      payload.objective = this.$store.state.okrs.objective;
-      // Set this is root objective
-      payload.objective.isRootObjective = true;
-      payload.keyResult = krs;
-      try {
-        await OkrsRepository.createOrUpdateOkrs(payload).then(async (res) => {
-          this.loading = false;
-          this.syncVisibleDialog = false;
-          this.krFormItems = [];
-          this.$store.dispatch(DispatchAction.CLEAR_OKRS);
-          await this.reloadData();
-          Notification.success({
-            ...notificationConfig,
-            message: 'Cập nhật OKRs thành công',
-          });
-        });
-      } catch (error) {
-        this.loading = false;
-      }
-    } else {
+    if (this.krFormItems.length === 0) {
       setTimeout(() => {
         this.loading = false;
       }, 300);
-      this.$message.error('Vui lòng nhập đúng các trường yêu cầu');
+      this.$message.error('Cần có ít nhất 1 kết quả then chốt');
+    } else {
+      (this.$refs.krsForm as any).forEach((form) => {
+        (form.$refs.keyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
+          if (isValid) {
+            validForm++;
+          }
+        });
+        krs.push(Object.freeze(form.syncTempKr));
+      });
+      if (validForm === krs.length) {
+        // Set this is root objective
+        const payload: PayloadOkrs = {
+          objective: Object.assign({}, this.$store.state.okrs.objective, { isRootObjective: true }),
+          keyResult: krs,
+        };
+        try {
+          await OkrsRepository.createOrUpdateOkrs(payload).then(async (res) => {
+            this.loading = false;
+            this.syncVisibleDialog = false;
+            this.krFormItems = [];
+            this.$store.dispatch(DispatchAction.CLEAR_OKRS);
+            await this.reloadData();
+            Notification.success({
+              ...notificationConfig,
+              message: 'Cập nhật OKRs thành công',
+            });
+          });
+        } catch (error) {
+          this.loading = false;
+        }
+      } else {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
+        this.$message.error('Vui lòng nhập đúng các trường yêu cầu');
+      }
     }
   }
 
   private backToStepOne() {
     this.$store.commit(MutationState.CLEAR_KRS);
-    (this.$refs.krsForm as any).forEach((form) => {
-      this.$store.commit(MutationState.SET_KR, form.syncTempKr);
-    });
+    if (this.krFormItems.length !== 0) {
+      (this.$refs.krsForm as any).forEach((form) => {
+        this.$store.commit(MutationState.SET_KR, form.syncTempKr);
+      });
+      this.syncActive--;
+    }
     this.syncActive--;
   }
 
   private nextStepThree() {
-    // let flagValidForms: number = 0;
+    const krs: any[] = [];
+    let validForm: number = 0;
+
     this.loading = true;
-    // Check all tree validate
-    // this.krFormItems.forEach((krsTree) => {
-    //   ((this.$refs.krsComponent as TreeKrComponent).$refs.tempKeyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
-    //     if (isValid) {
-    //       flagValidForms++;
-    //     }
-    //     if (invalidatedFields) {
-    //       setTimeout(() => {
-    //         this.loading = false;
-    //       }, 300);
-    //     }
-    //   });
-    // });
-    // if (flagValidForms === this.krFormItems.length) {
-    // commit all krs to vuex
-    // Commit the okrs staffs
-    this.$store.dispatch(DispatchAction.STAFF_OKRS);
-    if (this.syncActive++ > 2) this.syncActive = 0;
-    this.loading = false;
+    if (this.krFormItems.length === 0) {
+      setTimeout(() => {
+        this.loading = false;
+      }, 300);
+      this.$message.error('Cần có ít nhất 1 kết quả then chốt');
+    } else {
+      (this.$refs.krsForm as any).forEach((form) => {
+        (form.$refs.keyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
+          if (isValid) {
+            validForm++;
+          }
+        });
+        krs.push(Object.freeze(form.syncTempKr));
+      });
+      if (validForm === krs.length) {
+        // Set this is not root objective
+        const tempObjective = Object.assign({}, this.$store.state.okrs.objective, { isRootObjective: false });
+        krs.forEach((item) => {
+          this.$store.commit(MutationState.SET_KR, item);
+        });
+        this.$store.commit(MutationState.SET_OBJECTIVE, tempObjective);
+        this.$store.dispatch(DispatchAction.STAFF_OKRS, { cycleId: this.$store.state.cycle.cycle.id, type: 3 });
+        this.syncActive++;
+        this.loading = false;
+      } else {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
+        this.$message.error('Vui lòng nhập đúng các trường yêu cầu');
+      }
+    }
   }
 
   private deleteKrForm(indexForm: number) {

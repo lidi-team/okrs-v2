@@ -242,6 +242,7 @@ export default class KrsForm extends Vue {
       transition: transform 0.3s ease-in-out;
     }
     &--content {
+      word-break: break-word;
       color: $neutral-primary-4;
       font-weight: $font-weight-medium;
       padding-right: $unit-5;

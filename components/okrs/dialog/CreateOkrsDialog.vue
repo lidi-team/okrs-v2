@@ -1,31 +1,43 @@
 <template>
   <el-dialog
-    title="Thêm mới mục tiêu"
+    title="Thêm mới mục tiêu công ty"
     :visible.sync="syncCreateOkrsDialog"
     width="800px"
     placement="center"
     :before-close="handleCloseDialog"
-    class="create-okrs-dialog"
+    class="company-okrs"
   >
     <el-steps :active="active" finish-status="success" :align-center="true">
-      <el-step title="Mục tiêu"></el-step>
+      <el-step title="Mục tiêu"> </el-step>
       <el-step title="Các kết quả then chốt"></el-step>
-      <el-step title="Liên kết chéo"></el-step>
+      <el-step v-if="!isCompanyOkrs" title="Liên kết mục tiêu"></el-step>
     </el-steps>
-    <step-create-objective v-if="active === 0" ref="objective" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" />
-    <step-add-key-results v-if="active === 1" ref="krs" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" />
-    <step-add-align-objective v-if="active === 2" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" :reload-data="reloadData" />
+    <step-create-objective v-if="active === 0" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" :is-company-okrs="isCompanyOkrs" />
+    <step-add-key-results
+      v-if="active === 1"
+      :active.sync="active"
+      :visible-dialog.sync="syncCreateOkrsDialog"
+      :is-company-okrs="isCompanyOkrs"
+      :reload-data="reloadData"
+    />
+    <step-add-align-objective
+      v-if="active === 2 && !isCompanyOkrs"
+      :active.sync="active"
+      :visible-dialog.sync="syncCreateOkrsDialog"
+      :reload-data="reloadData"
+    />
   </el-dialog>
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { confirmWarningConfig } from '@/constants/app.constant';
 import { DispatchAction } from '@/constants/app.enum';
-@Component<CreatePersonalOkrs>({
-  name: 'CreatePersonalOkrs',
+@Component<CreateCompanyOkrs>({
+  name: 'CreateCompanyOkrs',
 })
-export default class CreatePersonalOkrs extends Vue {
+export default class CreateCompanyOkrs extends Vue {
   @Prop(Function) public reloadData!: Function;
+  @Prop(Boolean) public isCompanyOkrs!: boolean;
   @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncCreateOkrsDialog!: boolean;
 
   private active: number = 0;
@@ -39,15 +51,14 @@ export default class CreatePersonalOkrs extends Vue {
       })
       .catch((err) => console.log(err));
   }
-
-  private isAdminOkrs() {
-    return this.$store.state.auth.user.role === 'ADMIN';
-  }
 }
 </script>
 <style lang="scss">
 @import '@/assets/scss/main.scss';
-.create-okrs-dialog {
+.el-steps {
+  padding-bottom: $unit-8;
+}
+.company-okrs {
   .el-step {
     &__head {
       width: unset;
@@ -63,7 +74,7 @@ export default class CreatePersonalOkrs extends Vue {
     }
     &__main {
       .el-step__title {
-        color: $purple-primary-3 !important;
+        color: $purple-primary-5 !important;
       }
     }
     .is-process {

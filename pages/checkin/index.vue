@@ -53,7 +53,7 @@ export default class CheckinPage extends Vue {
   private loading: boolean = false;
   private options: SelectOptionDTO[] = [];
   private idCycle: number = this.$store.state.cycle.cycle.id;
-  private meta: object = {};
+  private meta: any = {};
 
   private currentTab: string = this.$route.query.tab === 'request-checkin' ? TabCheckins.CheckinResquest : TabCheckins.MyOKRs;
   private paramsCheckin = {
