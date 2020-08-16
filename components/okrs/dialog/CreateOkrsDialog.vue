@@ -1,88 +1,90 @@
 <template>
   <el-dialog
-    title="Thêm mới mục tiêu"
+    title="Thêm mới mục tiêu công ty"
     :visible.sync="syncCreateOkrsDialog"
     width="800px"
     placement="center"
     :before-close="handleCloseDialog"
-    class="create-okrs-dialog"
+    class="company-okrs"
   >
-    <el-steps :active="active" finish-status="success">
+    <el-steps :active="active" finish-status="success" :align-center="true">
       <el-step title="Mục tiêu"> </el-step>
       <el-step title="Các kết quả then chốt"></el-step>
-      <el-step title="Liên kết chéo"></el-step>
+      <el-step v-if="!isCompanyOkrs" title="Liên kết mục tiêu"></el-step>
     </el-steps>
-    <step-create-objective v-if="active === 0" ref="objective" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" />
-    <step-add-key-results v-if="active === 1" ref="krs" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" />
-    <step-add-align-objective v-if="active === 2" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" />
+    <step-create-objective v-if="active === 0" :active.sync="active" :visible-dialog.sync="syncCreateOkrsDialog" :is-company-okrs="isCompanyOkrs" />
+    <step-add-key-results
+      v-if="active === 1"
+      :active.sync="active"
+      :visible-dialog.sync="syncCreateOkrsDialog"
+      :is-company-okrs="isCompanyOkrs"
+      :reload-data="reloadData"
+    />
+    <step-add-align-objective
+      v-if="active === 2 && !isCompanyOkrs"
+      :active.sync="active"
+      :visible-dialog.sync="syncCreateOkrsDialog"
+      :reload-data="reloadData"
+    />
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { confirmWarningConfig } from '@/constants/app.constant';
-@Component<CreateOkrDialog>({
-  name: 'CreateOkrDialog',
+import { DispatchAction } from '@/constants/app.enum';
+@Component<CreateCompanyOkrs>({
+  name: 'CreateCompanyOkrs',
 })
-export default class CreateOkrDialog extends Vue {
+export default class CreateCompanyOkrs extends Vue {
   @Prop(Function) public reloadData!: Function;
+  @Prop(Boolean) public isCompanyOkrs!: boolean;
   @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncCreateOkrsDialog!: boolean;
 
   private active: number = 0;
 
   private handleCloseDialog() {
-    this.$confirm('Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?', { ...confirmWarningConfig }).then(() => {
-      this.syncCreateOkrsDialog = false;
-      this.active = 0;
-    });
+    this.$confirm('Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?', { ...confirmWarningConfig })
+      .then(() => {
+        this.$store.dispatch(DispatchAction.CLEAR_OKRS);
+        this.syncCreateOkrsDialog = false;
+        this.active = 0;
+      })
+      .catch((err) => console.log(err));
   }
 }
 </script>
 <style lang="scss">
 @import '@/assets/scss/main.scss';
-.create-okrs-dialog {
-  .el-steps {
-    padding: 0 $unit-5;
-    display: flex;
-    place-content: center;
-    .el-step {
-      margin-bottom: $unit-8;
-      padding-right: $unit-4;
-      display: flex;
-      flex-direction: column;
-      place-items: center;
-      &:first-child {
-        flex-basis: unset !important;
+.el-steps {
+  padding-bottom: $unit-8;
+}
+.company-okrs {
+  .el-step {
+    &__head {
+      width: unset;
+      .el-step__line {
+        top: $unit-4;
+        background-color: $purple-primary-4;
+        border-color: $purple-primary-4;
       }
-      &:nth-child(2) {
-        flex-basis: 60% !important;
+      .el-step__icon {
+        @include size($unit-8, $unit-8);
+        background-color: $purple-primary-4;
       }
-      &__head {
-        width: unset;
-        .el-step__line {
-          top: $unit-4;
-          right: -$unit-64;
-          background-color: $purple-primary-4;
-          border-color: $purple-primary-4;
-        }
-        .el-step__icon {
-          @include size($unit-8, $unit-8);
-          background-color: $purple-primary-4;
-        }
+    }
+    &__main {
+      .el-step__title {
+        color: $purple-primary-5 !important;
       }
-      &__main {
-        .el-step__title {
-          color: $purple-primary-3 !important;
-        }
-      }
-      .is-process {
-        color: $white;
-      }
-      .is-success {
-        border-color: $white;
-      }
-      .el-icon-check {
-        color: $white;
-      }
+    }
+    .is-process {
+      color: $white;
+    }
+    .is-success {
+      border-color: $white;
+    }
+    .el-icon-check {
+      color: $white;
     }
   }
   .el-dialog__body {

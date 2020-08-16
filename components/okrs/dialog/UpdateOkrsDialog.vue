@@ -19,6 +19,7 @@
         ref="krsForm"
         :index-kr-form="index"
         :key-result.sync="item"
+        :is-updating="true"
         @deleteKr="deleteKrForm($event)"
       />
     </div>
@@ -40,6 +41,7 @@ import { Maps, Rule } from '@/constants/app.type';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { notificationConfig } from '@/constants/app.constant';
 import KrsForm from '@/components/okrs/KrsForm.vue';
+import { PayloadOkrs } from '@/constants/app.interface';
 @Component<UpdateOkrsDialog>({
   name: 'UpdateOkrsDialog',
   components: {
@@ -108,7 +110,6 @@ export default class UpdateOkrsDialog extends Vue {
   }
 
   private updateOkrs() {
-    const payload: any = {};
     const krs: any[] = [];
 
     this.loading = true;
@@ -124,8 +125,10 @@ export default class UpdateOkrsDialog extends Vue {
           krs.push(Object.freeze(form.syncTempKr));
         });
         if (validForm === krs.length) {
-          payload.objective = this.tempObjective;
-          payload.keyResult = krs;
+          const payload: PayloadOkrs = {
+            objective: this.$store.state.okrs.objective,
+            keyResult: krs,
+          };
           try {
             await OkrsRepository.createOrUpdateOkrs(payload).then(async (res) => {
               this.loading = false;
@@ -160,16 +163,18 @@ export default class UpdateOkrsDialog extends Vue {
 .update-okrs {
   &__button {
     margin: $unit-4 0 $unit-4 0;
-    span {
-      display: flex;
-      place-items: center;
-      &:hover {
+    &:hover {
+      span {
         svg {
           path {
             fill: $white;
           }
         }
       }
+    }
+    span {
+      display: flex;
+      place-items: center;
       span {
         padding-left: $unit-1;
       }

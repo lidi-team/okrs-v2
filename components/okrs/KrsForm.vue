@@ -43,7 +43,7 @@
                 </el-form-item>
               </el-col>
               <el-col :span="7">
-                <el-form-item prop="startValue" label="Giá trị bắt đầu" label-width="100px">
+                <el-form-item class="krs-form__detail--value--start" prop="startValue" label="Giá trị bắt đầu" label-width="100px">
                   <el-input v-model.number="syncTempKr.startValue" size="medium" tabindex="2" />
                 </el-form-item>
               </el-col>
@@ -148,7 +148,6 @@ export default class KrsForm extends Vue {
       { type: 'string', required: true, message: 'Vui lòng nhập kết quả then chốt', trigger: 'blur' },
       { validator: this.validateContentKrs, trigger: 'blur' },
     ],
-    // unit: [{ type: 'number', required: true, message: 'Vui lòng chọn đơn vị tính', trigger: 'change' }],
     startValue: [
       { validator: this.validateIsValidNumber, trigger: 'blur' },
       { validator: this.validateStartValue, trigger: 'blur' },
@@ -243,6 +242,7 @@ export default class KrsForm extends Vue {
       transition: transform 0.3s ease-in-out;
     }
     &--content {
+      word-break: break-word;
       color: $neutral-primary-4;
       font-weight: $font-weight-medium;
       padding-right: $unit-5;
@@ -284,6 +284,12 @@ export default class KrsForm extends Vue {
     &__detail {
       margin-bottom: -$unit-6;
       &--value {
+        &--start {
+          .el-form-item__error {
+            left: -100px;
+            right: -40px;
+          }
+        }
         .el-col {
           &:not(:first-child) {
             padding-left: $unit-4;
