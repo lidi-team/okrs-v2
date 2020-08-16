@@ -84,10 +84,10 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { statusCheckin } from '@/constants/app.constant';
 
-@Component<MyOkrs>({
-  name: 'MyOkrs',
+@Component<MyOkrsCheckin>({
+  name: 'MyOkrsCheckin',
 })
-export default class MyOkrs extends Vue {
+export default class MyOkrsCheckin extends Vue {
   @Prop(Array) readonly tableData!: Array<object>;
   @Prop(Boolean) readonly loading!: boolean;
   @Prop(Function) readonly getListUsers;
