@@ -18,7 +18,7 @@
             <span>{{ new Date(row.nextCheckinDate) | dateFormat('DD/MM/YYYY') }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="Thay đổi" min-width="100">
+        <el-table-column align="center" label="Trạng thái" min-width="100">
           <template slot-scope="{ row }">
             <el-tag v-if="row.status === status.OVERDUE" type="danger">Quá hạn</el-tag>
             <el-tag v-else-if="row.status === status.DRAFT" type="warning">Bản nháp</el-tag>
