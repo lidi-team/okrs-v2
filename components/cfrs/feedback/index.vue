@@ -1,18 +1,16 @@
 <template>
   <div class="feedback">
-    <el-row :gutter="20" class="">
-      <el-col :span="12">
+    <el-row :gutter="20" class>
+      <el-col v-show="data.list1.list" :span="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ data.list1.name }}</p>
           <div v-for="item in data.list1.list" :key="item.id" class="cfr">
-            <div class="cfr__left">
+            <div class="cfr__left" @click="viewDetail(item.id)">
               <el-avatar :size="50">
-                <img :src="item.objective.user.avatarUrl" alt="avatar" />
+                <img :src="item.objective.user.avatarUrl ? item.objective.user.avatarUrl : item.objective.user.gravatarURL" alt="avatar" />
               </el-avatar>
               <div class="cfr__left__content">
-                <p class="cfr__left__title">
-                  {{ item.objective.title }}
-                </p>
+                <p class="cfr__left__title">{{ item.objective.title }}</p>
                 <p class="cfr__left__description">{{ item.objective.user.fullName }} - {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}</p>
               </div>
             </div>
@@ -20,20 +18,18 @@
               <el-button class="el-button el-button--purple el-button-medium" @click="showDialog(item.id)">Tạo Feedback</el-button>
             </div>
           </div>
-        </div></el-col
-      >
-      <el-col :span="12"
-        ><div class="feedback__col">
+        </div>
+      </el-col>
+      <el-col v-show="data.list2.list" :span="12">
+        <div class="feedback__col">
           <p class="feedback__col__header">{{ data.list2.name }}</p>
           <div v-for="item in data.list2.list" :key="item.id" class="cfr">
-            <div class="cfr__left">
+            <div class="cfr__left" @click="viewDetail(item.id)">
               <el-avatar :size="50">
-                <img :src="item.objective.user.avatarUrl" alt="avatar" />
+                <img :src="item.objective.user.avatarUrl ? item.objective.user.avatarUrl : item.objective.user.gravatarURL" alt="avatar" />
               </el-avatar>
               <div class="cfr__left__content">
-                <p class="cfr__left__title">
-                  {{ item.objective.title }}
-                </p>
+                <p class="cfr__left__title">{{ item.objective.title }}</p>
                 <p class="cfr__left__description">{{ item.objective.user.fullName }} - {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}</p>
               </div>
             </div>
@@ -41,24 +37,24 @@
               <el-button class="el-button el-button--purple el-button-medium" @click="showDialog(item.id)">Tạo Feedback</el-button>
             </div>
           </div>
-        </div></el-col
-      >
+        </div>
+      </el-col>
     </el-row>
-    <cfrs-create :visible-dialog.sync="visibleCreateDialog" :data-feedback="dataFeedback" />
+    <cfrs-create-feedback :visible-dialog.sync="visibleCreateDialog" :data-feedback="dataFeedback" />
+    <cfrs-detail-feedback :visible-dialog.sync="visibleDetailDialog" :detail-id="detailId" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CreateFeedback from './Create.vue';
-import CFRRepository from '@/repositories/CfrsRepository';
+import { CfrsRepository } from '@/repositories/CfrsRepository';
 @Component<Feedback>({
   name: 'Feedback',
-  async created() {
+  async mounted() {
     const {
       data: { data },
-    } = await CFRRepository.get();
-    console.log('hello', data);
+    } = await CfrsRepository.get();
     this.data = data;
   },
 })
@@ -83,10 +79,17 @@ export default class Feedback extends Vue {
     },
   };
 
-  private visibleCreateDialog = false;
+  private visibleCreateDialog: Boolean = false;
+  private visibleDetailDialog: Boolean = false;
+  private detailId: Number = 0;
   private showDialog(id: Number): void {
     this.dataFeedback = this.data.list1.list.concat(this.data.list2.list).find((item) => item.id === id);
     this.visibleCreateDialog = true;
+  }
+
+  private viewDetail(id: Number): void {
+    this.detailId = id;
+    this.visibleDetailDialog = true;
   }
 }
 </script>
@@ -108,6 +111,10 @@ export default class Feedback extends Vue {
       box-shadow: inset 0px -1px 0px #dfe3e8;
       border-radius: $border-radius-base $border-radius-base 0px 0px;
     }
+    &__empty {
+      text-align: center;
+      padding: $unit-3;
+    }
   }
 }
 .cfr {
@@ -119,12 +126,14 @@ export default class Feedback extends Vue {
   &__left {
     display: flex;
     flex-direction: row;
+    cursor: pointer;
     &__content {
       margin: 0 $unit-4;
     }
     &__title {
       font-weight: bold;
       font-size: 1.1rem;
+      @include text-ellipsis(1);
     }
     &__description {
       box-sizing: border-box;
