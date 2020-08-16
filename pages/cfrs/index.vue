@@ -3,10 +3,14 @@
     <div class="cfrs-page">
       <el-row class="cfrs-page__top" type="flex" justify="space-between">
         <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
-          <base-top-search-cycle :text-cycle.sync="textCycle" :text-search.sync="textSearch" :text-search-placeholder="textSearchPlaceholder" />
+          <cfrs-navbar-crfs
+            :text-search.sync="textSearch"
+            :text-search-placeholder="textSearchPlaceholder"
+            :current-tab-component="$route.query.tab"
+          />
         </el-col>
         <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
-          <el-button class="el-button el-button--purple el-button-medium">Thêm Recongnition</el-button>
+          <el-button class="el-button el-button--purple el-button-medium" @click="visibleCreateDialog = true">Thêm Recongnition</el-button>
         </el-col>
       </el-row>
     </div>
@@ -14,16 +18,11 @@
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab" />
       <component :is="currentTabComponent" />
-      <base-pagination
-        class="manage-employee__pagination"
-        :total="meta.totalItems"
-        :page.sync="params.page"
-        :limit.sync="params.limit"
-        @pagination="handlePagination($event)"
-      />
     </el-tabs>
+    <cfrs-recongnition :visible-dialog.sync="visibleCreateDialog" />
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { TabCFR } from '@/constants/app.enum';
@@ -35,13 +34,15 @@ import Rank from '@/components/cfrs/rank/index.vue';
 import OkrsRepository from '@/repositories/OkrsRepository';
 @Component<CFRs>({
   name: 'CFRs',
-  middleware: 'employeesPage',
+  mounted() {
+    if (!this.$route.query) {
+      this.$router.push('?tab=feedback');
+    }
+  },
 })
 export default class CFRs extends Vue {
   private textSearchPlaceholder: string = 'Tìm kiếm từ khóa';
   private textSearch: string = '';
-  private textCycle: string = '';
-  private loading: boolean = false;
   private params: ParamsCFR = {
     status: this.$route.query.tab === 'feedback' ? -1 : this.$route.query.tab === 'history' ? 0 : 1,
     text: this.$route.query.text ? String(this.$route.query.text) : '',
@@ -49,6 +50,7 @@ export default class CFRs extends Vue {
     limit: pageLimit,
   };
 
+  private visibleCreateDialog: Boolean = false;
   private currentTab: string =
     this.$route.query.tab === 'feedback' ? TabCFR.Feedback : this.$route.query.tab === 'history' ? TabCFR.History : TabCFR.Rank;
 
