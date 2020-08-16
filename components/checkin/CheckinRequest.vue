@@ -90,7 +90,7 @@
   </fragment>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
+import { Component, Vue, PropSync } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { statusCheckin, confidentLevel, notificationConfig } from '@/constants/app.constant';
