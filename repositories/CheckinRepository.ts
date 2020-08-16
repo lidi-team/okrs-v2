@@ -22,11 +22,15 @@ export default class RoleRepository {
     return authenticatedService.put(`${ResourcesEnpoint.Checkin}/${id}`, payload);
   }
 
+  public static leaderUpdateCheckin(payload, id) {
+    return authenticatedService.put(`${ResourcesEnpoint.Checkin}/checkin_request/${id}`, payload);
+  }
+
   public static getHistory(id) {
     return authenticatedService.get(`${ResourcesEnpoint.Checkin}/history/${id}`);
   }
 
-  public static getHistoryDetail(id) {
+  public static getDetailCheckin(id) {
     return authenticatedService.get(`${ResourcesEnpoint.Checkin}/${id}`);
   }
 }

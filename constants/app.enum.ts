@@ -42,7 +42,7 @@ export enum UserStatus {
 }
 
 export enum TabCheckins {
-  MyOKRs = 'OKRs của tôi',
+  MyOkrs = 'OKRs của tôi',
   CheckinResquest = 'Yêu cầu Check-in',
 }
 

@@ -9,7 +9,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
-import { formatDateToDD, compareTwoDate } from '@/utils/dateParser';
+import { formatDateToDD } from '@/utils/dateParser';
 @Component({
   name: 'CheckinPage',
   created() {
@@ -23,7 +23,7 @@ export default class CheckinPage extends Vue {
 
   private async getCheckin() {
     this.loading = true;
-    const res = await CheckinRepository.getDetail(this.$route.params.id).then((res) => {
+    await CheckinRepository.getDetail(this.$route.params.id).then((res) => {
       if (res.data.data.checkinDetail.length === 0) {
         this.isNew = true;
         res.data.data = Object.assign(res.data.data, {

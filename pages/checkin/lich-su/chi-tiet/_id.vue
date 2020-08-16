@@ -13,16 +13,16 @@ import CheckinRepository from '@/repositories/CheckinRepository';
 @Component({
   name: 'DetailHistoryPage',
   created() {
-    this.getList();
+    this.getDetail();
   },
 })
 export default class DetailHistoryPage extends Vue {
   private loading: boolean = false;
   private historyDetail: any = null;
 
-  private async getList() {
+  private async getDetail() {
     this.loading = true;
-    const res = await CheckinRepository.getHistoryDetail(this.$route.params.id);
+    const res = await CheckinRepository.getDetailCheckin(this.$route.params.id);
     this.historyDetail = res.data.data;
     this.loading = false;
   }

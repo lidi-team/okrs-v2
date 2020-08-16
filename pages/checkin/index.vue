@@ -55,7 +55,7 @@ export default class CheckinPage extends Vue {
   private idCycle: number = this.$store.state.cycle.cycle.id;
   private meta: object = {};
 
-  private currentTab: string = this.$route.query.tab === 'request-checkin' ? TabCheckins.CheckinResquest : TabCheckins.MyOKRs;
+  private currentTab: string = this.$route.query.tab === 'request-checkin' ? TabCheckins.CheckinResquest : TabCheckins.MyOkrs;
   private paramsCheckin = {
     page: this.$route.query.page ? Number(this.$route.query.page) : 1,
     cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycle.id,
@@ -72,7 +72,7 @@ export default class CheckinPage extends Vue {
 
   private handleSelectCycle(idCycle) {
     this.paramsCheckin.page = 1;
-    const tab = this.$route.query.tab === undefined ? 'myOKRs' : this.$route.query.tab;
+    const tab = this.$route.query.tab === undefined ? 'MyOkrs' : this.$route.query.tab;
     this.paramsCheckin.cycleId = idCycle;
     this.$router.push(`?tab=${tab}&cycleId=${idCycle}`);
   }
@@ -80,7 +80,7 @@ export default class CheckinPage extends Vue {
   @Watch('$route.query')
   private async getList() {
     this.loading = true;
-    if (this.currentTab === TabCheckins.MyOKRs) {
+    if (this.currentTab === TabCheckins.MyOkrs) {
       try {
         const paramsCheckin = {
           cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycle.id,
@@ -124,7 +124,7 @@ export default class CheckinPage extends Vue {
 
   private handleClick(currentTab: string) {
     this.paramsCheckin.page = 1;
-    this.$router.push(`?tab=${currentTab === TabCheckins.MyOKRs ? 'myOKRs' : 'request-checkin'}`);
+    this.$router.push(`?tab=${currentTab === TabCheckins.MyOkrs ? 'myOKRs' : 'request-checkin'}`);
   }
 }
 </script>

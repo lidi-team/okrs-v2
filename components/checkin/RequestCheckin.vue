@@ -17,8 +17,10 @@
         </template>
       </el-table-column>
       <el-table-column label="Hành động" align="center" width="180">
-        <template>
-          <el-button class="el-button--purple el-button--checkin">Checkin</el-button>
+        <template slot-scope="{ row }">
+          <nuxt-link :to="`checkin/yeu-cau/${row.id}`">
+            <el-button class="el-button--purple el-button--checkin">Checkin</el-button>
+          </nuxt-link>
         </template>
       </el-table-column>
     </el-table>

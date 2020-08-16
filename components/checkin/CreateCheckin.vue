@@ -117,7 +117,7 @@ export default class DetailHistory extends Vue {
 
   private checkText = (rule, value, callback) => {
     const valid: boolean = /^[^-\s]/.test(value);
-    if (!value) {
+    if (!valid) {
       return callback(new Error('Không được bỏ trống'));
     } else {
       callback();
