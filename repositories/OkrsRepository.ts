@@ -1,20 +1,16 @@
 import { AxiosResponse } from 'axios';
 import { authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
+import { PayloadOkrs } from '@/constants/app.interface';
 
 export default class OkrsRepository {
   /**
-   * // When the type = 1(Current Cycle) --> Need to passs user ID
-   * // When the type = 2(All Cycle) --> Need to pass the cycle id
-   * @param id { userId, cycleId }
-   * @param type {1, 2}
+   * When the type = 1 --> All Root Okrs
+   * When the type = 2 --> All leader Okrs
+   * When the type = 3 --> All Okrs, except root okrs
    */
-  public static getLeaderOkrs(userId: number, type: number): Promise<AxiosResponse<any>> {
-    return authenticatedService.get(`${ResourcesEnpoint.Objective}/team_leaders?userId=${userId}&type=${type}`);
-  }
-
-  public static getStaffOkrs(): Promise<AxiosResponse<any>> {
-    return authenticatedService.get(`${ResourcesEnpoint.Objective}/staffs`);
+  public static getListOkrs(cycleId: number, type: number): Promise<AxiosResponse<any>> {
+    return authenticatedService.get(`${ResourcesEnpoint.Objective}/list_okrs?cycleId=${cycleId}&type=${type}`);
   }
 
   public static getOkrsDetail(okrsId: number): Promise<AxiosResponse<any>> {
@@ -25,7 +21,7 @@ export default class OkrsRepository {
     return authenticatedService.get(`${ResourcesEnpoint.Objective}/view_list?cycleId=${cycleId}`);
   }
 
-  public static createOrUpdateOkrs(payload: any): Promise<AxiosResponse<any>> {
+  public static createOrUpdateOkrs(payload: PayloadOkrs): Promise<AxiosResponse<any>> {
     return authenticatedService.post(`${ResourcesEnpoint.Objective}`, payload);
   }
 

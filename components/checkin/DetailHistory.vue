@@ -57,7 +57,7 @@ import { statusCheckin } from '@/constants/app.constant';
   name: 'DetailHistory',
 })
 export default class DetailHistory extends Vue {
-  @Prop(Object) readonly historyDetail!: object;
+  @Prop(Object) readonly historyDetail!: any;
   private status = statusCheckin;
   private customColors(confident) {
     return confident === 1 ? '#DE3618' : confident === 2 ? '#47C1BF' : '#50B83C';

@@ -1,6 +1,11 @@
 import { dataType, ruleTrigger, Validator, PromiseValidtor } from './app.type';
 import { EvaluationCriteriaEnum } from './app.enum';
 
+export interface PayloadOkrs {
+  objective: any;
+  keyResult: any[];
+}
+
 export interface LoginDTO {
   email: string;
   password: string;
@@ -83,16 +88,16 @@ export interface EvaluationCriteriorDTO {
 }
 
 export interface ObjectiveDTO {
-  title: string | null;
+  title: string;
   parentObjectiveId: number | null;
-  cycleId: number | null;
+  cycleId: number;
 }
 
 export interface KeyResultDTO {
   id?: number;
   content: string;
   startValue: number;
-  targetvalue: number;
+  targetValue: number;
   linkPlans?: string;
   linkResults?: string;
   measureUnitId: number;
@@ -156,7 +161,20 @@ export interface AdminParams extends ParamsQuery {
   tab?: string;
 }
 
+export interface ParamsCFR extends ParamsQuery {
+  status?: number;
+}
+
 export interface SelectOptionDTO {
   label: string;
   value: any;
+}
+
+export interface FormFeedback {
+  circle?: string;
+  date?: Date;
+  user?: string;
+  objective?: number;
+  criteria?: string;
+  content?: string;
 }

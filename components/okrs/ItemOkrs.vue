@@ -17,6 +17,7 @@
               <div class="item-okrs__expandid--action">
                 <span :class="isUpValue(changeValue)">{{ changeValue }}%</span>
                 <okrs-action-tooltip
+                  :reload-data="reloadData"
                   :okrs-id.sync="objective.id"
                   :visible-update-dialog.sync="visibleUpdateDialog"
                   :visible-align-dialog.sync="visibleAlignDialog"
@@ -45,6 +46,7 @@
             <div class="item-okrs--row-change">
               <p :class="isUpValue(row.progress + 4)">{{ row.progress + 4 }}%</p>
               <okrs-action-tooltip
+                :reload-data="reloadData"
                 :okrs-id.sync="row.id"
                 :visible-update-dialog.sync="visibleUpdateDialog"
                 :visible-align-dialog.sync="visibleAlignDialog"
@@ -71,6 +73,7 @@ export default class OKRsItem extends Vue {
   @Prop(String) private textHeader!: string;
   @Prop(Array) private tableData!: Object[];
   @Prop(Boolean) readonly loading!: boolean;
+  @Prop(Function) private reloadData!: Function;
 
   private visibleUpdateDialog: boolean = false;
   private visibleAlignDialog: boolean = false;

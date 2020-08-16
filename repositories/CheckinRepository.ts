@@ -1,7 +1,7 @@
 import { authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
 
-export default class RoleRepository {
+export default class CheckinRepository {
   public static get(params) {
     return authenticatedService.get(`${ResourcesEnpoint.Checkin}`, { params });
   }
@@ -32,5 +32,9 @@ export default class RoleRepository {
 
   public static getDetailCheckin(id) {
     return authenticatedService.get(`${ResourcesEnpoint.Checkin}/${id}`);
+  }
+
+  public static getCheckinDetail(checkinId: Number): any {
+    return authenticatedService.get(`${ResourcesEnpoint.Checkin}/waiting_feedback_detail/${checkinId}`);
   }
 }

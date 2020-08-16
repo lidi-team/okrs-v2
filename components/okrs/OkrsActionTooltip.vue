@@ -12,7 +12,7 @@
   </el-tooltip>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Notification } from 'element-ui';
 import IconSetting from '@/assets/images/okrs/setting.svg';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
@@ -27,6 +27,7 @@ export default class OkrsActionTooltip extends Vue {
   @PropSync('visibleUpdateDialog', { type: Boolean, required: true, default: false }) private syncVisibleUpdateDialog!: boolean;
   @PropSync('visibleAlignDialog', { type: Boolean, required: true, default: false }) private syncVisibleAlignDialog!: boolean;
   @PropSync('okrsId', { type: Number, required: true }) private syncOkrsId!: number;
+  @Prop(Function) private reloadData!: Function;
 
   private moveToDetailOkrsPage() {
     this.$router.push(`/OKRs/chi-tiet/${this.syncOkrsId}`);
@@ -46,6 +47,7 @@ export default class OkrsActionTooltip extends Vue {
     }).then(async () => {
       try {
         await OkrsRepository.deleteOkrs(+this.syncOkrsId).then((res: any) => {
+          this.reloadData();
           Notification.success({
             ...notificationConfig,
             message: 'Xóa OKRs thành công',
@@ -57,7 +59,6 @@ export default class OkrsActionTooltip extends Vue {
   }
 
   private checkDisplayUpdate(okrsId: number) {
-    console.log(okrsId);
     const userId = +this.$store.state.auth.user.id;
     return userId === okrsId;
   }

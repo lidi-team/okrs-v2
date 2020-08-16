@@ -4,21 +4,34 @@
       <el-form-item prop="title" class="custom-label" label-width="120px">
         <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="autoSizeConfig"></el-input>
       </el-form-item>
-      <div class="create-objective__select">
+      <div v-loading="loadingSelect" class="create-objective__select">
         <el-form-item prop="cycleId" label="Chu kỳ" class="custom-label" label-width="120px">
           <el-select v-model="tempObjective.cycleId" filterable no-match-text="Không tìm thấy chu kỳ" placeholder="Chọn chu kỳ">
             <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.name" :value="cycle.id" />
           </el-select>
         </el-form-item>
-        <el-form-item prop="parentObjectiveId" label="OKRs cấp trên" class="custom-label" label-width="120px">
-          <el-select
-            v-model="tempObjective.parentObjectiveId"
-            filterable
-            no-match-text="Không tìm thấy kết quả"
-            :loading="loadingSelect"
-            placeholder="Chọn OKRs cấp trên"
-          >
-            <el-option v-for="itemOKRs in leaderOKRs" :key="itemOKRs.id" :label="okrsLeaderFormat(itemOKRs)" :value="itemOKRs.id" />
+        <!-- Select OKrs của các Team Leader -->
+        <el-form-item
+          v-if="!isCompanyOkrs && !isTeamLeader() && this.$store.state.auth.user.role.name !== 'ADMIN'"
+          prop="parentObjectiveId"
+          label="OKRs cấp trên"
+          class="custom-label"
+          label-width="120px"
+        >
+          <el-select v-model="tempObjective.parentObjectiveId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn OKRs cấp trên">
+            <el-option v-for="itemOKRs in listOkrsToSelect" :key="itemOKRs.id" :label="okrsLeaderFormat(itemOKRs)" :value="itemOKRs.id" />
+          </el-select>
+        </el-form-item>
+        <!-- Select OKrs của công ty -->
+        <el-form-item
+          v-if="(!isCompanyOkrs && isTeamLeader()) || this.$store.state.auth.user.role.name === 'ADMIN'"
+          prop="parentObjectiveId"
+          label="OKRs công ty"
+          class="custom-label"
+          label-width="120px"
+        >
+          <el-select v-model="tempObjective.parentObjectiveId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn OKRs công ty">
+            <el-option v-for="itemOKRs in listOkrsToSelect" :key="itemOKRs.id" :label="itemOKRs.title" :value="itemOKRs.id" />
           </el-select>
         </el-form-item>
       </div>
@@ -31,7 +44,7 @@
 </template>
 <script lang="ts">
 import { Form } from 'element-ui';
-import { Component, Vue, PropSync, Watch } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Watch, Prop } from 'vue-property-decorator';
 import { ObjectiveDTO, ParamsQuery } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import CycleRepository from '@/repositories/CycleRepository';
@@ -40,11 +53,16 @@ import { DispatchAction, MutationState } from '@/constants/app.enum';
 @Component<CreateObjectiveStep>({
   name: 'CreateObjectiveStep',
   created() {
-    this.getListData();
-    this.getLeaderOKrs();
+    this.getListCycle();
+    if (!this.isCompanyOkrs) {
+      if (!this.$store.state.okrs.objective) {
+        this.getListOkrs();
+      }
+    }
   },
 })
 export default class CreateObjectiveStep extends Vue {
+  @Prop({ type: Boolean, default: false }) private isCompanyOkrs!: boolean;
   @PropSync('active', Number) private syncActive!: number;
   @PropSync('visibleDialog', Boolean) private syncVisibleDialog!: boolean;
 
@@ -52,12 +70,13 @@ export default class CreateObjectiveStep extends Vue {
   private loadingSelect: boolean = false;
 
   public tempObjective: ObjectiveDTO = {
-    title: '',
-    parentObjectiveId: null,
-    cycleId: null,
+    title: !this.$store.state.okrs.objective ? '' : this.$store.state.okrs.objective.title,
+    parentObjectiveId: this.$store.state.okrs.objective ? this.$store.state.okrs.objective.parentObjectiveId : null,
+    // Set option cycles to defautl current cycle
+    cycleId: this.$store.state.okrs.objective ? this.$store.state.okrs.objective.cycleId : this.$store.state.cycle.cycle.id,
   };
 
-  private leaderOKRs: any[] = [];
+  private listOkrsToSelect: any[] = [];
   private listCycles: any[] = [];
   private autoSizeConfig = { minRows: 2, maxRows: 2 };
   private listDataParams: ParamsQuery = {
@@ -70,7 +89,7 @@ export default class CreateObjectiveStep extends Vue {
     (this.$refs.tempObjective as Form).validate((isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
         this.$store.commit(MutationState.SET_OBJECTIVE, this.tempObjective);
-        if (this.syncActive++ > 2) this.syncActive = 0;
+        this.syncActive++;
         this.loading = false;
       }
       if (invalidatedFields) {
@@ -81,48 +100,60 @@ export default class CreateObjectiveStep extends Vue {
     });
   }
 
-  private async getListData() {
+  private async getListCycle() {
     try {
       const { data } = await CycleRepository.get(this.listDataParams);
-      Object.freeze(data.data.items).forEach((item) => {
-        this.listCycles.push(item);
-      });
-      this.tempObjective.cycleId = this.$store.state.cycle.cycle.id;
+      this.listCycles = Object.freeze(data.data.items);
     } catch (error) {}
   }
 
   @Watch('tempObjective.cycleId', { deep: true, immediate: true })
-  private async getLeaderOKrs() {
-    this.loadingSelect = true;
-    try {
-      if (this.tempObjective.cycleId == null) {
-        this.tempObjective.cycleId = this.$store.state.cycle.cycle.id;
+  private async getListOkrs() {
+    if (!this.isCompanyOkrs) {
+      this.loadingSelect = true;
+      try {
+        if (this.tempObjective.cycleId == null) {
+          this.tempObjective.cycleId = this.$store.state.cycle.cycle.id;
+        }
+        let listOkrs: any[] = [];
+        if (this.isTeamLeader() || this.$store.state.auth.user.role.name === 'ADMIN') {
+          const { data } = await OkrsRepository.getListOkrs(+this.tempObjective.cycleId, 1);
+          listOkrs = Object.freeze(data.data);
+        } else {
+          const { data } = await OkrsRepository.getListOkrs(+this.tempObjective.cycleId, 2);
+          listOkrs = Object.freeze(data.data);
+        }
+        if (this.listOkrsToSelect.length > 0) {
+          this.listOkrsToSelect = [];
+        }
+        this.listOkrsToSelect = listOkrs;
+        setTimeout(() => {
+          this.loadingSelect = false;
+        }, 300);
+      } catch (error) {
+        setTimeout(() => {
+          this.loadingSelect = false;
+        }, 300);
       }
-      const { data } = await OkrsRepository.getLeaderOkrs(Number(this.tempObjective.cycleId), 1);
-      if (this.leaderOKRs.length > 0) {
-        this.leaderOKRs = [];
-      }
-      Object.freeze(data.data).forEach((item) => {
-        this.leaderOKRs.push(item);
-      });
-      this.loadingSelect = false;
-    } catch (error) {
-      this.loadingSelect = false;
     }
   }
 
   private rules: Maps<Rule[]> = {
     title: [{ type: 'string', required: true, message: 'Vui lòng nhập mục tiêu', trigger: 'blur' }],
     cycleId: [{ type: 'number', required: true, message: 'Vui lòng chọn chy kỳ', trigger: 'blur' }],
-    parentObjectiveId: [{ type: 'number', required: true, message: 'Vui lòng OKRs câp trên', trigger: ['blur', 'change'] }],
+    parentObjectiveId: [{ type: 'number', required: true, message: 'Vui lòng OKRs câp trên', trigger: 'blur' }],
   };
 
   public closeObjectiveForm() {
     (this.$refs.tempObjective as Form).clearValidate();
     this.tempObjective.title = '';
+    this.$store.commit(MutationState.SET_OBJECTIVE, null);
     this.tempObjective.parentObjectiveId = null;
-    this.tempObjective.cycleId = null;
     this.syncVisibleDialog = false;
+  }
+
+  private isTeamLeader(): boolean {
+    return this.$store.state.auth.user.isLeader;
   }
 
   private okrsLeaderFormat(item) {

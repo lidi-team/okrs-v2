@@ -41,6 +41,12 @@ export enum UserStatus {
   Inactive = 'Không hoạt động',
 }
 
+export enum TabCFR {
+  Feedback = 'Danh sách chờ Feedback',
+  History = 'Lịch sử',
+  Rank = 'Bảng xếp hạng',
+}
+
 export enum TabCheckins {
   MyOkrs = 'OKRs của tôi',
   CheckinResquest = 'Yêu cầu Check-in',
@@ -85,13 +91,24 @@ export enum ResourcesEnpoint {
   MeasureUnit = 'measure_units',
   MetaData = 'meta_data',
   Objective = 'objectives',
-  Checkin = 'checkins',
   KeyResults = 'key_results',
+  Checkin = 'checkins',
+  Feedback = 'feedback',
+  Recognition = 'recognitions',
+}
+
+export enum CFREnpoint {
+  ListWaiting = 'list_waiting',
+  History = 'history',
+  Rank = 'user_star',
+  Recognition = 'user_recognition',
+  Objective = 'list_okrs',
 }
 
 export enum EvaluationCriteriaEnum {
   MEMBER_TO_LEADER = 'MEMBER_TO_LEADER',
   LEADER_TO_MEMBER = 'LEADER_TO_MEMBER',
+  EvaluationCriteria = 'evaluation_criteria',
 }
 
 /**
@@ -101,8 +118,8 @@ export enum DispatchAction {
   LOGIN = 'auth/login',
   LOGOUT = 'auth/logout',
   CLEAR = 'auth/clear',
-  CURRENT_LEADER = 'okrs/setCurrentLeader',
   STAFF_OKRS = 'okrs/setStaffOkrs',
+  CLEAR_OKRS = 'okrs/clearOkrs',
 }
 
 export enum GetterState {
@@ -114,6 +131,9 @@ export enum MutationState {
   SET_TOKEN = 'auth/setToken',
   SET_CURRENT_CYCLE = 'cycle/setCurrentCycle',
   SET_OBJECTIVE = 'okrs/setObjective',
+  SET_KR = 'okrs/setKeyResult',
+  CLEAR_KRS = 'okrs/clearKrs',
   SET_OKRS_DETAIL = 'okrs/setOkrsDetail',
   SET_MEASURE_UNITS = 'measureUnit/setMeasureUnits',
+  SET_TEMP_CYCLE = 'cycle/setTempCycle',
 }

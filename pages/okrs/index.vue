@@ -5,7 +5,16 @@
         <base-top-search-cycle :text-cycle.sync="textCycle" :text-search.sync="textSearch" :text-search-placeholder="textSearchPlaceholder" />
       </el-col>
       <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
-        <el-button class="el-button el-button--purple el-button-medium" @click="addNewOKRs">Thêm mới OKRs</el-button>
+        <el-button v-if="isNotAdminButton()" class="el-button el-button--purple el-button-medium" icon="el-icon-plus" @click="addPersonalOkrs">
+          Tạo OKRs
+        </el-button>
+        <el-dropdown v-else class="create-okr-dropdown" trigger="click" @command="handleCommand">
+          <el-button class="el-button el-button--purple el-button-medium" icon="el-icon-plus">Tạo OKRs</el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="personal">Tạo OKRs cá nhân</el-dropdown-item>
+            <el-dropdown-item command="company">Tạo OKRs công ty</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </el-col>
     </el-row>
     <item-okrs
@@ -16,33 +25,45 @@
       :loading="loading"
       :reload-data="getDashBoardOkrs"
     />
-    <create-okrs-dialog :visible-dialog.sync="visibleCreateDialog" :reload-data="getDashBoardOkrs" />
+    <create-okrs-dialog
+      v-if="visibleCreateOkrsDialog"
+      :is-company-okrs="isCompanyOkrs"
+      :visible-dialog.sync="visibleCreateOkrsDialog"
+      :reload-data="getDashBoardOkrs"
+    />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { DispatchAction } from '@/constants/app.enum';
 import OkrsRepository from '@/repositories/OkrsRepository';
 @Component<OKRsPage>({
   name: 'OKRsPage',
   created() {
     this.getDashBoardOkrs();
   },
-  mounted() {
-    if (!this.$store.state.okrs.currentLeader) {
-      this.$store.dispatch(DispatchAction.CURRENT_LEADER);
-    }
-  },
+  middleware: ['measureUnit'],
 })
 export default class OKRsPage extends Vue {
   private textSearchPlaceholder: string = 'Tìm kiếm OKRs của';
   private textSearch: string = '';
   private textCycle: string = '';
   private loading: boolean = false;
-  private visibleCreateDialog = false;
+  private visibleCreateOkrsDialog = false;
+  private isCompanyOkrs: boolean = false;
 
-  private addNewOKRs() {
-    this.visibleCreateDialog = true;
+  private handleCommand(command: string) {
+    if (command === 'company') {
+      this.visibleCreateOkrsDialog = true;
+      this.isCompanyOkrs = true;
+    } else {
+      this.isCompanyOkrs = false;
+      this.visibleCreateOkrsDialog = true;
+    }
+  }
+
+  private addPersonalOkrs() {
+    this.isCompanyOkrs = false;
+    this.visibleCreateOkrsDialog = true;
   }
 
   private itemOKRsData: any[] = [
@@ -54,8 +75,8 @@ export default class OKRsPage extends Vue {
   private async getDashBoardOkrs() {
     this.loading = true;
     try {
-      const cycleId: number = +this.$store.state.cycle.cycle.id;
-      const { data } = await OkrsRepository.getOkrsDashboard(cycleId);
+      const currentCycleId: number = +this.$store.state.cycle.cycle.id;
+      const { data } = await OkrsRepository.getOkrsDashboard(currentCycleId);
       this.itemOKRsData[0].tableData = Object.freeze(data.data.root);
       this.itemOKRsData[1].tableData = Object.freeze(data.data.team);
       this.itemOKRsData[2].tableData = Object.freeze(data.data.personal);
@@ -63,6 +84,10 @@ export default class OKRsPage extends Vue {
     } catch (error) {
       this.loading = false;
     }
+  }
+
+  private isNotAdminButton(): boolean {
+    return this.$store.state.auth.user.role.name !== 'ADMIN';
   }
 }
 </script>
@@ -89,5 +114,8 @@ export default class OKRsPage extends Vue {
   .el-table__empty-block {
     width: 100% !important;
   }
+}
+.create-okr-dropdown {
+  color: $neutral-primary-4;
 }
 </style>
