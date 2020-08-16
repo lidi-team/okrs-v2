@@ -11,9 +11,9 @@
           <span class="myOKRs__txtBlue" @click="showKRs(row)">{{ row.keyResults ? row.keyResults.length : 0 }} kết quả</span>
         </template>
       </el-table-column>
-      <el-table-column label="Tiến độ" min-width="150">
+      <el-table-column label="Tiến độ" min-width="180">
         <template v-slot="{ row }">
-          <el-progress :percentage="row.progress" :color="customColors(row.change)" :text-inside="true" :stroke-width="26" />
+          <el-progress :percentage="row.progress" :text-inside="true" :color="customColors(row.progress)" :stroke-width="20" />
         </template>
       </el-table-column>
       <el-table-column align="center" label="Thay đổi" min-width="100">
@@ -30,11 +30,17 @@
       </el-table-column>
       <el-table-column label="Hành động" align="center" width="180">
         <template slot-scope="{ row }">
-          <el-button v-if="row.status === status.OVERDUE" type="danger" class="el-button--checkin">Quá hạn</el-button>
-          <el-button v-else-if="row.status === status.DRAFT" type="warning" class="el-button--checkin">Edit bản nháp</el-button>
+          <nuxt-link v-if="row.status === status.OVERDUE" :to="`/checkin/${row.id}`">
+            <el-button type="danger" class="el-button--checkin">Quá hạn</el-button>
+          </nuxt-link>
+          <nuxt-link v-else-if="row.status === status.DRAFT" :to="`/checkin/${row.id}`">
+            <el-button type="warning" class="el-button--checkin">Edit bản nháp</el-button>
+          </nuxt-link>
           <el-button v-else-if="row.status === status.PENDING" type="info" disabled class="el-button--checkin">Đang chờ duyệt</el-button>
           <el-button v-else-if="row.status === status.COMPLETED" type="success" disabled class="el-button--checkin">Đã hoàn thành</el-button>
-          <el-button v-else class="el-button--purple el-button--checkin">Tạo Checkin</el-button>
+          <nuxt-link v-else :to="`/checkin/${row.id}`">
+            <el-button class="el-button--purple el-button--checkin">Tạo Checkin</el-button>
+          </nuxt-link>
         </template>
       </el-table-column>
     </el-table>
