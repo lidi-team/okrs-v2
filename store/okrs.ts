@@ -9,17 +9,10 @@ export enum OkrsMutation {
   SET_STAFF_OKRS = 'setStaffOkrs',
 }
 
-export enum OkrsAction {}
-
 export interface OkrsState {
   objective: ObjectiveDTO | null;
   keyResults: KeyResultDTO[];
   staffOkrs: any[];
-}
-
-export interface OKRsAction<S, R> extends ActionTree<S, R> {
-  setStaffOkrs(context: ActionContext<S, R>): Promise<void>;
-  clearOkrs(context: ActionContext<S, R>): void;
 }
 
 export const state = (): OkrsState => ({
@@ -43,14 +36,19 @@ export const mutations: MutationTree<RootState> = {
   [OkrsMutation.SET_STAFF_OKRS]: (state, staffOkrs: any) => (state.staffOkrs = staffOkrs),
 };
 
+export interface OKRsAction<S, R> extends ActionTree<S, R> {
+  setStaffOkrs(context: ActionContext<S, R>): Promise<void>;
+  clearOkrs(context: ActionContext<S, R>): void;
+}
+
 export const actions: OKRsAction<OkrsState, RootState> = {
-  async setStaffOkrs({ commit }) {
+  async setStaffOkrs({ commit }): Promise<void> {
     try {
       const { data } = await OkrsRepository.getStaffOkrs();
       commit(OkrsMutation.SET_STAFF_OKRS, Object.freeze(data.data));
     } catch (error) {}
   },
-  clearOkrs({ commit }) {
+  clearOkrs({ commit }): void {
     commit(OkrsMutation.SET_OBJECTIVE, null);
     commit(OkrsMutation.CLEAR_KRS);
   },

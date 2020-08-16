@@ -49,9 +49,6 @@ import OkrsRepository from '@/repositories/OkrsRepository';
     this.objectiveTitle = this.$store.state.okrs.objective.title;
     this.krFormItems = this.$store.state.okrs.keyResults.length !== 0 ? this.$store.state.okrs.keyResults.map((item) => ({ ...item })) : [];
   },
-  destroyed() {
-    console.log('Destroyed');
-  },
 })
 export default class CreateObjectiveStep extends Vue {
   @Prop(Function) public reloadData!: Function;
@@ -185,16 +182,18 @@ export default class CreateObjectiveStep extends Vue {
   }
   &__button {
     margin: $unit-4 0 $unit-4 0;
-    span {
-      display: flex;
-      place-items: center;
-      &:hover {
+    &:hover {
+      span {
         svg {
           path {
             fill: $white;
           }
         }
       }
+    }
+    span {
+      display: flex;
+      place-items: center;
       span {
         padding-left: $unit-1;
       }

@@ -161,16 +161,18 @@ export default class UpdateOkrsDialog extends Vue {
 .update-okrs {
   &__button {
     margin: $unit-4 0 $unit-4 0;
-    span {
-      display: flex;
-      place-items: center;
-      &:hover {
+    &:hover {
+      span {
         svg {
           path {
             fill: $white;
           }
         }
       }
+    }
+    span {
+      display: flex;
+      place-items: center;
       span {
         padding-left: $unit-1;
       }

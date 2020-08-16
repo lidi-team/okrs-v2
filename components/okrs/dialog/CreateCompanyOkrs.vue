@@ -29,7 +29,7 @@
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { confirmWarningConfig } from '@/constants/app.constant';
 import { DispatchAction } from '@/constants/app.enum';
 @Component<CreateCompanyOkrs>({
@@ -43,11 +43,13 @@ export default class CreateCompanyOkrs extends Vue {
   private active: number = 0;
 
   private handleCloseDialog() {
-    this.$confirm('Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?', { ...confirmWarningConfig }).then(() => {
-      this.$store.dispatch(DispatchAction.CLEAR_OKRS);
-      this.syncCreateOkrsDialog = false;
-      this.active = 0;
-    });
+    this.$confirm('Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?', { ...confirmWarningConfig })
+      .then(() => {
+        this.$store.dispatch(DispatchAction.CLEAR_OKRS);
+        this.syncCreateOkrsDialog = false;
+        this.active = 0;
+      })
+      .catch((err) => console.log(err));
   }
 }
 </script>

@@ -67,9 +67,6 @@ import { GetterState } from '@/constants/app.enum';
       user: GetterState.USER,
     }),
   },
-  updated() {
-    console.log(this.$route.path);
-  },
 })
 export default class SideBar extends Vue {
   private get isCfrsActive() {

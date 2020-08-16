@@ -31,7 +31,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { DispatchAction } from '@/constants/app.enum';
 import OkrsRepository from '@/repositories/OkrsRepository';
 @Component<OKRsPage>({
   name: 'OKRsPage',
