@@ -23,6 +23,21 @@ export const statusCheckin = {
   COMPLETED: 'Completed', // OKRs da hoan thanh => Khong checkin duoc
 };
 
+export const confidentLevel = [
+  {
+    value: 3,
+    label: 'Ổn định',
+  },
+  {
+    value: 2,
+    label: 'Bình thường',
+  },
+  {
+    value: 1,
+    label: 'Không ổn định',
+  },
+];
+
 export const confirmWarningConfig: ElMessageBoxOptions = {
   type: 'warning',
   confirmButtonText: 'Đồng ý',

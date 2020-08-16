@@ -36,9 +36,5 @@ export default class DetailHistoryPage extends Vue {
     font-size: $text-2xl;
     padding-bottom: $unit-10;
   }
-  &__content {
-    background-color: $white;
-    padding: $unit-8;
-  }
 }
 </style>
