@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import { authenticatedService } from './BaseRepository';
-import { ResourcesEnpoint } from '@/constants/app.enum';
+import { ResourcesEnpoint, EvaluationCriteriaEnum } from '@/constants/app.enum';
 import { EvaluationCriteriorDTO, AdminParams } from '@/constants/app.interface';
 
 export default class EvaluationCriteriorRepository {
@@ -18,5 +18,9 @@ export default class EvaluationCriteriorRepository {
 
   public static delete(id: number): Promise<AxiosResponse<any>> {
     return authenticatedService.delete(`${ResourcesEnpoint.EvaluationCriterial}/${id}`);
+  }
+
+  public static getCombobox(): any {
+    return authenticatedService.get(`${ResourcesEnpoint.MetaData}/${EvaluationCriteriaEnum.EvaluationCriteria}`);
   }
 }

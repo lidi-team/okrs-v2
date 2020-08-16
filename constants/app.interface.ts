@@ -161,7 +161,20 @@ export interface AdminParams extends ParamsQuery {
   tab?: string;
 }
 
+export interface ParamsCFR extends ParamsQuery {
+  status?: number;
+}
+
 export interface SelectOptionDTO {
   label: string;
   value: any;
+}
+
+export interface FormFeedback {
+  circle?: string;
+  date?: Date;
+  user?: string;
+  objective?: number;
+  criteria?: string;
+  content?: string;
 }
