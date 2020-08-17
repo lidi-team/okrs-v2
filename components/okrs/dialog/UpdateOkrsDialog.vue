@@ -39,7 +39,7 @@ import { Form, Notification } from 'element-ui';
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
 import { Maps, Rule } from '@/constants/app.type';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import { notificationConfig } from '@/constants/app.constant';
+import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import KrsForm from '@/components/okrs/KrsForm.vue';
 import { PayloadOkrs } from '@/constants/app.interface';
 @Component<UpdateOkrsDialog>({
@@ -49,6 +49,7 @@ import { PayloadOkrs } from '@/constants/app.interface';
     KrsForm,
   },
   created() {
+    console.log(this.temporaryOkrs);
     this.krFormItems = this.temporaryOkrs.keyResults;
   },
 })
@@ -70,7 +71,7 @@ export default class UpdateOkrsDialog extends Vue {
     title: [{ type: 'string', required: true, message: 'Vùi lòng nhập tên mục tiêu', trigger: 'blur' }],
   };
 
-  private handleCloseDialog() {
+  private handleDataDialog() {
     this.tempObjective.title = JSON.parse(JSON.stringify(this.temporaryOkrs.title));
     (this.$refs.updateOkrsForm as Form).clearValidate();
     const numberForms = this.krFormItems.length;
@@ -82,8 +83,13 @@ export default class UpdateOkrsDialog extends Vue {
       (form[i].$refs.keyResult as Form).clearValidate();
     }
     this.syncUpdateDialog = false;
-    this.reloadData();
     this.krFormItems = this.temporaryOkrs.keyResults;
+  }
+
+  private handleCloseDialog() {
+    this.$confirm('Những thay đổi sẽ không được lưu, bạn có chắc chắn muốn thoát ra ngoài?', { ...confirmWarningConfig }).then(() => {
+      this.handleDataDialog();
+    });
   }
 
   private addNewKRs() {
@@ -128,14 +134,14 @@ export default class UpdateOkrsDialog extends Vue {
           const payload: PayloadOkrs = {
             objective: this.$store.state.okrs.objective
               ? this.$store.state.okrs.objective
-              : Object.assign({}, { id: +this.$route.params.id, title: this.tempObjective.title }),
+              : Object.assign({}, { id: this.$route.params.id ? +this.$route.params.id : +this.temporaryOkrs.id, title: this.tempObjective.title }),
             keyResult: krs,
           };
           try {
-            await OkrsRepository.createOrUpdateOkrs(payload).then(async (res) => {
+            await OkrsRepository.createOrUpdateOkrs(payload).then((res) => {
               this.loading = false;
-              this.handleCloseDialog();
-              await this.reloadData();
+              this.handleDataDialog();
+              this.reloadData();
               Notification.success({
                 ...notificationConfig,
                 message: 'Cập nhật OKRs thành công',
