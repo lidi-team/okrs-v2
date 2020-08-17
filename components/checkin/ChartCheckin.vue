@@ -14,11 +14,11 @@
                 <th scope="row">Tiến độ thực hiện</th>
                 <td>{{ historyDetail.objective.progress }} %</td>
               </tr>
-              <tr>
+              <tr v-if="historyDetail.checkinAt">
                 <th scope="row">Ngày check-in</th>
                 <td>{{ new Date(historyDetail.checkinAt) | dateFormat('DD/MM/YYYY') }}</td>
               </tr>
-              <tr>
+              <tr v-if="historyDetail.nextCheckinDate">
                 <th scope="row">Ngày check-in kế tiếp</th>
                 <td>{{ new Date(historyDetail.nextCheckinDate) | dateFormat('DD/MM/YYYY') }}</td>
               </tr>

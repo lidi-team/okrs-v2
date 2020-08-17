@@ -1,5 +1,5 @@
 <template>
-  <el-row class="sidebar" type="flex" justify="start" align="center">
+  <el-row v-if="user" class="sidebar" type="flex" justify="start" align="center">
     <nuxt-link to="/" :class="['sidebar__link']">
       <div class="sidebar__link__tab">
         <Dashboard class="sidebar__link__tab__icon" />

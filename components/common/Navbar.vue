@@ -5,7 +5,7 @@
         <img src="@/assets/images/common/logo.png" alt="logo" />
       </nuxt-link>
     </div>
-    <div v-if="user !== null" class="header__info side-right">
+    <div v-if="user" class="header__info side-right">
       <div class="side-right__list">
         <el-dropdown class="side-right__item" trigger="click">
           <i class="el-icon-message-solid"></i>
@@ -120,7 +120,7 @@ export default class Navbar extends Vue {
 
   private async logout() {
     await this.$store.dispatch(DispatchAction.LOGOUT);
-    this.$router.push('/');
+    this.$router.push('/login');
   }
 }
 </script>

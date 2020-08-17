@@ -1,9 +1,9 @@
 <template>
-  <div class="checkins">
+  <div v-if="user" class="checkins">
     <el-select v-model="idCycle" no-match-text="Không tìm thấy chu kỳ" filterable placeholder="Chọn chu kỳ" @change="handleSelectCycle(idCycle)">
       <el-option v-for="item in options" :key="item.id" :label="item.label" :value="item.id" />
     </el-select>
-    <el-tabs v-if="user.isLeader" v-model="currentTab" @tab-click="handleClick(currentTab)">
+    <el-tabs v-if="user.isLeader || user.role.name === 'ADMIN'" v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="checkins__content">
         <component :is="currentTabComponent" :get-list="getList" :loading="loading" :table-data="tableData" />

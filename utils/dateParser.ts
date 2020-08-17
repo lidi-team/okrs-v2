@@ -9,6 +9,12 @@ export const formatDateToDD = (date: string, dateFormat: string = 'dd/MM/yyyy'):
   return format(newDate, dateFormat);
 };
 
+export const initNewDate = (dateFormat: string = 'dd/MM/yyyy'): string => {
+  const date = new Date();
+  date.setDate(date.getDate() + 1);
+  return format(date, dateFormat);
+};
+
 export const formatDateToYYYY = (date: string): string => {
   return format(parseToDate(date), 'yyyy/MM/dd');
 };
