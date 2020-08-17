@@ -1,6 +1,8 @@
 <template>
-  <div>
-    <div id="chartdiv"></div>
+  <div class="dashboard">
+    <dashboard-progress-bar />
+    <dashboard-star-rank />
+    <!-- <div id="chartdiv"></div> -->
   </div>
 </template>
 
@@ -70,8 +72,14 @@ export default class HomePage extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/main.scss';
 #chartdiv {
   width: 100%;
   height: 400px;
+}
+.dashboard {
+  color: $neutral-primary-4;
+  margin-top: $unit-10;
+  margin-right: $unit-5;
 }
 </style>

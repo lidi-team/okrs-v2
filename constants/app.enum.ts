@@ -95,6 +95,7 @@ export enum ResourcesEnpoint {
   Checkin = 'checkins',
   Feedback = 'feedback',
   Recognition = 'recognitions',
+  Dashboard = 'dashboard',
 }
 
 export enum CFREnpoint {
