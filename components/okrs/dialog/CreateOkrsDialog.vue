@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Thêm mới mục tiêu công ty"
+    :title="titleDialog"
     :visible.sync="syncCreateOkrsDialog"
     width="800px"
     placement="center"
@@ -50,6 +50,10 @@ export default class CreateCompanyOkrs extends Vue {
         this.active = 0;
       })
       .catch((err) => console.log(err));
+  }
+
+  private get titleDialog() {
+    return this.isCompanyOkrs ? 'Thêm mới mục tiêu công ty' : 'Thêm mới mục tiêu cá nhân';
   }
 }
 </script>

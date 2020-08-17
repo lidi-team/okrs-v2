@@ -10,9 +10,11 @@
             <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.name" :value="cycle.id" />
           </el-select>
         </el-form-item>
+        <!-- OKRs company -->
+        <div v-if="isCompanyOkrs" />
         <!-- Select OKrs của các Team Leader -->
         <el-form-item
-          v-if="!isCompanyOkrs && !isTeamLeader() && this.$store.state.auth.user.role.name !== 'ADMIN'"
+          v-else-if="!isCompanyOkrs && !isTeamLeader() && this.$store.state.auth.user.role.name !== 'ADMIN'"
           prop="parentObjectiveId"
           label="OKRs cấp trên"
           class="custom-label"
@@ -24,7 +26,7 @@
         </el-form-item>
         <!-- Select OKrs của công ty -->
         <el-form-item
-          v-if="(!isCompanyOkrs && isTeamLeader()) || this.$store.state.auth.user.role.name === 'ADMIN'"
+          v-else-if="(!isCompanyOkrs && isTeamLeader()) || this.$store.state.auth.user.role.name === 'ADMIN'"
           prop="parentObjectiveId"
           label="OKRs công ty"
           class="custom-label"
