@@ -1,8 +1,8 @@
 <template>
   <el-row class="top-search-cycle">
     <el-col :xs="8" :sm="8" :md="8" :lg="8">
-      <el-select v-model="syncTextCycle" filterable placeholder="Nhập chu kỳ" no-match-text="Không tìm thấy chu kỳ">
-        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" @change="handleSelectCycle(item)" />
+      <el-select v-model.number="syncCycleId" filterable placeholder="Nhập chu kỳ" no-match-text="Không tìm thấy chu kỳ">
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </el-col>
     <el-col :xs="12" :sm="12" :md="12" :lg="12">
@@ -16,9 +16,10 @@
   </el-row>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
+import { Component, Vue, Prop, PropSync, Watch } from 'vue-property-decorator';
 import CycleRepository from '@/repositories/CycleRepository';
 import { SelectOptionDTO } from '@/constants/app.interface';
+import { MutationState } from '@/constants/app.enum';
 @Component<TopSearchCycle>({
   name: 'TopSearchCycle',
   created() {
@@ -26,7 +27,7 @@ import { SelectOptionDTO } from '@/constants/app.interface';
   },
 })
 export default class TopSearchCycle extends Vue {
-  @PropSync('textCycle', { required: true, type: String }) private syncTextCycle!: string;
+  @PropSync('cycleId', { required: true, type: Number }) private syncCycleId!: number;
   @Prop({ required: true, type: String }) private textSearchPlaceholder!: string;
   @PropSync('textSearch', { required: true, type: String }) private syncTextSearch!: string;
   private options: SelectOptionDTO[] = [];
@@ -49,10 +50,10 @@ export default class TopSearchCycle extends Vue {
     this.options = data.data.items.map((item) => {
       return {
         label: item.name,
-        value: item.name,
+        value: item.id,
       };
     });
-    this.syncTextCycle = this.$store.state.cycle.cycle.name;
+    // this.syncCycleId = this.$store.state.cycle.cycle.id;
   }
 }
 </script>

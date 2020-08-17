@@ -1,21 +1,23 @@
 <template>
-  <div>
-    <div class="item-okrs">
+  <fragment>
+    <div :class="['item-okrs', indexItem === 2 ? 'last-item-okrs' : null]">
       <p class="item-okrs__header">{{ textHeader }}</p>
-      <el-table v-loading="loading" :data="tableData" header-row-class-name="item-okrs__table-header" style="width: 100%;">
+      <el-table :data="tableData" header-row-class-name="item-okrs__table-header" style="width: 100%;">
         <el-table-column type="expand" width="20">
           <template v-slot="{ row }">
             <div v-for="objective in row.childObjectives" :key="objective.id" class="item-okrs__expand">
-              <div class="item-okrs__expand--objective">
-                <icon-ellipse />
-                <span>{{ objective.title }}</span>
+              <div style="display: flex;">
+                <div class="item-okrs__expand--objective">
+                  <icon-ellipse />
+                  <span>{{ objective.title }}</span>
+                </div>
+                <div class="item-okrs__expand--krs">{{ objective.keyResults.length }} kết quả</div>
+                <div class="item-okrs__expand--progress">
+                  <el-progress :percentage="+objective.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
+                </div>
               </div>
-              <div class="item-okrs__expand--krs">{{ objective.keyResults.length }} kết quả</div>
-              <div class="item-okrs__expand--progress">
-                <el-progress :percentage="objective.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
-              </div>
-              <div class="item-okrs__expandid--action">
-                <span :class="isUpValue(changeValue)">{{ changeValue }}%</span>
+              <div class="item-okrs__expand--action">
+                <span :class="isUpProgress(changeValue, true)">{{ changeValue }}%</span>
                 <okrs-action-tooltip
                   :reload-data="reloadData"
                   :okrs-id.sync="objective.id"
@@ -38,13 +40,13 @@
         </el-table-column>
         <el-table-column label="Tiến độ">
           <template v-slot="{ row }">
-            <el-progress :percentage="row.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
+            <el-progress :percentage="+row.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
           </template>
         </el-table-column>
         <el-table-column label="Thay đổi" width="200">
           <template v-slot="{ row }">
-            <div class="item-okrs--row-change">
-              <p :class="isUpValue(row.progress + 4)">{{ row.progress + 4 }}%</p>
+            <div class="item-okrs--row--change">
+              <p :class="isUpProgress(row.progress, false)">{{ row.progress }}%</p>
               <okrs-action-tooltip
                 :reload-data="reloadData"
                 :okrs-id.sync="row.id"
@@ -58,7 +60,7 @@
     </div>
     <!-- <update-okrs-dialog :visible-dialog.sync="visibleUpdateDialog" :reload-data="reloadData" /> -->
     <align-okrs-dialog v-if="visibleAlignDialog" :visible-dialog.sync="visibleAlignDialog" />
-  </div>
+  </fragment>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
@@ -71,8 +73,9 @@ import IconEllipse from '@/assets/images/okrs/ellipse.svg';
 })
 export default class OKRsItem extends Vue {
   @Prop(String) private textHeader!: string;
-  @Prop(Array) private tableData!: Object[];
-  @Prop(Boolean) readonly loading!: boolean;
+  @Prop(Number) private indexItem!: number;
+  @Prop(Array) private tableData!: object[];
+  // @Prop(Boolean) readonly loading!: boolean;
   @Prop(Function) private reloadData!: Function;
 
   private visibleUpdateDialog: boolean = false;
@@ -89,32 +92,45 @@ export default class OKRsItem extends Vue {
     }
   }
 
-  private isUpValue(value): string {
-    return value > 0 ? 'item-okrs__expand--action--happy' : 'item-okrs__expand--action--sad';
+  private isUpProgress(progress: number, isExpanded: boolean): string {
+    if (isExpanded) {
+      return progress > 0 ? 'item-okrs__expand--action--happy' : 'item-okrs__expand--action--sad';
+    } else {
+      return progress > 0 ? 'item-okrs--row--change--happy' : 'item-okrs--row--change--sad';
+    }
   }
 }
 </script>
 <style lang="scss">
 @import '@/assets/scss/main.scss';
+.last-item-okrs {
+  margin-bottom: $unit-5;
+}
 .item-okrs {
   background: $white;
   color: $neutral-primary-4;
   margin-top: $unit-5;
-  filter: drop-shadow(0px 0px 0px rgba(63, 63, 68, 0.05)), drop-shadow(0px 1px 3px rgba(63, 63, 68, 0.15));
   border-radius: $border-radius-base;
+  @include drop-shadow;
   &__header {
     font-size: $text-2xl;
     padding: $unit-5 0 $unit-5 $unit-5;
-    box-shadow: inset 0px -1px 0px #dfe3e8;
+    @include box-shadow;
     border-radius: $border-radius-base $border-radius-base 0px 0px;
   }
-  &--row-change {
+  &--row--change {
     display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    place-content: center space-between;
+    &--happy {
+      color: $green-primary-1;
+    }
+    &--sad {
+      color: $red-primary-1;
+    }
   }
   &__expand {
     display: flex;
+    place-content: center space-between;
     padding-bottom: $unit-5;
     &:last-child {
       padding-bottom: 0;
@@ -122,8 +138,8 @@ export default class OKRsItem extends Vue {
     &--objective {
       width: 400px;
       display: flex;
-      justify-content: flex-start;
       align-items: center;
+      padding-right: $unit-8;
       span {
         padding-left: $unit-5;
       }
@@ -135,15 +151,15 @@ export default class OKRsItem extends Vue {
       width: calc(100% - (400px + 200px + 150px + 50px));
     }
     &--action {
-      padding-left: $unit-10;
       width: 200px;
+      margin-right: $unit-11;
       display: flex;
-      justify-content: flex-start;
-      align-items: center;
+      place-content: center space-between;
       &--happy {
         color: $green-primary-1;
       }
       &--sad {
+        padding-left: $unit-21;
         color: $red-primary-1;
       }
     }

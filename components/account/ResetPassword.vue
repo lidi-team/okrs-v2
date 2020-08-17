@@ -130,12 +130,6 @@ export default class ResetPassword extends Vue {
     font-size: 1.75rem;
     color: $neutral-primary-4;
   }
-  &__input {
-    &__new-password {
-    }
-    &__match-password {
-    }
-  }
   &__action {
     margin-top: $unit-10;
     flex-direction: column;

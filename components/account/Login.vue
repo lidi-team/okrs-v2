@@ -1,7 +1,7 @@
 <template>
   <el-row class="login-form" type="flex" justify="center">
     <div class="login-form__title">
-      <span>Đăng nhập Capi Creative Design</span>
+      <span>Đăng nhập tài khoản</span>
     </div>
     <el-form
       ref="loginForm"

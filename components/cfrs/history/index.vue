@@ -109,7 +109,7 @@ export default class History extends Vue {
 .history {
   color: $neutral-primary-4;
   margin-top: $unit-5;
-  filter: drop-shadow(0px 0px 0px rgba(63, 63, 68, 0.05)), drop-shadow(0px 1px 3px rgba(63, 63, 68, 0.15));
+  @include drop-shadow;
   border-radius: $border-radius-base;
   &__col {
     background-color: $white;
@@ -121,7 +121,7 @@ export default class History extends Vue {
     &__header {
       font-size: $text-2xl;
       padding: 0 0 $unit-4;
-      box-shadow: inset 0px -1px 0px #dfe3e8;
+      @include box-shadow;
       border-radius: $border-radius-base $border-radius-base 0px 0px;
     }
   }
@@ -130,7 +130,7 @@ export default class History extends Vue {
   display: flex;
   flex-direction: row;
   padding: $unit-4 0;
-  box-shadow: inset 0px -1px 0px #dfe3e8;
+  @include box-shadow;
   cursor: pointer;
   &__content {
     margin: 0 $unit-4;
