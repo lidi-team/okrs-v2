@@ -95,7 +95,7 @@ import { Component, Vue, PropSync } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { statusCheckin, confidentLevel, notificationConfig } from '@/constants/app.constant';
-import { formatDateToYYYY, compareTwoDate } from '@/utils/dateParser';
+import { formatDateToYYYY } from '@/utils/dateParser';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<DetailHistory>({
   name: 'DetailHistory',

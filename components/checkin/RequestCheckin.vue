@@ -13,7 +13,7 @@
       </el-table-column>
       <el-table-column align="center" label="Ngày" min-width="150">
         <template slot-scope="{ row }">
-          <span v-if="row.checkinAt">{{ new Date(row.checkinAt) | dateFormat('DD/MM/YYYY') }}</span>
+          <span>{{ new Date(row.createdAt) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Hành động" align="center" width="180">
