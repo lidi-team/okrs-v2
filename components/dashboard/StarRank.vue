@@ -5,7 +5,7 @@
         <div class="star__col star__income">
           <div class="star__col__header">
             <icon-star-dashboard class="star__col__icon" />
-            <p>Top sao nhận được</p>
+            <p class="star__col__title">Top sao nhận được</p>
           </div>
           <div v-for="(item, index) in dataStarInCome" :key="item.id" class="star-item">
             <div class="star-item__left">
@@ -25,7 +25,7 @@
         <div class="star__col">
           <div class="star__col__header">
             <icon-star-dashboard class="star__col__icon" />
-            <p>Top sao cho đi</p>
+            <p class="star__col__title">Top sao cho đi</p>
           </div>
           <div v-for="(item, index) in dataStarOutCome" :key="item.id" class="star-item">
             <div class="star-item__left">
@@ -45,7 +45,7 @@
         <div class="star__col star__recognition">
           <div class="star__col__header">
             <icon-star-dashboard class="star__col__icon" />
-            <p>Ghi nhận đặc biệt</p>
+            <p class="star__col__title">Ghi nhận đặc biệt</p>
           </div>
         </div>
       </el-col>
@@ -96,7 +96,7 @@ export default class ProgressBarComponent extends Vue {
     border-radius: $unit-1;
     box-shadow: $box-shadow-default;
     &__header {
-      font-size: $text-2xl;
+      font-size: $text-base;
       padding: 0 0 $unit-4;
       display: flex;
       place-content: center;
@@ -106,6 +106,10 @@ export default class ProgressBarComponent extends Vue {
     &__icon {
       display: flex;
       align-self: center;
+    }
+    &__title {
+      font-size: $text-base;
+      font-weight: $font-weight-medium;
     }
   }
   &__income {
@@ -132,6 +136,7 @@ export default class ProgressBarComponent extends Vue {
     display: flex;
     align-self: center;
     font-weight: $font-weight-medium;
+    font-size: $text-sm;
   }
 }
 </style>
