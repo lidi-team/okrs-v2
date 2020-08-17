@@ -13,13 +13,13 @@
       </el-table-column>
       <el-table-column align="center" label="Ngày" min-width="150">
         <template slot-scope="{ row }">
-          <span>{{ new Date(row.checkinAt) | dateFormat('DD/MM/YYYY') }}</span>
+          <span>{{ new Date(row.createdAt) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Hành động" align="center" width="180">
         <template slot-scope="{ row }">
           <nuxt-link :to="`checkin/yeu-cau/${row.id}`">
-            <el-button class="el-button--purple el-button--checkin">Checkin</el-button>
+            <el-button class="el-button--purple el-button--checkin">Duyệt Check-in</el-button>
           </nuxt-link>
         </template>
       </el-table-column>

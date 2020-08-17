@@ -10,7 +10,7 @@
         </el-table-column>
         <el-table-column label="Ngày check-in" min-width="150">
           <template slot-scope="{ row }">
-            <span>{{ new Date(row.checkinAt) | dateFormat('DD/MM/YYYY') }}</span>
+            <span v-if="row.checkinAt">{{ new Date(row.checkinAt) | dateFormat('DD/MM/YYYY') }}</span>
           </template>
         </el-table-column>
         <el-table-column label="Ngày check-in kế tiếp" min-width="150">

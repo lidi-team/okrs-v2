@@ -1,6 +1,6 @@
 <template>
   <div v-loading.fullscreen.lock="loading" class="createCheckinPage">
-    <h1 class="createCheckinPage__title">Tạo checkin</h1>
+    <h1 class="createCheckinPage__title">Duyệt Check-in</h1>
     <checkin-request v-if="checkin" :checkin.sync="checkin">
       <chart-checkin v-if="checkin" slot="chartOKRs" :history-detail="chart" />
     </checkin-request>

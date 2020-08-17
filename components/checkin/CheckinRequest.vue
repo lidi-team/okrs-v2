@@ -69,6 +69,7 @@
                   v-model="syncCheckin.nextCheckinDate"
                   :clearable="false"
                   type="date"
+                  :picker-options="pickerOptions"
                   :format="dateFormat"
                   :value-format="dateFormat"
                   placeholder="Chọn ngày checkin tiếp theo"
@@ -94,7 +95,7 @@ import { Component, Vue, PropSync } from 'vue-property-decorator';
 import { Form, Notification } from 'element-ui';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { statusCheckin, confidentLevel, notificationConfig } from '@/constants/app.constant';
-import { formatDateToYYYY, compareTwoDate } from '@/utils/dateParser';
+import { formatDateToYYYY } from '@/utils/dateParser';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<DetailHistory>({
   name: 'DetailHistory',
@@ -110,16 +111,11 @@ export default class DetailHistory extends Vue {
   }
 
   private checkNumber = (rule, value, callback) => {
-    if (!value) {
-      return callback(new Error('Hãy nhập số đạt được'));
+    if (!Number.isInteger(value)) {
+      return callback(new Error('Phải là số nguyên'));
+    } else {
+      callback();
     }
-    setTimeout(() => {
-      if (!Number.isInteger(value)) {
-        callback(new Error('Phải là số nguyên'));
-      } else {
-        callback();
-      }
-    }, 500);
   };
 
   private checkText = (rule, value, callback) => {
@@ -131,12 +127,11 @@ export default class DetailHistory extends Vue {
     }
   };
 
-  private validateDate(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
-    if (compareTwoDate(value, this.syncCheckin.checkinAt) === 1) {
-      return callback('Ngày checkin tiếp theo phải lớn hơn ngày checkin hiện tại');
-    }
-    return callback();
-  }
+  private pickerOptions: any = {
+    disabledDate(time) {
+      return time.getTime() <= Date.now();
+    },
+  };
 
   private rules: Maps<Rule[]> = {
     valueObtained: [{ validator: this.checkNumber, trigger: ['change', 'blur'] }],
@@ -164,7 +159,7 @@ export default class DetailHistory extends Vue {
       },
       { validator: this.checkText, trigger: ['change', 'blur'] },
     ],
-    nextCheckinDate: [{ validator: this.validateDate, trigger: ['blur', 'change'] }],
+    nextCheckinDate: [{ required: true, message: 'Vui lòng chọn ngày check-in tiếp theo', trigger: ['blur', 'change'] }],
   };
 
   private handleBack() {
@@ -175,9 +170,8 @@ export default class DetailHistory extends Vue {
     const tempCheckin: any = {
       checkin: {
         confidentLevel: this.syncCheckin.confidentLevel,
-        objectiveId: this.syncCheckin.id,
+        objectiveId: this.syncCheckin.objective.id,
         isCompleted: this.syncCheckin.isCompleted,
-        checkinAt: formatDateToYYYY(this.syncCheckin.checkinAt),
         nextCheckinDate: formatDateToYYYY(this.syncCheckin.nextCheckinDate),
       },
       checkinDetails: [],

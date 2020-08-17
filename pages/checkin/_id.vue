@@ -9,7 +9,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
-import { formatDateToDD } from '@/utils/dateParser';
+import { formatDateToDD, initNewDate } from '@/utils/dateParser';
 @Component({
   name: 'CheckinPage',
   created() {
@@ -30,7 +30,7 @@ export default class CheckinPage extends Vue {
           confidentLevel: 3,
           status: 'Draft',
           checkinAt: formatDateToDD(res.data.data.checkin.checkinAt),
-          nextCheckinDate: formatDateToDD(res.data.data.checkin.nextCheckinDate),
+          nextCheckinDate: res.data.data.checkin.nextCheckinDate ? formatDateToDD(res.data.data.checkin.nextCheckinDate) : initNewDate(),
         });
         for (let index = 0; index < res.data.data.keyResults.length; index++) {
           res.data.data.checkinDetail.push({
