@@ -126,7 +126,9 @@ export default class UpdateOkrsDialog extends Vue {
         });
         if (validForm === krs.length) {
           const payload: PayloadOkrs = {
-            objective: this.$store.state.okrs.objective ? this.$store.state.okrs.objective : Object.assign({}, { id: +this.$route.params.id }),
+            objective: this.$store.state.okrs.objective
+              ? this.$store.state.okrs.objective
+              : Object.assign({}, { id: +this.$route.params.id, title: this.tempObjective.title }),
             keyResult: krs,
           };
           try {

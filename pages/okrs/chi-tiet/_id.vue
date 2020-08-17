@@ -44,7 +44,7 @@
         </template>
       </div>
     </div>
-    <update-okrs-dialog :temporary-okrs.sync="tempOkrs" :visible-dialog.sync="visibleDialog" :reload-data="reloadData" />
+    <update-okrs-dialog :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleDialog" :reload-data="reloadData" />
   </div>
 </template>
 <script lang="ts">
