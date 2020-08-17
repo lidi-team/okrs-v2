@@ -3,7 +3,7 @@
     <div class="cfrs-page">
       <el-row class="cfrs-page__top" type="flex" justify="space-between">
         <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
-          <cfrs-navbar-crfs
+          <cfrs-navbar-cfrs
             :text-search.sync="textSearch"
             :text-search-placeholder="textSearchPlaceholder"
             :current-tab-component="$route.query.tab"
@@ -19,7 +19,7 @@
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab" />
       <component :is="currentTabComponent" />
     </el-tabs>
-    <cfrs-recongnition :visible-dialog.sync="visibleCreateDialog" />
+    <cfrs-recognition :visible-dialog.sync="visibleCreateDialog" />
   </div>
 </template>
 

@@ -3,7 +3,7 @@
     <el-popover placement="top" trigger="click">
       <div class="okrs-tooltip__popover">
         <p @click="moveToDetailOkrsPage">Xem chi tiết</p>
-        <div v-if="checkAuthorizationToDisplay(syncOkrsId)">
+        <div v-if="editable">
           <p @click="openUpdateDialog">Cập nhật</p>
           <p @click="openAlignDialog">Liên kết</p>
           <p @click="handleDeleteOKrs">Xóa</p>
@@ -29,17 +29,21 @@ export default class OkrsActionTooltip extends Vue {
   @PropSync('visibleUpdateDialog', { type: Boolean, required: true, default: false }) private syncVisibleUpdateDialog!: boolean;
   @PropSync('visibleAlignDialog', { type: Boolean, required: true, default: false }) private syncVisibleAlignDialog!: boolean;
   @PropSync('okrsId', { type: Number, required: true }) private syncOkrsId!: number;
+  @PropSync('tempOkrs', { type: Object, required: true }) public syncTempOkrs!: object;
   @Prop(Function) private reloadData!: Function;
+  @Prop(Boolean) private editable!: boolean;
 
   private moveToDetailOkrsPage() {
     this.$router.push(`/OKRs/chi-tiet/${this.syncOkrsId}`);
   }
 
   private openUpdateDialog() {
+    this.$emit('updateTempOkrs', this.syncTempOkrs);
     this.syncVisibleUpdateDialog = true;
   }
 
   private openAlignDialog() {
+    this.$emit('updateTempOkrs', this.syncTempOkrs);
     this.syncVisibleAlignDialog = true;
   }
 

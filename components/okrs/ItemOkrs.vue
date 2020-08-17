@@ -20,9 +20,12 @@
                 <span :class="isUpProgress(changeValue, true)">{{ changeValue }}%</span>
                 <okrs-action-tooltip
                   :reload-data="reloadData"
+                  :editable="editableOkrs(objective.user.id)"
                   :okrs-id.sync="objective.id"
+                  :temp-okrs.sync="objective"
                   :visible-update-dialog.sync="visibleUpdateDialog"
                   :visible-align-dialog.sync="visibleAlignDialog"
+                  @updateTempOkrs="updateTempOkrs($event)"
                 />
               </div>
             </div>
@@ -49,17 +52,20 @@
               <p :class="isUpProgress(row.progress, false)">{{ row.progress }}%</p>
               <okrs-action-tooltip
                 :reload-data="reloadData"
+                :editable="editableOkrs(row.user.id)"
                 :okrs-id.sync="row.id"
+                :temp-okrs.sync="row"
                 :visible-update-dialog.sync="visibleUpdateDialog"
                 :visible-align-dialog.sync="visibleAlignDialog"
+                @updateTempOkrs="updateTempOkrs($event)"
               />
             </div>
           </template>
         </el-table-column>
       </el-table>
     </div>
-    <!-- <update-okrs-dialog :visible-dialog.sync="visibleUpdateDialog" :reload-data="reloadData" /> -->
-    <align-okrs-dialog v-if="visibleAlignDialog" :visible-dialog.sync="visibleAlignDialog" />
+    <update-okrs-dialog v-if="visibleUpdateDialog" :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleUpdateDialog" :reload-data="reloadData" />
+    <align-okrs-dialog v-if="visibleAlignDialog" :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleAlignDialog" :reload-data="reloadData" />
   </fragment>
 </template>
 <script lang="ts">
@@ -78,10 +84,16 @@ export default class OKRsItem extends Vue {
   // @Prop(Boolean) readonly loading!: boolean;
   @Prop(Function) private reloadData!: Function;
 
+  private tempOkrs: any = {};
   private visibleUpdateDialog: boolean = false;
   private visibleAlignDialog: boolean = false;
 
   private changeValue: number = 0;
+
+  private updateTempOkrs(tempOkrs: any) {
+    this.tempOkrs = tempOkrs;
+  }
+
   private customColors(percentage: number) {
     if (percentage < 30) {
       return '#e3d0ff';
@@ -98,6 +110,10 @@ export default class OKRsItem extends Vue {
     } else {
       return progress > 0 ? 'item-okrs--row--change--happy' : 'item-okrs--row--change--sad';
     }
+  }
+
+  private editableOkrs(userId) {
+    return userId === this.$store.state.auth.user.id;
   }
 }
 </script>
