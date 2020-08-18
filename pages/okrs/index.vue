@@ -2,7 +2,7 @@
   <div class="okrs-page">
     <el-row class="okrs-page__top" type="flex" justify="space-between">
       <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
-        <base-top-search-cycle :cycle-id.sync="cycleId" :text-search.sync="textSearch" :text-search-placeholder="textSearchPlaceholder" />
+        <base-top-search-cycle :cycle-id.sync="cycleId" />
       </el-col>
       <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
         <el-button v-if="isNotAdminButton()" class="el-button el-button--purple el-button-medium" icon="el-icon-plus" @click="addPersonalOkrs">
@@ -38,22 +38,19 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import { MutationState } from '@/constants/app.enum';
-import CycleRepository from '@/repositories/CycleRepository';
+import { MutationState, DispatchAction } from '@/constants/app.enum';
 @Component<OKRsPage>({
   name: 'OKRsPage',
   created() {
     this.getDashBoardOkrs();
+    this.$store.dispatch(DispatchAction.STAFF_OKRS, { cycleId: this.$store.state.cycle.cycle.id, type: 3 });
   },
-  async destroyed() {
-    const { data } = await CycleRepository.getCurrentCycle();
-    this.$store.commit(MutationState.SET_CURRENT_CYCLE, data.data);
+  destroyed() {
+    this.$store.commit(MutationState.CLEAR_STAFF_OKRS, null);
   },
   middleware: ['measureUnit'],
 })
 export default class OKRsPage extends Vue {
-  private textSearchPlaceholder: string = 'Tìm kiếm OKRs của';
-  private textSearch: string = '';
   private cycleId: number = this.$store.state.cycle.cycle.id;
   private loadingForm: boolean = false;
   private visibleCreateOkrsDialog = false;

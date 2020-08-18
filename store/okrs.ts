@@ -11,14 +11,14 @@ export enum OkrsMutation {
 
 export interface OkrsState {
   objective: ObjectiveDTO | null;
-  keyResults: KeyResultDTO[];
-  staffOkrs: any[];
+  keyResults: KeyResultDTO[] | null;
+  staffOkrs: any[] | null;
 }
 
 export const state = (): OkrsState => ({
   objective: null,
-  keyResults: [],
-  staffOkrs: [],
+  keyResults: null,
+  staffOkrs: null,
 });
 
 export type RootState = ReturnType<typeof state>;
@@ -31,7 +31,7 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   [OkrsMutation.SET_OBJECTIVE]: (state, objective: ObjectiveDTO) => (state.objective = objective),
-  [OkrsMutation.SET_KEY_RESULT]: (state, keyResult: KeyResultDTO) => state.keyResults.push(keyResult),
+  [OkrsMutation.SET_KEY_RESULT]: (state, keyResult: KeyResultDTO) => state.keyResults!.push(keyResult),
   [OkrsMutation.CLEAR_KRS]: (state) => (state.keyResults = []),
   [OkrsMutation.SET_STAFF_OKRS]: (state, staffOkrs: any) => (state.staffOkrs = staffOkrs),
 };

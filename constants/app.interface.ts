@@ -178,3 +178,12 @@ export interface FormFeedback {
   criteria?: string;
   content?: string;
 }
+
+/**
+ * Dialog type = 1 -> Open updating dialog
+ * Dialog type = 2 -> Open aligning dialog
+ */
+export interface DialogTooltipAction {
+  okrs: any;
+  dialogType: number;
+}

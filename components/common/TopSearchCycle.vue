@@ -7,41 +7,65 @@
     </el-col>
     <el-col :xs="12" :sm="12" :md="12" :lg="12">
       <el-autocomplete
-        v-model="syncTextSearch"
+        v-model="textSearch"
         :fetch-suggestions="querySearch"
-        :placeholder="textSearchPlaceholder"
+        :trigger-on-focus="false"
+        placeholder="Tìm kiếm OKRs"
         @select="handleSearchSelect"
       ></el-autocomplete>
     </el-col>
   </el-row>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, PropSync, Watch } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Watch } from 'vue-property-decorator';
 import CycleRepository from '@/repositories/CycleRepository';
 import { SelectOptionDTO } from '@/constants/app.interface';
 import { MutationState } from '@/constants/app.enum';
+import OkrsRepository from '@/repositories/OkrsRepository';
 @Component<TopSearchCycle>({
   name: 'TopSearchCycle',
   created() {
     this.getAllCycles();
   },
+  mounted() {
+    return this.getAllCompanyOkrs();
+  },
 })
 export default class TopSearchCycle extends Vue {
   @PropSync('cycleId', { required: true, type: Number }) private syncCycleId!: number;
-  @Prop({ required: true, type: String }) private textSearchPlaceholder!: string;
-  @PropSync('textSearch', { required: true, type: String }) private syncTextSearch!: string;
+  private allCompanyOkrs: any[] = [];
+  private textSearch: string = '';
   private options: SelectOptionDTO[] = [];
 
-  private querySearch() {
-    console.log('Query Search');
-  }
-
-  private handleSelectCycle(item) {
-    console.log('Select ' + item);
+  private querySearch(textQuery: string, callback: any) {
+    let results: any[] = [];
+    if (textQuery) {
+      results = this.allCompanyOkrs.filter((item) => {
+        return item.value.toLowerCase().includes(textQuery.toLowerCase());
+      });
+    } else {
+      results = this.allCompanyOkrs;
+    }
+    // call callback function to return suggestions
+    callback(results);
   }
 
   private handleSearchSelect(item) {
-    console.log('Search ' + item);
+    window.open(`${process.env.baseURL}/OKRs/chi-tiet/${item.id}`, '_blank');
+    this.textSearch = '';
+  }
+
+  private async getAllCompanyOkrs() {
+    const [rootOkrs, okrs] = await Promise.all([OkrsRepository.getListOkrs(this.syncCycleId, 1), OkrsRepository.getListOkrs(this.syncCycleId, 3)]);
+    const result = [...Object.freeze(rootOkrs.data.data), ...Object.freeze(okrs.data.data)];
+    if (result.length) {
+      this.allCompanyOkrs = result.map((item) => {
+        return {
+          id: item.id,
+          value: `[${item.user.email}] ${item.title}`,
+        };
+      });
+    }
   }
 
   private async getAllCycles() {
@@ -53,7 +77,6 @@ export default class TopSearchCycle extends Vue {
         value: item.id,
       };
     });
-    // this.syncCycleId = this.$store.state.cycle.cycle.id;
   }
 }
 </script>

@@ -43,8 +43,6 @@ import { DispatchAction, MutationState } from '@/constants/app.enum';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import { PayloadOkrs } from '@/constants/app.interface';
 
-let componenKey: number = 0;
-
 @Component<AddAlignObjeciveStep>({
   name: 'AddAlignObjeciveStep',
   components: {
@@ -137,10 +135,6 @@ export default class AddAlignObjeciveStep extends Vue {
 
   private backToStepTwo() {
     this.syncActive--;
-  }
-
-  private getKeyUpComponent(component) {
-    return `${component.name}-${componenKey++}`;
   }
 }
 </script>

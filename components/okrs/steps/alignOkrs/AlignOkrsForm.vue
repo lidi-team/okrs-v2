@@ -25,7 +25,7 @@ import { Maps, Rule } from '@/constants/app.type';
     IconDelete,
   },
   created() {
-    this.getStaffOkrs();
+    this.itemsAlignOkrs = this.$store.state.okrs.staffOkrs.map((item) => ({ ...item }));
   },
 })
 export default class InputAlignOkrs extends Vue {
@@ -42,10 +42,6 @@ export default class InputAlignOkrs extends Vue {
 
   private hovering: boolean = false;
   private itemsAlignOkrs: any[] = [];
-
-  private getStaffOkrs() {
-    this.itemsAlignOkrs = this.$store.state.okrs.staffOkrs.map((item) => ({ ...item }));
-  }
 
   private rules: Maps<Rule[]> = {
     objectiveId: [{ type: 'number', required: true, message: 'Vui lòng chọn OKRs để liên kết', trigger: ['blur', 'change'] }],

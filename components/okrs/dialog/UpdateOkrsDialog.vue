@@ -25,7 +25,7 @@
     </div>
     <el-button class="el-button el-button--white el-button--small update-okrs__button" @click="addNewKRs">
       <icon-add-krs />
-      <span>Thêm OKRs</span>
+      <span>Thêm KRs</span>
     </el-button>
     <span slot="footer">
       <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
@@ -50,6 +50,12 @@ import { PayloadOkrs } from '@/constants/app.interface';
   },
   created() {
     this.krFormItems = this.temporaryOkrs.keyResults;
+  },
+  beforeMount() {
+    this.formLoading = true;
+    setTimeout(() => {
+      this.formLoading = false;
+    }, 500);
   },
 })
 export default class UpdateOkrsDialog extends Vue {
