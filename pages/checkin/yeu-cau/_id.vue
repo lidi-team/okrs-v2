@@ -12,7 +12,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import { Notification } from 'element-ui';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { formatDateToDD } from '@/utils/dateParser';
-import { notificationConfig, pageLimit } from '@/constants/app.constant';
+import { notificationConfig } from '@/constants/app.constant';
 @Component({
   name: 'RequestPage',
   created() {
