@@ -135,6 +135,7 @@ export enum MutationState {
   SET_KR = 'okrs/setKeyResult',
   CLEAR_KRS = 'okrs/clearKrs',
   SET_OKRS_DETAIL = 'okrs/setOkrsDetail',
+  CLEAR_STAFF_OKRS = 'okrs/setStaffOkrs',
   SET_MEASURE_UNITS = 'measureUnit/setMeasureUnits',
   SET_TEMP_CYCLE = 'cycle/setTempCycle',
 }

@@ -38,16 +38,16 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import { MutationState } from '@/constants/app.enum';
+import { MutationState, DispatchAction } from '@/constants/app.enum';
 import CycleRepository from '@/repositories/CycleRepository';
 @Component<OKRsPage>({
   name: 'OKRsPage',
   created() {
     this.getDashBoardOkrs();
+    this.$store.dispatch(DispatchAction.STAFF_OKRS, { cycleId: this.$store.state.cycle.cycle.id, type: 3 });
   },
-  async destroyed() {
-    const { data } = await CycleRepository.getCurrentCycle();
-    this.$store.commit(MutationState.SET_CURRENT_CYCLE, data.data);
+  destroyed() {
+    this.$store.commit(MutationState.CLEAR_STAFF_OKRS, null);
   },
   middleware: ['measureUnit'],
 })

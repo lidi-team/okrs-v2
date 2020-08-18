@@ -2,10 +2,10 @@
   <el-tooltip class="okrs-tooltip" content="Hành động" placement="right-start" effect="dark">
     <el-popover placement="top" trigger="click">
       <div class="okrs-tooltip__popover">
-        <p @click="moveToDetailOkrsPage">Xem chi tiết</p>
+        <p @click="viewDetailOkrs">Xem chi tiết</p>
         <div v-if="editable">
-          <p @click="openUpdateDialog">Cập nhật</p>
-          <p @click="openAlignDialog">Liên kết</p>
+          <p @click="openUpdateDialog(1)">Cập nhật</p>
+          <p @click="openUpdateDialog(2)">Liên kết</p>
           <p @click="handleDeleteOKrs">Xóa</p>
         </div>
       </div>
@@ -19,6 +19,7 @@ import { Notification } from 'element-ui';
 import IconSetting from '@/assets/images/okrs/setting.svg';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import OkrsRepository from '@/repositories/OkrsRepository';
+import { DialogTooltipAction } from '@/constants/app.interface';
 @Component<OkrsActionTooltip>({
   name: 'OkrsActionTooltip',
   components: {
@@ -26,25 +27,18 @@ import OkrsRepository from '@/repositories/OkrsRepository';
   },
 })
 export default class OkrsActionTooltip extends Vue {
-  @PropSync('visibleUpdateDialog', { type: Boolean, required: true, default: false }) private syncVisibleUpdateDialog!: boolean;
-  @PropSync('visibleAlignDialog', { type: Boolean, required: true, default: false }) private syncVisibleAlignDialog!: boolean;
   @PropSync('okrsId', { type: Number, required: true }) private syncOkrsId!: number;
   @PropSync('tempOkrs', { type: Object, required: true }) public syncTempOkrs!: object;
   @Prop(Function) private reloadData!: Function;
   @Prop(Boolean) private editable!: boolean;
 
-  private moveToDetailOkrsPage() {
+  private viewDetailOkrs() {
     this.$router.push(`/OKRs/chi-tiet/${this.syncOkrsId}`);
   }
 
-  private openUpdateDialog() {
-    this.$emit('updateTempOkrs', this.syncTempOkrs);
-    this.syncVisibleUpdateDialog = true;
-  }
-
-  private openAlignDialog() {
-    this.$emit('updateTempOkrs', this.syncTempOkrs);
-    this.syncVisibleAlignDialog = true;
+  private openUpdateDialog(dialogType: number) {
+    const payload: DialogTooltipAction = { okrs: this.syncTempOkrs, dialogType };
+    this.$emit('updateTempOkrs', payload);
   }
 
   private handleDeleteOKrs(id: number) {
@@ -59,19 +53,8 @@ export default class OkrsActionTooltip extends Vue {
             message: 'Xóa OKRs thành công',
           });
         });
-        // Reaload page
       } catch (error) {}
     });
-  }
-
-  private checkAuthorizationToDisplay(okrsId: number): boolean {
-    // try {
-    //   const { data } = await OkrsRepository.getOkrsDetail(okrsId);
-    //   console.log('User' + data.data.user.id);
-    //   console.log('Detail ID' + this.$store.state.auth.user.id);
-    //   return this.$store.state.auth.user.id === data.data.user.id;
-    // } catch (error) {}
-    return false;
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <div :class="['item-okrs', indexItem === 2 ? 'last-item-okrs' : null]">
       <p class="item-okrs__header">{{ textHeader }}</p>
       <el-table :data="tableData" header-row-class-name="item-okrs__table-header" style="width: 100%;">
@@ -23,9 +23,7 @@
                   :editable="editableOkrs(objective.user.id)"
                   :okrs-id.sync="objective.id"
                   :temp-okrs.sync="objective"
-                  :visible-update-dialog.sync="visibleUpdateDialog"
-                  :visible-align-dialog.sync="visibleAlignDialog"
-                  @updateTempOkrs="tempOkrs = $event"
+                  @updateTempOkrs="updateTempOkrs($event)"
                 />
               </div>
             </div>
@@ -55,9 +53,7 @@
                 :editable="editableOkrs(row.user.id)"
                 :okrs-id.sync="row.id"
                 :temp-okrs.sync="row"
-                :visible-update-dialog.sync="visibleUpdateDialog"
-                :visible-align-dialog.sync="visibleAlignDialog"
-                @updateTempOkrs="tempOkrs = $event"
+                @updateTempOkrs="updateTempOkrs($event)"
               />
             </div>
           </template>
@@ -66,11 +62,12 @@
     </div>
     <update-okrs-dialog v-if="visibleUpdateDialog" :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleUpdateDialog" :reload-data="reloadData" />
     <align-okrs-dialog v-if="visibleAlignDialog" :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleAlignDialog" :reload-data="reloadData" />
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import IconEllipse from '@/assets/images/okrs/ellipse.svg';
+import { DialogTooltipAction } from '@/constants/app.interface';
 @Component<OKRsItem>({
   name: 'OKRsItem',
   components: {
@@ -99,11 +96,20 @@ export default class OKRsItem extends Vue {
     }
   }
 
-  private isUpProgress(progress: number, isExpanded: boolean): string {
-    if (isExpanded) {
+  private isUpProgress(progress: number, isRowExpanded: boolean): string {
+    if (isRowExpanded) {
       return progress > 0 ? 'item-okrs__expand--action--happy' : 'item-okrs__expand--action--sad';
     } else {
       return progress > 0 ? 'item-okrs--row--change--happy' : 'item-okrs--row--change--sad';
+    }
+  }
+
+  private updateTempOkrs({ dialogType, okrs }: DialogTooltipAction) {
+    this.tempOkrs = okrs;
+    if (dialogType === 1) {
+      this.visibleUpdateDialog = true;
+    } else {
+      this.visibleAlignDialog = true;
     }
   }
 

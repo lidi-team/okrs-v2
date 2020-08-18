@@ -13,7 +13,7 @@
     </div>
     <el-button class="el-button el-button--white el-button--small add-krs-step__button" @click="addNewKRs">
       <icon-add-krs />
-      <span>Thêm OKRs</span>
+      <span>Thêm KRs</span>
     </el-button>
     <div class="add-krs-step__attention">
       <p class="add-krs-step__attention--title">Lưu ý:</p>
