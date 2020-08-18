@@ -28,13 +28,14 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
+import { Notification } from 'element-ui';
+import { notificationConfig, pageLimit } from '@/constants/app.constant';
 import { TabCheckins, GetterState } from '@/constants/app.enum';
 import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
 import MyOkrsCheckin from '@/components/checkin/MyOkrsCheckin.vue';
 import CycleRepository from '@/repositories/CycleRepository';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { SelectOptionDTO } from '@/constants/app.interface';
-import { pageLimit } from '@/constants/app.constant';
 @Component<CheckinPage>({
   name: 'CheckinPage',
   created() {
@@ -89,6 +90,12 @@ export default class CheckinPage extends Vue {
         this.tableData = data.data;
         this.loading = false;
       } catch (error) {
+        if (error.response.data.statusCode === 470) {
+          Notification.error({
+            ...notificationConfig,
+            message: 'Bạn không có quyền truy cập checkin này',
+          });
+        }
         this.loading = false;
       }
     } else {
@@ -98,6 +105,13 @@ export default class CheckinPage extends Vue {
         this.meta = data.data.meta;
         this.loading = false;
       } catch (error) {
+        if (error.response.data.statusCode === 470) {
+          Notification.error({
+            ...notificationConfig,
+            message: 'Bạn không có quền truy cập checkin này',
+          });
+        }
+        this.$router.push('/checkin');
         this.loading = false;
       }
     }
