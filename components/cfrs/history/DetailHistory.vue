@@ -38,14 +38,10 @@ import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
 import { confirmWarningConfig } from '@/constants/app.constant';
 @Component<DetailHistory>({
   name: 'DetailHistory',
-  created() {
-    console.log(this.dataDetail);
-  },
 })
 export default class DetailHistory extends Vue {
   @Prop(Function) public reloadData!: Function;
-  @Prop()
-  dataDetail!: Object;
+  @Prop() dataDetail!: Object;
 
   @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncCreateOkrsDialog!: boolean;
   private content: String = '';

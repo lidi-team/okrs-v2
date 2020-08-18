@@ -66,7 +66,7 @@ import { CfrsRepository } from '@/repositories/CfrsRepository';
   async mounted() {
     const dataCriteria = await EvaluationCriteriaRepository.getCombobox();
     this.optionCriteria = dataCriteria.data.data;
-    const dataRecognition = await CfrsRepository.getRecognition();
+    const dataRecognition = await CfrsRepository.getRecognitions();
     this.optionUserRecongnition = dataRecognition.data.data;
   },
 })

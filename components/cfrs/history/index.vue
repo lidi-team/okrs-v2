@@ -1,5 +1,5 @@
 <template>
-  <div class="history">
+  <div v-loading="loadingTab" class="history">
     <el-row :gutter="20" class>
       <el-col :span="8">
         <div class="history__col">
@@ -61,17 +61,24 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CreateFeedback from './Create.vue';
-import { HistoryRepository } from '@/repositories/CfrsRepository';
+import { CfrsRepository } from '@/repositories/CfrsRepository';
 @Component<History>({
   name: 'History',
-  async mounted() {
-    const {
-      data: { data },
-    } = await HistoryRepository.get(3);
-    this.data = data;
+  async created() {
+    try {
+      const { data } = await CfrsRepository.getHistoryCfrs(3);
+      this.data = data.data;
+    } catch (error) {}
+  },
+  beforeMount() {
+    this.loadingTab = true;
+    setTimeout(() => {
+      this.loadingTab = false;
+    }, 500);
   },
 })
 export default class History extends Vue {
+  private loadingTab: boolean = false;
   private data: any = {
     sent: [],
     received: [],
@@ -89,7 +96,6 @@ export default class History extends Vue {
     if (item.receiver) {
       receiver = item.receiver.fullName;
     }
-    console.log(item);
     this.dataDetail = {
       sender,
       receiver,

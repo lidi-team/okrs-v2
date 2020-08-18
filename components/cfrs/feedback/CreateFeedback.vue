@@ -58,10 +58,9 @@ import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepos
 })
 export default class CreateFeedbackDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
-  @Prop()
-  dataFeedback!: any;
-
+  @Prop() dataFeedback!: any;
   @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncCreateOkrsDialog!: boolean;
+
   private content: String = '';
   private optionCriteria: Object = [];
   private criteriaId: String | Number = '';

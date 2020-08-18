@@ -1,5 +1,5 @@
 <template>
-  <div class="rank">
+  <div v-loading="loadingTab" class="rank">
     <el-row :gutter="20" class>
       <el-col :span="12">
         <div class="rank__col">
@@ -39,21 +39,27 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import CreateFeedback from './Create.vue';
-import { RankRepository } from '@/repositories/CfrsRepository';
+import { CfrsRepository } from '@/repositories/CfrsRepository';
 import IconStar from '@/assets/images/admin/star.svg';
 @Component<Rank>({
   name: 'Rank',
   components: {
     IconStar,
   },
-  async mounted() {
-    const dataCycle = await RankRepository.get('all');
-    this.dataCycle = dataCycle.data.data;
-    const dataCurrent = await RankRepository.get('curent');
-    this.dataCurrent = dataCurrent.data.data;
+  async created() {
+    const [rankingAllCycle, rankingCurrentCycle] = await Promise.all([CfrsRepository.getRankingCfrs('all'), CfrsRepository.getRankingCfrs('curent')]);
+    this.dataCycle = rankingAllCycle.data.data;
+    this.dataCurrent = rankingCurrentCycle.data.data;
+  },
+  beforeMount() {
+    this.loadingTab = true;
+    setTimeout(() => {
+      this.loadingTab = false;
+    }, 500);
   },
 })
 export default class Rank extends Vue {
+  private loadingTab: boolean = false;
   private dataCycle: any = [];
   private dataCurrent: any = [];
   private dataDetail: object = {};
@@ -67,7 +73,6 @@ export default class Rank extends Vue {
     if (item.receiver) {
       receiver = item.receiver.fullName;
     }
-    console.log(item);
     this.dataDetail = {
       sender,
       receiver,

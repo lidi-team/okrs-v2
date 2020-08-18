@@ -1,7 +1,7 @@
 <template>
   <el-row v-if="currentTabComponent === 'history'" class="top-search-cycle">
     <el-col :xs="8" :sm="8" :md="8" :lg="8">
-      <el-select v-model="idCycle" filterable disabled placeholder="Nhập chu kỳ" no-match-text="Không tìm thấy chu kỳ" @change="handleSelectCycle()">
+      <el-select v-model="cycleId" filterable disabled placeholder="Nhập chu kỳ" no-match-text="Không tìm thấy chu kỳ" @change="handleSelectCycle()">
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </el-col>
@@ -24,6 +24,7 @@ import { MutationState } from '@/constants/app.enum';
 @Component<NavbarCrfs>({
   name: 'NavbarCrfs',
   created() {
+    console.log(this.currentTabComponent);
     this.getAllCycles();
   },
 })
@@ -32,13 +33,13 @@ export default class NavbarCrfs extends Vue {
   @Prop({ required: true, type: String }) private currentTabComponent!: string;
   @PropSync('textSearch', { required: true, type: String }) private syncTextSearch!: string;
   private options: SelectOptionDTO[] = [];
-  private idCycle: String = 'Summer 2020';
+  private cycleId: String = 'Summer 2020';
   private querySearch() {
     console.log('Query Search');
   }
 
   private handleSelectCycle() {
-    this.$store.commit(MutationState.SET_TEMP_CYCLE, this.idCycle);
+    this.$store.commit(MutationState.SET_TEMP_CYCLE, this.cycleId);
   }
 
   private handleSearchSelect(item) {
@@ -47,17 +48,25 @@ export default class NavbarCrfs extends Vue {
 
   private async getAllCycles() {
     // Get 2 years(8 cycles OKRs) ago until now
-    const {
-      data: { data },
-    } = await CycleRepository.get({ page: 1, limit: 8 });
-    this.options = data.items.map((item) => {
-      return {
-        label: item.name,
-        value: item.id,
-      };
-    });
-    const idCycle = this.options.find((item) => item.label === this.idCycle);
-    this.$store.commit(MutationState.SET_TEMP_CYCLE, idCycle);
+    if (this.$store.state.cycle.cycles.length) {
+      this.options = this.$store.state.cycle.cycles;
+      const cycleId = this.options.find((item) => item.label === this.cycleId);
+      this.$store.commit(MutationState.SET_TEMP_CYCLE, cycleId);
+    } else {
+      try {
+        const { data } = await CycleRepository.get({ page: 1, limit: 8 });
+        this.options = data.data.items.map((item) => {
+          return {
+            id: item.id,
+            label: item.name,
+            value: item.id,
+          };
+        });
+        this.$store.commit(MutationState.SET_ALL_CYCLES, this.options);
+        const cycleId = this.options.find((item) => item.label === this.cycleId);
+        this.$store.commit(MutationState.SET_TEMP_CYCLE, cycleId);
+      } catch (error) {}
+    }
   }
 }
 </script>

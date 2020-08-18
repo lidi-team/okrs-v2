@@ -1,7 +1,7 @@
 <template>
-  <div class="feedback">
+  <div v-loading="loadingTab" class="feedback">
     <el-row :gutter="20" class>
-      <el-col v-show="data.list1.list" :span="12">
+      <el-col v-show="data.list1.list" :md="12" :lg="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ data.list1.name }}</p>
           <div v-for="item in data.list1.list" :key="item.id" class="cfr">
@@ -20,7 +20,7 @@
           </div>
         </div>
       </el-col>
-      <el-col v-show="data.list2.list" :span="12">
+      <el-col v-show="data.list2.list" :md="12" :lg="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ data.list2.name }}</p>
           <div v-for="item in data.list2.list" :key="item.id" class="cfr">
@@ -51,14 +51,22 @@ import CreateFeedback from './Create.vue';
 import { CfrsRepository } from '@/repositories/CfrsRepository';
 @Component<Feedback>({
   name: 'Feedback',
-  async mounted() {
-    const {
-      data: { data },
-    } = await CfrsRepository.get();
-    this.data = data;
+  async created() {
+    try {
+      await CfrsRepository.get().then((res) => {
+        this.data = res.data.data;
+      });
+    } catch (error) {}
+  },
+  beforeMount() {
+    this.loadingTab = true;
+    setTimeout(() => {
+      this.loadingTab = false;
+    }, 500);
   },
 })
 export default class Feedback extends Vue {
+  private loadingTab: boolean = false;
   private data: any = {
     list1: [],
     list2: [],
@@ -82,6 +90,7 @@ export default class Feedback extends Vue {
   private visibleCreateDialog: Boolean = false;
   private visibleDetailDialog: Boolean = false;
   private detailId: Number = 0;
+
   private showDialog(id: Number): void {
     this.dataFeedback = this.data.list1.list.concat(this.data.list2.list).find((item) => item.id === id);
     this.visibleCreateDialog = true;

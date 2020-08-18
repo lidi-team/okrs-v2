@@ -51,6 +51,7 @@ import CheckinRepository from '@/repositories/CheckinRepository';
 export default class DetailFeedback extends Vue {
   @Prop({ type: Number, required: true }) private detailId!: Number;
   @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncVisibleDialog!: boolean;
+
   @Watch('detailId', { deep: true, immediate: true })
   private async updateDetailId() {
     if (this.detailId) {
