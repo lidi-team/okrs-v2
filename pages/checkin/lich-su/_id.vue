@@ -69,7 +69,7 @@ export default class HistoryCheckin extends Vue {
       if (error.response.data.statusCode === 470) {
         Notification.error({
           ...notificationConfig,
-          message: 'Bạn không có quền truy cập checkin này',
+          message: 'Bạn không có quyền truy cập checkin này',
         });
       } else if (error.response.data.statusCode === 404) {
         Notification.error({

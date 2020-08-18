@@ -45,7 +45,7 @@ export default class RequestPage extends Vue {
         if (error.response.data.statusCode === 470) {
           Notification.error({
             ...notificationConfig,
-            message: 'Bạn không có quền truy cập checkin này',
+            message: 'Bạn không có quyền truy cập checkin này',
           });
         } else if (error.response.data.statusCode === 404) {
           Notification.error({
@@ -58,7 +58,7 @@ export default class RequestPage extends Vue {
             message: 'Bạn chỉ có thể checkin những form mà member gửi lên',
           });
         }
-        this.$router.push('/checkin');
+        this.$router.push('/checkin?tab=request-checkin');
         this.loading = false;
       });
   }
