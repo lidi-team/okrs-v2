@@ -71,13 +71,21 @@ export default class TopSearchCycle extends Vue {
 
   private async getAllCycles() {
     // Get 2 years(8 cycles OKRs) ago until now
-    const { data } = await CycleRepository.get({ page: 1, limit: 8 });
-    this.options = data.data.items.map((item) => {
-      return {
-        label: item.name,
-        value: item.id,
-      };
-    });
+    if (this.$store.state.cycle.cycles.length) {
+      this.options = this.$store.state.cycle.cycles;
+    } else {
+      try {
+        const { data } = await CycleRepository.get({ page: 1, limit: 8 });
+        this.options = data.data.items.map((item) => {
+          return {
+            id: item.id,
+            label: item.name,
+            value: item.id,
+          };
+        });
+        this.$store.commit(MutationState.SET_ALL_CYCLES, this.options);
+      } catch (error) {}
+    }
   }
 }
 </script>

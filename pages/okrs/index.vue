@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loadingForm" class="okrs-page">
+  <div v-loading.fullscreen.lock="loadingForm" class="okrs-page">
     <el-row class="okrs-page__top" type="flex" justify="space-between">
       <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
         <base-top-search-cycle :cycle-id.sync="cycleId" />

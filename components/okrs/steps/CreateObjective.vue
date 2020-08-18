@@ -103,10 +103,21 @@ export default class CreateObjectiveStep extends Vue {
   }
 
   private async getListCycle() {
-    try {
-      const { data } = await CycleRepository.get(this.listDataParams);
-      this.listCycles = Object.freeze(data.data.items);
-    } catch (error) {}
+    if (this.$store.state.cycle.cycles.length) {
+      this.listCycles = this.$store.state.cycle.cycles;
+    } else {
+      try {
+        const { data } = await CycleRepository.get({ page: 1, limit: 8 });
+        this.listCycles = data.data.items.map((item) => {
+          return {
+            id: item.id,
+            label: item.name,
+            value: item.id,
+          };
+        });
+        this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
+      } catch (error) {}
+    }
   }
 
   @Watch('tempObjective.cycleId', { deep: true, immediate: true })
