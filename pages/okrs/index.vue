@@ -39,7 +39,6 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { MutationState, DispatchAction } from '@/constants/app.enum';
-import CycleRepository from '@/repositories/CycleRepository';
 @Component<OKRsPage>({
   name: 'OKRsPage',
   created() {

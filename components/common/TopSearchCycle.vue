@@ -17,7 +17,7 @@
   </el-row>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, PropSync, Watch } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Watch } from 'vue-property-decorator';
 import CycleRepository from '@/repositories/CycleRepository';
 import { SelectOptionDTO } from '@/constants/app.interface';
 import { MutationState } from '@/constants/app.enum';
