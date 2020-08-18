@@ -142,6 +142,14 @@ export default class AlignOkrsDialog extends Vue {
       }
     }
   }
+
+  private deleteAlignOkrs(indexForm: number) {
+    this.formLoading = true;
+    this.itemsAlignOkrs.splice(indexForm, 1);
+    setTimeout(() => {
+      this.formLoading = false;
+    }, 300);
+  }
 }
 </script>
 <style lang="scss">

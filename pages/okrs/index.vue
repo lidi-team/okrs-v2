@@ -1,5 +1,5 @@
 <template>
-  <div class="okrs-page">
+  <div v-loading="loadingForm" class="okrs-page">
     <el-row class="okrs-page__top" type="flex" justify="space-between">
       <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
         <base-top-search-cycle :cycle-id.sync="cycleId" />
@@ -17,7 +17,7 @@
         </el-dropdown>
       </el-col>
     </el-row>
-    <div v-loading="loadingForm">
+    <div>
       <item-okrs
         v-for="(item, index) in itemOKRsData"
         :key="item.textHeader"

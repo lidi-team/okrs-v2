@@ -8,6 +8,7 @@
     <el-col :xs="12" :sm="12" :md="12" :lg="12">
       <el-autocomplete
         v-model="textSearch"
+        prefix-icon="el-icon-search"
         :fetch-suggestions="querySearch"
         :trigger-on-focus="false"
         placeholder="Tìm kiếm OKRs"
