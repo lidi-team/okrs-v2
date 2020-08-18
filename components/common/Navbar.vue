@@ -24,7 +24,7 @@
                 {{ user.fullName }}
                 <i class="el-icon-caret-bottom" />
               </span>
-              <span class="info__role">{{ user.role.name }}</span>
+              <span class="info__role">{{ displayRoleName(user) }}</span>
             </div>
           </div>
           <el-dropdown-menu slot="dropdown">
@@ -121,6 +121,13 @@ export default class Navbar extends Vue {
   private async logout() {
     await this.$store.dispatch(DispatchAction.LOGOUT);
     this.$router.push('/login');
+  }
+
+  private displayRoleName(user: any) {
+    if (user.isLeader && user.role.name !== 'ADMIN' && user.role.name !== 'HR') {
+      return 'LEADER';
+    }
+    return user.role.name;
   }
 }
 </script>

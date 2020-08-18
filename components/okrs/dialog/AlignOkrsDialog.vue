@@ -97,21 +97,36 @@ export default class AlignOkrsDialog extends Vue {
   }
 
   private async updateAlignOkrs() {
-    const tempAlignOkrs: any[] = [];
+    const tempAlignOkrs: Set<Number> = new Set();
+    // Check validate each forms
     let validForm: number = 0;
-
+    // Check duplicate OKRs ID
+    let invalidContent: number = 0;
     this.loading = true;
     (this.$refs.alignForms as any).forEach((form) => {
       (form.$refs.alignOkrs as Form).validate((isValid: boolean, invalidatedFields: object) => {
-        if (isValid) {
+        if (!isValid) {
           validForm++;
         }
       });
-      tempAlignOkrs.push(Object.freeze(form.syncAlignOkrs));
+      if (!tempAlignOkrs.has(form.syncAlignOkrs.objectiveId)) {
+        tempAlignOkrs.add(form.syncAlignOkrs.objectiveId);
+      } else {
+        invalidContent++;
+      }
     });
-    if (validForm === tempAlignOkrs.length) {
+    if (invalidContent > 0) {
+      setTimeout(() => {
+        this.loading = false;
+      }, 300);
+      this.$message.error('Trùng lặp OKRs, xin vui lòng chọn lại');
+    } else if (validForm > 0) {
+      setTimeout(() => {
+        this.loading = false;
+      }, 300);
+    } else {
       const payload: PayloadOkrs = {
-        objective: Object.assign({}, { id: +this.temporaryOkrs.id }, { alignObjectives: tempAlignOkrs.map((item) => +item.objectiveId) }),
+        objective: Object.assign({}, { id: +this.temporaryOkrs.id }, { alignObjectivesId: Array.from(tempAlignOkrs) }),
         keyResult: this.temporaryOkrs.keyResults,
       };
       try {
@@ -127,10 +142,6 @@ export default class AlignOkrsDialog extends Vue {
       } catch (error) {
         this.loading = false;
       }
-    } else {
-      setTimeout(() => {
-        this.loading = false;
-      }, 300);
     }
   }
 }

@@ -2,7 +2,7 @@
   <div class="okrs-page">
     <el-row class="okrs-page__top" type="flex" justify="space-between">
       <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
-        <base-top-search-cycle :cycle-id.sync="cycleId" :text-search.sync="textSearch" :text-search-placeholder="textSearchPlaceholder" />
+        <base-top-search-cycle :cycle-id.sync="cycleId" />
       </el-col>
       <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
         <el-button v-if="isNotAdminButton()" class="el-button el-button--purple el-button-medium" icon="el-icon-plus" @click="addPersonalOkrs">
@@ -52,8 +52,6 @@ import CycleRepository from '@/repositories/CycleRepository';
   middleware: ['measureUnit'],
 })
 export default class OKRsPage extends Vue {
-  private textSearchPlaceholder: string = 'Tìm kiếm OKRs của';
-  private textSearch: string = '';
   private cycleId: number = this.$store.state.cycle.cycle.id;
   private loadingForm: boolean = false;
   private visibleCreateOkrsDialog = false;
