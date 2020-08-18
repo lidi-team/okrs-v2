@@ -41,10 +41,16 @@ export enum UserStatus {
   Inactive = 'Không hoạt động',
 }
 
-export enum TabCFR {
+export enum TabCfr {
   Feedback = 'Danh sách chờ Feedback',
   History = 'Lịch sử',
   Rank = 'Bảng xếp hạng',
+}
+
+export enum TabCfrEng {
+  Feedback = 'feedback',
+  History = 'history',
+  Rank = 'rank',
 }
 
 export enum TabCheckins {
@@ -138,4 +144,5 @@ export enum MutationState {
   CLEAR_STAFF_OKRS = 'okrs/setStaffOkrs',
   SET_MEASURE_UNITS = 'measureUnit/setMeasureUnits',
   SET_TEMP_CYCLE = 'cycle/setTempCycle',
+  SET_ALL_CYCLES = 'cycle/setAllCycles',
 }
