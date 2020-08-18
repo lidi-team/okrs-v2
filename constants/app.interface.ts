@@ -54,7 +54,7 @@ export interface ProfileDTO {
   fullName: string;
   email: string;
   gender: boolean;
-  dateOfBirth: Date | '';
+  dateOfBirth: any;
   department: string;
   position: string;
 }
