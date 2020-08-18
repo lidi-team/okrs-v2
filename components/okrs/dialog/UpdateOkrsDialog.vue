@@ -49,7 +49,6 @@ import { PayloadOkrs } from '@/constants/app.interface';
     KrsForm,
   },
   created() {
-    console.log(this.temporaryOkrs);
     this.krFormItems = this.temporaryOkrs.keyResults;
   },
 })

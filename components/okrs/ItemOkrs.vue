@@ -25,7 +25,7 @@
                   :temp-okrs.sync="objective"
                   :visible-update-dialog.sync="visibleUpdateDialog"
                   :visible-align-dialog.sync="visibleAlignDialog"
-                  @updateTempOkrs="updateTempOkrs($event)"
+                  @updateTempOkrs="tempOkrs = $event"
                 />
               </div>
             </div>
@@ -57,7 +57,7 @@
                 :temp-okrs.sync="row"
                 :visible-update-dialog.sync="visibleUpdateDialog"
                 :visible-align-dialog.sync="visibleAlignDialog"
-                @updateTempOkrs="updateTempOkrs($event)"
+                @updateTempOkrs="tempOkrs = $event"
               />
             </div>
           </template>
@@ -81,7 +81,6 @@ export default class OKRsItem extends Vue {
   @Prop(String) private textHeader!: string;
   @Prop(Number) private indexItem!: number;
   @Prop(Array) private tableData!: object[];
-  // @Prop(Boolean) readonly loading!: boolean;
   @Prop(Function) private reloadData!: Function;
 
   private tempOkrs: any = {};
@@ -89,10 +88,6 @@ export default class OKRsItem extends Vue {
   private visibleAlignDialog: boolean = false;
 
   private changeValue: number = 0;
-
-  private updateTempOkrs(tempOkrs: any) {
-    this.tempOkrs = tempOkrs;
-  }
 
   private customColors(percentage: number) {
     if (percentage < 30) {
