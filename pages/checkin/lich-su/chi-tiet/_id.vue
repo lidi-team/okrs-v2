@@ -1,6 +1,7 @@
 <template>
   <div v-loading.fullscreen.lock="loading" class="historyDetailPage">
-    <h1 class="historyDetailPage__title">Chi tiết lịch sử check-in</h1>
+    <el-page-header title="Lịch sử Check-in" @back="goBack" />
+    <h1 class="historyDetailPage__title">Chi tiết lịch sử Check-in</h1>
     <detail-history v-if="historyDetail" :history-detail="historyDetail">
       <chart-checkin v-if="historyDetail" slot="chartCheckin" :history-detail="historyDetail" />
     </detail-history>
@@ -19,6 +20,9 @@ import CheckinRepository from '@/repositories/CheckinRepository';
 export default class DetailHistoryPage extends Vue {
   private loading: boolean = false;
   private historyDetail: any = null;
+  private goBack() {
+    this.$router.push(`/checkin/lich-su/${this.$route.params.id}`);
+  }
 
   private async getDetail() {
     this.loading = true;

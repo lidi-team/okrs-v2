@@ -237,9 +237,7 @@ export default class OkrsDetailPage extends Vue {
       }
     }
   }
-  .el-page-header__title {
-    color: $neutral-primary-2;
-  }
+
   .el-progress {
     width: 25vw;
     margin-left: auto;

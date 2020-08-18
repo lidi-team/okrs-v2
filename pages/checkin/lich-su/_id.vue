@@ -1,6 +1,7 @@
 <template>
   <div class="listHistory">
-    <h1 class="listHistory__title">Lịch sử check-in</h1>
+    <el-page-header title="OKRs của tôi" @back="goBack" />
+    <h1 class="listHistory__title">Lịch sử Check-in</h1>
     <div class="listHistory__content">
       <el-table v-loading="loading" empty-text="Không có dữ liệu" class="myOKRs" :data="historyList" style="width: 100%;">
         <el-table-column label="Mục tiêu" min-width="250">
@@ -53,6 +54,9 @@ export default class HistoryCheckin extends Vue {
   private loading: boolean = false;
   private historyList: Array<object> = [];
   private status = statusCheckin;
+  private goBack() {
+    this.$router.push('/checkin');
+  }
 
   private async getList() {
     this.loading = true;

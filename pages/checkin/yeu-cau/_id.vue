@@ -1,5 +1,6 @@
 <template>
   <div v-loading.fullscreen.lock="loading" class="createCheckinPage">
+    <el-page-header title="Yêu cầu checkin" @back="goBack" />
     <h1 class="createCheckinPage__title">Duyệt Check-in</h1>
     <checkin-request v-if="checkin" :checkin.sync="checkin">
       <chart-checkin v-if="checkin" slot="chartOKRs" :history-detail="chart" />
@@ -20,6 +21,10 @@ export default class RequestPage extends Vue {
   private loading: boolean = false;
   private checkin: any = null;
   private chart: any = null;
+
+  private goBack() {
+    this.$router.push('/checkin?tab=request-checkin');
+  }
 
   private async getCheckin() {
     this.loading = true;
