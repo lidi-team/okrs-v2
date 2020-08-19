@@ -25,12 +25,14 @@ import OkrsRepository from '@/repositories/OkrsRepository';
 @Component<TopSearchCycle>({
   name: 'TopSearchCycle',
   async created() {
-    this.cycleId = this.$store.state.cycle.cycle.id;
     await this.getListCycle();
+  },
+  mounted() {
+    this.getAllCompanyOkrs();
   },
 })
 export default class TopSearchCycle extends Vue {
-  // private cycleId: number = this.$store.state.cycle.cycle.id;
+  private cycleId: number = this.$store.state.cycle.cycle.id;
   private allCompanyOkrs: any[] = [];
   private textSearch: string = '';
   private listCycles: any[] = [];
@@ -60,17 +62,18 @@ export default class TopSearchCycle extends Vue {
   }
 
   private async getAllCompanyOkrs() {
-    // @ts-ignore
-    const [rootOkrs, okrs] = await Promise.all([OkrsRepository.getListOkrs(this.cycleId, 1), OkrsRepository.getListOkrs(this.cycleId, 3)]);
-    const result = [...Object.freeze(rootOkrs.data.data), ...Object.freeze(okrs.data.data)];
-    if (result.length) {
-      this.allCompanyOkrs = result.map((item) => {
-        return {
-          id: item.id,
-          value: `[${item.user.email}] ${item.title}`,
-        };
-      });
-    }
+    try {
+      const [rootOkrs, okrs] = await Promise.all([OkrsRepository.getListOkrs(this.cycleId, 1), OkrsRepository.getListOkrs(this.cycleId, 3)]);
+      const result = [...Object.freeze(rootOkrs.data.data), ...Object.freeze(okrs.data.data)];
+      if (result.length) {
+        this.allCompanyOkrs = result.map((item) => {
+          return {
+            id: item.id,
+            value: `[${item.user.email}] ${item.title}`,
+          };
+        });
+      }
+    } catch (error) {}
   }
 
   private async getListCycle() {

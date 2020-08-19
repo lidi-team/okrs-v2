@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loadingTab" class="feedback">
     <el-row :gutter="20" class>
-      <el-col v-if="data.list1.list" :md="12" :lg="12">
+      <el-col v-if="listFeedbackWaiting.superior" :md="12" :lg="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ data.list1.name }}</p>
           <div v-for="item in data.list1.list" :key="item.id" class="cfr">
@@ -20,7 +20,7 @@
           </div>
         </div>
       </el-col>
-      <el-col v-if="data.list2.list" :md="12" :lg="12">
+      <el-col v-if="listFeedbackWaiting.inferior" :md="12" :lg="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ data.list2.name }}</p>
           <div v-for="item in data.list2.list" :key="item.id" class="cfr">
@@ -67,9 +67,9 @@ import { CfrsRepository } from '@/repositories/CfrsRepository';
 })
 export default class Feedback extends Vue {
   private loadingTab: boolean = false;
-  private data: any = {
-    list1: [],
-    list2: [],
+  private listFeedbackWaiting: any = {
+    superior: [],
+    inferior: [],
   };
 
   private dataFeedback: any = {
@@ -92,7 +92,7 @@ export default class Feedback extends Vue {
   private detailId: Number = 0;
 
   private showDialogFeedback(checkinId: Number): void {
-    this.dataFeedback = [...this.data.list1.list, ...this.data.list2.list].find((item) => item.id === checkinId);
+    this.dataFeedback = [...this.listFeedbackWaiting.superior, ...this.listFeedbackWaiting.inferior].find((item) => item.id === checkinId);
     this.visibleCreateDialog = true;
   }
 
@@ -112,11 +112,10 @@ export default class Feedback extends Vue {
   border-radius: $border-radius-base;
   &__col {
     background-color: $white;
-    padding: $unit-8;
+    padding: $unit-6 0 0;
     &__header {
       font-size: $text-2xl;
-      padding: 0 0 $unit-4;
-      margin-bottom: $unit-4;
+      padding: 0 0 $unit-4 $unit-4;
       @include box-shadow;
       border-radius: $border-radius-base $border-radius-base 0px 0px;
     }

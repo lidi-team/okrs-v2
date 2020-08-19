@@ -190,7 +190,7 @@ export default class Rank extends Vue {
 .rank-item {
   display: flex;
   flex-direction: row;
-  padding: $unit-2;
+  padding: $unit-2 $unit-4;
   @include box-shadow;
   justify-content: space-between;
   &__left {
