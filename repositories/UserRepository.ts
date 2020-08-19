@@ -1,7 +1,7 @@
 import { authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
 import { ChangePasswordDTO, ProfileDTO } from '@/constants/app.interface';
-
+import { formatDateToYYYY } from '@/utils/dateParser';
 export default class UserRepository {
   public static me() {
     return authenticatedService.get(`${ResourcesEnpoint.Users}/me`);
@@ -11,11 +11,11 @@ export default class UserRepository {
     return authenticatedService.put(`${ResourcesEnpoint.Users}/me/change_password`, payload);
   }
 
-  public static update(payload: ProfileDTO) {
+  public static update(payload) {
     const tempProfile = {
       fullName: payload.fullName,
       gender: payload.gender,
-      dateOfBirth: payload.dateOfBirth,
+      dateOfBirth: formatDateToYYYY(payload.dateOfBirth),
     };
     return authenticatedService.put(`${ResourcesEnpoint.Users}/me`, tempProfile);
   }

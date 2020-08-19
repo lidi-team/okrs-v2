@@ -34,7 +34,7 @@
             >Cập nhật avatar</el-button
           >
           <p class="profile-common__name">{{ profileForm.fullName }}</p>
-          <p class="profile-common__role">{{ profileForm.role }}</p>
+          <p class="profile-common__role">{{ displayRoleName(user) }}</p>
         </el-col>
         <el-col :xs="24" :sm="24" :md="18" :lg="18" :xl="18" class="profile-right">
           <div class="info">
@@ -65,7 +65,8 @@
                   <el-form-item prop="dateOfBirth" label="Ngày sinh">
                     <el-date-picker
                       v-model="profileForm.dateOfBirth"
-                      format="dd-MM-yyyy"
+                      format="dd/MM/yyyy"
+                      value-format="dd/MM/yyyy"
                       :picker-options="pickerOptions"
                       type="date"
                       placeholder="Chọn ngày sinh"
@@ -99,6 +100,7 @@
 
 <script lang="ts">
 import { Component, Vue, Provide } from 'vue-property-decorator';
+import { mapGetters } from 'vuex';
 import myUpload from 'vue-image-crop-upload';
 import { Form } from 'element-ui';
 import { ProfileDTO } from '@/constants/app.interface';
@@ -106,7 +108,8 @@ import UserRepository from '@/repositories/UserRepository';
 import { Maps, Rule } from '@/constants/app.type';
 import { AuthMutation } from '@/store/auth';
 import { getTokenCookie } from '@/utils/cookies';
-import { MutationState } from '@/constants/app.enum';
+import { MutationState, GetterState } from '@/constants/app.enum';
+import { formatDateToDD } from '@/utils/dateParser';
 @Component<ViewProfile>({
   name: 'ViewProfile',
   components: {
@@ -114,6 +117,11 @@ import { MutationState } from '@/constants/app.enum';
   },
   created() {
     this.getProfile();
+  },
+  computed: {
+    ...mapGetters({
+      user: GetterState.USER,
+    }),
   },
 })
 export default class ViewProfile extends Vue {
@@ -159,7 +167,7 @@ export default class ViewProfile extends Vue {
     });
   }
 
-  private profileForm: ProfileDTO = {
+  private profileForm: any = {
     role: '',
     fullName: '',
     email: '',
@@ -179,7 +187,7 @@ export default class ViewProfile extends Vue {
         fullName: temp.data.data.fullName,
         email: temp.data.data.email,
         gender: temp.data.data.gender,
-        dateOfBirth: temp.data.data.dateOfBirth,
+        dateOfBirth: formatDateToDD(temp.data.data.dateOfBirth),
         department: temp.data.data.team.name,
         position: temp.data.data.jobPosition.name,
       };
@@ -209,6 +217,13 @@ export default class ViewProfile extends Vue {
         }
       }
     });
+  }
+
+  private displayRoleName(user: any) {
+    if (user.isLeader && user.role.name !== 'ADMIN' && user.role.name !== 'HR') {
+      return 'LEADER';
+    }
+    return user.role.name;
   }
 
   private rules: Maps<Rule[]> = {
