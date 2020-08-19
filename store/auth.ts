@@ -7,10 +7,12 @@ import { removeTokenCookie, setTokenCookie } from '@/utils/cookies';
 export enum AuthMutation {
   SET_TOKEN = 'setToken',
   SET_USER = 'setUser',
+  SET_TEMP_USER_ID = 'setTempUserId',
 }
 export interface AuthState {
   token: any;
   user: any;
+  tempUserId: any;
 }
 
 export interface AuthActions<S, R> extends ActionTree<S, R> {
@@ -22,6 +24,7 @@ export interface AuthActions<S, R> extends ActionTree<S, R> {
 export const state = (): AuthState => ({
   token: null,
   user: null,
+  tempUserId: null,
 });
 
 export type RootState = ReturnType<typeof state>;
@@ -29,11 +32,13 @@ export type RootState = ReturnType<typeof state>;
 export const getters: GetterTree<RootState, RootState> = {
   token: (state) => state.token,
   user: (state) => state.user,
+  tempUserId: (state) => state.tempUserId,
 };
 
 export const mutations: MutationTree<RootState> = {
   [AuthMutation.SET_TOKEN]: (state, token: string) => (state.token = token),
   [AuthMutation.SET_USER]: (state, user: any) => (state.user = user),
+  [AuthMutation.SET_TEMP_USER_ID]: (state, tempUserId: any) => (state.tempUserId = tempUserId),
 };
 
 export const actions: AuthActions<AuthState, RootState> = {

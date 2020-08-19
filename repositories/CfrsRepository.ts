@@ -18,8 +18,8 @@ export class CfrsRepository {
     return authenticatedService.get(`${CFREnpoint.Rank}?status=${status}`);
   }
 
-  public static getHistoryCfrs(cycleId): Promise<AxiosResponse<any>> {
-    return authenticatedService.get(`${ResourcesEnpoint.Feedback}/${CFREnpoint.History}/${cycleId}`);
+  public static getHistoryCfrs(userId: number, cycleId: number): Promise<AxiosResponse<any>> {
+    return authenticatedService.get(`${ResourcesEnpoint.Feedback}/${CFREnpoint.History}`, { params: { userId, cycleId } });
   }
 
   public static getObjective(userId: Number | String): Promise<AxiosResponse<any>> {

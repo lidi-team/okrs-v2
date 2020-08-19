@@ -131,10 +131,12 @@ export enum DispatchAction {
 
 export enum GetterState {
   USER = 'auth/user',
+  TEMP_CYCLE = 'cycle/cycleTemp',
 }
 
 export enum MutationState {
   SET_USER = 'auth/setUser',
+  SET_TEMP_USER_ID = 'auth/setTempUserId',
   SET_TOKEN = 'auth/setToken',
   SET_CURRENT_CYCLE = 'cycle/setCurrentCycle',
   SET_OBJECTIVE = 'okrs/setObjective',

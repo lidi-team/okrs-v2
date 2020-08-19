@@ -35,16 +35,16 @@ export const mutations: MutationTree<RootState> = {
 };
 
 export const actions: CycleAction<AuthState, RootState> = {
-  getHistoryFeedback({ commit, state }, cycleId: Number): Promise<any> {
-    return new Promise((resolve, reject) => {
-      CfrsRepository.getHistoryCfrs(cycleId)
-        .then((data) => {
-          console.log(data);
-          resolve(data);
-        })
-        .catch((error) => {
-          reject(error);
-        });
-    });
-  },
+  // getHistoryFeedback({ commit, state }, cycleId: Number): Promise<any> {
+  //   return new Promise((resolve, reject) => {
+  //     CfrsRepository.getHistoryCfrs(cycleId)
+  //       .then((data) => {
+  //         console.log(data);
+  //         resolve(data);
+  //       })
+  //       .catch((error) => {
+  //         reject(error);
+  //       });
+  //   });
+  // },
 };

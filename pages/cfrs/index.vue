@@ -3,7 +3,7 @@
     <div class="cfrs-page">
       <el-row class="cfrs-page__top" type="flex" justify="space-between">
         <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
-          <cfrs-navbar-cfrs :text-search.sync="textSearch" :text-search-placeholder="textSearchPlaceholder" :current-tab-component="currentTabEng" />
+          <cfrs-navbar :current-tab-component="currentTabEng" />
         </el-col>
         <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
           <el-button v-if="displayButton()" class="el-button el-button--purple el-button-medium" @click="visibleCreateDialog = true">
@@ -23,19 +23,21 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { TabCfr, TabCfrEng } from '@/constants/app.enum';
-import { ParamsCFR } from '@/constants/app.interface';
-import { pageLimit } from '@/constants/app.constant';
+
 import Feedback from '@/components/cfrs/feedback/index.vue';
 import History from '@/components/cfrs/history/index.vue';
 import Rank from '@/components/cfrs/rank/index.vue';
+
 import OkrsRepository from '@/repositories/OkrsRepository';
+
+import { TabCfr, TabCfrEng } from '@/constants/app.enum';
+import { ParamsCFR } from '@/constants/app.interface';
+import { pageLimit } from '@/constants/app.constant';
+
 @Component<CFRs>({
   name: 'CFRs',
 })
 export default class CFRs extends Vue {
-  private textSearchPlaceholder: string = 'Tìm kiếm từ khóa';
-  private textSearch: string = '';
   private meta: object = {};
   private visibleCreateDialog: Boolean = false;
   private tabs: string[] = [...Object.values(TabCfr)];
@@ -74,13 +76,6 @@ export default class CFRs extends Vue {
       : this.$route.query.tab === 'history'
       ? History
       : Rank;
-  }
-
-  private handlePagination(pagination: any) {
-    const tab = this.$route.query.tab === undefined ? 'active' : this.$route.query.tab;
-    this.$route.query.text === undefined
-      ? this.$router.push(`?tab=${tab}&page=${pagination.page}`)
-      : this.$router.push(`?tab=${tab}&text=${this.$route.query.text}&page=${pagination.page}`);
   }
 
   private handleClick(currentTab: string) {
