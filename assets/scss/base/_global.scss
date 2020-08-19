@@ -239,3 +239,19 @@ button:focus {
 }
 
 // End El tabs
+
+// El-page-header
+.el-page-header__title {
+  color: $neutral-primary-2;
+}
+
+// El-button-disabled
+.el-button.is-disabled,
+.el-button.is-disabled:focus,
+.el-button.is-disabled:hover {
+  color: #c0c4cc;
+  cursor: not-allowed;
+  background-image: none;
+  background-color: #fff;
+  border-color: #ebeef5;
+}

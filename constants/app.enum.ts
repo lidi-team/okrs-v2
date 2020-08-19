@@ -56,6 +56,7 @@ export enum TabCfrEng {
 export enum TabCheckins {
   MyOkrs = 'OKRs của tôi',
   CheckinResquest = 'Yêu cầu Check-in',
+  CheckinCompany = 'OKRs công ty',
 }
 
 export enum AdminTabsVn {
