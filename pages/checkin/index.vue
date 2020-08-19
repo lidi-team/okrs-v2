@@ -3,10 +3,24 @@
     <el-select v-model="idCycle" no-match-text="Không tìm thấy chu kỳ" filterable placeholder="Chọn chu kỳ" @change="handleSelectCycle(idCycle)">
       <el-option v-for="item in options" :key="item.id" :label="item.label" :value="item.id" />
     </el-select>
-    <el-tabs v-if="user.isLeader || user.role.name === 'ADMIN'" v-model="currentTab" @tab-click="handleClick(currentTab)">
+    <el-tabs v-if="user.isLeader" v-model="currentTab" @tab-click="handleClick(currentTab)">
+      <el-tab-pane v-for="tab in tabs.slice(0, 2)" :key="tab" :label="tab" :name="tab"></el-tab-pane>
+      <div class="checkins__content">
+        <component :is="currentTabComponent" :loading="loading" :table-data="tableData" />
+        <base-pagination
+          v-if="$route.query.tab === 'request-checkin'"
+          class="checkins__pagination"
+          :total="meta.totalItems"
+          :page.sync="paramsCheckin.page"
+          :limit.sync="paramsCheckin.limit"
+          @pagination="handlePagination"
+        />
+      </div>
+    </el-tabs>
+    <el-tabs v-if="user.role.name === 'ADMIN'" v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="checkins__content">
-        <component :is="currentTabComponent" :get-list="getList" :loading="loading" :table-data="tableData" />
+        <component :is="currentTabComponent" :loading="loading" :table-data="tableData" />
         <base-pagination
           v-if="$route.query.tab === 'request-checkin'"
           class="checkins__pagination"
@@ -20,7 +34,7 @@
     <el-tabs v-else v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs.slice(0, 1)" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="checkins__content">
-        <component :is="currentTabComponent" :get-list="getList" :loading="loading" :table-data="tableData" />
+        <component :is="currentTabComponent" :loading="loading" :table-data="tableData" />
       </div>
     </el-tabs>
   </div>
@@ -33,6 +47,7 @@ import { notificationConfig, pageLimit } from '@/constants/app.constant';
 import { TabCheckins, GetterState } from '@/constants/app.enum';
 import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
 import MyOkrsCheckin from '@/components/checkin/MyOkrsCheckin.vue';
+import CheckinCompany from '@/components/checkin/CheckinCompany.vue';
 import CycleRepository from '@/repositories/CycleRepository';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { SelectOptionDTO } from '@/constants/app.interface';
@@ -56,7 +71,13 @@ export default class CheckinPage extends Vue {
   private idCycle: number = this.$store.state.cycle.cycle.id;
   private meta: any = {};
 
-  private currentTab: string = this.$route.query.tab === 'request-checkin' ? TabCheckins.CheckinResquest : TabCheckins.MyOkrs;
+  private currentTab: string =
+    this.$route.query.tab === 'request-checkin'
+      ? TabCheckins.CheckinResquest
+      : this.$route.query.tab === 'checkin-company'
+      ? TabCheckins.CheckinCompany
+      : TabCheckins.MyOkrs;
+
   private paramsCheckin = {
     page: this.$route.query.page ? Number(this.$route.query.page) : 1,
     cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycle.id,
@@ -66,6 +87,8 @@ export default class CheckinPage extends Vue {
   private get currentTabComponent() {
     if (this.$route.query.tab === 'request-checkin') {
       return RequestCheckin;
+    } else if (this.$route.query.tab === 'checkin-company') {
+      return CheckinCompany;
     } else {
       return MyOkrsCheckin;
     }
@@ -98,7 +121,7 @@ export default class CheckinPage extends Vue {
         }
         this.loading = false;
       }
-    } else {
+    } else if (this.currentTab === TabCheckins.CheckinResquest) {
       try {
         const { data } = await CheckinRepository.getRequest(this.paramsCheckin);
         this.tableData = data.data.items;
@@ -108,7 +131,25 @@ export default class CheckinPage extends Vue {
         if (error.response.data.statusCode === 470) {
           Notification.error({
             ...notificationConfig,
-            message: 'Bạn không có quền truy cập checkin này',
+            message: 'Bạn không có quyền truy cập checkin này',
+          });
+        }
+        this.$router.push('/checkin');
+        this.loading = false;
+      }
+    } else {
+      try {
+        const paramsCheckin = {
+          cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycle.id,
+        };
+        const { data } = await CheckinRepository.getOKRsCompany(paramsCheckin);
+        this.tableData = data.data;
+        this.loading = false;
+      } catch (error) {
+        if (error.response.data.statusCode === 470) {
+          Notification.error({
+            ...notificationConfig,
+            message: 'Bạn không có quyền truy cập checkin này',
           });
         }
         this.$router.push('/checkin');
@@ -138,7 +179,9 @@ export default class CheckinPage extends Vue {
 
   private handleClick(currentTab: string) {
     this.paramsCheckin.page = 1;
-    this.$router.push(`?tab=${currentTab === TabCheckins.MyOkrs ? 'myOKRs' : 'request-checkin'}`);
+    this.$router.push(
+      `?tab=${currentTab === TabCheckins.MyOkrs ? 'myOKRs' : currentTab === TabCheckins.CheckinResquest ? 'request-checkin' : 'checkin-company'}`,
+    );
   }
 }
 </script>

@@ -96,7 +96,6 @@ import { statusCheckin } from '@/constants/app.constant';
 export default class MyOkrsCheckin extends Vue {
   @Prop(Array) readonly tableData!: Array<object>;
   @Prop(Boolean) readonly loading!: boolean;
-  @Prop(Function) readonly getListUsers;
 
   private status = statusCheckin;
   private keyResults: any = {};

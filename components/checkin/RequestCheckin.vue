@@ -36,7 +36,6 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class RequestCheckin extends Vue {
   @Prop(Array) public tableData!: Object[];
   @Prop(Boolean) readonly loading!: boolean;
-  @Prop(Function) readonly getListUsers;
 }
 </script>
 
