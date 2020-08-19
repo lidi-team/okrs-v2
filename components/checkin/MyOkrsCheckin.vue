@@ -23,12 +23,29 @@
       </el-table-column>
       <el-table-column align="center" label="Lịch sử" min-width="150">
         <template slot-scope="{ row }">
-          <nuxt-link :to="`/checkin/lich-su/${row.id}`">
+          <nuxt-link v-if="$route.query.tab === 'checkin-company'" :to="`/checkin/lich-su-cong-ty/${row.id}`">
+            <span class="myOKRs__txtBlue">Xem lịch sử</span>
+          </nuxt-link>
+          <nuxt-link v-else :to="`/checkin/lich-su/${row.id}`">
             <span class="myOKRs__txtBlue">Xem lịch sử</span>
           </nuxt-link>
         </template>
       </el-table-column>
-      <el-table-column label="Hành động" align="center" width="180">
+      <el-table-column v-if="$route.query.tab === 'checkin-company'" label="Hành động" align="center" width="180">
+        <template slot-scope="{ row }">
+          <nuxt-link v-if="row.status === status.OVERDUE" :to="`/checkin/company/${row.id}`">
+            <el-button type="danger" class="el-button--checkin">Quá hạn</el-button>
+          </nuxt-link>
+          <nuxt-link v-else-if="row.status === status.DRAFT" :to="`/checkin/company/${row.id}`">
+            <el-button type="warning" class="el-button--checkin">Edit bản nháp</el-button>
+          </nuxt-link>
+          <el-button v-else-if="row.status === status.COMPLETED" type="success" disabled class="el-button--checkin">Đã hoàn thành</el-button>
+          <nuxt-link v-else :to="`/checkin/company/${row.id}`">
+            <el-button class="el-button--purple el-button--checkin">Tạo Checkin</el-button>
+          </nuxt-link>
+        </template>
+      </el-table-column>
+      <el-table-column v-else label="Hành động" align="center" width="180">
         <template slot-scope="{ row }">
           <nuxt-link v-if="row.status === status.OVERDUE" :to="`/checkin/${row.id}`">
             <el-button type="danger" class="el-button--checkin">Quá hạn</el-button>

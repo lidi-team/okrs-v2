@@ -22,6 +22,14 @@ export default class CheckinRepository {
     return authenticatedService.post(`${ResourcesEnpoint.Checkin}`, payload);
   }
 
+  public static adminCreateCheckin(payload) {
+    return authenticatedService.post(`${ResourcesEnpoint.Checkin}/admin`, payload);
+  }
+
+  public static adminUpdateCheckin(payload, id) {
+    return authenticatedService.put(`${ResourcesEnpoint.Checkin}/admin/${id}`, payload);
+  }
+
   public static staffUpdateCheckin(payload, id) {
     return authenticatedService.put(`${ResourcesEnpoint.Checkin}/${id}`, payload);
   }

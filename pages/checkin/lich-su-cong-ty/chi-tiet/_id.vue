@@ -14,12 +14,12 @@ import CheckinRepository from '@/repositories/CheckinRepository';
 import { notificationConfig } from '@/constants/app.constant';
 
 @Component({
-  name: 'DetailHistoryPage',
+  name: 'DetailHistoryPageCompany',
   created() {
     this.getDetail();
   },
 })
-export default class DetailHistoryPage extends Vue {
+export default class DetailHistoryPageCompany extends Vue {
   private loading: boolean = false;
   private historyDetail: any = null;
 
@@ -48,7 +48,7 @@ export default class DetailHistoryPage extends Vue {
 
   private goBack() {
     if (this.historyDetail) {
-      this.$router.push(`/checkin/lich-su/${this.historyDetail.objective.id}`);
+      this.$router.push(`/checkin/lich-su-cong-ty/${this.historyDetail.objective.id}`);
     }
   }
 }

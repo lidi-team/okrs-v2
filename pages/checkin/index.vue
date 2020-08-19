@@ -17,7 +17,7 @@
         />
       </div>
     </el-tabs>
-    <el-tabs v-if="user.role.name === 'ADMIN'" v-model="currentTab" @tab-click="handleClick(currentTab)">
+    <el-tabs v-else-if="user.role.name === 'ADMIN'" v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="checkins__content">
         <component :is="currentTabComponent" :loading="loading" :table-data="tableData" />
