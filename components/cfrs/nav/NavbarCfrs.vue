@@ -24,7 +24,6 @@ import { MutationState } from '@/constants/app.enum';
 @Component<NavbarCrfs>({
   name: 'NavbarCrfs',
   created() {
-    console.log(this.currentTabComponent);
     this.getAllCycles();
   },
 })

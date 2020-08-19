@@ -1,7 +1,7 @@
 <template>
-  <el-row class="top-search-cycle">
+  <el-row v-if="cycleId" class="top-search-cycle">
     <el-col :xs="8" :sm="8" :md="8" :lg="8">
-      <el-select v-model.number="syncCycleId" filterable placeholder="Nhập chu kỳ" no-match-text="Không tìm thấy chu kỳ">
+      <el-select v-model.number="cycleId" filterable placeholder="Nhập chu kỳ" no-match-text="Không tìm thấy chu kỳ">
         <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
       </el-select>
     </el-col>
@@ -29,14 +29,20 @@ import OkrsRepository from '@/repositories/OkrsRepository';
     this.getAllCycles();
   },
   mounted() {
-    return this.getAllCompanyOkrs();
+    this.getAllCompanyOkrs();
   },
 })
 export default class TopSearchCycle extends Vue {
-  @PropSync('cycleId', { required: true, type: Number }) private syncCycleId!: number;
+  private cycleId: number = this.$store.state.cycle.cycle.id;
   private allCompanyOkrs: any[] = [];
   private textSearch: string = '';
   private options: SelectOptionDTO[] = [];
+
+  @Watch('cycleId')
+  private changeCycleData(cycleId: number) {
+    this.$store.commit(MutationState.SET_CURRENT_CYCLE, { id: cycleId });
+    this.$emit('changeCycleData');
+  }
 
   private querySearch(textQuery: string, callback: any) {
     let results: any[] = [];
@@ -57,7 +63,7 @@ export default class TopSearchCycle extends Vue {
   }
 
   private async getAllCompanyOkrs() {
-    const [rootOkrs, okrs] = await Promise.all([OkrsRepository.getListOkrs(this.syncCycleId, 1), OkrsRepository.getListOkrs(this.syncCycleId, 3)]);
+    const [rootOkrs, okrs] = await Promise.all([OkrsRepository.getListOkrs(this.cycleId, 1), OkrsRepository.getListOkrs(this.cycleId, 3)]);
     const result = [...Object.freeze(rootOkrs.data.data), ...Object.freeze(okrs.data.data)];
     if (result.length) {
       this.allCompanyOkrs = result.map((item) => {

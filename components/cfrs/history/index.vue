@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loadingTab" class="history">
     <el-row :gutter="20" class>
-      <el-col :span="8">
+      <el-col :md="8" :lg="8">
         <div class="history__col">
           <p class="history__col__header">Feedback gửi đi</p>
           <p v-if="data.sent.length === 0" class="history__col__empty">Không có dữ liệu</p>
@@ -18,7 +18,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="8">
+      <el-col :md="8" :lg="8">
         <div class="history__col">
           <p class="history__col__header">Feedback nhận được</p>
           <p v-if="data.received.length === 0" class="history__col__empty">Không có dữ liệu</p>
@@ -33,7 +33,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="8">
+      <el-col :md="8" :lg="8">
         <div class="history__col">
           <p class="history__col__header">CFRs toàn công ty</p>
           <p v-if="data.CFRs.length === 0" class="history__col__empty">Không có dữ liệu</p>
@@ -52,6 +52,8 @@
             </div>
           </div>
         </div>
+        <!-- Phân trang -->
+        <!-- <base-pagination class="pagination-bottom" :total="total" :page.sync="syncPage" :limit.sync="syncLimit" @pagination="handlePagination($event)" /> -->
       </el-col>
     </el-row>
     <cfrs-detail-history :visible-dialog.sync="visibleCreateDialog" :data-detail="dataDetail" />

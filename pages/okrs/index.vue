@@ -2,12 +2,13 @@
   <div v-loading.fullscreen.lock="loadingForm" class="okrs-page">
     <el-row class="okrs-page__top" type="flex" justify="space-between">
       <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
-        <base-top-search-cycle :cycle-id.sync="cycleId" />
+        <!-- <base-top-search-cycle :cycle-id.sync="cycleId" /> -->
+        <base-top-search-cycle @changeCycleData="getDashBoardOkrs" />
       </el-col>
       <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
-        <el-button v-if="isNotAdminButton()" class="el-button el-button--purple el-button-medium" icon="el-icon-plus" @click="addPersonalOkrs">
-          Tạo OKRs
-        </el-button>
+        <el-button v-if="isNotAdminButton()" class="el-button el-button--purple el-button-medium" icon="el-icon-plus" @click="addPersonalOkrs"
+          >Tạo OKRs</el-button
+        >
         <el-dropdown v-else class="create-okr-dropdown" trigger="click" @command="handleCommand">
           <el-button class="el-button el-button--purple el-button-medium" icon="el-icon-plus">Tạo OKRs</el-button>
           <el-dropdown-menu slot="dropdown">
@@ -51,16 +52,10 @@ import { MutationState, DispatchAction } from '@/constants/app.enum';
   middleware: ['measureUnit'],
 })
 export default class OKRsPage extends Vue {
-  private cycleId: number = this.$store.state.cycle.cycle.id;
+  // private cycleId: number = this.$store.state.cycle.cycle.id;
   private loadingForm: boolean = false;
   private visibleCreateOkrsDialog = false;
   private isCompanyOkrs: boolean = false;
-
-  @Watch('cycleId')
-  private changeCycleData(cycleId: number) {
-    this.$store.commit(MutationState.SET_CURRENT_CYCLE, { id: cycleId });
-    this.getDashBoardOkrs();
-  }
 
   private handleCommand(command: string) {
     if (command === 'company') {
