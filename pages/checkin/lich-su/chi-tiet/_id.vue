@@ -1,6 +1,7 @@
 <template>
   <div v-loading.fullscreen.lock="loading" class="historyDetailPage">
-    <h1 class="historyDetailPage__title">Chi tiết lịch sử check-in</h1>
+    <el-page-header title="Lịch sử Check-in" @back="goBack" />
+    <h1 class="historyDetailPage__title">Chi tiết lịch sử Check-in</h1>
     <detail-history v-if="historyDetail" :history-detail="historyDetail">
       <chart-checkin v-if="historyDetail" slot="chartCheckin" :history-detail="historyDetail" />
     </detail-history>
@@ -8,7 +9,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { Notification } from 'element-ui';
 import CheckinRepository from '@/repositories/CheckinRepository';
+import { notificationConfig } from '@/constants/app.constant';
 
 @Component({
   name: 'DetailHistoryPage',
@@ -19,12 +22,31 @@ import CheckinRepository from '@/repositories/CheckinRepository';
 export default class DetailHistoryPage extends Vue {
   private loading: boolean = false;
   private historyDetail: any = null;
+  private goBack() {
+    this.$router.push(`/checkin/lich-su/${this.$route.params.id}`);
+  }
 
   private async getDetail() {
-    this.loading = true;
-    const res = await CheckinRepository.getDetailCheckin(this.$route.params.id);
-    this.historyDetail = res.data.data;
-    this.loading = false;
+    try {
+      this.loading = true;
+      const res = await CheckinRepository.getDetailCheckin(this.$route.params.id);
+      this.historyDetail = res.data.data;
+      this.loading = false;
+    } catch (error) {
+      if (error.response.data.statusCode === 470) {
+        Notification.error({
+          ...notificationConfig,
+          message: 'Bạn không có quyền truy cập checkin này',
+        });
+      } else if (error.response.data.statusCode === 404) {
+        Notification.error({
+          ...notificationConfig,
+          message: 'Không thể tìm thấy dữ liệu',
+        });
+      }
+      this.$router.push('/checkin');
+      this.loading = false;
+    }
   }
 }
 </script>

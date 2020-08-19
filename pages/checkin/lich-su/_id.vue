@@ -1,6 +1,7 @@
 <template>
   <div class="listHistory">
-    <h1 class="listHistory__title">Lịch sử check-in</h1>
+    <el-page-header title="OKRs của tôi" @back="goBack" />
+    <h1 class="listHistory__title">Lịch sử Check-in</h1>
     <div class="listHistory__content">
       <el-table v-loading="loading" empty-text="Không có dữ liệu" class="myOKRs" :data="historyList" style="width: 100%;">
         <el-table-column label="Mục tiêu" min-width="250">
@@ -40,7 +41,8 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { statusCheckin } from '@/constants/app.constant';
+import { Notification } from 'element-ui';
+import { statusCheckin, notificationConfig } from '@/constants/app.constant';
 import CheckinRepository from '@/repositories/CheckinRepository';
 
 @Component<HistoryCheckin>({
@@ -53,12 +55,31 @@ export default class HistoryCheckin extends Vue {
   private loading: boolean = false;
   private historyList: Array<object> = [];
   private status = statusCheckin;
+  private goBack() {
+    this.$router.push('/checkin');
+  }
 
   private async getList() {
-    this.loading = true;
-    const res = await CheckinRepository.getHistory(this.$route.params.id);
-    this.historyList = res.data.data;
-    this.loading = false;
+    try {
+      this.loading = true;
+      const res = await CheckinRepository.getHistory(this.$route.params.id);
+      this.historyList = res.data.data;
+      this.loading = false;
+    } catch (error) {
+      if (error.response.data.statusCode === 470) {
+        Notification.error({
+          ...notificationConfig,
+          message: 'Bạn không có quyền truy cập checkin này',
+        });
+      } else if (error.response.data.statusCode === 404) {
+        Notification.error({
+          ...notificationConfig,
+          message: 'Không thể tìm thấy dữ liệu',
+        });
+      }
+      this.$router.push('/checkin');
+      this.loading = false;
+    }
   }
 }
 </script>

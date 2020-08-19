@@ -26,21 +26,21 @@
           <el-table-column align="center" label="Tiến độ" min-width="150">
             <template slot-scope="scope">
               <el-form-item :prop="'checkinDetail.' + scope.$index + '.progress'" :rules="rules.progress">
-                <el-input v-model="scope.row.progress" type="textarea" :rows="4" placeholder="Nhập tiến độ"> </el-input>
+                <el-input v-model="scope.row.progress" type="textarea" :rows="4" placeholder="Nhập tiến độ"></el-input>
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column align="center" label="Vấn đề" min-width="150">
             <template slot-scope="scope">
               <el-form-item :prop="'checkinDetail.' + scope.$index + '.problems'" :rules="rules.problems">
-                <el-input v-model="scope.row.problems" type="textarea" :rows="4" placeholder="Nhập vấn đề"> </el-input>
+                <el-input v-model="scope.row.problems" type="textarea" :rows="4" placeholder="Nhập vấn đề"></el-input>
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column align="center" label="Kế hoạch" min-width="150">
             <template slot-scope="scope">
               <el-form-item :prop="'checkinDetail.' + scope.$index + '.plans'" :rules="rules.plans">
-                <el-input v-model="scope.row.plans" type="textarea" :rows="4" placeholder="Nhập kế hoạch"> </el-input>
+                <el-input v-model="scope.row.plans" type="textarea" :rows="4" placeholder="Nhập kế hoạch"></el-input>
               </el-form-item>
             </template>
           </el-table-column>
@@ -194,7 +194,15 @@ export default class DetailHistory extends Vue {
           });
           this.$router.push('/checkin');
         });
-      } catch (error) {}
+      } catch (error) {
+        if (error.response.data.statusCode === 476) {
+          Notification.error({
+            ...notificationConfig,
+            message: 'Bạn không thể tạo checkin với Objective này',
+          });
+        }
+        this.$router.push('/checkin');
+      }
     } else {
       this.syncCheckin.checkinDetail.map((item) => {
         tempCheckin.checkinDetails.push({
@@ -216,7 +224,15 @@ export default class DetailHistory extends Vue {
           });
           this.$router.push('/checkin');
         });
-      } catch (error) {}
+      } catch (error) {
+        if (error.response.data.statusCode === 476) {
+          Notification.error({
+            ...notificationConfig,
+            message: 'Bạn không thể tạo checkin với Objective này',
+          });
+        }
+        this.$router.push('/checkin');
+      }
     }
   }
 
@@ -330,7 +346,15 @@ export default class DetailHistory extends Vue {
                   });
                   this.$router.push('/checkin');
                 });
-              } catch (error) {}
+              } catch (error) {
+                if (error.response.data.statusCode === 476) {
+                  Notification.error({
+                    ...notificationConfig,
+                    message: 'Bạn không thể tạo checkin với Objective này',
+                  });
+                }
+                this.$router.push('/checkin');
+              }
             })
             .catch((action) => {
               this.removeRules();
@@ -362,7 +386,15 @@ export default class DetailHistory extends Vue {
                   });
                   this.$router.push('/checkin');
                 });
-              } catch (error) {}
+              } catch (error) {
+                if (error.response.data.statusCode === 476) {
+                  Notification.error({
+                    ...notificationConfig,
+                    message: 'Bạn không thể tạo checkin với Objective này',
+                  });
+                }
+                this.$router.push('/checkin');
+              }
             })
             .catch((action) => {
               this.removeRules();

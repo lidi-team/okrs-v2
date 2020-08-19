@@ -203,7 +203,15 @@ export default class DetailHistory extends Vue {
               });
               this.$router.push('/checkin?tab=request-checkin');
             });
-          } catch (error) {}
+          } catch (error) {
+            if (error.response.data.statusCode === 475) {
+              Notification.error({
+                ...notificationConfig,
+                message: 'Bạn chỉ có thể checkin những form mà member gửi lên',
+              });
+            }
+            this.$router.push('/checkin?tab=request-checkin');
+          }
         });
       }
     });
