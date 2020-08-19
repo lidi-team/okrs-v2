@@ -20,7 +20,7 @@
             <div v-for="(item, index) in currentRanking" :key="item.id" class="rank-item">
               <div class="rank-item__left">
                 <div :class="['rank-item__left__index', topRanking(index)]">
-                  <span>{{ index }}</span>
+                  <span>{{ index + 1 }}</span>
                 </div>
                 <el-avatar :size="40">
                   <img :src="item.avatarURL ? item.avatarURL : item.gravatarURL" alt="avatar" />
@@ -37,12 +37,12 @@
       </el-col>
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <div class="rank__col">
-          <p class="rank__col__header">BXH lũy kế</p>
+          <p class="rank__col__header" style="padding-bottom: 20px;">BXH lũy kế</p>
           <p v-if="accumulatedRanking.length === 0" class="history__col__empty">Không có dữ liệu</p>
           <div v-for="(item, index) in accumulatedRanking" :key="item.id" class="rank-item">
             <div class="rank-item__left">
               <div :class="['rank-item__left__index', topRanking(index)]">
-                <span>{{ index }}</span>
+                <span>{{ index + 1 }}</span>
               </div>
               <el-avatar :size="40">
                 <img :src="item.avatarURL ? item.avatarURL : item.gravatarURL" alt="avatar" />
@@ -140,7 +140,7 @@ export default class Rank extends Vue {
   }
 
   private topRanking(index: number): String {
-    return index === 0 ? 'top1' : index === 1 ? 'top2' : index === 2 ? 'top3' : 'topdown';
+    return index === 1 ? 'top1' : index === 2 ? 'top2' : index === 3 ? 'top3' : 'topdown';
   }
 
   private async getListCycle() {
