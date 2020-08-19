@@ -14,8 +14,20 @@ export default class CheckinRepository {
     return authenticatedService.get(`${ResourcesEnpoint.Checkin}/checkin_request`, { params });
   }
 
+  public static getOKRsCompany(params) {
+    return authenticatedService.get(`${ResourcesEnpoint.Checkin}/admin`, { params });
+  }
+
   public static post(payload) {
     return authenticatedService.post(`${ResourcesEnpoint.Checkin}`, payload);
+  }
+
+  public static adminCreateCheckin(payload) {
+    return authenticatedService.post(`${ResourcesEnpoint.Checkin}/admin`, payload);
+  }
+
+  public static adminUpdateCheckin(payload, id) {
+    return authenticatedService.put(`${ResourcesEnpoint.Checkin}/admin/${id}`, payload);
   }
 
   public static staffUpdateCheckin(payload, id) {

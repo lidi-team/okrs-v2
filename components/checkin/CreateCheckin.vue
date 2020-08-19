@@ -1,7 +1,7 @@
 <template>
   <fragment>
     <slot name="chartOKRs" />
-    <div class="checkinDetail">
+    <div v-if="user" class="checkinDetail">
       <el-form ref="checkinRuleForm" label-position="left" :model="syncCheckin" :rules="rules">
         <el-table empty-text="Không có dữ liệu" class="checkinDetail__form" :data="syncCheckin.checkinDetail" style="width: 100%;">
           <el-table-column label="Kết quả chính" min-width="250">
@@ -62,7 +62,26 @@
               <el-radio :label="1">Không ổn lắm</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label-width="20%" :prop="'nextCheckinDate'" label="Ngày check-in tiếp theo">
+          <el-row v-if="user.role.name === 'ADMIN'">
+            <el-col :sm="24" :lg="12">
+              <el-form-item label-width="30%" :prop="'nextCheckinDate'" label="Ngày check-in tiếp theo">
+                <el-date-picker
+                  v-model="syncCheckin.nextCheckinDate"
+                  :clearable="false"
+                  type="date"
+                  :picker-options="pickerOptions"
+                  :format="dateFormat"
+                  :value-format="dateFormat"
+                  placeholder="Chọn ngày checkin tiếp theo"
+                ></el-date-picker>
+              </el-form-item>
+            </el-col>
+            <el-col :sm="24" :lg="12">
+              <el-form-item label-width="30%" :prop="'isCompleted'" label="Hoàn thành OKRs">
+                <el-checkbox v-model="syncCheckin.isCompleted"></el-checkbox> </el-form-item
+            ></el-col>
+          </el-row>
+          <el-form-item v-else label-width="20%" :prop="'nextCheckinDate'" label="Ngày check-in tiếp theo">
             <el-date-picker
               v-model="syncCheckin.nextCheckinDate"
               :clearable="false"
@@ -76,7 +95,11 @@
         </div>
       </el-form>
     </div>
-    <div class="checkinDetail__footer">
+    <div v-if="user.role.name === 'ADMIN'" class="checkinDetail__footer">
+      <el-button :disabled="syncCheckin.isCompleted" class="el-button--white" @click="handleDraftCheckinAdmin">Lưu nháp</el-button>
+      <el-button class="el-button--purple" @click="handleSubmitCheckinAdmin">Check-in</el-button>
+    </div>
+    <div v-else class="checkinDetail__footer">
       <el-button class="el-button--white" @click="handleDraftCheckin">Lưu nháp</el-button>
       <el-button class="el-button--purple" @click="handleSubmitCheckin">Gửi yêu cầu</el-button>
     </div>
@@ -84,13 +107,20 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
+import { mapGetters } from 'vuex';
 import { Form, Notification } from 'element-ui';
+import { GetterState } from '@/constants/app.enum';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { statusCheckin, confidentLevel, notificationConfig } from '@/constants/app.constant';
 import { formatDateToYYYY } from '@/utils/dateParser';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<DetailHistory>({
   name: 'DetailHistory',
+  computed: {
+    ...mapGetters({
+      user: GetterState.USER,
+    }),
+  },
 })
 export default class DetailHistory extends Vue {
   @PropSync('checkin', { type: Object }) syncCheckin!: any;
@@ -232,6 +262,79 @@ export default class DetailHistory extends Vue {
           });
         }
         this.$router.push('/checkin');
+      }
+    }
+  }
+
+  private async handleDraftCheckinAdmin() {
+    const tempCheckin: any = {
+      checkin: {
+        confidentLevel: this.syncCheckin.confidentLevel,
+        objectiveId: this.syncCheckin.id,
+        status: 'Draft',
+        isCompleted: this.syncCheckin.isCompleted,
+        nextCheckinDate: formatDateToYYYY(this.syncCheckin.nextCheckinDate),
+      },
+      checkinDetails: [],
+    };
+    if (this.isNew === true) {
+      this.syncCheckin.checkinDetail.map((item) => {
+        tempCheckin.checkinDetails.push({
+          targetValue: item.keyResult.targetValue,
+          valueObtained: item.valueObtained,
+          confidentLevel: item.confidentLevel,
+          progress: item.progress,
+          problems: item.problems,
+          plans: item.plans,
+          keyResultId: item.keyResult.id,
+        });
+      });
+      try {
+        await CheckinRepository.adminCreateCheckin(tempCheckin).then((res: any) => {
+          Notification.success({
+            ...notificationConfig,
+            message: 'Lưu nháp thành công',
+          });
+          this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
+        });
+      } catch (error) {
+        if (error.response.data.statusCode === 476) {
+          Notification.error({
+            ...notificationConfig,
+            message: 'Bạn không thể tạo checkin với Objective này',
+          });
+        }
+        this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
+      }
+    } else {
+      this.syncCheckin.checkinDetail.map((item) => {
+        tempCheckin.checkinDetails.push({
+          id: item.id,
+          targetValue: item.keyResult.targetValue,
+          valueObtained: item.valueObtained,
+          confidentLevel: item.confidentLevel,
+          progress: item.progress,
+          problems: item.problems,
+          plans: item.plans,
+          keyResultId: item.keyResult.id,
+        });
+      });
+      try {
+        await CheckinRepository.adminUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
+          Notification.success({
+            ...notificationConfig,
+            message: 'Lưu nháp thành công',
+          });
+          this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
+        });
+      } catch (error) {
+        if (error.response.data.statusCode === 476) {
+          Notification.error({
+            ...notificationConfig,
+            message: 'Bạn không thể tạo checkin với Objective này',
+          });
+        }
+        this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
       }
     }
   }
@@ -394,6 +497,104 @@ export default class DetailHistory extends Vue {
                   });
                 }
                 this.$router.push('/checkin');
+              }
+            })
+            .catch((action) => {
+              this.removeRules();
+            });
+        }
+      }
+    });
+  }
+
+  private async handleSubmitCheckinAdmin() {
+    await this.setRules();
+    const tempCheckin: any = {
+      checkin: {
+        confidentLevel: this.syncCheckin.confidentLevel,
+        objectiveId: this.syncCheckin.id,
+        status: 'Done',
+        isCompleted: this.syncCheckin.isCompleted,
+        nextCheckinDate: formatDateToYYYY(this.syncCheckin.nextCheckinDate),
+      },
+      checkinDetails: [],
+    };
+    (this.$refs.checkinRuleForm as Form).validate((isValid) => {
+      if (isValid) {
+        if (this.isNew === true) {
+          this.syncCheckin.checkinDetail.map((item) => {
+            tempCheckin.checkinDetails.push({
+              targetValue: item.keyResult.targetValue,
+              valueObtained: item.valueObtained,
+              confidentLevel: item.confidentLevel,
+              progress: item.progress,
+              problems: item.problems,
+              plans: item.plans,
+              keyResultId: item.keyResult.id,
+            });
+          });
+          this.$confirm(`Bạn có chắc chắn muốn check-in?`, {
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy bỏ',
+            type: 'warning',
+          })
+            .then(async () => {
+              try {
+                await CheckinRepository.adminCreateCheckin(tempCheckin).then((res: any) => {
+                  Notification.success({
+                    ...notificationConfig,
+                    message: 'Check-in thành công',
+                  });
+                  this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
+                });
+              } catch (error) {
+                if (error.response.data.statusCode === 476) {
+                  Notification.error({
+                    ...notificationConfig,
+                    message: 'Bạn không thể tạo checkin với Objective này',
+                  });
+                }
+                this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
+              }
+            })
+            .catch((action) => {
+              this.removeRules();
+            });
+        } else {
+          this.syncCheckin.checkinDetail.map((item) => {
+            tempCheckin.checkinDetails.push({
+              id: item.id,
+              targetValue: item.keyResult.targetValue,
+              valueObtained: item.valueObtained,
+              confidentLevel: item.confidentLevel,
+              progress: item.progress,
+              problems: item.problems,
+              plans: item.plans,
+              keyResultId: item.keyResult.id,
+            });
+          });
+          this.$confirm(`Bạn có chắc chắn muốn check-in?`, {
+            confirmButtonText: 'Đồng ý',
+            cancelButtonText: 'Hủy bỏ',
+            type: 'warning',
+          })
+            .then(async () => {
+              try {
+                await CheckinRepository.adminUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
+                  Notification.success({
+                    ...notificationConfig,
+                    message: 'Check-in thành công',
+                  });
+                  this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
+                });
+              } catch (error) {
+                if (error.response.data.statusCode === 476) {
+                  Notification.error({
+                    ...notificationConfig,
+                    message: 'Bạn không thể tạo checkin với Objective này',
+                  });
+                }
+                this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
               }
             })
             .catch((action) => {

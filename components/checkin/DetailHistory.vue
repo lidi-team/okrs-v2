@@ -43,7 +43,10 @@
       </el-table>
     </div>
     <div v-if="historyDetail.objective" class="historyDetail__footer">
-      <nuxt-link :to="`/checkin/lich-su/${historyDetail.objective.id}`">
+      <nuxt-link v-if="$route.name === 'checkin-lich-su-cong-ty-chi-tiet-id'" :to="`/checkin/lich-su-cong-ty/${historyDetail.objective.id}`">
+        <el-button class="el-button--purple">Xong</el-button>
+      </nuxt-link>
+      <nuxt-link v-else :to="`/checkin/lich-su/${historyDetail.objective.id}`">
         <el-button class="el-button--purple">Xong</el-button>
       </nuxt-link>
     </div>

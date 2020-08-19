@@ -1,6 +1,6 @@
 <template>
   <div v-loading.fullscreen.lock="loading" class="createCheckinPage">
-    <el-page-header title="OKRs của tôi" @back="goBack" />
+    <el-page-header title="OKRs công ty" @back="goBack" />
     <h1 class="createCheckinPage__title">Tạo checkin</h1>
     <create-checkin v-if="checkin" :checkin.sync="checkin" :is-new="isNew">
       <chart-okrs v-if="checkin" slot="chartOKRs" :checkin.sync="checkin" />
@@ -24,7 +24,7 @@ export default class CheckinPage extends Vue {
   private checkin: any = null;
   private isNew: boolean = false;
   private goBack() {
-    this.$router.push('/checkin');
+    this.$router.push('/checkin?tab=checkin-company');
   }
 
   private async getCheckin() {
