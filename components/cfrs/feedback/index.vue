@@ -1,12 +1,12 @@
 <template>
   <div v-loading="loadingTab" class="feedback">
     <el-row :gutter="20" class>
-      <el-col v-show="data.list1.list" :md="12" :lg="12">
+      <el-col v-if="data.list1.list" :md="12" :lg="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ data.list1.name }}</p>
           <div v-for="item in data.list1.list" :key="item.id" class="cfr">
             <div class="cfr__left" @click="viewDetail(item.id)">
-              <el-avatar :size="50">
+              <el-avatar :size="40">
                 <img :src="item.objective.user.avatarUrl ? item.objective.user.avatarUrl : item.objective.user.gravatarURL" alt="avatar" />
               </el-avatar>
               <div class="cfr__left__content">
@@ -20,12 +20,12 @@
           </div>
         </div>
       </el-col>
-      <el-col v-show="data.list2.list" :md="12" :lg="12">
+      <el-col v-if="data.list2.list" :md="12" :lg="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ data.list2.name }}</p>
           <div v-for="item in data.list2.list" :key="item.id" class="cfr">
             <div class="cfr__left" @click="viewDetail(item.id)">
-              <el-avatar :size="50">
+              <el-avatar :size="40">
                 <img :src="item.objective.user.avatarUrl ? item.objective.user.avatarUrl : item.objective.user.gravatarURL" alt="avatar" />
               </el-avatar>
               <div class="cfr__left__content">
@@ -34,7 +34,7 @@
               </div>
             </div>
             <div class="cfr__right">
-              <el-button class="el-button el-button--purple el-button-medium" @click="showDialog(item.id)">Tạo Feedback</el-button>
+              <el-button class="el-button el-button--purple el-button-medium" @click="showDialogFeedback(item.id)">Tạo Feedback</el-button>
             </div>
           </div>
         </div>
@@ -47,13 +47,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import CreateFeedback from './Create.vue';
 import { CfrsRepository } from '@/repositories/CfrsRepository';
 @Component<Feedback>({
   name: 'Feedback',
   async created() {
     try {
-      await CfrsRepository.get().then((res) => {
+      await CfrsRepository.getListWaitingFeedback().then((res) => {
+        console.table(res.data.data);
         this.data = res.data.data;
       });
     } catch (error) {}
@@ -91,8 +91,8 @@ export default class Feedback extends Vue {
   private visibleDetailDialog: Boolean = false;
   private detailId: Number = 0;
 
-  private showDialog(id: Number): void {
-    this.dataFeedback = this.data.list1.list.concat(this.data.list2.list).find((item) => item.id === id);
+  private showDialogFeedback(checkinId: Number): void {
+    this.dataFeedback = [...this.data.list1.list, ...this.data.list2.list].find((item) => item.id === checkinId);
     this.visibleCreateDialog = true;
   }
 
@@ -141,7 +141,7 @@ export default class Feedback extends Vue {
     }
     &__title {
       font-weight: bold;
-      font-size: 1.1rem;
+      font-size: $unit-4;
       @include text-ellipsis(1);
     }
     &__description {

@@ -1,33 +1,58 @@
 <template>
   <div v-loading="loadingTab" class="rank">
     <el-row :gutter="20" class>
-      <el-col :span="12">
+      <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <div class="rank__col">
-          <p class="rank__col__header">BXH chu kỳ hiện tại</p>
-          <p v-if="dataCurrent.length === 0" class="history__col__empty">Không có dữ liệu</p>
-          <div v-for="item in dataCurrent" :key="item.id" class="rank-item">
-            <div class="rank-item__left">
-              <el-avatar :size="50">
-                <img :src="item.avatarURL ? item.avatarURL : item.gravatarURL" alt="avatar" />
-              </el-avatar>
-              <p class="rank-item__title">{{ item.user_fullName }}</p>
+          <div class="rank__col__header">
+            <p class="rank__col__header--title">BXH theo chu kỳ</p>
+            <el-select
+              v-model="cycleId"
+              filterable
+              no-match-text="Không tìm thấy chu kỳ"
+              placeholder="Chọn chu kỳ"
+              class="rank__col__header--dropdown"
+            >
+              <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.label" :value="cycle.id" />
+            </el-select>
+          </div>
+          <p v-if="currentRanking.length === 0" class="history__col__empty">Không có dữ liệu</p>
+          <div v-loading="loadingCurrentRanking">
+            <div v-for="(item, index) in currentRanking" :key="item.id" class="rank-item">
+              <div class="rank-item__left">
+                <div :class="['rank-item__left__index', topRanking(index)]">
+                  <span>{{ index }}</span>
+                </div>
+                <el-avatar :size="40">
+                  <img :src="item.avatarURL ? item.avatarURL : item.gravatarURL" alt="avatar" />
+                </el-avatar>
+                <div class="rank-item__left__info">
+                  <p class="rank-item__left__info--fullname">{{ item.user_fullName }}</p>
+                  <p class="rank-item__left__info--department">{{ item.user_fullName }}</p>
+                </div>
+              </div>
+              <div class="rank-item__right">{{ item.sum }} <icon-star-dashboard /></div>
             </div>
-            <div class="rank-item__right">{{ item.sum }} <icon-star style="margin-left: 5px;" /></div>
           </div>
         </div>
       </el-col>
-      <el-col :span="12">
+      <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <div class="rank__col">
           <p class="rank__col__header">BXH lũy kế</p>
-          <p v-if="dataCycle.length === 0" class="history__col__empty">Không có dữ liệu</p>
-          <div v-for="item in dataCycle" :key="item.id" class="rank-item">
+          <p v-if="accumulatedRanking.length === 0" class="history__col__empty">Không có dữ liệu</p>
+          <div v-for="(item, index) in accumulatedRanking" :key="item.id" class="rank-item">
             <div class="rank-item__left">
-              <el-avatar :size="50">
+              <div :class="['rank-item__left__index', topRanking(index)]">
+                <span>{{ index }}</span>
+              </div>
+              <el-avatar :size="40">
                 <img :src="item.avatarURL ? item.avatarURL : item.gravatarURL" alt="avatar" />
               </el-avatar>
-              <p class="rank-item__title">{{ item.user_fullName }}</p>
+              <div class="rank-item__left__info">
+                <p class="rank-item__left__info--fullname">{{ item.user_fullName }}</p>
+                <p class="rank-item__left__info--department">{{ item.user_fullName }}</p>
+              </div>
             </div>
-            <div class="rank-item__right">{{ item.sum }}<icon-star style="margin-left: 5px;" /></div>
+            <div class="rank-item__right">{{ item.sum }} <icon-star-dashboard /></div>
           </div>
         </div>
       </el-col>
@@ -37,19 +62,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import CreateFeedback from './Create.vue';
 import { CfrsRepository } from '@/repositories/CfrsRepository';
-import IconStar from '@/assets/images/admin/star.svg';
+import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
+import CycleRepository from '@/repositories/CycleRepository';
+import { MutationState } from '@/constants/app.enum';
 @Component<Rank>({
   name: 'Rank',
   components: {
-    IconStar,
+    IconStarDashboard,
   },
   async created() {
-    const [rankingAllCycle, rankingCurrentCycle] = await Promise.all([CfrsRepository.getRankingCfrs('all'), CfrsRepository.getRankingCfrs('curent')]);
-    this.dataCycle = rankingAllCycle.data.data;
-    this.dataCurrent = rankingCurrentCycle.data.data;
+    await this.getListDataRanking();
+    await this.getListCycle();
   },
   beforeMount() {
     this.loadingTab = true;
@@ -59,11 +85,15 @@ import IconStar from '@/assets/images/admin/star.svg';
   },
 })
 export default class Rank extends Vue {
+  private cycleId: number = this.$store.state.cycle.cycle.id;
   private loadingTab: boolean = false;
-  private dataCycle: any = [];
-  private dataCurrent: any = [];
+  private loadingCurrentRanking: boolean = false;
+  private accumulatedRanking: any = [];
+  private currentRanking: any = [];
   private dataDetail: object = {};
   private visibleCreateDialog = false;
+  private listCycles: any[] = [];
+
   private detail(type: String, item: any): void {
     let sender = this.$store.state.auth.user.fullName;
     let receiver = this.$store.state.auth.user.fullName;
@@ -83,6 +113,52 @@ export default class Rank extends Vue {
     };
     this.visibleCreateDialog = true;
   }
+
+  private async getListDataRanking() {
+    this.loadingTab = true;
+    try {
+      const [accumulatedRanking, currentRanking] = await Promise.all([CfrsRepository.getRankingCfrs('all'), CfrsRepository.getRankingCfrs('curent')]);
+      this.accumulatedRanking = accumulatedRanking.data.data;
+      this.currentRanking = currentRanking.data.data;
+    } catch (error) {}
+    setTimeout(() => {
+      this.loadingTab = false;
+    }, 300);
+  }
+
+  @Watch('cycleId')
+  private async getRankingOnCycle(cycleId: number) {
+    this.loadingCurrentRanking = true;
+    try {
+      await CfrsRepository.getRankingCfrs('curent').then((res) => {
+        this.currentRanking = res.data.data;
+      });
+    } catch (error) {}
+    setTimeout(() => {
+      this.loadingCurrentRanking = false;
+    }, 300);
+  }
+
+  private topRanking(index: number): String {
+    return index === 0 ? 'top1' : index === 1 ? 'top2' : index === 2 ? 'top3' : 'topdown';
+  }
+
+  private async getListCycle() {
+    if (this.$store.state.cycle.cycles.length) {
+      this.listCycles = this.$store.state.cycle.cycles;
+    } else {
+      try {
+        const { data } = await CycleRepository.get({ page: 1, limit: 8 });
+        this.listCycles = data.data.items.map((item) => {
+          return {
+            id: item.id,
+            label: item.name,
+          };
+        });
+        this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
+      } catch (error) {}
+    }
+  }
 }
 </script>
 
@@ -95,12 +171,15 @@ export default class Rank extends Vue {
   border-radius: $border-radius-base;
   &__col {
     background-color: $white;
-    padding: $unit-8;
+    padding: $unit-6 0 0;
+    border-radius: $border-radius-base;
     &__header {
       font-size: $text-2xl;
-      padding: 0 0 $unit-4;
+      padding: 0 $unit-4 $unit-4;
       @include box-shadow;
       border-radius: $border-radius-base $border-radius-base 0px 0px;
+      display: flex;
+      place-content: center space-between;
     }
     &__empty {
       text-align: center;
@@ -111,25 +190,59 @@ export default class Rank extends Vue {
 .rank-item {
   display: flex;
   flex-direction: row;
-  padding: $unit-4 0;
+  padding: $unit-2;
   @include box-shadow;
   justify-content: space-between;
   &__left {
     display: flex;
     flex-direction: row;
-    align-items: center;
-  }
-  &__title {
-    margin-left: $unit-4;
-    font-weight: bold;
-    font-size: 1.1rem;
+    place-content: center;
+    &__index {
+      color: $white;
+      font-weight: $font-weight-bold;
+      display: block;
+      width: $unit-10;
+      height: $unit-10;
+      border-radius: 50%;
+      text-align: center;
+      padding-top: 0.15rem;
+      span {
+        font-size: $unit-6;
+      }
+    }
+    .el-avatar {
+      align-self: center;
+      margin: 0 $unit-2 0 $unit-6;
+    }
+    &__info {
+      align-self: center;
+      &--fullname {
+        font-weight: $font-weight-medium;
+      }
+      &--department {
+        color: $neutral-primary-2;
+        font-size: $unit-3;
+      }
+    }
+    .top1 {
+      background-color: $yello-primary-1;
+    }
+    .top2 {
+      background-color: $blue-primary-3;
+    }
+    .top3 {
+      background-color: $orange-primary-1;
+    }
+    .topdown {
+      background-color: $purple-primary-3;
+    }
   }
   &__right {
     display: flex;
     flex-direction: row;
     align-items: center;
-    font-weight: bold;
-    font-size: 1.2rem;
+    font-weight: $font-weight-medium;
+    font-size: $unit-5;
   }
 }
 </style>

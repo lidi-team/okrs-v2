@@ -7,7 +7,7 @@
       placeholder="Chọn chu kỳ"
       @change="handleSelectCycle(currentCycleId)"
     >
-      <el-option v-for="item in options" :key="item.id" :label="item.label" :value="item.id" />
+      <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.label" :value="cycle.id" />
     </el-select>
     <el-tabs v-if="user.isLeader || user.role.name === 'ADMIN'" v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
@@ -39,7 +39,6 @@ import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
 import MyOkrsCheckin from '@/components/checkin/MyOkrsCheckin.vue';
 import CycleRepository from '@/repositories/CycleRepository';
 import CheckinRepository from '@/repositories/CheckinRepository';
-import { SelectOptionDTO } from '@/constants/app.interface';
 import { pageLimit } from '@/constants/app.constant';
 @Component<CheckinPage>({
   name: 'CheckinPage',
@@ -57,7 +56,7 @@ export default class CheckinPage extends Vue {
   private tableData: any[] = [];
   private tabs: string[] = [...Object.values(TabCheckins)];
   private loading: boolean = false;
-  private options: SelectOptionDTO[] = [];
+  private listCycles: any[] = [];
   private currentCycleId: number = this.$store.state.cycle.cycle.id;
   private meta: any = {};
 
@@ -118,19 +117,18 @@ export default class CheckinPage extends Vue {
   private async getAllCycles() {
     // Get 2 years(8 cycles OKRs) ago until now
     if (this.$store.state.cycle.cycles.length) {
-      this.options = this.$store.state.cycle.cycles;
+      this.listCycles = this.$store.state.cycle.cycles;
       this.currentCycleId = this.$store.state.cycle.cycle.id;
     } else {
       try {
         const { data } = await CycleRepository.get({ page: 1, limit: 8 });
-        this.options = data.data.items.map((item) => {
+        this.listCycles = data.data.items.map((item) => {
           return {
             id: item.id,
             label: item.name,
-            value: item.id,
           };
         });
-        this.$store.commit(MutationState.SET_ALL_CYCLES, this.options);
+        this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
         this.currentCycleId = this.$store.state.cycle.cycle.id;
       } catch (error) {}
     }

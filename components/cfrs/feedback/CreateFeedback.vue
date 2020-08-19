@@ -80,7 +80,7 @@ export default class CreateFeedbackDialog extends Vue {
       checkinId: this.dataFeedback.id,
       content: this.content,
     };
-    const response = await CfrsRepository.post(data);
+    const response = await CfrsRepository.postFeedback(data);
     this.loading = false;
     this.$router.push('?tab=history');
   }

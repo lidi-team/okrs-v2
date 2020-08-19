@@ -2,7 +2,7 @@
   <el-row v-if="currentTabComponent === 'history'" class="top-search-cycle">
     <el-col :xs="8" :sm="8" :md="8" :lg="8">
       <el-select v-model="cycleId" filterable disabled placeholder="Nhập chu kỳ" no-match-text="Không tìm thấy chu kỳ" @change="handleSelectCycle()">
-        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+        <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.label" :value="cycle.id" />
       </el-select>
     </el-col>
     <el-col :xs="12" :sm="12" :md="12" :lg="12">
@@ -19,7 +19,6 @@
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import CycleRepository from '@/repositories/CycleRepository';
-import { SelectOptionDTO } from '@/constants/app.interface';
 import { MutationState } from '@/constants/app.enum';
 @Component<NavbarCrfs>({
   name: 'NavbarCrfs',
@@ -31,7 +30,7 @@ export default class NavbarCrfs extends Vue {
   @Prop({ required: true, type: String }) private textSearchPlaceholder!: string;
   @Prop({ required: true, type: String }) private currentTabComponent!: string;
   @PropSync('textSearch', { required: true, type: String }) private syncTextSearch!: string;
-  private options: SelectOptionDTO[] = [];
+  private listCycles: any[] = [];
   private cycleId: String = 'Summer 2020';
   private querySearch() {
     console.log('Query Search');
@@ -48,21 +47,20 @@ export default class NavbarCrfs extends Vue {
   private async getAllCycles() {
     // Get 2 years(8 cycles OKRs) ago until now
     if (this.$store.state.cycle.cycles.length) {
-      this.options = this.$store.state.cycle.cycles;
-      const cycleId = this.options.find((item) => item.label === this.cycleId);
+      this.listCycles = this.$store.state.cycle.cycles;
+      const cycleId = this.listCycles.find((item) => item.label === this.cycleId);
       this.$store.commit(MutationState.SET_TEMP_CYCLE, cycleId);
     } else {
       try {
         const { data } = await CycleRepository.get({ page: 1, limit: 8 });
-        this.options = data.data.items.map((item) => {
+        this.listCycles = data.data.items.map((item) => {
           return {
             id: item.id,
             label: item.name,
-            value: item.id,
           };
         });
-        this.$store.commit(MutationState.SET_ALL_CYCLES, this.options);
-        const cycleId = this.options.find((item) => item.label === this.cycleId);
+        this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
+        const cycleId = this.listCycles.find((item) => item.label === this.cycleId);
         this.$store.commit(MutationState.SET_TEMP_CYCLE, cycleId);
       } catch (error) {}
     }

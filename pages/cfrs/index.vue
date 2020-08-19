@@ -6,7 +6,9 @@
           <cfrs-navbar-cfrs :text-search.sync="textSearch" :text-search-placeholder="textSearchPlaceholder" :current-tab-component="currentTabEng" />
         </el-col>
         <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
-          <el-button class="el-button el-button--purple el-button-medium" @click="visibleCreateDialog = true">Thêm Recongnition</el-button>
+          <el-button v-if="displayButton()" class="el-button el-button--purple el-button-medium" @click="visibleCreateDialog = true">
+            Tạo Recognition
+          </el-button>
         </el-col>
       </el-row>
     </div>
@@ -51,6 +53,12 @@ export default class CFRs extends Vue {
       : this.$route.query.tab === 'history'
       ? TabCfr.History
       : TabCfr.Rank;
+
+  private displayButton(): Boolean {
+    return (
+      this.$store.state.auth.user.role.name === 'ADMIN' || this.$store.state.auth.user.isLeader || this.$store.state.auth.user.role.name === 'HR'
+    );
+  }
 
   private get currentTabEng(): String {
     return this.$route.query.tab === 'feedback' || this.$route.query.tab === undefined

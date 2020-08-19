@@ -2,7 +2,7 @@
   <el-row v-if="cycleId" class="top-search-cycle">
     <el-col :xs="8" :sm="8" :md="8" :lg="8">
       <el-select v-model.number="cycleId" filterable placeholder="Nhập chu kỳ" no-match-text="Không tìm thấy chu kỳ">
-        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+        <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.label" :value="cycle.id" />
       </el-select>
     </el-col>
     <el-col :xs="12" :sm="12" :md="12" :lg="12">
@@ -20,23 +20,20 @@
 <script lang="ts">
 import { Component, Vue, PropSync, Watch } from 'vue-property-decorator';
 import CycleRepository from '@/repositories/CycleRepository';
-import { SelectOptionDTO } from '@/constants/app.interface';
 import { MutationState } from '@/constants/app.enum';
 import OkrsRepository from '@/repositories/OkrsRepository';
 @Component<TopSearchCycle>({
   name: 'TopSearchCycle',
-  created() {
-    this.getAllCycles();
-  },
-  mounted() {
-    this.getAllCompanyOkrs();
+  async created() {
+    this.cycleId = this.$store.state.cycle.cycle.id;
+    await this.getListCycle();
   },
 })
 export default class TopSearchCycle extends Vue {
-  private cycleId: number = this.$store.state.cycle.cycle.id;
+  // private cycleId: number = this.$store.state.cycle.cycle.id;
   private allCompanyOkrs: any[] = [];
   private textSearch: string = '';
-  private options: SelectOptionDTO[] = [];
+  private listCycles: any[] = [];
 
   @Watch('cycleId')
   private changeCycleData(cycleId: number) {
@@ -63,6 +60,7 @@ export default class TopSearchCycle extends Vue {
   }
 
   private async getAllCompanyOkrs() {
+    // @ts-ignore
     const [rootOkrs, okrs] = await Promise.all([OkrsRepository.getListOkrs(this.cycleId, 1), OkrsRepository.getListOkrs(this.cycleId, 3)]);
     const result = [...Object.freeze(rootOkrs.data.data), ...Object.freeze(okrs.data.data)];
     if (result.length) {
@@ -75,21 +73,20 @@ export default class TopSearchCycle extends Vue {
     }
   }
 
-  private async getAllCycles() {
+  private async getListCycle() {
     // Get 2 years(8 cycles OKRs) ago until now
     if (this.$store.state.cycle.cycles.length) {
-      this.options = this.$store.state.cycle.cycles;
+      this.listCycles = this.$store.state.cycle.cycles;
     } else {
       try {
         const { data } = await CycleRepository.get({ page: 1, limit: 8 });
-        this.options = data.data.items.map((item) => {
+        this.listCycles = data.data.items.map((item) => {
           return {
             id: item.id,
             label: item.name,
-            value: item.id,
           };
         });
-        this.$store.commit(MutationState.SET_ALL_CYCLES, this.options);
+        this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
       } catch (error) {}
     }
   }
