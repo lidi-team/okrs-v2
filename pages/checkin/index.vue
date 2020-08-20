@@ -3,8 +3,8 @@
     <el-select v-model="idCycle" no-match-text="Không tìm thấy chu kỳ" filterable placeholder="Chọn chu kỳ" @change="handleSelectCycle(idCycle)">
       <el-option v-for="item in options" :key="item.id" :label="item.label" :value="item.id" />
     </el-select>
-    <el-tabs v-if="user.isLeader" v-model="currentTab" @tab-click="handleClick(currentTab)">
-      <el-tab-pane v-for="tab in tabs.slice(0, 2)" :key="tab" :label="tab" :name="tab"></el-tab-pane>
+    <el-tabs v-if="user.role.name === 'ADMIN'" v-model="currentTab" @tab-click="handleClick(currentTab)">
+      <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="checkins__content">
         <component :is="currentTabComponent" :loading="loading" :table-data="tableData" />
         <base-pagination
@@ -17,8 +17,8 @@
         />
       </div>
     </el-tabs>
-    <el-tabs v-else-if="user.role.name === 'ADMIN'" v-model="currentTab" @tab-click="handleClick(currentTab)">
-      <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
+    <el-tabs v-else-if="user.isLeader" v-model="currentTab" @tab-click="handleClick(currentTab)">
+      <el-tab-pane v-for="tab in tabs.slice(0, 2)" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="checkins__content">
         <component :is="currentTabComponent" :loading="loading" :table-data="tableData" />
         <base-pagination
