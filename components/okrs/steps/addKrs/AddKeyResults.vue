@@ -47,7 +47,9 @@ import OkrsRepository from '@/repositories/OkrsRepository';
   },
   created() {
     this.objectiveTitle = this.$store.state.okrs.objective.title;
-    this.krFormItems = this.$store.state.okrs.keyResults.length !== 0 ? this.$store.state.okrs.keyResults.map((item) => ({ ...item })) : [];
+    if (this.$store.state.okrs.keyResults) {
+      this.krFormItems = this.$store.state.okrs.keyResults.length !== 0 ? this.$store.state.okrs.keyResults.map((item) => ({ ...item })) : [];
+    }
   },
 })
 export default class CreateObjectiveStep extends Vue {
