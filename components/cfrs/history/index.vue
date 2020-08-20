@@ -1,34 +1,60 @@
 <template>
   <div v-loading="loadingTab" class="history">
     <el-row :gutter="20" class>
-      <el-col :md="8" :lg="8">
+      <el-col v-loading="loadingPersonalTab" :md="8" :lg="8">
         <div class="history__col">
-          <p class="history__col__header">CFRs bạn gửi đi</p>
-          <p v-if="!dataExample.sent.length" class="history__col__empty">Không có dữ liệu</p>
-          <div v-for="item in data.sent" v-else :key="item.id" class="history-item" @click="detail('feedback', item)">
-            <el-avatar :size="40">
-              <img :src="item.receiver.avatarURL ? item.receiver.avatarURL : item.receiver.gravatarURL" alt="avatar" />
-            </el-avatar>
-            <div class="history-item__content">
-              <p class="history-item__title">{{ item.evaluationCriteria.content }}</p>
-              <p class="history-item__description">
-                Gửi đến {{ item.receiver.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}
-              </p>
+          <p class="history__col__header">CFRs {{ displayNameCfrs }} gửi đi</p>
+          <p v-if="!historyItems.sent.length" class="history__col__empty">Chưa có CFRs</p>
+          <div v-for="item in historyItems.sent" v-else :key="`sent-${item.id}`" class="history-item" @click="detail('feedback', item)">
+            <div class="history-item__left">
+              <div class="history-item__left--icon">
+                <div :class="['history-item__left--icon--type', isFeedback(item.type)]">
+                  <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
+                </div>
+                <div>
+                  <el-avatar :size="30">
+                    <img :src="item.receiver.avatarURL ? item.receiver.avatarURL : item.receiver.gravatarURL" alt="avatar" />
+                  </el-avatar>
+                </div>
+              </div>
+              <div class="history-item__left--content">
+                <p class="history-item__left--content--title">{{ item.evaluationCriteria.content }}</p>
+                <p class="history-item__left--content-description">
+                  Gửi đến {{ item.receiver.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}
+                </p>
+              </div>
+            </div>
+            <div class="history-item__right">
+              <span>{{ item.evaluationCriteria.numberOfStar }}</span>
+              <icon-star-dashboard />
             </div>
           </div>
         </div>
       </el-col>
-      <el-col :md="8" :lg="8">
+      <el-col v-loading="loadingPersonalTab" :md="8" :lg="8">
         <div class="history__col">
-          <p class="history__col__header">CFRs bạn nhận được</p>
-          <p v-if="!dataExample.received.length" class="history__col__empty">Không có dữ liệu</p>
-          <div v-for="(item, index) in data.received" v-else :key="`receive-${index}`" class="history-item" @click="detail('feedback', item)">
-            <el-avatar :size="40">
-              <img :src="item.sender.avatarURL ? item.sender.avatarURL : item.sender.gravatarURL" alt="avatar" />
-            </el-avatar>
-            <div class="history-item__content">
-              <p class="history-item__title">{{ item.evaluationCriteria.content }}</p>
-              <p class="history-item__description">Gửi bởi {{ item.sender.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}</p>
+          <p class="history__col__header">CFRs {{ displayNameCfrs }} nhận được</p>
+          <p v-if="!historyItems.received.length" class="history__col__empty">Chưa có CFRs</p>
+          <div v-for="item in historyItems.received" v-else :key="`received-${item.id}`" class="history-item" @click="detail('feedback', item)">
+            <div class="history-item__left">
+              <div class="history-item__left--icon">
+                <div :class="['history-item__left--icon--type', isFeedback(item.type)]">
+                  <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
+                </div>
+                <div>
+                  <el-avatar :size="30">
+                    <img :src="item.sender.avatarURL ? item.sender.avatarURL : item.sender.gravatarURL" alt="avatar" />
+                  </el-avatar>
+                </div>
+              </div>
+              <div class="history-item__left--content">
+                <p class="content--title">{{ item.evaluationCriteria.content }}</p>
+                <p class="content--description">Gửi bởi {{ item.sender.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}</p>
+              </div>
+            </div>
+            <div class="history-item__right">
+              <span>{{ item.evaluationCriteria.numberOfStar }}</span>
+              <icon-star-dashboard />
             </div>
           </div>
         </div>
@@ -36,19 +62,35 @@
       <el-col :md="8" :lg="8">
         <div class="history__col">
           <p class="history__col__header">CFRs toàn công ty</p>
-          <p v-if="!dataExample.all.length" class="history__col__empty">Không có dữ liệu</p>
-          <div v-for="(item, index) in data.CFRs" v-else :key="`cfrs-${index}`" class="history-item" @click="detail(item.type, item)">
-            <el-avatar :size="40">
-              <img :src="item.sender.avatarURL ? item.sender.avatarURL : item.sender.gravatarURL" alt="avatar" />
-            </el-avatar>
-            <el-avatar :size="40">
-              <img :src="item.receiver.avatarURL ? item.receiver.avatarURL : item.receiver.gravatarURL" alt="avatar" />
-            </el-avatar>
-            <div class="history-item__content">
-              <p class="history-item__title">{{ item.evaluationCriteria.content }}</p>
-              <p class="history-item__description">
-                {{ item.sender.fullName }} đến {{ item.receiver.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}
-              </p>
+          <p v-if="!historyItems.all.length" class="history__col__empty">Chưa có CFRs</p>
+          <div v-for="item in historyItems.all" v-else :key="item.id" class="history-item" @click="detail(item.type, item)">
+            <div class="item__left">
+              <div class="item__left--icon">
+                <div :class="['icon__type', isFeedback(item.type)]">
+                  <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
+                </div>
+                <div class="icon__avatar">
+                  <el-avatar :size="30">
+                    <img :src="item.sender.avatarURL ? item.sender.avatarURL : item.sender.gravatarURL" alt="avatar" />
+                  </el-avatar>
+                  <el-avatar :size="30">
+                    <img :src="item.receiver.avatarURL ? item.receiver.avatarURL : item.receiver.gravatarURL" alt="avatar" />
+                  </el-avatar>
+                </div>
+              </div>
+              <div class="item__left--content">
+                <p>
+                  ({{ isLeaderToMember(item.evaluationCriteria.type) }}) <span class="content__title"> {{ item.evaluationCriteria.content }}</span>
+                </p>
+                <p class="content__description">
+                  {{ takeTwoLastNameUser(item.sender.fullName) }} đến {{ takeTwoLastNameUser(item.receiver.fullName) }} -
+                  {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}
+                </p>
+              </div>
+            </div>
+            <div class="item__right">
+              <span>{{ item.evaluationCriteria.numberOfStar }}</span>
+              <icon-star-dashboard />
             </div>
           </div>
         </div>
@@ -63,219 +105,39 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import CreateFeedback from './Create.vue';
+import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import { CfrsRepository } from '@/repositories/CfrsRepository';
 import { GetterState, MutationState } from '@/constants/app.enum';
 @Component<History>({
   name: 'History',
-  async created() {
-    await this.getListDataHistory(this.$store.state.cycle.cycle.id);
-    this.$store.commit(MutationState.SET_TEMP_CYCLE, this.$store.state.cycle.cycle.id);
-    this.$watchAll(['$store.state.cycle.cycleTemp', 'state.amount'], this.onStateChange);
+  components: {
+    IconStarDashboard,
+  },
+  created() {
+    this.getListDataHistory(this.$store.state.cycle.cycle.id);
   },
   beforeMount() {
     this.loadingTab = true;
     setTimeout(() => {
       this.loadingTab = false;
-    }, 500);
+    }, 1000);
   },
 })
 export default class History extends Vue {
   private loadingTab: boolean = false;
-  private data: any = [
-    { type: 1, items: [] },
-    { type: 2, items: [] },
-    { type: 3, items: [] },
-  ];
-
-  private dataExample: any = {
-    // Truyền API kèm User ID - Cycle ID
-    sent: [
-      {
-        id: 1,
-        type: 'recognition',
-        content: 'Bạn làm rất tốt',
-        createdAt: '2020-08-18T11:33:40.898Z',
-        evaluationCriteria: {
-          id: 1,
-          star: 50,
-          content: 'Bạn làm việc tốt',
-        },
-        receiver: {
-          fullName: 'Diệu Linh',
-          avatarURL: null,
-          gravatarURL:
-            'https://gravatar.com/avatar/882ea16b62f875eaae5eab32de8988b27001a556d40d32e86df208981f94b7e456fd9b0b55f221c3c3b4f0cd1bb723b7d4e8d2a8743c53d2032da5f55ccbb155?s=200&d=retro',
-          objective: {
-            id: 10,
-            title: 'Cải thiện sự gắn kết nhân viên nội bộ và sự hài lòng trong công việc',
-          },
-        },
-      },
-      {
-        id: 1,
-        type: 'feedback',
-        star: 50,
-        content: 'Bạn làm rất tốt',
-        createdAt: '2020-08-18T11:33:40.898Z',
-        objectives: [
-          {
-            id: 1,
-            title: 'zxczxczxczxc',
-            changeValue: 3,
-          },
-          {
-            id: 2,
-            title: 'zczxc',
-            changeValue: 4,
-          },
-        ],
-        evaluationCriteria: {
-          id: 1,
-          content: 'Bạn làm việc tốt',
-        },
-        receiver: {
-          fullName: 'Diệu Linh',
-          avatarURL: null,
-          gravatarURL:
-            'https://gravatar.com/avatar/882ea16b62f875eaae5eab32de8988b27001a556d40d32e86df208981f94b7e456fd9b0b55f221c3c3b4f0cd1bb723b7d4e8d2a8743c53d2032da5f55ccbb155?s=200&d=retro',
-          objective: {
-            id: 10,
-            title: 'Cải thiện sự gắn kết nhân viên nội bộ và sự hài lòng trong công việc',
-            changeValue: 7,
-          },
-        },
-      },
-    ],
+  private loadingPersonalTab: boolean = false;
+  private historyItems: any = {
+    sent: [],
     received: [],
-    all: [
-      {
-        id: 1,
-        type: 'recognition',
-        star: 50,
-        content: 'Bạn làm rất tốt',
-        createdAt: '2020-08-18T11:33:40.898Z',
-        evaluationCriteria: {
-          id: 1,
-          content: 'Bạn làm việc tốt',
-        },
-        sender: {
-          fullName: 'Hữu Lợi',
-          avatarURL: null,
-          gravatarURL:
-            'https://gravatar.com/avatar/52c17264e02258faa8e4b9d98d0af3cbb86cf1935d1cddd5633a7cf6fd0df46c1246ec162a28c698ed88230c01d1963300fb566d2f2527c3603e8a67cc85c82a?s=200&d=retro',
-        },
-        receiver: {
-          fullName: 'Diệu Linh',
-          avatarURL: null,
-          gravatarURL:
-            'https://gravatar.com/avatar/882ea16b62f875eaae5eab32de8988b27001a556d40d32e86df208981f94b7e456fd9b0b55f221c3c3b4f0cd1bb723b7d4e8d2a8743c53d2032da5f55ccbb155?s=200&d=retro',
-          objective: {
-            id: 10,
-            title: 'Cải thiện sự gắn kết nhân viên nội bộ và sự hài lòng trong công việc',
-            changeValue: 7,
-          },
-        },
-      },
-      {
-        id: 1,
-        type: 'recognition',
-        star: 30,
-        content: 'Bạn làm tốt hơn rồi đấy',
-        createdAt: '2020-08-18T11:33:40.898Z',
-        evaluationCriteria: {
-          id: 1,
-          content: 'Bạn làm việc tốt',
-        },
-        sender: {
-          id: 1,
-          fullName: 'Hữu Lợi',
-          avatarURL: null,
-          gravatarURL:
-            'https://gravatar.com/avatar/52c17264e02258faa8e4b9d98d0af3cbb86cf1935d1cddd5633a7cf6fd0df46c1246ec162a28c698ed88230c01d1963300fb566d2f2527c3603e8a67cc85c82a?s=200&d=retro',
-        },
-        receiver: {
-          id: 2,
-          fullName: 'Diệu Linh',
-          avatarURL:
-            'https://gravatar.com/avatar/882ea16b62f875eaae5eab32de8988b27001a556d40d32e86df208981f94b7e456fd9b0b55f221c3c3b4f0cd1bb723b7d4e8d2a8743c53d2032da5f55ccbb155?s=200&d=retro',
-          gravatarURL:
-            'https://gravatar.com/avatar/882ea16b62f875eaae5eab32de8988b27001a556d40d32e86df208981f94b7e456fd9b0b55f221c3c3b4f0cd1bb723b7d4e8d2a8743c53d2032da5f55ccbb155?s=200&d=retro',
-          objective: null,
-        },
-      },
-      {
-        id: 1,
-        type: 'feedback',
-        star: 5,
-        content: 'Sếp chỉ dạy em rất tốt',
-        createdAt: '2020-08-18T11:33:40.898Z',
-        objectives: [
-          {
-            id: 1,
-            title: 'zxczxczxczxc',
-            changeValue: 3,
-          },
-          {
-            id: 2,
-            title: 'zczxc',
-            changeValue: 4,
-          },
-        ],
-        evaluationCriteria: {
-          id: 1,
-          content: 'Bạn làm việc tốt',
-        },
-        sender: {
-          id: 1,
-          fullName: 'Hữu Lợi',
-          avatarURL: null,
-          gravatarURL:
-            'https://gravatar.com/avatar/52c17264e02258faa8e4b9d98d0af3cbb86cf1935d1cddd5633a7cf6fd0df46c1246ec162a28c698ed88230c01d1963300fb566d2f2527c3603e8a67cc85c82a?s=200&d=retro',
-        },
-        receiver: {
-          id: 2,
-          fullName: 'Diệu Linh',
-          avatarURL:
-            'https://gravatar.com/avatar/882ea16b62f875eaae5eab32de8988b27001a556d40d32e86df208981f94b7e456fd9b0b55f221c3c3b4f0cd1bb723b7d4e8d2a8743c53d2032da5f55ccbb155?s=200&d=retro',
-          gravatarURL:
-            'https://gravatar.com/avatar/882ea16b62f875eaae5eab32de8988b27001a556d40d32e86df208981f94b7e456fd9b0b55f221c3c3b4f0cd1bb723b7d4e8d2a8743c53d2032da5f55ccbb155?s=200&d=retro',
-        },
-      },
-      {
-        id: 1,
-        type: 'feedback',
-        star: 3,
-        content: 'Em làm được có 70% tiến đô',
-        createdAt: '2020-08-18T11:33:40.898Z',
-        evaluationCriteria: {
-          id: 1,
-          content: 'Nhân viên làm việc tốt',
-        },
-        sender: {
-          id: 1,
-          fullName: 'Diệu Linh',
-          avatarURL: null,
-          gravatarURL:
-            'https://gravatar.com/avatar/52c17264e02258faa8e4b9d98d0af3cbb86cf1935d1cddd5633a7cf6fd0df46c1246ec162a28c698ed88230c01d1963300fb566d2f2527c3603e8a67cc85c82a?s=200&d=retro',
-        },
-        receiver: {
-          id: 2,
-          fullName: 'Hữu Lợi',
-          avatarURL:
-            'https://gravatar.com/avatar/882ea16b62f875eaae5eab32de8988b27001a556d40d32e86df208981f94b7e456fd9b0b55f221c3c3b4f0cd1bb723b7d4e8d2a8743c53d2032da5f55ccbb155?s=200&d=retro',
-          gravatarURL:
-            'https://gravatar.com/avatar/882ea16b62f875eaae5eab32de8988b27001a556d40d32e86df208981f94b7e456fd9b0b55f221c3c3b4f0cd1bb723b7d4e8d2a8743c53d2032da5f55ccbb155?s=200&d=retro',
-        },
-      },
-    ],
+    all: [],
   };
 
+  private cycleTempId: number = this.$store.state.cycle.cycle.id;
   private dataDetail: object = {};
   private visibleCreateDialog = false;
 
   @Watch('$store.state.cycle.cycleTemp')
-  private async changeListDataHistory(cycleTemp: number) {
-    console.log(cycleTemp);
+  private async changeListDataOnCycle(cycleTemp: number) {
     this.loadingTab = true;
     await this.getListDataHistory(cycleTemp);
     setTimeout(() => {
@@ -283,10 +145,19 @@ export default class History extends Vue {
     }, 300);
   }
 
+  @Watch('$store.state.user.tempUser.id')
+  private async changeListDataOnUser(tempUserId: number) {
+    this.loadingPersonalTab = true;
+    await this.getListDataHistory(this.$store.state.cycle.cycleTemp, tempUserId);
+    setTimeout(() => {
+      this.loadingPersonalTab = false;
+    }, 300);
+  }
+
   private async getListDataHistory(cycleId: number, userId: number = this.$store.state.auth.user.id) {
     try {
-      const { data } = await CfrsRepository.getHistoryCfrs(userId, cycleId);
-      this.data = data.data;
+      const { data } = await CfrsRepository.getHistoryCfrs(cycleId, userId);
+      this.historyItems = Object.freeze(data.data);
     } catch (error) {}
   }
 
@@ -310,6 +181,34 @@ export default class History extends Vue {
     };
     this.visibleCreateDialog = true;
   }
+
+  private isFeedback(type: string): String | null {
+    return type !== 'recognition' ? 'is-feedback' : null;
+  }
+
+  private get displayNameCfrs(): String {
+    if (!this.$store.state.user.tempUser) {
+      return 'bạn';
+    }
+    if (this.$store.state.user.tempUser.id !== this.$store.state.auth.user.id) {
+      return this.takeTwoLastNameUser(this.$store.state.user.tempUser.fullName);
+    } else {
+      return 'bạn';
+    }
+  }
+
+  private isLeaderToMember(type: string): string {
+    if (type === 'LEADER_TO_MEMBER') {
+      return 'Leader đánh giá thành viên';
+    } else {
+      return 'Thành viên đánh giá Leader';
+    }
+  }
+
+  private takeTwoLastNameUser(userName: string): string {
+    const arr = userName.split(' ');
+    return arr.slice(Math.max(arr.length - 2, 1)).join(' ');
+  }
 }
 </script>
 
@@ -322,7 +221,9 @@ export default class History extends Vue {
   border-radius: $border-radius-base;
   &__col {
     background-color: $white;
-    padding: $unit-8;
+    padding: $unit-6 0 $unit-4;
+    border-radius: $border-radius-base;
+    @include box-shadow;
     &__empty {
       text-align: center;
       padding: $unit-3;
@@ -332,30 +233,76 @@ export default class History extends Vue {
       padding: 0 0 $unit-4;
       @include box-shadow;
       border-radius: $border-radius-base $border-radius-base 0px 0px;
+      padding-left: $unit-4;
     }
   }
 }
 .history-item {
   display: flex;
   flex-direction: row;
-  padding: $unit-4 0;
+  place-content: center space-between;
+  padding: $unit-2 0;
   @include box-shadow;
   cursor: pointer;
-  &__content {
-    margin: 0 $unit-4;
+  .item__left {
+    display: flex;
+    padding-left: $unit-4;
+    &--icon {
+      display: flex;
+      flex-direction: column;
+      .icon__type {
+        color: $white;
+        background-color: $purple-primary-3;
+        font-weight: $font-weight-bold;
+        display: flex;
+        place-content: center;
+        align-self: center;
+        @include circle($unit-8);
+        text-align: center;
+        padding-top: 0.15rem;
+        span {
+          align-self: center;
+          font-size: $unit-4;
+        }
+      }
+      .is-feedback {
+        background-color: $orange-primary-1;
+      }
+      .icon__avatar {
+      }
+    }
+    &--content {
+      display: flex;
+      flex-direction: column;
+      align-self: center;
+      margin-left: $unit-4;
+      p {
+        @include text-ellipsis(1);
+        display: flex;
+      }
+      .content__title {
+        padding-left: $unit-1;
+        font-weight: bold;
+        @include text-ellipsis(1);
+      }
+      .content__description {
+        @include text-ellipsis(1);
+        margin: unset;
+        white-space: normal;
+      }
+    }
   }
-  &__title {
-    font-weight: bold;
-    font-size: 1.1rem;
-  }
-  &__description {
-    box-sizing: border-box;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
-    word-break: break-all;
-    line-height: 23px;
-    padding-right: 10px;
+  .item__right {
+    display: flex;
+    place-content: center;
+    align-self: center;
+    padding-right: $unit-4;
+    font-weight: $font-weight-medium;
+    font-size: $unit-5;
+    svg {
+      display: flex;
+      align-self: center;
+    }
   }
 }
 </style>

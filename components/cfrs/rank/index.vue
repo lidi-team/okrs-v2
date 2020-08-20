@@ -15,8 +15,8 @@
               <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.label" :value="cycle.id" />
             </el-select>
           </div>
-          <p v-if="currentRanking.length === 0" class="history__col__empty">Không có dữ liệu</p>
-          <div v-loading="loadingCurrentRanking">
+          <p v-if="!currentRanking.length" v-loading="loadingCurrentRanking" class="history__col__empty">Không có dữ liệu</p>
+          <div v-else v-loading="loadingCurrentRanking">
             <div v-for="(item, index) in currentRanking" :key="item.id" class="rank-item">
               <div class="rank-item__left">
                 <div :class="['rank-item__left__index', topRanking(index)]">
@@ -38,8 +38,8 @@
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <div class="rank__col">
           <p class="rank__col__header" style="padding-bottom: 20px;">BXH lũy kế</p>
-          <p v-if="accumulatedRanking.length === 0" class="history__col__empty">Không có dữ liệu</p>
-          <div v-for="(item, index) in accumulatedRanking" :key="item.id" class="rank-item">
+          <p v-if="!accumulatedRanking.length" class="history__col__empty">Không có dữ liệu</p>
+          <div v-for="(item, index) in accumulatedRanking" v-else :key="item.id" class="rank-item">
             <div class="rank-item__left">
               <div :class="['rank-item__left__index', topRanking(index)]">
                 <span>{{ index + 1 }}</span>
@@ -117,7 +117,10 @@ export default class Rank extends Vue {
   private async getListDataRanking() {
     this.loadingTab = true;
     try {
-      const [accumulatedRanking, currentRanking] = await Promise.all([CfrsRepository.getRankingCfrs('all'), CfrsRepository.getRankingCfrs('curent')]);
+      const [accumulatedRanking, currentRanking] = await Promise.all([
+        CfrsRepository.getRankingCfrs(),
+        CfrsRepository.getRankingCfrs(this.$store.state.cycle.cycle.id),
+      ]);
       this.accumulatedRanking = accumulatedRanking.data.data;
       this.currentRanking = currentRanking.data.data;
     } catch (error) {}
@@ -130,7 +133,7 @@ export default class Rank extends Vue {
   private async getRankingOnCycle(cycleId: number) {
     this.loadingCurrentRanking = true;
     try {
-      await CfrsRepository.getRankingCfrs('curent').then((res) => {
+      await CfrsRepository.getRankingCfrs(cycleId).then((res) => {
         this.currentRanking = res.data.data;
       });
     } catch (error) {}
@@ -201,8 +204,7 @@ export default class Rank extends Vue {
       color: $white;
       font-weight: $font-weight-bold;
       display: block;
-      width: $unit-10;
-      height: $unit-10;
+      @include size($unit-10, $unit-10);
       border-radius: 50%;
       text-align: center;
       padding-top: 0.15rem;

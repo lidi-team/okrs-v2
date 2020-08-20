@@ -10,17 +10,19 @@
         v-model="textSearch"
         prefix-icon="el-icon-search"
         :fetch-suggestions="querySearch"
-        :trigger-on-focus="false"
+        :trigger-on-focus="true"
         placeholder="Tìm kiếm CFRs của"
         @select="handleSearchSelect"
       >
         <template v-slot="{ item }">
-          <el-avatar :size="25">
-            <img :src="item.avatarURL ? item.avatarURL : item.gravatarURL" alt="avatar" />
-          </el-avatar>
           <div class="navbar-history__search">
-            <p class="navbar-history__search--fullName">{{ item.fullName }}</p>
-            <p class="navbar-history__search--department">{{ getInforUser(item) }}</p>
+            <el-avatar :size="30">
+              <img :src="item.avatarURL ? item.avatarURL : item.gravatarURL" alt="avatar" />
+            </el-avatar>
+            <div class="navbar-history__search--info">
+              <p class="navbar-history__search--info--fullName">{{ item.fullName }}</p>
+              <p class="navbar-history__search--info--department">{{ getInforUser(item) }}</p>
+            </div>
           </div>
         </template>
       </el-autocomplete>
@@ -38,7 +40,11 @@ import UserRepository from '@/repositories/UserRepository';
     this.getAllCycles();
   },
   mounted() {
-    this.getUsers();
+    this.getAllUsers();
+  },
+  destroyed() {
+    this.$store.commit(MutationState.SET_USERS, []);
+    this.$store.commit(MutationState.SET_TEMP_USER, null);
   },
 })
 export default class NavbarCrfs extends Vue {
@@ -53,7 +59,7 @@ export default class NavbarCrfs extends Vue {
     let results: any[] = [];
     if (textQuery) {
       results = this.allUsers.filter((item) => {
-        return item.value.toLowerCase().includes(textQuery.toLowerCase());
+        return item.fullName.toLowerCase().includes(textQuery.toLowerCase());
       });
     } else {
       results = this.allUsers;
@@ -68,7 +74,7 @@ export default class NavbarCrfs extends Vue {
   }
 
   private handleSearchSelect(item) {
-    this.$store.commit(MutationState.SET_TEMP_USER_ID, item.id);
+    this.$store.commit(MutationState.SET_TEMP_USER, item);
   }
 
   private async getAllCycles() {
@@ -76,7 +82,6 @@ export default class NavbarCrfs extends Vue {
     if (this.$store.state.cycle.cycles.length) {
       this.listCycles = this.$store.state.cycle.cycles;
       const cycleId = this.listCycles.find((item) => item.label === this.cycleId);
-      this.$store.commit(MutationState.SET_TEMP_CYCLE, cycleId);
     } else {
       try {
         const { data } = await CycleRepository.get({ page: 1, limit: 8 });
@@ -88,24 +93,24 @@ export default class NavbarCrfs extends Vue {
         });
         this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
         const cycleId = this.listCycles.find((item) => item.label === this.cycleId);
-        this.$store.commit(MutationState.SET_TEMP_CYCLE, cycleId);
       } catch (error) {}
     }
   }
 
   private getInforUser(item: any): String {
     if (item.isLeader) {
-      return `Trưởng phòng ${item.team.name}`;
+      return `Trưởng ${item.team.name}`;
     } else {
-      return `Thành viên phòng ${item.team.name}`;
+      return `Thành viên ${item.team.name}`;
     }
   }
 
-  private async getUsers() {
+  private async getAllUsers() {
     try {
-      await UserRepository.getUsers().then((res) => {
-        if (res.data.data.items.length) {
-          this.allUsers = Object.freeze(res.data.data.items);
+      await UserRepository.getAllUsers().then((res) => {
+        if (res.data.data.length) {
+          this.allUsers = Object.freeze(res.data.data);
+          this.$store.commit(MutationState.SET_USERS, this.allUsers);
         }
       });
     } catch (error) {}
@@ -114,13 +119,34 @@ export default class NavbarCrfs extends Vue {
 </script>
 <style lang="scss">
 @import '@/assets/scss/main.scss';
-.top-search-cycle {
+.navbar-history {
   @include breakpoint-down(phone) {
     display: flex;
     justify-content: space-between;
   }
+  &__search {
+    display: flex;
+    place-content: center flex-start;
+    padding: $unit-2 0 $unit-2 0;
+    span {
+      align-self: center;
+    }
+    &--info {
+      align-self: center;
+      line-height: $unit-5;
+      padding-left: $unit-2;
+    }
+  }
   .el-autocomplete {
     width: 100%;
   }
+  // .el-autocomplete-suggestion__list {
+  //   li {
+  //     padding-bottom: $unit-2;
+  //     &:last-child {
+  //       padding-bottom: 0;
+  //     }
+  //   }
+  // }
 }
 </style>
