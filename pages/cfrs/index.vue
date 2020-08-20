@@ -17,7 +17,7 @@
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab" />
       <component :is="currentTabComponent" />
     </el-tabs>
-    <cfrs-recognition :visible-dialog.sync="visibleCreateDialog" />
+    <!-- <cfrs-recognition :visible-dialog.sync="visibleCreateDialog" /> -->
   </div>
 </template>
 
@@ -30,12 +30,15 @@ import Rank from '@/components/cfrs/rank/index.vue';
 
 import OkrsRepository from '@/repositories/OkrsRepository';
 
-import { TabCfr, TabCfrEng } from '@/constants/app.enum';
+import { TabCfr, TabCfrEng, MutationState } from '@/constants/app.enum';
 import { ParamsCFR } from '@/constants/app.interface';
 import { pageLimit } from '@/constants/app.constant';
 
 @Component<CFRs>({
   name: 'CFRs',
+  created() {
+    this.$store.commit(MutationState.SET_TEMP_CYCLE, this.$store.state.cycle.cycle.id);
+  },
 })
 export default class CFRs extends Vue {
   private meta: object = {};

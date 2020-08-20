@@ -7,8 +7,8 @@ export default class UserRepository {
     return authenticatedService.get(`${ResourcesEnpoint.Users}/me`);
   }
 
-  public static getUsers() {
-    return authenticatedService.get(`${ResourcesEnpoint.Users}/users`, { params: { status: 1 } });
+  public static getAllUsers() {
+    return authenticatedService.get(`${ResourcesEnpoint.Users}/all`);
   }
 
   public static changePassword(payload: ChangePasswordDTO) {

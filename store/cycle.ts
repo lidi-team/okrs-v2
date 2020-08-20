@@ -1,5 +1,4 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
-import { CfrsRepository } from '@/repositories/CfrsRepository';
 
 export enum CycleMutation {
   SET_ALL_CYCLE = 'setAllCycles',
