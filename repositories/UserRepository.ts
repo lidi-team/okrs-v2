@@ -7,6 +7,10 @@ export default class UserRepository {
     return authenticatedService.get(`${ResourcesEnpoint.Users}/me`);
   }
 
+  public static getAllUsers() {
+    return authenticatedService.get(`${ResourcesEnpoint.Users}/all`);
+  }
+
   public static changePassword(payload: ChangePasswordDTO) {
     return authenticatedService.put(`${ResourcesEnpoint.Users}/me/change_password`, payload);
   }

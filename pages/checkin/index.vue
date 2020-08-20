@@ -1,7 +1,13 @@
 <template>
   <div v-if="user" class="checkins">
-    <el-select v-model="idCycle" no-match-text="Không tìm thấy chu kỳ" filterable placeholder="Chọn chu kỳ" @change="handleSelectCycle(idCycle)">
-      <el-option v-for="item in options" :key="item.id" :label="item.label" :value="item.id" />
+    <el-select
+      v-model="currentCycleId"
+      no-match-text="Không tìm thấy chu kỳ"
+      filterable
+      placeholder="Chọn chu kỳ"
+      @change="handleSelectCycle(currentCycleId)"
+    >
+      <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.label" :value="cycle.id" />
     </el-select>
     <el-tabs v-if="user.role.name === 'ADMIN'" v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
@@ -44,7 +50,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { Notification } from 'element-ui';
 import { notificationConfig, pageLimit } from '@/constants/app.constant';
-import { TabCheckins, GetterState } from '@/constants/app.enum';
+import { TabCheckins, GetterState, MutationState } from '@/constants/app.enum';
 import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
 import MyOkrsCheckin from '@/components/checkin/MyOkrsCheckin.vue';
 import CheckinCompany from '@/components/checkin/CheckinCompany.vue';
@@ -67,8 +73,8 @@ export default class CheckinPage extends Vue {
   private tableData: any[] = [];
   private tabs: string[] = [...Object.values(TabCheckins)];
   private loading: boolean = false;
-  private options: SelectOptionDTO[] = [];
-  private idCycle: number = this.$store.state.cycle.cycle.id;
+  private listCycles: any[] = [];
+  private currentCycleId: number = this.$store.state.cycle.cycle.id;
   private meta: any = {};
 
   private currentTab: string =
@@ -166,15 +172,22 @@ export default class CheckinPage extends Vue {
 
   private async getAllCycles() {
     // Get 2 years(8 cycles OKRs) ago until now
-    const { data } = await CycleRepository.get({ page: 1, limit: 8 });
-    this.options = data.data.items.map((item) => {
-      return {
-        id: item.id,
-        label: item.name,
-        value: item.name,
-      };
-    });
-    this.idCycle = this.$store.state.cycle.cycle.id;
+    if (this.$store.state.cycle.cycles.length) {
+      this.listCycles = this.$store.state.cycle.cycles;
+      this.currentCycleId = this.$store.state.cycle.cycle.id;
+    } else {
+      try {
+        const { data } = await CycleRepository.get({ page: 1, limit: 8 });
+        this.listCycles = data.data.items.map((item) => {
+          return {
+            id: item.id,
+            label: item.name,
+          };
+        });
+        this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
+        this.currentCycleId = this.$store.state.cycle.cycle.id;
+      } catch (error) {}
+    }
   }
 
   private handleClick(currentTab: string) {

@@ -58,10 +58,9 @@ import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepos
 })
 export default class CreateFeedbackDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
-  @Prop()
-  dataFeedback!: any;
-
+  @Prop() dataFeedback!: any;
   @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncCreateOkrsDialog!: boolean;
+
   private content: String = '';
   private optionCriteria: Object = [];
   private criteriaId: String | Number = '';
@@ -81,7 +80,7 @@ export default class CreateFeedbackDialog extends Vue {
       checkinId: this.dataFeedback.id,
       content: this.content,
     };
-    const response = await CfrsRepository.post(data);
+    const response = await CfrsRepository.postFeedback(data);
     this.loading = false;
     this.$router.push('?tab=history');
   }

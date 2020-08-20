@@ -66,7 +66,7 @@ import { CfrsRepository } from '@/repositories/CfrsRepository';
   async mounted() {
     const dataCriteria = await EvaluationCriteriaRepository.getCombobox();
     this.optionCriteria = dataCriteria.data.data;
-    const dataRecognition = await CfrsRepository.getRecognition();
+    const dataRecognition = await CfrsRepository.getRecognitions();
     this.optionUserRecongnition = dataRecognition.data.data;
   },
 })
@@ -82,6 +82,7 @@ export default class CreateRecongnitionDialog extends Vue {
   private criteriaId: String | Number = '';
   private autoSizeConfig = { minRows: 4, maxRows: 6 };
   private loading: Boolean = false;
+
   private handleCloseDialog() {
     this.$confirm('Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?', { ...confirmWarningConfig }).then(() => {
       this.syncCreateOkrsDialog = false;
@@ -96,7 +97,7 @@ export default class CreateRecongnitionDialog extends Vue {
 
   private async createRecognition() {
     this.loading = true;
-    await CfrsRepository.posRecognition({
+    await CfrsRepository.postRecognition({
       receiverId: this.userRecongnitionId,
       content: this.content,
       evaluationCriteriaId: this.criteriaId,

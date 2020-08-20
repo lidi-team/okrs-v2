@@ -21,7 +21,7 @@
           label-width="120px"
         >
           <el-select v-model="tempObjective.parentObjectiveId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn OKRs cấp trên">
-            <el-option v-for="itemOKRs in listOkrsToSelect" :key="itemOKRs.id" :label="okrsLeaderFormat(itemOKRs)" :value="itemOKRs.id" />
+            <el-option v-for="okrs in listOkrs" :key="okrs.id" :label="okrsLeaderFormat(okrs)" :value="okrs.id" />
           </el-select>
         </el-form-item>
         <!-- Select OKrs của công ty -->
@@ -33,7 +33,7 @@
           label-width="120px"
         >
           <el-select v-model="tempObjective.parentObjectiveId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn OKRs công ty">
-            <el-option v-for="itemOKRs in listOkrsToSelect" :key="itemOKRs.id" :label="itemOKRs.title" :value="itemOKRs.id" />
+            <el-option v-for="okrs in listOkrs" :key="okrs.id" :label="okrs.title" :value="okrs.id" />
           </el-select>
         </el-form-item>
       </div>
@@ -78,7 +78,7 @@ export default class CreateObjectiveStep extends Vue {
     cycleId: this.$store.state.okrs.objective ? this.$store.state.okrs.objective.cycleId : this.$store.state.cycle.cycle.id,
   };
 
-  private listOkrsToSelect: any[] = [];
+  private listOkrs: any[] = [];
   private listCycles: any[] = [];
   private autoSizeConfig = { minRows: 2, maxRows: 2 };
   private listDataParams: ParamsQuery = {
@@ -103,10 +103,20 @@ export default class CreateObjectiveStep extends Vue {
   }
 
   private async getListCycle() {
-    try {
-      const { data } = await CycleRepository.get(this.listDataParams);
-      this.listCycles = Object.freeze(data.data.items);
-    } catch (error) {}
+    if (this.$store.state.cycle.cycles.length) {
+      this.listCycles = this.$store.state.cycle.cycles;
+    } else {
+      try {
+        const { data } = await CycleRepository.get({ page: 1, limit: 8 });
+        this.listCycles = data.data.items.map((item) => {
+          return {
+            id: item.id,
+            label: item.name,
+          };
+        });
+        this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
+      } catch (error) {}
+    }
   }
 
   @Watch('tempObjective.cycleId', { deep: true, immediate: true })
@@ -125,10 +135,10 @@ export default class CreateObjectiveStep extends Vue {
           const { data } = await OkrsRepository.getListOkrs(+this.tempObjective.cycleId, 2);
           listOkrs = Object.freeze(data.data);
         }
-        if (this.listOkrsToSelect.length > 0) {
-          this.listOkrsToSelect = [];
+        if (this.listOkrs.length > 0) {
+          this.listOkrs = [];
         }
-        this.listOkrsToSelect = listOkrs;
+        this.listOkrs = listOkrs;
         setTimeout(() => {
           this.loadingSelect = false;
         }, 300);

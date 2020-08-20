@@ -3,35 +3,34 @@ import { authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint, CFREnpoint } from '@/constants/app.enum';
 
 export class CfrsRepository {
-  public static get(): Promise<AxiosResponse<any>> {
+  public static getListWaitingFeedback(): Promise<AxiosResponse<any>> {
     return authenticatedService.get(`${ResourcesEnpoint.Feedback}/${CFREnpoint.ListWaiting}`);
   }
 
-  public static getRecognition(): any {
+  public static getRecognitions(): Promise<AxiosResponse<any>> {
     return authenticatedService.get(`${ResourcesEnpoint.Users}/${CFREnpoint.Recognition}`);
   }
 
-  public static posRecognition(payload: any): any {
-    return authenticatedService.post(`${ResourcesEnpoint.Recognition}`, payload);
+  /**
+   * @param status -> Have 2 status: 'all' and 'current'
+   */
+  public static getRankingCfrs(cycleId?: number): Promise<AxiosResponse<any>> {
+    return authenticatedService.get(`${CFREnpoint.Rank}`, { params: { cycleId } });
   }
 
-  public static getObjective(userId: Number | String) {
+  public static getHistoryCfrs(cycleId: number, userId: number): Promise<AxiosResponse<any>> {
+    return authenticatedService.get(`${ResourcesEnpoint.Feedback}/${CFREnpoint.History}`, { params: { cycleId, userId } });
+  }
+
+  public static getObjective(userId: Number | String): Promise<AxiosResponse<any>> {
     return authenticatedService.get(`${ResourcesEnpoint.Objective}/${CFREnpoint.Objective}/${userId}`);
   }
 
-  public static post(payload: any): Promise<AxiosResponse<any>> {
+  public static postRecognition(payload: any): Promise<AxiosResponse<any>> {
+    return authenticatedService.post(`${ResourcesEnpoint.Recognition}`, payload);
+  }
+
+  public static postFeedback(payload: any): Promise<AxiosResponse<any>> {
     return authenticatedService.post(`${ResourcesEnpoint.Feedback}`, payload);
-  }
-}
-
-export class HistoryRepository {
-  public static get(cycleId): Promise<AxiosResponse<any>> {
-    return authenticatedService.get(`${ResourcesEnpoint.Feedback}/${CFREnpoint.History}/${cycleId}`);
-  }
-}
-
-export class RankRepository {
-  public static get(status: String): Promise<AxiosResponse<any>> {
-    return authenticatedService.get(`${CFREnpoint.Rank}?status=${status}`);
   }
 }

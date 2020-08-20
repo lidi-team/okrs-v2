@@ -67,6 +67,7 @@ const nuxtConfig: NuxtConfig = {
     },
     { src: '~/plugins/vue-simplemde' },
     { src: '~/plugins/md-it' },
+    { src: '~/plugins/vue' },
   ],
   /*
    ** Nuxt.js dev-modules

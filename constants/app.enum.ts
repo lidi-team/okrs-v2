@@ -41,10 +41,16 @@ export enum UserStatus {
   Inactive = 'Không hoạt động',
 }
 
-export enum TabCFR {
+export enum TabCfr {
   Feedback = 'Danh sách chờ Feedback',
   History = 'Lịch sử',
   Rank = 'Bảng xếp hạng',
+}
+
+export enum TabCfrEng {
+  Feedback = 'feedback',
+  History = 'history',
+  Rank = 'rank',
 }
 
 export enum TabCheckins {
@@ -126,11 +132,14 @@ export enum DispatchAction {
 
 export enum GetterState {
   USER = 'auth/user',
+  TEMP_CYCLE = 'cycle/cycleTemp',
 }
 
 export enum MutationState {
   SET_USER = 'auth/setUser',
   SET_TOKEN = 'auth/setToken',
+  SET_TEMP_USER = 'user/setTempUser',
+  SET_USERS = 'user/setUsers',
   SET_CURRENT_CYCLE = 'cycle/setCurrentCycle',
   SET_OBJECTIVE = 'okrs/setObjective',
   SET_KR = 'okrs/setKeyResult',
@@ -139,4 +148,5 @@ export enum MutationState {
   CLEAR_STAFF_OKRS = 'okrs/setStaffOkrs',
   SET_MEASURE_UNITS = 'measureUnit/setMeasureUnits',
   SET_TEMP_CYCLE = 'cycle/setTempCycle',
+  SET_ALL_CYCLES = 'cycle/setAllCycles',
 }
