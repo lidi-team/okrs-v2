@@ -1,14 +1,11 @@
 import { AxiosResponse } from 'axios';
 import { authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint, CFREnpoint } from '@/constants/app.enum';
+import { FeedbackDTO } from '@/constants/app.interface';
 
 export class CfrsRepository {
   public static getListWaitingFeedback(): Promise<AxiosResponse<any>> {
     return authenticatedService.get(`${ResourcesEnpoint.Feedback}/${CFREnpoint.ListWaiting}`);
-  }
-
-  public static getRecognitions(): Promise<AxiosResponse<any>> {
-    return authenticatedService.get(`${ResourcesEnpoint.Users}/${CFREnpoint.Recognition}`);
   }
 
   /**
@@ -26,7 +23,7 @@ export class CfrsRepository {
     return authenticatedService.get(`${ResourcesEnpoint.Objective}/${CFREnpoint.Objective}/${userId}`);
   }
 
-  public static postRecognition(payload: any): Promise<AxiosResponse<any>> {
+  public static postRecognition(payload: FeedbackDTO): Promise<AxiosResponse<any>> {
     return authenticatedService.post(`${ResourcesEnpoint.Recognition}`, payload);
   }
 

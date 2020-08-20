@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loadingTab" class="feedback">
     <el-row :gutter="20" class>
-      <el-col v-if="listFeedbackWaiting.superior" :md="12" :lg="12">
+      <el-col v-if="listWatingFeedback.superior" :md="12" :lg="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ data.list1.name }}</p>
           <div v-for="item in data.list1.list" :key="item.id" class="cfr">
@@ -20,7 +20,7 @@
           </div>
         </div>
       </el-col>
-      <el-col v-if="listFeedbackWaiting.inferior" :md="12" :lg="12">
+      <el-col v-if="listWatingFeedback.inferior" :md="12" :lg="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ data.list2.name }}</p>
           <div v-for="item in data.list2.list" :key="item.id" class="cfr">
@@ -51,12 +51,7 @@ import { CfrsRepository } from '@/repositories/CfrsRepository';
 @Component<Feedback>({
   name: 'Feedback',
   async created() {
-    try {
-      await CfrsRepository.getListWaitingFeedback().then((res) => {
-        console.table(res.data.data);
-        this.data = res.data.data;
-      });
-    } catch (error) {}
+    await this.listWatingFeedbacks();
   },
   beforeMount() {
     this.loadingTab = true;
@@ -67,7 +62,7 @@ import { CfrsRepository } from '@/repositories/CfrsRepository';
 })
 export default class Feedback extends Vue {
   private loadingTab: boolean = false;
-  private listFeedbackWaiting: any = {
+  private listWatingFeedback: any = {
     superior: [],
     inferior: [],
   };
@@ -91,8 +86,16 @@ export default class Feedback extends Vue {
   private visibleDetailDialog: Boolean = false;
   private detailId: Number = 0;
 
+  private async listWatingFeedbacks() {
+    try {
+      await CfrsRepository.getListWaitingFeedback().then((res) => {
+        this.listWatingFeedback = res.data.data;
+      });
+    } catch (error) {}
+  }
+
   private showDialogFeedback(checkinId: Number): void {
-    this.dataFeedback = [...this.listFeedbackWaiting.superior, ...this.listFeedbackWaiting.inferior].find((item) => item.id === checkinId);
+    this.dataFeedback = [...this.listWatingFeedback.superior, ...this.listWatingFeedback.inferior].find((item) => item.id === checkinId);
     this.visibleCreateDialog = true;
   }
 

@@ -187,3 +187,10 @@ export interface DialogTooltipAction {
   okrs: any;
   dialogType: number;
 }
+
+export interface FeedbackDTO {
+  receiverId: Number | null;
+  content: String;
+  evaluationCriteriaId: Number | null;
+  objectiveId: Number | null;
+}
