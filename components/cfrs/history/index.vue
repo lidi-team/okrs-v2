@@ -7,8 +7,8 @@
           <p v-if="!historyItems.sent.length" class="history__col__empty">Chưa có CFRs</p>
           <div v-for="item in historyItems.sent" v-else :key="`sent-${item.id}`" class="history-item" @click="detail('feedback', item)">
             <div class="history-item__left">
-              <div class="history-item__left--icon">
-                <div :class="['history-item__left--icon--type', isFeedback(item.type)]">
+              <div class="item__left--icon">
+                <div :class="['icon--type', isFeedback(item.type)]">
                   <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
                 </div>
                 <div>
@@ -17,14 +17,14 @@
                   </el-avatar>
                 </div>
               </div>
-              <div class="history-item__left--content">
-                <p class="history-item__left--content--title">{{ item.evaluationCriteria.content }}</p>
-                <p class="history-item__left--content-description">
-                  Gửi đến {{ item.receiver.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}
+              <div class="item__left--content">
+                <p>
+                  ({{ isLeaderToMember(item.evaluationCriteria.type) }}) <span class="content__title"> {{ item.evaluationCriteria.content }}</span>
                 </p>
+                <p class="content--description">Gửi đến {{ item.receiver.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}</p>
               </div>
             </div>
-            <div class="history-item__right">
+            <div class="item__right">
               <span>{{ item.evaluationCriteria.numberOfStar }}</span>
               <icon-star-dashboard />
             </div>
@@ -36,9 +36,9 @@
           <p class="history__col__header">CFRs {{ displayNameCfrs }} nhận được</p>
           <p v-if="!historyItems.received.length" class="history__col__empty">Chưa có CFRs</p>
           <div v-for="item in historyItems.received" v-else :key="`received-${item.id}`" class="history-item" @click="detail('feedback', item)">
-            <div class="history-item__left">
-              <div class="history-item__left--icon">
-                <div :class="['history-item__left--icon--type', isFeedback(item.type)]">
+            <div class="item__left">
+              <div class="item__left--icon">
+                <div :class="['icon--type', isFeedback(item.type)]">
                   <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
                 </div>
                 <div>
@@ -47,12 +47,14 @@
                   </el-avatar>
                 </div>
               </div>
-              <div class="history-item__left--content">
-                <p class="content--title">{{ item.evaluationCriteria.content }}</p>
+              <div class="item__left--content">
+                <p>
+                  ({{ isLeaderToMember(item.evaluationCriteria.type) }}) <span class="content__title"> {{ item.evaluationCriteria.content }}</span>
+                </p>
                 <p class="content--description">Gửi bởi {{ item.sender.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}</p>
               </div>
             </div>
-            <div class="history-item__right">
+            <div class="item__right">
               <span>{{ item.evaluationCriteria.numberOfStar }}</span>
               <icon-star-dashboard />
             </div>
@@ -107,7 +109,6 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import CreateFeedback from './Create.vue';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import { CfrsRepository } from '@/repositories/CfrsRepository';
-import { GetterState, MutationState } from '@/constants/app.enum';
 @Component<History>({
   name: 'History',
   components: {

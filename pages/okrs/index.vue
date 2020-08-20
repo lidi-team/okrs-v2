@@ -37,7 +37,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { MutationState, DispatchAction } from '@/constants/app.enum';
 @Component<OKRsPage>({
@@ -52,7 +52,6 @@ import { MutationState, DispatchAction } from '@/constants/app.enum';
   middleware: ['measureUnit'],
 })
 export default class OKRsPage extends Vue {
-  // private cycleId: number = this.$store.state.cycle.cycle.id;
   private loadingForm: boolean = false;
   private visibleCreateOkrsDialog = false;
   private isCompanyOkrs: boolean = false;

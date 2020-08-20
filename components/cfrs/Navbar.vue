@@ -92,7 +92,6 @@ export default class NavbarCrfs extends Vue {
           };
         });
         this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
-        const cycleId = this.listCycles.find((item) => item.label === this.cycleId);
       } catch (error) {}
     }
   }
