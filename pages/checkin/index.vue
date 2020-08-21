@@ -74,7 +74,7 @@ export default class CheckinPage extends Vue {
   private tabs: string[] = [...Object.values(TabCheckins)];
   private loading: boolean = false;
   private listCycles: any[] = [];
-  private currentCycleId: number = this.$store.state.cycle.cycle.id;
+  private currentCycleId: number = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycle.id;
   private meta: any = {};
 
   private currentTab: string =
@@ -86,7 +86,7 @@ export default class CheckinPage extends Vue {
 
   private paramsCheckin = {
     page: this.$route.query.page ? Number(this.$route.query.page) : 1,
-    cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycle.id,
+    cycleId: this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycle.id,
     limit: pageLimit,
   };
 
@@ -113,7 +113,7 @@ export default class CheckinPage extends Vue {
     if (this.currentTab === TabCheckins.MyOkrs) {
       try {
         const paramsCheckin = {
-          cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycle.id,
+          cycleId: this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycle.id,
         };
         const { data } = await CheckinRepository.get(paramsCheckin);
         this.tableData = data.data;
@@ -146,7 +146,7 @@ export default class CheckinPage extends Vue {
     } else {
       try {
         const paramsCheckin = {
-          cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycle.id,
+          cycleId: this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycle.id,
         };
         const { data } = await CheckinRepository.getOKRsCompany(paramsCheckin);
         this.tableData = data.data;
@@ -167,7 +167,7 @@ export default class CheckinPage extends Vue {
   private handlePagination(pagination: any) {
     this.$route.query.cycleId === undefined
       ? this.$router.push(`?tab=request-checkin&page=${pagination.page}`)
-      : this.$router.push(`?tab=request-checkin&cycleId=${this.$route.query.cycleId}&page=${pagination.page}`);
+      : this.$router.push(`?tab=request-checkin&cycleId=${Number(this.$route.query.cycleId)}&page=${pagination.page}`);
   }
 
   private async getAllCycles() {
@@ -185,7 +185,6 @@ export default class CheckinPage extends Vue {
           };
         });
         this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
-        this.currentCycleId = this.$store.state.cycle.cycle.id;
       } catch (error) {}
     }
   }
