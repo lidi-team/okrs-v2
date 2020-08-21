@@ -7,7 +7,7 @@
         </el-col>
         <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
           <el-button v-if="displayButton()" class="el-button el-button--purple el-button-medium" @click="visibleCreateDialog = true">
-            Tạo Recognition
+            Tạo ghi nhận
           </el-button>
         </el-col>
       </el-row>
@@ -17,7 +17,7 @@
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab" />
       <component :is="currentTabComponent" />
     </el-tabs>
-    <!-- <cfrs-recognition :visible-dialog.sync="visibleCreateDialog" /> -->
+    <cfrs-recognition v-if="visibleCreateDialog" :visible-dialog.sync="visibleCreateDialog" />
   </div>
 </template>
 

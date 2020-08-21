@@ -26,7 +26,7 @@ export default class DetailHistoryPage extends Vue {
   private async getDetail() {
     try {
       this.loading = true;
-      const res = await CheckinRepository.getDetailCheckin(this.$route.params.id);
+      const res = await CheckinRepository.getDetailCheckin(+this.$route.params.id);
       this.historyDetail = res.data.data;
       this.loading = false;
     } catch (error) {

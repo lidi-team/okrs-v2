@@ -5,23 +5,22 @@
         <div class="history__col">
           <p class="history__col__header">CFRs {{ displayNameCfrs }} gửi đi</p>
           <p v-if="!historyItems.sent.length" class="history__col__empty">Chưa có CFRs</p>
-          <div v-for="item in historyItems.sent" v-else :key="`sent-${item.id}`" class="history-item" @click="detail('feedback', item)">
-            <div class="history-item__left">
+          <div v-for="item in historyItems.sent" v-else :key="`sent-${item.id}`" class="history-item" @click="viewDetailCfrs(item, 'sent')">
+            <div class="item__left">
               <div class="item__left--icon">
-                <div :class="['icon--type', isFeedback(item.type)]">
+                <div :class="['icon__type', isFeedback(item.type)]">
                   <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
                 </div>
-                <div>
+                <div class="icon__avatar">
                   <el-avatar :size="30">
                     <img :src="item.receiver.avatarURL ? item.receiver.avatarURL : item.receiver.gravatarURL" alt="avatar" />
                   </el-avatar>
                 </div>
               </div>
               <div class="item__left--content">
-                <p>
-                  ({{ isLeaderToMember(item.evaluationCriteria.type) }}) <span class="content__title"> {{ item.evaluationCriteria.content }}</span>
-                </p>
-                <p class="content--description">Gửi đến {{ item.receiver.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}</p>
+                <p class="content__title">{{ item.evaluationCriteria.content }}</p>
+                <p class="content__description">Gửi đến {{ item.receiver.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}</p>
+                <p class="content__direction">{{ isLeaderToMember(item.evaluationCriteria.type) }}</p>
               </div>
             </div>
             <div class="item__right">
@@ -35,23 +34,28 @@
         <div class="history__col">
           <p class="history__col__header">CFRs {{ displayNameCfrs }} nhận được</p>
           <p v-if="!historyItems.received.length" class="history__col__empty">Chưa có CFRs</p>
-          <div v-for="item in historyItems.received" v-else :key="`received-${item.id}`" class="history-item" @click="detail('feedback', item)">
+          <div
+            v-for="item in historyItems.received"
+            v-else
+            :key="`received-${item.id}`"
+            class="history-item"
+            @click="viewDetailCfrs(item, 'received')"
+          >
             <div class="item__left">
               <div class="item__left--icon">
-                <div :class="['icon--type', isFeedback(item.type)]">
+                <div :class="['icon__type', isFeedback(item.type)]">
                   <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
                 </div>
-                <div>
+                <div class="icon__avatar">
                   <el-avatar :size="30">
                     <img :src="item.sender.avatarURL ? item.sender.avatarURL : item.sender.gravatarURL" alt="avatar" />
                   </el-avatar>
                 </div>
               </div>
               <div class="item__left--content">
-                <p>
-                  ({{ isLeaderToMember(item.evaluationCriteria.type) }}) <span class="content__title"> {{ item.evaluationCriteria.content }}</span>
-                </p>
-                <p class="content--description">Gửi bởi {{ item.sender.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}</p>
+                <p class="content__title">{{ item.evaluationCriteria.content }}</p>
+                <p class="content__description">Gửi bởi {{ item.sender.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}</p>
+                <p class="content__direction">{{ isLeaderToMember(item.evaluationCriteria.type) }}</p>
               </div>
             </div>
             <div class="item__right">
@@ -65,7 +69,7 @@
         <div class="history__col">
           <p class="history__col__header">CFRs toàn công ty</p>
           <p v-if="!historyItems.all.length" class="history__col__empty">Chưa có CFRs</p>
-          <div v-for="item in historyItems.all" v-else :key="item.id" class="history-item" @click="detail(item.type, item)">
+          <div v-for="item in historyItems.all" v-else :key="item.id" class="history-item" @click="viewDetailCfrs(item, 'all')">
             <div class="item__left">
               <div class="item__left--icon">
                 <div :class="['icon__type', isFeedback(item.type)]">
@@ -81,13 +85,12 @@
                 </div>
               </div>
               <div class="item__left--content">
-                <p>
-                  ({{ isLeaderToMember(item.evaluationCriteria.type) }}) <span class="content__title"> {{ item.evaluationCriteria.content }}</span>
-                </p>
+                <p class="content__title">{{ item.evaluationCriteria.content }}</p>
                 <p class="content__description">
                   {{ takeTwoLastNameUser(item.sender.fullName) }} đến {{ takeTwoLastNameUser(item.receiver.fullName) }} -
                   {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}
                 </p>
+                <p class="content__direction">{{ isLeaderToMember(item.evaluationCriteria.type) }}</p>
               </div>
             </div>
             <div class="item__right">
@@ -100,7 +103,7 @@
         <!-- <base-pagination class="pagination-bottom" :total="total" :page.sync="syncPage" :limit.sync="syncLimit" @pagination="handlePagination($event)" /> -->
       </el-col>
     </el-row>
-    <cfrs-detail-history :visible-dialog.sync="visibleCreateDialog" :data-detail="dataDetail" />
+    <!-- <cfrs-detail-history :visible-dialog.sync="visibleCreateDialog" :item-data="itemDataCfrs.data" :type="itemDataCfrs.type" /> -->
   </div>
 </template>
 
@@ -127,15 +130,18 @@ import { CfrsRepository } from '@/repositories/CfrsRepository';
 export default class History extends Vue {
   private loadingTab: boolean = false;
   private loadingPersonalTab: boolean = false;
+  private visibleCreateDialog = false;
+  private cycleTempId: number = this.$store.state.cycle.cycle.id;
   private historyItems: any = {
     sent: [],
     received: [],
     all: [],
   };
 
-  private cycleTempId: number = this.$store.state.cycle.cycle.id;
-  private dataDetail: object = {};
-  private visibleCreateDialog = false;
+  private itemDataCfrs: any = {
+    data: null,
+    type: '',
+  };
 
   @Watch('$store.state.cycle.cycleTemp')
   private async changeListDataOnCycle(cycleTemp: number) {
@@ -157,29 +163,16 @@ export default class History extends Vue {
 
   private async getListDataHistory(cycleId: number, userId: number = this.$store.state.auth.user.id) {
     try {
-      const { data } = await CfrsRepository.getHistoryCfrs(cycleId, userId);
-      this.historyItems = Object.freeze(data.data);
+      await CfrsRepository.getHistoryCfrs(cycleId, userId).then((res) => {
+        this.historyItems = Object.freeze(res.data.data);
+      });
     } catch (error) {}
   }
 
-  private detail(type: String, item: any): void {
-    let sender = this.$store.state.auth.user.fullName;
-    let receiver = this.$store.state.auth.user.fullName;
-    if (item.sender) {
-      sender = item.sender.fullName;
-    }
-    if (item.receiver) {
-      receiver = item.receiver.fullName;
-    }
-    this.dataDetail = {
-      sender,
-      receiver,
-      objective: item.objective ? item.objective.title : item.checkin.objective.title,
-      createdAt: item.createdAt || new Date(),
-      content: item.content || '',
-      criteria: item.evaluationCriteria.content || '',
-      type: type || 'Feedback',
-    };
+  private viewDetailCfrs(item: any, type: string): void {
+    this.itemDataCfrs.data = item;
+    this.itemDataCfrs.type = type;
+    console.log(this.itemDataCfrs);
     this.visibleCreateDialog = true;
   }
 
@@ -222,7 +215,7 @@ export default class History extends Vue {
   border-radius: $border-radius-base;
   &__col {
     background-color: $white;
-    padding: $unit-6 0 $unit-4;
+    padding: $unit-4 0 0;
     border-radius: $border-radius-base;
     @include box-shadow;
     &__empty {
@@ -266,10 +259,11 @@ export default class History extends Vue {
           font-size: $unit-4;
         }
       }
+      .icon__avatar {
+        margin-top: $unit-1;
+      }
       .is-feedback {
         background-color: $orange-primary-1;
-      }
-      .icon__avatar {
       }
     }
     &--content {
@@ -278,18 +272,22 @@ export default class History extends Vue {
       align-self: center;
       margin-left: $unit-4;
       p {
-        @include text-ellipsis(1);
+        @include truncate-oneline;
+        margin: unset;
         display: flex;
       }
       .content__title {
-        padding-left: $unit-1;
         font-weight: bold;
-        @include text-ellipsis(1);
       }
       .content__description {
-        @include text-ellipsis(1);
-        margin: unset;
+        font-size: 0.875rem;
+        color: $neutral-primary-4;
         white-space: normal;
+      }
+      .content__direction {
+        font-style: italic;
+        font-size: $unit-3;
+        color: $neutral-primary-3;
       }
     }
   }

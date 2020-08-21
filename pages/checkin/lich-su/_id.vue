@@ -62,7 +62,7 @@ export default class HistoryCheckin extends Vue {
   private async getList() {
     try {
       this.loading = true;
-      const res = await CheckinRepository.getHistory(this.$route.params.id);
+      const res = await CheckinRepository.getHistory(+this.$route.params.id);
       this.historyList = res.data.data;
       this.loading = false;
     } catch (error) {
