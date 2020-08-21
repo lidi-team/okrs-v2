@@ -188,9 +188,16 @@ export interface DialogTooltipAction {
   dialogType: number;
 }
 
-export interface FeedbackDTO {
+export interface RecognitionDTO {
   receiverId: Number | null;
   content: String;
   evaluationCriteriaId: Number | null;
   objectiveId: Number | null;
+}
+
+export interface FeedbackDTO {
+  receiverId?: Number;
+  checkinId?: Number;
+  evaluationCriteriaId: Number | null;
+  content: String;
 }

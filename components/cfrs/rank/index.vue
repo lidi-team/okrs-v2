@@ -174,7 +174,7 @@ export default class Rank extends Vue {
   border-radius: $border-radius-base;
   &__col {
     background-color: $white;
-    padding: $unit-6 0 0;
+    padding: $unit-4 0 0;
     border-radius: $border-radius-base;
     &__header {
       font-size: $text-2xl;
