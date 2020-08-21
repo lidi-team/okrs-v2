@@ -1,53 +1,84 @@
 <template>
   <div v-loading="loadingTab" class="feedback">
     <el-row :gutter="20" class>
-      <el-col v-if="listWatingFeedback.superior" :md="12" :lg="12">
+      <el-col v-if="listWatingFeedback.inferior" :md="12" :lg="12">
         <div class="feedback__col">
-          <p class="feedback__col__header">{{ data.list1.name }}</p>
-          <div v-for="item in data.list1.list" :key="item.id" class="cfr">
-            <div class="cfr__left" @click="viewDetail(item.id)">
-              <el-avatar :size="40">
-                <img :src="item.objective.user.avatarUrl ? item.objective.user.avatarUrl : item.objective.user.gravatarURL" alt="avatar" />
+          <p class="feedback__col__header">{{ displayHeader('inferior') }}</p>
+          <div v-for="item in listWatingFeedback.inferior.checkins" :key="item.id" class="cfr">
+            <div class="cfr__left" @click="viewDetailCheckin(item, listWatingFeedback.inferior.type)">
+              <el-avatar :size="30">
+                <img :src="item.objective.user.avatarURL ? item.objective.user.avatarURL : item.objective.user.gravatarURL" alt="avatar" />
               </el-avatar>
               <div class="cfr__left__content">
-                <p class="cfr__left__title">{{ item.objective.title }}</p>
-                <p class="cfr__left__description">{{ item.objective.user.fullName }} - {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}</p>
+                <p class="cfr__left__content--title">{{ item.objective.title }}</p>
+                <p class="cfr__left__content--description">
+                  {{ item.objective.user.fullName }} - {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}
+                </p>
               </div>
             </div>
             <div class="cfr__right">
-              <el-button class="el-button el-button--purple el-button-medium" @click="showDialog(item.id)">Tạo Feedback</el-button>
+              <el-button
+                class="el-button el-button--purple el-button-medium"
+                @click="showDialogCreatingFeedback(item, listWatingFeedback.inferior.type, false)"
+                >Tạo Feedback</el-button
+              >
             </div>
           </div>
         </div>
       </el-col>
-      <el-col v-if="listWatingFeedback.inferior" :md="12" :lg="12">
+      <el-col v-if="listWatingFeedback.superior" :md="12" :lg="12">
         <div class="feedback__col">
-          <p class="feedback__col__header">{{ data.list2.name }}</p>
-          <div v-for="item in data.list2.list" :key="item.id" class="cfr">
-            <div class="cfr__left" @click="viewDetail(item.id)">
-              <el-avatar :size="40">
-                <img :src="item.objective.user.avatarUrl ? item.objective.user.avatarUrl : item.objective.user.gravatarURL" alt="avatar" />
+          <p class="feedback__col__header">{{ displayHeader('superior') }}</p>
+          <div v-for="item in listWatingFeedback.superior.checkins" :key="item.id" class="cfr">
+            <div class="cfr__left" @click="viewDetailCheckin(item, listWatingFeedback.superior.type)">
+              <el-avatar :size="30">
+                <img
+                  :src="
+                    listWatingFeedback.superior.user.avatarURL
+                      ? listWatingFeedback.superior.user.avatarURL
+                      : listWatingFeedback.superior.user.gravatarURL
+                  "
+                  alt="avatar"
+                />
               </el-avatar>
               <div class="cfr__left__content">
-                <p class="cfr__left__title">{{ item.objective.title }}</p>
-                <p class="cfr__left__description">{{ item.objective.user.fullName }} - {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}</p>
+                <p class="cfr__left__content--title">{{ item.objective.title }}</p>
+                <p class="cfr__left__content--description">
+                  {{ item.objective.user.fullName }} - {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}
+                </p>
               </div>
             </div>
             <div class="cfr__right">
-              <el-button class="el-button el-button--purple el-button-medium" @click="showDialogFeedback(item.id)">Tạo Feedback</el-button>
+              <el-button
+                class="el-button el-button--purple el-button-medium"
+                @click="showDialogCreatingFeedback(item, listWatingFeedback.superior.type, true)"
+                >Tạo Feedback</el-button
+              >
             </div>
           </div>
         </div>
       </el-col>
     </el-row>
-    <cfrs-create-feedback :visible-dialog.sync="visibleCreateDialog" :data-feedback="dataFeedback" />
-    <cfrs-detail-feedback :visible-dialog.sync="visibleDetailDialog" :detail-id="detailId" />
+    <cfrs-create-feedback
+      v-if="visibleCreateDialog"
+      :visible-dialog.sync="visibleCreateDialog"
+      :data-feedback="dataFeedback"
+      :reload-data="reloadData"
+    />
+    <cfrs-detail-feedback
+      v-if="visibleDetailDialog"
+      :visible-dialog.sync="visibleDetailDialog"
+      :detail-checkin-info="detailCheckinInfo"
+      @openFeedbackDialog="openFeedbackDialog($event)"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { CfrsRepository } from '@/repositories/CfrsRepository';
+import { FeedbackDTO } from '@/constants/app.interface';
+import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 @Component<Feedback>({
   name: 'Feedback',
   async created() {
@@ -62,21 +93,17 @@ import { CfrsRepository } from '@/repositories/CfrsRepository';
 })
 export default class Feedback extends Vue {
   private loadingTab: boolean = false;
+  private detailCheckinInfo: any = null;
   private listWatingFeedback: any = {
     superior: [],
     inferior: [],
   };
 
   private dataFeedback: any = {
+    checkinAt: null,
     objective: {
-      id: 0,
-      name: '',
-      cycle: {
-        id: 0,
-        name: '',
-      },
+      title: '',
       user: {
-        id: 0,
         fullName: '',
       },
     },
@@ -84,7 +111,14 @@ export default class Feedback extends Vue {
 
   private visibleCreateDialog: Boolean = false;
   private visibleDetailDialog: Boolean = false;
-  private detailId: Number = 0;
+
+  private async reloadData() {
+    this.loadingTab = true;
+    await this.listWatingFeedbacks();
+    setTimeout(() => {
+      this.loadingTab = false;
+    }, 500);
+  }
 
   private async listWatingFeedbacks() {
     try {
@@ -94,14 +128,54 @@ export default class Feedback extends Vue {
     } catch (error) {}
   }
 
-  private showDialogFeedback(checkinId: Number): void {
-    this.dataFeedback = [...this.listWatingFeedback.superior, ...this.listWatingFeedback.inferior].find((item) => item.id === checkinId);
+  private showDialogCreatingFeedback(itemCheckin: any, type: EvaluationCriteriaEnum, isSuperior: boolean): void {
+    this.dataFeedback = itemCheckin;
+    this.dataFeedback.type = type;
+    if (isSuperior) {
+      this.dataFeedback.user = this.listWatingFeedback.superior.user;
+    }
+    this.dataFeedback.isSuperior = isSuperior;
     this.visibleCreateDialog = true;
   }
 
-  private viewDetail(id: Number): void {
-    this.detailId = id;
+  private openFeedbackDialog(detailCheckinInfo: any) {
+    this.dataFeedback = detailCheckinInfo;
+    this.dataFeedback.type = detailCheckinInfo.type;
+    setTimeout(() => {
+      this.visibleCreateDialog = true;
+    }, 300);
+  }
+
+  private viewDetailCheckin(itemCheckin: any, type: EvaluationCriteriaEnum): void {
+    this.detailCheckinInfo = itemCheckin;
+    this.detailCheckinInfo.type = type;
     this.visibleDetailDialog = true;
+  }
+
+  private displayHeader(type: string, superior?: any) {
+    if (type === 'inferior') {
+      // Feedback cho Team member
+      if (this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
+        return 'Feedback cho Team Member';
+      }
+      // Feedback cho Team Leader
+      if (this.$store.state.auth.user.role.name === 'ADMIN') {
+        return 'Feedback cho Team Leader';
+      }
+    } else {
+      // Feedback cho Team Leader
+      if (!this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
+        return 'Feedback cho Team Leader';
+      }
+      // Feedback cho Admin
+      if (this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
+        return 'Feedback cho Admin';
+      }
+      // Feedback cho bạn -- admin
+      if (this.$store.state.auth.user.role.name === 'ADMIN') {
+        return 'Feedback cho tôi';
+      }
+    }
   }
 }
 </script>
@@ -115,7 +189,8 @@ export default class Feedback extends Vue {
   border-radius: $border-radius-base;
   &__col {
     background-color: $white;
-    padding: $unit-6 0 0;
+    padding: $unit-4 0 0;
+    border-radius: $border-radius-base;
     &__header {
       font-size: $text-2xl;
       padding: 0 0 $unit-4 $unit-4;
@@ -131,7 +206,7 @@ export default class Feedback extends Vue {
 .cfr {
   display: flex;
   flex-direction: row;
-  padding: $unit-4 0;
+  padding: $unit-3 $unit-4 $unit-3 $unit-4;
   @include box-shadow;
   justify-content: space-between;
   &__left {
@@ -144,17 +219,20 @@ export default class Feedback extends Vue {
     &__title {
       font-weight: bold;
       font-size: $unit-4;
-      @include text-ellipsis(1);
+      @include truncate-oneline;
     }
     &__description {
-      box-sizing: border-box;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: normal;
-      word-break: break-all;
+      font-size: 0.875rem;
+      color: $neutral-primary-3;
       line-height: 23px;
       padding-right: 10px;
     }
+    .el-avatar {
+      align-self: center;
+    }
+  }
+  &__right {
+    align-self: center;
   }
 }
 </style>

@@ -1,95 +1,102 @@
 <template>
   <el-dialog
-    title="Tạo Recongnition"
+    title="Tạo ghi nhận"
     :visible.sync="syncCreateOkrsDialog"
     width="800px"
     placement="center"
     :before-close="handleCloseDialog"
-    class="create-feedback-dialog"
+    class="create-recognition-dialog"
   >
-    <el-row :gutter="20">
-      <el-col :span="6" class="create-feedback-dialog__attribute">Chu kỳ</el-col>
-      <el-col :span="18" class="create-feedback-dialog__value">{{ $store.state.cycle.cycle.name }}</el-col>
-    </el-row>
-    <el-row :gutter="20">
-      <el-col :span="6" class="create-feedback-dialog__attribute">Người được recognition</el-col>
-      <el-col :span="18" class="create-feedback-dialog__value">
-        <el-select
-          v-model="userRecongnitionId"
-          filterable
-          remote
-          reserve-keyword
-          placeholder="Chọn người đươc recongnition"
-          @change="handleSelectUser()"
-        >
-          <el-option v-for="item in optionsMetadata.users" :key="item.id" :label="item.fullName" :value="item.id"> </el-option>
+    <el-form ref="recognition" v-loading="loadingForm" :model="recognition" label-width="180px" :rules="rules" label-position="left">
+      <el-form-item prop="receiverId" label="Người được ghi nhận" class="custom-label user">
+        <el-select v-model="recognition.receiverId" filterable placeholder="Chọn người đươc ghi nhận" @change="handleSelectUser()">
+          <el-option v-for="user in optionsMetadata.users" :key="user.id" :label="user.fullName" :value="user.id">
+            <div style="display: flex;">
+              <el-avatar :size="25" style="align-self: center;">
+                <img :src="user.avatarURL ? user.avatarURL : user.gravatarURL" alt="avatar" />
+              </el-avatar>
+              <span style="margin-left: 0.5rem;">{{ user.fullName }}</span>
+            </div>
+          </el-option>
         </el-select>
-      </el-col>
-    </el-row>
-    <el-row :gutter="20">
-      <el-col :span="6" class="create-feedback-dialog__attribute">Mục tiêu</el-col>
-      <el-col :span="18" class="create-feedback-dialog__value">
-        <el-select v-model="obectiveId" filterable remote reserve-keyword placeholder="Chọn mục tiêu">
-          <el-option v-for="item in optionObjective" :key="item.id" :label="item.title" :value="item.id"> </el-option>
+      </el-form-item>
+      <el-form-item label="Mục tiêu" class="objective">
+        <el-select v-model="recognition.objectiveId" filterable placeholder="Chọn mục tiêu">
+          <el-option v-for="okrs in optionsMetadata.objectives" :key="okrs.id" :label="okrs.title" :value="okrs.id"></el-option>
         </el-select>
-      </el-col>
-    </el-row>
-    <el-row :gutter="20">
-      <el-row :gutter="20">
-        <el-col :span="6" class="create-feedback-dialog__attribute">Tiêu chí</el-col>
-        <el-col :span="18" class="create-feedback-dialog__value">
-          <el-select v-model="feedback.evaluationCriteriaId" placeholder="Lựa chọn tiêu chí đánh giá">
-            <el-option v-for="item in optionsMetadata.criteria" :key="item.id" :label="item.content" :value="item.id"> </el-option>
-          </el-select>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="6" class="create-feedback-dialog__attribute">Nội dung </el-col>
-        <el-col :span="18"
-          ><el-input v-model="feedback.content" type="textarea" placeholder="Nhập nội dung feedback" :autosize="autoSizeConfig"></el-input
-        ></el-col>
-      </el-row>
-      <div class="create-feedback-dialog__action">
-        <el-button class="el-button--white el-button--modal" @click="syncCreateOkrsDialog = false">Hủy</el-button>
-        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createRecognition">Hoàn thành</el-button>
-      </div>
-    </el-row>
+      </el-form-item>
+      <el-form-item prop="evaluationCriteriaId" label="Tiêu chí" class="custom-label criteria">
+        <el-select v-model="recognition.evaluationCriteriaId" placeholder="Lựa chọn tiêu chí đánh giá">
+          <el-option v-for="criteria in optionsMetadata.criteria" :key="criteria.id" :label="criteria.content" :value="criteria.id"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item prop="content" label="Nội dung" class="custom-label">
+        <el-input v-model="recognition.content" type="textarea" placeholder="Nhập nội dung feedback" :autosize="autoSizeConfig"></el-input>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="create-recognition-dialog__action">
+      <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
+      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createRecognition">Tạo ghi nhận</el-button>
+    </div>
   </el-dialog>
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
+import { Form } from 'element-ui';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import { CfrsRepository } from '@/repositories/CfrsRepository';
 import UserRepository from '@/repositories/UserRepository';
-import { FeedbackDTO } from '@/constants/app.interface';
+import { FeedbackDTO, RecognitionDTO } from '@/constants/app.interface';
+import { EvaluationCriteriaEnum } from '@/constants/app.enum';
+import { Maps, Rule } from '@/constants/app.type';
 @Component<CreateRecongnitionDialog>({
   name: 'CreateRecongnitionDialog',
   async created() {
     await this.getMetaDataRecognition();
   },
+  mounted() {
+    this.loadingForm = true;
+    setTimeout(() => {
+      this.loadingForm = false;
+    }, 300);
+  },
+  async beforeDestroy() {
+    this.clearForm();
+    if (this.isCreating) {
+      await this.reloadHistoryCfrs();
+    }
+  },
 })
 export default class CreateRecongnitionDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
   @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncCreateOkrsDialog!: boolean;
-  private content: String = '';
   private optionsMetadata: any = {
     criteria: [],
     users: [],
     objectives: [],
   };
 
-  private feedback: FeedbackDTO = {
+  private recognition: RecognitionDTO = {
     receiverId: null,
     content: '',
     evaluationCriteriaId: null,
     objectiveId: null,
   };
 
-  private userRecongnitionId: any = null;
-  private criteriaId: String | Number = '';
   private autoSizeConfig = { minRows: 4, maxRows: 6 };
   private loading: Boolean = false;
+  private loadingForm: Boolean = false;
+  private isCreating: Boolean = false;
+
+  public rules: Maps<Rule[]> = {
+    content: [
+      { required: true, message: 'Vui lòng nhập nội dung phản hồi', trigger: 'blur' },
+      { max: 255, message: 'Vui lòng chỉ nhập không quá 255 ký tự', trigger: 'blur' },
+    ],
+    evaluationCriteriaId: [{ required: true, message: 'Vui lòng chọn tiêu chí đánh giá', trigger: 'blur' }],
+    receiverId: [{ required: true, message: 'Vui lòng chọn người được ghi nhận', trigger: 'blur' }],
+  };
 
   private handleCloseDialog() {
     this.$confirm('Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?', { ...confirmWarningConfig }).then(() => {
@@ -99,44 +106,78 @@ export default class CreateRecongnitionDialog extends Vue {
 
   private async getMetaDataRecognition() {
     try {
-      await Promise.all([EvaluationCriteriaRepository.getCombobox(), UserRepository.getAllUsers()]).then(([evaluationCriteria, allUsers]) => {
-        console.log(evaluationCriteria);
-        console.log(allUsers);
-        this.optionsMetadata.criteria = Object.freeze(evaluationCriteria.data.data);
-        this.optionsMetadata.users = Object.freeze(allUsers.data.data);
-      });
+      await Promise.all([EvaluationCriteriaRepository.getCombobox(EvaluationCriteriaEnum.RECOGNITION), UserRepository.getAllUsers()]).then(
+        ([evaluationCriteria, allUsers]) => {
+          this.optionsMetadata.criteria = Object.freeze(evaluationCriteria.data.data);
+          this.optionsMetadata.users = Object.freeze(allUsers.data.data);
+        },
+      );
     } catch (error) {}
   }
 
   private async handleSelectUser() {
-    this.feedback.objectiveId = null;
+    this.loadingForm = true;
     try {
-      await CfrsRepository.getObjective(this.userRecongnitionId).then((res) => {
+      await CfrsRepository.getUserObjectives(Number(this.recognition.receiverId)).then((res) => {
         this.optionsMetadata.objectives = res.data.data;
       });
-    } catch (error) {}
+      setTimeout(() => {
+        this.loadingForm = false;
+      }, 500);
+    } catch (error) {
+      this.loadingForm = false;
+    }
   }
 
-  private async createRecognition() {
+  private createRecognition() {
     this.loading = true;
-    try {
-      await CfrsRepository.postRecognition(this.feedback).then(() => {
-        this.$notify.success({ ...notificationConfig, message: 'Tạo ghi nhận thành công' });
-        this.feedback.receiverId = null;
-        this.feedback.content = '';
-        this.feedback.evaluationCriteriaId = null;
-        this.feedback.objectiveId = null;
-      });
-    } catch (error) {}
-    this.syncCreateOkrsDialog = false;
-    this.loading = false;
-    this.$router.push('?tab=feedback');
+    (this.$refs.recognition as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
+      if (isValid) {
+        try {
+          await CfrsRepository.postRecognition(this.recognition).then(() => {
+            this.$notify.success({ ...notificationConfig, message: 'Tạo ghi nhận thành công' });
+          });
+          this.isCreating = true;
+          this.syncCreateOkrsDialog = false;
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
+        } catch (error) {
+          this.loading = false;
+        }
+      }
+      if (invalidatedFields) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
+      }
+    });
+  }
+
+  private async reloadHistoryCfrs() {
+    if (this.$route.query.tab === 'history') {
+      // @ts-ignore
+      this.$parent.$children[1].$children[4].loadingTab = true;
+      // @ts-ignore
+      await this.$parent.$children[1].$children[4].getListDataHistory(this.$store.state.cycle.cycle.id);
+      setTimeout(() => {
+        // @ts-ignore
+        this.$parent.$children[1].$children[4].loadingTab = false;
+      }, 500);
+    }
+  }
+
+  private clearForm(): void {
+    this.recognition.receiverId = null;
+    this.recognition.content = '';
+    this.recognition.evaluationCriteriaId = null;
+    this.recognition.objectiveId = null;
   }
 }
 </script>
 <style lang="scss">
 @import '@/assets/scss/main.scss';
-.create-feedback-dialog {
+.create-recognition-dialog {
   padding: $unit-4;
   &__attribute {
     font-weight: bold;
@@ -150,6 +191,32 @@ export default class CreateRecongnitionDialog extends Vue {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+  }
+  .el-form-item {
+    &__label {
+      font-weight: $font-weight-medium;
+      margin-top: -$unit-3;
+    }
+  }
+  .el-form {
+    .user {
+      .el-select {
+        width: 250px;
+      }
+      &__info {
+        display: flex;
+      }
+    }
+    .objective {
+      .el-select {
+        width: 100%;
+      }
+    }
+    .criteria {
+      .el-select {
+        width: 100%;
+      }
+    }
   }
 }
 </style>
