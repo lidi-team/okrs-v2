@@ -30,7 +30,7 @@ export default class RequestPage extends Vue {
 
   private async getCheckin() {
     this.loading = true;
-    await CheckinRepository.getDetailCheckin(this.$route.params.id)
+    await CheckinRepository.getDetailCheckin(+this.$route.params.id)
       .then((res) => {
         this.chart = Object.assign({}, res.data.data);
         res.data.data = Object.assign(res.data.data, {

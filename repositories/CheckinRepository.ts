@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import { authenticatedService } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
 
@@ -38,15 +39,15 @@ export default class CheckinRepository {
     return authenticatedService.put(`${ResourcesEnpoint.Checkin}/checkin_request/${id}`, payload);
   }
 
-  public static getHistory(id) {
+  public static getHistory(id: number) {
     return authenticatedService.get(`${ResourcesEnpoint.Checkin}/history/${id}`);
   }
 
-  public static getDetailCheckin(id) {
+  public static getDetailCheckin(id: number): Promise<AxiosResponse<any>> {
     return authenticatedService.get(`${ResourcesEnpoint.Checkin}/${id}`);
   }
 
-  public static getCheckinDetail(checkinId: Number): any {
+  public static getCheckinDetail(checkinId: number): any {
     return authenticatedService.get(`${ResourcesEnpoint.Checkin}/waiting_feedback_detail/${checkinId}`);
   }
 }
