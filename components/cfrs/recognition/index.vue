@@ -47,7 +47,7 @@ import { confirmWarningConfig, notificationConfig } from '@/constants/app.consta
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import { CfrsRepository } from '@/repositories/CfrsRepository';
 import UserRepository from '@/repositories/UserRepository';
-import { FeedbackDTO, RecognitionDTO } from '@/constants/app.interface';
+import { RecognitionDTO } from '@/constants/app.interface';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<CreateRecongnitionDialog>({

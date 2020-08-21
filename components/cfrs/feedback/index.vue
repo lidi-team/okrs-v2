@@ -77,7 +77,6 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { CfrsRepository } from '@/repositories/CfrsRepository';
-import { FeedbackDTO } from '@/constants/app.interface';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 @Component<Feedback>({
   name: 'Feedback',
@@ -140,7 +139,6 @@ export default class Feedback extends Vue {
 
   private openFeedbackDialog(detailCheckinInfo: any) {
     this.dataFeedback = detailCheckinInfo;
-    this.dataFeedback.type = detailCheckinInfo.type;
     setTimeout(() => {
       this.visibleCreateDialog = true;
     }, 300);

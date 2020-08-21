@@ -100,8 +100,6 @@ export default class CreateFeedbackDialog extends Vue {
     });
   }
 
-  private;
-
   private async getListEvaluationCriterias() {
     try {
       await EvaluationCriteriaRepository.getCombobox(this.dataFeedback.type).then((res) => {
