@@ -7,6 +7,10 @@ export default class UserRepository {
     return authenticatedService.get(`${ResourcesEnpoint.Users}/me`);
   }
 
+  public static getAdminId() {
+    return authenticatedService.get(`${ResourcesEnpoint.Users}/admin`);
+  }
+
   public static getAllUsers() {
     return authenticatedService.get(`${ResourcesEnpoint.Users}/all`);
   }

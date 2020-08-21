@@ -20,7 +20,7 @@ export default class EvaluationCriteriorRepository {
     return authenticatedService.delete(`${ResourcesEnpoint.EvaluationCriterial}/${id}`);
   }
 
-  public static getCombobox(): any {
-    return authenticatedService.get(`${ResourcesEnpoint.MetaData}/${EvaluationCriteriaEnum.EvaluationCriteria}`);
+  public static getCombobox(type: EvaluationCriteriaEnum): Promise<AxiosResponse<any>> {
+    return authenticatedService.get(`${ResourcesEnpoint.MetaData}/${EvaluationCriteriaEnum.EvaluationCriteria}`, { params: { type } });
   }
 }
