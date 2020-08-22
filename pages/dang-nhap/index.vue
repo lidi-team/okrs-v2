@@ -13,6 +13,11 @@
 import { Component, Vue } from 'vue-property-decorator';
 @Component<LoginPage>({
   name: 'LoginPage',
+  head() {
+    return {
+      title: 'Đăng nhập',
+    };
+  },
   middleware: 'isGuest',
   layout: 'empty',
 })

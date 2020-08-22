@@ -55,6 +55,11 @@ import { confirmWarningConfig, notificationConfig } from '@/constants/app.consta
 import { MutationState } from '@/constants/app.enum';
 @Component<OkrsDetailPage>({
   name: 'OkrsDetailPage',
+  head() {
+    return {
+      title: 'Chi tiết OKRs',
+    };
+  },
   async asyncData({ params }) {
     try {
       const { data } = await OkrsRepository.getOkrsDetail(+params.id);

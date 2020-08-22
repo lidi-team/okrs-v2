@@ -6,6 +6,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import LessonRepository from '@/repositories/LessonRepository';
 @Component<LessonDetail>({
   name: 'LessonDetail',
+  head() {
+    return {
+      title: 'Chi tiết bài học OKRs',
+    };
+  },
   watchQuery: ['page'],
   async asyncData({ params }) {
     try {

@@ -10,6 +10,11 @@
 import { Component, Vue } from 'vue-property-decorator';
 @Component<ListLesson>({
   name: 'ListLesson',
+  head() {
+    return {
+      title: 'Quản lý bài học OKRs',
+    };
+  },
 })
 export default class ListLesson extends Vue {}
 </script>

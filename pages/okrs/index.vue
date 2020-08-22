@@ -50,6 +50,11 @@ import { MutationState, DispatchAction } from '@/constants/app.enum';
     this.$store.commit(MutationState.CLEAR_STAFF_OKRS, null);
   },
   middleware: ['measureUnit'],
+  head() {
+    return {
+      title: 'OKRs',
+    };
+  },
 })
 export default class OKRsPage extends Vue {
   private loadingForm: boolean = false;

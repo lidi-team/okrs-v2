@@ -27,6 +27,18 @@ import DashboardRepository from '@/repositories/DashboardRepository';
 import { GetterState } from '@/constants/app.enum';
 @Component<HomePage>({
   name: 'HomePage',
+  head() {
+    return {
+      title: 'Dashboard',
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content: 'Awesome tool OKRs',
+        },
+      ],
+    };
+  },
   async created() {
     await this.getAllCycles();
     if (this.user.role.name === 'ADMIN') {

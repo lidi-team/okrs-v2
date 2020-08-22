@@ -8,6 +8,11 @@ import { Component, Vue } from 'vue-property-decorator';
 import LessonRepository from '@/repositories/LessonRepository';
 @Component<CreateLesson>({
   name: 'CreateLesson',
+  head() {
+    return {
+      title: 'Tạo mới bài học OKRs',
+    };
+  },
   middleware: 'employeesPage',
   async asyncData() {
     try {

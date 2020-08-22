@@ -10,7 +10,14 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-@Component<ChangePasswordPage>({ name: 'ChangePasswordPage' })
+@Component<ChangePasswordPage>({
+  name: 'ChangePasswordPage',
+  head() {
+    return {
+      title: 'Đổi mật khẩu',
+    };
+  },
+})
 export default class ChangePasswordPage extends Vue {}
 </script>
 <style lang="scss" scoped>
