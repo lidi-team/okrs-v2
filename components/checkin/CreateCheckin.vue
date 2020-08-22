@@ -136,6 +136,8 @@ export default class DetailHistory extends Vue {
   private checkNumber = (rule, value, callback) => {
     if (!Number.isInteger(value)) {
       return callback(new Error('Phải là số nguyên dương'));
+    } else if (value < 0) {
+      callback(new Error('Không được nhỏ hơn 0'));
     } else {
       callback();
     }
@@ -157,13 +159,7 @@ export default class DetailHistory extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    valueObtained: [
-      {
-        required: false,
-        message: 'Không được bỏ trống',
-        trigger: ['blur', 'change'],
-      },
-    ],
+    valueObtained: [{ validator: this.checkNumber, trigger: ['change', 'blur'] }],
     progress: [
       {
         required: false,
@@ -194,7 +190,7 @@ export default class DetailHistory extends Vue {
     ],
   };
 
-  private async handleDraftCheckin() {
+  private handleDraftCheckin() {
     const tempCheckin: any = {
       checkin: {
         confidentLevel: this.syncCheckin.confidentLevel,
@@ -204,69 +200,73 @@ export default class DetailHistory extends Vue {
       },
       checkinDetails: [],
     };
-    if (this.isNew === true) {
-      this.syncCheckin.checkinDetail.map((item) => {
-        tempCheckin.checkinDetails.push({
-          targetValue: item.keyResult.targetValue,
-          valueObtained: item.valueObtained,
-          confidentLevel: item.confidentLevel,
-          progress: item.progress,
-          problems: item.problems,
-          plans: item.plans,
-          keyResultId: item.keyResult.id,
-        });
-      });
-      try {
-        await CheckinRepository.post(tempCheckin).then((res: any) => {
-          Notification.success({
-            ...notificationConfig,
-            message: 'Lưu nháp thành công',
+    (this.$refs.checkinRuleForm as Form).validate(async (isValid) => {
+      if (isValid) {
+        if (this.isNew === true) {
+          this.syncCheckin.checkinDetail.map((item) => {
+            tempCheckin.checkinDetails.push({
+              targetValue: item.keyResult.targetValue,
+              valueObtained: item.valueObtained,
+              confidentLevel: item.confidentLevel,
+              progress: item.progress,
+              problems: item.problems,
+              plans: item.plans,
+              keyResultId: item.keyResult.id,
+            });
           });
-          this.$router.push('/checkin');
-        });
-      } catch (error) {
-        if (error.response.data.statusCode === 476) {
-          Notification.error({
-            ...notificationConfig,
-            message: 'Bạn không thể tạo checkin với Objective này',
+          try {
+            await CheckinRepository.post(tempCheckin).then((res: any) => {
+              Notification.success({
+                ...notificationConfig,
+                message: 'Lưu nháp thành công',
+              });
+              this.$router.push('/checkin');
+            });
+          } catch (error) {
+            if (error.response.data.statusCode === 476) {
+              Notification.error({
+                ...notificationConfig,
+                message: 'Bạn không thể tạo checkin với Objective này',
+              });
+            }
+            this.$router.push('/checkin');
+          }
+        } else {
+          this.syncCheckin.checkinDetail.map((item) => {
+            tempCheckin.checkinDetails.push({
+              id: item.id,
+              targetValue: item.keyResult.targetValue,
+              valueObtained: item.valueObtained,
+              confidentLevel: item.confidentLevel,
+              progress: item.progress,
+              problems: item.problems,
+              plans: item.plans,
+              keyResultId: item.keyResult.id,
+            });
           });
+          try {
+            await CheckinRepository.staffUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
+              Notification.success({
+                ...notificationConfig,
+                message: 'Lưu nháp thành công',
+              });
+              this.$router.push('/checkin');
+            });
+          } catch (error) {
+            if (error.response.data.statusCode === 476) {
+              Notification.error({
+                ...notificationConfig,
+                message: 'Bạn không thể tạo checkin với Objective này',
+              });
+            }
+            this.$router.push('/checkin');
+          }
         }
-        this.$router.push('/checkin');
       }
-    } else {
-      this.syncCheckin.checkinDetail.map((item) => {
-        tempCheckin.checkinDetails.push({
-          id: item.id,
-          targetValue: item.keyResult.targetValue,
-          valueObtained: item.valueObtained,
-          confidentLevel: item.confidentLevel,
-          progress: item.progress,
-          problems: item.problems,
-          plans: item.plans,
-          keyResultId: item.keyResult.id,
-        });
-      });
-      try {
-        await CheckinRepository.staffUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
-          Notification.success({
-            ...notificationConfig,
-            message: 'Lưu nháp thành công',
-          });
-          this.$router.push('/checkin');
-        });
-      } catch (error) {
-        if (error.response.data.statusCode === 476) {
-          Notification.error({
-            ...notificationConfig,
-            message: 'Bạn không thể tạo checkin với Objective này',
-          });
-        }
-        this.$router.push('/checkin');
-      }
-    }
+    });
   }
 
-  private async handleDraftCheckinAdmin() {
+  private handleDraftCheckinAdmin() {
     const tempCheckin: any = {
       checkin: {
         confidentLevel: this.syncCheckin.confidentLevel,
@@ -277,77 +277,75 @@ export default class DetailHistory extends Vue {
       },
       checkinDetails: [],
     };
-    if (this.isNew === true) {
-      this.syncCheckin.checkinDetail.map((item) => {
-        tempCheckin.checkinDetails.push({
-          targetValue: item.keyResult.targetValue,
-          valueObtained: item.valueObtained,
-          confidentLevel: item.confidentLevel,
-          progress: item.progress,
-          problems: item.problems,
-          plans: item.plans,
-          keyResultId: item.keyResult.id,
-        });
-      });
-      try {
-        await CheckinRepository.adminCreateCheckin(tempCheckin).then((res: any) => {
-          Notification.success({
-            ...notificationConfig,
-            message: 'Lưu nháp thành công',
+    (this.$refs.checkinRuleForm as Form).validate(async (isValid) => {
+      if (isValid) {
+        if (this.isNew === true) {
+          this.syncCheckin.checkinDetail.map((item) => {
+            tempCheckin.checkinDetails.push({
+              targetValue: item.keyResult.targetValue,
+              valueObtained: item.valueObtained,
+              confidentLevel: item.confidentLevel,
+              progress: item.progress,
+              problems: item.problems,
+              plans: item.plans,
+              keyResultId: item.keyResult.id,
+            });
           });
-          this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
-        });
-      } catch (error) {
-        if (error.response.data.statusCode === 476) {
-          Notification.error({
-            ...notificationConfig,
-            message: 'Bạn không thể tạo checkin với Objective này',
+          try {
+            await CheckinRepository.adminCreateCheckin(tempCheckin).then((res: any) => {
+              Notification.success({
+                ...notificationConfig,
+                message: 'Lưu nháp thành công',
+              });
+              this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
+            });
+          } catch (error) {
+            if (error.response.data.statusCode === 476) {
+              Notification.error({
+                ...notificationConfig,
+                message: 'Bạn không thể tạo checkin với Objective này',
+              });
+            }
+            this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
+          }
+        } else {
+          this.syncCheckin.checkinDetail.map((item) => {
+            tempCheckin.checkinDetails.push({
+              id: item.id,
+              targetValue: item.keyResult.targetValue,
+              valueObtained: item.valueObtained,
+              confidentLevel: item.confidentLevel,
+              progress: item.progress,
+              problems: item.problems,
+              plans: item.plans,
+              keyResultId: item.keyResult.id,
+            });
           });
+          try {
+            await CheckinRepository.adminUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
+              Notification.success({
+                ...notificationConfig,
+                message: 'Lưu nháp thành công',
+              });
+              this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
+            });
+          } catch (error) {
+            if (error.response.data.statusCode === 476) {
+              Notification.error({
+                ...notificationConfig,
+                message: 'Bạn không thể tạo checkin với Objective này',
+              });
+            }
+            this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
+          }
         }
-        this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
       }
-    } else {
-      this.syncCheckin.checkinDetail.map((item) => {
-        tempCheckin.checkinDetails.push({
-          id: item.id,
-          targetValue: item.keyResult.targetValue,
-          valueObtained: item.valueObtained,
-          confidentLevel: item.confidentLevel,
-          progress: item.progress,
-          problems: item.problems,
-          plans: item.plans,
-          keyResultId: item.keyResult.id,
-        });
-      });
-      try {
-        await CheckinRepository.adminUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
-          Notification.success({
-            ...notificationConfig,
-            message: 'Lưu nháp thành công',
-          });
-          this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
-        });
-      } catch (error) {
-        if (error.response.data.statusCode === 476) {
-          Notification.error({
-            ...notificationConfig,
-            message: 'Bạn không thể tạo checkin với Objective này',
-          });
-        }
-        this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
-      }
-    }
+    });
   }
 
   private removeRules() {
     this.rules = {
-      valueObtained: [
-        {
-          required: false,
-          message: 'Không được bỏ trống',
-          trigger: ['blur', 'change'],
-        },
-      ],
+      valueObtained: [{ validator: this.checkNumber, trigger: ['change', 'blur'] }],
       progress: [
         {
           required: false,
