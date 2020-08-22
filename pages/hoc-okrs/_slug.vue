@@ -12,13 +12,17 @@ import LessonRepository from '@/repositories/LessonRepository';
     };
   },
   watchQuery: ['page'],
-  async asyncData({ params }) {
+  async asyncData({ params, redirect }) {
     try {
       const response = await LessonRepository.getPost(params.slug);
       return {
         post: response.data.data,
       };
-    } catch (error) {}
+    } catch (error) {
+      if (error.response.status === 404) {
+        return redirect('/404');
+      }
+    }
   },
 })
 export default class LessonDetail extends Vue {}
