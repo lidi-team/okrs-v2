@@ -37,7 +37,7 @@
             <el-button type="danger" class="el-button--checkin">Quá hạn</el-button>
           </nuxt-link>
           <nuxt-link v-else-if="row.status === status.DRAFT" :to="`/checkin/company/${row.id}`">
-            <el-button type="warning" class="el-button--checkin">Edit bản nháp</el-button>
+            <el-button type="warning" class="el-button--checkin">Sửa bản nháp</el-button>
           </nuxt-link>
           <el-button v-else-if="row.status === status.COMPLETED" type="success" disabled class="el-button--checkin">Đã hoàn thành</el-button>
           <nuxt-link v-else :to="`/checkin/company/${row.id}`">
@@ -51,7 +51,7 @@
             <el-button type="danger" class="el-button--checkin">Quá hạn</el-button>
           </nuxt-link>
           <nuxt-link v-else-if="row.status === status.DRAFT" :to="`/checkin/${row.id}`">
-            <el-button type="warning" class="el-button--checkin">Edit bản nháp</el-button>
+            <el-button type="warning" class="el-button--checkin">Sửa bản nháp</el-button>
           </nuxt-link>
           <el-button v-else-if="row.status === status.PENDING" type="info" disabled class="el-button--checkin">Đang chờ duyệt</el-button>
           <el-button v-else-if="row.status === status.COMPLETED" type="success" disabled class="el-button--checkin">Đã hoàn thành</el-button>

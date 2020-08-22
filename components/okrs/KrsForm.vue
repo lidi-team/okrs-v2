@@ -3,10 +3,8 @@
     <div :class="['control-collapse', hovering ? 'hovering' : '']" @mouseenter="hovering = true" @mouseleave="hovering = false">
       <div class="control-collapse__expand" @click="expandForm">
         <span :class="['control-collapse__expand--caret', 'el-icon-caret-right', isExpanded ? 'expanded' : '']" />
-        <span v-if="syncTempKr.content !== 'Xin vui lòng nhập kết quả then chốt'" class="control-collapse__expand--content">
-          {{ syncTempKr.content }}
-        </span>
-        <span v-else class="control-collapse__expand--content example">{{ keyResult.content }}</span>
+        <span v-if="syncTempKr.content.length !== 0" class="control-collapse__expand--content">{{ syncTempKr.content }}</span>
+        <span v-if="syncTempKr.content.length === 0" class="control-collapse__expand--content example">Ấn vào đây để chỉnh sửa</span>
       </div>
       <el-popover v-model="popoverVisisble" placement="top-start" width="200" trigger="click">
         <div class="control-collapse__popover">
@@ -38,18 +36,18 @@
                     no-match-text="Không tìm thấy kết quả"
                     placeholder="Chọn đơn vị"
                   >
-                    <el-option v-for="unit in units" :key="unit.id" :label="unit.type" :value="unit.id" tabindex="3" />
+                    <el-option v-for="unit in units" :key="unit.id" :label="unit.type" :value="unit.id" tabindex="2" />
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="7">
-                <el-form-item class="krs-form__detail--value--start" prop="startValue" label="Giá trị bắt đầu" label-width="100px">
-                  <el-input v-model.number="syncTempKr.startValue" size="medium" tabindex="2" />
+                <el-form-item class="custom-label krs-form__detail--value--start" prop="startValue" label="Giá trị bắt đầu" label-width="100px">
+                  <el-input v-model.number="syncTempKr.startValue" size="medium" tabindex="3" />
                 </el-form-item>
               </el-col>
               <el-col :span="10">
                 <el-form-item prop="targetValue" label="Mục tiêu" class="custom-label" label-width="80px">
-                  <el-input v-model.number="syncTempKr.targetValue" size="medium" tabindex="2" />
+                  <el-input v-model.number="syncTempKr.targetValue" size="medium" tabindex="4" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -92,7 +90,7 @@ export default class KrsForm extends Vue {
     default: () => ({
       startValue: 0,
       targetValue: 100,
-      content: 'Xin vui lòng nhập kết quả then chốt',
+      content: '',
       linkPlans: '',
       linkResults: '',
       measureUnitId: 1,
@@ -106,37 +104,43 @@ export default class KrsForm extends Vue {
   private popoverVisisble: boolean = false;
   private isExpanded: boolean = false;
   private scrollHeight: number = 0;
+  private tempContentKr: string = 'Ấn vào đây để chỉnh sửa';
 
   private units: any[] = [];
 
   private async deleteKr(keyResult: any) {
     if (keyResult.id) {
-      try {
-        await OkrsRepository.deleteKr(keyResult.id).then((res) => {
-          if (res.data.statusCode === 404) {
-            Notification.success({
-              ...notificationConfig,
-              message: res.data.message,
-            });
-            this.popoverVisisble = false;
-          }
-          if (res.data.statusCode === 480) {
-            Notification.success({
-              ...notificationConfig,
-              message: res.data.message,
-            });
-            this.popoverVisisble = false;
-          }
-          if (res.data.statusCode === 200) {
-            Notification.success({
-              ...notificationConfig,
-              message: 'Xóa KR thành công',
-            });
-            this.popoverVisisble = false;
-          }
-          this.$emit('deleteKr', this.indexKrForm);
-        });
-      } catch (error) {}
+      if (this.indexKrForm === 0) {
+        this.popoverVisisble = false;
+        this.$message.error('Cần có ít nhất 1 kết quả then chốt đã được tạo');
+      } else {
+        try {
+          await OkrsRepository.deleteKr(keyResult.id).then((res) => {
+            if (res.data.statusCode === 404) {
+              Notification.success({
+                ...notificationConfig,
+                message: res.data.message,
+              });
+              this.popoverVisisble = false;
+            }
+            if (res.data.statusCode === 480) {
+              Notification.success({
+                ...notificationConfig,
+                message: res.data.message,
+              });
+              this.popoverVisisble = false;
+            }
+            if (res.data.statusCode === 200) {
+              Notification.success({
+                ...notificationConfig,
+                message: 'Xóa KR thành công',
+              });
+              this.popoverVisisble = false;
+            }
+            this.$emit('deleteKr', this.indexKrForm);
+          });
+        } catch (error) {}
+      }
     } else {
       this.popoverVisisble = false;
       this.$emit('deleteKr', this.indexKrForm);
@@ -149,10 +153,12 @@ export default class KrsForm extends Vue {
       { validator: this.validateContentKrs, trigger: 'blur' },
     ],
     startValue: [
+      { type: 'number', required: true, message: 'Vui lòng nhập giá trị', trigger: 'blur' },
       { validator: this.validateIsValidNumber, trigger: 'blur' },
       { validator: this.validateStartValue, trigger: 'blur' },
     ],
     targetValue: [
+      { type: 'number', required: true, message: 'Vui lòng nhập giá trị', trigger: 'blur' },
       { validator: this.validateIsValidNumber, trigger: 'blur' },
       { validator: this.validateTargetValue, trigger: 'blur' },
     ],
@@ -164,13 +170,13 @@ export default class KrsForm extends Vue {
     if (isNaN(value)) {
       return callback('Giá trị phải là số');
     }
-    if (value < 0) {
-      return callback('Giá trị phải lớn hơn 0');
-    }
     return callback();
   }
 
   private validateStartValue(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    if (value < 0) {
+      return callback('Giá trị phải là số không âm');
+    }
     if (value > this.syncTempKr.targetValue) {
       return callback('Giá trị bắt đầu đang lớn hơn giá trị mục tiêu');
     }
@@ -178,8 +184,8 @@ export default class KrsForm extends Vue {
   }
 
   private validateTargetValue(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
-    if (value === 0) {
-      return callback('Giá trị mục tiêu phải lớn hơn 0');
+    if (value <= 0) {
+      return callback('Giá trị phải lớn hơn 0');
     }
     if (value < this.syncTempKr.startValue) {
       return callback('Giá trị mục tiêu phải lớn hơn bắt đầu');
@@ -285,8 +291,12 @@ export default class KrsForm extends Vue {
       margin-bottom: -$unit-6;
       &--value {
         &--start {
+          label {
+            margin-left: -$unit-2;
+            width: unset !important;
+          }
           .el-form-item__error {
-            left: -100px;
+            left: -106px;
             right: -40px;
           }
         }

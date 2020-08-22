@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Tạo Feedback"
+    title="Tạo phản hồi"
     :visible.sync="syncCreateOkrsDialog"
     width="800px"
     placement="center"
@@ -28,7 +28,7 @@
     </el-form>
     <div slot="footer" class="create-feedback-dialog__action">
       <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createFeedback">Tạo Feedback</el-button>
+      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createFeedback">Tạo phản hồi</el-button>
     </div>
   </el-dialog>
 </template>

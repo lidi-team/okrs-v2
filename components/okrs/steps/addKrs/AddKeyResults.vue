@@ -69,7 +69,7 @@ export default class CreateObjectiveStep extends Vue {
     this.krFormItems.push({
       startValue: 0,
       targetValue: 100,
-      content: 'Xin vui lòng nhập kết quả then chốt',
+      content: '',
       linkPlans: '',
       linkResults: '',
       measureUnitId: 1,
@@ -209,7 +209,9 @@ export default class CreateObjectiveStep extends Vue {
   }
   &__button {
     margin: $unit-4 0 $unit-4 0;
-    &:hover {
+    &:hover,
+    &:focus,
+    &:active {
       span {
         svg {
           path {

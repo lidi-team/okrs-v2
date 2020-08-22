@@ -7,7 +7,7 @@
       <div v-loading="loadingSelect" class="create-objective__select">
         <el-form-item prop="cycleId" label="Chu kỳ" class="custom-label" label-width="120px">
           <el-select v-model="tempObjective.cycleId" filterable no-match-text="Không tìm thấy chu kỳ" placeholder="Chọn chu kỳ">
-            <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.name" :value="cycle.id" />
+            <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.label" :value="cycle.id" />
           </el-select>
         </el-form-item>
         <!-- OKRs company -->
@@ -153,7 +153,7 @@ export default class CreateObjectiveStep extends Vue {
   private rules: Maps<Rule[]> = {
     title: [{ type: 'string', required: true, message: 'Vui lòng nhập mục tiêu', trigger: 'blur' }],
     cycleId: [{ type: 'number', required: true, message: 'Vui lòng chọn chy kỳ', trigger: 'blur' }],
-    parentObjectiveId: [{ type: 'number', required: true, message: 'Vui lòng OKRs câp trên', trigger: 'blur' }],
+    parentObjectiveId: [{ type: 'number', required: true, message: 'Vui lòng chọn OKRs cấp trên', trigger: 'blur' }],
   };
 
   public closeObjectiveForm() {

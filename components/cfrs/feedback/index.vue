@@ -20,7 +20,7 @@
               <el-button
                 class="el-button el-button--purple el-button-medium"
                 @click="showDialogCreatingFeedback(item, listWatingFeedback.inferior.type, false)"
-                >Tạo Feedback</el-button
+                >Tạo phản hồi</el-button
               >
             </div>
           </div>
@@ -52,7 +52,7 @@
               <el-button
                 class="el-button el-button--purple el-button-medium"
                 @click="showDialogCreatingFeedback(item, listWatingFeedback.superior.type, true)"
-                >Tạo Feedback</el-button
+                >Tạo phản hồi</el-button
               >
             </div>
           </div>
@@ -154,24 +154,24 @@ export default class Feedback extends Vue {
     if (type === 'inferior') {
       // Feedback cho Team member
       if (this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
-        return 'Feedback cho Team Member';
+        return 'Phản hồi cho Team Member';
       }
       // Feedback cho Team Leader
       if (this.$store.state.auth.user.role.name === 'ADMIN') {
-        return 'Feedback cho Team Leader';
+        return 'Phản hồi cho Team Leader';
       }
     } else {
       // Feedback cho Team Leader
       if (!this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
-        return 'Feedback cho Team Leader';
+        return 'Phản hồi cho Team Leader';
       }
       // Feedback cho Admin
       if (this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
-        return 'Feedback cho Admin';
+        return 'Phản hồi cho Admin';
       }
       // Feedback cho bạn -- admin
       if (this.$store.state.auth.user.role.name === 'ADMIN') {
-        return 'Feedback cho tôi';
+        return 'Phản hồi cho tôi';
       }
     }
   }

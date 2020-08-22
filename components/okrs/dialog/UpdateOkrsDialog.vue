@@ -73,7 +73,7 @@ export default class UpdateOkrsDialog extends Vue {
   private krFormItems: any[] = [];
 
   private rules: Maps<Rule[]> = {
-    title: [{ type: 'string', required: true, message: 'Vùi lòng nhập tên mục tiêu', trigger: 'blur' }],
+    title: [{ type: 'string', required: true, message: 'Vui lòng nhập tên mục tiêu', trigger: 'blur' }],
   };
 
   private handleDataDialog() {
@@ -102,7 +102,7 @@ export default class UpdateOkrsDialog extends Vue {
     this.krFormItems.push({
       startValue: 0,
       targetValue: 100,
-      content: 'Xin vui lòng nhập kết quả then chốt',
+      content: '',
       linkPlans: '',
       linkResults: '',
       measureUnitId: 1,
@@ -124,49 +124,56 @@ export default class UpdateOkrsDialog extends Vue {
     const krs: any[] = [];
 
     this.loading = true;
-    (this.$refs.updateOkrsForm as Form).validate(async (isValid: boolean) => {
-      if (isValid) {
-        let validForm: number = 0;
-        (this.$refs.krsForm as any).forEach((form) => {
-          (form.$refs.keyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
-            if (isValid) {
-              validForm++;
-            }
-          });
-          krs.push(Object.freeze(form.syncTempKr));
-        });
-        if (validForm === krs.length) {
-          const payload: PayloadOkrs = {
-            objective: this.$store.state.okrs.objective
-              ? this.$store.state.okrs.objective
-              : Object.assign({}, { id: this.$route.params.id ? +this.$route.params.id : +this.temporaryOkrs.id, title: this.tempObjective.title }),
-            keyResult: krs,
-          };
-          try {
-            await OkrsRepository.createOrUpdateOkrs(payload).then((res) => {
-              this.loading = false;
-              this.handleDataDialog();
-              this.reloadData();
-              Notification.success({
-                ...notificationConfig,
-                message: 'Cập nhật OKRs thành công',
-              });
+    if (this.krFormItems.length === 0) {
+      setTimeout(() => {
+        this.loading = false;
+      }, 300);
+      this.$message.error('Cần có ít nhất 1 kết quả then chốt');
+    } else {
+      (this.$refs.updateOkrsForm as Form).validate(async (isValid: boolean) => {
+        if (isValid) {
+          let validForm: number = 0;
+          (this.$refs.krsForm as any).forEach((form) => {
+            (form.$refs.keyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
+              if (isValid) {
+                validForm++;
+              }
             });
-          } catch (error) {
-            this.loading = false;
+            krs.push(Object.freeze(form.syncTempKr));
+          });
+          if (validForm === krs.length) {
+            const payload: PayloadOkrs = {
+              objective: this.$store.state.okrs.objective
+                ? this.$store.state.okrs.objective
+                : Object.assign({}, { id: this.$route.params.id ? +this.$route.params.id : +this.temporaryOkrs.id, title: this.tempObjective.title }),
+              keyResult: krs,
+            };
+            try {
+              await OkrsRepository.createOrUpdateOkrs(payload).then((res) => {
+                this.loading = false;
+                this.handleDataDialog();
+                this.reloadData();
+                Notification.success({
+                  ...notificationConfig,
+                  message: 'Cập nhật OKRs thành công',
+                });
+              });
+            } catch (error) {
+              this.loading = false;
+            }
+          } else {
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+            this.$message.error('Vui lòng nhập đúng các trường yêu cầu');
           }
         } else {
           setTimeout(() => {
             this.loading = false;
           }, 300);
-          this.$message.error('Vui lòng nhập đúng các trường yêu cầu');
         }
-      } else {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
+      });
+    }
   }
 }
 </script>
@@ -176,7 +183,9 @@ export default class UpdateOkrsDialog extends Vue {
 .update-okrs {
   &__button {
     margin: $unit-4 0 $unit-4 0;
-    &:hover {
+    &:hover,
+    &:focus,
+    &:active {
       span {
         svg {
           path {
