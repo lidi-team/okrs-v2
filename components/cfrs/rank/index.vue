@@ -57,7 +57,6 @@
         </div>
       </el-col>
     </el-row>
-    <cfrs-detail-history :visible-dialog.sync="visibleCreateDialog" :data-detail="dataDetail" />
   </div>
 </template>
 
@@ -93,26 +92,6 @@ export default class Rank extends Vue {
   private dataDetail: object = {};
   private visibleCreateDialog = false;
   private listCycles: any[] = [];
-
-  private detail(type: String, item: any): void {
-    let sender = this.$store.state.auth.user.fullName;
-    let receiver = this.$store.state.auth.user.fullName;
-    if (item.sender) {
-      sender = item.sender.fullName;
-    }
-    if (item.receiver) {
-      receiver = item.receiver.fullName;
-    }
-    this.dataDetail = {
-      sender,
-      receiver,
-      objective: item.objective ? item.objective.title : item.checkin.objective.title,
-      createdAt: item.createdAt || new Date(),
-      content: item.evaluationCriteria.content || '',
-      type: type || 'Feedback',
-    };
-    this.visibleCreateDialog = true;
-  }
 
   private async getListDataRanking() {
     this.loadingTab = true;

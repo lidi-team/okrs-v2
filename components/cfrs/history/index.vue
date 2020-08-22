@@ -143,7 +143,7 @@ export default class History extends Vue {
     type: '',
   };
 
-  @Watch('$store.state.cycle.cycleTemp')
+  // @Watch('$store.state.cycle.cycleTemp')
   private async changeListDataOnCycle(cycleTemp: number) {
     this.loadingTab = true;
     await this.getListDataHistory(cycleTemp);
@@ -152,7 +152,7 @@ export default class History extends Vue {
     }, 300);
   }
 
-  @Watch('$store.state.user.tempUser.id')
+  // @Watch('$store.state.user.tempUser.id')
   private async changeListDataOnUser(tempUserId: number) {
     this.loadingPersonalTab = true;
     await this.getListDataHistory(this.$store.state.cycle.cycleTemp, tempUserId);
