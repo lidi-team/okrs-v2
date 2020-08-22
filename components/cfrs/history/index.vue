@@ -103,7 +103,7 @@
         <!-- <base-pagination class="pagination-bottom" :total="total" :page.sync="syncPage" :limit.sync="syncLimit" @pagination="handlePagination($event)" /> -->
       </el-col>
     </el-row>
-    <!-- <cfrs-detail-history :visible-dialog.sync="visibleCreateDialog" :item-data="itemDataCfrs.data" :type="itemDataCfrs.type" /> -->
+    <cfrs-detail-history :visible-dialog.sync="visibleCreateDialog" :item-data="itemDataCfrs.data" :type="itemDataCfrs.type" />
   </div>
 </template>
 
@@ -112,10 +112,14 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import CreateFeedback from './Create.vue';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import { CfrsRepository } from '@/repositories/CfrsRepository';
+import { MutationState } from '@/constants/app.enum';
 @Component<History>({
   name: 'History',
   components: {
     IconStarDashboard,
+  },
+  beforeCreate() {
+    this.$store.commit(MutationState.SET_TEMP_USER, this.$store.state.auth.user);
   },
   created() {
     this.getListDataHistory(this.$store.state.cycle.cycle.id);
@@ -139,20 +143,32 @@ export default class History extends Vue {
   };
 
   private itemDataCfrs: any = {
-    data: null,
+    data: {
+      content: '',
+      createdAt: '',
+      objective: {
+        title: '',
+      },
+      checkin: {
+        objective: {},
+      },
+      sender: {},
+      receiver: {},
+      type: '',
+    },
     type: '',
   };
 
-  // @Watch('$store.state.cycle.cycleTemp')
+  @Watch('$store.state.cycle.cycleTemp')
   private async changeListDataOnCycle(cycleTemp: number) {
     this.loadingTab = true;
-    await this.getListDataHistory(cycleTemp);
+    await this.getListDataHistory(cycleTemp, this.$store.state.user.tempUser.id);
     setTimeout(() => {
       this.loadingTab = false;
     }, 300);
   }
 
-  // @Watch('$store.state.user.tempUser.id')
+  @Watch('$store.state.user.tempUser.id')
   private async changeListDataOnUser(tempUserId: number) {
     this.loadingPersonalTab = true;
     await this.getListDataHistory(this.$store.state.cycle.cycleTemp, tempUserId);
@@ -172,7 +188,7 @@ export default class History extends Vue {
   private viewDetailCfrs(item: any, type: string): void {
     this.itemDataCfrs.data = item;
     this.itemDataCfrs.type = type;
-    console.log(this.itemDataCfrs);
+    console.table(this.itemDataCfrs.data);
     this.visibleCreateDialog = true;
   }
 
