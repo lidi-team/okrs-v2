@@ -1,7 +1,7 @@
 <template>
   <div class="star">
-    <el-row v-loading="loading">
-      <el-col :span="6">
+    <el-row v-loading="loading" :gutter="20">
+      <el-col :sm="24" :md="12">
         <div class="star__col star__income">
           <div class="star__col__header">
             <icon-star-dashboard class="star__col__icon" />
@@ -21,7 +21,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :sm="24" :md="12">
         <div class="star__col">
           <div class="star__col__header">
             <icon-star-dashboard class="star__col__icon" />
@@ -41,20 +41,19 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="12">
+      <!-- <el-col :sm="24" :md="24" :lg="12">
         <div class="star__col star__recognition">
           <div class="star__col__header">
             <icon-star-dashboard class="star__col__icon" />
             <p class="star__col__title">Ghi nhận đặc biệt</p>
           </div>
         </div>
-      </el-col>
+      </el-col>-->
     </el-row>
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import DashboardRepository from '@/repositories/DashboardRepository';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import IconStar from '@/assets/images/admin/star.svg';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import IconStarFirst from '@/assets/images/dashboard/top-1.svg';
@@ -69,24 +68,14 @@ import IconStarThird from '@/assets/images/dashboard/top-3.svg';
     IconStarSecond,
     IconStarThird,
   },
-  async created() {
-    this.loading = true;
-    const currentCycle = this.$store.state.cycle.cycle.id;
-    const dataStarInCome = await DashboardRepository.getTopIncome(currentCycle, 1);
-    const dataStarOutCome = await DashboardRepository.getTopIncome(currentCycle, 2);
-
-    this.dataStarInCome = dataStarInCome.data.data;
-    this.dataStarOutCome = dataStarOutCome.data.data;
-    this.loading = false;
-  },
 })
 export default class ProgressBarComponent extends Vue {
-  private dataStarInCome: object = {};
-  private dataStarOutCome: object = {};
-  private loading: boolean = false;
+  @Prop(Array) readonly dataStarInCome;
+  @Prop(Array) readonly dataStarOutCome;
+  @Prop(Boolean) readonly loading!: boolean;
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .star {
   padding-top: $unit-5;
@@ -113,10 +102,8 @@ export default class ProgressBarComponent extends Vue {
     }
   }
   &__income {
-    margin-right: $unit-4;
   }
   &__recognition {
-    margin-left: $unit-4;
   }
 }
 .star-item {

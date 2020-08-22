@@ -1,6 +1,6 @@
 <template>
   <el-row v-if="user" class="sidebar" type="flex" justify="start" align="center">
-    <nuxt-link to="/" :class="['sidebar__link']">
+    <nuxt-link to="/" :class="['sidebar__link', { 'nuxt-link-exact-active': isHome }]">
       <div class="sidebar__link__tab">
         <Dashboard class="sidebar__link__tab__icon" />
         <span>Dashboard</span>
@@ -69,6 +69,12 @@ import { GetterState } from '@/constants/app.enum';
   },
 })
 export default class SideBar extends Vue {
+  private get isHome() {
+    if (this.$route.path === '/' || this.$route.query.cycleId) {
+      return true;
+    }
+  }
+
   private get isCfrsActive() {
     return !!this.$route.path.startsWith('/CFRs');
   }
