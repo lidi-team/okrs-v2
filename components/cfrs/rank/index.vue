@@ -57,7 +57,7 @@
         </div>
       </el-col>
     </el-row>
-    <cfrs-detail-history :visible-dialog.sync="visibleCreateDialog" :data-detail="dataDetail" />
+    <!-- <cfrs-detail-history :visible-dialog.sync="visibleCreateDialog" :data-detail="dataDetail" /> -->
   </div>
 </template>
 

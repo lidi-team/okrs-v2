@@ -35,6 +35,9 @@ import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
 import { confirmWarningConfig } from '@/constants/app.constant';
 @Component<DetailHistory>({
   name: 'DetailHistory',
+  created() {
+    console.log(this.itemData);
+  },
 })
 export default class DetailHistory extends Vue {
   @Prop(Object) itemData!: any;
