@@ -9,23 +9,31 @@
         <el-col :xs="8" :sm="6" :md="12">
           <el-progress :percentage="dataOkrsProgress.root ? dataOkrsProgress.root : 0" :color="customColors" :text-inside="true" :stroke-width="26" />
         </el-col>
-        <el-col :xs="5" :sm="4" :md="2" class="progress__end-cycle">{{ new Date(dataOkrsProgress.endDate) | dateFormat('MM/YYYY') }}</el-col>
+        <el-col v-if="dataOkrsProgress.endDate" :xs="5" :sm="4" :md="2" class="progress__end-cycle">{{
+          new Date(dataOkrsProgress.endDate) | dateFormat('MM/YYYY')
+        }}</el-col>
       </el-row>
     </div>
     <div class="progress__item">
       <el-row :gutter="10">
         <el-col :xs="6" :sm="6" :md="6" class="progress__header">OKR nhóm:</el-col>
-        <el-col :xs="5" :sm="4" :md="2" class="progress__start-cycle">{{ new Date(dataOkrsProgress.startDate) | dateFormat('MM/YYYY') }}</el-col>
+        <el-col v-if="dataOkrsProgress.startDate" :xs="5" :sm="4" :md="2" class="progress__start-cycle">{{
+          new Date(dataOkrsProgress.startDate) | dateFormat('MM/YYYY')
+        }}</el-col>
         <el-col :xs="8" :sm="6" :md="12">
           <el-progress :percentage="dataOkrsProgress.team ? dataOkrsProgress.team : 0" :color="customColors" :text-inside="true" :stroke-width="26" />
         </el-col>
-        <el-col :xs="5" :sm="4" :md="2" class="progress__end-cycle">{{ new Date(dataOkrsProgress.endDate) | dateFormat('MM/YYYY') }}</el-col>
+        <el-col v-if="dataOkrsProgress.endDate" :xs="5" :sm="4" :md="2" class="progress__end-cycle">{{
+          new Date(dataOkrsProgress.endDate) | dateFormat('MM/YYYY')
+        }}</el-col>
       </el-row>
     </div>
     <div class="progress__item">
       <el-row :gutter="10">
         <el-col :xs="6" :sm="6" :md="6" class="progress__header">OKR cá nhân:</el-col>
-        <el-col :xs="5" :sm="4" :md="2" class="progress__start-cycle">{{ new Date(dataOkrsProgress.startDate) | dateFormat('MM/YYYY') }}</el-col>
+        <el-col v-if="dataOkrsProgress.startDate" :xs="5" :sm="4" :md="2" class="progress__start-cycle">{{
+          new Date(dataOkrsProgress.startDate) | dateFormat('MM/YYYY')
+        }}</el-col>
         <el-col :xs="8" :sm="6" :md="12">
           <el-progress
             :percentage="dataOkrsProgress.personal ? dataOkrsProgress.personal : 0"
@@ -34,7 +42,9 @@
             :stroke-width="26"
           />
         </el-col>
-        <el-col :xs="5" :sm="4" :md="2" class="progress__end-cycle">{{ new Date(dataOkrsProgress.endDate) | dateFormat('MM/YYYY') }}</el-col>
+        <el-col v-if="dataOkrsProgress.endDate" :xs="5" :sm="4" :md="2" class="progress__end-cycle">{{
+          new Date(dataOkrsProgress.endDate) | dateFormat('MM/YYYY')
+        }}</el-col>
       </el-row>
     </div>
   </div>
