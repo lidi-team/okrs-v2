@@ -15,6 +15,11 @@ import { notificationConfig } from '@/constants/app.constant';
 
 @Component({
   name: 'DetailHistoryPageCompany',
+  head() {
+    return {
+      title: 'Chi tiết lịch sử Check-in công ty',
+    };
+  },
   created() {
     this.getDetail();
   },

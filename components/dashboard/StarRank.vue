@@ -1,6 +1,6 @@
 <template>
-  <div class="star">
-    <el-row v-loading="loading" :gutter="20">
+  <div v-loading="loading" class="star">
+    <el-row :gutter="20">
       <el-col :sm="24" :md="12">
         <div class="star__col star__income">
           <div class="star__col__header">

@@ -47,6 +47,11 @@ import CheckinRepository from '@/repositories/CheckinRepository';
 
 @Component<HistoryCheckin>({
   name: 'HistoryCheckin',
+  head() {
+    return {
+      title: 'Lịch sử Check-in',
+    };
+  },
   created() {
     this.getList();
   },

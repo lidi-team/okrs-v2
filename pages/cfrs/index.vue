@@ -36,6 +36,11 @@ import { pageLimit } from '@/constants/app.constant';
 
 @Component<CFRs>({
   name: 'CFRs',
+  head() {
+    return {
+      title: 'Ghi nhận và Phản hồi',
+    };
+  },
   created() {
     this.$store.commit(MutationState.SET_TEMP_CYCLE, this.$store.state.cycle.cycle.id);
   },

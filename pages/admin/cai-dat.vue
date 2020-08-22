@@ -60,6 +60,11 @@ import { pageLimit } from '@/constants/app.constant';
 import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 @Component<SettingCompanyPage>({
   name: 'SettingCompanyPage',
+  head() {
+    return {
+      title: 'Cài đặt công ty',
+    };
+  },
   async created() {
     await this.getListData();
   },

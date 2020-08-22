@@ -38,6 +38,11 @@ import { pageLimit } from '@/constants/app.constant';
     await this.getListUsers();
     await this.getDataCommons();
   },
+  head() {
+    return {
+      title: 'Quản lý nhân sự',
+    };
+  },
 })
 export default class ManageEmployee extends Vue {
   private tableData: Array<object> = [];

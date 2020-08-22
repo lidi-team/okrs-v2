@@ -28,6 +28,11 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 
 @Component({
   name: 'Error404Page',
+  head() {
+    return {
+      title: '404',
+    };
+  },
 })
 export default class Error404Page extends Vue {
   @Prop(Object) error;

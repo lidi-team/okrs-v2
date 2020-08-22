@@ -59,6 +59,11 @@ import CheckinRepository from '@/repositories/CheckinRepository';
 import { SelectOptionDTO } from '@/constants/app.interface';
 @Component<CheckinPage>({
   name: 'CheckinPage',
+  head() {
+    return {
+      title: 'Check-in',
+    };
+  },
   created() {
     this.getAllCycles();
     this.getList();
