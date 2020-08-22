@@ -15,6 +15,11 @@ import { Component, Vue } from 'vue-property-decorator';
   name: 'ForgotPasswordPage',
   layout: 'empty',
   middleware: 'isGuest',
+  head() {
+    return {
+      title: 'Quên mật khẩu',
+    };
+  },
 })
 export default class ForgotPasswordPage extends Vue {}
 </script>

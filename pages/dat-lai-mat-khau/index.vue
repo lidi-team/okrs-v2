@@ -15,6 +15,11 @@ import AuthRepository from '@/repositories/AuthRepository';
 import { notifyErrorResetPassword } from '@/constants/app.notify';
 @Component<ResetPasswordPage>({
   name: 'ResetPasswordPage',
+  head() {
+    return {
+      title: 'Đặt lại mật khẩu',
+    };
+  },
   middleware: 'isGuest',
   watchQuery: ['token'],
   async asyncData({ query, redirect }) {

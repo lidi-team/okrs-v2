@@ -15,6 +15,11 @@ import { formatDateToDD } from '@/utils/dateParser';
 import { notificationConfig } from '@/constants/app.constant';
 @Component({
   name: 'RequestPage',
+  head() {
+    return {
+      title: 'Duyệt Check-in',
+    };
+  },
   created() {
     this.getCheckin();
   },

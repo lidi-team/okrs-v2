@@ -16,6 +16,11 @@ import { notifyErrorRegister } from '@/constants/app.notify';
 
 @Component<LoginPage>({
   name: 'LoginPage',
+  head() {
+    return {
+      title: 'Đăng ký',
+    };
+  },
   middleware: 'isGuest',
   layout: 'empty',
   watchQuery: ['token'],

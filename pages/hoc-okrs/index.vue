@@ -12,6 +12,11 @@ import LessonRepository from '@/repositories/LessonRepository';
 import { pageLimit } from '@/constants/app.constant';
 @Component<LearnLesson>({
   name: 'LearnLesson',
+  head() {
+    return {
+      title: 'Danh sách bài học OKRs',
+    };
+  },
   watchQuery: ['page'],
   async asyncData({ query }) {
     try {
