@@ -1,43 +1,47 @@
 <template>
   <el-dialog :title="dialogTitle(itemData, type)" :visible.sync="syncCreateOkrsDialog" width="800px" placement="center" class="detail-history">
     <el-row :gutter="20">
-      <el-col :span="6" class="detail-history__attribute">Ngày Check-in</el-col>
-      <el-col :span="18" class="detail-history__value">{{ new Date(itemData.createdAt) | dateFormat('DD/MM/YYYY') }}</el-col>
+      <el-col :span="7" class="detail-history__attribute">Ngày Check-in</el-col>
+      <el-col :span="17" class="detail-history__value">{{ new Date(itemData.createdAt) | dateFormat('DD/MM/YYYY') }}</el-col>
     </el-row>
+    <!-- Nếu là Recognition -->
     <el-row v-if="itemData.objective" :gutter="20">
-      <el-col :span="6" class="detail-history__attribute">Mục tiêu</el-col>
-      <el-col :span="18" class="detail-history__value">{{ itemData.objective.title }}</el-col>
+      <el-col :span="7" class="detail-history__attribute">Mục tiêu</el-col>
+      <el-col :span="17" class="detail-history__value">{{ itemData.objective.title }}</el-col>
     </el-row>
-    <div v-if="type !== all">
+    <!-- Nếu là feedback -->
+    <el-row v-if="itemData.type === 'feedback' && itemData.checkin.objective.title" :gutter="20">
+      <el-col :span="7" class="detail-history__attribute">Mục tiêu</el-col>
+      <el-col :span="17" class="detail-history__value">{{ itemData.checkin.objective.title }}</el-col>
+    </el-row>
+    <div v-if="type === 'sent'">
       <el-row :gutter="20">
-        <el-col :span="6" class="detail-history__attribute">Người {{ itemData.type }}</el-col>
-        <el-col :span="18" class="detail-history__value">{{ itemData.sender }}</el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="6" class="detail-history__attribute">Tiêu chí</el-col>
-        <el-col :span="18" class="detail-history__value">{{ itemData.criteria }}</el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="6" class="detail-history__attribute">Nội dung Feedback</el-col>
-        <el-col :span="18" class="detail-history__value">
-          {{ itemData.content }}
-        </el-col>
+        <el-col :span="7" class="detail-history__attribute">Người {{ displayNameCfrs }} {{ itemData.type }}</el-col>
+        <el-col :span="17" class="detail-history__value">{{ itemData.receiver.fullName }}</el-col>
       </el-row>
     </div>
-    <div v-else></div>
+    <div v-if="type === 'received'">
+      <el-row :gutter="20">
+        <el-col :span="7" class="detail-history__attribute">Người {{ itemData.type }} tới {{ displayNameCfrs }}</el-col>
+        <el-col :span="17" class="detail-history__value">{{ itemData.sender.fullName }}</el-col>
+      </el-row>
+    </div>
+    <el-row :gutter="20">
+      <el-col :span="7" class="detail-history__attribute">Nội dung {{ itemData.type }}</el-col>
+      <el-col :span="17" class="detail-history__value">
+        {{ itemData.content }}
+      </el-col>
+    </el-row>
     <div class="create-feedback-dialog__action">
-      <el-button class="el-button--white el-button--modal" @click="closeObjectiveForm">Hủy</el-button>
+      <el-button class="el-button--white el-button--modal" @click="closeDetailDialog">Đóng</el-button>
     </div>
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { confirmWarningConfig } from '@/constants/app.constant';
 @Component<DetailHistory>({
   name: 'DetailHistory',
-  created() {
-    console.log(this.itemData);
-  },
 })
 export default class DetailHistory extends Vue {
   @Prop(Object) itemData!: any;
@@ -45,7 +49,7 @@ export default class DetailHistory extends Vue {
   @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncCreateOkrsDialog!: boolean;
   private content: String = '';
   private autoSizeConfig = { minRows: 4, maxRows: 6 };
-  private closeObjectiveForm(): void {
+  private closeDetailDialog(): void {
     this.syncCreateOkrsDialog = false;
   }
 
@@ -62,6 +66,22 @@ export default class DetailHistory extends Vue {
   private upFirst(data: String): String {
     return data ? data.charAt(0).toUpperCase() + data.slice(1) : 'Feedback';
   }
+
+  private get displayNameCfrs(): String {
+    if (!this.$store.state.user.tempUser) {
+      return 'bạn';
+    }
+    if (this.$store.state.user.tempUser.id !== this.$store.state.auth.user.id) {
+      return this.takeTwoLastNameUser(this.$store.state.user.tempUser.fullName);
+    } else {
+      return 'bạn';
+    }
+  }
+
+  private takeTwoLastNameUser(userName: string): string {
+    const arr = userName.split(' ');
+    return arr.slice(Math.max(arr.length - 2, 1)).join(' ');
+  }
 }
 </script>
 <style lang="scss">
@@ -71,15 +91,21 @@ export default class DetailHistory extends Vue {
   &__attribute {
     font-weight: bold;
     padding: $unit-3 0;
+    word-break: break-word;
   }
   &__value {
     padding: $unit-3 0;
   }
   &__action {
     margin-top: $unit-4;
+    margin-bottom: $unit-1;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    margin-bottom: -$unit-2;
+  }
+  .el-dialog__body {
+    padding: $unit-4 $unit-5;
   }
 }
 </style>
