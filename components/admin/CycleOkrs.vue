@@ -1,6 +1,6 @@
 <template>
   <fragment>
-    <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="cycle-okrs">
+    <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" class="cycle-okrs">
       <el-table-column prop="name" label="Tên chu kỳ"></el-table-column>
       <el-table-column label="Ngày bắt đầu">
         <template v-slot="{ row }">
@@ -18,7 +18,7 @@
           <el-tooltip class="cycle-okrs__icon" content="Sửa" placement="top">
             <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
-          <el-tooltip class="cycle-okrs__icon" content="Xóa" placement="top">
+          <el-tooltip v-if="$store.state.cycle.cycle.id !== row.id" class="cycle-okrs__icon" content="Xóa" placement="top">
             <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
           </el-tooltip>
         </template>
@@ -69,7 +69,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { AdminTabsEn } from '@/constants/app.enum';
@@ -80,15 +80,21 @@ import { formatDateToDD, formatDateToYYYY, compareTwoDate } from '@/utils/datePa
 
 @Component<ManageCycleOkrs>({
   name: 'ManageCycleOkrs',
+  mounted() {
+    this.loadingTable = true;
+    setTimeout(() => {
+      this.loadingTable = false;
+    }, 500);
+  },
 })
 export default class ManageCycleOkrs extends Vue {
   @Prop(Array) public tableData!: Object[];
-  @Prop(Boolean) public loading!: boolean;
   @Prop(Function) public reloadData!: Function;
   @Prop({ type: Number, required: true }) public total!: number;
   @PropSync('page', { type: Number, required: true }) public syncPage!: number;
   @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
 
+  public loadingTable: boolean = false;
   private dateFormat: string = 'dd/MM/yyyy';
   private dialogUpdateVisible: boolean = false;
   private temporaryUpdateCycle: CycleDTO = {
@@ -148,7 +154,7 @@ export default class ManageCycleOkrs extends Vue {
               endDate: formatDateToYYYY(this.temporaryUpdateCycle.endDate),
             };
             await CycleRepository.update(tempCycle).then((res) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Cập nhật chu kỳ thành công',
               });
@@ -167,7 +173,7 @@ export default class ManageCycleOkrs extends Vue {
     }).then(async () => {
       try {
         await CycleRepository.delete(row.id).then((res) => {
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Xóa chu kỳ thành công',
           });

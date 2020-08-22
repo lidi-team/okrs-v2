@@ -20,7 +20,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 
 import { notificationConfig } from '@/constants/app.constant';
 import TeamRepository from '@/repositories/TeamRepository';
@@ -63,7 +63,7 @@ export default class TeamDialog extends Vue {
       if (isValid) {
         try {
           await TeamRepository.post(this.tempCreateDepartment).then((res) => {
-            Notification.success({
+            this.$notify.success({
               ...notificationConfig,
               message: 'Tạo phòng ban mới thành công',
             });

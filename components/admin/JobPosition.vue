@@ -1,6 +1,6 @@
 <template>
   <fragment>
-    <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="job-admin">
+    <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" class="job-admin">
       <el-table-column prop="name" label="Tên vị trí"></el-table-column>
       <el-table-column prop="description" label="Mô tả"></el-table-column>
       <el-table-column label="Ngày cập nhật">
@@ -56,7 +56,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
@@ -64,15 +64,24 @@ import { JobPositionDTO } from '@/constants/app.interface';
 import JobRepository from '@/repositories/JobRepository';
 import { AdminTabsEn } from '@/constants/app.enum';
 
-@Component<ManageJobPosition>({ name: 'ManageJobPosition' })
+@Component<ManageJobPosition>({
+  name: 'ManageJobPosition',
+  mounted() {
+    this.loadingTable = true;
+    setTimeout(() => {
+      this.loadingTable = false;
+    }, 500);
+  },
+})
 export default class ManageJobPosition extends Vue {
   @Prop(Array) public tableData!: Object[];
-  @Prop(Boolean) public loading!: boolean;
   @Prop(Function) public reloadData!: Function;
   @Prop({ type: Number, required: true }) public total!: number;
   @PropSync('page', { type: Number, required: true }) public syncPage!: number;
   @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
 
+  public loadingTable: boolean = false;
+  private loading: boolean = false;
   private autoSizeConfig = { minRows: 2, maxRows: 4 };
   private dateFormat: string = 'dd/MM/yyyy';
   private dialogUpdateVisible: boolean = false;
@@ -108,6 +117,7 @@ export default class ManageJobPosition extends Vue {
   }
 
   private handleUpdate(): void {
+    this.loading = true;
     (this.$refs.tempUpdateJob as Form).validate((isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
         this.$confirm(`Bạn có chắc chắn muốn cập nhật vị trí này không?`, {
@@ -115,15 +125,21 @@ export default class ManageJobPosition extends Vue {
         }).then(async () => {
           try {
             await JobRepository.update(this.tempUpdateJob).then((res) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Cập nhật vị trí thành công',
               });
             });
+            this.loading = false;
             this.reloadData();
             this.dialogUpdateVisible = false;
           } catch (error) {}
         });
+      }
+      if (invalidatedFields) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }
@@ -134,7 +150,7 @@ export default class ManageJobPosition extends Vue {
     }).then(async () => {
       try {
         await JobRepository.delete(row.id).then((res) => {
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Xóa vị trí thành công',
           });

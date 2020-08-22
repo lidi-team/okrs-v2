@@ -4,15 +4,13 @@
       <template #top>
         <div justify="space-between" class="admin__top">
           <div class="admin__top__left">
-            <el-autocomplete
+            <el-input
               v-model="textSearch"
               class="admin__top__left--input"
-              prefix-icon="el-icon-search"
               :placeholder="topChange.textPlaceholder"
-              :fetch-suggestions="querySearch"
-              :trigger-on-focus="false"
-              @select="handleSelectItem"
-            ></el-autocomplete>
+              prefix-icon="el-icon-search"
+              @keyup.enter.native="handleSearch(textSearch)"
+            />
           </div>
           <div class="admin__top__right">
             <el-button class="el-button--purple el-button--invite" icon="el-icon-plus" @click="addNew">
@@ -29,7 +27,6 @@
               :is="currentTabComponent"
               :table-data="tableData"
               :reload-data="getListData"
-              :loading="loading"
               :total="totalItems"
               :page.sync="adminParams.page"
               :limit.sync="adminParams.limit"
@@ -63,8 +60,8 @@ import { pageLimit } from '@/constants/app.constant';
 import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 @Component<SettingCompanyPage>({
   name: 'SettingCompanyPage',
-  created() {
-    this.getListData();
+  async created() {
+    await this.getListData();
   },
   middleware: ['isAdmin'],
 })
@@ -72,29 +69,9 @@ export default class SettingCompanyPage extends Vue {
   private tableData: any[] = [];
   private metaPagination: object = {};
   private totalItems: number = 1;
-  private loading: boolean = false;
   private tabs: string[] = [...Object.values(AdminTabsVn)];
   private textSearch: string = '';
   private visibleDialog: boolean = false;
-  private timeout: any = null;
-  private querySearch(queryString: string, callback) {
-    const link = this.tableData;
-    let results: readonly any[] = queryString ? link.filter(this.createFilter(queryString)) : link;
-    results = Object.freeze(results);
-    results = results.map((data) => data.name);
-    // call callback function to return suggestions
-    callback(results);
-  }
-
-  private createFilter(queryString: any) {
-    return (dataTable: any) => {
-      return dataTable.name.toLowerCase().includes(queryString.toLowerCase()) === true;
-    };
-  }
-
-  private handleSelectItem(item) {
-    console.log(item);
-  }
 
   private currentTab: string =
     this.$route.query.tab === AdminTabsEn.MeasureUnit
@@ -110,24 +87,47 @@ export default class SettingCompanyPage extends Vue {
   private adminParams: AdminParams = {
     page: this.$route.query.page ? Number(this.$route.query.page) : 1,
     limit: pageLimit,
+    text: this.$route.query.text ? String(this.$route.query.text) : '',
   };
 
   private switchTabs(currentTab: string) {
     if (currentTab === AdminTabsVn.CycleOKR) {
       this.adminParams.page = 1;
+      this.adminParams.text = '';
+      this.textSearch = '';
       this.$router.push(`?tab=${AdminTabsEn.CycleOKR}`);
     } else if (currentTab === AdminTabsVn.Department) {
       this.adminParams.page = 1;
+      this.adminParams.text = '';
+      this.textSearch = '';
       this.$router.push(`?tab=${AdminTabsEn.Department}`);
     } else if (currentTab === AdminTabsVn.JobPosition) {
       this.adminParams.page = 1;
+      this.adminParams.text = '';
+      this.textSearch = '';
       this.$router.push(`?tab=${AdminTabsEn.JobPosition}`);
     } else if (currentTab === AdminTabsVn.EvaluationCriterial) {
       this.adminParams.page = 1;
+      this.adminParams.text = '';
+      this.textSearch = '';
       this.$router.push(`?tab=${AdminTabsEn.EvaluationCriterial}`);
     } else {
       this.adminParams.page = 1;
+      this.adminParams.text = '';
+      this.textSearch = '';
       this.$router.push(`?tab=${AdminTabsEn.MeasureUnit}`);
+    }
+  }
+
+  private handleSearch(textSearch: string) {
+    if (textSearch.trim() !== '') {
+      this.adminParams.page = 1;
+      this.adminParams.text = textSearch;
+      if (!this.$route.query.tab) {
+        this.$router.push(`?tab=quan-ly-chu-ky&text=${textSearch}`);
+      } else {
+        this.$router.push(`?tab=${this.$route.query.tab}&text=${textSearch}`);
+      }
     }
   }
 
@@ -135,55 +135,36 @@ export default class SettingCompanyPage extends Vue {
     this.visibleDialog = true;
   }
 
-  @Watch('$route.query')
+  @Watch('$route.query', { deep: true })
   private async getListData() {
-    this.loading = true;
-    if (this.$route.query.tab === AdminTabsEn.CycleOKR || this.$route.query.tab === undefined) {
-      try {
-        const { data } = await CycleRepository.get(this.adminParams);
-        this.tableData = Object.freeze(data.data.items);
-        this.totalItems = data.data.meta.totalItems;
-        this.loading = false;
-      } catch (error) {
-        this.loading = false;
+    try {
+      if (this.$route.query.tab === AdminTabsEn.CycleOKR || this.$route.query.tab === undefined) {
+        await CycleRepository.get(this.adminParams).then((res) => {
+          this.tableData = Object.freeze(res.data.data.items);
+          this.totalItems = res.data.data.meta.totalItems;
+        });
+      } else if (this.$route.query.tab === AdminTabsEn.Department) {
+        await TeamRepository.get(this.adminParams).then((res) => {
+          this.tableData = res.data.data.items;
+          this.totalItems = res.data.data.meta.totalItems;
+        });
+      } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
+        await JobRepository.get(this.adminParams).then((res) => {
+          this.tableData = res.data.data.items;
+          this.totalItems = res.data.data.meta.totalItems;
+        });
+      } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
+        await EvaluationCriteriaRepository.get(this.adminParams).then((res) => {
+          this.tableData = Object.freeze(res.data.data.items);
+          this.totalItems = res.data.data.meta.totalItems;
+        });
+      } else {
+        await MeasureUnitRepository.get(this.adminParams).then((res) => {
+          this.tableData = res.data.data.items;
+          this.totalItems = res.data.data.meta.totalItems;
+        });
       }
-    } else if (this.$route.query.tab === AdminTabsEn.Department) {
-      try {
-        const { data } = await TeamRepository.get(this.adminParams);
-        this.tableData = data.data.items;
-        this.totalItems = data.data.meta.totalItems;
-        this.loading = false;
-      } catch (error) {
-        this.loading = false;
-      }
-    } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
-      try {
-        const { data } = await JobRepository.get(this.adminParams);
-        this.tableData = data.data.items;
-        this.totalItems = data.data.meta.totalItems;
-        this.loading = false;
-      } catch (error) {
-        this.loading = false;
-      }
-    } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
-      try {
-        const { data } = await EvaluationCriteriaRepository.get(this.adminParams);
-        this.tableData = data.data.items;
-        this.totalItems = data.data.meta.totalItems;
-        this.loading = false;
-      } catch (error) {
-        this.loading = false;
-      }
-    } else {
-      try {
-        const { data } = await MeasureUnitRepository.get(this.adminParams);
-        this.tableData = data.data.items;
-        this.totalItems = data.data.meta.totalItems;
-        this.loading = false;
-      } catch (error) {
-        this.loading = false;
-      }
-    }
+    } catch (error) {}
   }
 
   private get currentTabComponent() {

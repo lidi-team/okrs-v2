@@ -1,13 +1,17 @@
 <template>
   <fragment>
-    <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="criteria-admin">
+    <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" class="criteria-admin">
       <el-table-column prop="content" label="Tiêu chí đánh giá" min-width="400px"></el-table-column>
       <el-table-column label="Số sao" min-width="70px">
         <template v-slot="{ row }">
           <span>{{ row.numberOfStar }} <star-icon /></span>
         </template>
       </el-table-column>
-      <el-table-column prop="type" label="Kiểu" :formatter="typeFormatter" min-width="300px" />
+      <el-table-column label="Kiểu" min-width="300px">
+        <template v-slot="{ row }">
+          <span>{{ row.type | typeFormatter(row.type) }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="Ngày cập nhật" min-width="120px">
         <template v-slot="{ row }">
           <!-- Vue Fileter Date Plugin -->
@@ -64,7 +68,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
@@ -78,10 +82,20 @@ import StarIcon from '@/assets/images/admin/star.svg';
   components: {
     StarIcon,
   },
+  filters: {
+    typeFormatter(cellValue) {
+      return cellValue === EvaluationCriteriaEnum.LEADER_TO_MEMBER ? 'Sếp đánh giá nhân viên' : 'Nhân viên đánh giá sếp';
+    },
+  },
+  mounted() {
+    this.loadingTable = true;
+    setTimeout(() => {
+      this.loadingTable = false;
+    }, 500);
+  },
 })
 export default class ManageEvaluationCriteria extends Vue {
   @Prop(Array) public tableData!: Object[];
-  @Prop(Boolean) public loading!: boolean;
   @Prop(Function) public reloadData!: Function;
   @Prop({ type: Number, required: true }) public total!: number;
   @PropSync('page', { type: Number, required: true }) public syncPage!: number;
@@ -93,6 +107,7 @@ export default class ManageEvaluationCriteria extends Vue {
     { label: 'Recognition', value: EvaluationCriteriaEnum.RECOGNITION },
   ];
 
+  public loadingTable: boolean = false;
   private dateFormat: string = 'dd/MM/yyyy';
   private dialogUpdateVisible: boolean = false;
   private tempUpdateCriteria: EvaluationCriteriorDTO = {
@@ -136,7 +151,7 @@ export default class ManageEvaluationCriteria extends Vue {
         }).then(async () => {
           try {
             await EvaluationCriteriorRepository.update(this.tempUpdateCriteria).then((res) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Cập nhật tiêu chí thành công',
               });
@@ -155,7 +170,7 @@ export default class ManageEvaluationCriteria extends Vue {
     }).then(async () => {
       try {
         await EvaluationCriteriorRepository.delete(row.id).then((res) => {
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Xóa tiêu chí thành công',
           });
@@ -172,10 +187,6 @@ export default class ManageEvaluationCriteria extends Vue {
   private handleCloseDialog(): void {
     (this.$refs.tempUpdateCriteria as Form).clearValidate();
     this.dialogUpdateVisible = false;
-  }
-
-  private typeFormatter(row, column, cellValue, index) {
-    return cellValue === EvaluationCriteriaEnum.LEADER_TO_MEMBER ? 'Sếp đánh giá nhân viên' : 'Nhân viên đánh giá sếp';
   }
 }
 </script>
