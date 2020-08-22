@@ -135,7 +135,7 @@ export default class DetailHistory extends Vue {
 
   private checkNumber = (rule, value, callback) => {
     if (!Number.isInteger(value)) {
-      return callback(new Error('Phải là số nguyên'));
+      return callback(new Error('Phải là số nguyên dương'));
     } else {
       callback();
     }
