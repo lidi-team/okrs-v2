@@ -1,16 +1,16 @@
 <template>
-  <div class="okrs-status">
+  <div v-loading="loadingAdmin" class="okrs-status">
     <div class="okrs-status__top">
-      <span>Tiến độ tuần này</span>
-      <div>
-        <span>Thay đổi</span>
-        <div>(so với tuần trước)</div>
+      <span class="okrs-status__title">Tiến độ tuần này</span>
+      <div class="okrs-status__right">
+        <span class="okrs-status__title">Thay đổi</span>
+        <div class="okrs-status__des">(so với tuần trước)</div>
       </div>
     </div>
     <div class="okrs-status__content">
-      <div v-for="item in dataProgress" :key="item.name" class="okrs-status__item item">
+      <div v-for="(item, index) in dataProgress" :key="item.name" class="okrs-status__item item">
         <div class="item__left">
-          <span class="item__circle">{{ item.value }}</span>
+          <span :style="`border-color: ${customColors(index)}`" class="item__circle">{{ item.value }}</span>
           <span class="item__okrs">{{ item.name }}</span>
         </div>
         <div class="item__right">
@@ -28,27 +28,56 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 export default class OkrsStatus extends Vue {
   @Prop(Array) readonly dataProgress;
   @Prop(Boolean) readonly loadingAdmin!: boolean;
+
+  private customColors(index: number) {
+    if (index === 0) {
+      return '#50B83C';
+    } else if (index === 1) {
+      return '#47C1BF';
+    } else if (index === 2) {
+      return '#EEC200';
+    } else {
+      return '#919EAB';
+    }
+  }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .okrs-status {
-  background-color: $white;
-  padding: $unit-8;
-  border-radius: $unit-1;
-  box-shadow: $box-shadow-default;
+  height: 100%;
   &__top {
-    padding: 0 0 $unit-2;
+    height: 20%;
+    padding: 0 $unit-4;
     border-bottom: 1px solid #dfe3e8;
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  &__right {
+    text-align: right;
+  }
+  &__title {
+    font-size: $text-base;
+    color: $neutral-primary-4;
+    font-style: normal;
+    font-weight: 600;
+    line-height: $unit-6;
+  }
+  &__des {
+    font-size: $text-sm;
+    color: $neutral-primary-4;
+    font-style: normal;
+    font-weight: normal;
+    line-height: $unit-5;
   }
   .item {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: $unit-5;
+    padding-left: $unit-3;
+    padding-right: $unit-5;
     &__circle {
       border: 4px solid;
       background: $white;
@@ -57,11 +86,26 @@ export default class OkrsStatus extends Vue {
       -webkit-border-radius: 50%;
       color: $neutral-primary-4;
       display: inline-block;
-      font-weight: bold;
+      font-size: $text-sm;
+      font-style: normal;
+      font-weight: normal;
       line-height: 50px;
       margin-right: 5px;
       text-align: center;
       width: 55px;
+    }
+    &__okrs {
+      font-style: normal;
+      font-weight: 600;
+      font-size: $text-sm;
+      line-height: $unit-5;
+    }
+    &__change {
+      font-size: $text-sm;
+      color: $neutral-primary-4;
+      font-style: normal;
+      font-weight: normal;
+      line-height: $unit-5;
     }
   }
 }

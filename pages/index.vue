@@ -4,42 +4,36 @@
       <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
     </el-select>
     <dashboard-progress-bar :loading="loading" :data-okrs-progress="dataOkrsProgress" />
-    <el-row :gutter="10">
-      <el-col :sm="24" :md="8">
+    <el-row v-if="user.role.name === 'ADMIN'" class="col-container">
+      <el-col class="col" :md="24" :lg="8">
         <dashboard-okrs-status :data-progress="dataProgress" :loading-admin="loadingAdmin" />
       </el-col>
-      <el-col :sm="24" :md="8">
-        <dashboard-checkin-status :data-checkin="dataCheckin" :loading-admin="loadingAdmin" />
+      <el-col class="col col--second" :md="24" :lg="8">
+        <dashboard-checkin-status v-if="dataCheckin.length > 0" :data-checkin="dataCheckin" :loading-admin="loadingAdmin" />
       </el-col>
-      <el-col :sm="24" :md="8">
+      <el-col class="col" :md="24" :lg="8">
         <dashboard-cfr-status :data-cfr="dataCfr" :loading-admin="loadingAdmin" />
       </el-col>
     </el-row>
     <dashboard-star-rank :loading="loading" :data-star-in-come="dataStarInCome" :data-star-out-come="dataStarOutCome" />
-    <!-- <div id="chartdiv"></div> -->
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-import * as am4core from '@amcharts/amcharts4/core';
-import * as am4charts from '@amcharts/amcharts4/charts';
-import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
 import CycleRepository from '@/repositories/CycleRepository';
 import DashboardRepository from '@/repositories/DashboardRepository';
 import { GetterState } from '@/constants/app.enum';
 import { SelectOptionDTO } from '@/constants/app.interface';
-am4core.useTheme(am4themesAnimated);
 @Component<HomePage>({
   name: 'HomePage',
   async created() {
     await this.getAllCycles();
-    this.getDataAdmin();
+    if (this.user.role.name === 'ADMIN') {
+      this.getDataAdmin();
+    }
     await this.getData();
-  },
-  mounted() {
-    this.initPieChart();
   },
   computed: {
     ...mapGetters({
@@ -52,53 +46,6 @@ export default class HomePage extends Vue {
   private loading: boolean = false;
   private loadingAdmin: boolean = false;
   private options: Array<any> = [];
-  private initPieChart() {
-    const chart = am4core.create('chartdiv', am4charts.PieChart);
-
-    chart.data = [
-      {
-        country: 'Lithuania',
-        litres: 501.9,
-      },
-      {
-        country: 'Czech Republic',
-        litres: 301.9,
-      },
-      {
-        country: 'Ireland',
-        litres: 201.1,
-      },
-      {
-        country: 'Germany',
-        litres: 165.8,
-      },
-      {
-        country: 'Australia',
-        litres: 139.9,
-      },
-      {
-        country: 'Austria',
-        litres: 128.3,
-      },
-      {
-        country: 'UK',
-        litres: 99,
-      },
-      {
-        country: 'Belgium',
-        litres: 60,
-      },
-      {
-        country: 'The Netherlands',
-        litres: 50,
-      },
-    ];
-
-    // Add and configure Series
-    const pieSeries = chart.series.push(new am4charts.PieSeries());
-    pieSeries.dataFields.value = 'litres';
-    pieSeries.dataFields.category = 'country';
-  }
 
   private dataStarInCome: Array<object> = [];
   private dataStarOutCome: Array<object> = [];
@@ -184,13 +131,32 @@ export default class HomePage extends Vue {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
-#chartdiv {
-  width: 100%;
-  height: 400px;
-}
 .dashboard {
   color: $neutral-primary-4;
-  margin-top: $unit-10;
-  margin-right: $unit-5;
+  padding: $unit-10 $unit-8 $unit-20 $unit-10;
+  .col-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    @include breakpoint-down(phone) {
+      flex-direction: column;
+    }
+    .col {
+      min-height: 70vh;
+      flex: 1;
+      padding-bottom: $unit-10;
+      margin: $unit-6 0;
+      background-color: $white;
+      border-radius: $unit-1;
+      box-shadow: $box-shadow-default;
+      @include breakpoint-down(phone) {
+        height: 70vh;
+      }
+      &--second {
+        margin-left: $unit-6;
+        margin-right: $unit-6;
+      }
+    }
+  }
 }
 </style>

@@ -48,7 +48,7 @@
             <p class="star__col__title">Ghi nhận đặc biệt</p>
           </div>
         </div>
-      </el-col> -->
+      </el-col>-->
     </el-row>
   </div>
 </template>
@@ -75,7 +75,7 @@ export default class ProgressBarComponent extends Vue {
   @Prop(Boolean) readonly loading!: boolean;
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .star {
   padding-top: $unit-5;
