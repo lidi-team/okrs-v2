@@ -31,7 +31,7 @@
     </div>
     <div slot="footer" class="detail-feedback__action">
       <el-button class="el-button--white el-button--modal" @click="syncVisibleDialog = false">Hủy</el-button>
-      <el-button class="el-button--purple el-button--modal" @click="createFeedback">Tạo Feedback</el-button>
+      <el-button class="el-button--purple el-button--modal" @click="createFeedback">Tạo phản hồi</el-button>
     </div>
   </el-dialog>
 </template>
