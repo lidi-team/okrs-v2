@@ -12,13 +12,13 @@
     >
       <el-row class="profile">
         <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="profile-common">
-          <my-upload
+          <base-flame-upload
             ref="uploader"
             v-model="show"
             field="file"
             :width="300"
             :height="300"
-            lang-type="en"
+            lang-type="vi"
             :url="url"
             :headers="headers"
             method="PUT"
@@ -26,7 +26,7 @@
             @crop-success="cropSuccess"
             @crop-upload-success="cropUploadSuccess"
             @crop-upload-fail="cropUploadFail"
-          ></my-upload>
+          />
           <el-avatar :size="120">
             <img :src="avatarUrl" alt="avatar" />
           </el-avatar>
@@ -101,7 +101,6 @@
 <script lang="ts">
 import { Component, Vue, Provide } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-import myUpload from 'vue-image-crop-upload';
 import { Form } from 'element-ui';
 import { ProfileDTO } from '@/constants/app.interface';
 import UserRepository from '@/repositories/UserRepository';
@@ -112,9 +111,6 @@ import { MutationState, GetterState } from '@/constants/app.enum';
 import { formatDateToDD } from '@/utils/dateParser';
 @Component<ViewProfile>({
   name: 'ViewProfile',
-  components: {
-    myUpload,
-  },
   created() {
     this.getProfile();
   },
