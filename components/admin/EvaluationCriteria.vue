@@ -1,26 +1,26 @@
 <template>
   <fragment>
     <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="criteria-admin">
-      <el-table-column prop="content" label="Tiêu chí đánh giá"></el-table-column>
-      <el-table-column label="Số sao">
+      <el-table-column prop="content" label="Tiêu chí đánh giá" min-width="400px"></el-table-column>
+      <el-table-column label="Số sao" min-width="70px">
         <template v-slot="{ row }">
           <span>{{ row.numberOfStar }} <star-icon /></span>
         </template>
       </el-table-column>
-      <el-table-column prop="type" label="Kiểu" :formatter="typeFormatter" />
-      <el-table-column label="Ngày cập nhật">
+      <el-table-column prop="type" label="Kiểu" :formatter="typeFormatter" min-width="300px" />
+      <el-table-column label="Ngày cập nhật" min-width="120px">
         <template v-slot="{ row }">
           <!-- Vue Fileter Date Plugin -->
           <span>{{ new Date(row.updatedAt) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Thao tác" align="center">
+      <el-table-column label="Thao tác" align="center" min-width="400px">
         <template v-slot="{ row }">
           <el-tooltip class="criteria-admin__icon" content="Sửa" placement="top">
-            <i class="el-icon-edit" @click="handleOpenDialogUpdate(row)"></i>
+            <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
           <el-tooltip class="criteria-admin__icon" content="Xóa" placement="top">
-            <i class="el-icon-delete" @click="deleteRow(row)"></i>
+            <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -90,6 +90,7 @@ export default class ManageEvaluationCriteria extends Vue {
   private typeCriterias: SelectOptionDTO[] = [
     { label: 'Sếp đánh giá nhân viên', value: EvaluationCriteriaEnum.LEADER_TO_MEMBER },
     { label: 'Nhân viên đánh giá sếp', value: EvaluationCriteriaEnum.MEMBER_TO_LEADER },
+    { label: 'Recognition', value: EvaluationCriteriaEnum.RECOGNITION },
   ];
 
   private dateFormat: string = 'dd/MM/yyyy';

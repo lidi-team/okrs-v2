@@ -20,7 +20,7 @@
       <el-table-column label="Thao tác" align="center" width="150">
         <template slot-scope="{ row }">
           <el-tooltip class="employee-active__icon" content="Sửa" placement="top">
-            <i class="el-icon-edit" @click="handleOpenDialogUpdate(row)"></i>
+            <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
           <el-tooltip class="employee-active__icon" content="Xóa" placement="top">
             <i class="el-icon-delete" @click="handleDelete(row)"></i>

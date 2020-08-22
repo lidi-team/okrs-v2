@@ -12,10 +12,10 @@
       <el-table-column label="Thao tác" align="center">
         <template v-slot="{ row }">
           <el-tooltip class="job-admin__icon" content="Sửa" placement="top">
-            <i class="el-icon-edit" @click="handleOpenDialogUpdate(row)"></i>
+            <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
           <el-tooltip class="job-admin__icon" content="Xóa" placement="top">
-            <i class="el-icon-delete" @click="deleteRow(row)"></i>
+            <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
           </el-tooltip>
         </template>
       </el-table-column>

@@ -49,6 +49,7 @@ export default class CriteriaDialog extends Vue {
   private typeCriterias: object[] = [
     { label: 'Sếp đánh giá nhân viên', value: EvaluationCriteriaEnum.LEADER_TO_MEMBER },
     { label: 'Nhân viên đánh giá sếp', value: EvaluationCriteriaEnum.MEMBER_TO_LEADER },
+    { label: 'Recognition', value: EvaluationCriteriaEnum.RECOGNITION },
   ];
 
   private loading: boolean = false;

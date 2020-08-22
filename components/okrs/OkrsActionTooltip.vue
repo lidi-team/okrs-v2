@@ -9,7 +9,7 @@
           <p @click="handleDeleteOKrs">Xóa</p>
         </div>
       </div>
-      <icon-setting slot="reference" />
+      <i slot="reference" class="el-icon-more okrs-tooltip__icon"></i>
     </el-popover>
   </el-tooltip>
 </template>
@@ -28,7 +28,7 @@ import { DialogTooltipAction } from '@/constants/app.interface';
 })
 export default class OkrsActionTooltip extends Vue {
   @PropSync('okrsId', { type: Number, required: true }) private syncOkrsId!: number;
-  @PropSync('tempOkrs', { type: Object, required: true }) public syncTempOkrs!: object;
+  @Prop(Object) private tempOkrs!: object;
   @Prop(Function) private reloadData!: Function;
   @Prop(Boolean) private editable!: boolean;
 
@@ -37,7 +37,7 @@ export default class OkrsActionTooltip extends Vue {
   }
 
   private openUpdateDialog(dialogType: number) {
-    const payload: DialogTooltipAction = { okrs: this.syncTempOkrs, dialogType };
+    const payload: DialogTooltipAction = { okrs: this.tempOkrs, dialogType };
     this.$emit('updateTempOkrs', payload);
   }
 
@@ -62,11 +62,6 @@ export default class OkrsActionTooltip extends Vue {
 @import '@/assets/scss/main.scss';
 .okrs-tooltip {
   margin-left: $unit-10;
-  svg {
-    &:hover {
-      cursor: pointer;
-    }
-  }
   &__popover {
     cursor: pointer;
     display: flex;
@@ -83,6 +78,9 @@ export default class OkrsActionTooltip extends Vue {
         background-color: $purple-primary-1;
       }
     }
+  }
+  &__icon {
+    cursor: pointer;
   }
 }
 .el-popover {

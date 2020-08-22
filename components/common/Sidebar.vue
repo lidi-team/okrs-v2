@@ -105,7 +105,6 @@ export default class SideBar extends Vue {
   color: $purple-primary-2;
   box-shadow: $box-shadow-default;
   background-color: $white;
-  margin-right: $unit-8;
   position: fixed;
   width: 170px;
   .nuxt-link-exact-active {

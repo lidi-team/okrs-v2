@@ -1,14 +1,12 @@
 <template>
   <fragment>
     <base-navbar />
-    <el-row type="flex" class="authenticated-screen">
-      <el-col :span="3">
-        <base-sidebar />
-      </el-col>
-      <el-col :span="21" class="authenticated-screen__app">
+    <div class="authenticated-screen">
+      <base-sidebar />
+      <div class="authenticated-screen__app">
         <nuxt />
-      </el-col>
-    </el-row>
+      </div>
+    </div>
   </fragment>
 </template>
 <script lang="ts">
@@ -25,15 +23,12 @@ export default class Layout extends Vue {}
 $bg-gray-common: #e5e5e5;
 .authenticated-screen {
   height: 92vh;
+  display: flex;
   &__app {
     background-color: $bg-gray-common;
     min-height: calc(100vh - 60px);
-  }
-  .el-col-3 {
-    width: 10.5%;
-  }
-  .el-col-21 {
-    width: 89.5%;
+    margin-left: calc(170px + 2rem);
+    width: 100%;
   }
 }
 </style>

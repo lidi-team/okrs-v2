@@ -2,28 +2,24 @@
   <div>
     <admin-slot class="admin">
       <template #top>
-        <el-row type="flex" justify="space-between" class="admin__top">
-          <el-col :span="17">
-            <div class="admin__top__left">
-              <el-autocomplete
-                v-model="textSearch"
-                class="admin__top__left--input"
-                prefix-icon="el-icon-search"
-                :placeholder="topChange.textPlaceholder"
-                :fetch-suggestions="querySearch"
-                :trigger-on-focus="false"
-                @select="handleSelectItem"
-              ></el-autocomplete>
-            </div>
-          </el-col>
-          <el-col :span="7">
-            <div class="admin__top__right">
-              <el-button class="el-button--purple el-button--small el-button--invite" icon="el-icon-plus" @click="addNew">
-                Thêm mới {{ topChange.buttonName }}
-              </el-button>
-            </div>
-          </el-col>
-        </el-row>
+        <div justify="space-between" class="admin__top">
+          <div class="admin__top__left">
+            <el-autocomplete
+              v-model="textSearch"
+              class="admin__top__left--input"
+              prefix-icon="el-icon-search"
+              :placeholder="topChange.textPlaceholder"
+              :fetch-suggestions="querySearch"
+              :trigger-on-focus="false"
+              @select="handleSelectItem"
+            ></el-autocomplete>
+          </div>
+          <div class="admin__top__right">
+            <el-button class="el-button--purple el-button--invite" icon="el-icon-plus" @click="addNew">
+              Thêm mới {{ topChange.buttonName }}
+            </el-button>
+          </div>
+        </div>
       </template>
       <template #tab>
         <el-tabs v-model="currentTab" class="admin__tab" @tab-click="switchTabs(currentTab)">
@@ -65,7 +61,6 @@ import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepos
 import { AdminParams } from '@/constants/app.interface';
 import { pageLimit } from '@/constants/app.constant';
 import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
-
 @Component<SettingCompanyPage>({
   name: 'SettingCompanyPage',
   created() {
@@ -77,13 +72,11 @@ export default class SettingCompanyPage extends Vue {
   private tableData: any[] = [];
   private metaPagination: object = {};
   private totalItems: number = 1;
-
   private loading: boolean = false;
   private tabs: string[] = [...Object.values(AdminTabsVn)];
   private textSearch: string = '';
   private visibleDialog: boolean = false;
   private timeout: any = null;
-
   private querySearch(queryString: string, callback) {
     const link = this.tableData;
     let results: readonly any[] = queryString ? link.filter(this.createFilter(queryString)) : link;
@@ -263,6 +256,8 @@ export default class SettingCompanyPage extends Vue {
   margin-left: $unit-9;
   &__top {
     margin: $unit-8 0 $unit-8 0;
+    display: flex;
+    justify-content: space-between;
     &__left {
       &--input {
         width: calc(100vw * 5 / 24);
@@ -274,7 +269,6 @@ export default class SettingCompanyPage extends Vue {
   }
   &__tab {
     margin: $unit-4 0 0 0;
-    width: 80%;
   }
   .el-button {
     height: 100%;
