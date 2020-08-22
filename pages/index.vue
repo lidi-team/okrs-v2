@@ -154,6 +154,9 @@ export default class HomePage extends Vue {
       &--second {
         margin-left: $unit-6;
         margin-right: $unit-6;
+        @include breakpoint-down(phone) {
+          margin: $unit-6 0;
+        }
       }
     }
   }
