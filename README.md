@@ -52,3 +52,15 @@ yarn dev
 
 yarn start
 ```
+
+5. Account to testing the system
+
+⚠️ Password is depends on your own .env file on back-end repository which you cloned.
+
+| Account                   | Role        |
+| ------------------------- | ----------- |
+| ducpvse05320@fpt.edu.vn   | HR          |
+| ducnmhe130666@fpt.edu.vn  | HR & Leader |
+| hiepdqse05627@fpt.edu.vn  | Leader      |
+| quangnvse05839@fpt.edu.vn | Admin       |
+| nhattqse05439@fpt.edu.vn  | Staff       |
