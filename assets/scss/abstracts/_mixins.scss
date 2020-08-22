@@ -205,7 +205,7 @@ $breakpoints: (
 @mixin sidebar-hover {
   transform: scale(1.005);
   box-shadow: $box-shadow-default;
-  border-radius: $border-radius-large;
+  border-radius: 10px;
   background-color: $purple-primary-2;
   color: $purple-primary-4;
   g {
