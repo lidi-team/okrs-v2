@@ -1,6 +1,6 @@
 <template>
   <fragment>
-    <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="team-admin">
+    <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" class="team-admin">
       <el-table-column prop="name" label="Tên phòng ban"></el-table-column>
       <el-table-column prop="description" label="Mô tả"></el-table-column>
       <el-table-column label="Ngày cập nhật">
@@ -56,7 +56,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
@@ -66,15 +66,21 @@ import { AdminTabsEn } from '@/constants/app.enum';
 
 @Component<ManageDepartment>({
   name: 'ManageDepartment',
+  mounted() {
+    this.loadingTable = true;
+    setTimeout(() => {
+      this.loadingTable = false;
+    }, 500);
+  },
 })
 export default class ManageDepartment extends Vue {
   @Prop(Array) public tableData!: Object[];
-  @Prop(Boolean) public loading!: boolean;
   @Prop(Function) public reloadData!: Function;
   @Prop({ type: Number, required: true }) public total!: number;
   @PropSync('page', { type: Number, required: true }) public syncPage!: number;
   @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
 
+  public loadingTable: boolean = false;
   private autoSizeConfig = { minRows: 2, maxRows: 4 };
   private dateFormat: string = 'dd/MM/yyyy';
   private dialogUpdateVisible: boolean = false;
@@ -117,7 +123,7 @@ export default class ManageDepartment extends Vue {
         }).then(async () => {
           try {
             await TeamRepository.update(this.tempUpdateTeam).then((res) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Cập nhật phòng ban thành công',
               });
@@ -136,7 +142,7 @@ export default class ManageDepartment extends Vue {
     }).then(async () => {
       try {
         await TeamRepository.delete(row.id).then((res) => {
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Xóa phòng ban thành công',
           });

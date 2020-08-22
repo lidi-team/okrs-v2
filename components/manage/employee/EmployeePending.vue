@@ -3,7 +3,7 @@
     <el-button v-if="id.length !== 0" class="el-button--purple el-button--small" icon="el-icon-plus" @click="handleApproveAll"
       >Duyệt tất cả</el-button
     >
-    <el-table :data="tableData" empty-text="Không có dữ liệu" style="width: 100%;" @selection-change="handleSelectionChange">
+    <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" style="width: 100%;" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column prop="fullName" label="Tên đầy đủ" width="250"></el-table-column>
       <el-table-column prop="email" label="Email" width="250"></el-table-column>
@@ -19,11 +19,11 @@
       </el-table-column>
       <el-table-column label="Thao tác" align="center" width="150">
         <template slot-scope="{ row }">
-          <el-tooltip class="employee-active__icon" content="Sửa" placement="top">
+          <el-tooltip class="employee-active__icon" content="Sửa" placement="left-end">
             <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
-          <el-tooltip class="employee-active__icon" content="Xóa" placement="top">
-            <i class="el-icon-delete" @click="handleDelete(row)"></i>
+          <el-tooltip class="employee-active__icon" content="Xóa" placement="right-end">
+            <i class="el-icon-delete icon--delete" @click="handleDelete(row)"></i>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -159,7 +159,7 @@
   </fragment>
 </template>
 <script lang="ts">
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
@@ -167,17 +167,23 @@ import { EmployeeDTO } from '@/constants/app.interface';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 @Component<EmployeePending>({
   name: 'EmployeePending',
+  mounted() {
+    this.loadingTable = true;
+    setTimeout(() => {
+      this.loadingTable = false;
+    }, 500);
+  },
 })
 export default class EmployeePending extends Vue {
   @Prop(Array) readonly tableData!: Array<object>;
   @Prop(Array) readonly teams!: Array<object>;
   @Prop(Array) readonly jobs!: Array<object>;
   @Prop(Array) readonly roles!: Array<object>;
-  @Prop(Boolean) readonly loading!: boolean;
   @Prop(Function) readonly getListUsers;
+
+  private loadingTable: boolean = false;
   private dialogUpdateVisible: boolean = false;
   private id: Array<number> = [];
-
   private tempUpdateUser: EmployeeDTO = {
     id: 0,
     fullName: '',
@@ -197,7 +203,7 @@ export default class EmployeePending extends Vue {
     }).then(async () => {
       try {
         await EmployeeRepository.approveAll(this.id).then((res: any) => {
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Duyệt tất cả thành công',
           });
@@ -235,7 +241,7 @@ export default class EmployeePending extends Vue {
         }).then(async () => {
           try {
             await EmployeeRepository.update(tempUpdateUser).then((res: any) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Active user thành công',
               });
@@ -262,7 +268,7 @@ export default class EmployeePending extends Vue {
     }).then(async () => {
       try {
         await EmployeeRepository.delete(row.id).then((res: any) => {
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Từ chối thành viên thành công',
           });

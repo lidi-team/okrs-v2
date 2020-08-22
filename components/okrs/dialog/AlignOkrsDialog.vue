@@ -31,7 +31,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
 import { PayloadOkrs } from '@/constants/app.interface';
 import OkrsRepository from '@/repositories/OkrsRepository';
@@ -132,7 +132,7 @@ export default class AlignOkrsDialog extends Vue {
           this.loading = false;
           this.handleDataDialog();
           this.reloadData();
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Cập nhật OKRs thành công',
           });

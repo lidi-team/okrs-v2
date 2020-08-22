@@ -42,7 +42,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 
 import { notificationConfig } from '@/constants/app.constant';
 import { CycleDTO } from '@/constants/app.interface';
@@ -102,7 +102,7 @@ export default class CycleOkrsDialog extends Vue {
             endDate: formatDateToYYYY(this.temCreateCycle.endDate),
           };
           await CycleRepository.post(tempCycle).then((res) => {
-            Notification.success({
+            this.$notify.success({
               ...notificationConfig,
               message: 'Tạo chu kỳ mới thành công',
             });

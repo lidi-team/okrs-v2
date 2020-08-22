@@ -1,6 +1,6 @@
 <template>
   <fragment>
-    <el-table v-loading="loading" empty-text="Không có dữ liệu" class="employee-active" :data="tableData" style="width: 100%;">
+    <el-table v-loading="loadingTable" empty-text="Không có dữ liệu" class="employee-active" :data="tableData" style="width: 100%;">
       <el-table-column prop="fullName" label="Tên đầy đủ" width="250"></el-table-column>
       <el-table-column prop="email" label="Email" width="250"></el-table-column>
       <el-table-column label="Phòng ban" width="180">
@@ -20,11 +20,11 @@
       </el-table-column>
       <el-table-column label="Thao tác" align="center" width="150">
         <template v-if="row.role.name !== 'ADMIN'" slot-scope="{ row }">
-          <el-tooltip class="employee-active__icon" content="Sửa" placement="top">
+          <el-tooltip class="employee-active__icon" content="Sửa" placement="left-end">
             <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
-          <el-tooltip class="employee-active__icon" content="Xóa" placement="top">
-            <i class="el-icon-warning icon--warning" @click="handleDelete(row)"></i>
+          <el-tooltip class="employee-active__icon" content="Deactive tài khoản" placement="right-end">
+            <i class="el-icon-warning icon--warning" @click="deactiveUser(row)"></i>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -161,7 +161,7 @@
   </fragment>
 </template>
 <script lang="ts">
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
@@ -170,14 +170,21 @@ import { EmployeeDTO } from '@/constants/app.interface';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 @Component<EmployeeActive>({
   name: 'EmployeeActive',
+  mounted() {
+    this.loadingTable = true;
+    setTimeout(() => {
+      this.loadingTable = false;
+    }, 500);
+  },
 })
 export default class EmployeeActive extends Vue {
   @Prop(Array) readonly tableData!: Array<object>;
   @Prop(Array) readonly teams!: Array<object>;
   @Prop(Array) readonly jobs!: Array<object>;
   @Prop(Array) readonly roles!: Array<object>;
-  @Prop(Boolean) readonly loading!: boolean;
   @Prop(Function) readonly getListUsers;
+
+  private loadingTable: boolean = false;
   private dialogUpdateVisible: boolean = false;
   private tempUpdateUser: EmployeeDTO = {
     id: 0,
@@ -215,7 +222,7 @@ export default class EmployeeActive extends Vue {
         }).then(async () => {
           try {
             await EmployeeRepository.update(tempUpdateUser).then((res: any) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Cập nhật thành viên thành công',
               });
@@ -236,7 +243,7 @@ export default class EmployeeActive extends Vue {
     this.dialogUpdateVisible = false;
   }
 
-  private handleDelete(row) {
+  private deactiveUser(row) {
     this.tempUpdateUser = {
       id: row.id,
       fullName: row.fullName,
@@ -254,7 +261,7 @@ export default class EmployeeActive extends Vue {
     }).then(async () => {
       try {
         await EmployeeRepository.update(this.tempUpdateUser).then((res: any) => {
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Cập nhật thành viên thành công',
           });

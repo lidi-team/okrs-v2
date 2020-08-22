@@ -1,6 +1,6 @@
 <template>
   <fragment>
-    <el-table :data="tableData" empty-text="Không có dữ liệu" style="width: 100%;">
+    <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" style="width: 100%;">
       <el-table-column prop="fullName" label="Tên đầy đủ" width="250"></el-table-column>
       <el-table-column prop="email" label="Email" width="250"></el-table-column>
       <el-table-column label="Phòng ban" width="180">
@@ -20,7 +20,7 @@
       </el-table-column>
       <el-table-column label="Thao tác" align="center" width="150">
         <template slot-scope="{ row }">
-          <el-tooltip class="employee-active__icon" content="Sửa" placement="top">
+          <el-tooltip class="employee-active__icon" content="Sửa" placement="right-end">
             <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
         </template>
@@ -158,7 +158,7 @@
   </fragment>
 </template>
 <script lang="ts">
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
@@ -166,16 +166,22 @@ import { EmployeeDTO } from '@/constants/app.interface';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 @Component<EmployeeDeactive>({
   name: 'EmployeeDeactive',
+  mounted() {
+    this.loadingTable = true;
+    setTimeout(() => {
+      this.loadingTable = false;
+    }, 500);
+  },
 })
 export default class EmployeeDeactive extends Vue {
   @Prop(Array) readonly tableData!: Array<object>;
   @Prop(Array) readonly teams!: Array<object>;
   @Prop(Array) readonly jobs!: Array<object>;
   @Prop(Array) readonly roles!: Array<object>;
-  @Prop(Boolean) readonly loading!: boolean;
   @Prop(Function) readonly getListUsers;
-  private dialogUpdateVisible: boolean = false;
 
+  private loadingTable: boolean = false;
+  private dialogUpdateVisible: boolean = false;
   private tempUpdateUser: EmployeeDTO = {
     id: 0,
     fullName: '',
@@ -210,7 +216,7 @@ export default class EmployeeDeactive extends Vue {
         }).then(async () => {
           try {
             await EmployeeRepository.update(tempUpdateUser).then((res: any) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Cập nhật thành viên thành công',
               });

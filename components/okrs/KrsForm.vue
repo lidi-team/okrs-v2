@@ -67,7 +67,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Emit, PropSync } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
 import IconDelete from '@/assets/images/common/delete.svg';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
@@ -117,21 +117,21 @@ export default class KrsForm extends Vue {
         try {
           await OkrsRepository.deleteKr(keyResult.id).then((res) => {
             if (res.data.statusCode === 404) {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: res.data.message,
               });
               this.popoverVisisble = false;
             }
             if (res.data.statusCode === 480) {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: res.data.message,
               });
               this.popoverVisisble = false;
             }
             if (res.data.statusCode === 200) {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Xóa KR thành công',
               });

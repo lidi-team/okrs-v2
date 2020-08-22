@@ -1,6 +1,6 @@
 <template>
   <fragment>
-    <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="unit-admin">
+    <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" class="unit-admin">
       <el-table-column prop="index" label="Thứ tự sắp xếp" />
       <el-table-column prop="type" label="Tên đơn vị" />
       <el-table-column prop="preset" label="Tên viết tắt" />
@@ -48,7 +48,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
@@ -58,15 +58,21 @@ import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 
 @Component<ManageMeasureUnit>({
   name: 'ManageMeasureUnit',
+  mounted() {
+    this.loadingTable = true;
+    setTimeout(() => {
+      this.loadingTable = false;
+    }, 500);
+  },
 })
 export default class ManageMeasureUnit extends Vue {
   @Prop(Array) public tableData!: Object[];
-  @Prop(Boolean) public loading!: boolean;
   @Prop(Function) public reloadData!: Function;
   @Prop({ type: Number, required: true }) public total!: number;
   @PropSync('page', { type: Number, required: true }) public syncPage!: number;
   @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
 
+  public loadingTable: boolean = false;
   private dialogUpdateVisible: boolean = false;
   private tempUpdateUnit: MeasureUnitDTO = {
     type: '',
@@ -108,7 +114,7 @@ export default class ManageMeasureUnit extends Vue {
         }).then(async () => {
           try {
             await MeasureUnitRepository.update(this.tempUpdateUnit).then((res) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Cập nhật đơn vị thành công',
               });
@@ -127,7 +133,7 @@ export default class ManageMeasureUnit extends Vue {
     }).then(async () => {
       try {
         await MeasureUnitRepository.delete(row.id).then((res) => {
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Xóa đơn vị thành công',
           });

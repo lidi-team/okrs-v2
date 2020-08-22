@@ -46,6 +46,11 @@ am4core.useTheme(am4themesAnimated);
   mounted() {
     this.renderChart();
   },
+  beforeDestroy() {
+    if (this.chart) {
+      this.chart.dispose();
+    }
+  },
 })
 export default class ChartOkrs extends Vue {
   @Prop() checkin!: any;

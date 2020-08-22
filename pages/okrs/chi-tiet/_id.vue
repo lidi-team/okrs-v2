@@ -49,7 +49,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
-import { Notification } from 'element-ui';
+
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import { MutationState } from '@/constants/app.enum';
@@ -91,7 +91,7 @@ export default class OkrsDetailPage extends Vue {
     this.$confirm('Bạn có chắc chắn muốn xóa OKRs này không?', { ...confirmWarningConfig }).then(async () => {
       try {
         await OkrsRepository.deleteOkrs(okrsId).then((res) => {
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Xóa OKRs thành công',
           });
