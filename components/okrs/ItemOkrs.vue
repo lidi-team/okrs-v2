@@ -11,7 +11,7 @@
                   <icon-ellipse />
                   <span>{{ objective.title }}</span>
                 </div>
-                <div class="item-okrs__expand--krs">{{ objective.keyResults.length }} kết quả</div>
+                <nuxt-link class="item-okrs__expand--krs" :to="`OKRs/chi-tiet/${objective.id}`">{{ objective.keyResults.length }} kết quả</nuxt-link>
                 <div class="item-okrs__expand--progress">
                   <el-progress :percentage="+objective.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
                 </div>
@@ -22,7 +22,7 @@
                   :reload-data="reloadData"
                   :editable="editableOkrs(objective.user.id)"
                   :okrs-id.sync="objective.id"
-                  :temp-okrs.sync="objective"
+                  :temp-okrs="objective"
                   @updateTempOkrs="updateTempOkrs($event)"
                 />
               </div>
@@ -36,7 +36,7 @@
         </el-table-column>
         <el-table-column label="Kết quả then chốt" width="200">
           <template v-slot="{ row }">
-            <span>{{ row.keyResults.length }} kết quả</span>
+            <nuxt-link class="item-okrs__expand--krs" :to="`OKRs/chi-tiet/${row.id}`">{{ row.keyResults.length }} kết quả</nuxt-link>
           </template>
         </el-table-column>
         <el-table-column label="Tiến độ">
@@ -52,7 +52,7 @@
                 :reload-data="reloadData"
                 :editable="editableOkrs(row.user.id)"
                 :okrs-id.sync="row.id"
-                :temp-okrs.sync="row"
+                :temp-okrs="row"
                 @updateTempOkrs="updateTempOkrs($event)"
               />
             </div>
