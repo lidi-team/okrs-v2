@@ -17,7 +17,12 @@ am4core.useTheme(am4themesAnimated);
 @Component<CheckinStatus>({
   name: 'CheckinStatus',
   mounted() {
-    this.initPieChart();
+    this.chart = this.initPieChart();
+  },
+  beforeDestroy() {
+    if (this.chart) {
+      this.chart.dispose();
+    }
   },
 })
 export default class CheckinStatus extends Vue {
@@ -43,6 +48,7 @@ export default class CheckinStatus extends Vue {
     pieSeries.ticks.template.disabled = true;
 
     chart.legend = new am4charts.Legend();
+    return chart;
   }
 }
 </script>

@@ -5,15 +5,7 @@
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="manage-employee__content">
         <head-employee :link-invite="linkInvite" :text.sync="paramsUser.text" @name="paramsUser.text = $event" @search="handleSearch($event)" />
-        <component
-          :is="currentTabComponent"
-          :get-list-users="getListUsers"
-          :teams="teams"
-          :roles="roles"
-          :jobs="jobs"
-          :loading="loading"
-          :table-data="tableData"
-        />
+        <component :is="currentTabComponent" :get-list-users="getListUsers" :teams="teams" :roles="roles" :jobs="jobs" :table-data="tableData" />
         <base-pagination
           class="manage-employee__pagination"
           :total="meta.totalItems"
@@ -42,9 +34,9 @@ import { pageLimit } from '@/constants/app.constant';
 @Component<ManageEmployee>({
   name: 'ManageEmployee',
   middleware: 'employeesPage',
-  created() {
-    this.getListUsers();
-    this.getDataCommons();
+  async created() {
+    await this.getListUsers();
+    await this.getDataCommons();
   },
 })
 export default class ManageEmployee extends Vue {
@@ -53,6 +45,7 @@ export default class ManageEmployee extends Vue {
   private jobs: Array<object> = [];
   private roles: Array<object> = [];
   private linkInvite: string = '';
+  private meta: object = {};
   private paramsUser: ParamsUser = {
     status: this.$route.query.tab === 'deactive' ? -1 : this.$route.query.tab === 'pending' ? 0 : 1,
     text: this.$route.query.text ? String(this.$route.query.text) : '',
@@ -63,21 +56,13 @@ export default class ManageEmployee extends Vue {
   private currentTab: string =
     this.$route.query.tab === 'deactive' ? UserStatus.Inactive : this.$route.query.tab === 'pending' ? UserStatus.Pending : UserStatus.Active;
 
-  private meta: object = {};
-
-  private loading: boolean = false;
-
   @Watch('$route.query')
   private async getListUsers() {
-    this.loading = true;
     try {
       const { data } = await EmployeeRepository.get(this.paramsUser);
       this.tableData = data.data.items;
       this.meta = data.data.meta;
-      this.loading = false;
-    } catch (error) {
-      this.loading = false;
-    }
+    } catch (error) {}
   }
 
   private async getDataCommons() {

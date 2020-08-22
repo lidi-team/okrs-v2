@@ -46,6 +46,11 @@ am4core.useTheme(am4themesAnimated);
   mounted() {
     this.renderChart();
   },
+  beforeDestroy() {
+    if (this.chart) {
+      this.chart.dispose();
+    }
+  },
 })
 export default class ChartCheckin extends Vue {
   @Prop() historyDetail!: any;
