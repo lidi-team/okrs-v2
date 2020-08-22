@@ -92,7 +92,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { statusCheckin, confidentLevel, notificationConfig } from '@/constants/app.constant';
 import { formatDateToYYYY } from '@/utils/dateParser';
@@ -199,7 +199,7 @@ export default class DetailHistory extends Vue {
         }).then(async () => {
           try {
             await CheckinRepository.leaderUpdateCheckin(tempCheckin, this.syncCheckin.id).then((res: any) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Checkin thành công',
               });
@@ -207,7 +207,7 @@ export default class DetailHistory extends Vue {
             });
           } catch (error) {
             if (error.response.data.statusCode === 475) {
-              Notification.error({
+              this.$notify.error({
                 ...notificationConfig,
                 message: 'Bạn chỉ có thể checkin những form mà member gửi lên',
               });

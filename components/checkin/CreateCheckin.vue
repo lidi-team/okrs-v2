@@ -108,7 +108,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import { GetterState } from '@/constants/app.enum';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { statusCheckin, confidentLevel, notificationConfig } from '@/constants/app.constant';
@@ -216,7 +216,7 @@ export default class DetailHistory extends Vue {
           });
           try {
             await CheckinRepository.post(tempCheckin).then((res: any) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Lưu nháp thành công',
               });
@@ -224,7 +224,7 @@ export default class DetailHistory extends Vue {
             });
           } catch (error) {
             if (error.response.data.statusCode === 476) {
-              Notification.error({
+              this.$notify.error({
                 ...notificationConfig,
                 message: 'Bạn không thể tạo checkin với Objective này',
               });
@@ -246,7 +246,7 @@ export default class DetailHistory extends Vue {
           });
           try {
             await CheckinRepository.staffUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Lưu nháp thành công',
               });
@@ -254,7 +254,7 @@ export default class DetailHistory extends Vue {
             });
           } catch (error) {
             if (error.response.data.statusCode === 476) {
-              Notification.error({
+              this.$notify.error({
                 ...notificationConfig,
                 message: 'Bạn không thể tạo checkin với Objective này',
               });
@@ -293,7 +293,7 @@ export default class DetailHistory extends Vue {
           });
           try {
             await CheckinRepository.adminCreateCheckin(tempCheckin).then((res: any) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Lưu nháp thành công',
               });
@@ -301,7 +301,7 @@ export default class DetailHistory extends Vue {
             });
           } catch (error) {
             if (error.response.data.statusCode === 476) {
-              Notification.error({
+              this.$notify.error({
                 ...notificationConfig,
                 message: 'Bạn không thể tạo checkin với Objective này',
               });
@@ -323,7 +323,7 @@ export default class DetailHistory extends Vue {
           });
           try {
             await CheckinRepository.adminUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Lưu nháp thành công',
               });
@@ -331,7 +331,7 @@ export default class DetailHistory extends Vue {
             });
           } catch (error) {
             if (error.response.data.statusCode === 476) {
-              Notification.error({
+              this.$notify.error({
                 ...notificationConfig,
                 message: 'Bạn không thể tạo checkin với Objective này',
               });
@@ -441,7 +441,7 @@ export default class DetailHistory extends Vue {
             .then(async () => {
               try {
                 await CheckinRepository.post(tempCheckin).then((res: any) => {
-                  Notification.success({
+                  this.$notify.success({
                     ...notificationConfig,
                     message: 'Gửi yêu cầu thành công',
                   });
@@ -449,7 +449,7 @@ export default class DetailHistory extends Vue {
                 });
               } catch (error) {
                 if (error.response.data.statusCode === 476) {
-                  Notification.error({
+                  this.$notify.error({
                     ...notificationConfig,
                     message: 'Bạn không thể tạo checkin với Objective này',
                   });
@@ -481,7 +481,7 @@ export default class DetailHistory extends Vue {
             .then(async () => {
               try {
                 await CheckinRepository.staffUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
-                  Notification.success({
+                  this.$notify.success({
                     ...notificationConfig,
                     message: 'Gửi yêu cầu thành công',
                   });
@@ -489,7 +489,7 @@ export default class DetailHistory extends Vue {
                 });
               } catch (error) {
                 if (error.response.data.statusCode === 476) {
-                  Notification.error({
+                  this.$notify.error({
                     ...notificationConfig,
                     message: 'Bạn không thể tạo checkin với Objective này',
                   });
@@ -539,7 +539,7 @@ export default class DetailHistory extends Vue {
             .then(async () => {
               try {
                 await CheckinRepository.adminCreateCheckin(tempCheckin).then((res: any) => {
-                  Notification.success({
+                  this.$notify.success({
                     ...notificationConfig,
                     message: 'Check-in thành công',
                   });
@@ -547,7 +547,7 @@ export default class DetailHistory extends Vue {
                 });
               } catch (error) {
                 if (error.response.data.statusCode === 476) {
-                  Notification.error({
+                  this.$notify.error({
                     ...notificationConfig,
                     message: 'Bạn không thể tạo checkin với Objective này',
                   });
@@ -579,7 +579,7 @@ export default class DetailHistory extends Vue {
             .then(async () => {
               try {
                 await CheckinRepository.adminUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
-                  Notification.success({
+                  this.$notify.success({
                     ...notificationConfig,
                     message: 'Check-in thành công',
                   });
@@ -587,7 +587,7 @@ export default class DetailHistory extends Vue {
                 });
               } catch (error) {
                 if (error.response.data.statusCode === 476) {
-                  Notification.error({
+                  this.$notify.error({
                     ...notificationConfig,
                     message: 'Bạn không thể tạo checkin với Objective này',
                   });

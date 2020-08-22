@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 
 import { notificationConfig } from '@/constants/app.constant';
 import { ResetPasswordDTO, ResetPasswordActionDTO } from '@/constants/app.interface';
@@ -99,7 +99,7 @@ export default class ResetPassword extends Vue {
           this.loading = true;
           delete this.resetPasswordForm.matchPassword;
           await AuthRepository.resetPasswordWithToken(this.resetPasswordForm).then((res: any) => {
-            Notification.success({
+            this.$notify.success({
               ...notificationConfig,
               message: 'Gửi yêu cầu đăng ký thành công',
             });

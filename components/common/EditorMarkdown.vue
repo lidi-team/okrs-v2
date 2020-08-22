@@ -56,7 +56,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import { notificationConfig } from '@/constants/app.constant';
 import { LessonDTO } from '@/constants/app.interface';
 import LessonRepository from '@/repositories/LessonRepository';
@@ -123,7 +123,7 @@ export default class EditorMarkdown extends Vue {
           }).then(async () => {
             try {
               await LessonRepository.create(formLesson).then((res: any) => {
-                Notification.success({
+                this.$notify.success({
                   ...notificationConfig,
                   message: 'Tạo bài viết thành công',
                 });
@@ -139,7 +139,7 @@ export default class EditorMarkdown extends Vue {
           }).then(async () => {
             try {
               await LessonRepository.update(formLesson, this.post.id).then((res: any) => {
-                Notification.success({
+                this.$notify.success({
                   ...notificationConfig,
                   message: 'Cập nhật bài viết thành công',
                 });

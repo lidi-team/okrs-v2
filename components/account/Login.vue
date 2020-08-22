@@ -39,9 +39,7 @@
         ></el-input>
       </el-form-item>
       <el-row type="flex" justify="space-between">
-        <el-col :span="12">
-          <el-checkbox v-model="rememberPassword" class="login-form__checkbox">Ghi nhớ mật khẩu</el-checkbox>
-        </el-col>
+        <el-col :span="12"> </el-col>
         <el-col :span="12">
           <nuxt-link class="login-form__link" to="/quen-mat-khau">Quên mật khẩu ?</nuxt-link>
         </el-col>

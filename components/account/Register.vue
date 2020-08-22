@@ -47,7 +47,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import { notificationConfig } from '@/constants/app.constant';
 import { RegisterDTO, RegisterOption } from '@/constants/app.interface';
 import { notifyErrorRegister } from '@/constants/app.notify';
@@ -129,7 +129,7 @@ export default class RegisterComponent extends Vue {
           this.loading = true;
           delete this.registerForm.matchPassword;
           await AuthRepository.register(this.registerForm).then((res: any) => {
-            Notification.success({
+            this.$notify.success({
               ...notificationConfig,
               message: 'Gửi yêu cầu đăng ký thành công',
             });

@@ -33,7 +33,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import InputAlignOkrs from './InputAlignKrs.vue';
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
@@ -95,7 +95,7 @@ export default class AddAlignObjeciveStep extends Vue {
             this.syncActive = 0;
             this.syncVisibleDialog = false;
             this.reloadData();
-            Notification.success({
+            this.$notify.success({
               ...notificationConfig,
               message: 'Tạo OKRs thành công',
             });
@@ -114,7 +114,7 @@ export default class AddAlignObjeciveStep extends Vue {
           this.syncActive = 0;
           this.syncVisibleDialog = false;
           this.reloadData();
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Tạo OKRs thành công',
           });

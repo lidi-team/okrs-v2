@@ -42,7 +42,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import { notificationConfig, pageLimit } from '@/constants/app.constant';
 import { LessonDTO } from '@/constants/app.interface';
 import LessonRepository from '@/repositories/LessonRepository';
@@ -107,7 +107,7 @@ export default class TableLesson extends Vue {
     }).then(async () => {
       try {
         await LessonRepository.delete(row.id).then((res: any) => {
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Xoá bài viết thành công',
           });

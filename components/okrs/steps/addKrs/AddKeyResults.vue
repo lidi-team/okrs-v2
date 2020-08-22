@@ -31,7 +31,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import IconAttention from '@/assets/images/okrs/attention.svg';
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
 import { KeyResultDTO, PayloadOkrs } from '@/constants/app.interface';
@@ -123,7 +123,7 @@ export default class CreateObjectiveStep extends Vue {
             this.krFormItems = [];
             this.$store.dispatch(DispatchAction.CLEAR_OKRS);
             await this.reloadData();
-            Notification.success({
+            this.$notify.success({
               ...notificationConfig,
               message: 'Cập nhật OKRs thành công',
             });

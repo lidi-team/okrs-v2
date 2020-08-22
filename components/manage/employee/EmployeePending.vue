@@ -159,7 +159,7 @@
   </fragment>
 </template>
 <script lang="ts">
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
@@ -197,7 +197,7 @@ export default class EmployeePending extends Vue {
     }).then(async () => {
       try {
         await EmployeeRepository.approveAll(this.id).then((res: any) => {
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Duyệt tất cả thành công',
           });
@@ -235,7 +235,7 @@ export default class EmployeePending extends Vue {
         }).then(async () => {
           try {
             await EmployeeRepository.update(tempUpdateUser).then((res: any) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Active user thành công',
               });
@@ -262,7 +262,7 @@ export default class EmployeePending extends Vue {
     }).then(async () => {
       try {
         await EmployeeRepository.delete(row.id).then((res: any) => {
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Từ chối thành viên thành công',
           });

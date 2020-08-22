@@ -55,7 +55,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import { notificationConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { ChangePasswordDTO } from '@/constants/app.interface';
@@ -110,7 +110,7 @@ export default class ChangePasswordDialog extends Vue {
           delete this.changePasswordForm.matchPassword;
           await UserRepository.changePassword(this.changePasswordForm);
           this.loading = false;
-          Notification.success({
+          this.$notify.success({
             ...notificationConfig,
             message: 'Đổi mật khẩu thành công',
           });
@@ -119,7 +119,7 @@ export default class ChangePasswordDialog extends Vue {
         } catch (error) {
           this.loading = false;
           if (error.response.data.statusCode === 409) {
-            Notification.error({
+            this.$notify.error({
               ...notificationConfig,
               message: 'Mât khẩu không chính xác',
             });

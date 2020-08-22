@@ -1,4 +1,3 @@
-import { Notification } from 'element-ui';
 import { notificationConfig } from './app.constant';
 
 export const notifyErrorLogin = (error: any) => {

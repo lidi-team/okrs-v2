@@ -9,7 +9,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Notification } from 'element-ui';
+
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { notificationConfig } from '@/constants/app.constant';
 
@@ -31,12 +31,12 @@ export default class DetailHistoryPage extends Vue {
       this.loading = false;
     } catch (error) {
       if (error.response.data.statusCode === 470) {
-        Notification.error({
+        this.$notify.error({
           ...notificationConfig,
           message: 'Bạn không có quyền truy cập checkin này',
         });
       } else if (error.response.data.statusCode === 404) {
-        Notification.error({
+        this.$notify.error({
           ...notificationConfig,
           message: 'Không thể tìm thấy dữ liệu',
         });

@@ -158,7 +158,7 @@
   </fragment>
 </template>
 <script lang="ts">
-import { Form, Notification } from 'element-ui';
+import { Form } from 'element-ui';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
@@ -210,7 +210,7 @@ export default class EmployeeDeactive extends Vue {
         }).then(async () => {
           try {
             await EmployeeRepository.update(tempUpdateUser).then((res: any) => {
-              Notification.success({
+              this.$notify.success({
                 ...notificationConfig,
                 message: 'Cập nhật thành viên thành công',
               });

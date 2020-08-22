@@ -7,15 +7,6 @@
     </div>
     <div v-if="user" class="header__info side-right">
       <div class="side-right__list">
-        <el-dropdown class="side-right__item" trigger="click">
-          <i class="el-icon-message-solid"></i>
-          <div v-show="show" class="item__dot"></div>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>
-              <span>Bạn có thông báo</span>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
         <el-dropdown class="side-right__item item" trigger="click">
           <div class="item__wrapper">
             <img :src="user.imageUrl" alt="avatar" class="item__avatar" />

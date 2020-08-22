@@ -48,7 +48,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-import { Notification } from 'element-ui';
+
 import { notificationConfig, pageLimit } from '@/constants/app.constant';
 import { TabCheckins, GetterState, MutationState } from '@/constants/app.enum';
 import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
@@ -120,7 +120,7 @@ export default class CheckinPage extends Vue {
         this.loading = false;
       } catch (error) {
         if (error.response.data.statusCode === 470) {
-          Notification.error({
+          this.$notify.error({
             ...notificationConfig,
             message: 'Bạn không có quyền truy cập checkin này',
           });
@@ -135,7 +135,7 @@ export default class CheckinPage extends Vue {
         this.loading = false;
       } catch (error) {
         if (error.response.data.statusCode === 470) {
-          Notification.error({
+          this.$notify.error({
             ...notificationConfig,
             message: 'Bạn không có quyền truy cập checkin này',
           });
@@ -153,7 +153,7 @@ export default class CheckinPage extends Vue {
         this.loading = false;
       } catch (error) {
         if (error.response.data.statusCode === 470) {
-          Notification.error({
+          this.$notify.error({
             ...notificationConfig,
             message: 'Bạn không có quyền truy cập checkin này',
           });
