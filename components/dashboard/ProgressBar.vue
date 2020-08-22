@@ -41,7 +41,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { formatDateToDD } from '@/utils/dateParser';
 @Component<ProgressBarComponent>({
   name: 'ProgressBarComponent',
 })

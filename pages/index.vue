@@ -25,7 +25,6 @@ import { mapGetters } from 'vuex';
 import CycleRepository from '@/repositories/CycleRepository';
 import DashboardRepository from '@/repositories/DashboardRepository';
 import { GetterState } from '@/constants/app.enum';
-import { SelectOptionDTO } from '@/constants/app.interface';
 @Component<HomePage>({
   name: 'HomePage',
   async created() {
