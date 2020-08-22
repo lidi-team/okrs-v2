@@ -113,6 +113,8 @@ export default class DetailHistory extends Vue {
   private checkNumber = (rule, value, callback) => {
     if (!Number.isInteger(value)) {
       return callback(new Error('Phải là số nguyên dương'));
+    } else if (value < 0) {
+      callback(new Error('Không được nhỏ hơn 0'));
     } else {
       callback();
     }
