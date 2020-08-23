@@ -10,17 +10,17 @@
       </div>
     </div>
     <el-table v-loading="loading" empty-text="Không có dữ liệu" class="table-lesson__content" :data="tableLesson" style="width: 100%;">
-      <el-table-column label="Tiêu đề" width="650">
+      <el-table-column label="Tiêu đề" min-width="650">
         <template slot-scope="{ row }">
           <span class="table-lesson__title" @click="handleClickTitle(row.slug)">{{ row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Ngày tạo" width="200">
+      <el-table-column label="Ngày tạo" min-width="150">
         <template slot-scope="{ row }">
           <span>{{ new Date(row.createdAt) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Thao tác" align="center" width="200">
+      <el-table-column label="Thao tác" align="center">
         <template slot-scope="{ row }">
           <el-tooltip class="table-lesson__icon" content="Sửa" placement="top">
             <i class="el-icon-edit" @click="handleUpdate(row)"></i>
@@ -144,7 +144,7 @@ export default class TableLesson extends Vue {
         padding-left: $unit-8;
         padding-right: $unit-8;
       }
-      &--invite {
+      &--create {
         padding-top: $unit-3;
         padding-bottom: $unit-3;
         font-size: $text-sm;

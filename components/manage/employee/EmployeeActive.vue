@@ -1,24 +1,24 @@
 <template>
   <fragment>
     <el-table v-loading="loadingTable" empty-text="Không có dữ liệu" class="employee-active" :data="tableData" style="width: 100%;">
-      <el-table-column prop="fullName" label="Tên đầy đủ" width="250"></el-table-column>
-      <el-table-column prop="email" label="Email" width="250"></el-table-column>
-      <el-table-column label="Phòng ban" width="180">
+      <el-table-column prop="fullName" label="Tên đầy đủ" min-width="150"></el-table-column>
+      <el-table-column prop="email" label="Email" min-width="150"></el-table-column>
+      <el-table-column label="Phòng ban" min-width="150">
         <template slot-scope="{ row }">
           <span>{{ row.team.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Vị trí công việc" width="250">
+      <el-table-column label="Vị trí công việc" min-width="150">
         <template slot-scope="{ row }">
           <span>{{ row.jobPosition.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="role" label="Vai trò" width="180">
+      <el-table-column prop="role" label="Vai trò">
         <template slot-scope="{ row }">
           <span>{{ row.role.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Thao tác" align="center" width="150">
+      <el-table-column label="Thao tác" align="center">
         <template v-if="row.role.name !== 'ADMIN'" slot-scope="{ row }">
           <el-tooltip class="employee-active__icon" content="Sửa" placement="left-end">
             <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
