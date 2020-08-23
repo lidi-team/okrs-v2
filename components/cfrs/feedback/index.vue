@@ -1,9 +1,10 @@
 <template>
   <div v-loading="loadingTab" class="feedback">
-    <el-row :gutter="20" class>
+    <el-row :gutter="30" class>
       <el-col v-if="listWatingFeedback.inferior" :md="12" :lg="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ displayHeader('inferior') }}</p>
+          <p v-if="!listWatingFeedback.inferior.checkins.length" class="cfr">Không có dữ liệu để phản hồi</p>
           <div v-for="item in listWatingFeedback.inferior.checkins" :key="item.id" class="cfr">
             <div class="cfr__left" @click="viewDetailCheckin(item, listWatingFeedback.inferior.type)">
               <el-avatar :size="30">
@@ -29,7 +30,8 @@
       <el-col v-if="listWatingFeedback.superior" :md="12" :lg="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ displayHeader('superior') }}</p>
-          <div v-for="item in listWatingFeedback.superior.checkins" :key="item.id" class="cfr">
+          <p v-if="!listWatingFeedback.superior.checkins.length" class="cfr">Không có dữ liệu để phản hồi</p>
+          <div v-for="item in listWatingFeedback.superior.checkins" v-else :key="item.id" class="cfr">
             <div class="cfr__left" @click="viewDetailCheckin(item, listWatingFeedback.superior.type)">
               <el-avatar :size="30">
                 <img
@@ -81,7 +83,7 @@ import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 @Component<Feedback>({
   name: 'Feedback',
   async created() {
-    await this.listWatingFeedbacks();
+    await this.getListWatingFeedbacks();
   },
   beforeMount() {
     this.loadingTab = true;
@@ -94,8 +96,12 @@ export default class Feedback extends Vue {
   private loadingTab: boolean = false;
   private detailCheckinInfo: any = null;
   private listWatingFeedback: any = {
-    superior: [],
-    inferior: [],
+    superior: {
+      checkins: [],
+    },
+    inferior: {
+      checkins: [],
+    },
   };
 
   private dataFeedback: any = {
@@ -110,19 +116,20 @@ export default class Feedback extends Vue {
 
   private visibleCreateDialog: Boolean = false;
   private visibleDetailDialog: Boolean = false;
-
   private async reloadData() {
     this.loadingTab = true;
-    await this.listWatingFeedbacks();
+    await this.getListWatingFeedbacks();
     setTimeout(() => {
       this.loadingTab = false;
     }, 500);
   }
 
-  private async listWatingFeedbacks() {
+  private async getListWatingFeedbacks() {
     try {
       await CfrsRepository.getListWaitingFeedback().then((res) => {
-        this.listWatingFeedback = res.data.data;
+        this.listWatingFeedback.inferior = Object.freeze(res.data.data.inferior);
+        this.listWatingFeedback.superior = Object.freeze(res.data.data.superior);
+        console.log(this.listWatingFeedback);
       });
     } catch (error) {}
   }
@@ -182,7 +189,6 @@ export default class Feedback extends Vue {
 @import '@/assets/scss/main.scss';
 .feedback {
   color: $neutral-primary-4;
-  margin-top: $unit-5;
   @include drop-shadow;
   border-radius: $border-radius-base;
   &__col {
