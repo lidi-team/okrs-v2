@@ -71,7 +71,6 @@ export default class DetailHistory extends Vue {
 @import '@/assets/scss/main.scss';
 .historyDetail {
   background-color: $white;
-  padding: $unit-8;
   &__footer {
     margin-top: $unit-4;
     margin-bottom: $unit-4;

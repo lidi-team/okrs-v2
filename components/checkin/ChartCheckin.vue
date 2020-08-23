@@ -12,10 +12,7 @@
               </tr>
               <tr>
                 <th scope="row">Tiến độ thực hiện</th>
-                <td v-if="$route.name === 'checkin-lich-su-cong-ty-chi-tiet-id' || $route.name === 'checkin-lich-su-chi-tiet-id'">
-                  {{ historyDetail.progress }} %
-                </td>
-                <td v-else>{{ historyDetail.objective.progress }} %</td>
+                <td>{{ historyDetail.progress }} %</td>
               </tr>
               <tr v-if="historyDetail.checkinAt">
                 <th scope="row">Ngày check-in</th>
