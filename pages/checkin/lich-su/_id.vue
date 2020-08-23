@@ -65,33 +65,33 @@ export default class HistoryCheckin extends Vue {
   }
 
   private async getList() {
-    try {
-      this.loading = true;
-      const res = await CheckinRepository.getHistory(+this.$route.params.id);
-      this.historyList = res.data.data;
-      this.loading = false;
-    } catch (error) {
-      if (error.response.data.statusCode === 470) {
-        this.$notify.error({
-          ...notificationConfig,
-          message: 'Bạn không có quyền truy cập checkin này',
-        });
-      } else if (error.response.data.statusCode === 404) {
-        this.$notify.error({
-          ...notificationConfig,
-          message: 'Không thể tìm thấy dữ liệu',
-        });
-      }
-      this.$router.push('/checkin');
-      this.loading = false;
-    }
+    this.loading = true;
+    await CheckinRepository.getHistory(Number(this.$route.params.id))
+      .then((res) => {
+        this.historyList = res.data.data;
+        this.loading = false;
+      })
+      .catch((error) => {
+        if (error.response.data.statusCode === 470) {
+          this.$notify.error({
+            ...notificationConfig,
+            message: 'Bạn không có quyền truy cập checkin này',
+          });
+        } else if (error.response.data.statusCode === 404) {
+          this.$notify.error({
+            ...notificationConfig,
+            message: 'Không thể tìm thấy dữ liệu',
+          });
+        }
+        this.$router.push('/checkin');
+        this.loading = false;
+      });
   }
 }
 </script>
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .listHistory {
-  padding: $unit-10 $unit-8 0 $unit-10;
   &__title {
     font-size: $text-2xl;
     padding-bottom: $unit-10;

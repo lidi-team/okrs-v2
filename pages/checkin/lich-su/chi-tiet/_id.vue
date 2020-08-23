@@ -29,26 +29,27 @@ export default class DetailHistoryPage extends Vue {
   private historyDetail: any = null;
 
   private async getDetail() {
-    try {
-      this.loading = true;
-      const res = await CheckinRepository.getDetailCheckin(+this.$route.params.id);
-      this.historyDetail = res.data.data;
-      this.loading = false;
-    } catch (error) {
-      if (error.response.data.statusCode === 470) {
-        this.$notify.error({
-          ...notificationConfig,
-          message: 'Bạn không có quyền truy cập checkin này',
-        });
-      } else if (error.response.data.statusCode === 404) {
-        this.$notify.error({
-          ...notificationConfig,
-          message: 'Không thể tìm thấy dữ liệu',
-        });
-      }
-      this.$router.push('/checkin');
-      this.loading = false;
-    }
+    this.loading = true;
+    await CheckinRepository.getDetailCheckin(+this.$route.params.id)
+      .then((result) => {
+        this.historyDetail = result.data.data;
+        this.loading = false;
+      })
+      .catch((error) => {
+        if (error.response.data.statusCode === 470) {
+          this.$notify.error({
+            ...notificationConfig,
+            message: 'Bạn không có quyền truy cập checkin này',
+          });
+        } else if (error.response.data.statusCode === 404) {
+          this.$notify.error({
+            ...notificationConfig,
+            message: 'Không thể tìm thấy dữ liệu',
+          });
+        }
+        this.$router.push('/checkin');
+        this.loading = false;
+      });
   }
 
   private goBack() {
@@ -61,7 +62,6 @@ export default class DetailHistoryPage extends Vue {
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .historyDetailPage {
-  padding: $unit-10 $unit-8 0 $unit-10;
   &__title {
     font-size: $text-2xl;
     padding-bottom: $unit-10;
