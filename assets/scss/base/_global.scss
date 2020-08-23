@@ -276,3 +276,24 @@ button:focus {
 .el-tabs__header {
   margin: $unit-8 0;
 }
+
+.page-enter-active,
+.page-leave-active {
+  margin: $unit-8 0;
+  transition: all 0.5s;
+}
+.page-enter,
+.page-leave-active {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.layout-enter-active,
+.layout-leave-active {
+  transition: all 0.5s;
+}
+.layout-enter,
+.layout-leave-active {
+  opacity: 0;
+  transform: translateX(30px);
+}
