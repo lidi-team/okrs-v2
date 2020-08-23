@@ -79,13 +79,10 @@ export default class OKRsItem extends Vue {
   @Prop(Number) private indexItem!: number;
   @Prop(Array) private tableData!: object[];
   @Prop(Function) private reloadData!: Function;
-
   private tempOkrs: any = {};
   private visibleUpdateDialog: boolean = false;
   private visibleAlignDialog: boolean = false;
-
   private changeValue: number = 0;
-
   private customColors(percentage: number) {
     if (percentage < 30) {
       return '#e3d0ff';
@@ -126,7 +123,7 @@ export default class OKRsItem extends Vue {
 .item-okrs {
   background: $white;
   color: $neutral-primary-4;
-  margin-top: $unit-5;
+  margin-top: $unit-8;
   border-radius: $border-radius-base;
   @include drop-shadow;
   &__header {
