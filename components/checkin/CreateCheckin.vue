@@ -97,11 +97,11 @@
     </div>
     <div v-if="user.role.name === 'ADMIN'" class="checkinDetail__footer">
       <el-button :disabled="syncCheckin.isCompleted" class="el-button--white" @click="handleDraftCheckinAdmin">Lưu nháp</el-button>
-      <el-button class="el-button--purple" @click="handleSubmitCheckinAdmin">Check-in</el-button>
+      <el-button class="el-button--purple" :loading="loading" @click="handleSubmitCheckinAdmin">Check-in</el-button>
     </div>
     <div v-else class="checkinDetail__footer">
       <el-button class="el-button--white" @click="handleDraftCheckin">Lưu nháp</el-button>
-      <el-button class="el-button--purple" @click="handleSubmitCheckin">Gửi yêu cầu</el-button>
+      <el-button class="el-button--purple" :loading="loading" @click="handleSubmitCheckin">Gửi yêu cầu</el-button>
     </div>
   </fragment>
 </template>
@@ -129,6 +129,8 @@ export default class DetailHistory extends Vue {
   private status = statusCheckin;
   private dateFormat: string = 'dd/MM/yyyy';
   private dropdownConfident = confidentLevel;
+  private loading: boolean = false;
+
   private customColors(confident) {
     return confident === 1 ? '#DE3618' : confident === 2 ? '#47C1BF' : '#50B83C';
   }
@@ -419,7 +421,8 @@ export default class DetailHistory extends Vue {
       },
       checkinDetails: [],
     };
-    (this.$refs.checkinRuleForm as Form).validate((isValid) => {
+    this.loading = true;
+    (this.$refs.checkinRuleForm as Form).validate((isValid: boolean, invalidFileds: object) => {
       if (isValid) {
         if (this.isNew === true) {
           this.syncCheckin.checkinDetail.map((item) => {
@@ -441,6 +444,9 @@ export default class DetailHistory extends Vue {
             .then(async () => {
               try {
                 await CheckinRepository.post(tempCheckin).then((res: any) => {
+                  setTimeout(() => {
+                    this.loading = false;
+                  }, 300);
                   this.$notify.success({
                     ...notificationConfig,
                     message: 'Gửi yêu cầu thành công',
@@ -448,6 +454,9 @@ export default class DetailHistory extends Vue {
                   this.$router.push('/checkin');
                 });
               } catch (error) {
+                setTimeout(() => {
+                  this.loading = false;
+                }, 300);
                 if (error.response.data.statusCode === 476) {
                   this.$notify.error({
                     ...notificationConfig,
@@ -458,6 +467,9 @@ export default class DetailHistory extends Vue {
               }
             })
             .catch((action) => {
+              setTimeout(() => {
+                this.loading = false;
+              }, 300);
               this.removeRules();
             });
         } else {
@@ -481,6 +493,9 @@ export default class DetailHistory extends Vue {
             .then(async () => {
               try {
                 await CheckinRepository.staffUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
+                  setTimeout(() => {
+                    this.loading = false;
+                  }, 300);
                   this.$notify.success({
                     ...notificationConfig,
                     message: 'Gửi yêu cầu thành công',
@@ -488,6 +503,9 @@ export default class DetailHistory extends Vue {
                   this.$router.push('/checkin');
                 });
               } catch (error) {
+                setTimeout(() => {
+                  this.loading = false;
+                }, 300);
                 if (error.response.data.statusCode === 476) {
                   this.$notify.error({
                     ...notificationConfig,
@@ -498,9 +516,17 @@ export default class DetailHistory extends Vue {
               }
             })
             .catch((action) => {
+              setTimeout(() => {
+                this.loading = false;
+              }, 300);
               this.removeRules();
             });
         }
+      }
+      if (invalidFileds) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }
@@ -517,7 +543,8 @@ export default class DetailHistory extends Vue {
       },
       checkinDetails: [],
     };
-    (this.$refs.checkinRuleForm as Form).validate((isValid) => {
+    this.loading = true;
+    (this.$refs.checkinRuleForm as Form).validate((isValid: boolean, invalidFileds: object) => {
       if (isValid) {
         if (this.isNew === true) {
           this.syncCheckin.checkinDetail.map((item) => {
@@ -539,6 +566,9 @@ export default class DetailHistory extends Vue {
             .then(async () => {
               try {
                 await CheckinRepository.adminCreateCheckin(tempCheckin).then((res: any) => {
+                  setTimeout(() => {
+                    this.loading = false;
+                  }, 300);
                   this.$notify.success({
                     ...notificationConfig,
                     message: 'Check-in thành công',
@@ -546,6 +576,9 @@ export default class DetailHistory extends Vue {
                   this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
                 });
               } catch (error) {
+                setTimeout(() => {
+                  this.loading = false;
+                }, 300);
                 if (error.response.data.statusCode === 476) {
                   this.$notify.error({
                     ...notificationConfig,
@@ -556,6 +589,9 @@ export default class DetailHistory extends Vue {
               }
             })
             .catch((action) => {
+              setTimeout(() => {
+                this.loading = false;
+              }, 300);
               this.removeRules();
             });
         } else {
@@ -579,6 +615,9 @@ export default class DetailHistory extends Vue {
             .then(async () => {
               try {
                 await CheckinRepository.adminUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
+                  setTimeout(() => {
+                    this.loading = false;
+                  }, 300);
                   this.$notify.success({
                     ...notificationConfig,
                     message: 'Check-in thành công',
@@ -586,6 +625,9 @@ export default class DetailHistory extends Vue {
                   this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
                 });
               } catch (error) {
+                setTimeout(() => {
+                  this.loading = false;
+                }, 300);
                 if (error.response.data.statusCode === 476) {
                   this.$notify.error({
                     ...notificationConfig,
@@ -596,9 +638,17 @@ export default class DetailHistory extends Vue {
               }
             })
             .catch((action) => {
+              setTimeout(() => {
+                this.loading = false;
+              }, 300);
               this.removeRules();
             });
         }
+      }
+      if (invalidFileds) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }

@@ -70,6 +70,7 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
+import { max255Char } from '../account/account.constant';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { EvaluationCriteriorDTO, SelectOptionDTO } from '@/constants/app.interface';
@@ -117,7 +118,7 @@ export default class ManageEvaluationCriteria extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    content: [{ validator: this.sanitizeInput, trigger: 'change' }],
+    content: [{ validator: this.sanitizeInput, trigger: 'change' }, max255Char],
     numberOfStar: [{ type: 'number', min: 1, required: true, message: 'Số sao phải là 1 số nguyên không âm', trigger: 'blur' }],
     type: [{ type: 'string', required: true, message: 'Vui lòng chọn kiểu của tiêu chí', trigger: 'change' }],
   };

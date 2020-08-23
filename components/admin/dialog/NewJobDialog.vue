@@ -43,7 +43,7 @@ export default class JobDialog extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    name: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }],
+    name: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }, max255Char],
     description: [max255Char],
   };
 

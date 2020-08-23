@@ -86,7 +86,7 @@
     </div>
     <div class="checkinDetail__footer">
       <el-button class="el-button--white" @click="handleBack">Quay lại</el-button>
-      <el-button class="el-button--purple" @click="handleSubmitCheckin">Check-in xong</el-button>
+      <el-button class="el-button--purple" :loading="loading" @click="handleSubmitCheckin">Check-in xong</el-button>
     </div>
   </fragment>
 </template>
@@ -106,6 +106,8 @@ export default class DetailHistory extends Vue {
   private status = statusCheckin;
   private dateFormat: string = 'dd/MM/yyyy';
   private dropdownConfident = confidentLevel;
+  private loading: boolean = true;
+
   private customColors(confident) {
     return confident === 1 ? '#DE3618' : confident === 2 ? '#47C1BF' : '#50B83C';
   }
@@ -178,7 +180,8 @@ export default class DetailHistory extends Vue {
       },
       checkinDetails: [],
     };
-    (this.$refs.checkinRuleForm as Form).validate((isValid) => {
+    this.loading = true;
+    (this.$refs.checkinRuleForm as Form).validate((isValid: boolean, invalidFields: object) => {
       if (isValid) {
         this.syncCheckin.checkinDetails.map((item) => {
           tempCheckin.checkinDetails.push({
@@ -199,6 +202,9 @@ export default class DetailHistory extends Vue {
         }).then(async () => {
           try {
             await CheckinRepository.leaderUpdateCheckin(tempCheckin, this.syncCheckin.id).then((res: any) => {
+              setTimeout(() => {
+                this.loading = false;
+              }, 300);
               this.$notify.success({
                 ...notificationConfig,
                 message: 'Checkin thành công',
@@ -206,6 +212,9 @@ export default class DetailHistory extends Vue {
               this.$router.push('/checkin?tab=request-checkin');
             });
           } catch (error) {
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
             if (error.response.data.statusCode === 475) {
               this.$notify.error({
                 ...notificationConfig,
@@ -215,6 +224,11 @@ export default class DetailHistory extends Vue {
             this.$router.push('/checkin?tab=request-checkin');
           }
         });
+      }
+      if (invalidFields) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }

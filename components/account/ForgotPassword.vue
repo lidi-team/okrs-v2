@@ -60,10 +60,10 @@ export default class ForgotPassword extends Vue {
   };
 
   private handleForgotPasswordForm(): void {
-    (this.$refs.forgotPasswordForm as Form).validate(async (isValid) => {
+    this.loading = true;
+    (this.$refs.forgotPasswordForm as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
         try {
-          this.loading = true;
           await AuthRepository.sendMailToResetPassword(this.forgotPasswordForm);
           this.loading = false;
           this.$notify.success({
@@ -72,8 +72,15 @@ export default class ForgotPassword extends Vue {
           });
           this.$router.push('/dang-nhap');
         } catch (error) {
-          this.loading = false;
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
         }
+      }
+      if (invalidatedFields) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }

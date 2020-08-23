@@ -29,6 +29,7 @@ import { notificationConfig } from '@/constants/app.constant';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
+import { max255Char } from '@/components/account/account.constant';
 @Component<MeasureUnitDialog>({
   name: 'MeasureUnitDialog',
 })
@@ -45,7 +46,7 @@ export default class MeasureUnitDialog extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    type: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }],
+    type: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }, max255Char],
   };
 
   private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {

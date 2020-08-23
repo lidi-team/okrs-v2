@@ -50,6 +50,7 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
+import { max255Char } from '../account/account.constant';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { MeasureUnitDTO } from '@/constants/app.interface';
@@ -81,7 +82,7 @@ export default class ManageMeasureUnit extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    type: [{ validator: this.sanitizeInput, trigger: 'change' }],
+    type: [{ validator: this.sanitizeInput, trigger: 'blur' }, max255Char],
     index: [{ type: 'number', min: 1, required: true, message: 'Thứ tự phải là 1 số nguyên không âm', trigger: 'blur' }],
   };
 

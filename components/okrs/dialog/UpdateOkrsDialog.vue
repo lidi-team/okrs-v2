@@ -42,6 +42,7 @@ import OkrsRepository from '@/repositories/OkrsRepository';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import KrsForm from '@/components/okrs/KrsForm.vue';
 import { PayloadOkrs } from '@/constants/app.interface';
+import { max255Char } from '@/components/account/account.constant';
 @Component<UpdateOkrsDialog>({
   name: 'UpdateOkrsDialog',
   components: {
@@ -73,7 +74,7 @@ export default class UpdateOkrsDialog extends Vue {
   private krFormItems: any[] = [];
 
   private rules: Maps<Rule[]> = {
-    title: [{ type: 'string', required: true, message: 'Vui lòng nhập tên mục tiêu', trigger: 'blur' }],
+    title: [{ type: 'string', required: true, message: 'Vui lòng nhập tên mục tiêu', trigger: 'blur' }, max255Char],
   };
 
   private handleDataDialog() {

@@ -135,10 +135,8 @@ export default class RegisterComponent extends Vue {
               message: 'Gửi yêu cầu đăng ký thành công',
             });
           });
+          this.loading = false;
           this.$router.push('/dang-nhap');
-          setTimeout(() => {
-            this.loading = false;
-          }, 300);
         } catch (error) {
           setTimeout(() => {
             this.loading = false;

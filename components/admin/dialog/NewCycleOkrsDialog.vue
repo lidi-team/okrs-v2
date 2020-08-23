@@ -49,6 +49,7 @@ import { CycleDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import { compareTwoDate, formatDateToYYYY } from '@/utils/dateParser';
 import CycleRepository from '@/repositories/CycleRepository';
+import { max255Char } from '@/components/account/account.constant';
 @Component<CycleOkrsDialog>({
   name: 'CycleOkrsDialog',
 })
@@ -65,7 +66,7 @@ export default class CycleOkrsDialog extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    name: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }],
+    name: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }, max255Char],
     startDate: [{ required: true, message: 'Vui lòng chọn ngày bắt đầu', trigger: 'blur' }],
     endDate: [
       { required: true, message: 'Vui lòng chọn ngày kết thúc', trigger: 'blur' },

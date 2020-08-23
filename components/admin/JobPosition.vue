@@ -93,7 +93,7 @@ export default class ManageJobPosition extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    name: [{ validator: this.sanitizeInput, trigger: 'change' }],
+    name: [{ validator: this.sanitizeInput, trigger: 'blur' }, max255Char],
     description: [max255Char],
   };
 

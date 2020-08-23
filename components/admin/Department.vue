@@ -92,7 +92,7 @@ export default class ManageDepartment extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    name: [{ validator: this.sanitizeInput, trigger: 'change' }],
+    name: [{ validator: this.sanitizeInput, trigger: 'change' }, max255Char],
     description: [max255Char],
   };
 

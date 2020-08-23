@@ -39,6 +39,7 @@ import { EvaluationCriteriorDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import CriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
+import { max255Char } from '@/components/account/account.constant';
 @Component<CriteriaDialog>({
   name: 'CriteriaDialog',
 })
@@ -60,7 +61,7 @@ export default class CriteriaDialog extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    content: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }],
+    content: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }, max255Char],
     numberOfStar: [{ type: 'number', required: true, message: 'Số sao phải là 1 số nguyên', trigger: 'blur' }],
     type: [{ type: 'string', required: true, message: 'Vui lòng chọn kiểu của tiêu chí', trigger: 'blur' }],
   };

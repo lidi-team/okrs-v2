@@ -76,14 +76,19 @@ export default class LoginSComponent extends Vue {
   };
 
   private handleLogin(): any {
-    (this.$refs.loginForm as LoginForm).validate(async (isValid: boolean) => {
+    this.loading = true;
+    (this.$refs.loginForm as LoginForm).validate(async (isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
-        this.loading = true;
         const user = await this.$store.dispatch(DispatchAction.LOGIN, this.loginForm);
         this.loading = false;
         if (user) {
           this.$router.push('/');
         }
+      }
+      if (invalidatedFields) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }
