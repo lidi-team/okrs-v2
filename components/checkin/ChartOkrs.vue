@@ -106,6 +106,7 @@ export default class ChartOkrs extends Vue {
 
     chart.cursor = new am4charts.XYCursor();
     chart.cursor.xAxis = dateAxis;
+    chart.logo.disabled = true;
   }
 }
 </script>
