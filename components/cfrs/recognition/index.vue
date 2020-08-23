@@ -27,7 +27,15 @@
       </el-form-item>
       <el-form-item prop="evaluationCriteriaId" label="Tiêu chí" class="custom-label criteria">
         <el-select v-model="recognition.evaluationCriteriaId" placeholder="Lựa chọn tiêu chí đánh giá">
-          <el-option v-for="criteria in optionsMetadata.criteria" :key="criteria.id" :label="criteria.content" :value="criteria.id"></el-option>
+          <el-option v-for="criteria in optionsMetadata.criteria" :key="criteria.id" :label="criteria.content" :value="criteria.id">
+            <div class="item-criteria">
+              <div class="item-criteria__icon">
+                <span>{{ criteria.numberOfStar }}</span>
+                <icon-star-dashboard class="item-criteria__icon--star" />
+              </div>
+              <span class="item-criteria__content">{{ criteria.content }}</span>
+            </div>
+          </el-option>
         </el-select>
       </el-form-item>
       <el-form-item prop="content" label="Nội dung" class="custom-label">
@@ -43,6 +51,7 @@
 <script lang="ts">
 import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import { CfrsRepository } from '@/repositories/CfrsRepository';
@@ -54,6 +63,9 @@ import { Maps, Rule } from '@/constants/app.type';
   name: 'CreateRecongnitionDialog',
   async created() {
     await this.getMetaDataRecognition();
+  },
+  components: {
+    IconStarDashboard,
   },
   mounted() {
     this.loadingForm = true;
@@ -177,6 +189,19 @@ export default class CreateRecongnitionDialog extends Vue {
 </script>
 <style lang="scss">
 @import '@/assets/scss/main.scss';
+.item-criteria {
+  display: flex;
+  place-content: center flex-start;
+  align-items: center;
+  &__icon {
+    display: flex;
+    margin-right: $unit-4;
+    width: $unit-10;
+    &--star {
+      align-self: center;
+    }
+  }
+}
 .create-recognition-dialog {
   padding: $unit-4;
   &__attribute {
