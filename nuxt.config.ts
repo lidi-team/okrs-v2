@@ -67,7 +67,7 @@ const nuxtConfig: NuxtConfig = {
     },
     { src: '~/plugins/vue-simplemde' },
     { src: '~/plugins/md-it' },
-    { src: '~/plugins/vue' },
+    { src: '~/plugins/vue-progress-bar' },
   ],
   /*
    ** Nuxt.js dev-modules
