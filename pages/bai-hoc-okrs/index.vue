@@ -22,7 +22,6 @@ export default class ListLesson extends Vue {}
 @import '@/assets/scss/main.scss';
 .manage-lessons {
   height: 100%;
-  padding: $unit-10 $unit-8 0 $unit-10;
   &__title {
     font-size: $text-2xl;
     padding-bottom: $unit-10;

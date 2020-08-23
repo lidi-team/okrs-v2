@@ -4,20 +4,20 @@
       >Duyệt tất cả</el-button
     >
     <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" style="width: 100%;" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column prop="fullName" label="Tên đầy đủ" width="250"></el-table-column>
-      <el-table-column prop="email" label="Email" width="250"></el-table-column>
-      <el-table-column label="Phòng ban" width="180">
+      <el-table-column type="selection"></el-table-column>
+      <el-table-column prop="fullName" label="Tên đầy đủ" min-width="150"></el-table-column>
+      <el-table-column prop="email" label="Email" min-width="150"></el-table-column>
+      <el-table-column label="Phòng ban" min-width="150">
         <template slot-scope="{ row }">
           <span>{{ row.team.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Vị trí công việc" width="250">
+      <el-table-column label="Vị trí công việc" min-width="150">
         <template slot-scope="{ row }">
           <span>{{ row.jobPosition.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Thao tác" align="center" width="150">
+      <el-table-column label="Thao tác" align="center">
         <template slot-scope="{ row }">
           <el-tooltip class="employee-active__icon" content="Sửa" placement="left-end">
             <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
