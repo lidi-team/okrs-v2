@@ -38,7 +38,7 @@
             <nuxt-link v-if="user.role.name === 'HR' || user.role.name === 'ADMIN'" to="/quan-ly/nhan-su">
               <el-dropdown-item>
                 <div class="item__div">
-                  <fa icon="user-friends" class="item__div--icon item__div--icon--hr" />
+                  <icon-hr class="item__div--icon item__div--icon--hr" />
                   <span>Quản lý nhân sự</span>
                 </div>
               </el-dropdown-item>
@@ -88,6 +88,7 @@ import IconLesson from '@/assets/images/common/navbar/lesson-okrs.svg';
 import IconLogout from '@/assets/images/common/navbar/logout.svg';
 import IconProfile from '@/assets/images/common/navbar/profile.svg';
 import IconSetting from '@/assets/images/common/navbar/setting.svg';
+import IconHr from '@/assets/images/common/navbar/hr.svg';
 import { DispatchAction, GetterState } from '@/constants/app.enum';
 @Component<Navbar>({
   name: 'Navbar',
@@ -97,6 +98,7 @@ import { DispatchAction, GetterState } from '@/constants/app.enum';
     IconLogout,
     IconProfile,
     IconSetting,
+    IconHr,
   },
   computed: {
     ...mapGetters({

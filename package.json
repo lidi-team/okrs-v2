@@ -52,8 +52,6 @@
     "vuejs-progress-bar": "^1.2.2"
   },
   "devDependencies": {
-    "@fortawesome/free-brands-svg-icons": "^5.14.0",
-    "@fortawesome/free-solid-svg-icons": "^5.14.0",
     "@ls-lint/ls-lint": "^1.9.0",
     "@nuxt/components": "^1.0.7",
     "@nuxt/typescript-build": "^2.0.2",
@@ -61,7 +59,6 @@
     "@nuxtjs/eslint-config": "^3.0.0",
     "@nuxtjs/eslint-config-typescript": "^2.0.0",
     "@nuxtjs/eslint-module": "^2.0.0",
-    "@nuxtjs/fontawesome": "^1.1.2",
     "@types/jest": "^26.0.4",
     "@types/js-cookie": "^2.2.6",
     "@vue/test-utils": "^1.0.3",
