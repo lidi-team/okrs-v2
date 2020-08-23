@@ -6,3 +6,4 @@ declare module '*.vue' {
 declare module 'highlight.js';
 declare module 'markdown-it';
 declare module 'vue-simplemde';
+declare module '@nuxtjs/markdownit';

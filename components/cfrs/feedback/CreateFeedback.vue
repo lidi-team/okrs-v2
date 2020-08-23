@@ -19,7 +19,15 @@
       </el-form-item>
       <el-form-item label-width="200px" prop="evaluationCriteriaId" label="Tiêu chí" class="custom-label">
         <el-select v-model="contentFeedback.evaluationCriteriaId" placeholder="Lựa chọn tiêu chí đánh giá">
-          <el-option v-for="item in listEvaluationCriterias" :key="item.id" :label="item.content" :value="item.id"> </el-option>
+          <el-option v-for="criteria in listEvaluationCriterias" :key="criteria.id" :label="criteria.content" :value="criteria.id">
+            <div class="item-criteria">
+              <div class="item-criteria__icon">
+                <span>{{ criteria.numberOfStar }}</span>
+                <icon-star-dashboard class="item-criteria__icon--star" />
+              </div>
+              <span class="item-criteria__content">{{ criteria.content }}</span>
+            </div>
+          </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label-width="200px" prop="content" label="Nội dung" class="custom-label">
@@ -35,6 +43,7 @@
 <script lang="ts">
 import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import { CfrsRepository } from '@/repositories/CfrsRepository';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
@@ -42,6 +51,9 @@ import { FeedbackDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<CreateFeedbackDialog>({
   name: 'CreateFeedbackDialog',
+  components: {
+    IconStarDashboard,
+  },
   async mounted() {
     await this.getListEvaluationCriterias();
   },

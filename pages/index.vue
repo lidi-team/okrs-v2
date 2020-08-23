@@ -144,7 +144,6 @@ export default class HomePage extends Vue {
 @import '@/assets/scss/main.scss';
 .dashboard {
   color: $neutral-primary-4;
-  padding: $unit-10 $unit-8 $unit-20 $unit-10;
   .col-container {
     display: flex;
     justify-content: space-between;

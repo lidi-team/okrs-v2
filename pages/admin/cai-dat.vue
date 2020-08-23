@@ -153,17 +153,17 @@ export default class SettingCompanyPage extends Vue {
           this.tableData = res.data.data.items;
           this.totalItems = res.data.data.meta.totalItems;
         });
-      } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
-        await JobRepository.get(this.adminParams).then((res) => {
-          this.tableData = res.data.data.items;
-          this.totalItems = res.data.data.meta.totalItems;
-        });
       } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
         await EvaluationCriteriaRepository.get(this.adminParams).then((res) => {
           this.tableData = Object.freeze(res.data.data.items);
           this.totalItems = res.data.data.meta.totalItems;
         });
-      } else {
+      } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
+        await JobRepository.get(this.adminParams).then((res) => {
+          this.tableData = res.data.data.items;
+          this.totalItems = res.data.data.meta.totalItems;
+        });
+      } else if (this.$route.query.tab === AdminTabsEn.MeasureUnit) {
         await MeasureUnitRepository.get(this.adminParams).then((res) => {
           this.tableData = res.data.data.items;
           this.totalItems = res.data.data.meta.totalItems;
@@ -179,24 +179,24 @@ export default class SettingCompanyPage extends Vue {
       return ManageDepartment;
     } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
       return ManageJobPosition;
+    } else if (this.$route.query.tab === AdminTabsEn.MeasureUnit) {
+      return ManageMeasureUnit;
     } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
       return ManageEvaluationCriteria;
-    } else {
-      return ManageMeasureUnit;
     }
   }
 
   private get currentDialogComponent() {
-    if (this.topChange.tab === 1) {
+    if (this.topChange!.tab === 1) {
       return NewCycleOkrsDialog;
-    } else if (this.topChange.tab === 2) {
+    } else if (this.topChange!.tab === 2) {
       return NewDepartmentDialog;
-    } else if (this.topChange.tab === 3) {
+    } else if (this.topChange!.tab === 3) {
       return NewJobDialog;
-    } else if (this.topChange.tab === 4) {
-      return NewCriteriaDialog;
-    } else {
+    } else if (this.topChange!.tab === 5) {
       return NewUnitDialog;
+    } else if (this.topChange!.tab === 4) {
+      return NewCriteriaDialog;
     }
   }
 
@@ -219,17 +219,17 @@ export default class SettingCompanyPage extends Vue {
         textPlaceholder: 'Tìm kiếm vị trí công việc',
         tab: 3,
       };
+    } else if (this.$route.query.tab === AdminTabsEn.MeasureUnit) {
+      return {
+        buttonName: 'đơn vị',
+        textPlaceholder: 'Tìm kiếm đơn vị đo lường',
+        tab: 5,
+      };
     } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
       return {
         buttonName: 'tiêu chí',
         textPlaceholder: 'Tìm kiếm tiêu chí đánh giá',
         tab: 4,
-      };
-    } else {
-      return {
-        buttonName: 'đơn vị',
-        textPlaceholder: 'Tìm kiếm đơn vị đo lường',
-        tab: 5,
       };
     }
   }
