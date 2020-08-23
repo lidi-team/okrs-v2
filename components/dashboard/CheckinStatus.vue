@@ -48,6 +48,7 @@ export default class CheckinStatus extends Vue {
     pieSeries.ticks.template.disabled = true;
 
     chart.legend = new am4charts.Legend();
+    chart.logo.disabled = true;
     return chart;
   }
 }

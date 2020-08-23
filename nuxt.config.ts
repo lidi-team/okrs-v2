@@ -72,22 +72,7 @@ const nuxtConfig: NuxtConfig = {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: [
-    '@nuxt/typescript-build',
-    '@nuxt/components',
-    '@nuxtjs/dotenv',
-    'nuxt-clipboard2',
-    // 'nuxt-purgecss',
-    [
-      '@nuxtjs/fontawesome',
-      {
-        component: 'fa',
-        icons: {
-          solid: true,
-        },
-      },
-    ],
-  ],
+  buildModules: ['@nuxt/typescript-build', '@nuxt/components', '@nuxtjs/dotenv', 'nuxt-clipboard2'],
   // purgeCSS: pureCssConfig,
   /**
    * @description Config all components in app
