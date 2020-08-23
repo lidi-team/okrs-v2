@@ -1,6 +1,5 @@
 <template>
   <div class="learn-lessons">
-    <h1 class="learn-lessons__title">Học OKRs</h1>
     <div class="learn-lessons__list">
       <lesson-list :posts="posts" :meta="meta" />
     </div>
@@ -39,9 +38,5 @@ export default class LearnLesson extends Vue {}
 @import '@/assets/scss/main.scss';
 .learn-lessons {
   height: 100%;
-  &__title {
-    font-size: $text-2xl;
-    padding-bottom: $unit-10;
-  }
 }
 </style>
