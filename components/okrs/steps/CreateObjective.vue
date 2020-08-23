@@ -52,6 +52,7 @@ import { Maps, Rule } from '@/constants/app.type';
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { DispatchAction, MutationState } from '@/constants/app.enum';
+import { max255Char } from '@/components/account/account.constant';
 @Component<CreateObjectiveStep>({
   name: 'CreateObjectiveStep',
   created() {
@@ -151,7 +152,7 @@ export default class CreateObjectiveStep extends Vue {
   }
 
   private rules: Maps<Rule[]> = {
-    title: [{ type: 'string', required: true, message: 'Vui lòng nhập mục tiêu', trigger: 'blur' }],
+    title: [{ type: 'string', required: true, message: 'Vui lòng nhập mục tiêu', trigger: 'blur' }, max255Char],
     cycleId: [{ type: 'number', required: true, message: 'Vui lòng chọn chy kỳ', trigger: 'blur' }],
     parentObjectiveId: [{ type: 'number', required: true, message: 'Vui lòng chọn OKRs cấp trên', trigger: 'blur' }],
   };

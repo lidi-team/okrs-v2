@@ -71,6 +71,7 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
+import { max255Char } from '../account/account.constant';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { AdminTabsEn } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
@@ -104,7 +105,7 @@ export default class ManageCycleOkrs extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    name: [{ validator: this.sanitizeInput, trigger: 'change' }],
+    name: [{ validator: this.sanitizeInput, trigger: 'change' }, max255Char],
     startDate: [{ required: true, message: 'Vui lòng chọn ngày bắt đầu', trigger: ['blur', 'change'] }],
     endDate: [
       { required: true, message: 'Vui lòng chọn ngày kết thúc', trigger: ['blur', 'change'] },

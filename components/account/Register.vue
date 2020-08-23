@@ -48,6 +48,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { regexPassword, max255Char } from './account.constant';
 import { notificationConfig } from '@/constants/app.constant';
 import { RegisterDTO, RegisterOption } from '@/constants/app.interface';
 import { notifyErrorRegister } from '@/constants/app.notify';
@@ -55,6 +56,7 @@ import { Maps, Rule } from '@/constants/app.type';
 import AuthRepository from '@/repositories/AuthRepository';
 import TeamRepository from '@/repositories/TeamRepository';
 import JobRepository from '@/repositories/JobRepository';
+
 @Component<RegisterComponent>({
   name: 'RegisterComponent',
   created() {
@@ -93,22 +95,21 @@ export default class RegisterComponent extends Vue {
     email: [
       { required: true, message: 'Vui lòng nhập địa chỉ email', trigger: 'blur' },
       { type: 'email', message: 'Vui lòng nhập đúng địa chỉ email', trigger: 'blur' },
+      max255Char,
     ],
-    password: [
-      { required: true, message: 'Vui lòng nhập mật khẩu' },
-      { validator: this.validatePassword, trigger: ['blur', 'change'] },
-    ],
+    password: [{ required: true, message: 'Vui lòng nhập mật khẩu' }, max255Char, { validator: this.validatePassword, trigger: ['blur', 'change'] }],
     matchPassword: [
       { required: true, message: 'Vui lòng nhập lại mật khẩu' },
+      max255Char,
       { validator: this.validateMatchPassword, trigger: ['blur', 'change'] },
     ],
-    fullName: [{ required: true, message: 'Vui lòng nhập họ tên' }],
+    fullName: [{ required: true, message: 'Vui lòng nhập họ tên' }, max255Char],
     teamId: [{ required: true, message: 'Vui lòng chọn phòng ban' }],
     jobPositionId: [{ required: true, message: 'Vui lòng chọn vị trí công việc' }],
   };
 
-  private validatePassword(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
-    const valid: boolean = /^(?=.*\d)[0-9a-zA-Z]{8,}$/.test(value);
+  private validatePassword(rule: any, value: string, callback: (message?: string) => any): (message?: string) => any {
+    const valid: boolean = regexPassword.test(value.trim());
     if (!valid) {
       return callback('Mật khẩu chứ ít nhất 8 ký tự và 1 chữ số');
     }
@@ -123,10 +124,10 @@ export default class RegisterComponent extends Vue {
   }
 
   private handleRegisterForm() {
-    (this.$refs.registerForm as Form).validate(async (isValid: boolean) => {
+    this.loading = true;
+    (this.$refs.registerForm as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
         try {
-          this.loading = true;
           delete this.registerForm.matchPassword;
           await AuthRepository.register(this.registerForm).then((res: any) => {
             this.$notify.success({
@@ -134,12 +135,19 @@ export default class RegisterComponent extends Vue {
               message: 'Gửi yêu cầu đăng ký thành công',
             });
           });
+          this.loading = false;
           this.$router.push('/dang-nhap');
-          this.loading = false;
         } catch (error) {
-          this.loading = false;
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
           notifyErrorRegister(error);
         }
+      }
+      if (invalidatedFields) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }

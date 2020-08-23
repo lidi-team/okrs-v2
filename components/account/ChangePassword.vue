@@ -103,10 +103,10 @@ export default class ChangePasswordDialog extends Vue {
   }
 
   private handleUpdatePasswordForm(): void {
-    (this.$refs.changePasswordForm as Form).validate(async (isValid) => {
+    this.loading = true;
+    (this.$refs.changePasswordForm as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
         try {
-          this.loading = true;
           delete this.changePasswordForm.matchPassword;
           await UserRepository.changePassword(this.changePasswordForm);
           this.loading = false;
@@ -117,7 +117,9 @@ export default class ChangePasswordDialog extends Vue {
           this.$store.dispatch(DispatchAction.CLEAR);
           this.$router.push('/');
         } catch (error) {
-          this.loading = false;
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
           if (error.response.data.statusCode === 409) {
             this.$notify.error({
               ...notificationConfig,
@@ -125,6 +127,11 @@ export default class ChangePasswordDialog extends Vue {
             });
           }
         }
+      }
+      if (invalidatedFields) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }

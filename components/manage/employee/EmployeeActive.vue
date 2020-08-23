@@ -50,53 +50,13 @@
             label-position="top"
             style="width: 100%;"
           >
-            <el-form-item
-              label="Tên đầy đủ:"
-              prop="fullName"
-              :rules="[
-                {
-                  required: true,
-                  pattern: /^[^-\s]/,
-                  message: 'Họ và tên không được bỏ trống',
-                  trigger: 'blur',
-                },
-                {
-                  pattern: /^[^\@\#\^\{\}\<\>\~\+\`\/\*\[\]]+$/,
-                  message: 'Họ và tên không được chứa ký tự đặc biệt',
-                  trigger: 'blur',
-                },
-              ]"
-              class="custom-label"
-            >
+            <el-form-item label="Tên đầy đủ:" prop="fullName" class="custom-label">
               <el-input v-model="tempUpdateUser.fullName" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
             </el-form-item>
-            <el-form-item
-              :rules="[
-                {
-                  type: 'email',
-                  required: true,
-                  message: 'Email không được bỏ trống',
-                  trigger: 'blur',
-                },
-              ]"
-              label="Email:"
-              prop="email"
-              class="custom-label"
-            >
+            <el-form-item label="Email:" prop="email" class="custom-label">
               <el-input v-model="tempUpdateUser.email" placeholder="Nhập email" :disabled="true" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
             </el-form-item>
-            <el-form-item
-              :rules="[
-                {
-                  required: true,
-                  message: 'Phòng ban không được bỏ trống',
-                  trigger: 'blur',
-                },
-              ]"
-              label="Phòng ban:"
-              class="custom-label"
-              prop="teamId"
-            >
+            <el-form-item label="Phòng ban:" class="custom-label" prop="teamId">
               <el-select
                 v-model="tempUpdateUser.teamId"
                 class="custom-label"
@@ -106,18 +66,7 @@
                 <el-option v-for="item in teams" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
             </el-form-item>
-            <el-form-item
-              :rules="[
-                {
-                  required: true,
-                  message: 'Vị trí công việc không được bỏ trống',
-                  trigger: 'blur',
-                },
-              ]"
-              label="Vị trí công việc:"
-              class="custom-label"
-              prop="jobPositionId"
-            >
+            <el-form-item label="Vị trí công việc:" class="custom-label" prop="jobPositionId">
               <el-select
                 v-model="tempUpdateUser.jobPositionId"
                 class="custom-label"
@@ -127,18 +76,7 @@
                 <el-option v-for="item in jobs" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
             </el-form-item>
-            <el-form-item
-              :rules="[
-                {
-                  required: true,
-                  message: 'Vai trò không được bỏ trống',
-                  trigger: 'blur',
-                },
-              ]"
-              label="Vai trò:"
-              class="custom-label"
-              prop="roleId"
-            >
+            <el-form-item label="Vai trò:" class="custom-label" prop="roleId">
               <el-select
                 v-model="tempUpdateUser.roleId"
                 class="custom-label"
@@ -154,7 +92,7 @@
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-        <el-button class="el-button--purple el-button--modal" @click="handleUpdate(tempUpdateUser)">Cập nhật</el-button>
+        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="handleUpdate(tempUpdateUser)">Cập nhật</el-button>
       </span>
     </el-dialog>
     <!-- end update user dialog -->
@@ -164,6 +102,7 @@
 import { Form } from 'element-ui';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 
+import { employeeRules } from './employee.constant';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { EmployeeDTO } from '@/constants/app.interface';
@@ -185,6 +124,7 @@ export default class EmployeeActive extends Vue {
   @Prop(Function) readonly getListUsers;
 
   private loadingTable: boolean = false;
+  private loading: boolean = false;
   private dialogUpdateVisible: boolean = false;
   private tempUpdateUser: EmployeeDTO = {
     id: 0,
@@ -197,7 +137,7 @@ export default class EmployeeActive extends Vue {
     isActive: false,
   };
 
-  public rules: Maps<Rule[]> = {};
+  public rules: Maps<Rule[]> = employeeRules;
 
   private handleOpenDialogUpdate(row) {
     this.tempUpdateUser = {
@@ -214,14 +154,17 @@ export default class EmployeeActive extends Vue {
   }
 
   private handleUpdate(tempUpdateUser: EmployeeDTO) {
-    const updateUserForm = this.$refs.updateEmployeeForm as Form;
-    updateUserForm.validate((isValid) => {
+    this.loading = true;
+    (this.$refs.updateEmployeeForm as Form).validate((isValid: boolean, invalidFields: object) => {
       if (isValid) {
         this.$confirm(`Bạn có chắc chắn muốn cập nhật user này?`, {
           ...confirmWarningConfig,
         }).then(async () => {
           try {
-            await EmployeeRepository.update(tempUpdateUser).then((res: any) => {
+            await EmployeeRepository.update(tempUpdateUser).then((res) => {
+              setTimeout(() => {
+                this.loading = false;
+              }, 300);
               this.$notify.success({
                 ...notificationConfig,
                 message: 'Cập nhật thành viên thành công',
@@ -230,9 +173,17 @@ export default class EmployeeActive extends Vue {
             this.getListUsers();
             this.dialogUpdateVisible = false;
           } catch (error) {
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
             this.dialogUpdateVisible = false;
           }
         });
+      }
+      if (invalidFields) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }

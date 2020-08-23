@@ -93,10 +93,10 @@ export default class ResetPassword extends Vue {
   }
 
   private handleResetPasswordForm(): void {
-    (this.$refs.resetPasswordForm as Form).validate(async (isValid) => {
+    this.loading = true;
+    (this.$refs.resetPasswordForm as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
         try {
-          this.loading = true;
           delete this.resetPasswordForm.matchPassword;
           await AuthRepository.resetPasswordWithToken(this.resetPasswordForm).then((res: any) => {
             this.$notify.success({
@@ -104,11 +104,18 @@ export default class ResetPassword extends Vue {
               message: 'Gửi yêu cầu đăng ký thành công',
             });
           });
+          this.loading = false;
           this.$router.push('/dang-nhap');
-          this.loading = false;
         } catch (error) {
-          this.loading = false;
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
         }
+      }
+      if (invalidatedFields) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }

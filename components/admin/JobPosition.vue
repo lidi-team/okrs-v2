@@ -58,6 +58,7 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
+import { max255Char } from '../account/account.constant';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { JobPositionDTO } from '@/constants/app.interface';
@@ -92,8 +93,8 @@ export default class ManageJobPosition extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    name: [{ validator: this.sanitizeInput, trigger: 'change' }],
-    description: [{ type: 'string', max: 255, message: 'Mô tả vị trí không được quá 255 ký tự' }],
+    name: [{ validator: this.sanitizeInput, trigger: 'blur' }, max255Char],
+    description: [max255Char],
   };
 
   private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {

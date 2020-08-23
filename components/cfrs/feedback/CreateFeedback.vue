@@ -49,6 +49,7 @@ import { confirmWarningConfig, notificationConfig } from '@/constants/app.consta
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import { FeedbackDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
+import { max255Char } from '@/components/account/account.constant';
 @Component<CreateFeedbackDialog>({
   name: 'CreateFeedbackDialog',
   components: {
@@ -121,10 +122,7 @@ export default class CreateFeedbackDialog extends Vue {
   }
 
   public rules: Maps<Rule[]> = {
-    content: [
-      { required: true, message: 'Vui lòng nhập nội dung phản hồi', trigger: 'blur' },
-      { max: 255, message: 'Vui lòng chỉ nhập không quá 255 ký tự', trigger: 'blur' },
-    ],
+    content: [{ required: true, message: 'Vui lòng nhập nội dung phản hồi', trigger: 'blur' }, max255Char],
     evaluationCriteriaId: [{ required: true, message: 'Vui lòng chọn tiêu chí đánh giá', trigger: 'blur' }],
   };
 }

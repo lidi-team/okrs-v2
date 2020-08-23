@@ -145,6 +145,7 @@ export interface FormRule {
   trigger?: ruleTrigger;
   min?: number;
   max?: number;
+  pattern?: RegExp;
 }
 
 export interface ParamsQuery {

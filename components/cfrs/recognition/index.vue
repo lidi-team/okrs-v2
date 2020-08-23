@@ -59,6 +59,7 @@ import UserRepository from '@/repositories/UserRepository';
 import { RecognitionDTO } from '@/constants/app.interface';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
+import { max255Char } from '@/components/account/account.constant';
 @Component<CreateRecongnitionDialog>({
   name: 'CreateRecongnitionDialog',
   async created() {
@@ -102,10 +103,7 @@ export default class CreateRecongnitionDialog extends Vue {
   private isCreating: Boolean = false;
 
   public rules: Maps<Rule[]> = {
-    content: [
-      { required: true, message: 'Vui lòng nhập nội dung phản hồi', trigger: 'blur' },
-      { max: 255, message: 'Vui lòng chỉ nhập không quá 255 ký tự', trigger: 'blur' },
-    ],
+    content: [{ required: true, message: 'Vui lòng nhập nội dung phản hồi', trigger: 'blur' }, max255Char],
     evaluationCriteriaId: [{ required: true, message: 'Vui lòng chọn tiêu chí đánh giá', trigger: 'blur' }],
     receiverId: [{ required: true, message: 'Vui lòng chọn người được ghi nhận', trigger: 'blur' }],
   };

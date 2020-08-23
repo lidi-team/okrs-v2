@@ -26,6 +26,7 @@ import { notificationConfig } from '@/constants/app.constant';
 import TeamRepository from '@/repositories/TeamRepository';
 import { TeamDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
+import { max255Char } from '@/components/account/account.constant';
 @Component<TeamDialog>({
   name: 'TeamDialog',
 })
@@ -42,8 +43,8 @@ export default class TeamDialog extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    name: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }],
-    description: [{ type: 'string', max: 255, message: 'Mô tả phòng ban không được quá 255 ký tự' }],
+    name: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }, max255Char],
+    description: [max255Char],
   };
 
   private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {

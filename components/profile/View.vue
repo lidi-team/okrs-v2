@@ -1,5 +1,5 @@
 <template>
-  <div v-loading.fullscreen.lock="loading" class="wrap-profile">
+  <div v-loading.fullscreen.lock="loadingProfile" class="wrap-profile">
     <h2>Thông tin tài khoản của bạn</h2>
     <el-form
       ref="updateProfileForm"
@@ -90,7 +90,7 @@
                 </el-col>
               </el-row>
             </div>
-            <el-button class="el-button el-button--purple el-button--update" @click="updateProfile">Cập nhật</el-button>
+            <el-button class="el-button el-button--purple el-button--update" :loading="loading" @click="updateProfile">Cập nhật</el-button>
           </div>
         </el-col>
       </el-row>
@@ -102,6 +102,7 @@
 import { Component, Vue, Provide } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { Form } from 'element-ui';
+import { max255Char } from '../account/account.constant';
 import { ProfileDTO } from '@/constants/app.interface';
 import UserRepository from '@/repositories/UserRepository';
 import { Maps, Rule } from '@/constants/app.type';
@@ -121,11 +122,30 @@ import { formatDateToDD } from '@/utils/dateParser';
   },
 })
 export default class ViewProfile extends Vue {
+  private loadingProfile: boolean = false;
   private loading: boolean = false;
   private url: string = `${process.env.baseAPI}/api/v1/users/upload_avatar`;
   private show: boolean = false;
   private avatarUrl: string = '';
   private headers = { Authorization: `Bearer ${getTokenCookie()}` };
+
+  private rules: Maps<Rule[]> = {
+    fullName: [
+      {
+        required: true,
+        pattern: /^[^-\s]/,
+        message: 'Họ và tên không được bỏ trống',
+        trigger: 'blur',
+      },
+      {
+        // eslint-disable-next-line no-useless-escape
+        pattern: /^[^\@\#\^\{\}\<\>\~\+\`\/\*\[\]]+$/,
+        message: 'Họ và tên không được chứa ký tự đặc biệt',
+        trigger: 'blur',
+      },
+      max255Char,
+    ],
+  };
 
   private toggleShow() {
     this.show = !this.show;
@@ -175,7 +195,7 @@ export default class ViewProfile extends Vue {
 
   private async getProfile(force?: boolean) {
     try {
-      this.loading = true;
+      this.loadingProfile = true;
       const temp = await UserRepository.me();
       this.avatarUrl = temp.data.data.imageUrl;
       this.profileForm = {
@@ -187,30 +207,42 @@ export default class ViewProfile extends Vue {
         department: temp.data.data.team.name,
         position: temp.data.data.jobPosition.name,
       };
-      this.loading = false;
+      this.loadingProfile = false;
     } catch (error) {
-      this.loading = false;
+      this.loadingProfile = false;
     }
   }
 
   private updateProfile() {
-    (this.$refs.updateProfileForm as Form).validate(async (isValid) => {
+    this.loading = true;
+    (this.$refs.updateProfileForm as Form).validate(async (isValid: boolean, invalidFields: object) => {
       if (isValid) {
         try {
-          this.loading = true;
           await UserRepository.update(this.profileForm);
-          this.$notify({
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
+          this.$notify.success({
             title: 'Trạng thái',
-            type: 'success',
             message: 'Cập nhật thông tin cá nhân thành công',
             duration: 2000,
           });
           const { data } = await UserRepository.me();
           this.$store.commit(MutationState.SET_USER, data.data);
-          this.loading = false;
+          this.loadingProfile = true;
+          setTimeout(() => {
+            this.loadingProfile = false;
+          }, 300);
         } catch (error) {
-          this.loading = false;
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
         }
+      }
+      if (invalidFields) {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
       }
     });
   }
@@ -221,11 +253,6 @@ export default class ViewProfile extends Vue {
     }
     return user.role.name;
   }
-
-  private rules: Maps<Rule[]> = {
-    fullName: [{ required: true, message: 'Vui lòng nhập tên của bạn', trigger: 'blur' }],
-    dateOfBirth: [{ required: false, message: 'Vui lòng chọn ngày sinh', trigger: 'change' }],
-  };
 }
 </script>
 
