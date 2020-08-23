@@ -68,6 +68,7 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { max255Char } from '../account/account.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import IconDelete from '@/assets/images/common/delete.svg';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
@@ -151,6 +152,7 @@ export default class KrsForm extends Vue {
     content: [
       { type: 'string', required: true, message: 'Vui lòng nhập kết quả then chốt', trigger: 'blur' },
       { validator: this.validateContentKrs, trigger: 'blur' },
+      max255Char,
     ],
     startValue: [
       { type: 'number', required: true, message: 'Vui lòng nhập giá trị', trigger: 'blur' },
@@ -162,8 +164,8 @@ export default class KrsForm extends Vue {
       { validator: this.validateIsValidNumber, trigger: 'blur' },
       { validator: this.validateTargetValue, trigger: 'blur' },
     ],
-    linkPlans: [{ type: 'url', message: 'Vui lòng nhập đúng định dạng đường link', trigger: 'blur' }],
-    linkResults: [{ type: 'url', message: 'Vui lòng nhập đúng định dạng đường link', trigger: 'blur' }],
+    linkPlans: [{ type: 'url', message: 'Vui lòng nhập đúng định dạng đường link', trigger: 'blur' }, max255Char],
+    linkResults: [{ type: 'url', message: 'Vui lòng nhập đúng định dạng đường link', trigger: 'blur' }, max255Char],
   };
 
   private validateIsValidNumber(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {

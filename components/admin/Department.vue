@@ -58,6 +58,7 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
+import { max255Char } from '../account/account.constant';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { TeamDTO } from '@/constants/app.interface';
@@ -92,7 +93,7 @@ export default class ManageDepartment extends Vue {
 
   private rules: Maps<Rule[]> = {
     name: [{ validator: this.sanitizeInput, trigger: 'change' }],
-    description: [{ type: 'string', max: 255, message: 'Mô tả phòng ban không được quá 255 ký tự' }],
+    description: [max255Char],
   };
 
   private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
