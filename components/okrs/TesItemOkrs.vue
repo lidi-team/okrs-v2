@@ -6,30 +6,30 @@
         <el-table-column type="expand" width="20">
           <template v-slot="{ row }">
             <div v-for="objective in row.childObjectives" :key="objective.id" class="item-okrs__expand">
-              <div style="display: flex;">
-                <div class="item-okrs__expand--objective">
-                  <icon-ellipse />
-                  <span>{{ objective.title }}</span>
-                </div>
-                <nuxt-link class="item-okrs__expand--krs" :to="`OKRs/chi-tiet/${objective.id}`">{{ objective.keyResults.length }} kết quả</nuxt-link>
-                <div class="item-okrs__expand--progress">
-                  <el-progress :percentage="+objective.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
-                </div>
+              <div class="expand__objective">
+                <icon-ellipse />
+                <span>{{ objective.title }}</span>
               </div>
-              <div class="item-okrs__expand--action">
-                <span :class="isUpProgress(changeValue, true)">{{ changeValue }}%</span>
-                <okrs-action-tooltip
-                  :reload-data="reloadData"
-                  :editable="editableOkrs(objective.user.id)"
-                  :okrs-id.sync="objective.id"
-                  :temp-okrs="objective"
-                  @updateTempOkrs="updateTempOkrs($event)"
-                />
+              <div class="expand__info">
+                <nuxt-link class="expand__info--krs" :to="`OKRs/chi-tiet/${objective.id}`">{{ objective.keyResults.length }} kết quả</nuxt-link>
+                <div class="expand__info--progress">
+                  <progress-bar :options="progressBarOption" :value="objective.progress" />
+                </div>
+                <div class="expand__info--action">
+                  <span :class="isUpProgress(changeValue, true)">{{ changeValue }}%</span>
+                  <okrs-action-tooltip
+                    :reload-data="reloadData"
+                    :editable="editableOkrs(objective.user.id)"
+                    :okrs-id.sync="objective.id"
+                    :temp-okrs="objective"
+                    @updateTempOkrs="updateTempOkrs($event)"
+                  />
+                </div>
               </div>
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="Mục tiêu" width="400">
+        <el-table-column label="Mục tiêu" width="500">
           <template v-slot="{ row }">
             <span>{{ row.title }}</span>
           </template>
@@ -39,9 +39,9 @@
             <nuxt-link class="item-okrs__expand--krs" :to="`OKRs/chi-tiet/${row.id}`">{{ row.keyResults.length }} kết quả</nuxt-link>
           </template>
         </el-table-column>
-        <el-table-column label="Tiến độ">
+        <el-table-column label="Tiến độ" width="300">
           <template v-slot="{ row }">
-            <el-progress :percentage="+row.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
+            <progress-bar :options="progressBarOption" :value="row.progress" />
           </template>
         </el-table-column>
         <el-table-column label="Thay đổi" width="200">
@@ -68,6 +68,8 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import IconEllipse from '@/assets/images/okrs/ellipse.svg';
 import { DialogTooltipAction } from '@/constants/app.interface';
+import progressBarOption from '@/utils/progressBarOption';
+
 @Component<OKRsItem>({
   name: 'OKRsItem',
   components: {
@@ -79,10 +81,13 @@ export default class OKRsItem extends Vue {
   @Prop(Number) private indexItem!: number;
   @Prop(Array) private tableData!: object[];
   @Prop(Function) private reloadData!: Function;
+
   private tempOkrs: any = {};
   private visibleUpdateDialog: boolean = false;
   private visibleAlignDialog: boolean = false;
+  private progressBarOption: Object = progressBarOption;
   private changeValue: number = 0;
+
   private customColors(percentage: number) {
     if (percentage < 30) {
       return '#e3d0ff';
@@ -149,8 +154,8 @@ export default class OKRsItem extends Vue {
     &:last-child {
       padding-bottom: 0;
     }
-    &--objective {
-      width: 400px;
+    .expand__objective {
+      width: 500px;
       display: flex;
       align-items: center;
       padding-right: $unit-8;
@@ -158,23 +163,27 @@ export default class OKRsItem extends Vue {
         padding-left: $unit-5;
       }
     }
-    &--krs {
-      width: 200px;
-    }
-    &--progress {
-      width: calc(100% - (400px + 200px + 150px + 50px));
-    }
-    &--action {
-      width: 200px;
-      margin-right: $unit-11;
+    .expand__info {
       display: flex;
-      place-content: center space-between;
-      &--happy {
-        color: $green-primary-1;
+      align-items: center;
+      &--krs {
+        width: 200px;
       }
-      &--sad {
-        padding-left: $unit-21;
-        color: $red-primary-1;
+      &--progress {
+        width: 300px;
+      }
+      &--action {
+        width: 200px;
+        margin-right: $unit-11;
+        display: flex;
+        place-content: center space-between;
+        &--happy {
+          color: $green-primary-1;
+        }
+        &--sad {
+          padding-left: $unit-21;
+          color: $red-primary-1;
+        }
       }
     }
   }
@@ -237,7 +246,7 @@ export default class OKRsItem extends Vue {
       width: $unit-40;
     }
     .el-table__expanded-cell {
-      padding: $unit-5 30px;
+      padding: 0 30px;
     }
   }
 }

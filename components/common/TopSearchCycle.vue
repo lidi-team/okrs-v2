@@ -39,6 +39,7 @@ export default class TopSearchCycle extends Vue {
 
   @Watch('cycleId')
   private changeCycleData(cycleId: number) {
+    console.log(cycleId);
     this.$store.commit(MutationState.SET_CURRENT_CYCLE, { id: cycleId });
     this.$emit('changeCycleData');
   }

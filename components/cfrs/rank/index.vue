@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loadingTab" class="rank">
-    <el-row :gutter="20" class>
+    <el-row :gutter="30" class>
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <div class="rank__col">
           <div class="rank__col__header">
@@ -27,7 +27,7 @@
                 </el-avatar>
                 <div class="rank-item__left__info">
                   <p class="rank-item__left__info--fullname">{{ item.user_fullName }}</p>
-                  <p class="rank-item__left__info--department">{{ item.user_fullName }}</p>
+                  <p class="rank-item__left__info--department">{{ displayDepartment(item) }}</p>
                 </div>
               </div>
               <div class="rank-item__right">{{ item.sum }} <icon-star-dashboard /></div>
@@ -49,7 +49,7 @@
               </el-avatar>
               <div class="rank-item__left__info">
                 <p class="rank-item__left__info--fullname">{{ item.user_fullName }}</p>
-                <p class="rank-item__left__info--department">{{ item.user_fullName }}</p>
+                <p class="rank-item__left__info--department">{{ displayDepartment(item) }}</p>
               </div>
             </div>
             <div class="rank-item__right">{{ item.sum }} <icon-star-dashboard /></div>
@@ -92,7 +92,6 @@ export default class Rank extends Vue {
   private dataDetail: object = {};
   private visibleCreateDialog = false;
   private listCycles: any[] = [];
-
   private async getListDataRanking() {
     this.loadingTab = true;
     try {
@@ -125,6 +124,10 @@ export default class Rank extends Vue {
     return index === 1 ? 'top1' : index === 2 ? 'top2' : index === 3 ? 'top3' : 'topdown';
   }
 
+  private displayDepartment(item: any): String {
+    return item.isLeader ? `Leader ${item.name}` : `Thành viên ${item.name}`;
+  }
+
   private async getListCycle() {
     if (this.$store.state.cycle.cycles.length) {
       this.listCycles = this.$store.state.cycle.cycles;
@@ -148,7 +151,6 @@ export default class Rank extends Vue {
 @import '@/assets/scss/main.scss';
 .rank {
   color: $neutral-primary-4;
-  margin-top: $unit-5;
   @include drop-shadow;
   border-radius: $border-radius-base;
   &__col {

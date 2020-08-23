@@ -156,7 +156,6 @@ export default class HomePage extends Vue {
       min-height: 70vh;
       flex: 1;
       padding-bottom: $unit-10;
-      margin: $unit-6 0;
       background-color: $white;
       border-radius: $unit-1;
       box-shadow: $box-shadow-default;
@@ -164,8 +163,8 @@ export default class HomePage extends Vue {
         height: 70vh;
       }
       &--second {
-        margin-left: $unit-6;
-        margin-right: $unit-6;
+        margin-left: $unit-8;
+        margin-right: $unit-8;
         @include breakpoint-down(phone) {
           margin: $unit-6 0;
         }

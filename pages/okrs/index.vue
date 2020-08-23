@@ -1,24 +1,27 @@
 <template>
-  <div v-loading.fullscreen.lock="loadingForm" class="okrs-page">
+  <div class="okrs-page">
     <el-row class="okrs-page__top" type="flex" justify="space-between">
       <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
-        <!-- <base-top-search-cycle :cycle-id.sync="cycleId" /> -->
         <base-top-search-cycle @changeCycleData="getDashBoardOkrs" />
       </el-col>
       <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
-        <el-button v-if="isNotAdminButton()" class="el-button el-button--purple el-button-medium" icon="el-icon-plus" @click="addPersonalOkrs"
-          >Tạo OKRs</el-button
-        >
-        <el-dropdown v-else class="create-okr-dropdown" trigger="click" @command="handleCommand">
-          <el-button class="el-button el-button--purple el-button-medium" icon="el-icon-plus">Tạo OKRs</el-button>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item command="personal">Tạo OKRs cá nhân</el-dropdown-item>
-            <el-dropdown-item command="company">Tạo OKRs công ty</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
+        <el-button v-if="isNotAdminButton()" class="el-button el-button--purple el-button-medium" icon="el-icon-plus" @click="addPersonalOkrs">
+          Tạo OKRs
+        </el-button>
+        <el-popover v-else v-model="visible" placement="bottom" width="160">
+          <div style="text-align: center;">
+            <el-button class="okrs-page__item el-button el-button--white el-button--small" @click="handleCommand('personal')">
+              Tạo OKRs cá nhân
+            </el-button>
+            <el-button class="okrs-page__item el-button el-button--white el-button--small" @click="handleCommand('company')">
+              Tạo OKRs công ty
+            </el-button>
+          </div>
+          <el-button slot="reference" class="el-button el-button--purple el-button-medium" icon="el-icon-plus">Tạo OKRs</el-button>
+        </el-popover>
       </el-col>
     </el-row>
-    <div>
+    <div v-loading="loadingForm">
       <item-okrs
         v-for="(item, index) in itemOKRsData"
         :key="item.textHeader"
@@ -42,24 +45,20 @@ import OkrsRepository from '@/repositories/OkrsRepository';
 import { MutationState, DispatchAction } from '@/constants/app.enum';
 @Component<OKRsPage>({
   name: 'OKRsPage',
-  created() {
-    this.getDashBoardOkrs();
+  async created() {
+    await this.getDashBoardOkrs();
     this.$store.dispatch(DispatchAction.STAFF_OKRS, { cycleId: this.$store.state.cycle.cycle.id, type: 3 });
   },
   destroyed() {
     this.$store.commit(MutationState.CLEAR_STAFF_OKRS, null);
   },
   middleware: ['measureUnit'],
-  head() {
-    return {
-      title: 'OKRs',
-    };
-  },
 })
 export default class OKRsPage extends Vue {
   private loadingForm: boolean = false;
   private visibleCreateOkrsDialog = false;
   private isCompanyOkrs: boolean = false;
+  private visible: boolean = false;
 
   private handleCommand(command: string) {
     if (command === 'company') {
@@ -107,21 +106,34 @@ export default class OKRsPage extends Vue {
 <style lang="scss">
 @import '@/assets/scss/main.scss';
 .okrs-page {
-  width: 85%;
+  width: 98%;
   &__top {
     @include breakpoint-down(phone) {
       flex-direction: column;
     }
-    &--searching {
-      padding: $unit-7 0 $unit-4 0;
-    }
     &--button {
       display: flex;
-      margin: $unit-7 0 $unit-4 0;
       justify-content: flex-end;
       @include breakpoint-down(phone) {
         justify-content: center;
       }
+    }
+  }
+  &__item {
+    &:first-child {
+      padding: 1rem 1.6rem 1rem 1.6rem;
+      border: unset;
+      border-bottom-left-radius: unset;
+      border-bottom-right-radius: unset;
+      border-bottom: 1px solid $purple-primary-1;
+      margin-top: 1px;
+    }
+    &:last-child {
+      padding: 1rem 1.6rem 1rem 1.8rem;
+      margin: 0;
+      border: unset;
+      border-top-left-radius: unset;
+      border-top-right-radius: unset;
     }
   }
   .el-table__empty-block {

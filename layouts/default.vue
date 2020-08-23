@@ -25,10 +25,11 @@ $bg-gray-common: #e5e5e5;
   height: 92vh;
   display: flex;
   &__app {
-    background-color: $bg-gray-common;
-    min-height: calc(100vh - 60px);
-    margin-left: calc(170px + 2rem);
     width: 100%;
+    min-height: calc(100vh - 60px);
+    margin-left: 170px;
+    padding: $unit-8;
+    background-color: $bg-gray-common;
   }
 }
 </style>
