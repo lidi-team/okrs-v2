@@ -203,7 +203,7 @@ export default class ViewProfile extends Vue {
         fullName: temp.data.data.fullName,
         email: temp.data.data.email,
         gender: temp.data.data.gender,
-        dateOfBirth: formatDateToDD(temp.data.data.dateOfBirth),
+        dateOfBirth: temp.data.data.dateOfBirth ? formatDateToDD(temp.data.data.dateOfBirth) : '',
         department: temp.data.data.team.name,
         position: temp.data.data.jobPosition.name,
       };
