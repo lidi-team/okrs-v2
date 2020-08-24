@@ -54,12 +54,12 @@ import { Form } from 'element-ui';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
-import { CfrsRepository } from '@/repositories/CfrsRepository';
+import CfrsRepository from '@/repositories/CfrsRepository';
 import UserRepository from '@/repositories/UserRepository';
-import { RecognitionDTO } from '@/constants/app.interface';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/components/account/account.constant';
+import { CfrsDTO } from '@/constants/app.interface';
 @Component<CreateRecongnitionDialog>({
   name: 'CreateRecongnitionDialog',
   async created() {
@@ -90,7 +90,8 @@ export default class CreateRecongnitionDialog extends Vue {
     objectives: [],
   };
 
-  private recognition: RecognitionDTO = {
+  private recognition: CfrsDTO = {
+    type: 'recognition',
     receiverId: null,
     content: '',
     evaluationCriteriaId: null,
@@ -164,15 +165,15 @@ export default class CreateRecongnitionDialog extends Vue {
     });
   }
 
-  private async reloadHistoryCfrs() {
+  private reloadHistoryCfrs() {
     if (this.$route.query.tab === 'history') {
       // @ts-ignore
-      this.$parent.$children[1].$children[4].loadingTab = true;
-      // @ts-ignore
-      await this.$parent.$children[1].$children[4].getListDataHistory(this.$store.state.cycle.cycle.id);
+      const historyComponent: any = this.$parent.$children[1].$children[4];
+      const cycleId = this.$store.state.cycle.cycleTemp ? this.$store.state.cycle.cycleTemp : this.$store.state.cycle.cycle.id;
+      historyComponent.loadingTab = true;
+      historyComponent.changeListDataOnCycle(cycleId);
       setTimeout(() => {
-        // @ts-ignore
-        this.$parent.$children[1].$children[4].loadingTab = false;
+        historyComponent.loadingTab = false;
       }, 500);
     }
   }

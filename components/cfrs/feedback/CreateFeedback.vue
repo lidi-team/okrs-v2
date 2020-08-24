@@ -44,12 +44,12 @@
 import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
-import { CfrsRepository } from '@/repositories/CfrsRepository';
+import CfrsRepository from '@/repositories/CfrsRepository';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
-import { FeedbackDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/components/account/account.constant';
+import { CfrsDTO } from '@/constants/app.interface';
 @Component<CreateFeedbackDialog>({
   name: 'CreateFeedbackDialog',
   components: {
@@ -68,7 +68,8 @@ export default class CreateFeedbackDialog extends Vue {
   @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncCreateOkrsDialog!: boolean;
 
   private listEvaluationCriterias: any[] = [];
-  private contentFeedback: FeedbackDTO = {
+  private contentFeedback: CfrsDTO = {
+    type: 'feedback',
     content: '',
     evaluationCriteriaId: null,
   };
@@ -87,7 +88,7 @@ export default class CreateFeedbackDialog extends Vue {
     (this.$refs.contentFeedback as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
         console.log(this.dataFeedback);
-        const payload: FeedbackDTO = {
+        const payload: CfrsDTO = {
           // Nếu là cấp trên -> Lấy Id của cấp dưới, ngược lại
           receiverId: this.dataFeedback.isSuperior ? this.dataFeedback.user.id : this.dataFeedback.objective.user.id,
           checkinId: this.dataFeedback.id,

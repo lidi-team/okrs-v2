@@ -26,21 +26,21 @@
           <el-table-column align="center" label="Tiến độ" min-width="150">
             <template slot-scope="scope">
               <el-form-item :prop="'checkinDetails.' + scope.$index + '.progress'" :rules="rules.progress">
-                <el-input v-model="scope.row.progress" type="textarea" :rows="4" placeholder="Nhập tiến độ"> </el-input>
+                <el-input v-model="scope.row.progress" type="textarea" :rows="4" placeholder="Nhập tiến độ"></el-input>
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column align="center" label="Vấn đề" min-width="150">
             <template slot-scope="scope">
               <el-form-item :prop="'checkinDetails.' + scope.$index + '.problems'" :rules="rules.problems">
-                <el-input v-model="scope.row.problems" type="textarea" :rows="4" placeholder="Nhập vấn đề"> </el-input>
+                <el-input v-model="scope.row.problems" type="textarea" :rows="4" placeholder="Nhập vấn đề"></el-input>
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column align="center" label="Kế hoạch" min-width="150">
             <template slot-scope="scope">
               <el-form-item :prop="'checkinDetails.' + scope.$index + '.plans'" :rules="rules.plans">
-                <el-input v-model="scope.row.plans" type="textarea" :rows="4" placeholder="Nhập kế hoạch"> </el-input>
+                <el-input v-model="scope.row.plans" type="textarea" :rows="4" placeholder="Nhập kế hoạch"></el-input>
               </el-form-item>
             </template>
           </el-table-column>
@@ -78,8 +78,9 @@
             </el-col>
             <el-col :sm="24" :lg="12">
               <el-form-item label-width="30%" :prop="'isCompleted'" label="Hoàn thành OKRs">
-                <el-checkbox v-model="syncCheckin.isCompleted"></el-checkbox> </el-form-item
-            ></el-col>
+                <el-checkbox v-model="syncCheckin.isCompleted"></el-checkbox>
+              </el-form-item>
+            </el-col>
           </el-row>
         </div>
       </el-form>

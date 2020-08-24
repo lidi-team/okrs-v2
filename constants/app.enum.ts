@@ -100,8 +100,7 @@ export enum ResourcesEnpoint {
   Objective = 'objectives',
   KeyResults = 'key_results',
   Checkin = 'checkins',
-  Feedback = 'feedback',
-  Recognition = 'recognitions',
+  CFRs = 'cfrs',
   Dashboard = 'dashboard',
 }
 

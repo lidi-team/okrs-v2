@@ -7,12 +7,20 @@
     <!-- Nếu là Recognition -->
     <el-row v-if="itemData.objective" :gutter="20">
       <el-col :span="7" class="detail-history__attribute">Mục tiêu</el-col>
-      <el-col :span="17" class="detail-history__value">{{ itemData.objective.title }}</el-col>
+      <el-col :span="17" class="detail-history__value">
+        <a target="_blank" :href="`${$config.baseURL}/OKRs/chi-tiet/${itemData.objective.id}`">
+          {{ itemData.objective.title }}
+        </a>
+      </el-col>
     </el-row>
     <!-- Nếu là feedback -->
     <el-row v-if="itemData.type === 'feedback' && itemData.checkin.objective.title" :gutter="20">
       <el-col :span="7" class="detail-history__attribute">Mục tiêu</el-col>
-      <el-col :span="17" class="detail-history__value">{{ itemData.checkin.objective.title }}</el-col>
+      <el-col :span="17" class="detail-history__value">
+        <a target="_blank" :href="`${$config.baseURL}/OKRs/chi-tiet/${itemData.checkin.objective.id}`">
+          {{ itemData.checkin.objective.title }}
+        </a>
+      </el-col>
     </el-row>
     <div v-if="type === 'sent'">
       <el-row :gutter="20">

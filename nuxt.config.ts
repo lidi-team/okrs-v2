@@ -65,9 +65,9 @@ const nuxtConfig: NuxtConfig = {
     {
       src: '@/plugins/vue-filter-date',
     },
-    { src: '~/plugins/vue-simplemde' },
-    { src: '~/plugins/md-it' },
-    { src: '~/plugins/vue-progress-bar' },
+    { src: '@/plugins/vue-simplemde' },
+    { src: '@/plugins/md-it' },
+    { src: '@/plugins/vue-progress-bar' },
   ],
   /*
    ** Nuxt.js dev-modules
@@ -79,16 +79,16 @@ const nuxtConfig: NuxtConfig = {
    * @docs https://github.com/nuxt/components
    */
   components: [
-    '~/components',
-    { path: '~/components/common', prefix: 'base' },
-    { path: '~/components/account', prefix: 'account' },
-    { path: '~/components/profile', prefix: 'profile' },
-    { path: '~/components/okrs', prefix: '' },
-    { path: '~/components/okrs/steps', prefix: 'step' },
-    { path: '~/components/manage', prefix: '' },
-    { path: '~/components/admin', prefix: '' },
-    { path: '~/components/cfrs', prefix: 'cfrs' },
-    { path: '~/components/dashboard', prefix: 'dashboard' },
+    '@/components',
+    { path: '@/components/common', prefix: 'base' },
+    { path: '@/components/account', prefix: 'account' },
+    { path: '@/components/profile', prefix: 'profile' },
+    { path: '@/components/okrs', prefix: '' },
+    { path: '@/components/okrs/steps', prefix: 'step' },
+    { path: '@/components/manage', prefix: '' },
+    { path: '@/components/admin', prefix: '' },
+    { path: '@/components/cfrs', prefix: 'cfrs' },
+    { path: '@/components/dashboard', prefix: 'dashboard' },
   ],
   /*
    ** Nuxt.js modules
