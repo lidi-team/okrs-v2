@@ -1,11 +1,11 @@
 <template>
   <div v-loading="loadingTab" class="feedback">
     <el-row :gutter="30" class>
-      <el-col v-if="listWatingFeedback.inferior" :md="12" :lg="12">
+      <el-col v-if="listWatingFeedback.inferior && $store.state.auth.user.role.name !== 'STAFF'" v-loading="loadingInferior" :md="12" :lg="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ displayHeader('inferior') }}</p>
-          <p v-if="!listWatingFeedback.inferior.checkins.length" class="cfr">Không có dữ liệu để phản hồi</p>
-          <div v-for="item in listWatingFeedback.inferior.checkins" :key="item.id" class="cfr">
+          <p v-if="!listWatingFeedback.inferior.checkins.items.length" class="cfr">Không có dữ liệu để phản hồi</p>
+          <div v-for="item in listWatingFeedback.inferior.checkins.items" :key="item.id" class="cfr">
             <div class="cfr__left" @click="viewDetailCheckin(item, listWatingFeedback.inferior.type)">
               <el-avatar :size="30">
                 <img :src="item.objective.user.avatarURL ? item.objective.user.avatarURL : item.objective.user.gravatarURL" alt="avatar" />
@@ -25,13 +25,21 @@
               >
             </div>
           </div>
+          <base-pagination
+            v-if="listWatingFeedback.inferior.checkins.items.length"
+            class="feedback__col__pagination"
+            :total="totalItems"
+            :page.sync="paramsContext.page"
+            :limit.sync="paramsContext.limit"
+            @pagination="handlePagination($event)"
+          />
         </div>
       </el-col>
       <el-col v-if="listWatingFeedback.superior" :md="12" :lg="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ displayHeader('superior') }}</p>
           <p v-if="!listWatingFeedback.superior.checkins.length" class="cfr">Không có dữ liệu để phản hồi</p>
-          <div v-for="item in listWatingFeedback.superior.checkins" v-else :key="item.id" class="cfr">
+          <div v-for="item in listWatingFeedback.superior.items" v-else :key="item.id" class="cfr">
             <div class="cfr__left" @click="viewDetailCheckin(item, listWatingFeedback.superior.type)">
               <el-avatar :size="30">
                 <img
@@ -77,9 +85,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import { CfrsRepository } from '@/repositories/CfrsRepository';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import CfrsRepository from '@/repositories/CfrsRepository';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
+import { ParamsQuery } from '@/constants/app.interface';
 @Component<Feedback>({
   name: 'Feedback',
   async created() {
@@ -94,13 +103,24 @@ import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 })
 export default class Feedback extends Vue {
   private loadingTab: boolean = false;
+  private loadingInferior: boolean = false;
   private detailCheckinInfo: any = null;
+  private totalItems: number = 1;
+
+  private paramsContext: ParamsQuery = {
+    page: 1,
+    limit: 10,
+  };
+
   private listWatingFeedback: any = {
     superior: {
       checkins: [],
     },
     inferior: {
-      checkins: [],
+      checkins: {
+        items: [],
+        meta: {},
+      },
     },
   };
 
@@ -114,8 +134,31 @@ export default class Feedback extends Vue {
     },
   };
 
-  private visibleCreateDialog: Boolean = false;
-  private visibleDetailDialog: Boolean = false;
+  private visibleCreateDialog: boolean = false;
+  private visibleDetailDialog: boolean = false;
+
+  @Watch('$route.query.page')
+  private async changeListWaitingFeedbacks(page: string) {
+    this.loadingInferior = true;
+    try {
+      this.paramsContext.page = +page;
+      await CfrsRepository.getListWaitingFeedback(this.paramsContext).then(({ data }) => {
+        this.listWatingFeedback.inferior = Object.freeze(data.data.inferior);
+        setTimeout(() => {
+          this.loadingInferior = false;
+        }, 300);
+      });
+    } catch (error) {
+      setTimeout(() => {
+        this.loadingInferior = false;
+      }, 300);
+    }
+  }
+
+  private handlePagination(pagination: any) {
+    this.$router.push(`?tab=feedback&page=${pagination.page}`);
+  }
+
   private async reloadData() {
     this.loadingTab = true;
     await this.getListWatingFeedbacks();
@@ -126,10 +169,10 @@ export default class Feedback extends Vue {
 
   private async getListWatingFeedbacks() {
     try {
-      await CfrsRepository.getListWaitingFeedback().then((res) => {
-        this.listWatingFeedback.inferior = Object.freeze(res.data.data.inferior);
-        this.listWatingFeedback.superior = Object.freeze(res.data.data.superior);
-        console.log(this.listWatingFeedback);
+      await CfrsRepository.getListWaitingFeedback(this.paramsContext).then(({ data }) => {
+        this.listWatingFeedback.inferior = Object.freeze(data.data.inferior);
+        this.listWatingFeedback.superior = Object.freeze(data.data.superior);
+        this.totalItems = Object.freeze(data.data.inferior.checkins.meta.totalItems);
       });
     } catch (error) {}
   }
@@ -204,6 +247,11 @@ export default class Feedback extends Vue {
     &__empty {
       text-align: center;
       padding: $unit-3;
+    }
+    &__pagination {
+      padding: $unit-4 0;
+      display: flex;
+      place-content: center;
     }
   }
 }
