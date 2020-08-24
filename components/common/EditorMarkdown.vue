@@ -1,9 +1,7 @@
 <template>
   <div class="wrap-editor">
     <div class="wrap-editor__form">
-      <h1 class="wrap-editor__title">
-        {{ $nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi' ? 'Thêm mới bài học OKRs' : 'Cập nhật bài học OKRs' }}
-      </h1>
+      <h1 class="wrap-editor__title">{{ $nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi' ? 'Thêm mới bài học OKRs' : 'Cập nhật bài học OKRs' }}</h1>
       <el-row :gutter="10">
         <el-col :span="24">
           <el-form ref="editorForm" :model="formLesson" label-position="top" style="width: 100%;" :rules="rules">
@@ -12,6 +10,9 @@
             </el-form-item>
             <el-form-item label="Nội dung:" prop="content" class="custom-label">
               <vue-simplemde ref="md" v-model="formLesson.content" :configs="config" preview-class="markdown-body" />
+            </el-form-item>
+            <el-form-item label="Mô tả:" prop="abstract">
+              <el-input v-model="formLesson.abstract" type="textarea" :rows="2" placeholder="Nhập mô tả bài viết"></el-input>
             </el-form-item>
             <el-form-item label="Độ ưu tiên" class="custom-label" prop="index">
               <el-select v-model="formLesson.index" class="custom-label">
@@ -22,9 +23,9 @@
         </el-col>
         <div class="wrap-editor__footer">
           <el-button class="el-button--white" @click="handleCancel">Hủy</el-button>
-          <el-button class="el-button--purple" :loading="loading" @click="handleSubmit(formLesson)">{{
-            $nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi' ? 'Tạo bài' : 'Cập nhật'
-          }}</el-button>
+          <el-button class="el-button--purple" :loading="loading" @click="handleSubmit(formLesson)">
+            {{ $nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi' ? 'Tạo bài' : 'Cập nhật' }}
+          </el-button>
         </div>
       </el-row>
     </div>
@@ -67,6 +68,7 @@ export default class EditorMarkdown extends Vue {
 
   private formLesson = {
     title: this.post ? this.post.title : '',
+    abstract: this.post ? this.post.abstract : '',
     content: this.post ? this.post.content : '',
     index: this.post ? this.post.index : this.custom,
   };

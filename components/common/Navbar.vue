@@ -112,7 +112,7 @@ export default class Navbar extends Vue {
   private show: boolean = true;
 
   private async logout() {
-    await this.$store.dispatch(DispatchAction.LOGOUT);
+    await this.$store.dispatch(DispatchAction.CLEAR);
     this.$router.push('/login');
   }
 
