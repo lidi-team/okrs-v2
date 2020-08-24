@@ -44,7 +44,7 @@ export default class EditorMarkdown extends Vue {
   @Prop({ default: undefined }) readonly post;
   @Prop(Number) length!: number;
 
-  private loading: boolean = true;
+  private loading: boolean = false;
 
   private rules: Maps<Rule[]> = {
     title: [

@@ -201,7 +201,7 @@ export default class ManageCycleOkrs extends Vue {
   width: 100%;
 }
 .pagination-bottom {
-  margin-top: 2rem;
+  margin-top: $unit-8;
 }
 .cycle-okrs-dialog {
   .el-date-editor.el-input {

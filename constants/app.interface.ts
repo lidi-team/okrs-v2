@@ -154,6 +154,12 @@ export interface ParamsQuery {
   text?: string;
 }
 
+export interface HistoryCfrsParams extends ParamsQuery {
+  cycleId?: number;
+  userId?: number;
+  type?: 1 | 2 | 3;
+}
+
 export interface ParamsUser extends ParamsQuery {
   status?: number;
 }
@@ -189,16 +195,12 @@ export interface DialogTooltipAction {
   dialogType: number;
 }
 
-export interface RecognitionDTO {
-  receiverId: Number | null;
+export interface CfrsDTO {
+  type: 'feedback' | 'recognition';
+  senderId?: Number;
+  receiverId?: Number | null;
   content: String;
   evaluationCriteriaId: Number | null;
-  objectiveId: Number | null;
-}
-
-export interface FeedbackDTO {
-  receiverId?: Number;
+  objectiveId?: Number | null;
   checkinId?: Number;
-  evaluationCriteriaId: Number | null;
-  content: String;
 }
