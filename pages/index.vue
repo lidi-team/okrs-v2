@@ -81,6 +81,7 @@ export default class HomePage extends Vue {
         }, 1000);
       })
       .catch((err) => {
+        this.loadingAdmin = false;
         console.log(err);
       });
   }
@@ -129,6 +130,7 @@ export default class HomePage extends Vue {
         }, 1000);
       })
       .catch((err) => {
+        this.loading = false;
         console.log(err);
       });
   }
