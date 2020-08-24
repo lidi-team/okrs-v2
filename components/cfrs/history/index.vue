@@ -120,12 +120,11 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import InfiniteLoading, { StateChanger } from 'vue-infinite-loading';
-import CreateFeedback from './Create.vue';
-import { HistoryType, itemCfrsDefault } from './history.const';
+import { itemCfrsDefault } from './history.const';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import { MutationState } from '@/constants/app.enum';
-import { ParamsQuery, HistoryCfrsParams } from '@/constants/app.interface';
+import { HistoryCfrsParams } from '@/constants/app.interface';
 
 @Component<History>({
   name: 'History',
