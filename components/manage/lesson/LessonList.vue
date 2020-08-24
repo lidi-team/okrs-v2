@@ -14,9 +14,9 @@
                     <nuxt-link :to="`/hoc-okrs/${post.slug}`">
                       <div
                         class="xs-fillWidth table__image"
-                        style="
-                          background-image: url(https://cdn.hit.vn/bongdaplus/17f3b033-f714-4468-50e1-5d87ba780b35/Medium/6645a93f-13f2-495b-5f81-a4461752b2f8.jpg);
-                        "
+                        :style="`
+                          background-image: url(${post.thumbnail});
+                        `"
                       ></div>
                     </nuxt-link>
                   </td>
@@ -27,12 +27,12 @@
                       </h1>
                     </nuxt-link>
                     <div class="table__des">
-                      Các tựa game mobile tiếp tục thống trị bảng xếp hạng giải đấu e-Sports được theo dõi nhiều nhất trên quy mô toàn cầu.
+                      {{ post.abstract }}
                     </div>
                     <div class="xs-marginTop10 table__author">
                       <span style="color: #757575;">{{ new Date(post.createdAt) | dateFormat('DD/MM/YYYY') }}</span
                       ><img
-                        src="https://ci5.googleusercontent.com/proxy/BWQxaNTf44teTKkE9ppQVJU1-ezz0siU-vkhe332KMMVV_AFWxcaYWMZT_Sk3HPOcIJ5FoB1GsbsW35FXrLA8KomJ2MAlcwUeZzQ67Fe4IH1aQS-wQ=s0-d-e1-ft#https://cdn-images-1.medium.com/proxy/1*dMba6LR4dsoQTHzQ5T7oaA.png"
+                        src="https://cdn-images-1.medium.com/proxy/1*dMba6LR4dsoQTHzQ5T7oaA.png"
                         alt="Member only content"
                         width="12"
                         height="12"
@@ -150,6 +150,8 @@ export default class LessonList extends Vue {
     margin-top: 4px;
   }
   &__author {
+    display: flex;
+    align-items: center;
     font-size: $text-base;
     color: #757575;
     margin-top: 8px;

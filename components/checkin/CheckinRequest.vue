@@ -106,7 +106,7 @@ export default class DetailHistory extends Vue {
   private status = statusCheckin;
   private dateFormat: string = 'dd/MM/yyyy';
   private dropdownConfident = confidentLevel;
-  private loading: boolean = true;
+  private loading: boolean = false;
 
   private customColors(confident) {
     return confident === 1 ? '#DE3618' : confident === 2 ? '#47C1BF' : '#50B83C';
