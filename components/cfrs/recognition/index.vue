@@ -104,7 +104,11 @@ export default class CreateRecongnitionDialog extends Vue {
   private isCreating: Boolean = false;
 
   public rules: Maps<Rule[]> = {
-    content: [{ required: true, message: 'Vui lòng nhập nội dung phản hồi', trigger: 'blur' }, max255Char],
+    content: [
+      { type: 'string', required: true, message: 'Vui lòng nhập nội dung phản hồi', trigger: 'blur' },
+      { type: 'string', min: 50, message: 'Nội dung ghi nhận ít nhất phải chứa 50 ký tự', trigger: 'blur' },
+      max255Char,
+    ],
     evaluationCriteriaId: [{ required: true, message: 'Vui lòng chọn tiêu chí đánh giá', trigger: 'blur' }],
     receiverId: [{ required: true, message: 'Vui lòng chọn người được ghi nhận', trigger: 'blur' }],
   };
