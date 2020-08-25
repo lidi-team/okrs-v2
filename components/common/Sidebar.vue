@@ -1,35 +1,38 @@
 <template>
-  <el-row v-if="user" class="sidebar" type="flex" justify="start" align="center">
+  <el-row v-if="user" :class="['sidebar', { 'hide-nav': isHide }]" type="flex" justify="start" align="center">
+    <div class="sidebar__btn-group">
+      <div class="sidebar__switch-btn" @click="isHide = !isHide"></div>
+    </div>
     <nuxt-link to="/" :class="['sidebar__link', { 'nuxt-link-exact-active': isHome }]">
       <div class="sidebar__link__tab">
         <Dashboard class="sidebar__link__tab__icon" />
-        <span>Dashboard</span>
+        <span class="hidden-tablet">Dashboard</span>
       </div>
     </nuxt-link>
     <nuxt-link to="/checkin" :class="['sidebar__link', { 'nuxt-link-exact-active': isCheckinActive }]">
       <div class="sidebar__link__tab">
         <Checkin class="sidebar__link__tab__icon" />
-        <span>Check-in</span>
+        <span class="hidden-tablet">Check-in</span>
       </div>
     </nuxt-link>
     <nuxt-link to="/OKRs" :class="['sidebar__link', { 'nuxt-link-exact-active': isOkrsActive }]">
       <div class="sidebar__link__tab">
         <OKRs class="sidebar__link__tab__icon" />
-        <span>OKRs</span>
+        <span class="hidden-tablet">OKRs</span>
       </div>
     </nuxt-link>
     <nuxt-link to="/CFRs" :class="['sidebar__link', { 'nuxt-link-exact-active': isCfrsActive }]">
       <div class="sidebar__link__tab">
         <CFRs class="sidebar__link__tab__icon" />
-        <span>CFRs</span>
+        <span class="hidden-tablet">CFRs</span>
       </div>
     </nuxt-link>
     <!-- Start Role Permission action -->
     <nuxt-link v-if="user.role.name === 'ADMIN'" to="/admin/cai-dat" :class="['sidebar__link', { 'nuxt-link-exact-active': isSettingCompanyActive }]">
       <div class="sidebar__link__tab">
         <Setting class="sidebar__link__tab__icon" />
-        <p>Cài đặt</p>
-        <p>công ty</p>
+        <p class="hidden-tablet">Cài đặt</p>
+        <p class="hidden-tablet">công ty</p>
       </div>
     </nuxt-link>
     <nuxt-link v-if="user.role.name === 'HR'" to="/quan-ly/nhan-su" :class="['sidebar__link', { 'nuxt-link-exact-active': isHRsActive }]">
@@ -69,6 +72,7 @@ import { GetterState } from '@/constants/app.vuex';
   },
 })
 export default class SideBar extends Vue {
+  private isHide: boolean = false;
   private get isHome() {
     if (this.$route.path === '/' || this.$route.query.cycleId) {
       return true;
@@ -105,8 +109,34 @@ export default class SideBar extends Vue {
   color: $purple-primary-2;
   box-shadow: $box-shadow-default;
   background-color: $white;
-  position: fixed;
-  width: 170px;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  position: relative;
+  z-index: 99;
+  width: 160px;
+  @include breakpoint-down(tablet) {
+    width: 60px;
+  }
+  &__switch-btn {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABIklEQVRYR2NkGGDAOMD2M4w6AB4CDTM3c/1jYM5kYPjPS8to+f+f4dOXb4LT+4usvoPsgTugdua2pYwMDFG0tBxh9v/FTenecagOmLF1OyMjowd9HMCwvSndy2vQOaCZkZGxhh4h8P8/Q31zhlcTSgiAOA0ztpr8+c/EQ0tHsDAxfmpI9zgHs2O0HBg8IZA28wyrFOML0z9/mdlomQYYGRl+Mr/gON3Q4PhntCAaXAVR3YxtSxgYGaJpGf9464KGqft5/jD9MKGHA75+5z+JURvSw2JsdgyecmBQhEDt9G2G/xkY+WnpGEaG/x+bM73OY1RGtTO2NTIyMtTR0nKY2Vir49oR3yIaFAXRX+bvGYyM/2naIsLZLKdH4hstiAZlCAAAVGZ+IcIkyAcAAAAASUVORK5CYII=);
+    background-size: 16px;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: #f2f4f6;
+    margin-top: 10px;
+    display: block;
+  }
+  &__btn-group {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    -webkit-transform: translateX(10px);
+    transform: translateX(10px);
+  }
   .nuxt-link-exact-active {
     @include sidebar-hover;
   }
@@ -117,6 +147,10 @@ export default class SideBar extends Vue {
     padding: $unit-3;
     transition: all 0.2s ease-in-out;
     margin: $unit-4 0 0 0;
+    @include breakpoint-down(tablet) {
+      margin-top: $unit-8;
+      padding: 0;
+    }
     &:hover {
       @include sidebar-hover;
     }
@@ -133,6 +167,17 @@ export default class SideBar extends Vue {
         @include size($unit-10, $unit-10);
       }
     }
+  }
+}
+.hide-nav {
+  margin-left: -160px;
+  @include breakpoint-down(tablet) {
+    margin-left: -60px;
+  }
+}
+.hidden-tablet {
+  @include breakpoint-down(tablet) {
+    display: none;
   }
 }
 </style>

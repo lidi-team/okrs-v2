@@ -41,12 +41,13 @@ export default class Error404Page extends Vue {
 </script>
 
 <style lang="scss" scoped>
-.wscn-http404-container {
+@import '@/assets/scss/main.scss';
+/* .wscn-http404-container {
   transform: translate(-50%, -50%);
   position: absolute;
   top: 40%;
   left: 50%;
-}
+} */
 
 .wscn-http404 {
   position: relative;
@@ -59,6 +60,9 @@ export default class Error404Page extends Vue {
     float: left;
     width: 600px;
     overflow: hidden;
+    @include breakpoint-down(tablet) {
+      display: none;
+    }
 
     &__parent {
       width: 100%;
