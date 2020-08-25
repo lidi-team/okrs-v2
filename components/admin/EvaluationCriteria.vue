@@ -4,7 +4,10 @@
       <el-table-column prop="content" label="Tiêu chí đánh giá" min-width="400px"></el-table-column>
       <el-table-column label="Số sao" min-width="70px">
         <template v-slot="{ row }">
-          <span>{{ row.numberOfStar }} <star-icon /></span>
+          <span>
+            {{ row.numberOfStar }}
+            <star-icon />
+          </span>
         </template>
       </el-table-column>
       <el-table-column label="Kiểu" min-width="300px">
@@ -14,7 +17,6 @@
       </el-table-column>
       <el-table-column label="Ngày cập nhật" min-width="120px">
         <template v-slot="{ row }">
-          <!-- Vue Fileter Date Plugin -->
           <span>{{ new Date(row.updatedAt) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
       </el-table-column>
@@ -85,7 +87,11 @@ import StarIcon from '@/assets/images/admin/star.svg';
   },
   filters: {
     typeFormatter(cellValue) {
-      return cellValue === EvaluationCriteriaEnum.LEADER_TO_MEMBER ? 'Sếp đánh giá nhân viên' : 'Nhân viên đánh giá sếp';
+      return cellValue === EvaluationCriteriaEnum.RECOGNITION
+        ? 'Ghi nhận'
+        : cellValue === EvaluationCriteriaEnum.LEADER_TO_MEMBER
+        ? 'Cấp trên đánh giá thành viên'
+        : 'Thành viên đánh giá cấp trên';
     },
   },
   mounted() {
@@ -103,9 +109,9 @@ export default class ManageEvaluationCriteria extends Vue {
   @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
 
   private typeCriterias: SelectOptionDTO[] = [
-    { label: 'Sếp đánh giá nhân viên', value: EvaluationCriteriaEnum.LEADER_TO_MEMBER },
-    { label: 'Nhân viên đánh giá sếp', value: EvaluationCriteriaEnum.MEMBER_TO_LEADER },
-    { label: 'Recognition', value: EvaluationCriteriaEnum.RECOGNITION },
+    { label: 'Cấp trên đánh giá thành viên', value: EvaluationCriteriaEnum.LEADER_TO_MEMBER },
+    { label: 'Thành viên đánh giá cấp trên', value: EvaluationCriteriaEnum.MEMBER_TO_LEADER },
+    { label: 'Ghi nhận', value: EvaluationCriteriaEnum.RECOGNITION },
   ];
 
   public loadingTable: boolean = false;
@@ -119,7 +125,10 @@ export default class ManageEvaluationCriteria extends Vue {
 
   private rules: Maps<Rule[]> = {
     content: [{ validator: this.sanitizeInput, trigger: 'change' }, max255Char],
-    numberOfStar: [{ type: 'number', min: 1, required: true, message: 'Số sao phải là 1 số nguyên không âm', trigger: 'blur' }],
+    numberOfStar: [
+      { type: 'number', required: true, message: 'Số sao phải là 1 số nguyên', trigger: 'blur' },
+      { min: 1, max: 100, message: 'Số sao tối thiểu là 1 và tối đa là 100', trigger: 'blur' },
+    ],
     type: [{ type: 'string', required: true, message: 'Vui lòng chọn kiểu của tiêu chí', trigger: 'change' }],
   };
 
@@ -195,6 +204,9 @@ export default class ManageEvaluationCriteria extends Vue {
 @import '@/assets/scss/main.scss';
 .criteria-admin {
   width: 100%;
+  &__icon {
+    cursor: pointer;
+  }
 }
 .pagination-bottom {
   margin-top: 2rem;
