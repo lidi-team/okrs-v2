@@ -1,13 +1,13 @@
 <template>
-  <fragment>
+  <div style="overflow: hidden; height: 100vh;">
     <base-navbar />
-    <div class="authenticated-screen">
+    <div id="app">
       <base-sidebar />
       <div class="authenticated-screen__app">
         <nuxt />
       </div>
     </div>
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
@@ -21,14 +21,18 @@ export default class Layout extends Vue {}
 <style lang="scss">
 @import '@/assets/scss/main.scss';
 $bg-gray-common: #e5e5e5;
-.authenticated-screen {
-  height: 92vh;
+#app {
+  height: 100vh;
+  overflow: hidden;
   display: flex;
+}
+.authenticated-screen {
   &__app {
+    flex: 1;
+    overflow: auto;
     width: 100%;
-    min-height: calc(100vh - 60px);
-    margin-left: 170px;
-    padding: $unit-8;
+    margin: 0 auto;
+    padding: $unit-10;
     background-color: $bg-gray-common;
   }
 }

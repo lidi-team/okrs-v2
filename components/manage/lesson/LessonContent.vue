@@ -8,8 +8,6 @@
           alt="avatar-logo"
           class="lesson-content__avatar"
           src="https://avatars3.githubusercontent.com/u/23659823?s=460&u=cbb3ca39bc2e9969614339f47ff3743f688f1a11&v=4"
-          width="48"
-          height="48"
         />
       </div>
       <div class="lesson-content__author">
@@ -75,9 +73,9 @@ export default class LessonContent extends Vue {
   }
   &__avatar {
     display: block;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 100%;
   }
   &__author {
     width: 100%;
