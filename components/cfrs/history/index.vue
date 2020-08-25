@@ -84,9 +84,6 @@
                   </div>
                   <div class="icon__avatar">
                     <el-avatar :size="30">
-                      <img :src="item.sender.avatarURL ? item.sender.avatarURL : item.sender.gravatarURL" alt="avatar" />
-                    </el-avatar>
-                    <el-avatar :size="30">
                       <img :src="item.receiver.avatarURL ? item.receiver.avatarURL : item.receiver.gravatarURL" alt="avatar" />
                     </el-avatar>
                   </div>
@@ -344,19 +341,20 @@ export default class History extends Vue {
             align-self: center;
             margin-left: $unit-4;
             p {
-              @include truncate-oneline;
-              margin: unset;
-              display: flex;
+              @include text-ellipsis(1);
             }
             .content__title {
+              margin: unset;
               font-weight: bold;
             }
             .content__description {
+              margin: unset;
               font-size: 0.875rem;
               color: $neutral-primary-4;
               white-space: normal;
             }
             .content__direction {
+              margin: unset;
               font-style: italic;
               font-size: $unit-3;
               color: $neutral-primary-3;
@@ -370,6 +368,7 @@ export default class History extends Vue {
           padding-right: $unit-4;
           font-weight: $font-weight-medium;
           font-size: $unit-5;
+          margin-left: $unit-2;
           svg {
             display: flex;
             align-self: center;
