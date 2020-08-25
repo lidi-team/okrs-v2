@@ -35,7 +35,7 @@ import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
 import { notificationConfig } from '@/constants/app.constant';
-import { EvaluationCriteriorDTO } from '@/constants/app.interface';
+import { EvaluationCriteriorDTO, SelectOptionDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import CriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
@@ -47,10 +47,10 @@ export default class CriteriaDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
   @PropSync('visibleDialog', { type: Boolean, required: true }) public syncCriteriaDialog!: boolean;
 
-  private typeCriterias: object[] = [
-    { label: 'Sếp đánh giá nhân viên', value: EvaluationCriteriaEnum.LEADER_TO_MEMBER },
-    { label: 'Nhân viên đánh giá sếp', value: EvaluationCriteriaEnum.MEMBER_TO_LEADER },
-    { label: 'Recognition', value: EvaluationCriteriaEnum.RECOGNITION },
+  private typeCriterias: SelectOptionDTO[] = [
+    { label: 'Cấp trên đánh giá thành viên', value: EvaluationCriteriaEnum.LEADER_TO_MEMBER },
+    { label: 'Thành viên đánh giá cấp trên', value: EvaluationCriteriaEnum.MEMBER_TO_LEADER },
+    { label: 'Ghi nhận', value: EvaluationCriteriaEnum.RECOGNITION },
   ];
 
   private loading: boolean = false;
@@ -61,8 +61,11 @@ export default class CriteriaDialog extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    content: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }, max255Char],
-    numberOfStar: [{ type: 'number', required: true, message: 'Số sao phải là 1 số nguyên', trigger: 'blur' }],
+    content: [{ validator: this.sanitizeInput, trigger: 'blur' }, max255Char],
+    numberOfStar: [
+      { type: 'number', required: true, message: 'Số sao phải là 1 số nguyên', trigger: 'blur' },
+      { type: 'number', min: 1, max: 100, message: 'Số sao tối thiểu là 1 và tối đa là 100', trigger: 'blur' },
+    ],
     type: [{ type: 'string', required: true, message: 'Vui lòng chọn kiểu của tiêu chí', trigger: 'blur' }],
   };
 
