@@ -1,5 +1,5 @@
 <template>
-  <div class="okrs-page">
+  <div v-loading="loadingComponent" class="okrs-page">
     <el-row class="okrs-page__top" type="flex" justify="space-between">
       <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
         <base-top-search-cycle @changeCycleData="getDashBoardOkrs" />
@@ -31,33 +31,45 @@
         :reload-data="getDashBoardOkrs"
       />
     </div>
-    <create-okrs-dialog
-      v-if="visibleCreateOkrsDialog"
-      :is-company-okrs="isCompanyOkrs"
-      :visible-dialog.sync="visibleCreateOkrsDialog"
-      :reload-data="getDashBoardOkrs"
-    />
+    <transition name="el-fade-in">
+      <create-okrs-dialog
+        v-if="visibleCreateOkrsDialog"
+        :is-company-okrs="isCompanyOkrs"
+        :visible-dialog.sync="visibleCreateOkrsDialog"
+        :reload-data="getDashBoardOkrs"
+      />
+    </transition>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import { MutationState, DispatchAction } from '@/constants/app.vuex';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import { MutationState, DispatchAction } from '@/constants/app.enum';
 @Component<OKRsPage>({
   name: 'OKRsPage',
   async created() {
     await this.getDashBoardOkrs();
-    this.$store.dispatch(DispatchAction.STAFF_OKRS, { cycleId: this.$store.state.cycle.cycle.id, type: 3 });
   },
-  destroyed() {
-    this.$store.commit(MutationState.CLEAR_STAFF_OKRS, null);
+  mounted() {
+    this.loadingComponent = true;
+    this.$store.dispatch(DispatchAction.SET_STAFF_OKRS, { cycleId: this.$store.state.cycle.cycle.id, type: 3 });
+    setTimeout(() => {
+      this.loadingComponent = false;
+    }, 500);
+    setTimeout(() => {
+      this.$store.dispatch(DispatchAction.SET_MEASURE_UNITS);
+    }, 2000);
   },
-  middleware: ['measureUnit'],
+  beforeDestroy() {
+    this.$store.commit(MutationState.SET_TEMP_CYCLE, this.$store.state.cycle.cycle.id);
+    this.$store.dispatch(DispatchAction.CLEAR_STAFF_OKRS);
+  },
 })
 export default class OKRsPage extends Vue {
-  private loadingForm: boolean = false;
-  private visibleCreateOkrsDialog = false;
   private isCompanyOkrs: boolean = false;
+  private loadingForm: boolean = false;
+  private loadingComponent: boolean = false;
+  private visibleCreateOkrsDialog = false;
   private visible: boolean = false;
 
   private handleCommand(command: string) {
@@ -84,7 +96,8 @@ export default class OKRsPage extends Vue {
   private async getDashBoardOkrs() {
     this.loadingForm = true;
     try {
-      const { data } = await OkrsRepository.getOkrsDashboard(this.$store.state.cycle.cycle.id);
+      const cycleId = this.$store.state.cycle.cycleTemp ? this.$store.state.cycle.cycleTemp : this.$store.state.cycle.cycle.id;
+      const { data } = await OkrsRepository.getOkrsDashboard(cycleId);
       this.itemOKRsData[0].tableData = Object.freeze(data.data.root);
       this.itemOKRsData[1].tableData = Object.freeze(data.data.team);
       this.itemOKRsData[2].tableData = Object.freeze(data.data.personal);

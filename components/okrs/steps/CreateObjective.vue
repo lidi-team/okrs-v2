@@ -44,6 +44,7 @@
     </div>
   </fragment>
 </template>
+
 <script lang="ts">
 import { Form } from 'element-ui';
 import { Component, Vue, PropSync, Watch, Prop } from 'vue-property-decorator';
@@ -51,8 +52,9 @@ import { ObjectiveDTO, ParamsQuery } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import { DispatchAction, MutationState } from '@/constants/app.enum';
+import { DispatchAction, MutationState } from '@/constants/app.vuex';
 import { max255Char } from '@/components/account/account.constant';
+
 @Component<CreateObjectiveStep>({
   name: 'CreateObjectiveStep',
   created() {
@@ -62,6 +64,9 @@ import { max255Char } from '@/components/account/account.constant';
         this.getListOkrs();
       }
     }
+  },
+  beforeDestroy() {
+    this.$store.dispatch(DispatchAction.SET_MEASURE_UNITS);
   },
 })
 export default class CreateObjectiveStep extends Vue {
@@ -120,7 +125,7 @@ export default class CreateObjectiveStep extends Vue {
     }
   }
 
-  @Watch('tempObjective.cycleId', { deep: true, immediate: true })
+  @Watch('tempObjective.cycleId', { immediate: true })
   private async getListOkrs() {
     if (!this.isCompanyOkrs) {
       this.loadingSelect = true;

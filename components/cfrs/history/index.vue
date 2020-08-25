@@ -110,7 +110,14 @@
         </infinite-loading>
       </el-col>
     </el-row>
-    <cfrs-detail-history :visible-dialog.sync="visibleDetailDialog" :item-data="itemDataCfrs.data" :type="itemDataCfrs.type" />
+    <transition name="el-zoom-in-center">
+      <cfrs-detail-history
+        v-if="visibleDetailDialog"
+        :visible-dialog.sync="visibleDetailDialog"
+        :item-data="itemDataCfrs.data"
+        :type="itemDataCfrs.type"
+      />
+    </transition>
   </div>
 </template>
 
@@ -120,7 +127,7 @@ import InfiniteLoading, { StateChanger } from 'vue-infinite-loading';
 import { itemCfrsDefault } from './history.const';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import CfrsRepository from '@/repositories/CfrsRepository';
-import { MutationState } from '@/constants/app.enum';
+import { MutationState } from '@/constants/app.vuex';
 import { HistoryCfrsParams } from '@/constants/app.interface';
 
 @Component<History>({

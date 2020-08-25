@@ -39,7 +39,7 @@ import InputAlignOkrs from './InputAlignKrs.vue';
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import { DispatchAction, MutationState } from '@/constants/app.enum';
+import { DispatchAction, MutationState } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import { PayloadOkrs } from '@/constants/app.interface';
 
@@ -47,6 +47,9 @@ import { PayloadOkrs } from '@/constants/app.interface';
   name: 'AddAlignObjeciveStep',
   components: {
     IconAddKrs,
+  },
+  beforeCreate() {
+    this.$store.dispatch(DispatchAction.SET_STAFF_OKRS, { cycleId: this.$store.state.cycle.cycle.id, type: 3 });
   },
 })
 export default class AddAlignObjeciveStep extends Vue {

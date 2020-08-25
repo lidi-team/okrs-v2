@@ -33,8 +33,8 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
-import { PayloadOkrs } from '@/constants/app.interface';
 import OkrsRepository from '@/repositories/OkrsRepository';
+import { PayloadOkrs } from '@/constants/app.interface';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 @Component<AlignOkrsDialog>({
   name: 'AlignOkrsDialog',

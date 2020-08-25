@@ -35,7 +35,7 @@ import { Form } from 'element-ui';
 import IconAttention from '@/assets/images/okrs/attention.svg';
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
 import { KeyResultDTO, PayloadOkrs } from '@/constants/app.interface';
-import { MutationState, DispatchAction } from '@/constants/app.enum';
+import { MutationState, DispatchAction } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import OkrsRepository from '@/repositories/OkrsRepository';
 
@@ -143,9 +143,11 @@ export default class CreateObjectiveStep extends Vue {
   private backToStepOne() {
     this.$store.commit(MutationState.CLEAR_KRS);
     if (this.krFormItems.length !== 0) {
+      const tempKrs: any[] = [];
       (this.$refs.krsForm as any).forEach((form) => {
-        this.$store.commit(MutationState.SET_KR, form.syncTempKr);
+        tempKrs.push(form.syncTempKr);
       });
+      this.$store.commit(MutationState.SET_KRS, tempKrs);
       this.syncActive--;
     }
     this.syncActive--;
@@ -173,11 +175,8 @@ export default class CreateObjectiveStep extends Vue {
       if (validForm === krs.length) {
         // Set this is not root objective
         const tempObjective = Object.assign({}, this.$store.state.okrs.objective, { isRootObjective: false });
-        krs.forEach((item) => {
-          this.$store.commit(MutationState.SET_KR, item);
-        });
+        this.$store.commit(MutationState.SET_KRS, krs);
         this.$store.commit(MutationState.SET_OBJECTIVE, tempObjective);
-        this.$store.dispatch(DispatchAction.STAFF_OKRS, { cycleId: this.$store.state.cycle.cycle.id, type: 3 });
         this.syncActive++;
         this.loading = false;
       } else {
