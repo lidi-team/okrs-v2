@@ -6,7 +6,12 @@
           <cfrs-navbar :current-tab-component="currentTabEng" />
         </el-col>
         <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
-          <el-button v-if="displayButton()" class="el-button el-button--purple el-button-medium" @click="visibleCreateDialog = true">
+          <el-button
+            v-if="displayButton()"
+            class="el-button el-button--purple el-button-medium"
+            icon="el-icon-plus"
+            @click="visibleCreateDialog = true"
+          >
             Tạo ghi nhận
           </el-button>
         </el-col>
