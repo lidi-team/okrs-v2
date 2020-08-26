@@ -4,8 +4,7 @@
       <el-col :md="8" :lg="8">
         <div class="history__col">
           <p class="history__col__header">CFRs {{ displayNameCfrs }} gửi đi</p>
-          <p v-if="!sentItems.length" class="history__col__empty">Chưa có CFRs</p>
-          <div v-else class="history__col--items">
+          <div class="history__col--items">
             <div v-for="(item, index) in sentItems" :key="`${index}-${item.id}`" class="history-item" @click="viewDetailCfrs(item, 'sent')">
               <div class="item__left">
                 <div class="item__left--icon">
@@ -29,18 +28,17 @@
                 <icon-star-dashboard />
               </div>
             </div>
+            <infinite-loading spinner="spiral" direction="bottom" @infinite="infiniteSentHandler">
+              <span slot="no-more"></span>
+              <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
+            </infinite-loading>
           </div>
-          <infinite-loading spinner="spiral" direction="bottom" :identifier="infiniteId" @infinite="infiniteSentHandler">
-            <span slot="no-more"></span>
-            <span slot="no-results"></span>
-          </infinite-loading>
         </div>
       </el-col>
       <el-col :md="8" :lg="8">
         <div class="history__col">
           <p class="history__col__header">CFRs {{ displayNameCfrs }} nhận được</p>
-          <p v-if="!receivedItems.length" class="history__col__empty">Chưa có CFRs</p>
-          <div v-else class="history__col--items">
+          <div class="history__col--items">
             <div v-for="item in receivedItems" :key="`received-${item.id}`" class="history-item" @click="viewDetailCfrs(item, 'received')">
               <div class="item__left">
                 <div class="item__left--icon">
@@ -64,18 +62,17 @@
                 <icon-star-dashboard />
               </div>
             </div>
+            <infinite-loading spinner="spiral" direction="bottom" @infinite="infiniteReceivedHandler">
+              <span slot="no-more"></span>
+              <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
+            </infinite-loading>
           </div>
         </div>
-        <infinite-loading spinner="spiral" direction="bottom" :identifier="infiniteId" @infinite="infiniteReceivedHandler">
-          <span slot="no-more"></span>
-          <span slot="no-results"></span>
-        </infinite-loading>
       </el-col>
       <el-col :md="8" :lg="8">
         <div class="history__col">
           <p class="history__col__header">CFRs toàn công ty</p>
-          <p v-if="!allItems.length" class="history__col__empty">Chưa có CFRs</p>
-          <div v-else class="history__col--items">
+          <div class="history__col--items">
             <div v-for="(item, index) in allItems" :key="`${index}-${item.id}`" class="history-item" @click="viewDetailCfrs(item, 'all')">
               <div class="item__left">
                 <div class="item__left--icon">
@@ -102,12 +99,12 @@
                 <icon-star-dashboard />
               </div>
             </div>
+            <infinite-loading spinner="spiral" direction="bottom" @infinite="infiniteAllHandler">
+              <span slot="no-more"></span>
+              <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
+            </infinite-loading>
           </div>
         </div>
-        <infinite-loading spinner="spiral" direction="bottom" :identifier="infiniteId" @infinite="infiniteAllHandler">
-          <span slot="no-more"></span>
-          <span slot="no-results"></span>
-        </infinite-loading>
       </el-col>
     </el-row>
     <transition name="el-zoom-in-center">
@@ -161,17 +158,17 @@ export default class History extends Vue {
   private receivedItems: any[] = [];
   private allItems: any[] = [];
 
-  private sentContext: HistoryCfrsParams = {
+  private sentContext: any = {
     page: 1,
     limit: 10,
   };
 
-  private receivedContext: HistoryCfrsParams = {
+  private receivedContext: any = {
     page: 1,
     limit: 10,
   };
 
-  private allContext: HistoryCfrsParams = {
+  private allContext: any = {
     page: 1,
     limit: 10,
   };
@@ -204,7 +201,7 @@ export default class History extends Vue {
     try {
       await CfrsRepository.getHistoryCfrs(this.sentContext, 1).then(({ data }) => {
         if (data.data.items.length) {
-          this.sentContext.page = this.countSent++;
+          this.sentContext.page += 1;
           this.sentItems.push(...Object.freeze(data.data.items));
           stateChanger.loaded();
         } else {
@@ -220,7 +217,7 @@ export default class History extends Vue {
     try {
       await CfrsRepository.getHistoryCfrs(this.receivedContext, 2).then(({ data }) => {
         if (data.data.items.length) {
-          this.receivedContext.page = this.countReceived++;
+          this.receivedContext.page += 1;
           this.receivedItems.push(...Object.freeze(data.data.items));
           stateChanger.loaded();
         } else {
@@ -236,7 +233,7 @@ export default class History extends Vue {
     try {
       await CfrsRepository.getHistoryCfrs(this.allContext, 3).then(({ data }) => {
         if (data.data.items.length) {
-          this.allContext.page = this.countAll++;
+          this.allContext.page += 1;
           this.allItems.push(...Object.freeze(data.data.items));
           stateChanger.loaded();
         } else {
@@ -286,6 +283,7 @@ export default class History extends Vue {
 @import '@/assets/scss/main.scss';
 .history {
   color: $neutral-primary-4;
+  margin-bottom: $unit-8;
   @include drop-shadow;
   border-radius: $border-radius-base;
   &__col {
@@ -305,8 +303,8 @@ export default class History extends Vue {
       padding-left: $unit-4;
     }
     &--items {
-      height: 885px;
-      overflow-y: auto;
+      height: 60vh;
+      overflow-y: scroll;
       .history-item {
         display: flex;
         flex-direction: row;
