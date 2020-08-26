@@ -1,47 +1,45 @@
 <template>
-  <el-drawer v-if="listKrs.length" :visible.sync="syncVisibleDrawer" size="50%" :before-close="handleClose" :show-close="false" class="krs-drawer">
-    <h2 slot="title" class="krs-drawer__header">Danh sách kết quả then chốt</h2>
-    <el-table :data="listKrs" header-row-class-name="krs-drawer__table-header">
+  <el-dialog class="krs-detail" title="Danh sách kết quả then chốt" :visible.sync="syncDetailKrsDialog" width="50%" @close="handleClose">
+    <el-table :data="listKrs" header-row-class-name="krs-detail__table-header">
       <el-table-column label="KRs" min-width="300">
         <template v-slot="{ row }">
-          <span class="krs-drawer__content">{{ row.content }}</span>
+          <span class="krs-detail__content">{{ row.content }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Tiến độ" width="150">
         <template v-slot="{ row }">
-          <div class="krs-drawer__progress">
+          <div class="krs-detail__progress">
             <el-progress style="width: 80%;" :percentage="getProgressKrs(row)" :color="customColors" :text-inside="true" :stroke-width="20" />
           </div>
         </template>
       </el-table-column>
       <el-table-column label="Link kế hoạch" width="150">
         <template v-slot="{ row }">
-          <a class="krs-drawer__link" :href="`${row.linkPlans}`" target="_blank">
+          <a class="krs-detail__link" :href="`${row.linkPlans}`" target="_blank">
             {{ row.linkPlans }}
           </a>
         </template>
       </el-table-column>
       <el-table-column label="Link kết quả" width="150">
         <template v-slot="{ row }">
-          <a class="krs-drawer__link" :href="`${row.linkPlans}`" target="_blank">
+          <a class="krs-detail__link" :href="`${row.linkPlans}`" target="_blank">
             {{ row.linkPlans }}
           </a>
         </template>
       </el-table-column>
     </el-table>
-  </el-drawer>
+  </el-dialog>
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { customColors } from './okrs.constant';
-@Component<OkrsDrawer>({ name: 'OkrsDrawer' })
-export default class OkrsDrawer extends Vue {
-  @PropSync('visibleDrawer', { type: Boolean, required: true }) public syncVisibleDrawer!: boolean;
+import { customColors } from '../okrs.constant';
+@Component<DetailKrsDialog>({ name: 'DetailKrsDialog' })
+export default class DetailKrsDialog extends Vue {
+  @PropSync('visibleDetailKrs', { type: Boolean, required: true }) public syncDetailKrsDialog!: boolean;
   @Prop({ type: Array, required: true }) public listKrs!: any[];
 
-  private handleClose(done: any) {
-    this.syncVisibleDrawer = false;
-    done();
+  private handleClose() {
+    this.syncDetailKrsDialog = false;
   }
 
   private customColors = customColors;
@@ -52,7 +50,7 @@ export default class OkrsDrawer extends Vue {
 </script>
 <style lang="scss">
 @import '@/assets/scss/main.scss';
-.krs-drawer {
+.krs-detail {
   &__header {
     color: $neutral-primary-4;
   }
@@ -70,11 +68,6 @@ export default class OkrsDrawer extends Vue {
     color: $blue-primary-2;
     @include text-ellipsis(1);
   }
-  .el-drawer {
-    &__header {
-      padding: $unit-5 $unit-3 0 $unit-3;
-    }
-  }
   .el-progress {
     width: 80%;
     .el-progress-bar {
@@ -85,6 +78,14 @@ export default class OkrsDrawer extends Vue {
           border-radius: $border-radius-medium;
         }
       }
+    }
+  }
+  .el-dialog {
+    &__header {
+      padding: $unit-4 $unit-7;
+    }
+    &__body {
+      padding: 0 $unit-5 $unit-5;
     }
   }
 }
