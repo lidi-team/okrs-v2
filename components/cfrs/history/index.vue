@@ -5,7 +5,13 @@
         <div class="history__col">
           <p class="history__col__header">CFRs {{ displayNameCfrs }} gửi đi</p>
           <div class="history__col--items">
-            <div v-for="(item, index) in sentItems" :key="`${index}-${item.id}`" class="history-item" @click="viewDetailCfrs(item, 'sent')">
+            <div
+              v-for="(item, index) in sentItems"
+              :key="`${index}-${item.id}`"
+              :identifier="infiniteId"
+              class="history-item"
+              @click="viewDetailCfrs(item, 'sent')"
+            >
               <div class="item__left">
                 <div class="item__left--icon">
                   <div :class="['icon__type', isFeedback(item.type)]">
@@ -28,7 +34,7 @@
                 <icon-star-dashboard />
               </div>
             </div>
-            <infinite-loading spinner="spiral" direction="bottom" @infinite="infiniteSentHandler">
+            <infinite-loading spinner="spiral" direction="bottom" :identifier="infiniteId" @infinite="infiniteSentHandler">
               <span slot="no-more"></span>
               <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
             </infinite-loading>
@@ -62,7 +68,7 @@
                 <icon-star-dashboard />
               </div>
             </div>
-            <infinite-loading spinner="spiral" direction="bottom" @infinite="infiniteReceivedHandler">
+            <infinite-loading spinner="spiral" direction="bottom" :identifier="infiniteId" @infinite="infiniteReceivedHandler">
               <span slot="no-more"></span>
               <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
             </infinite-loading>
@@ -99,7 +105,7 @@
                 <icon-star-dashboard />
               </div>
             </div>
-            <infinite-loading spinner="spiral" direction="bottom" @infinite="infiniteAllHandler">
+            <infinite-loading spinner="spiral" direction="bottom" :identifier="infiniteId" @infinite="infiniteAllHandler">
               <span slot="no-more"></span>
               <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
             </infinite-loading>
