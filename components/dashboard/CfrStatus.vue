@@ -32,7 +32,6 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 })
 export default class CfrStatus extends Vue {
   @Prop(Array) readonly dataCfr;
-  @Prop(Boolean) readonly loadingAdmin!: boolean;
   private customColors(change: number) {
     if (change > 0) {
       return '#27ae60';

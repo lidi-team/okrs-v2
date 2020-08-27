@@ -14,13 +14,13 @@
     <div v-if="user.role.name === 'ADMIN'" v-loading="loadingAdmin">
       <el-row v-if="dataCheckin.length > 0" class="col-container">
         <el-col class="col" :md="24" :lg="8">
-          <dashboard-okrs-status :data-progress="dataProgress" :loading-admin="loadingAdmin" />
+          <dashboard-okrs-status :data-progress="dataProgress" />
         </el-col>
         <el-col class="col col--second" :md="24" :lg="8">
-          <dashboard-checkin-status :data-checkin="dataCheckin" :loading-admin="loadingAdmin" />
+          <dashboard-checkin-status :data-checkin="dataCheckin" />
         </el-col>
         <el-col class="col" :md="24" :lg="8">
-          <dashboard-cfr-status :data-cfr="dataCfr" :loading-admin="loadingAdmin" />
+          <dashboard-cfr-status :data-cfr="dataCfr" />
         </el-col>
       </el-row>
     </div>
@@ -98,26 +98,21 @@ export default class HomePage extends Vue {
 
   private async getAllCycles() {
     // Get 2 years(8 cycles OKRs) ago until now
-    if (this.$store.state.cycle.cycles.length) {
-      this.listCycles = this.$store.state.cycle.cycles;
-      const cycleId = this.listCycles.find((item) => item.label === this.cycleId);
-    } else {
-      await CycleRepository.get({ page: 1, limit: 8 })
-        .then((res) => {
-          this.listCycles = res.data.data.items.map((item) => {
-            return {
-              id: item.id,
-              label: item.name,
-              value: item.id,
-              startDate: item.startDate,
-              endDate: item.endDate,
-            };
-          });
-          this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
-        })
-        // eslint-disable-next-line handle-callback-err
-        .catch((err) => {});
-    }
+    await CycleRepository.get({ page: 1, limit: 8 })
+      .then((res) => {
+        this.listCycles = res.data.data.items.map((item) => {
+          return {
+            id: item.id,
+            label: item.name,
+            value: item.id,
+            startDate: item.startDate,
+            endDate: item.endDate,
+          };
+        });
+        this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
+      })
+      // eslint-disable-next-line handle-callback-err
+      .catch((err) => {});
   }
 
   @Watch('$route.query')
