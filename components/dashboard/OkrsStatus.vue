@@ -27,7 +27,6 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 })
 export default class OkrsStatus extends Vue {
   @Prop(Array) readonly dataProgress;
-  @Prop(Boolean) readonly loadingAdmin!: boolean;
 
   private customColors(index: number) {
     if (index === 0) {

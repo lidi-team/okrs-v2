@@ -23,7 +23,7 @@ export default class Layout extends Vue {}
 $bg-gray-common: #e5e5e5;
 #app {
   height: 100vh;
-  overflow-x: hidden;
+  overflow: hidden;
   display: flex;
 }
 .authenticated-screen {

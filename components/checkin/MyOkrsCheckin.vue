@@ -13,12 +13,12 @@
       </el-table-column>
       <el-table-column label="Tiến độ" min-width="180">
         <template v-slot="{ row }">
-          <el-progress :percentage="row.progress" :text-inside="true" :color="customColors(row.progress)" :stroke-width="20" />
+          <el-progress :percentage="row.progress ? row.progress : 0" :color="customColors" :text-inside="true" :stroke-width="26" />
         </template>
       </el-table-column>
       <el-table-column align="center" label="Thay đổi" min-width="100">
         <template slot-scope="{ row }">
-          <span :style="`color: ${customColors(row.change)}`">{{ row.change }}</span>
+          <span :style="`color: ${customColorsChanging(row.change)}`">{{ row.change }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Lịch sử" min-width="150">
@@ -112,6 +112,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
+import { customColors } from '../okrs/okrs.constant';
 import { statusCheckin } from '@/constants/app.constant';
 
 @Component<MyOkrsCheckin>({
@@ -120,17 +121,16 @@ import { statusCheckin } from '@/constants/app.constant';
 export default class MyOkrsCheckin extends Vue {
   @Prop(Array) readonly tableData!: Array<object>;
   @Prop(Boolean) readonly loading!: boolean;
-
+  private customColors = customColors;
   private status = statusCheckin;
   private keyResults: any = {};
   private showDialogKRs: boolean = false;
-  private customColors(percentage: number) {
-    if (percentage < 30) {
-      return '#e3d0ff';
-    } else if (percentage < 70) {
-      return '#9c6ade';
+
+  private customColorsChanging(change: number) {
+    if (change > 0) {
+      return '#27ae60';
     } else {
-      return '#50248f';
+      return '#eb5757';
     }
   }
 
@@ -149,7 +149,7 @@ export default class MyOkrsCheckin extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/assets/scss/main.scss';
 .myOKRs {
   .el-button {
@@ -164,6 +164,17 @@ export default class MyOkrsCheckin extends Vue {
 
     &:hover {
       color: rgb(32, 160, 255);
+    }
+  }
+  .el-progress {
+    .el-progress-bar {
+      &__outer {
+        background-color: $purple-primary-2;
+        border-radius: $border-radius-medium;
+        .el-progress-bar__inner {
+          border-radius: $border-radius-medium;
+        }
+      }
     }
   }
 }

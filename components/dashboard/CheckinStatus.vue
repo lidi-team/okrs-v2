@@ -27,7 +27,6 @@ am4core.useTheme(am4themesAnimated);
 })
 export default class CheckinStatus extends Vue {
   @Prop(Array) readonly dataCheckin;
-  @Prop(Boolean) readonly loadingAdmin!: boolean;
   private initPieChart() {
     const chart = am4core.create('chartCheckin', am4charts.PieChart);
 
