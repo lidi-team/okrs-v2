@@ -11,17 +11,19 @@
       <el-option v-for="cycle in listCycles" :key="cycle.value" :label="cycle.label" :value="cycle.value" />
     </el-select>
     <dashboard-progress-bar :loading="loading" :data-okrs-progress="dataOkrsProgress" />
-    <el-row v-if="user.role.name === 'ADMIN'" class="col-container">
-      <el-col class="col" :md="24" :lg="8">
-        <dashboard-okrs-status :data-progress="dataProgress" :loading-admin="loadingAdmin" />
-      </el-col>
-      <el-col class="col col--second" :md="24" :lg="8">
-        <dashboard-checkin-status v-if="dataCheckin.length > 0" :data-checkin="dataCheckin" :loading-admin="loadingAdmin" />
-      </el-col>
-      <el-col class="col" :md="24" :lg="8">
-        <dashboard-cfr-status :data-cfr="dataCfr" :loading-admin="loadingAdmin" />
-      </el-col>
-    </el-row>
+    <div v-if="user.role.name === 'ADMIN'" v-loading="loadingAdmin">
+      <el-row v-if="dataCheckin.length > 0" class="col-container">
+        <el-col class="col" :md="24" :lg="8">
+          <dashboard-okrs-status :data-progress="dataProgress" :loading-admin="loadingAdmin" />
+        </el-col>
+        <el-col class="col col--second" :md="24" :lg="8">
+          <dashboard-checkin-status :data-checkin="dataCheckin" :loading-admin="loadingAdmin" />
+        </el-col>
+        <el-col class="col" :md="24" :lg="8">
+          <dashboard-cfr-status :data-cfr="dataCfr" :loading-admin="loadingAdmin" />
+        </el-col>
+      </el-row>
+    </div>
     <dashboard-star-rank :loading="loading" :data-star-in-come="dataStarInCome" :data-star-out-come="dataStarOutCome" />
   </div>
 </template>
@@ -100,39 +102,51 @@ export default class HomePage extends Vue {
       this.listCycles = this.$store.state.cycle.cycles;
       const cycleId = this.listCycles.find((item) => item.label === this.cycleId);
     } else {
-      try {
-        const { data } = await CycleRepository.get({ page: 1, limit: 8 });
-        this.listCycles = data.data.items.map((item) => {
-          return {
-            id: item.id,
-            label: item.name,
-            value: item.id,
-            startDate: item.startDate,
-            endDate: item.endDate,
-          };
-        });
-        this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
-      } catch (error) {}
+      await CycleRepository.get({ page: 1, limit: 8 })
+        .then((res) => {
+          this.listCycles = res.data.data.items.map((item) => {
+            return {
+              id: item.id,
+              label: item.name,
+              value: item.id,
+              startDate: item.startDate,
+              endDate: item.endDate,
+            };
+          });
+          this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
+        })
+        // eslint-disable-next-line handle-callback-err
+        .catch((err) => {});
     }
   }
 
   @Watch('$route.query')
   private async getData() {
-    await CycleRepository.get({ page: 1, limit: 8 })
-      .then((res) => {
-        this.listCycles = res.data.data.items.map((item) => {
-          return {
-            id: item.id,
-            label: item.name,
-            value: item.id,
-            startDate: item.startDate,
-            endDate: item.endDate,
-          };
-        });
-        this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
-      })
-      // eslint-disable-next-line handle-callback-err
-      .catch((err) => {});
+    this.loading = true;
+    try {
+      await Promise.all([
+        DashboardRepository.getTopIncome(this.params.cycleId, 1),
+        DashboardRepository.getTopIncome(this.params.cycleId, 2),
+        DashboardRepository.getOKRsProgress(this.params),
+      ]).then(([income, outcome, progress]) => {
+        const tempCycle = this.listCycles.find((item) => item.id === Number(this.params.cycleId));
+        this.dataOkrsProgress = Object.assign(
+          {},
+          {
+            startDate: tempCycle.startDate,
+            endDate: tempCycle.endDate,
+          },
+        );
+        this.dataStarInCome = income.data.data;
+        this.dataStarOutCome = outcome.data.data;
+        this.dataOkrsProgress = Object.assign(this.dataOkrsProgress, progress.data.data);
+        setTimeout(() => {
+          this.loading = false;
+        }, 1000);
+      });
+    } catch (error) {
+      this.loading = false;
+    }
   }
 
   private handleSelectCycle(cycleId: number) {
@@ -154,15 +168,11 @@ export default class HomePage extends Vue {
       flex-direction: column;
     }
     .col {
-      height: 70vh;
       flex: 1;
       padding-bottom: $unit-10;
       background-color: $white;
       border-radius: $unit-1;
       box-shadow: $box-shadow-default;
-      @include breakpoint-down(phone) {
-        height: 70vh;
-      }
       &--second {
         margin-left: $unit-8;
         margin-right: $unit-8;

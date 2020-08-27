@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loadingAdmin" class="checkin-status">
+  <div class="checkin-status">
     <div class="checkin-status__top">
       <span class="checkin-status__title">Tình trạng Check-in</span>
     </div>
@@ -58,7 +58,10 @@ export default class CheckinStatus extends Vue {
 .checkin-status {
   height: 100%;
   &__top {
-    height: 20%;
+    height: 4rem;
+    @include breakpoint-down(desktop) {
+      height: 20%;
+    }
     padding: 0 $unit-4;
     border-bottom: 1px solid #dfe3e8;
     display: flex;
