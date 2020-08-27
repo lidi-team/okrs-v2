@@ -74,7 +74,7 @@ import { GetterState } from '@/constants/app.vuex';
 export default class SideBar extends Vue {
   private isHide: boolean = false;
   private get isHome() {
-    if (this.$route.path === '/' || this.$route.query.cycleId) {
+    if (this.$route.path === '/' || (this.$route.path === '/' && this.$route.query.cycleId)) {
       return true;
     }
   }
