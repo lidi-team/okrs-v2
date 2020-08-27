@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loadingAdmin" class="cfr-status">
+  <div class="cfr-status">
     <div class="cfr-status__top">
       <div>
         <span class="cfr-status__title">Tình trạng CFRs</span>
@@ -19,7 +19,7 @@
           <span class="item__cfr">{{ item.value }} {{ item.name }}</span>
         </div>
         <div class="item__right">
-          <span class="item__change">{{ item.changing }}</span>
+          <span class="item__change" :style="`color: ${customColors(item.changing)}`">{{ item.changing }}</span>
         </div>
       </div>
     </div>
@@ -33,6 +33,13 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 export default class CfrStatus extends Vue {
   @Prop(Array) readonly dataCfr;
   @Prop(Boolean) readonly loadingAdmin!: boolean;
+  private customColors(change: number) {
+    if (change > 0) {
+      return '#27ae60';
+    } else {
+      return '#eb5757';
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -40,7 +47,10 @@ export default class CfrStatus extends Vue {
 .cfr-status {
   height: 100%;
   &__top {
-    height: 20%;
+    height: 4rem;
+    @include breakpoint-down(desktop) {
+      height: 20%;
+    }
     padding: 0 $unit-4;
     border-bottom: 1px solid #dfe3e8;
     display: flex;

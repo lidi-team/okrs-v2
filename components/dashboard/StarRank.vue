@@ -12,6 +12,8 @@
               <icon-star-first v-if="index === 0" class="star__col__icon" />
               <icon-star-second v-if="index === 1" class="star__col__icon" />
               <icon-star-third v-if="index === 2" class="star__col__icon" />
+              <icon-star-four v-if="index === 3" class="star__col__icon" />
+              <icon-star-five v-if="index === 4" class="star__col__icon" />
               <p class="star-item__name">{{ item.fullname }}</p>
             </div>
             <div class="star-item__right">
@@ -32,6 +34,8 @@
               <icon-star-first v-if="index === 0" class="star__col__icon" />
               <icon-star-second v-if="index === 1" class="star__col__icon" />
               <icon-star-third v-if="index === 2" class="star__col__icon" />
+              <icon-star-four v-if="index === 3" class="star__col__icon" />
+              <icon-star-five v-if="index === 4" class="star__col__icon" />
               <p class="star-item__name">{{ item.fullname }}</p>
             </div>
             <div class="star-item__right">
@@ -51,6 +55,8 @@ import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import IconStarFirst from '@/assets/images/dashboard/top-1.svg';
 import IconStarSecond from '@/assets/images/dashboard/top-2.svg';
 import IconStarThird from '@/assets/images/dashboard/top-3.svg';
+import IconStarFour from '@/assets/images/dashboard/top-4.svg';
+import IconStarFive from '@/assets/images/dashboard/top-5.svg';
 @Component<ProgressBarComponent>({
   name: 'ProgressBarComponent',
   components: {
@@ -59,6 +65,8 @@ import IconStarThird from '@/assets/images/dashboard/top-3.svg';
     IconStarFirst,
     IconStarSecond,
     IconStarThird,
+    IconStarFour,
+    IconStarFive,
   },
 })
 export default class ProgressBarComponent extends Vue {
@@ -96,27 +104,33 @@ export default class ProgressBarComponent extends Vue {
   }
   .col-container {
     display: flex;
+    justify-content: space-between;
+    @include breakpoint-down(phone) {
+      flex-direction: column;
+    }
     .col {
       flex: 1;
+      @include breakpoint-down(phone) {
+        margin: $unit-6 0;
+      }
     }
   }
 }
 .star-item {
   display: flex;
-  flex-direction: row;
+  align-items: center;
   padding: 0.75rem 0;
   justify-content: space-between;
   &__left {
     display: flex;
-    align-self: center;
+    text-align: left;
+    align-items: center;
   }
   &__right {
     display: flex;
-    align-self: center;
+    align-items: center;
   }
   &__name {
-    display: flex;
-    align-self: center;
     font-weight: $font-weight-medium;
     font-size: $text-sm;
   }

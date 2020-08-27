@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loadingAdmin" class="okrs-status">
+  <div class="okrs-status">
     <div class="okrs-status__top">
       <span class="okrs-status__title">Tiến độ tuần này</span>
       <div class="okrs-status__right">
@@ -14,7 +14,7 @@
           <span class="item__okrs">{{ item.name }}</span>
         </div>
         <div class="item__right">
-          <span class="item__change">{{ item.changing }}</span>
+          <span class="item__change" :style="`color: ${customColorsChanging(item.changing)}`">{{ item.changing }}</span>
         </div>
       </div>
     </div>
@@ -40,6 +40,14 @@ export default class OkrsStatus extends Vue {
       return '#919EAB';
     }
   }
+
+  private customColorsChanging(change: number) {
+    if (change > 0) {
+      return '#27ae60';
+    } else {
+      return '#eb5757';
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -47,7 +55,10 @@ export default class OkrsStatus extends Vue {
 .okrs-status {
   height: 100%;
   &__top {
-    height: 20%;
+    height: 4rem;
+    @include breakpoint-down(desktop) {
+      height: 20%;
+    }
     padding: 0 $unit-4;
     border-bottom: 1px solid #dfe3e8;
     display: flex;
