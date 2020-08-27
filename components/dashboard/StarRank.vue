@@ -1,7 +1,7 @@
 <template>
   <div class="star">
-    <el-row v-loading="loading" :gutter="30">
-      <el-col :sm="24" :md="12">
+    <el-row v-loading="loading" :gutter="30" class="col-container">
+      <el-col class="col" :sm="24" :md="12">
         <div class="star__col star__income">
           <div class="star__col__header">
             <icon-star-dashboard class="star__col__icon" />
@@ -21,7 +21,7 @@
           </div>
         </div>
       </el-col>
-      <el-col :sm="24" :md="12">
+      <el-col class="col" :sm="24" :md="12">
         <div class="star__col">
           <div class="star__col__header">
             <icon-star-dashboard class="star__col__icon" />
@@ -72,6 +72,7 @@ export default class ProgressBarComponent extends Vue {
 .star {
   margin: $unit-8 0;
   &__col {
+    height: 100%;
     background-color: $white;
     padding: $unit-8;
     border-radius: $unit-1;
@@ -91,6 +92,12 @@ export default class ProgressBarComponent extends Vue {
     &__title {
       font-size: $text-base;
       font-weight: $font-weight-medium;
+    }
+  }
+  .col-container {
+    display: flex;
+    .col {
+      flex: 1;
     }
   }
 }
