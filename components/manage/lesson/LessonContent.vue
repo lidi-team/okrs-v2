@@ -4,19 +4,20 @@
     <h1 class="lesson-content__title">{{ post.title }}</h1>
     <div class="lesson-content__des">
       <div>
-        <img alt="avatar-logo" class="lesson-content__avatar" src="@/static/icon.png" />
+        <img alt="avatar-logo" class="lesson-content__avatar" src="@/static/icon-dark.png" />
       </div>
       <div class="lesson-content__author">
         <span class="lesson-content__name">Capi Creative</span>
         <div class="lesson-content__muted">
-          <span style="color: #757575;">{{ new Date(post.createdAt) | dateFormat('DD/MM/YYYY') }}</span
-          ><img
+          <span style="color: #757575;">{{ new Date(post.createdAt) | dateFormat('DD/MM/YYYY') }}</span>
+          <img
             src="https://cdn-images-1.medium.com/proxy/1*dMba6LR4dsoQTHzQ5T7oaA.png"
             alt="Member only content"
             width="12"
             height="12"
             class="lesson-content__star"
-          /><reading-time :content="post.content" />
+          />
+          <reading-time :content="post.content" />
         </div>
       </div>
     </div>

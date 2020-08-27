@@ -1,4 +1,5 @@
 import { ElMessageBoxOptions } from 'element-ui/types/message-box';
+import { LinkMeta } from './app.interface';
 
 export const authEnpoint = {
   register: 'auth/register',

@@ -1,6 +1,11 @@
 import { dataType, ruleTrigger, Validator, PromiseValidtor } from './app.type';
 import { EvaluationCriteriaEnum } from './app.enum';
 
+export interface LinkMeta {
+  rel: string;
+  href: string;
+}
+
 export interface PayloadOkrs {
   objective: any;
   keyResult: any[];
