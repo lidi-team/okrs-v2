@@ -118,31 +118,21 @@ export default class HomePage extends Vue {
 
   @Watch('$route.query')
   private async getData() {
-    this.loading = true;
-    try {
-      await Promise.all([
-        DashboardRepository.getTopIncome(this.params.cycleId, 1),
-        DashboardRepository.getTopIncome(this.params.cycleId, 2),
-        DashboardRepository.getOKRsProgress(this.params),
-      ]).then(([income, outcome, progress]) => {
-        const tempCycle = this.listCycles.find((item) => item.id === Number(this.params.cycleId));
-        this.dataOkrsProgress = Object.assign(
-          {},
-          {
-            startDate: tempCycle.startDate,
-            endDate: tempCycle.endDate,
-          },
-        );
-        this.dataStarInCome = income.data.data;
-        this.dataStarOutCome = outcome.data.data;
-        this.dataOkrsProgress = Object.assign(this.dataOkrsProgress, progress.data.data);
-        setTimeout(() => {
-          this.loading = false;
-        }, 1000);
-      });
-    } catch (error) {
-      this.loading = false;
-    }
+    await CycleRepository.get({ page: 1, limit: 8 })
+      .then((res) => {
+        this.listCycles = res.data.data.items.map((item) => {
+          return {
+            id: item.id,
+            label: item.name,
+            value: item.id,
+            startDate: item.startDate,
+            endDate: item.endDate,
+          };
+        });
+        this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
+      })
+      // eslint-disable-next-line handle-callback-err
+      .catch((err) => {});
   }
 
   private handleSelectCycle(cycleId: number) {
