@@ -47,7 +47,7 @@ export default class CheckinPage extends Vue {
           });
           for (let index = 0; index < res.data.data.keyResults.length; index++) {
             res.data.data.checkinDetail.push({
-              valueObtained: 0,
+              valueObtained: res.data.data.keyResults[index].valueObtained,
               confidentLevel: 2,
               progress: '',
               problems: '',

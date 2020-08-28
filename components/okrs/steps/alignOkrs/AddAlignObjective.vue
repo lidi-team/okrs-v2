@@ -91,7 +91,6 @@ export default class AddAlignObjeciveStep extends Vue {
       if (validForm === alignObjectives.length) {
         // add align OKRs ID
         payload.objective.alignObjectivesId = alignObjectives;
-        console.log(payload);
         try {
           await OkrsRepository.createOrUpdateOkrs(payload).then((res) => {
             this.$store.dispatch(DispatchAction.CLEAR_OKRS);
