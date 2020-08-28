@@ -125,14 +125,12 @@ export default class SettingCompanyPage extends Vue {
   }
 
   private handleSearch(textSearch: string) {
-    if (textSearch.trim() !== '') {
-      this.adminParams.page = 1;
-      this.adminParams.text = textSearch;
-      if (!this.$route.query.tab) {
-        this.$router.push(`?tab=quan-ly-chu-ky&text=${textSearch}`);
-      } else {
-        this.$router.push(`?tab=${this.$route.query.tab}&text=${textSearch}`);
-      }
+    this.adminParams.page = 1;
+    this.adminParams.text = textSearch;
+    if (!this.$route.query.tab) {
+      this.$router.push(`?tab=quan-ly-chu-ky&text=${textSearch}`);
+    } else {
+      this.$router.push(`?tab=${this.$route.query.tab}&text=${textSearch}`);
     }
   }
 

@@ -45,9 +45,7 @@ export default class HeadEmployee extends Vue {
   private searchText: string = '';
   private showInvite: boolean = false;
   private handleSearch(value: string) {
-    if (value.trim() !== '') {
-      this.$emit('search', value);
-    }
+    this.$emit('search', value);
   }
 
   private showInviteDialog() {
@@ -70,7 +68,7 @@ export default class HeadEmployee extends Vue {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: $unit-8;
+  padding-bottom: $unit-4;
   @include breakpoint-down(phone) {
     flex-direction: column;
     justify-content: start;

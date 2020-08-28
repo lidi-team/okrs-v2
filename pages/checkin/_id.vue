@@ -92,6 +92,7 @@ export default class CheckinPage extends Vue {
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .createCheckinPage {
+  padding-bottom: $unit-8;
   &__title {
     font-size: $text-2xl;
     padding-bottom: $unit-10;
