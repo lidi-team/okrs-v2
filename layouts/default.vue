@@ -4,7 +4,9 @@
     <div id="app">
       <base-sidebar />
       <div class="authenticated-screen__app">
-        <nuxt />
+        <div class="authenticated-screen__nuxt">
+          <nuxt />
+        </div>
       </div>
     </div>
   </div>
@@ -29,11 +31,13 @@ $bg-gray-common: #e5e5e5;
 .authenticated-screen {
   &__app {
     flex: 1;
-    overflow-x: auto;
+    overflow: auto;
     width: 100%;
-    margin: 0 auto;
-    padding: $unit-10;
     background-color: $bg-gray-common;
+  }
+  &__nuxt {
+    padding: $unit-10;
+    margin: 0 auto $unit-16 auto;
   }
 }
 </style>

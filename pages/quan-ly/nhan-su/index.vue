@@ -123,10 +123,8 @@ export default class ManageEmployee extends Vue {
 @import '@/assets/scss/main.scss';
 .manage-employee {
   height: 100%;
-
   &__title {
     font-size: $text-2xl;
-    padding-bottom: $unit-10;
   }
   &__content {
     background-color: $white;

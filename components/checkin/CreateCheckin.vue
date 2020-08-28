@@ -1,7 +1,7 @@
 <template>
-  <fragment>
+  <div class="checkinDetail">
     <slot name="chartOKRs" />
-    <div v-if="user" class="checkinDetail">
+    <div v-if="user">
       <el-form ref="checkinRuleForm" label-position="left" :model="syncCheckin" :rules="rules">
         <el-table empty-text="Không có dữ liệu" class="checkinDetail__form" :data="syncCheckin.checkinDetail" style="width: 100%;">
           <el-table-column label="Kết quả chính" min-width="250">
@@ -103,7 +103,7 @@
       <el-button class="el-button--white" @click="handleDraftCheckin">Lưu nháp</el-button>
       <el-button class="el-button--purple" :loading="loading" @click="handleSubmitCheckin">Gửi yêu cầu</el-button>
     </div>
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
@@ -667,7 +667,6 @@ export default class DetailHistory extends Vue {
   }
   &__footer {
     margin-top: $unit-4;
-    margin-bottom: $unit-4;
     float: right;
   }
 }
