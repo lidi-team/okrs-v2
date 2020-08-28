@@ -87,7 +87,6 @@ export default class CreateFeedbackDialog extends Vue {
 
     (this.$refs.contentFeedback as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
-        console.log(this.dataFeedback);
         const payload: CfrsDTO = {
           // Nếu là cấp trên -> Lấy Id của cấp dưới, ngược lại
           receiverId: this.dataFeedback.isSuperior ? this.dataFeedback.user.id : this.dataFeedback.objective.user.id,

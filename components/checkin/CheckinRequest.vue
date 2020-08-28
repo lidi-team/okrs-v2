@@ -124,7 +124,6 @@ export default class DetailHistory extends Vue {
   };
 
   private validateDate = (rule, value, callback) => {
-    console.log(value);
     if (compareTwoDate(value, formatDateToDD(new Date())) === 1) {
       return callback(new Error('Không được nhỏ hơn ngày hiện tại'));
     } else {
