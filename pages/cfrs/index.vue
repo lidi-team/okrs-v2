@@ -85,6 +85,12 @@ export default class CFRs extends Vue {
   }
 
   private get currentTabComponent() {
+    this.currentTab =
+      this.$route.query.tab === 'feedback' || this.$route.query.tab === undefined
+        ? TabCfr.Feedback
+        : this.$route.query.tab === 'history'
+        ? TabCfr.History
+        : TabCfr.Rank;
     return this.$route.query.tab === undefined || this.$route.query.tab === 'feedback'
       ? Feedback
       : this.$route.query.tab === 'history'

@@ -140,6 +140,21 @@ export default class SettingCompanyPage extends Vue {
 
   @Watch('$route.query', { deep: true })
   private async getListData() {
+    this.currentTab =
+      this.$route.query.tab === AdminTabsEn.MeasureUnit
+        ? AdminTabsVn.MeasureUnit
+        : this.$route.query.tab === AdminTabsEn.EvaluationCriterial
+        ? AdminTabsVn.EvaluationCriterial
+        : this.$route.query.tab === AdminTabsEn.JobPosition
+        ? AdminTabsVn.JobPosition
+        : this.$route.query.tab === AdminTabsEn.Department
+        ? AdminTabsVn.Department
+        : AdminTabsVn.CycleOKR;
+    this.adminParams = {
+      page: this.$route.query.page ? Number(this.$route.query.page) : 1,
+      limit: pageLimit,
+      text: this.$route.query.text ? String(this.$route.query.text) : '',
+    };
     try {
       if (this.$route.query.tab === AdminTabsEn.CycleOKR || this.$route.query.tab === undefined) {
         await CycleRepository.get(this.adminParams).then((res) => {

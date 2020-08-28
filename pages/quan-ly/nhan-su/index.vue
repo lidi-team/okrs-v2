@@ -63,6 +63,14 @@ export default class ManageEmployee extends Vue {
 
   @Watch('$route.query')
   private async getListUsers() {
+    this.paramsUser = {
+      status: this.$route.query.tab === 'deactive' ? -1 : this.$route.query.tab === 'pending' ? 0 : 1,
+      text: this.$route.query.text ? String(this.$route.query.text) : '',
+      page: this.$route.query.page ? Number(this.$route.query.page) : 1,
+      limit: pageLimit,
+    };
+    this.currentTab =
+      this.$route.query.tab === 'deactive' ? UserStatus.Inactive : this.$route.query.tab === 'pending' ? UserStatus.Pending : UserStatus.Active;
     try {
       const { data } = await EmployeeRepository.get(this.paramsUser);
       this.tableData = data.data.items;

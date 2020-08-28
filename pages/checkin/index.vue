@@ -117,6 +117,17 @@ export default class CheckinPage extends Vue {
   @Watch('$route.query')
   private async getList() {
     this.loading = true;
+    this.currentTab =
+      this.$route.query.tab === 'request-checkin'
+        ? TabCheckins.CheckinResquest
+        : this.$route.query.tab === 'checkin-company'
+        ? TabCheckins.CheckinCompany
+        : TabCheckins.MyOkrs;
+    this.paramsCheckin = {
+      page: this.$route.query.page ? Number(this.$route.query.page) : 1,
+      cycleId: this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycle.id,
+      limit: pageLimit,
+    };
     if (this.currentTab === TabCheckins.MyOkrs) {
       try {
         const paramsCheckin = {
