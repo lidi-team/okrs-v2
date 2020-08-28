@@ -96,7 +96,7 @@ import { Component, Vue, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { statusCheckin, confidentLevel, notificationConfig } from '@/constants/app.constant';
-import { formatDateToYYYY, formatDateToDD } from '@/utils/dateParser';
+import { formatDateToYYYY, formatDateToDD, compareTwoDate } from '@/utils/dateParser';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<DetailHistory>({
   name: 'DetailHistory',
@@ -125,7 +125,7 @@ export default class DetailHistory extends Vue {
 
   private validateDate = (rule, value, callback) => {
     console.log(value);
-    if (value < formatDateToDD(new Date())) {
+    if (compareTwoDate(value, formatDateToDD(new Date())) === 1) {
       return callback(new Error('Không được nhỏ hơn ngày hiện tại'));
     } else {
       callback();
