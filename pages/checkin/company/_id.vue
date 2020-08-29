@@ -47,7 +47,7 @@ import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { formatDateToDD, initNewDate } from '@/utils/dateParser';
-import { notificationConfig, statusCheckin } from '@/constants/app.constant';
+import { notificationConfig } from '@/constants/app.constant';
 am4core.useTheme(am4themesAnimated);
 @Component({
   name: 'CheckinPage',
