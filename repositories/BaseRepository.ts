@@ -54,6 +54,12 @@ authenticatedService.interceptors.response.use(
           message: error.response.data.message,
         });
         break;
+      case 495: // DB Constraint
+        Notification.error({
+          ...notificationConfig,
+          message: error.response.data.message,
+        });
+        break;
       case 500:
         Notification.error({
           ...notificationConfig,
