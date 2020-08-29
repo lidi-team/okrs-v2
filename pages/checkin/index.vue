@@ -13,9 +13,9 @@
     <el-tabs v-if="user.role.name === 'ADMIN'" v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="checkins__content">
-        <component :is="currentTabComponent" :loading="loading" :table-data="tableData" />
+        <component :is="currentTabComponent" :current-cycle-id="currentCycleId" :loading="loading" :table-data="tableData" />
         <base-pagination
-          v-if="$route.query.tab === 'request-checkin'"
+          v-if="$route.query.tab === 'request-checkin' || $route.query.tab === 'inferior'"
           class="checkins__pagination"
           :total="meta.totalItems"
           :page.sync="paramsCheckin.page"
@@ -25,7 +25,7 @@
       </div>
     </el-tabs>
     <el-tabs v-else-if="user.isLeader" v-model="currentTab" @tab-click="handleClick(currentTab)">
-      <el-tab-pane v-for="tab in tabs.slice(0, 2)" :key="tab" :label="tab" :name="tab"></el-tab-pane>
+      <el-tab-pane v-for="tab in tabs.slice(0, 3)" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="checkins__content">
         <component :is="currentTabComponent" :loading="loading" :table-data="tableData" />
         <base-pagination
@@ -55,6 +55,7 @@ import { TabCheckins } from '@/constants/app.enum';
 import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
 import MyOkrsCheckin from '@/components/checkin/MyOkrsCheckin.vue';
 import CheckinCompany from '@/components/checkin/CheckinCompany.vue';
+import Inferior from '@/components/checkin/Inferior.vue';
 import CycleRepository from '@/repositories/CycleRepository';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { SelectOptionDTO } from '@/constants/app.interface';
@@ -89,6 +90,8 @@ export default class CheckinPage extends Vue {
       ? TabCheckins.CheckinResquest
       : this.$route.query.tab === 'checkin-company'
       ? TabCheckins.CheckinCompany
+      : this.$route.query.tab === 'inferior'
+      ? TabCheckins.Inferior
       : TabCheckins.MyOkrs;
 
   private paramsCheckin = {
@@ -102,6 +105,8 @@ export default class CheckinPage extends Vue {
       return RequestCheckin;
     } else if (this.$route.query.tab === 'checkin-company') {
       return CheckinCompany;
+    } else if (this.$route.query.tab === 'inferior') {
+      return Inferior;
     } else {
       return MyOkrsCheckin;
     }
@@ -122,6 +127,8 @@ export default class CheckinPage extends Vue {
         ? TabCheckins.CheckinResquest
         : this.$route.query.tab === 'checkin-company'
         ? TabCheckins.CheckinCompany
+        : this.$route.query.tab === 'inferior'
+        ? TabCheckins.Inferior
         : TabCheckins.MyOkrs;
     this.paramsCheckin = {
       page: this.$route.query.page ? Number(this.$route.query.page) : 1,
@@ -148,6 +155,22 @@ export default class CheckinPage extends Vue {
     } else if (this.currentTab === TabCheckins.CheckinResquest) {
       try {
         const { data } = await CheckinRepository.getRequest(this.paramsCheckin);
+        this.tableData = data.data.items;
+        this.meta = data.data.meta;
+        this.loading = false;
+      } catch (error) {
+        if (error.response.data.statusCode === 470) {
+          this.$notify.error({
+            ...notificationConfig,
+            message: 'Bạn không có quyền truy cập checkin này',
+          });
+        }
+        this.$router.push('/checkin');
+        this.loading = false;
+      }
+    } else if (this.currentTab === TabCheckins.Inferior) {
+      try {
+        const { data } = await CheckinRepository.getListInferior(this.paramsCheckin);
         this.tableData = data.data.items;
         this.meta = data.data.meta;
         this.loading = false;
@@ -210,7 +233,15 @@ export default class CheckinPage extends Vue {
   private handleClick(currentTab: string) {
     this.paramsCheckin.page = 1;
     this.$router.push(
-      `?tab=${currentTab === TabCheckins.MyOkrs ? 'myOKRs' : currentTab === TabCheckins.CheckinResquest ? 'request-checkin' : 'checkin-company'}`,
+      `?tab=${
+        currentTab === TabCheckins.MyOkrs
+          ? 'myOKRs'
+          : currentTab === TabCheckins.CheckinResquest
+          ? 'request-checkin'
+          : currentTab === TabCheckins.Inferior
+          ? 'inferior'
+          : 'checkin-company'
+      }`,
     );
   }
 }
