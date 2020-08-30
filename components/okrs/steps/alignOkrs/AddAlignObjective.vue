@@ -4,7 +4,7 @@
       <el-button class="el-button el-button--white el-button--medium" :loading="loading" @click="createOkrs(false)">
         Bỏ qua liên kết và tạo OKRs
       </el-button>
-      <el-button class="el-button el-button--purple el-button--medium" :loading="loading" @click="displayForm = !displayForm">
+      <el-button class="el-button el-button--purple el-button--medium" @click="displayForm = !displayForm">
         Liên kết mục tiêu
       </el-button>
     </div>
