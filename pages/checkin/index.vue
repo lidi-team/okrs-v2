@@ -27,9 +27,9 @@
     <el-tabs v-else-if="user.isLeader" v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs.slice(0, 3)" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="checkins__content">
-        <component :is="currentTabComponent" :loading="loading" :table-data="tableData" />
+        <component :is="currentTabComponent" :current-cycle-id="currentCycleId" :loading="loading" :table-data="tableData" />
         <base-pagination
-          v-if="$route.query.tab === 'request-checkin'"
+          v-if="$route.query.tab === 'request-checkin' || $route.query.tab === 'inferior'"
           class="checkins__pagination"
           :total="meta.totalItems"
           :page.sync="paramsCheckin.page"

@@ -1,10 +1,10 @@
 <template>
   <fragment>
     <el-table v-loading="loading" empty-text="Không có dữ liệu" class="inferiorOKRs" :data="tableData" style="width: 100%;">
-      <el-table-column type="index" align="center" label="STT"> </el-table-column>
+      <el-table-column type="index" align="center" label="STT"></el-table-column>
       <el-table-column label="Họ và tên">
         <template slot-scope="{ row }">
-          <div class="inferiorOKRs__info">
+          <div v-if="row.fullName" class="inferiorOKRs__info">
             <img :src="row.avatarURL ? row.avatarURL : row.gravatarURL" class="inferiorOKRs__avatar" alt="avatar" />
             <span>{{ row.fullName }}</span>
           </div>
@@ -12,7 +12,7 @@
       </el-table-column>
       <el-table-column label="Vai trò" align="center">
         <template slot-scope="{ row }">
-          <span>{{ row.role.name }}</span>
+          <span v-if="row.role">{{ row.role.name }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Hành động" align="center">
@@ -77,7 +77,6 @@ export default class Inferior extends Vue {
   private tempOKRs: Array<object> = [];
 
   private async showKRs(row) {
-    // this.keyResults = Object.assign({}, row);
     this.showDialogKRs = true;
     this.loadingDialogKRs = true;
 
