@@ -15,6 +15,14 @@ export default class CheckinRepository {
     return authenticatedService.get(`${ResourcesEnpoint.Checkin}/checkin_request`, { params });
   }
 
+  public static getListInferior(params: any) {
+    return authenticatedService.get(`${ResourcesEnpoint.Checkin}/inferior`, { params });
+  }
+
+  public static getListOKRs(params: any) {
+    return authenticatedService.get(`${ResourcesEnpoint.Checkin}/inferior_objective`, { params });
+  }
+
   public static getOKRsCompany(params: any) {
     return authenticatedService.get(`${ResourcesEnpoint.Checkin}/admin`, { params });
   }
