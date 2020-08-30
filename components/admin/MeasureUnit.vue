@@ -1,15 +1,15 @@
 <template>
-  <fragment>
-    <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" class="unit-admin">
+  <div v-loading="loadingTable">
+    <el-table v-if="tableData.length > 0" :data="tableData" empty-text="Không có dữ liệu" class="unit-admin">
       <el-table-column prop="index" label="Thứ tự sắp xếp" />
       <el-table-column prop="type" label="Tên đơn vị" />
       <el-table-column prop="preset" label="Tên viết tắt" />
       <el-table-column label="Thao tác" align="center">
         <template v-slot="{ row }">
-          <el-tooltip content="Sửa" placement="top">
+          <el-tooltip class="unit-admin__icon" content="Sửa" placement="top">
             <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
-          <el-tooltip content="Xóa" placement="top">
+          <el-tooltip class="unit-admin__icon" content="Xóa" placement="top">
             <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
           </el-tooltip>
         </template>
@@ -44,7 +44,7 @@
         <el-button class="el-button--purple el-button--modal" @click="handleUpdate">Cập nhật</el-button>
       </span>
     </el-dialog>
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
@@ -158,6 +158,10 @@ export default class ManageMeasureUnit extends Vue {
 @import '@/assets/scss/main.scss';
 .unit-admin {
   width: 100%;
+  &__icon {
+    cursor: pointer;
+    margin: 0 $unit-1;
+  }
 }
 .pagination-bottom {
   margin-top: 2rem;

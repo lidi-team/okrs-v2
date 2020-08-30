@@ -96,6 +96,7 @@ export default class SettingCompanyPage extends Vue {
   };
 
   private switchTabs(currentTab: string) {
+    this.tableData = [];
     if (currentTab === AdminTabsVn.CycleOKR) {
       this.adminParams.page = 1;
       this.adminParams.text = '';

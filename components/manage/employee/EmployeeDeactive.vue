@@ -51,7 +51,7 @@
               <el-input v-model="tempUpdateUser.fullName" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
             </el-form-item>
             <el-form-item label="Email:" prop="email" class="custom-label">
-              <el-input v-model="tempUpdateUser.email" placeholder="Nhập email" :disabled="true" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
+              <el-input v-model="tempUpdateUser.email" placeholder="Nhập email" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
             </el-form-item>
             <el-form-item label="Phòng ban:" class="custom-label" prop="teamId">
               <el-select
@@ -157,34 +157,38 @@ export default class EmployeeDeactive extends Vue {
       if (isValid) {
         this.$confirm(`Bạn có chắc chắn muốn active user này?`, {
           ...confirmWarningConfig,
-        }).then(async () => {
-          await EmployeeRepository.update(tempUpdateUser)
-            .then((res) => {
-              setTimeout(() => {
-                this.loading = false;
-              }, 300);
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Cập nhật thành viên thành công',
-              });
-              this.getListUsers();
-              this.dialogUpdateVisible = false;
-            })
-            .catch((error) => {
-              if (error.response.data.statusCode === 430) {
-                this.$notify.error({
+        })
+          .then(async () => {
+            await EmployeeRepository.update(tempUpdateUser)
+              .then((res) => {
+                setTimeout(() => {
+                  this.loading = false;
+                }, 300);
+                this.$notify.success({
                   ...notificationConfig,
-                  message: 'Team Leader đã tồn tại',
+                  message: 'Cập nhật thành viên thành công',
                 });
-              }
-              setTimeout(() => {
-                this.loading = false;
-              }, 300);
-              this.dialogUpdateVisible = false;
-            });
-        });
-      }
-      if (invalidFileds) {
+                this.getListUsers();
+                this.dialogUpdateVisible = false;
+              })
+              .catch((error) => {
+                if (error.response.data.statusCode === 430) {
+                  this.$notify.error({
+                    ...notificationConfig,
+                    message: 'Team Leader đã tồn tại',
+                  });
+                }
+                setTimeout(() => {
+                  this.loading = false;
+                }, 300);
+              });
+          })
+          .catch(() => {
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+          });
+      } else {
         setTimeout(() => {
           this.loading = false;
         }, 300);
