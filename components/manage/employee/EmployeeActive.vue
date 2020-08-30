@@ -160,8 +160,8 @@ export default class EmployeeActive extends Vue {
         this.$confirm(`Bạn có chắc chắn muốn cập nhật user này?`, {
           ...confirmWarningConfig,
         }).then(async () => {
-          try {
-            await EmployeeRepository.update(tempUpdateUser).then((res) => {
+          await EmployeeRepository.update(tempUpdateUser)
+            .then((res) => {
               setTimeout(() => {
                 this.loading = false;
               }, 300);
@@ -169,15 +169,21 @@ export default class EmployeeActive extends Vue {
                 ...notificationConfig,
                 message: 'Cập nhật thành viên thành công',
               });
+              this.getListUsers();
+              this.dialogUpdateVisible = false;
+            })
+            .catch((error) => {
+              if (error.response.data.statusCode === 430) {
+                this.$notify.error({
+                  ...notificationConfig,
+                  message: 'Team Leader đã tồn tại',
+                });
+              }
+              setTimeout(() => {
+                this.loading = false;
+              }, 300);
+              this.dialogUpdateVisible = false;
             });
-            this.getListUsers();
-            this.dialogUpdateVisible = false;
-          } catch (error) {
-            setTimeout(() => {
-              this.loading = false;
-            }, 300);
-            this.dialogUpdateVisible = false;
-          }
         });
       }
       if (invalidFields) {
