@@ -20,7 +20,7 @@
               <img :src="item.avatarURL ? item.avatarURL : item.gravatarURL" alt="avatar" />
             </el-avatar>
             <div class="navbar-history__search--info">
-              <p class="navbar-history__search--info--fullName">{{ item.fullName }}</p>
+              <b class="navbar-history__search--info--fullName">{{ item.fullName }}</b>
               <p class="navbar-history__search--info--department">{{ getInforUser(item) }}</p>
             </div>
           </div>
@@ -78,14 +78,12 @@ export default class NavbarCrfs extends Vue {
   }
 
   private async getAllCycles() {
-    // Get 2 years(8 cycles OKRs) ago until now
     if (this.$store.state.cycle.cycles.length) {
       this.listCycles = this.$store.state.cycle.cycles;
-      const cycleId = this.listCycles.find((item) => item.label === this.cycleId);
     } else {
       try {
-        const { data } = await CycleRepository.get({ page: 1, limit: 8 });
-        this.listCycles = data.data.items.map((item) => {
+        const { data } = await CycleRepository.getMetadata();
+        this.listCycles = data.data.all.map((item) => {
           return {
             id: item.id,
             label: item.name,
@@ -97,10 +95,12 @@ export default class NavbarCrfs extends Vue {
   }
 
   private getInforUser(item: any): String {
-    if (item.isLeader) {
-      return `Trưởng ${item.team.name}`;
+    if (item.role.name === 'ADMIN') {
+      return 'OKRs Master';
+    } else if (item.isLeader) {
+      return `Trưởng ${item.team.name.toLowerCase()}`;
     } else {
-      return `Thành viên ${item.team.name}`;
+      return `Thành viên ${item.team.name.toLowerCase()}`;
     }
   }
 
