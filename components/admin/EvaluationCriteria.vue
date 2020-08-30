@@ -1,6 +1,6 @@
 <template>
-  <fragment>
-    <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" class="criteria-admin">
+  <div v-loading="loadingTable">
+    <el-table v-if="tableData.length > 0" :data="tableData" empty-text="Không có dữ liệu" class="criteria-admin">
       <el-table-column prop="content" label="Tiêu chí đánh giá" min-width="400px"></el-table-column>
       <el-table-column label="Số sao" min-width="70px">
         <template v-slot="{ row }">
@@ -66,7 +66,7 @@
         <el-button class="el-button--purple el-button--modal" @click="handleUpdate">Cập nhật</el-button>
       </span>
     </el-dialog>
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
@@ -206,6 +206,7 @@ export default class ManageEvaluationCriteria extends Vue {
   width: 100%;
   &__icon {
     cursor: pointer;
+    margin: 0 $unit-1;
   }
 }
 .pagination-bottom {

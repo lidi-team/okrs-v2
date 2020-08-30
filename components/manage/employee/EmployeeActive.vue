@@ -19,13 +19,20 @@
         </template>
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
-        <template v-if="row.role.name !== 'ADMIN'" slot-scope="{ row }">
-          <el-tooltip class="employee-active__icon" content="Sửa" placement="left-end">
-            <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
-          </el-tooltip>
-          <el-tooltip class="employee-active__icon" content="Deactive tài khoản" placement="right-end">
-            <i class="el-icon-warning icon--warning" @click="deactiveUser(row)"></i>
-          </el-tooltip>
+        <template slot-scope="{ row }">
+          <div v-if="row.role.name === 'ADMIN' && user.role.name === 'ADMIN'">
+            <el-tooltip class="employee-active__icon" content="Sửa" placement="left-end">
+              <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
+            </el-tooltip>
+          </div>
+          <div v-if="row.role.name !== 'ADMIN'">
+            <el-tooltip class="employee-active__icon" content="Sửa" placement="left-end">
+              <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
+            </el-tooltip>
+            <el-tooltip class="employee-active__icon" content="Deactive tài khoản" placement="right-end">
+              <i class="el-icon-warning icon--warning" @click="deactiveUser(row)"></i>
+            </el-tooltip>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -54,7 +61,7 @@
               <el-input v-model="tempUpdateUser.fullName" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
             </el-form-item>
             <el-form-item label="Email:" prop="email" class="custom-label">
-              <el-input v-model="tempUpdateUser.email" placeholder="Nhập email" :disabled="true" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
+              <el-input v-model="tempUpdateUser.email" placeholder="Nhập email" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
             </el-form-item>
             <el-form-item label="Phòng ban:" class="custom-label" prop="teamId">
               <el-select
@@ -101,14 +108,20 @@
 <script lang="ts">
 import { Form } from 'element-ui';
 import { Component, Vue, Prop } from 'vue-property-decorator';
-
+import { mapGetters } from 'vuex';
 import { employeeRules } from './employee.constant';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { EmployeeDTO } from '@/constants/app.interface';
+import { GetterState } from '@/constants/app.vuex';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 @Component<EmployeeActive>({
   name: 'EmployeeActive',
+  computed: {
+    ...mapGetters({
+      user: GetterState.USER,
+    }),
+  },
   mounted() {
     this.loadingTable = true;
     setTimeout(() => {
@@ -159,34 +172,39 @@ export default class EmployeeActive extends Vue {
       if (isValid) {
         this.$confirm(`Bạn có chắc chắn muốn cập nhật user này?`, {
           ...confirmWarningConfig,
-        }).then(async () => {
-          await EmployeeRepository.update(tempUpdateUser)
-            .then((res) => {
-              setTimeout(() => {
-                this.loading = false;
-              }, 300);
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Cập nhật thành viên thành công',
-              });
-              this.getListUsers();
-              this.dialogUpdateVisible = false;
-            })
-            .catch((error) => {
-              if (error.response.data.statusCode === 430) {
-                this.$notify.error({
+        })
+          .then(async () => {
+            await EmployeeRepository.update(tempUpdateUser)
+              .then((res) => {
+                setTimeout(() => {
+                  console.log('aa');
+                  this.loading = false;
+                }, 300);
+                this.$notify.success({
                   ...notificationConfig,
-                  message: 'Team Leader đã tồn tại',
+                  message: 'Cập nhật thành viên thành công',
                 });
-              }
-              setTimeout(() => {
-                this.loading = false;
-              }, 300);
-              this.dialogUpdateVisible = false;
-            });
-        });
-      }
-      if (invalidFields) {
+                this.getListUsers();
+                this.dialogUpdateVisible = false;
+              })
+              .catch((error) => {
+                if (error.response.data.statusCode === 430) {
+                  this.$notify.error({
+                    ...notificationConfig,
+                    message: 'Team Leader đã tồn tại',
+                  });
+                }
+                setTimeout(() => {
+                  this.loading = false;
+                }, 300);
+              });
+          })
+          .catch(() => {
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+          });
+      } else {
         setTimeout(() => {
           this.loading = false;
         }, 300);

@@ -1,6 +1,6 @@
 <template>
-  <fragment>
-    <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" class="team-admin">
+  <div v-loading="loadingTable">
+    <el-table v-if="tableData.length > 0" :data="tableData" empty-text="Không có dữ liệu" class="team-admin">
       <el-table-column prop="name" label="Tên phòng ban"></el-table-column>
       <el-table-column prop="description" label="Mô tả"></el-table-column>
       <el-table-column label="Ngày cập nhật">
@@ -52,7 +52,7 @@
         <el-button class="el-button--purple el-button--modal" @click="handleUpdate">Cập nhật</el-button>
       </span>
     </el-dialog>
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
@@ -167,6 +167,10 @@ export default class ManageDepartment extends Vue {
 @import '@/assets/scss/main.scss';
 .team-admin {
   width: 100%;
+  &__icon {
+    cursor: pointer;
+    margin: 0 $unit-1;
+  }
 }
 .pagination-bottom {
   margin-top: 2rem;

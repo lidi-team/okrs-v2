@@ -1,6 +1,6 @@
 <template>
-  <fragment>
-    <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" class="cycle-okrs">
+  <div v-loading="loadingTable">
+    <el-table v-if="tableData.length > 0" :data="tableData" empty-text="Không có dữ liệu" class="cycle-okrs">
       <el-table-column prop="name" label="Tên chu kỳ"></el-table-column>
       <el-table-column label="Ngày bắt đầu">
         <template v-slot="{ row }">
@@ -65,7 +65,7 @@
         <el-button class="el-button--purple el-button--modal" @click="handleUpdate">Cập nhật</el-button>
       </span>
     </el-dialog>
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
@@ -199,6 +199,10 @@ export default class ManageCycleOkrs extends Vue {
 @import '@/assets/scss/main.scss';
 .cycle-okrs {
   width: 100%;
+  &__icon {
+    cursor: pointer;
+    margin: 0 $unit-1;
+  }
 }
 .pagination-bottom {
   margin-top: $unit-8;
