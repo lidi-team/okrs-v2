@@ -1,6 +1,6 @@
 <template>
   <div class="listHistory">
-    <el-page-header title="OKRs của tôi" @back="goBack" />
+    <el-page-header title="OKRs cấp dưới" @back="goBack" />
     <h1 class="listHistory__title">Lịch sử Check-in</h1>
     <div class="listHistory__content">
       <el-table v-loading="loading" empty-text="Không có dữ liệu" class="myOKRs" :data="historyList" style="width: 100%;">
@@ -30,7 +30,7 @@
         </el-table-column>
         <el-table-column label="Hành động" align="center" width="180">
           <template slot-scope="{ row }">
-            <nuxt-link :to="`/checkin/lich-su/chi-tiet/${row.id}`">
+            <nuxt-link :to="`/checkin/lich-su-nhan-vien/chi-tiet/${row.id}`">
               <el-button class="el-button--white el-button--checkin">Xem chi tiết</el-button>
             </nuxt-link>
           </template>
@@ -45,23 +45,23 @@ import { Component, Vue } from 'vue-property-decorator';
 import { statusCheckin, notificationConfig } from '@/constants/app.constant';
 import CheckinRepository from '@/repositories/CheckinRepository';
 
-@Component<HistoryCheckin>({
-  name: 'HistoryCheckin',
+@Component<HistoryCheckinEmployee>({
+  name: 'HistoryCheckinEmployee',
   head() {
     return {
-      title: 'Lịch sử Check-in',
+      title: 'Lịch sử Check-in của nhân viên',
     };
   },
   created() {
     this.getList();
   },
 })
-export default class HistoryCheckin extends Vue {
+export default class HistoryCheckinEmployee extends Vue {
   private loading: boolean = false;
   private historyList: Array<object> = [];
   private status = statusCheckin;
   private goBack() {
-    this.$router.push('/checkin');
+    this.$router.push('/checkin?tab=inferior');
   }
 
   private async getList() {

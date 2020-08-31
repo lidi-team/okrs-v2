@@ -44,7 +44,7 @@
             </el-table-column>
             <el-table-column align="center" label="Lịch sử">
               <template slot-scope="{ row }">
-                <nuxt-link :to="`/checkin/lich-su/${row.id}`">
+                <nuxt-link :to="`/checkin/lich-su-nhan-vien/${row.id}`">
                   <span class="myOKRs__txtBlue">Xem lịch sử</span>
                 </nuxt-link>
               </template>
