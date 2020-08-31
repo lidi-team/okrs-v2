@@ -4,10 +4,10 @@
     <h1 class="lesson-content__title">{{ post.title }}</h1>
     <div class="lesson-content__des">
       <div>
-        <img alt="avatar-logo" class="lesson-content__avatar" src="@/static/icon-dark.png" />
+        <img alt="avatar-logo" class="lesson-content__avatar" src="@/assets/images/common/logoflame.png" />
       </div>
       <div class="lesson-content__author">
-        <span class="lesson-content__name">Capi Creative</span>
+        <span class="lesson-content__name">Flame OKRs</span>
         <div class="lesson-content__muted">
           <span style="color: #757575;">{{ new Date(post.createdAt) | dateFormat('DD/MM/YYYY') }}</span>
           <img
@@ -71,7 +71,7 @@ export default class LessonContent extends Vue {
   &__avatar {
     background-color: #e2e8f0;
     display: block;
-    width: 2.5rem;
+    width: 3rem;
     height: 2.5rem;
     border-radius: 100%;
   }

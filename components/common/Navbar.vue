@@ -1,10 +1,11 @@
 <template>
   <div class="header">
-    <div class="header__logo">
-      <nuxt-link to="/">
-        <img src="@/assets/images/common/logo.png" alt="logo" />
-      </nuxt-link>
-    </div>
+    <nuxt-link to="/">
+      <div class="header__logo">
+        <img class="header__img" src="@/assets/images/common/logoflame.png" alt="logo" />
+        <span class="header__brandname">Flame OKRs</span>
+      </div>
+    </nuxt-link>
     <div v-if="user" class="header__info side-right">
       <div class="side-right__list">
         <el-dropdown class="side-right__item item" trigger="click">
@@ -135,12 +136,28 @@ export default class Navbar extends Vue {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 7vh;
+  height: 45px;
   padding: $unit-6 $unit-10 $unit-6 $unit-5;
   background-color: $purple-primary-5;
 
   @include breakpoint-down(phone) {
     padding: 0 $unit-4;
+  }
+
+  &__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__img {
+    width: 24px;
+    height: 24px;
+  }
+  &__brandname {
+    font-weight: $font-weight-medium;
+    margin-left: $unit-2;
+    color: $white;
+    font-size: $text-sm;
   }
 }
 
