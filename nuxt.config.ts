@@ -1,6 +1,10 @@
 import { NuxtConfig } from '@nuxt/types';
 
 const nuxtConfig: NuxtConfig = {
+  /**
+   * @docs https://nuxtjs.org/api/configuration-generate#crawler
+   */
+  generate: {},
   server: {
     port: process.env.port,
   },
@@ -134,6 +138,15 @@ const nuxtConfig: NuxtConfig = {
       minify: {
         collapseWhitespace: true,
         removeComments: true,
+        collapseBooleanAttributes: true,
+        decodeEntities: true,
+        minifyCSS: true,
+        minifyJS: true,
+        processConditionalComments: true,
+        removeEmptyAttributes: true,
+        removeRedundantAttributes: true,
+        trimCustomFragments: true,
+        useShortDoctype: true,
       },
     },
     babel: {
