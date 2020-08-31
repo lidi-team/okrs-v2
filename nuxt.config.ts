@@ -48,14 +48,14 @@ const nuxtConfig: NuxtConfig = {
         rel: 'stylesheet',
         href: 'https://fonts.googleapis.com/css?family=Merriweather:400,400i,700,700i&display=swap&subset=vietnamese',
       },
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon-white.ico' },
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     ],
-    script: [
-      {
-        src: '/setColorScheme.js',
-        async: true,
-      },
-    ],
+    // script: [
+    //   {
+    //     src: '/setColorScheme.js',
+    //     async: true,
+    //   },
+    // ],
   },
   /*
    ** Global CSS
