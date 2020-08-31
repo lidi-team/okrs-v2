@@ -3,7 +3,14 @@
     <el-button v-if="id.length !== 0" class="el-button--purple el-button--small" icon="el-icon-plus" @click="handleApproveAll"
       >Duyệt tất cả</el-button
     >
-    <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" style="width: 100%;" @selection-change="handleSelectionChange">
+    <el-table
+      v-loading="loadingTable"
+      :data="tableData"
+      class="employee-pending"
+      empty-text="Không có dữ liệu"
+      style="width: 100%;"
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection"></el-table-column>
       <el-table-column prop="fullName" label="Tên đầy đủ" min-width="150"></el-table-column>
       <el-table-column prop="email" label="Email" min-width="150"></el-table-column>
@@ -19,12 +26,14 @@
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
         <template slot-scope="{ row }">
-          <el-tooltip class="employee-active__icon" content="Sửa" placement="left-end">
-            <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
-          </el-tooltip>
-          <el-tooltip class="employee-active__icon" content="Xóa" placement="right-end">
-            <i class="el-icon-delete icon--delete" @click="handleDelete(row)"></i>
-          </el-tooltip>
+          <div style="display: flex; align-item: center; justify-content: center;">
+            <el-tooltip class="employee-pending__icon" content="Duyệt" placement="left-end">
+              <icon-add class="icon--add" @click="handleOpenDialogUpdate(row)" />
+            </el-tooltip>
+            <el-tooltip class="employee-pending__icon" content="Từ chối" placement="right-end">
+              <icon-reject class="icon--rejected" @click="handleDelete(row)" />
+            </el-tooltip>
+          </div>
         </template>
       </el-table-column>
     </el-table>
@@ -35,7 +44,7 @@
       :visible.sync="dialogUpdateVisible"
       width="40%"
       placement="bottom-start"
-      title="Cập nhật thông tin"
+      title="Duyệt yêu cầu"
       :before-close="handleCloseDialog"
     >
       <el-row :gutter="10">
@@ -100,14 +109,19 @@
 <script lang="ts">
 import { Form } from 'element-ui';
 import { Component, Vue, Prop } from 'vue-property-decorator';
-
 import { employeeRules } from './employee.constant';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { EmployeeDTO } from '@/constants/app.interface';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
+import IconReject from '@/assets/images/employee/rejected.svg';
+import IconAdd from '@/assets/images/employee/add-user.svg';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<EmployeePending>({
   name: 'EmployeePending',
+  components: {
+    IconReject,
+    IconAdd,
+  },
   mounted() {
     this.loadingTable = true;
     setTimeout(() => {
@@ -246,3 +260,13 @@ export default class EmployeePending extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+@import '@/assets/scss/main.scss';
+.employee-pending {
+  &__icon {
+    cursor: pointer;
+    margin: 0 $unit-1;
+  }
+}
+</style>
