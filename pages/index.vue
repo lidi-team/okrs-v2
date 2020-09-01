@@ -24,7 +24,13 @@
         </el-col>
       </el-row>
     </div>
-    <dashboard-star-rank :loading="loading" :data-star-in-come="dataStarInCome" :data-star-out-come="dataStarOutCome" />
+    <dashboard-star-rank
+      :no-data-feedback="noDataFeedback"
+      :no-data-re="noDataRe"
+      :loading="loading"
+      :data-star-in-come="dataStarInCome"
+      :data-star-out-come="dataStarOutCome"
+    />
   </div>
 </template>
 
@@ -65,6 +71,8 @@ export default class HomePage extends Vue {
   private cycleId: number = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycle.id;
   private loading: boolean = false;
   private loadingAdmin: boolean = false;
+  private noDataFeedback: boolean = false;
+  private noDataRe: boolean = false;
   private listCycles: any[] = [];
 
   private dataStarInCome: Array<object> = [];
@@ -133,6 +141,12 @@ export default class HomePage extends Vue {
         );
         this.dataStarInCome = income.data.data;
         this.dataStarOutCome = outcome.data.data;
+        if (this.dataStarInCome.length === 0) {
+          this.noDataRe = true;
+        }
+        if (this.dataStarOutCome.length === 0) {
+          this.noDataFeedback = true;
+        }
         this.dataOkrsProgress = Object.assign(this.dataOkrsProgress, progress.data.data);
         setTimeout(() => {
           this.loading = false;
