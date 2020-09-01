@@ -21,6 +21,9 @@
               <icon-star class="star__col__icon" style="margin-left: 5px;" />
             </div>
           </div>
+          <div v-if="noDataRe === true" class="star-item--nodata">
+            <h2>Không có dữ liệu</h2>
+          </div>
         </div>
       </el-col>
       <el-col class="col" :sm="24" :md="12">
@@ -42,6 +45,9 @@
               <p>{{ item.numberofstar }}</p>
               <icon-star class="star__col__icon" style="margin-left: 5px;" />
             </div>
+          </div>
+          <div v-if="noDataFeedback" class="star-item--nodata">
+            <h2>Không có dữ liệu</h2>
           </div>
         </div>
       </el-col>
@@ -73,6 +79,8 @@ export default class ProgressBarComponent extends Vue {
   @Prop(Array) readonly dataStarInCome;
   @Prop(Array) readonly dataStarOutCome;
   @Prop(Boolean) readonly loading!: boolean;
+  @Prop(Boolean) readonly noDataRe!: boolean;
+  @Prop(Boolean) readonly noDataFeedback!: boolean;
 }
 </script>
 <style lang="scss" scoped>
@@ -121,6 +129,12 @@ export default class ProgressBarComponent extends Vue {
   align-items: center;
   padding: 0.75rem 0;
   justify-content: space-between;
+  &--nodata {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 0;
+    justify-content: center;
+  }
   &__left {
     display: flex;
     text-align: left;
