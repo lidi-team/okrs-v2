@@ -168,6 +168,10 @@ export default class MyOkrsCheckin extends Vue {
   }
   .el-progress {
     .el-progress-bar {
+      &__innerText {
+        color: #606266;
+        font-size: 14px;
+      }
       &__outer {
         background-color: $purple-primary-2;
         border-radius: $border-radius-medium;
