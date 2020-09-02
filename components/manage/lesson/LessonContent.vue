@@ -1,6 +1,7 @@
 <template>
-  <div v-loading="loading" class="lesson-content">
-    <el-page-header title="Bài Học OKRs" @back="goBack" />
+  <div v-if="prevRoute" class="lesson-content">
+    <el-page-header v-if="prevRoute.path === '/bai-hoc-okrs'" title="Quản lý bài học OKRs" @back="goBack('manage')" />
+    <el-page-header v-else title="Bài Học OKRs" @back="goBack('learn')" />
     <h1 class="lesson-content__title">{{ post.title }}</h1>
     <div class="lesson-content__des">
       <div>
@@ -44,10 +45,10 @@ import LessonRepository from '@/repositories/LessonRepository';
 })
 export default class LessonContent extends Vue {
   @Prop(Object) readonly post;
-
+  @Prop(Object) readonly prevRoute;
   private loading: boolean = false;
-  private goBack() {
-    this.$router.push('/hoc-okrs');
+  private goBack(type: string) {
+    type === 'manage' ? this.$router.push('/bai-hoc-okrs') : this.$router.push('/hoc-okrs');
   }
 }
 </script>
