@@ -1,5 +1,5 @@
 <template>
-  <lesson-content :post="post" />
+  <lesson-content :post="post" :prev-route="prevRoute" />
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
@@ -24,6 +24,13 @@ import LessonRepository from '@/repositories/LessonRepository';
       }
     }
   },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      vm.prevRoute = from;
+    });
+  },
 })
-export default class LessonDetail extends Vue {}
+export default class LessonDetail extends Vue {
+  private prevRoute: any = null;
+}
 </script>
