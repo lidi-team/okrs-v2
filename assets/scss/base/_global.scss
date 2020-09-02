@@ -28,6 +28,13 @@ button:focus {
   outline: none;
 }
 
+p,
+textarea,
+span {
+  word-break: break-word;
+  word-wrap: break-word;
+}
+
 ::-webkit-scrollbar {
   width: 4px;
   height: 3px;
