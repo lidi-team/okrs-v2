@@ -1,7 +1,8 @@
 <template>
-  <div v-if="prevRoute" class="lesson-content">
-    <el-page-header v-if="prevRoute.path === '/bai-hoc-okrs'" title="Quản lý bài học OKRs" @back="goBack('manage')" />
-    <el-page-header v-else title="Bài Học OKRs" @back="goBack('learn')" />
+  <div class="lesson-content">
+    <!-- <el-page-header v-if="prevRoute.path === '/bai-hoc-okrs'" title="Quản lý bài học OKRs" @back="goBack('manage')" />
+    <el-page-header v-else title="Bài Học OKRs" @back="goBack('learn')" /> -->
+    <slot name="header" />
     <h1 class="lesson-content__title">{{ post.title }}</h1>
     <div class="lesson-content__des">
       <div>
@@ -45,11 +46,7 @@ import LessonRepository from '@/repositories/LessonRepository';
 })
 export default class LessonContent extends Vue {
   @Prop(Object) readonly post;
-  @Prop(Object) readonly prevRoute;
   private loading: boolean = false;
-  private goBack(type: string) {
-    type === 'manage' ? this.$router.push('/bai-hoc-okrs') : this.$router.push('/hoc-okrs');
-  }
 }
 </script>
 
@@ -111,6 +108,7 @@ export default class LessonContent extends Vue {
     }
   }
   .paginate {
+    border-top: 1px solid #757575;
     &__link {
       max-width: 350px;
       &--right {
@@ -122,14 +120,15 @@ export default class LessonContent extends Vue {
       }
     }
     &__title {
-      font-size: $unit-4;
+      font-size: $text-lg;
       font-style: normal;
+      color: #757575;
       color: $black-light;
       font-weight: $font-family-base;
       line-height: 48px;
     }
     &__slug {
-      font-size: $unit-6;
+      font-size: $text-xl;
       color: $purple-primary-4;
       &:hover {
         color: $purple-primary-3;
