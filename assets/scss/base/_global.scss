@@ -318,3 +318,9 @@ span {
   opacity: 0;
   transform: translateX(30px);
 }
+
+// El-table
+.el-table .cell {
+  word-break: break-word;
+  word-wrap: break-word;
+}

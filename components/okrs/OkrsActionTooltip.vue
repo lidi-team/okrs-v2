@@ -58,7 +58,7 @@ export default class OkrsActionTooltip extends Vue {
         if (error.response.data.statusCode === 481) {
           this.$notify.error({
             ...notificationConfig,
-            message: 'Không được xóa OKRs constraint',
+            message: 'Không được xóa OKRs đang được liên kết',
           });
         }
       }
