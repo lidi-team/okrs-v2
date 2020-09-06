@@ -96,7 +96,6 @@ export default class SettingCompanyPage extends Vue {
   };
 
   private switchTabs(currentTab: string) {
-    this.tableData = [];
     if (currentTab === AdminTabsVn.CycleOKR) {
       this.adminParams.page = 1;
       this.adminParams.text = '';
@@ -141,6 +140,7 @@ export default class SettingCompanyPage extends Vue {
 
   @Watch('$route.query', { deep: true })
   private async getListData() {
+    this.tableData = [];
     this.currentTab =
       this.$route.query.tab === AdminTabsEn.MeasureUnit
         ? AdminTabsVn.MeasureUnit
