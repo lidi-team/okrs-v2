@@ -129,17 +129,22 @@ export default class AlignOkrsDialog extends Vue {
           validForm++;
         }
       });
-      if (!tempAlignOkrs.has(form.syncAlignOkrs.objectiveId)) {
-        tempAlignOkrs.add(form.syncAlignOkrs.objectiveId);
-      } else {
-        invalidContent++;
+      if (form.syncAlignOkrs.objectiveId !== null) {
+        if (!tempAlignOkrs.has(form.syncAlignOkrs.objectiveId)) {
+          tempAlignOkrs.add(form.syncAlignOkrs.objectiveId);
+        } else {
+          invalidContent++;
+        }
       }
     });
+    // console.log(': -------------------------------------------------');
+    // console.log('updateAlignOkrs -> invalidContent', invalidContent);
+    // console.log(': -------------------------------------------------');
     if (invalidContent > 0) {
       setTimeout(() => {
         this.loading = false;
       }, 300);
-      this.$message.error('Trùng lặp OKRs, xin vui lòng chọn lại');
+      this.$message.error('Trùng lặp OKRs liên kết chéo, xin vui lòng chọn lại');
     } else if (validForm > 0) {
       setTimeout(() => {
         this.loading = false;
@@ -149,7 +154,7 @@ export default class AlignOkrsDialog extends Vue {
         objective: Object.assign(
           {},
           { id: +this.temporaryOkrs.id },
-          { alignObjectivesId: Array.from(tempAlignOkrs) },
+          { alignObjectivesId: !tempAlignOkrs.size ? [] : Array.from(tempAlignOkrs) },
           { parentObjectiveId: this.parentObjectiveId },
         ),
       };
