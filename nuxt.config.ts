@@ -33,7 +33,7 @@ const nuxtConfig: NuxtConfig = {
    * @docs https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s - FlameOKRs',
+    titleTemplate: '%s | FlameOKRs',
     title: 'Awesome tool OKRs',
     meta: [
       { charset: 'utf-8' },
