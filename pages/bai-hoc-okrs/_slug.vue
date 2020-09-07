@@ -14,17 +14,13 @@ import LessonRepository from '@/repositories/LessonRepository';
     };
   },
   watchQuery: ['page'],
-  async asyncData({ params, redirect }) {
+  async asyncData({ params }) {
     try {
       const response = await LessonRepository.getPost(params.slug);
       return {
         post: response.data.data,
       };
-    } catch (error) {
-      if (error.response.status === 404) {
-        return redirect('/404');
-      }
-    }
+    } catch (error) {}
   },
 })
 export default class ManageLessonDetail extends Vue {

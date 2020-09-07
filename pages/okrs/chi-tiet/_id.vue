@@ -60,17 +60,13 @@ import { MutationState, DispatchAction } from '@/constants/app.vuex';
       title: 'Chi tiết OKRs',
     };
   },
-  async asyncData({ params, redirect }) {
+  async asyncData({ params }) {
     try {
       const { data } = await OkrsRepository.getOkrsDetail(+params.id);
       return {
         objective: Object.freeze(data.data),
       };
-    } catch (error) {
-      if (error.response.status === 404) {
-        return redirect('/404');
-      }
-    }
+    } catch (error) {}
   },
   created() {
     this.tempOkrs = this.objective;
