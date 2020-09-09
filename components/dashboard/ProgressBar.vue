@@ -2,7 +2,7 @@
   <div v-loading="loading" class="progress">
     <div class="progress__item">
       <el-row :gutter="10">
-        <el-col :xs="24" :sm="6" :md="6" class="progress__header">OKR công ty:</el-col>
+        <el-col :xs="24" :sm="6" :md="6" class="progress__header">OKRs công ty:</el-col>
         <el-col v-if="dataOkrsProgress.startDate" :xs="24" :sm="4" :md="2" class="progress__start-cycle">
           {{ new Date(dataOkrsProgress.startDate) | dateFormat('MM/YYYY') }}
         </el-col>
@@ -16,7 +16,7 @@
     </div>
     <div v-if="user.role.name !== 'ADMIN'" class="progress__item">
       <el-row :gutter="10">
-        <el-col :xs="24" :sm="6" :md="6" class="progress__header">OKR nhóm:</el-col>
+        <el-col :xs="24" :sm="6" :md="6" class="progress__header">OKRs nhóm:</el-col>
         <el-col v-if="dataOkrsProgress.startDate" :xs="24" :sm="4" :md="2" class="progress__start-cycle">
           {{ new Date(dataOkrsProgress.startDate) | dateFormat('MM/YYYY') }}
         </el-col>
@@ -30,7 +30,7 @@
     </div>
     <div class="progress__item">
       <el-row :gutter="10">
-        <el-col :xs="24" :sm="6" :md="6" class="progress__header">OKR cá nhân:</el-col>
+        <el-col :xs="24" :sm="6" :md="6" class="progress__header">OKRs cá nhân:</el-col>
         <el-col v-if="dataOkrsProgress.startDate" :xs="24" :sm="4" :md="2" class="progress__start-cycle">
           {{ new Date(dataOkrsProgress.startDate) | dateFormat('MM/YYYY') }}
         </el-col>
