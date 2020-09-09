@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development nuxt-ts",
     "build": "run-s build:*",
-    "build:nuxt": "cross-env NODE_ENV=production nuxt-ts build",
+    "build:nuxt": "cross-env NODE_ENV=production nuxt-ts build && nuxt-ts start",
     "ci": "run-s test build",
     "start": "yarn build && yarn export && yarn serve",
     "analyze": "nuxt-ts build --analyze",

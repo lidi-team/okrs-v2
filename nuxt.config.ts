@@ -27,7 +27,7 @@ const nuxtConfig: NuxtConfig = {
    * @description Nuxt target
    * @docs https://nuxtjs.org/api/configuration-target
    */
-  target: 'static',
+  target: 'server',
   /**
    * @description Headers of the page
    * @docs https://nuxtjs.org/api/configuration-head
