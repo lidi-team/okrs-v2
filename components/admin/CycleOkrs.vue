@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loadingTable">
-    <el-table v-if="tableData.length > 0" :data="tableData" empty-text="Không có dữ liệu" class="cycle-okrs">
+    <el-table :data="tableData" empty-text="Không có dữ liệu" class="cycle-okrs">
       <el-table-column prop="name" label="Tên chu kỳ"></el-table-column>
       <el-table-column label="Ngày bắt đầu">
         <template v-slot="{ row }">

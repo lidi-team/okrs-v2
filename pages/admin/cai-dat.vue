@@ -159,7 +159,7 @@ export default class SettingCompanyPage extends Vue {
     try {
       if (this.$route.query.tab === AdminTabsEn.CycleOKR || this.$route.query.tab === undefined) {
         await CycleRepository.get(this.adminParams).then((res) => {
-          this.tableData = Object.freeze(res.data.data.items);
+          this.tableData = res.data.data.items;
           this.totalItems = res.data.data.meta.totalItems;
         });
       } else if (this.$route.query.tab === AdminTabsEn.Department) {
@@ -169,7 +169,7 @@ export default class SettingCompanyPage extends Vue {
         });
       } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
         await EvaluationCriteriaRepository.get(this.adminParams).then((res) => {
-          this.tableData = Object.freeze(res.data.data.items);
+          this.tableData = res.data.data.items;
           this.totalItems = res.data.data.meta.totalItems;
         });
       } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
