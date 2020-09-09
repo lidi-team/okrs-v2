@@ -70,7 +70,6 @@
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
-
 import { max255Char } from '../account/account.constant';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import { AdminTabsEn } from '@/constants/app.enum';
@@ -162,7 +161,14 @@ export default class ManageCycleOkrs extends Vue {
             });
             this.reloadData();
             this.dialogUpdateVisible = false;
-          } catch (error) {}
+          } catch (error) {
+            if (error.response.data.statusCode === 486) {
+              this.$notify.error({
+                ...notificationConfig,
+                message: 'Ngày bắt đầu hoặc ngày kết thúc không hợp lệ',
+              });
+            }
+          }
         });
       }
     });
