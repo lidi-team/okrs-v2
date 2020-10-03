@@ -10,52 +10,18 @@
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
 
 <h2 align="center">
-Tool OKRs - NuxtJs + Vuex + Element UI
+OKRs Tool
 </h2>
 
-<p align="center">Code 1 app nhỏ nhắn xinh xắn nhưng không hề đáng yêu về tool OKRs cho các Start Up nhỏ sử dụng! Ai có đóng góp gì thì mong các bạn tạo issue để cải thiện hơn ạ 🥳</p>
+## Người đóng góp
 
-<hr>
-
-## Thành viên
-
-| [<img src="https://avatars1.githubusercontent.com/u/24296018?s=460&u=6575a1785649a40e12d9593c46178b8fa36c3c9d&v=4" width="60px;"/>](https://github.com/harrytran998) | [<img src="https://avatars1.githubusercontent.com/u/23659823?s=400&u=ce4b4205be4e2b4e949eea9e36612b9d7daade53&v=4" width="60px;"/>](https://github.com/bacodekiller) |
-| :------------------------------------------------------------------------------------------------------------------------------------------------------------------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+- [Harry Trần](https://github.com/harrytran998)
+- [Hiep Do](https://github.com/bacodekiller)
+- [Nam Nguyen](https://github.com/ifuncoding)
+- [Thaycacac](https://github.com/thaycacac)
 
 
-| [Harry Trần](https://github.com/harrytran998) | [Quang Hiệp](https://github.com/bacodekiller) |
-
-## OKRs Enterprise Frontend
-
-### Cách chạy project
-
-#### Yêu cầu trước khi chạy
-
-1. [Clone repo của Backend về](https://github.com/Olympus-Team/OKRs-enterprise-api)
-2. Làm theo các hướng dẫn của bên Backend để setup DB các thứ
-3. Copy file .env và cài đặt các gói dependencies
-
-```bash
-cp .env.development .env
-yarn install
-```
-
-4. Chạy Frontend theo các comman options ở dưới
-
-```bash
-# Dev với HRM(hot reload replacement) ở localhost:8080
-
-yarn dev
-
-# Build ra cho production
-# host mặc định đang là 3000 --> Có thể config ở script: https://nuxtjs.org/faq/host-port/#configure-in-nuxtconfigjs
-
-yarn start
-```
-
-5. Tài khoản để Test hệ thống
-
-⚠️ Mật khẩu tài khoản phụ thuộc vào file .env trong back-end repository mà bạn clone về.
+## Tài khoản
 
 | Account                   | Role        |
 | ------------------------- | ----------- |

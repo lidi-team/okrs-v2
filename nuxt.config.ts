@@ -44,7 +44,7 @@ const nuxtConfig: NuxtConfig = {
    */
   head: {
     titleTemplate: '%s | FlameOKRs',
-    title: 'Awesome tool OKRs',
+    title: 'OKKs V2',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
