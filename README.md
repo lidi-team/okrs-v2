@@ -20,7 +20,6 @@ OKRs Tool
 - [Nam Nguyen](https://github.com/ifuncoding)
 - [Thaycacac](https://github.com/thaycacac)
 
-
 ## Account
 
 | Account                   | Role        |

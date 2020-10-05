@@ -40,8 +40,21 @@ import { mapGetters } from 'vuex';
 import CycleRepository from '@/repositories/CycleRepository';
 import DashboardRepository from '@/repositories/DashboardRepository';
 import { GetterState, MutationState } from '@/constants/app.vuex';
+import DashboardCfrStatus from '@/components/dashboard/CfrStatus.vue';
+import DashboardOkrsStatus from '@/components/dashboard/OkrsStatus.vue';
+import DashboardCheckinStatus from '@/components/dashboard/CheckinStatus.vue';
+import DashboardStarRank from '@/components/dashboard/StarRank.vue';
+import DashboardProgressBar from '@/components/dashboard/ProgressBar.vue';
+
 @Component<HomePage>({
   name: 'HomePage',
+  components: {
+    DashboardCfrStatus,
+    DashboardOkrsStatus,
+    DashboardCheckinStatus,
+    DashboardStarRank,
+    DashboardProgressBar,
+  },
   head() {
     return {
       title: 'Dashboard',

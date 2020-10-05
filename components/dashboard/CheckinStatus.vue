@@ -52,6 +52,7 @@ export default class CheckinStatus extends Vue {
   }
 }
 </script>
+
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .checkin-status {
