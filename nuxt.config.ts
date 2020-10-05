@@ -103,7 +103,6 @@ const nuxtConfig: NuxtConfig = {
     { path: '@/components/okrs', prefix: '' },
     { path: '@/components/manage', prefix: '' },
     { path: '@/components/admin', prefix: '' },
-    { path: '@/components/cfrs', prefix: 'cfrs' },
   ],
   /*
    ** Nuxt.js modules

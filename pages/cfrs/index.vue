@@ -39,9 +39,16 @@ import { TabCfr, TabCfrEng } from '@/constants/app.enum';
 import { ParamsCFR } from '@/constants/app.interface';
 import { pageLimit } from '@/constants/app.constant';
 import { MutationState } from '@/constants/app.vuex';
+// components
+import CfrsNavbar from '@/components/cfrs/Navbar.vue';
+import CfrsRecognition from '@/components/cfrs/recognition/index.vue';
 
 @Component<CFRs>({
   name: 'CFRs',
+  components: {
+    CfrsNavbar,
+    CfrsRecognition,
+  },
   head() {
     return {
       title: 'Ghi nhận và Phản hồi',

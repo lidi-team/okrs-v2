@@ -132,12 +132,15 @@ import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import { MutationState } from '@/constants/app.vuex';
 import { HistoryCfrsParams } from '@/constants/app.interface';
+// components
+import CfrsDetailHistory from '@/components/cfrs/history/DetailHistory.vue';
 
 @Component<History>({
   name: 'History',
   components: {
     IconStarDashboard,
     InfiniteLoading,
+    CfrsDetailHistory,
   },
   beforeCreate() {
     this.$store.commit(MutationState.SET_TEMP_USER, this.$store.state.auth.user);
