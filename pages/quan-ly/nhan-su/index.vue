@@ -6,7 +6,7 @@
       <div class="manage-employee__content">
         <head-employee :link-invite="linkInvite" :text.sync="paramsUser.text" @name="paramsUser.text = $event" @search="handleSearch($event)" />
         <component :is="currentTabComponent" :get-list-users="getListUsers" :teams="teams" :roles="roles" :jobs="jobs" :table-data="tableData" />
-        <base-pagination
+        <common-pagination
           class="manage-employee__pagination"
           :total="meta.totalItems"
           :page.sync="paramsUser.page"
@@ -30,10 +30,14 @@ import TeamRepository from '@/repositories/TeamRepository';
 import JobRepository from '@/repositories/JobRepository';
 import RoleRepository from '@/repositories/RoleRepository';
 import { pageLimit } from '@/constants/app.constant';
-
+// components
+import CommonPagination from '@/components/common/Pagination.vue';
 @Component<ManageEmployee>({
   name: 'ManageEmployee',
   middleware: 'employeesPage',
+  components: {
+    CommonPagination,
+  },
   async created() {
     await this.getListUsers();
     await this.getDataCommons();

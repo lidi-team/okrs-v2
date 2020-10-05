@@ -31,7 +31,13 @@
         </template>
       </el-table-column>
     </el-table>
-    <base-pagination class="pagination-bottom" :total="total" :page.sync="syncPage" :limit.sync="syncLimit" @pagination="handlePagination($event)" />
+    <common-pagination
+      class="pagination-bottom"
+      :total="total"
+      :page.sync="syncPage"
+      :limit.sync="syncLimit"
+      @pagination="handlePagination($event)"
+    />
     <el-dialog
       title="Cập nhật tiêu chí"
       :visible.sync="dialogUpdateVisible"
@@ -80,10 +86,13 @@ import { EvaluationCriteriaEnum, AdminTabsEn } from '@/constants/app.enum';
 import EvaluationCriteriorRepository from '@/repositories/EvaluationCriteriaRepository';
 import StarIcon from '@/assets/images/admin/star.svg';
 
+import CommonPagination from '@/components/common/Pagination.vue';
+
 @Component<ManageEvaluationCriteria>({
   name: 'ManageEvaluationCriteria',
   components: {
     StarIcon,
+    CommonPagination,
   },
   filters: {
     typeFormatter(cellValue) {

@@ -11,10 +11,15 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+
+import AccountForgotPassword from '@/components/account/ForgotPassword.vue';
 @Component<ForgotPasswordPage>({
   name: 'ForgotPasswordPage',
   layout: 'empty',
   middleware: 'isGuest',
+  components: {
+    AccountForgotPassword,
+  },
   head() {
     return {
       title: 'Quên mật khẩu',

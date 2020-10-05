@@ -11,8 +11,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+
+import AccountLogin from '@/components/account/Login.vue';
 @Component<LoginPage>({
   name: 'LoginPage',
+  components: {
+    AccountLogin,
+  },
   head() {
     return {
       title: 'Đăng nhập',

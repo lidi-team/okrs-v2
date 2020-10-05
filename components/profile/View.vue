@@ -12,7 +12,7 @@
     >
       <el-row class="profile">
         <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="profile-common">
-          <base-flame-upload
+          <common-flame-upload
             ref="uploader"
             v-model="show"
             field="file"
@@ -110,8 +110,13 @@ import { AuthMutation } from '@/store/auth';
 import { getTokenCookie } from '@/utils/cookies';
 import { MutationState, GetterState } from '@/constants/app.vuex';
 import { formatDateToDD } from '@/utils/dateParser';
+
+import CommonFlameUpload from '@/components/common/FlameUpload.vue';
 @Component<ViewProfile>({
   name: 'ViewProfile',
+  components: {
+    CommonFlameUpload,
+  },
   created() {
     this.getProfile();
   },

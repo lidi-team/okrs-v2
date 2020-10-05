@@ -1,8 +1,8 @@
 <template>
   <div style="overflow: hidden; height: 100vh;">
-    <base-navbar />
+    <common-navbar />
     <div id="app">
-      <base-sidebar />
+      <common-sidebar />
       <div class="authenticated-screen__app">
         <div class="authenticated-screen__nuxt">
           <nuxt />
@@ -13,9 +13,17 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+
+// components
+import CommonNavbar from '@/components/common/Navbar.vue';
+import CommonSidebar from '@/components/common/Sidebar.vue';
 @Component<Layout>({
   name: 'Layout',
   middleware: 'isAuthenticated',
+  components: {
+    CommonNavbar,
+    CommonSidebar,
+  },
 })
 export default class Layout extends Vue {}
 </script>

@@ -100,8 +100,6 @@ const nuxtConfig: NuxtConfig = {
    */
   components: [
     '@/components',
-    { path: '@/components/common', prefix: 'base' },
-    { path: '@/components/account', prefix: 'account' },
     { path: '@/components/profile', prefix: 'profile' },
     { path: '@/components/okrs', prefix: '' },
     { path: '@/components/okrs/steps', prefix: 'step' },

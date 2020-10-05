@@ -11,10 +11,16 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+
+import AccountResetPassword from '@/components/account/ResetPassword.vue';
+
 import AuthRepository from '@/repositories/AuthRepository';
 import { notifyErrorResetPassword } from '@/constants/app.notify';
 @Component<ResetPasswordPage>({
   name: 'ResetPasswordPage',
+  components: {
+    AccountResetPassword,
+  },
   head() {
     return {
       title: 'Đặt lại mật khẩu',

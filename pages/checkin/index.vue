@@ -14,7 +14,7 @@
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="checkins__content">
         <component :is="currentTabComponent" :current-cycle-id="currentCycleId" :loading="loading" :table-data="tableData" />
-        <base-pagination
+        <common-pagination
           v-if="$route.query.tab === 'request-checkin' || $route.query.tab === 'inferior'"
           class="checkins__pagination"
           :total="meta.totalItems"
@@ -28,7 +28,7 @@
       <el-tab-pane v-for="tab in tabs.slice(0, 3)" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="checkins__content">
         <component :is="currentTabComponent" :current-cycle-id="currentCycleId" :loading="loading" :table-data="tableData" />
-        <base-pagination
+        <common-pagination
           v-if="$route.query.tab === 'request-checkin' || $route.query.tab === 'inferior'"
           class="checkins__pagination"
           :total="meta.totalItems"
@@ -60,8 +60,13 @@ import CycleRepository from '@/repositories/CycleRepository';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { SelectOptionDTO } from '@/constants/app.interface';
 import { GetterState, MutationState } from '@/constants/app.vuex';
+
+import CommonPagination from '@/components/common/Pagination.vue';
 @Component<CheckinPage>({
   name: 'CheckinPage',
+  components: {
+    CommonPagination,
+  },
   head() {
     return {
       title: 'Check-in',

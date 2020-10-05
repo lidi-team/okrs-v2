@@ -47,7 +47,7 @@
         </tr>
       </tbody>
     </table>
-    <base-pagination
+    <common-pagination
       class="list-lesson__pagination"
       :total="meta.totalItems"
       :page.sync="paramsLesson.page"
@@ -59,8 +59,13 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { pageLimit } from '@/constants/app.constant';
+
+import CommonPagination from '@/components/common/Pagination.vue';
 @Component<LessonList>({
   name: 'LessonList',
+  components: {
+    CommonPagination,
+  },
 })
 export default class LessonList extends Vue {
   @Prop(Array) readonly posts!: Array<object>;

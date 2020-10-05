@@ -27,7 +27,7 @@
               >
             </div>
           </div>
-          <base-pagination
+          <common-pagination
             v-if="listWatingFeedback.inferior.checkins.items.length"
             class="feedback__col__pagination"
             :total="totalItems"
@@ -93,8 +93,13 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 import { ParamsQuery } from '@/constants/app.interface';
+
+import CommonPagination from '@/components/common/Pagination.vue';
 @Component<Feedback>({
   name: 'Feedback',
+  components: {
+    CommonPagination,
+  },
   async created() {
     await this.getListWatingFeedbacks();
   },

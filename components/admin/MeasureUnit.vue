@@ -15,7 +15,13 @@
         </template>
       </el-table-column>
     </el-table>
-    <base-pagination class="pagination-bottom" :total="total" :page.sync="syncPage" :limit.sync="syncLimit" @pagination="handlePagination($event)" />
+    <common-pagination
+      class="pagination-bottom"
+      :total="total"
+      :page.sync="syncPage"
+      :limit.sync="syncLimit"
+      @pagination="handlePagination($event)"
+    />
     <el-dialog
       title="Cập nhật đơn vị đo lường"
       :visible.sync="dialogUpdateVisible"
@@ -57,8 +63,13 @@ import { MeasureUnitDTO } from '@/constants/app.interface';
 import { AdminTabsEn } from '@/constants/app.enum';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 
+import CommonPagination from '@/components/common/Pagination.vue';
+
 @Component<ManageMeasureUnit>({
   name: 'ManageMeasureUnit',
+  components: {
+    CommonPagination,
+  },
   mounted() {
     this.loadingTable = true;
     setTimeout(() => {

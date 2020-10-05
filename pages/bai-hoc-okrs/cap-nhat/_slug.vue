@@ -1,13 +1,18 @@
 <template>
   <fragment>
-    <base-editor-markdown :post="post" :length="length" />
+    <common-editor-markdown :post="post" :length="length" />
   </fragment>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import LessonRepository from '@/repositories/LessonRepository';
+// components
+import CommonEditorMarkdown from '@/components/common/EditorMarkdown.vue';
 @Component<UpdateLesson>({
   name: 'UpdateLesson',
+  components: {
+    CommonEditorMarkdown,
+  },
   head() {
     return {
       title: 'Cập nhật bài học OKRs',

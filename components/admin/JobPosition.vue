@@ -20,7 +20,13 @@
         </template>
       </el-table-column>
     </el-table>
-    <base-pagination class="pagination-bottom" :total="total" :page.sync="syncPage" :limit.sync="syncLimit" @pagination="handlePagination($event)" />
+    <common-pagination
+      class="pagination-bottom"
+      :total="total"
+      :page.sync="syncPage"
+      :limit.sync="syncLimit"
+      @pagination="handlePagination($event)"
+    />
     <el-dialog
       title="Cập nhật vị trí công việc"
       :visible.sync="dialogUpdateVisible"
@@ -65,8 +71,13 @@ import { JobPositionDTO } from '@/constants/app.interface';
 import JobRepository from '@/repositories/JobRepository';
 import { AdminTabsEn } from '@/constants/app.enum';
 
+import CommonPagination from '@/components/common/Pagination.vue';
+
 @Component<ManageJobPosition>({
   name: 'ManageJobPosition',
+  components: {
+    CommonPagination,
+  },
   mounted() {
     this.loadingTable = true;
     setTimeout(() => {

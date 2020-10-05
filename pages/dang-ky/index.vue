@@ -11,11 +11,17 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+
+import AccountRegister from '@/components/account/Register.vue';
+
 import AuthRepository from '@/repositories/AuthRepository';
 import { notifyErrorRegister } from '@/constants/app.notify';
 
 @Component<LoginPage>({
   name: 'LoginPage',
+  components: {
+    AccountRegister,
+  },
   head() {
     return {
       title: 'Đăng ký',

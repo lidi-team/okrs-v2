@@ -24,7 +24,13 @@
         </template>
       </el-table-column>
     </el-table>
-    <base-pagination class="pagination-bottom" :total="total" :page.sync="syncPage" :limit.sync="syncLimit" @pagination="handlePagination($event)" />
+    <common-pagination
+      class="pagination-bottom"
+      :total="total"
+      :page.sync="syncPage"
+      :limit.sync="syncLimit"
+      @pagination="handlePagination($event)"
+    />
     <el-dialog
       title="Cập nhật chu kỳ"
       :visible.sync="dialogUpdateVisible"
@@ -78,8 +84,13 @@ import { CycleDTO } from '@/constants/app.interface';
 import CycleRepository from '@/repositories/CycleRepository';
 import { formatDateToDD, formatDateToYYYY, compareTwoDate } from '@/utils/dateParser';
 
+import CommonPagination from '@/components/common/Pagination.vue';
+
 @Component<ManageCycleOkrs>({
   name: 'ManageCycleOkrs',
+  components: {
+    CommonPagination,
+  },
   mounted() {
     this.loadingTable = true;
     setTimeout(() => {

@@ -2,7 +2,7 @@
   <div v-loading="loadingComponent" class="okrs-page">
     <el-row class="okrs-page__top" type="flex" justify="space-between">
       <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
-        <base-top-search-cycle @changeCycleData="changeCycleData($event)" />
+        <common-top-search-cycle @changeCycleData="changeCycleData($event)" />
       </el-col>
       <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
         <el-button v-if="isNotAdminButton()" class="el-button el-button--purple el-button-medium" icon="el-icon-plus" @click="addPersonalOkrs"
@@ -49,8 +49,13 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { MutationState, DispatchAction } from '@/constants/app.vuex';
 import OkrsRepository from '@/repositories/OkrsRepository';
+// components
+import CommonTopSearchCycle from '@/components/common/TopSearchCycle.vue';
 @Component<OKRsPage>({
   name: 'OKRsPage',
+  components: {
+    CommonTopSearchCycle,
+  },
   head() {
     return {
       title: 'OKRs',

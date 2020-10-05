@@ -31,7 +31,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <base-pagination
+    <common-pagination
       class="table-lesson__pagination"
       :total="meta.totalItems"
       :page.sync="paramsLesson.page"
@@ -46,8 +46,13 @@ import { Form } from 'element-ui';
 import { notificationConfig, pageLimit } from '@/constants/app.constant';
 import { LessonDTO } from '@/constants/app.interface';
 import LessonRepository from '@/repositories/LessonRepository';
+
+import CommonPagination from '@/components/common/Pagination.vue';
 @Component<TableLesson>({
   name: 'TableLesson',
+  components: {
+    CommonPagination,
+  },
   created() {
     this.getList();
   },
