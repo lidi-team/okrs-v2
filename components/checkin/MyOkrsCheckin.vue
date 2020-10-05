@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <el-table v-loading="loading" empty-text="Không có dữ liệu" class="myOKRs" :data="tableData" style="width: 100%;">
       <el-table-column label="Mục tiêu" min-width="250">
         <template slot-scope="{ row }">
@@ -107,7 +107,7 @@
       </span>
     </el-dialog>
     <!-- end dialog KRs -->
-  </fragment>
+  </div>
 </template>
 
 <script lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <el-form ref="tempObjective" :model="tempObjective" :rules="rules" class="create-objective" label-position="top">
       <el-form-item prop="title" class="custom-label" label-width="120px">
         <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="autoSizeConfig"></el-input>
@@ -42,7 +42,7 @@
       <el-button class="el-button--white el-button--modal" @click="closeObjectiveForm">Hủy</el-button>
       <el-button class="el-button--purple el-button--modal" :loading="loading" @click="nextStepTwo">Tiếp theo</el-button>
     </div>
-  </fragment>
+  </div>
 </template>
 
 <script lang="ts">

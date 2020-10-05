@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <slot name="chartCheckin" />
     <div class="historyDetail">
       <el-table empty-text="Không có dữ liệu" class="historyDetail__form" :data="historyDetail.checkinDetails" style="width: 100%;">
@@ -50,7 +50,7 @@
         <el-button class="el-button--purple">Xong</el-button>
       </nuxt-link>
     </div>
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';

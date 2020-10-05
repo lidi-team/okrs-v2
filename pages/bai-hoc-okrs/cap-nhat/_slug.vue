@@ -1,7 +1,7 @@
 <template>
-  <fragment>
+  <div>
     <common-editor-markdown :post="post" :length="length" />
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';

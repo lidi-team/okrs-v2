@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <el-table v-loading="loadingTable" :data="tableData" empty-text="Không có dữ liệu" style="width: 100%;">
       <el-table-column prop="fullName" label="Tên đầy đủ" min-width="150"></el-table-column>
       <el-table-column prop="email" label="Email" min-width="150"></el-table-column>
@@ -94,7 +94,7 @@
       </span>
     </el-dialog>
     <!-- end update user dialog -->
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Form } from 'element-ui';

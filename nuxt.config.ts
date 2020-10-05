@@ -81,9 +81,6 @@ const nuxtConfig: NuxtConfig = {
       src: '@/plugins/element-ui',
     },
     {
-      src: '@/plugins/vue-fragment',
-    },
-    {
       src: '@/plugins/vue-filter-date',
     },
     { src: '@/plugins/vue-simplemde' },

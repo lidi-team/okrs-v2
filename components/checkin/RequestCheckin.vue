@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="requestCheckin" style="width: 100%;">
       <el-table-column label="Họ và tên" min-width="150">
         <template slot-scope="{ row }">
@@ -24,7 +24,7 @@
         </template>
       </el-table-column>
     </el-table>
-  </fragment>
+  </div>
 </template>
 
 <script lang="ts">

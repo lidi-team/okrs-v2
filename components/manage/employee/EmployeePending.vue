@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <el-button v-if="id.length !== 0" class="el-button--purple el-button--small" icon="el-icon-plus" @click="handleApproveAll"
       >Duyệt tất cả</el-button
     >
@@ -104,7 +104,7 @@
       </span>
     </el-dialog>
     <!-- end update user dialog -->
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Form } from 'element-ui';

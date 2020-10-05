@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <slot name="chartOKRs" />
     <div class="checkinDetail">
       <el-form ref="checkinRuleForm" label-position="left" :model="syncCheckin" :rules="rules">
@@ -89,7 +89,7 @@
       <el-button class="el-button--white" @click="handleBack">Quay lại</el-button>
       <el-button class="el-button--purple" :loading="loading" @click="handleSubmitCheckin">Check-in xong</el-button>
     </div>
-  </fragment>
+  </div>
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync } from 'vue-property-decorator';

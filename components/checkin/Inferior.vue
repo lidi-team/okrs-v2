@@ -1,5 +1,5 @@
 <template>
-  <fragment>
+  <div>
     <el-table v-loading="loading" empty-text="Không có dữ liệu" class="inferiorOKRs" :data="tableData" style="width: 100%;">
       <el-table-column type="index" align="center" label="STT"></el-table-column>
       <el-table-column label="Họ và tên">
@@ -57,7 +57,7 @@
       </span>
     </el-dialog>
     <!-- end dialog KRs -->
-  </fragment>
+  </div>
 </template>
 
 <script lang="ts">
