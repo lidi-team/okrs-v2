@@ -32,8 +32,17 @@
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { confirmWarningConfig } from '@/constants/app.constant';
 import { DispatchAction } from '@/constants/app.vuex';
+// components
+import StepCreateObjective from '@/components/okrs/steps/CreateObjective.vue';
+import stepAddKeyResults from '@/components/okrs/steps/addKrs/AddKeyResults.vue';
+import StepAddAlignObjective from '@/components/okrs/steps/alignOkrs/AddAlignObjective.vue';
 @Component<CreateCompanyOkrs>({
   name: 'CreateCompanyOkrs',
+  components: {
+    StepCreateObjective,
+    stepAddKeyResults,
+    StepAddAlignObjective,
+  },
 })
 export default class CreateCompanyOkrs extends Vue {
   @Prop(Function) public reloadData!: Function;

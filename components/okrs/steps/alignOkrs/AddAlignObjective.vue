@@ -42,11 +42,14 @@ import OkrsRepository from '@/repositories/OkrsRepository';
 import { DispatchAction, MutationState } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import { PayloadOkrs } from '@/constants/app.interface';
+// components
+import StepAlignOkrsForm from '@/components/okrs/steps/alignOkrs/AlignOkrsForm.vue';
 
 @Component<AddAlignObjeciveStep>({
   name: 'AddAlignObjeciveStep',
   components: {
     IconAddKrs,
+    StepAlignOkrsForm,
   },
   beforeCreate() {
     this.$store.dispatch(DispatchAction.SET_STAFF_OKRS, { cycleId: this.$store.state.cycle.cycle.id, type: 3 });

@@ -51,14 +51,17 @@
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
-import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { PayloadOkrs } from '@/constants/app.interface';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
+// components
+import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
+import StepAlignOkrsForm from '@/components/okrs/steps/alignOkrs/AlignOkrsForm.vue';
 @Component<AlignOkrsDialog>({
   name: 'AlignOkrsDialog',
   components: {
     IconAddKrs,
+    StepAlignOkrsForm,
   },
   created() {
     this.getListOkrs();
