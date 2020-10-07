@@ -1,38 +1,45 @@
 import { AxiosResponse } from 'axios';
-import { unAuthenticatedservice, authenticatedService } from './BaseRepository';
-import { RegisterDTO, MailResetPassDTO, LoginDTO, ResetPasswordActionDTO } from '@/constants/app.interface';
-import { authEnpoint } from '@/constants/app.constant';
+import { baseUrlV1, baseUrl } from './BaseRepository';
+import { RegisterDTO, MailResetPassDTO, LoginDTO, ResetPasswordActionDTO } from '@/constants/DTO/Auth';
+
+export const enpoint = {
+  register: 'auth/register',
+  login: 'common/api/auth/signin',
+  generateLink: 'auth/link_invite',
+  logout: 'users/me/logout',
+  resetPassword: 'reset_password',
+};
 
 export default class AuthRepository {
   public static register(credentials: RegisterDTO) {
-    return unAuthenticatedservice.post(authEnpoint.register, credentials);
+    return baseUrlV1.post(enpoint.register, credentials);
   }
 
   public static login(credentials: LoginDTO) {
-    return unAuthenticatedservice.post(authEnpoint.login, credentials);
+    return baseUrl.post(enpoint.login, credentials);
   }
 
   public static logout(): Promise<AxiosResponse<void>> {
-    return authenticatedService.post(authEnpoint.logout);
+    return baseUrlV1.post(enpoint.logout);
   }
 
   public static sendMailToResetPassword(payload: MailResetPassDTO): Promise<AxiosResponse<void>> {
-    return unAuthenticatedservice.post<void>(authEnpoint.resetPassword, payload);
+    return baseUrlV1.post<void>(enpoint.resetPassword, payload);
   }
 
   public static resetPasswordWithToken(data: ResetPasswordActionDTO) {
-    return unAuthenticatedservice.put(authEnpoint.resetPassword, data);
+    return baseUrlV1.put(enpoint.resetPassword, data);
   }
 
   public static verifyLinkInvite(token: string) {
-    return unAuthenticatedservice.get(`auth/verification/${token}`);
+    return baseUrlV1.get(`auth/verification/${token}`);
   }
 
   public static verifyResetPassword(token: string) {
-    return unAuthenticatedservice.get(`${authEnpoint.resetPassword}/${token}`);
+    return baseUrlV1.get(`${enpoint.resetPassword}/${token}`);
   }
 
   public static generateLinkInivte() {
-    return authenticatedService.get(authEnpoint.generateLink);
+    return baseUrlV1.get(enpoint.generateLink);
   }
 }

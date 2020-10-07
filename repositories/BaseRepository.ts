@@ -4,21 +4,21 @@ import { Notification } from 'element-ui';
 import { getTokenCookie } from '@/utils/cookies';
 import { notificationConfig } from '@/constants/app.constant';
 
-export const unAuthenticatedservice = axios.create({
-  baseURL: `${process.env.baseAPI}/api/v1`,
+export const baseUrlV1 = axios.create({
+  baseURL: `${process.env.baseAPIV1}/api/v1`,
 });
 
-export const authenticatedService = axios.create({
-  baseURL: `${process.env.baseAPI}/api/v1`,
+export const baseUrl = axios.create({
+  baseURL: `${process.env.baseAPI}`,
   // withCredentials: true // send cookies when cross-domain requests
 });
 
 // Request interceptors
-authenticatedService.interceptors.request.use(
+baseUrl.interceptors.request.use(
   (config) => {
     // Add Bearer token's header to every request
     if (getTokenCookie() !== null) {
-      config.headers.Authorization = `Bearer ${getTokenCookie()}`;
+      config.headers.Authorization = `lidi ${getTokenCookie()}`;
     }
     return config;
   },
@@ -27,9 +27,9 @@ authenticatedService.interceptors.request.use(
   },
 );
 
-authenticatedService.interceptors.response.use(
+baseUrl.interceptors.response.use(
   (response) => {
-    return response;
+    return response.data;
   },
   (error) => {
     switch (error.response.data.statusCode) {

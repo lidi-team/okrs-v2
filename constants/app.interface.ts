@@ -11,15 +11,6 @@ export interface PayloadOkrs {
   keyResult?: any[];
 }
 
-export interface LoginDTO {
-  email: string;
-  password: string;
-}
-
-export interface MailResetPassDTO {
-  email: string;
-}
-
 export interface LessonDTO {
   id?: number;
   index: number;
@@ -36,17 +27,6 @@ export interface EmployeeDTO {
   isLeader: boolean;
   isActive?: boolean;
   isApproved?: boolean;
-}
-
-export interface RegisterDTO {
-  email: string;
-  password: string;
-  matchPassword?: string;
-  fullName: string;
-  gender: boolean | null;
-  teamId: number | null;
-  jobPositionId: number | null;
-  token: string | null;
 }
 
 export interface RegisterOption {
@@ -115,12 +95,6 @@ export interface SelectDTO {
 
 export interface ResetPasswordDTO {
   email: string;
-}
-
-export interface ResetPasswordActionDTO {
-  password: string;
-  matchPassword?: string;
-  token: string;
 }
 
 export interface ChangePasswordDTO {

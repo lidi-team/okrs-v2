@@ -1,6 +1,6 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
 import { notifyErrorLogin } from '@/constants/app.notify';
-import { LoginDTO } from '@/constants/app.interface';
+import { LoginDTO } from '@/constants/DTO/Auth';
 import AuthRepository from '@/repositories/AuthRepository';
 import { removeTokenCookie, setTokenCookie } from '@/utils/cookies';
 
@@ -39,7 +39,8 @@ export const mutations: MutationTree<RootState> = {
 export const actions: AuthActions<AuthState, RootState> = {
   async login({ commit }, { email, password }: LoginDTO) {
     try {
-      const { data } = await AuthRepository.login({ email, password });
+      const data = await AuthRepository.login({ email, password });
+      console.log('datalogin', data);
       commit(AuthMutation.SET_TOKEN, data.data.token);
       setTokenCookie(data.data.token);
       return data.data.user;

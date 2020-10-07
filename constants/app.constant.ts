@@ -1,14 +1,6 @@
 import { ElMessageBoxOptions } from 'element-ui/types/message-box';
 import { LinkMeta } from './app.interface';
 
-export const authEnpoint = {
-  register: 'auth/register',
-  login: 'auth/login',
-  generateLink: 'auth/link_invite',
-  logout: 'users/me/logout',
-  resetPassword: 'reset_password',
-};
-
 export const pageLimit = 10;
 
 export const notificationConfig = {
