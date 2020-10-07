@@ -19,7 +19,7 @@ import CommonNavbar from '@/components/common/Navbar.vue';
 import CommonSidebar from '@/components/common/Sidebar.vue';
 @Component<Layout>({
   name: 'Layout',
-  middleware: 'isAuthenticated',
+  // middleware: 'isAuthenticated',
   components: {
     CommonNavbar,
     CommonSidebar,
