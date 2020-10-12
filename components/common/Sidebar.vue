@@ -29,7 +29,8 @@
         </div>
       </nuxt-link>
       <!-- Start Role Permission action -->
-      <nuxt-link
+
+      <!-- <nuxt-link
         v-if="user.role.name === 'ADMIN'"
         to="/admin/cai-dat"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isSettingCompanyActive }]"
@@ -45,7 +46,7 @@
           <human-resources class="sidebar__link__tab__icon" />
           <span>Quản lý nhân sự</span>
         </div>
-      </nuxt-link>
+      </nuxt-link> -->
       <!-- End Role Permission action -->
     </el-row>
   </div>

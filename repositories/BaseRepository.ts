@@ -9,7 +9,7 @@ export const baseUrlV1 = axios.create({
 });
 
 export const baseUrl = axios.create({
-  baseURL: `${process.env.baseAPI}`,
+  baseURL: `${process.env.baseAPI}/api`,
   // withCredentials: true // send cookies when cross-domain requests
 });
 

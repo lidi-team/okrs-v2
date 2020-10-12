@@ -4,7 +4,7 @@ import { RegisterDTO, MailResetPassDTO, LoginDTO, ResetPasswordActionDTO } from 
 
 export const enpoint = {
   register: 'auth/register',
-  login: 'common/api/auth/signin',
+  login: 'auth/signin',
   generateLink: 'auth/link_invite',
   logout: 'users/me/logout',
   resetPassword: 'reset_password',
@@ -12,7 +12,7 @@ export const enpoint = {
 
 export default class AuthRepository {
   public static register(credentials: RegisterDTO) {
-    return baseUrlV1.post(enpoint.register, credentials);
+    return baseUrl.post(enpoint.register, credentials);
   }
 
   public static login(credentials: LoginDTO) {

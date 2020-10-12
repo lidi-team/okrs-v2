@@ -13,13 +13,15 @@ export default async function ({ redirect, store }) {
       store.commit(MutationState.SET_TOKEN, token);
       if (store.state.auth.user === null) {
         const [user, currentCycle] = await Promise.all([UserRepository.me(), CycleRepository.getCurrentCycle()]);
-        store.commit(MutationState.SET_USER, user.data.data);
-        store.commit(MutationState.SET_CURRENT_CYCLE, currentCycle.data.data);
-        store.commit(MutationState.SET_TEMP_CYCLE, currentCycle.data.data.id);
+        console.log(currentCycle);
+        store.commit(MutationState.SET_USER, user.data);
+        // store.commit(MutationState.SET_CURRENT_CYCLE, currentCycle);
+        // store.commit(MutationState.SET_TEMP_CYCLE, currentCycle.id);
       }
     }
   } catch (error) {
-    store.dispatch(DispatchAction.CLEAR_AUTH);
-    return redirect('/dang-nhap');
+    // store.dispatch(DispatchAction.CLEAR_AUTH);
+    // return redirect('/dang-nhap');
+    console.log(error);
   }
 }

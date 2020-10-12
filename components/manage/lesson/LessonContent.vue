@@ -9,7 +9,7 @@
         <img alt="avatar-logo" class="lesson-content__avatar" src="@/assets/images/common/logoflame.png" />
       </div>
       <div class="lesson-content__author">
-        <span class="lesson-content__name">Flame OKRs</span>
+        <span class="lesson-content__name">OKRs V2</span>
         <div class="lesson-content__muted">
           <span style="color: #757575;">{{ new Date(post.createdAt) | dateFormat('DD/MM/YYYY') }}</span>
           <img

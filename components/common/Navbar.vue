@@ -3,7 +3,7 @@
     <nuxt-link to="/">
       <div class="header__logo">
         <img class="header__img" src="@/assets/images/common/logoflame.png" alt="logo" />
-        <span class="header__brandname">Flame OKRs</span>
+        <span class="header__brandname">OKRs V2</span>
       </div>
     </nuxt-link>
     <div v-if="user" class="header__info side-right">
@@ -16,7 +16,7 @@
                 {{ user.fullName }}
                 <i class="el-icon-caret-bottom" />
               </span>
-              <span class="info__role">{{ displayRoleName(user) }}</span>
+              <!-- <span class="info__role">{{ displayRoleName(user) }}</span> -->
             </div>
           </div>
           <el-dropdown-menu slot="dropdown">
@@ -28,14 +28,14 @@
                 </div>
               </el-dropdown-item>
             </nuxt-link>
-            <nuxt-link v-if="user.role.name === 'ADMIN'" to="/admin/cai-dat">
+            <!-- <nuxt-link v-if="user.role.name === 'ADMIN'" to="/admin/cai-dat">
               <el-dropdown-item>
                 <div class="item__div">
                   <icon-setting class="item__div--icon" />
                   <span>Cài đặt công ty</span>
                 </div>
               </el-dropdown-item>
-            </nuxt-link>
+            </nuxt-link> 
             <nuxt-link v-if="user.role.name === 'HR' || user.role.name === 'ADMIN'" to="/quan-ly/nhan-su">
               <el-dropdown-item>
                 <div class="item__div">
@@ -51,7 +51,7 @@
                   <span>Quản lý bài học OKRs</span>
                 </div>
               </el-dropdown-item>
-            </nuxt-link>
+            </nuxt-link> -->
             <nuxt-link to="/hoc-okrs">
               <el-dropdown-item>
                 <div class="item__div">
@@ -91,6 +91,7 @@ import IconProfile from '@/assets/images/common/navbar/profile.svg';
 import IconSetting from '@/assets/images/common/navbar/setting.svg';
 import IconHr from '@/assets/images/common/navbar/hr.svg';
 import { DispatchAction, GetterState } from '@/constants/app.vuex';
+
 @Component<Navbar>({
   name: 'Navbar',
   components: {

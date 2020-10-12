@@ -42,26 +42,20 @@ export const actions: AuthActions<AuthState, RootState> = {
       const { data } = await AuthRepository.login({ email, password });
       commit(AuthMutation.SET_TOKEN, data.jwtToken);
       setTokenCookie(data.jwtToken);
-      const user = {
-        id: 14,
-        fullName: 'Nguyễn Văn Quang',
-        email: 'quangnvse05839@fpt.edu.vn',
-        role: 'ADMIN',
-        imageUrl:
-          'https://gravatar.com/avatar/eea0ec5070691d423e6e3fdf8ea6e6a490786752bea8b8df8f71a06b748f028cb6a7b92945db1d892ef5a2401b4df2a171592bfadadd474270dfcc3cabd91287?s=200&d=retro',
-      };
-      return user;
+      return data.user;
     } catch (error) {
       notifyErrorLogin(error);
       return false;
     }
   },
+
   async logout() {
     try {
       await AuthRepository.logout();
       removeTokenCookie();
     } catch (error) {}
   },
+
   clear({ commit }) {
     commit(AuthMutation.SET_TOKEN, '');
     commit(AuthMutation.SET_USER, null);

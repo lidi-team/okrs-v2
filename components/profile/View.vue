@@ -34,7 +34,7 @@
             >Cập nhật avatar</el-button
           >
           <p class="profile-common__name">{{ profileForm.fullName }}</p>
-          <p class="profile-common__role">{{ displayRoleName(user) }}</p>
+          <!-- <p class="profile-common__role">{{ displayRoleName(user) }}</p> -->
         </el-col>
         <el-col :xs="24" :sm="24" :md="18" :lg="18" :xl="18" class="profile-right">
           <div class="info">

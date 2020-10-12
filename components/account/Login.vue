@@ -63,8 +63,8 @@ export default class LoginSComponent extends Vue {
   private loading: boolean = false;
   private rememberPassword: boolean = false;
   public loginForm: LoginDTO = {
-    email: '',
-    password: '',
+    email: 'tunglsse05703@gmail.com',
+    password: '123445',
   };
 
   public rules: Maps<Rule[]> = {
