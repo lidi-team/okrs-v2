@@ -43,6 +43,7 @@ import 'element-ui/lib/theme-chalk/popover.css';
 import 'element-ui/lib/theme-chalk/page-header.css';
 import 'element-ui/lib/theme-chalk/tag.css';
 import 'element-ui/lib/theme-chalk/progress.css';
+import 'element-ui/lib/theme-chalk/drawer.css';
 
 // configure default language
 locale.use(vietnameseLang);
@@ -79,6 +80,7 @@ Vue.component(elComponent.ElProgress, () => import(/* webpackChunkName: 'element
 Vue.component(elComponent.ElPopover, () => import(/* webpackChunkName: 'element-ui-popover' */ 'element-ui/lib/popover'));
 Vue.component(elComponent.ElPageHeader, () => import(/* webpackChunkName: 'element-ui-page-header' */ 'element-ui/lib/page-header'));
 Vue.component(elComponent.ElTag, () => import(/* webpackChunkName: 'element-tag' */ 'element-ui/lib/tag'));
+Vue.component(elComponent.ElDrawer, () => import(/* webpackChunkName: 'element-tag' */ 'element-ui/lib/drawer'));
 
 // import prototype Vue
 Vue.use(Loading.directive);
