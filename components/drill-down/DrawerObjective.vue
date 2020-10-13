@@ -41,51 +41,6 @@ import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 export default class DrillDownPage extends Vue {
   @Prop(Object) public dataChildren!: {};
 
-  private tableData: any = [
-    {
-      id: 1,
-      name: 'Phat trien he thong phan mem',
-      author: 'Project 1',
-      type: 1,
-      grandChildObjectives: [
-        {
-          id: 2,
-          name: 'Phat trien he thong phan mem',
-          author: 'Le Son Tung',
-          type: 2,
-          grandChildObjectives: [],
-        },
-        {
-          id: 3,
-          name: 'Phat trien he thong phan mem',
-          author: 'Nguyen Hai Nam',
-          type: 2,
-          grandChildObjectives: [],
-        },
-      ],
-    },
-    {
-      id: 4,
-      name: 'Phat trien he thong phan mem',
-      author: 'Project 1',
-      type: 1,
-      grandChildObjectives: [
-        {
-          id: 2,
-          name: 'Phat trien he thong phan mem',
-          author: 'Le Son Tung',
-          type: 2,
-          grandChildObjectives: [],
-        },
-        {
-          id: 3,
-          name: 'Phat trien he thong phan mem',
-          author: 'Nguyen Hai Nam',
-          type: 2,
-          grandChildObjectives: [],
-        },
-      ],
-    },
-  ];
+  private tableData: any = [];
 }
 </script>
