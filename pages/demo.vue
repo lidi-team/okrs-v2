@@ -4,11 +4,7 @@
       <el-table-column prop="id" label="ID" width="100" align="center"> </el-table-column>
       <el-table-column prop="name" label="Name"> </el-table-column>
       <el-table-column prop="author" label="Author" width="250"></el-table-column>
-      <el-table-column label="Type" width="150">
-        <template v-slot="{ row }">
-          <span>{{ row.type | filterType }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column label="Type" width="150" prop="type"> </el-table-column>
       <el-table-column label="Action" align="right" width="80">
         <template v-slot="{ row }">
           <el-button
@@ -33,17 +29,6 @@ import DrillDownRepository from '@/repositories/DrillDownRepository';
 
 @Component<DrillDownPage>({
   name: 'DrillDownPage',
-  filters: {
-    filterType(value: Number) {
-      if (value === 2) {
-        return 'Objective cá nhân';
-      } else if (value === 1) {
-        return 'Objective dự án';
-      } else {
-        return 'Objective công ty';
-      }
-    },
-  },
   components: {
     DrawerObjective,
   },
