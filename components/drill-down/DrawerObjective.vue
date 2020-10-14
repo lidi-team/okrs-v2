@@ -21,7 +21,7 @@
       </el-table-column>
     </el-table>
     <el-drawer :visible.sync="selected" :append-to-body="true" :size="`${width - 10}%`">
-      <DrawerObjectiveClone :id-selected="idSelectedChild" :data-children="dataGrandChildren" :width="width - 10" />
+      <DrawerObjective :id-selected="idSelectedChild" :data-children="dataGrandChildren" :width="width - 10" />
     </el-drawer>
   </div>
 </template>
@@ -29,10 +29,9 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import DrillDownRepository from '@/repositories/DrillDownRepository';
-import DrawerObjectiveClone from '@/components/drill-down/DrawerObjective.vue';
 
 @Component<DrillDownObject>({
-  name: 'DrillDownPage',
+  name: 'DrawerObjective',
   filters: {
     filterType(value: Number) {
       if (value === 2) {
@@ -44,20 +43,16 @@ import DrawerObjectiveClone from '@/components/drill-down/DrawerObjective.vue';
       }
     },
   },
-  components: {
-    DrawerObjectiveClone,
-  },
   async mounted() {
     const { data } = await DrillDownRepository.get(this.idSelected);
     this.dataChildrenUpdated = data;
   },
 })
 export default class DrillDownObject extends Vue {
-  @Prop(Array) public dataChildren!: [];
   @Prop(Number) public idSelected!: 0;
+  @Prop(Array) public dataChildren!: [];
   @Prop(Number) public width!: 0;
   private selected: Boolean = false;
-  z;
   private idSelectedChild: Number = 0;
   private dataGrandChildren: any = {};
 
@@ -65,6 +60,7 @@ export default class DrillDownObject extends Vue {
 
   @Watch('idSelected')
   private async getData(id: Number) {
+    this.dataChildrenUpdated = this.dataChildren;
     const { data } = await DrillDownRepository.get(id);
     this.dataChildrenUpdated = data;
   }

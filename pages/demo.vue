@@ -21,7 +21,7 @@
       </el-table-column>
     </el-table>
     <el-drawer :visible.sync="selected" size="80%" :append-to-body="true">
-      <DrawerObjective :id-selected="idSelected" :data-children="dataChildren" :width="80" />
+      <DrawerObjective :id-selected="idSelected" :data-children="dataChildren" width="80" />
     </el-drawer>
   </div>
 </template>
