@@ -4,7 +4,7 @@
       <el-table-column prop="id" label="ID" width="100" align="center"> </el-table-column>
       <el-table-column prop="name" label="Name"> </el-table-column>
       <el-table-column prop="author" label="Author" width="250"></el-table-column>
-      <el-table-column label="Type" width="150" prop="type"> </el-table-column>
+      <el-table-column label="Type" width="200" prop="type"> </el-table-column>
       <el-table-column label="Action" align="right" width="80">
         <template v-slot="{ row }">
           <el-button

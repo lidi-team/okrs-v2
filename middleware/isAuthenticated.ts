@@ -15,13 +15,10 @@ export default async function ({ redirect, store }) {
         const [user, currentCycle] = await Promise.all([UserRepository.me(), CycleRepository.getCurrentCycle()]);
         console.log(currentCycle);
         store.commit(MutationState.SET_USER, user.data);
-        // store.commit(MutationState.SET_CURRENT_CYCLE, currentCycle);
-        // store.commit(MutationState.SET_TEMP_CYCLE, currentCycle.id);
       }
     }
   } catch (error) {
-    // store.dispatch(DispatchAction.CLEAR_AUTH);
-    // return redirect('/dang-nhap');
-    console.log(error);
+    store.dispatch(DispatchAction.CLEAR_AUTH);
+    return redirect('/dang-nhap');
   }
 }
