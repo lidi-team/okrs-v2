@@ -57,6 +57,7 @@ export default class DrillDownObject extends Vue {
   @Prop(Number) public idSelected!: 0;
   @Prop(Number) public width!: 0;
   private selected: Boolean = false;
+  z;
   private idSelectedChild: Number = 0;
   private dataGrandChildren: any = {};
 

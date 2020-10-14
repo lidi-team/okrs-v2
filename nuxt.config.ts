@@ -118,7 +118,7 @@ const nuxtConfig: NuxtConfig = {
   //   prefetchLinks: false,
   // },
   build: {
-    // analyze: true,
+    analyze: true,
     extractCSS: {
       ignoreOrder: true,
     },
@@ -176,14 +176,6 @@ const nuxtConfig: NuxtConfig = {
           loader: 'eslint-loader',
           exclude: /(node_modules)/u,
         });
-        //  dynamically loaded only when they are needed
-        // @docs https://www.amcharts.com/docs/v4/getting-started/integrations/using-webpack/#Large_file_sizes
-        (externals as ExternalsFunctionElement) = (_: any, request: any, callback: ExternalsFunctionCallback) => {
-          if (/xlsx|canvg|pdfmake/.test(request)) {
-            return callback(null, 'commonjs ' + request);
-          }
-          callback();
-        };
       }
     },
   },

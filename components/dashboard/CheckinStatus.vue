@@ -10,10 +10,10 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import * as am4core from '@amcharts/amcharts4/core';
-import * as am4charts from '@amcharts/amcharts4/charts';
-import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
-am4core.useTheme(am4themesAnimated);
+// import * as am4core from '@amcharts/amcharts4/core';
+// import * as am4charts from '@amcharts/amcharts4/charts';
+// import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
+// am4core.useTheme(am4themesAnimated);
 @Component<CheckinStatus>({
   name: 'CheckinStatus',
   mounted() {
@@ -28,27 +28,22 @@ am4core.useTheme(am4themesAnimated);
 export default class CheckinStatus extends Vue {
   @Prop(Array) readonly dataCheckin;
   private initPieChart() {
-    const chart = am4core.create('chartCheckin', am4charts.PieChart);
-
-    chart.data = this.dataCheckin;
-
-    chart.data[0].color = am4core.color('#32C8FF');
-    chart.data[1].color = am4core.color('#FF0064');
-    chart.data[2].color = am4core.color('#FFC832');
-
-    // Add and configure Series
-    const pieSeries = chart.series.push(new am4charts.PieSeries());
-    pieSeries.dataFields.value = 'value';
-    pieSeries.dataFields.category = 'name';
-    pieSeries.slices.template.propertyFields.fill = 'color';
-
-    // Disable ticks and labels
-    pieSeries.labels.template.disabled = true;
-    pieSeries.ticks.template.disabled = true;
-
-    chart.legend = new am4charts.Legend();
-    chart.logo.disabled = true;
-    return chart;
+    // const chart = am4core.create('chartCheckin', am4charts.PieChart);
+    // chart.data = this.dataCheckin;
+    // chart.data[0].color = am4core.color('#32C8FF');
+    // chart.data[1].color = am4core.color('#FF0064');
+    // chart.data[2].color = am4core.color('#FFC832');
+    // // Add and configure Series
+    // const pieSeries = chart.series.push(new am4charts.PieSeries());
+    // pieSeries.dataFields.value = 'value';
+    // pieSeries.dataFields.category = 'name';
+    // pieSeries.slices.template.propertyFields.fill = 'color';
+    // // Disable ticks and labels
+    // pieSeries.labels.template.disabled = true;
+    // pieSeries.ticks.template.disabled = true;
+    // chart.legend = new am4charts.Legend();
+    // chart.logo.disabled = true;
+    // return chart;
   }
 }
 </script>

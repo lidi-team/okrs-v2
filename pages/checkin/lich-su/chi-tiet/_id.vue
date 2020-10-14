@@ -42,12 +42,12 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import * as am4core from '@amcharts/amcharts4/core';
-import * as am4charts from '@amcharts/amcharts4/charts';
-import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
+// import * as am4core from '@amcharts/amcharts4/core';
+// import * as am4charts from '@amcharts/amcharts4/charts';
+// import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { notificationConfig } from '@/constants/app.constant';
-am4core.useTheme(am4themesAnimated);
+// am4core.useTheme(am4themesAnimated);
 @Component({
   name: 'DetailHistoryPage',
   head() {
@@ -90,52 +90,45 @@ export default class DetailHistoryPage extends Vue {
   }
 
   private renderChart() {
-    this.checkinAt = this.historyDetail.chart.map(function (item: any) {
-      return new Date(item.checkinAt).toLocaleDateString('en');
-    });
-
-    for (let i = 0; i < this.historyDetail.chart.length; i++) {
-      const chartTotal = { checkinAt: '', progress: 0 };
-      chartTotal.checkinAt += this.checkinAt[i];
-      chartTotal.progress += this.historyDetail.chart[i].progress;
-
-      this.historyDetail.chart[i] = chartTotal;
-    }
-
-    const chart = am4core.create('chartCheckin', am4charts.XYChart);
-    chart.numberFormatter.numberFormat = "#.#'%'";
-    chart.data = this.historyDetail.chart.reverse();
-
-    const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-    dateAxis.renderer.grid.template.location = 0;
-    dateAxis.renderer.minGridDistance = 50;
-    dateAxis.dateFormats.setKey('day', 'dd/MM');
-    dateAxis.periodChangeDateFormats.setKey('day', 'dd/MM');
-    const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.min = 0;
-
-    function createSeries(this: any, field: string | undefined, color: string) {
-      const series = chart.series.push(new am4charts.LineSeries());
-      series.dataFields.valueY = field;
-      series.dataFields.dateX = 'checkinAt';
-      series.tooltipText = ' [b]{valueY}[/]';
-      series.fill = am4core.color(color);
-      series.strokeWidth = 2;
-      series.minHeight = 500;
-      series.responsive.enabled = true;
-      series.stroke = am4core.color(color);
-      const bullet = series.bullets.push(new am4charts.CircleBullet());
-      bullet.circle.fill = am4core.color(color);
-      bullet.circle.radius = 4;
-      bullet.circle.strokeWidth = 1;
-
-      return series;
-    }
-    createSeries('progress', '#9C6ADE');
-
-    chart.cursor = new am4charts.XYCursor();
-    chart.cursor.xAxis = dateAxis;
-    chart.logo.disabled = true;
+    // this.checkinAt = this.historyDetail.chart.map(function (item: any) {
+    //   return new Date(item.checkinAt).toLocaleDateString('en');
+    // });
+    // for (let i = 0; i < this.historyDetail.chart.length; i++) {
+    //   const chartTotal = { checkinAt: '', progress: 0 };
+    //   chartTotal.checkinAt += this.checkinAt[i];
+    //   chartTotal.progress += this.historyDetail.chart[i].progress;
+    //   this.historyDetail.chart[i] = chartTotal;
+    // }
+    // const chart = am4core.create('chartCheckin', am4charts.XYChart);
+    // chart.numberFormatter.numberFormat = "#.#'%'";
+    // chart.data = this.historyDetail.chart.reverse();
+    // const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    // dateAxis.renderer.grid.template.location = 0;
+    // dateAxis.renderer.minGridDistance = 50;
+    // dateAxis.dateFormats.setKey('day', 'dd/MM');
+    // dateAxis.periodChangeDateFormats.setKey('day', 'dd/MM');
+    // const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    // valueAxis.min = 0;
+    // function createSeries(this: any, field: string | undefined, color: string) {
+    //   const series = chart.series.push(new am4charts.LineSeries());
+    //   series.dataFields.valueY = field;
+    //   series.dataFields.dateX = 'checkinAt';
+    //   series.tooltipText = ' [b]{valueY}[/]';
+    //   series.fill = am4core.color(color);
+    //   series.strokeWidth = 2;
+    //   series.minHeight = 500;
+    //   series.responsive.enabled = true;
+    //   series.stroke = am4core.color(color);
+    //   const bullet = series.bullets.push(new am4charts.CircleBullet());
+    //   bullet.circle.fill = am4core.color(color);
+    //   bullet.circle.radius = 4;
+    //   bullet.circle.strokeWidth = 1;
+    //   return series;
+    // }
+    // createSeries('progress', '#9C6ADE');
+    // chart.cursor = new am4charts.XYCursor();
+    // chart.cursor.xAxis = dateAxis;
+    // chart.logo.disabled = true;
   }
 
   private goBack() {
