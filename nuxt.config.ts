@@ -91,16 +91,6 @@ const nuxtConfig: NuxtConfig = {
    */
   buildModules: ['@nuxt/typescript-build', '@nuxt/components', '@nuxtjs/dotenv', 'nuxt-clipboard2'],
   // purgeCSS: pureCssConfig,
-  /**
-   * @description Config all components in app
-   * @docs https://github.com/nuxt/components
-   */
-  components: [
-    '@/components',
-    { path: '@/components/okrs', prefix: '' },
-    { path: '@/components/manage', prefix: '' },
-    { path: '@/components/admin', prefix: '' },
-  ],
   /*
    ** Nuxt.js modules
    */
@@ -156,7 +146,7 @@ const nuxtConfig: NuxtConfig = {
         return [['@nuxt/babel-preset-app', { loose: true }]];
       },
     },
-    extend({ module, externals }: WebpackConfiguration, { isDev, isClient }: any): any {
+    extend({ module }: WebpackConfiguration, { isDev, isClient }: any): any {
       if (module !== undefined) {
         // @ts-ignore
         const svgRule = module.rules.find((rule) => rule.test!.test('.svg'));
