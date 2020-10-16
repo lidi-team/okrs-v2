@@ -2,10 +2,10 @@
   <div>
     <el-table :data="tableData" style="width: 100%;">
       <el-table-column prop="id" label="ID" width="100" align="center"> </el-table-column>
-      <el-table-column prop="name" label="Name"> </el-table-column>
-      <el-table-column prop="author" label="Author" width="250"></el-table-column>
-      <el-table-column label="Type" width="200" prop="type"> </el-table-column>
-      <el-table-column label="Action" align="right" width="80">
+      <el-table-column prop="name" label="Mục tiêu"> </el-table-column>
+      <el-table-column prop="author" label="Tác giả" width="250" align="center"></el-table-column>
+      <el-table-column label="Loại" width="200" prop="type" align="center"> </el-table-column>
+      <el-table-column label="Hành động" align="right" width="80">
         <template v-slot="{ row }">
           <el-button
             type="primary"
@@ -17,7 +17,7 @@
       </el-table-column>
     </el-table>
     <el-drawer :visible.sync="selected" size="80%" :append-to-body="true">
-      <DrawerObjective :id-selected="idSelected" :data-children="dataChildren" width="80" />
+      <DrawerObjective :id-selected="idSelected" width="80" />
     </el-drawer>
   </div>
 </template>
@@ -41,13 +41,11 @@ import DrillDownRepository from '@/repositories/DrillDownRepository';
 export default class DrillDownPage extends Vue {
   private selected: boolean = false;
   private idSelected: Number = 0;
-  private dataChildren: any = {};
   private tableData: any = [];
 
   private drillDown(data) {
     this.selected = true;
     this.idSelected = data.id;
-    this.dataChildren = data.grandChildObjectives;
   }
 }
 </script>
