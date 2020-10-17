@@ -6,7 +6,7 @@ export const enpoint = {
 };
 
 export default class DrillDown {
-  public static get(id: Number): Promise<AxiosResponse<any>> {
-    return baseUrl.get(`${enpoint.objectives}/${id}`);
+  public static get(cycleId: Number, objectiveId: Number): Promise<AxiosResponse<any>> {
+    return baseUrl.get(`${enpoint.objectives}?cycleId=${cycleId}&objectiveId=${objectiveId}`);
   }
 }

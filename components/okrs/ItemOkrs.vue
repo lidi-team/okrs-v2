@@ -2,6 +2,7 @@
   <div v-if="tableData" class="item-okrs">
     <div :class="['item', indexItem !== 2 ? 'last-item' : null]">
       <p class="item__header">{{ textHeader }}</p>
+
       <el-table :data="tableData" header-row-class-name="item__table-header" style="width: 100%;">
         <el-table-column v-if="indexItem === 2" width="20" style="display: none;"></el-table-column>
         <el-table-column v-else type="expand" width="20">

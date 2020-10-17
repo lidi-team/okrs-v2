@@ -29,7 +29,7 @@ import DrillDownRepository from '@/repositories/DrillDownRepository';
 @Component<DrillDownObject>({
   name: 'DrawerObjective',
   async mounted() {
-    const { data } = await DrillDownRepository.get(this.idSelected);
+    const { data } = await DrillDownRepository.get(3, this.idSelected);
     this.dataChildren = data;
   },
 })
