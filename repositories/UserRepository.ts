@@ -20,8 +20,8 @@ export default class UserRepository {
     return baseUrlV1.get(`${enpoint.Users}/all`);
   }
 
-  public static changePassword(payload: ChangePasswordDTO) {
-    return baseUrlV1.put(`${enpoint.Users}/me/change_password`, payload);
+  public static changePassword(payload: Object) {
+    return baseUrl.post(`user/change-password`, payload);
   }
 
   public static update(payload: any) {

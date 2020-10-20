@@ -113,7 +113,11 @@ export default class ChangePasswordDialog extends Vue {
       if (isValid) {
         try {
           delete this.changePasswordForm.matchPassword;
-          await UserRepository.changePassword(this.changePasswordForm);
+          const form = this.changePasswordForm;
+          await UserRepository.changePassword({
+            oldPassword: form.password,
+            newPassword: form.newPassword,
+          });
           this.loading = false;
           this.$notify.success({
             ...notificationConfig,

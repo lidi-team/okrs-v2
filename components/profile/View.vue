@@ -48,8 +48,8 @@
                 </el-col>
                 <el-col :sm="24" :md="12">
                   <el-form-item prop="gender" label="Giới tính">
-                    <el-radio v-model="profileForm.gender" :label="true">Nam</el-radio>
-                    <el-radio v-model="profileForm.gender" :label="false">Nữ</el-radio>
+                    <el-radio v-model="profileForm.gender" :label="1">Nam</el-radio>
+                    <el-radio v-model="profileForm.gender" :label="0">Nữ</el-radio>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -202,15 +202,15 @@ export default class ViewProfile extends Vue {
     try {
       this.loadingProfile = true;
       const temp = await UserRepository.me();
-      this.avatarUrl = temp.data.data.imageUrl;
+      this.avatarUrl = temp.data.avatarUrl;
       this.profileForm = {
-        role: temp.data.data.role.name,
-        fullName: temp.data.data.fullName,
-        email: temp.data.data.email,
-        gender: temp.data.data.gender,
-        dateOfBirth: temp.data.data.dateOfBirth ? formatDateToDD(temp.data.data.dateOfBirth) : '',
-        department: temp.data.data.team.name,
-        position: temp.data.data.jobPosition.name,
+        role: temp.data.roles[0],
+        fullName: temp.data.fullName,
+        email: temp.data.email,
+        gender: temp.data.gender,
+        dateOfBirth: temp.data.dob ? formatDateToDD(temp.data.dob) : '',
+        department: '',
+        position: temp.data.roles[0],
       };
       this.loadingProfile = false;
     } catch (error) {
