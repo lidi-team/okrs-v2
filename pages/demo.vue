@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p>hello</p>
     <ItemOkrs />
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <p class="item__header">Mục tiêu công ty</p>
+    <p class="item__header -text-center">Mục tiêu công ty</p>
     <el-table :data="dataObjectives" style="width: 100%;" header-row-class-name="item__table-header">
       <el-table-column label="Mục tiêu">
         <template v-slot="{ row }">
@@ -13,30 +13,35 @@
           <p v-else style="color: #212b36;">{{ row.keyResults | filterKeyresults }}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="author" label="Tiến độ" width="250" align="center">
+      <el-table-column prop="author" label="Tiến độ" width="260" align="center">
         <template v-slot="{ row }">
           <div class="item__progress">
             <el-progress :percentage="+row.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="Thay đổi" width="250" align="center">
+      <el-table-column label="Thay đổi" width="100" align="center">
+        <template v-slot="{ row }">
+          <p :class="row.changing | getStatusOfProgress">{{ row.changing }}%</p>
+        </template>
+      </el-table-column>
+      <!-- <el-table-column label="Thay đổi" width="100" align="center">
         <template v-slot="{ row }">
           <div class="item__action">
             <p :class="row.changing | getStatusOfProgress">{{ row.changing }}%</p>
-            <!-- <okrs-action-tooltip
+            <okrs-action-tooltip
               :reload-data="reloadData"
-              :editable="editableOkrs(row.user.id)"
+              :editable="showKeyResult(1)"
               :okrs-id.sync="row.id"
               :temp-okrs="row"
-              :is-root-okrs="row.isRootObjective"
-              @updateTempOkrs="updateTempOkrs($event)"
-            /> -->
+              :is-root-okrs="row.changing"
+              @updateTempOkrs="showKeyResult($event)"
+            />
           </div>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="Loại" width="200" prop="type" align="center"> </el-table-column>
-      <el-table-column label="Hành động" align="right" width="80">
+      <el-table-column label="Hành động" align="right" width="150">
         <template v-slot="{ row }">
           <el-button
             type="primary"
@@ -123,8 +128,8 @@ export default class DrillDownPage extends Vue {
   border-radius: $border-radius-base;
   @include drop-shadow;
   &__header {
-    font-size: $text-2xl;
-    padding: $unit-5 0 $unit-5 $unit-5;
+    font-size: $text-xl;
+    padding: $unit-2;
     @include box-shadow;
     border-radius: $border-radius-base $border-radius-base 0px 0px;
   }
@@ -145,45 +150,6 @@ export default class DrillDownPage extends Vue {
   &__action {
     display: flex;
     place-content: center space-between;
-  }
-
-  &__expand {
-    display: flex;
-    place-content: center space-between;
-    padding-bottom: $unit-5;
-    &:last-child {
-      padding-bottom: 0;
-    }
-    .expand__objective {
-      display: flex;
-      place-content: center flex-start;
-      align-items: center;
-      padding-right: $unit-8;
-      span {
-        padding-left: $unit-5;
-      }
-    }
-    .expand__infor {
-      display: flex;
-      &--link {
-        width: 200px;
-        color: $blue-primary-2;
-        cursor: pointer;
-      }
-      &--progress {
-        width: 250px;
-      }
-      &--action {
-        width: 200px;
-        margin-right: -$unit-10;
-        display: flex;
-        align-items: center;
-        place-content: center space-between;
-        &__tooltip {
-          padding-right: 5.25rem;
-        }
-      }
-    }
   }
 }
 </style>
