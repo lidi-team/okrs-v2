@@ -87,16 +87,23 @@ span {
 
 // Dialog
 .el-dialog__header {
-  padding: $unit-4 $unit-5;
+  padding: $unit-1 $unit-5;
   border-bottom: 1px solid #dfe3e8;
   border-radius: $border-radius-base $border-radius-base 0px 0px;
 
   .el-dialog__title {
-    font-size: $text-xl;
+    font-size: $text-lg;
     font-weight: $font-weight-light;
     display: block;
     line-height: 2.5rem;
   }
+}
+
+.el-dialog__body {
+  padding: $unit-1 $unit-5;
+  color: #606266;
+  font-size: 14px;
+  word-break: break-all;
 }
 
 .el-dialog__footer {
@@ -104,6 +111,8 @@ span {
   border-top: 1px solid #dfe3e8;
   border-radius: 0px 0px $border-radius-base $border-radius-base;
 }
+
+// button
 
 .el-button {
   &--modal {
@@ -285,9 +294,11 @@ span {
     &__innerText {
       font-size: 14px;
     }
+
     &__outer {
       background-color: $purple-primary-2;
       border-radius: $border-radius-medium;
+
       .el-progress-bar__inner {
         border-radius: $border-radius-medium;
       }
@@ -303,6 +314,7 @@ span {
 .page-leave-active {
   transition: all 0.5s;
 }
+
 .page-enter,
 .page-leave-active {
   opacity: 0;
@@ -313,6 +325,7 @@ span {
 .layout-leave-active {
   transition: all 0.5s;
 }
+
 .layout-enter,
 .layout-leave-active {
   opacity: 0;

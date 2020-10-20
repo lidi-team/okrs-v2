@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <p class="item__header -text-center">Mục tiêu công ty</p>
+    <p class="item__header">Mục tiêu công ty</p>
     <el-table :data="dataObjectives" style="width: 100%;" header-row-class-name="item__table-header">
       <el-table-column label="Mục tiêu">
         <template v-slot="{ row }">
@@ -148,7 +148,6 @@ export default class DrillDownPage extends Vue {
     width: 250px;
   }
   &__action {
-    display: flex;
     place-content: center space-between;
   }
 }
