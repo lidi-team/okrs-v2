@@ -12,9 +12,9 @@ export default async function ({ redirect, store }) {
     } else {
       store.commit(MutationState.SET_TOKEN, token);
       if (store.state.auth.user === null) {
-        const [user, currentCycle] = await Promise.all([UserRepository.me(), CycleRepository.getCurrentCycle()]);
+        const [user, currentCycle] = await Promise.all([UserRepository.me(), CycleRepository.getCycleCurrent()]);
         store.commit(MutationState.SET_USER, user.data);
-        store.commit(MutationState.SET_CURRENT_CYCLE, currentCycle);
+        store.commit(MutationState.SET_CURRENT_CYCLE, currentCycle.data);
       }
     }
   } catch (error) {

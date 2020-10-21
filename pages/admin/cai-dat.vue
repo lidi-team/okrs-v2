@@ -158,10 +158,10 @@ export default class SettingCompanyPage extends Vue {
     };
     try {
       if (this.$route.query.tab === AdminTabsEn.CycleOKR || this.$route.query.tab === undefined) {
-        await CycleRepository.get(this.adminParams).then((res) => {
-          this.tableData = res.data.data.items;
-          this.totalItems = res.data.data.meta.totalItems;
-        });
+        // await CycleRepository.get(this.adminParams).then((res) => {
+        //   this.tableData = res.data.data.items;
+        //   this.totalItems = res.data.data.meta.totalItems;
+        // });
       } else if (this.$route.query.tab === AdminTabsEn.Department) {
         await TeamRepository.get(this.adminParams).then((res) => {
           this.tableData = res.data.data.items;

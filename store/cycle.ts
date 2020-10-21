@@ -1,4 +1,5 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
+import { CycleDTO } from '@/constants/DTO/cycle';
 
 export enum CycleMutation {
   SET_ALL_CYCLE = 'setAllCycles',
@@ -7,7 +8,7 @@ export enum CycleMutation {
 }
 export interface AuthState {
   cycles: any[];
-  cycleCurrent: any;
+  cycleCurrent: CycleDTO;
   cycleTemp: any;
 }
 
@@ -15,7 +16,10 @@ export interface CycleAction<S, R> extends ActionTree<S, R> {}
 
 export const state = (): AuthState => ({
   cycles: [],
-  cycleCurrent: null,
+  cycleCurrent: {
+    id: 0,
+    name: '2020',
+  },
   cycleTemp: null,
 });
 
@@ -23,7 +27,7 @@ export type RootState = ReturnType<typeof state>;
 
 export const getters: GetterTree<RootState, RootState> = {
   cycles: (state) => state.cycles,
-  cycle: (state) => state.cycleCurrent,
+  cycleCurrent: (state) => state.cycleCurrent,
   cycleTemp: (state) => state.cycleTemp,
 };
 

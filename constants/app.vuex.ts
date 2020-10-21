@@ -11,7 +11,8 @@ export enum DispatchAction {
 
 export enum GetterState {
   USER = 'auth/user',
-  TEMP_CYCLE = 'cycle/cycleTemp',
+  CYCLE_TEMP = 'cycle/cycleTemp',
+  CYCLE_CURRENT = 'cycle/cycleCurrent',
 }
 
 export enum MutationState {
