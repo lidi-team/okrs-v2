@@ -10,13 +10,28 @@ export enum OkrsMutation {
 }
 
 export interface OkrsState {
-  objective: ObjectiveDTO | null;
+  objective: ObjectiveDTO;
   keyResults: KeyResultDTO[] | null;
   staffOkrs: any[] | null;
 }
 
 export const state = (): OkrsState => ({
-  objective: null,
+  objective: {
+    id: 0,
+    title: '',
+    content: '',
+    userId: 0,
+    projectId: 0,
+    parentId: 0,
+    type: 0,
+    weight: 0,
+    cycleId: 0,
+    changing: 0,
+    progress: 0,
+    status: '',
+    alignmentObjectives: [],
+    keyResults: [],
+  },
   keyResults: null,
   staffOkrs: null,
 });

@@ -19,7 +19,7 @@ export default class CycleRepository {
 
   /**
    *
-   * @param cycleId if equal 0 then return cycle with time current, else then return cycle with id input
+   * @param cycleId if equal 0 then return cycle with time current, else then return cycle with id inputmeta_data/cycles
    */
   public static getCycleCurrent(cycleId: Number): Promise<AxiosResponse<any>> {
     return baseUrl.get(`${enpoint.cycleCurrent}/${cycleId}`);

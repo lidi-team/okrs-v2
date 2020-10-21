@@ -5,13 +5,17 @@
       <el-form-item prop="title" class="custom-label" label-width="120px">
         <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="sizeConfig"></el-input>
       </el-form-item>
-      <div v-loading="loadingSelect" class="create-objective__select">
-        <el-form-item prop="parentObjectiveId" label="OKRs cấp trên" class="custom-label" label-width="120px">
-          <el-select v-model="tempObjective.parentObjectiveId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn OKRs cấp trên">
-            <el-option v-for="okrs in listOkrs" :key="okrs.id" :label="okrsLeaderFormat(okrs)" :value="okrs.id" />
-          </el-select>
-        </el-form-item>
-      </div>
+      <el-form-item prop="parentId" label="Mục tiêu cấp trên" class="custom-label" label-width="120px">
+        <el-select
+          v-model="tempObjective.parentId"
+          filterable
+          no-match-text="Không tìm thấy kết quả"
+          placeholder="Chọn mục tiêu cấp trên"
+          :loading="loadingObjective"
+        >
+          <el-option v-for="objective in listObjectiveParent" :key="objective.id" :label="objective.name" :value="objective.id" />
+        </el-select>
+      </el-form-item>
     </el-form>
     <div class="okrs-button-action">
       <el-button class="el-button--white el-button--modal" @click="closeObjectiveForm">Hủy</el-button>
@@ -32,6 +36,7 @@ import { max255Char } from '@/components/account/account.constant';
 
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';
+import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 
 @Component<CreateObjective>({
   name: 'CreateObjective',
@@ -43,11 +48,16 @@ import OkrsRepository from '@/repositories/OkrsRepository';
   beforeDestroy() {
     this.$store.dispatch(DispatchAction.SET_MEASURE_UNITS);
   },
-  mounted() {},
+  async mounted() {
+    const { data } = await ObjectiveRepository.getObjectivesParent(this.ObjectiveId);
+    console.log(data);
+    this.listObjectiveParent = data;
+    this.loadingObjective = false;
+  },
 })
 export default class CreateObjective extends Vue {
+  @Prop({ type: Number, default: 17 }) public ObjectiveId!: Number;
   @PropSync('active', Number) private syncActive!: number;
-  @PropSync('visibleDialog', Boolean) private syncVisibleDialog!: boolean;
 
   private rules: Maps<Rule[]> = {
     title: [{ type: 'string', required: true, message: 'Vui lòng nhập mục tiêu', trigger: 'blur' }, max255Char],
@@ -56,19 +66,15 @@ export default class CreateObjective extends Vue {
   };
 
   private loading: boolean = false;
-  private loadingSelect: boolean = false;
+  private loadingObjective: boolean = true;
 
-  public tempObjective: ObjectiveDTO = {
+  public tempObjective: any = {
     title: '',
-    parentObjectiveId: 1,
-    cycleId: this.$store.state.cycle.cycleCurrent.id,
-    // title: !this.$store.state.okrs.objective ? '' : this.$store.state.okrs.objective.title,
-    // parentObjectiveId: this.$store.state.okrs.objective ? this.$store.state.okrs.objective.parentObjectiveId : null,
-    // cycleId: this.$store.state.okrs.objective ? this.$store.state.okrs.objective.cycleId : this.$store.state.cycle.cycle.id,
+    parentId: null,
+    cycle: this.$store.state.cycle.cycleCurrent.id,
   };
 
-  private listOkrs: any[] = [];
-  private listCycles: any[] = [];
+  private listObjectiveParent: any[] = [];
   private sizeConfig = { minRows: 2, maxRows: 2 };
   private listDataParams: ParamsQuery = {
     page: 1,
@@ -96,7 +102,6 @@ export default class CreateObjective extends Vue {
     this.tempObjective.title = '';
     this.$store.commit(MutationState.SET_OBJECTIVE, null);
     this.tempObjective.parentObjectiveId = null;
-    this.syncVisibleDialog = false;
   }
 }
 </script>
