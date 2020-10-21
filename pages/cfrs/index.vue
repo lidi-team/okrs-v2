@@ -36,7 +36,7 @@ import Rank from '@/components/cfrs/rank/index.vue';
 import OkrsRepository from '@/repositories/OkrsRepository';
 
 import { TabCfr, TabCfrEng } from '@/constants/app.enum';
-import { ParamsCFR } from '@/constants/app.interface';
+import { ParamsCFR } from '@/constants/DTO/common';
 import { pageLimit } from '@/constants/app.constant';
 import { MutationState } from '@/constants/app.vuex';
 // components

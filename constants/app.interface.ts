@@ -72,22 +72,6 @@ export interface EvaluationCriteriorDTO {
   type: EvaluationCriteriaEnum | any;
 }
 
-export interface ObjectiveDTO {
-  title: string;
-  parentObjectiveId: number | null;
-  cycleId: number;
-}
-
-export interface KeyResultDTO {
-  id?: number;
-  content: string;
-  startValue: number;
-  targetValue: number;
-  linkPlans?: string;
-  linkResults?: string;
-  measureUnitId: number;
-}
-
 export interface SelectDTO {
   label: string;
   value: string;
@@ -125,30 +109,6 @@ export interface FormRule {
   min?: number;
   max?: number;
   pattern?: RegExp;
-}
-
-export interface ParamsQuery {
-  page?: number;
-  limit?: number;
-  text?: string;
-}
-
-export interface HistoryCfrsParams extends ParamsQuery {
-  cycleId?: number;
-  userId?: number;
-  type?: 1 | 2 | 3;
-}
-
-export interface ParamsUser extends ParamsQuery {
-  status?: number;
-}
-
-export interface AdminParams extends ParamsQuery {
-  tab?: string;
-}
-
-export interface ParamsCFR extends ParamsQuery {
-  status?: number;
 }
 
 export interface SelectOptionDTO {

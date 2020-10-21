@@ -23,7 +23,7 @@ import EmployeePending from '@/components/manage/employee/EmployeePending.vue';
 import EmployeeActive from '@/components/manage/employee/EmployeeActive.vue';
 import EmployeeDeactive from '@/components/manage/employee/EmployeeDeactive.vue';
 import { UserStatus } from '@/constants/app.enum';
-import { ParamsUser } from '@/constants/app.interface';
+import { ParamsUser } from '@/constants/DTO/common';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 import AuthRepository from '@/repositories/AuthRepository';
 import TeamRepository from '@/repositories/TeamRepository';

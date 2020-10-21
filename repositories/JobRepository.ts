@@ -1,7 +1,8 @@
 import { AxiosResponse } from 'axios';
 import { baseUrlV1, baseUrl } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
-import { JobPositionDTO, AdminParams } from '@/constants/app.interface';
+import { JobPositionDTO } from '@/constants/app.interface';
+import { AdminParams } from '@/constants/DTO/common';
 
 export default class JobRepository {
   public static get(params: AdminParams): Promise<AxiosResponse<any>> {

@@ -1,6 +1,7 @@
 import { baseUrlV1 } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
-import { ParamsUser, EmployeeDTO } from '@/constants/app.interface';
+import { EmployeeDTO } from '@/constants/app.interface';
+import { ParamsUser } from '@/constants/DTO/common';
 
 export default class EmployeeRepository {
   public static get(params: ParamsUser) {

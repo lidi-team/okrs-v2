@@ -55,7 +55,7 @@ import CycleRepository from '@/repositories/CycleRepository';
 import JobRepository from '@/repositories/JobRepository';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
-import { AdminParams } from '@/constants/app.interface';
+import { AdminParams } from '@/constants/DTO/common';
 import { pageLimit } from '@/constants/app.constant';
 import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 @Component<SettingCompanyPage>({

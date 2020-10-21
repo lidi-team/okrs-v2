@@ -43,7 +43,7 @@ const nuxtConfig: NuxtConfig = {
    * @docs https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s | FlameOKRs',
+    titleTemplate: '%s | Lidi OKRs',
     title: 'OKKs V2',
     meta: [
       { charset: 'utf-8' },

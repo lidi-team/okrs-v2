@@ -1,7 +1,8 @@
 import { AxiosResponse } from 'axios';
 import { baseUrlV1 } from './BaseRepository';
 import { ResourcesEnpoint, CFREnpoint, EvaluationCriteriaEnum } from '@/constants/app.enum';
-import { HistoryCfrsParams, ParamsQuery, CfrsDTO } from '@/constants/app.interface';
+import { CfrsDTO } from '@/constants/app.interface';
+import { HistoryCfrsParams, ParamsQuery } from '@/constants/DTO/common';
 
 export default class CfrsRepository {
   public static getListWaitingFeedback(params: ParamsQuery): Promise<AxiosResponse<any>> {

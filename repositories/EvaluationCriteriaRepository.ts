@@ -1,7 +1,8 @@
 import { AxiosResponse } from 'axios';
 import { baseUrlV1 } from './BaseRepository';
 import { ResourcesEnpoint, EvaluationCriteriaEnum } from '@/constants/app.enum';
-import { EvaluationCriteriorDTO, AdminParams } from '@/constants/app.interface';
+import { EvaluationCriteriorDTO } from '@/constants/app.interface';
+import { AdminParams } from '@/constants/DTO/common';
 
 export default class EvaluationCriteriorRepository {
   public static get(params: AdminParams): Promise<AxiosResponse<any>> {

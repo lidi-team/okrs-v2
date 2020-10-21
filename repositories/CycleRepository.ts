@@ -1,7 +1,8 @@
 import { AxiosResponse } from 'axios';
 import { baseUrlV1, baseUrl } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
-import { CycleDTO, AdminParams } from '@/constants/app.interface';
+import { CycleDTO } from '@/constants/app.interface';
+import { AdminParams } from '@/constants/DTO/common';
 
 export enum enpoint {
   cycles = 'cycles',

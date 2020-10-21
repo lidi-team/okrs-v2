@@ -131,7 +131,7 @@ import { itemCfrsDefault } from './history.const';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import { MutationState } from '@/constants/app.vuex';
-import { HistoryCfrsParams } from '@/constants/app.interface';
+import { HistoryCfrsParams } from '@/constants/DTO/common';
 // components
 import CfrsDetailHistory from '@/components/cfrs/history/DetailHistory.vue';
 

@@ -1,5 +1,5 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
-import { ObjectiveDTO, KeyResultDTO } from '@/constants/app.interface';
+import { ObjectiveDTO, KeyResultDTO } from '@/constants/DTO/okrs';
 import OkrsRepository from '@/repositories/OkrsRepository';
 
 export enum OkrsMutation {
