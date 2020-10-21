@@ -24,7 +24,6 @@
         :visible-dialog.sync="syncCreateOkrsDialog"
         :reload-data="reloadData"
       /> -->
-      <p v-if="active === 0">hello</p>
     </el-dialog>
   </div>
 </template>

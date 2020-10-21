@@ -1,6 +1,5 @@
 <template>
   <div>
-    <p>{{ cycleCurrent }}</p>
     <el-form ref="tempObjective" :model="tempObjective" :rules="rules" class="create-objective" label-position="top">
       <el-form-item prop="title" class="custom-label" label-width="120px">
         <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="sizeConfig"></el-input>
@@ -19,7 +18,7 @@
     </el-form>
     <div class="okrs-button-action">
       <el-button class="el-button--white el-button--modal" @click="closeObjectiveForm">Hủy</el-button>
-      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="nextStepTwo">Tiếp theo</el-button>
+      <el-button class="el-button--purple el-button--modal" @click="nextStepTwo">Tiếp theo</el-button>
     </div>
   </div>
 </template>
@@ -45,18 +44,14 @@ import ObjectiveRepository from '@/repositories/ObjectiveRepository';
       cycleCurrent: GetterState.CYCLE_CURRENT,
     }),
   },
-  beforeDestroy() {
-    this.$store.dispatch(DispatchAction.SET_MEASURE_UNITS);
-  },
   async mounted() {
     const { data } = await ObjectiveRepository.getObjectivesParent(this.ObjectiveId);
-    console.log(data);
-    this.listObjectiveParent = data;
+    this.listObjectiveParent = data.objectives;
     this.loadingObjective = false;
   },
 })
 export default class CreateObjective extends Vue {
-  @Prop({ type: Number, default: 17 }) public ObjectiveId!: Number;
+  @Prop({ type: Number, default: 0 }) public ObjectiveId!: Number;
   @PropSync('active', Number) private syncActive!: number;
 
   private rules: Maps<Rule[]> = {
@@ -65,7 +60,6 @@ export default class CreateObjective extends Vue {
     parentObjectiveId: [{ type: 'number', required: true, message: 'Vui lòng chọn OKRs cấp trên', trigger: 'blur' }],
   };
 
-  private loading: boolean = false;
   private loadingObjective: boolean = true;
 
   public tempObjective: any = {
@@ -82,17 +76,11 @@ export default class CreateObjective extends Vue {
   };
 
   private nextStepTwo(): void {
-    this.loading = true;
     (this.$refs.tempObjective as Form).validate((isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
+        console.log('submit', this.tempObjective);
         this.$store.commit(MutationState.SET_OBJECTIVE, this.tempObjective);
         this.syncActive++;
-        this.loading = false;
-      }
-      if (invalidatedFields) {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
       }
     });
   }
