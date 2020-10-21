@@ -55,7 +55,7 @@ import { Form } from 'element-ui';
 import { max255Char } from './account.constant';
 import { notificationConfig } from '@/constants/app.constant';
 import { ResetPasswordDTO } from '@/constants/app.interface';
-import { ResetPasswordActionDTO } from '@/constants/DTO/Auth';
+import { ResetPasswordActionDTO } from '@/constants/DTO/auth';
 import AuthRepository from '@/repositories/AuthRepository';
 import { Maps, Rule } from '@/constants/app.type';
 @Component<ResetPassword>({

@@ -48,7 +48,7 @@ import { max255Char } from './account.constant';
 import { notificationConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import AuthRepository from '@/repositories/AuthRepository';
-import { MailResetPassDTO } from '@/constants/DTO/Auth';
+import { MailResetPassDTO } from '@/constants/DTO/auth';
 @Component<ForgotPassword>({
   name: 'Login',
 })

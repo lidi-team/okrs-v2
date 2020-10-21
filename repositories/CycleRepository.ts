@@ -15,10 +15,6 @@ export default class CycleRepository {
       const dataExample = {
         id: 4,
         name: 'Fall 2020',
-        startDate: '2020-10-01T00:00:00.000Z',
-        endDate: '2020-12-31T00:00:00.000Z',
-        createdAt: '2020-10-07T04:24:43.973Z',
-        updatedAt: '2020-10-07T04:24:43.973Z',
       };
       resolve(dataExample);
     });
@@ -33,10 +29,6 @@ export default class CycleRepository {
       const dataExample = {
         id: 4,
         name: 'Fall 2020',
-        startDate: '2020-10-01T00:00:00.000Z',
-        endDate: '2020-12-31T00:00:00.000Z',
-        createdAt: '2020-10-07T04:24:43.973Z',
-        updatedAt: '2020-10-07T04:24:43.973Z',
       };
       resolve(dataExample);
     });

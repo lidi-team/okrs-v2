@@ -53,7 +53,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Form as LoginForm, Message } from 'element-ui';
 import { max255Char } from './account.constant';
-import { LoginDTO } from '@/constants/DTO/Auth';
+import { LoginDTO } from '@/constants/DTO/auth';
 import { Maps, Rule } from '@/constants/app.type';
 import { DispatchAction } from '@/constants/app.vuex';
 @Component<LoginSComponent>({
