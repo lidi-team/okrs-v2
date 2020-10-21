@@ -17,8 +17,12 @@ export default class CycleRepository {
     return baseUrlV1.get(`${ResourcesEnpoint.MetaData}/cycles`);
   }
 
-  public static getCycleCurrent(): Promise<AxiosResponse<any>> {
-    return baseUrl.get(enpoint.cycleCurrent);
+  /**
+   *
+   * @param cycleId if equal 0 then return cycle with time current, else then return cycle with id input
+   */
+  public static getCycleCurrent(cycleId: Number): Promise<AxiosResponse<any>> {
+    return baseUrl.get(`${enpoint.cycleCurrent}/${cycleId}`);
   }
 
   public static update(payload: CycleDTO): Promise<AxiosResponse<any>> {

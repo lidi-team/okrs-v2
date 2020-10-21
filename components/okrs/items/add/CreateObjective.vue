@@ -1,9 +1,17 @@
 <template>
   <div>
+    <p>{{ cycleCurrent }}</p>
     <el-form ref="tempObjective" :model="tempObjective" :rules="rules" class="create-objective" label-position="top">
       <el-form-item prop="title" class="custom-label" label-width="120px">
         <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="sizeConfig"></el-input>
       </el-form-item>
+      <div v-loading="loadingSelect" class="create-objective__select">
+        <el-form-item prop="parentObjectiveId" label="OKRs cấp trên" class="custom-label" label-width="120px">
+          <el-select v-model="tempObjective.parentObjectiveId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn OKRs cấp trên">
+            <el-option v-for="okrs in listOkrs" :key="okrs.id" :label="okrsLeaderFormat(okrs)" :value="okrs.id" />
+          </el-select>
+        </el-form-item>
+      </div>
     </el-form>
     <div class="okrs-button-action">
       <el-button class="el-button--white el-button--modal" @click="closeObjectiveForm">Hủy</el-button>
@@ -25,33 +33,6 @@ import { max255Char } from '@/components/account/account.constant';
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';
 
-// <div v-loading="loadingSelect" class="create-objective__select">
-//         <!-- Select OKrs của các Team Leader -->
-//         <el-form-item
-//           v-if="this.$store.state.auth.user.role.name !== 'ADMIN'"
-//           prop="parentObjectiveId"
-//           label="OKRs cấp trên"
-//           class="custom-label"
-//           label-width="120px"
-//         >
-//           <el-select v-model="tempObjective.parentObjectiveId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn OKRs cấp trên">
-//             <el-option v-for="okrs in listOkrs" :key="okrs.id" :label="okrsLeaderFormat(okrs)" :value="okrs.id" />
-//           </el-select>
-//         </el-form-item>
-//         <!-- Select OKrs của công ty -->
-//         <el-form-item
-//           v-else-if="isTeamLeader() || this.$store.state.auth.user.role.name === 'ADMIN'"
-//           prop="parentObjectiveId"
-//           label="OKRs công ty"
-//           class="custom-label"
-//           label-width="120px"
-//         >
-//           <el-select v-model="tempObjective.parentObjectiveId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn OKRs công ty">
-//             <el-option v-for="okrs in listOkrs" :key="okrs.id" :label="okrs.title" :value="okrs.id" />
-//           </el-select>
-//         </el-form-item>
-//       </div>
-
 @Component<CreateObjective>({
   name: 'CreateObjective',
   computed: {
@@ -62,6 +43,7 @@ import OkrsRepository from '@/repositories/OkrsRepository';
   beforeDestroy() {
     this.$store.dispatch(DispatchAction.SET_MEASURE_UNITS);
   },
+  mounted() {},
 })
 export default class CreateObjective extends Vue {
   @PropSync('active', Number) private syncActive!: number;

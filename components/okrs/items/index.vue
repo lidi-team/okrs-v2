@@ -65,6 +65,7 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
+import { mapGetters } from 'vuex';
 import DrawerObjective from '@/components/drill-down/DrawerObjective.vue';
 import DrillDownRepository from '@/repositories/DrillDownRepository';
 import { filterKeyresults } from '@/utils/filters';
@@ -81,8 +82,13 @@ import KeyResult from '@/components/okrs/items/kr.vue';
     filterKeyresults,
     getStatusOfProgress,
   },
+  computed: {
+    ...mapGetters({
+      cycleCurrent: 'cycle/cycleCurrent',
+    }),
+  },
   async mounted() {
-    const { data } = await DrillDownRepository.get(3, 0);
+    const { data } = await DrillDownRepository.get(this.cycleCurrent.id, 0);
     console.log('data drill down', data);
     this.title = data.title;
     this.dataObjectives = data.childObjectives;
