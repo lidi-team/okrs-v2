@@ -102,7 +102,7 @@
 import { Component, Vue, Provide } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { Form } from 'element-ui';
-import { max255Char } from '../account/account.constant';
+import { max255Char } from '@/constants/account.constant';
 import { ProfileDTO } from '@/constants/app.interface';
 import UserRepository from '@/repositories/UserRepository';
 import { Maps, Rule } from '@/constants/app.type';

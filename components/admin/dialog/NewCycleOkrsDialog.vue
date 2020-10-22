@@ -48,7 +48,7 @@ import { CycleDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import { compareTwoDate, formatDateToYYYY } from '@/utils/dateParser';
 import CycleRepository from '@/repositories/CycleRepository';
-import { max255Char } from '@/components/account/account.constant';
+import { max255Char } from '@/constants/account.constant';
 @Component<CycleOkrsDialog>({
   name: 'CycleOkrsDialog',
 })

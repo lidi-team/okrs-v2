@@ -39,7 +39,7 @@ import { EvaluationCriteriorDTO, SelectOptionDTO } from '@/constants/app.interfa
 import { Maps, Rule } from '@/constants/app.type';
 import CriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
-import { max255Char } from '@/components/account/account.constant';
+import { max255Char } from '@/constants/account.constant';
 @Component<CriteriaDialog>({
   name: 'CriteriaDialog',
 })

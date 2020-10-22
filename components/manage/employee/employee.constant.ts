@@ -1,5 +1,5 @@
 import { Maps, Rule } from '@/constants/app.type';
-import { max255Char } from '@/components/account/account.constant';
+import { max255Char } from '@/constants/account.constant';
 
 export const employeeRules: Maps<Rule[]> = {
   fullName: [

@@ -48,7 +48,7 @@ import CfrsRepository from '@/repositories/CfrsRepository';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import { Maps, Rule } from '@/constants/app.type';
-import { max255Char } from '@/components/account/account.constant';
+import { max255Char } from '@/constants/account.constant';
 import { CfrsDTO } from '@/constants/app.interface';
 @Component<CreateFeedbackDialog>({
   name: 'CreateFeedbackDialog',

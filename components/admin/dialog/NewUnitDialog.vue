@@ -29,7 +29,7 @@ import { notificationConfig } from '@/constants/app.constant';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
-import { max255Char } from '@/components/account/account.constant';
+import { max255Char } from '@/constants/account.constant';
 @Component<MeasureUnitDialog>({
   name: 'MeasureUnitDialog',
 })

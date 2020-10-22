@@ -42,7 +42,7 @@ import OkrsRepository from '@/repositories/OkrsRepository';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 import KrsForm from '@/components/okrs/KrsForm.vue';
 import { PayloadOkrs } from '@/constants/app.interface';
-import { max255Char } from '@/components/account/account.constant';
+import { max255Char } from '@/constants/account.constant';
 @Component<UpdateOkrsDialog>({
   name: 'UpdateOkrsDialog',
   components: {

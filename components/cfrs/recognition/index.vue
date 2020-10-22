@@ -58,7 +58,7 @@ import CfrsRepository from '@/repositories/CfrsRepository';
 import UserRepository from '@/repositories/UserRepository';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
-import { max255Char } from '@/components/account/account.constant';
+import { max255Char } from '@/constants/account.constant';
 import { CfrsDTO } from '@/constants/app.interface';
 @Component<CreateRecongnitionDialog>({
   name: 'CreateRecongnitionDialog',

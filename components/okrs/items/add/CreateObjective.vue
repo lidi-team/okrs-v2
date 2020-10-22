@@ -25,13 +25,14 @@
 
 <script lang="ts">
 import { Form } from 'element-ui';
-import { Component, Vue, PropSync, Watch, Prop } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
+import { Component, Vue, PropSync, Watch, Prop } from 'vue-property-decorator';
+import { max255Char } from '@/constants/account.constant';
+
 import { ObjectiveDTO } from '@/constants/DTO/okrs';
 import { ParamsQuery } from '@/constants/DTO/common';
 import { Maps, Rule } from '@/constants/app.type';
 import { DispatchAction, MutationState, GetterState } from '@/constants/app.vuex';
-import { max255Char } from '@/components/account/account.constant';
 
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';

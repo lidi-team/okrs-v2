@@ -26,7 +26,7 @@ import { notificationConfig } from '@/constants/app.constant';
 import { TeamDTO } from '@/constants/app.interface';
 import JobRepository from '@/repositories/JobRepository';
 import { Maps, Rule } from '@/constants/app.type';
-import { max255Char } from '@/components/account/account.constant';
+import { max255Char } from '@/constants/account.constant';
 @Component<JobDialog>({
   name: 'JobDialog',
 })

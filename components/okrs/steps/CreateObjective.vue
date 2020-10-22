@@ -53,7 +53,7 @@ import { Maps, Rule } from '@/constants/app.type';
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { DispatchAction, MutationState } from '@/constants/app.vuex';
-import { max255Char } from '@/components/account/account.constant';
+import { max255Char } from '@/constants/account.constant';
 
 @Component<CreateObjectiveStep>({
   name: 'CreateObjectiveStep',

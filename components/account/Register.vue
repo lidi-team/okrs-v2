@@ -60,7 +60,7 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
-import { regexPassword, max255Char } from './account.constant';
+import { regexPassword, max255Char } from '@/constants/account.constant';
 import { notificationConfig } from '@/constants/app.constant';
 import { RegisterOption } from '@/constants/app.interface';
 import { RegisterDTO } from '@/constants/DTO/auth';

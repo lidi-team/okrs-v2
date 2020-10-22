@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- truyền vào objective id để lấy list objective cha -->
     <AddOkrs />
     <ItemOkrs />
   </div>

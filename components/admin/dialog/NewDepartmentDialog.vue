@@ -26,7 +26,7 @@ import { notificationConfig } from '@/constants/app.constant';
 import TeamRepository from '@/repositories/TeamRepository';
 import { TeamDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
-import { max255Char } from '@/components/account/account.constant';
+import { max255Char } from '@/constants/account.constant';
 @Component<TeamDialog>({
   name: 'TeamDialog',
 })
