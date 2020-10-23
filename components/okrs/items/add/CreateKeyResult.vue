@@ -1,18 +1,17 @@
 <template>
   <div class="add-krs-step">
-    <p class="add-krs-step__objective">{{ objectiveTitle }}</p>
+    <p class="add-krs-step__objective -text-center">Objective: {{ objectiveTitle }}</p>
     <div v-loading="formLoading">
-      <krs-form
+      <!-- <krs-form
         v-for="(item, index) in krFormItems"
         :key="index"
         ref="krsForm"
         :index-kr-form="index"
         :key-result.sync="item"
         @deleteKr="deleteKrForm($event)"
-      />
+      /> -->
     </div>
     <el-button v-if="!formLoading" class="el-button el-button--white el-button--small add-krs-step__button" @click="addNewKRs">
-      <icon-add-krs />
       <span>Thêm KRs</span>
     </el-button>
     <div class="add-krs-step__attention">
@@ -24,27 +23,28 @@
     </div>
     <div class="add-krs-step__action">
       <el-button class="el-button--white el-button--modal" @click="backToStepOne">Quay lại</el-button>
-      <el-button v-if="!isCompanyOkrs" class="el-button--purple el-button--modal" :loading="loading" @click="nextStepThree">Tiếp theo</el-button>
-      <el-button v-else class="el-button--purple el-button--modal" :loading="loading" @click="createRootOkrs">Tạo OKRs</el-button>
+      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="nextStepThree">Tiếp theo</el-button>
+      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createRootOkrs">Tạo OKRs</el-button>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+
 import IconAttention from '@/assets/images/okrs/attention.svg';
-import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
+
 import { PayloadOkrs } from '@/constants/app.interface';
 import { KeyResultDTO } from '@/constants/DTO/okrs';
 import { MutationState, DispatchAction } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
+
 import OkrsRepository from '@/repositories/OkrsRepository';
 
 @Component<CreateObjectiveStep>({
   name: 'CreateObjectiveStep',
   components: {
     IconAttention,
-    IconAddKrs,
   },
   created() {
     this.objectiveTitle = this.$store.state.okrs.objective.title;
@@ -52,10 +52,11 @@ import OkrsRepository from '@/repositories/OkrsRepository';
       this.krFormItems = this.$store.state.okrs.keyResults.length !== 0 ? this.$store.state.okrs.keyResults.map((item) => ({ ...item })) : [];
     }
   },
+  mounted() {
+    console.log(this.$route.query.objectiveId);
+  },
 })
 export default class CreateObjectiveStep extends Vue {
-  @Prop(Function) public reloadData!: Function;
-  @Prop({ type: Boolean, default: false }) private isCompanyOkrs!: boolean;
   @PropSync('active', Number) private syncActive!: number;
   @PropSync('visibleDialog', Boolean) private syncVisibleDialog!: boolean;
 
@@ -118,12 +119,11 @@ export default class CreateObjectiveStep extends Vue {
           keyResult: krs,
         };
         try {
-          await OkrsRepository.createOrUpdateOkrs(payload).then(async (res) => {
+          await OkrsRepository.createOrUpdateOkrs(payload).then((res) => {
             this.loading = false;
             this.syncVisibleDialog = false;
             this.krFormItems = [];
             this.$store.dispatch(DispatchAction.CLEAR_OKRS);
-            await this.reloadData();
             this.$notify.success({
               ...notificationConfig,
               message: 'Tạo OKRs thành công',
@@ -198,33 +198,16 @@ export default class CreateObjectiveStep extends Vue {
   }
 }
 </script>
-<style lang="scss">
-@import '@/assets/scss/main.scss';
+<style lang="scss" scoped>
+@import '@/assets/scss/utils/main.scss';
+@import '@/assets/scss/abstracts/main.scss';
+
 .add-krs-step {
   padding: 0 $unit-5;
   &__objective {
     padding-bottom: $unit-3;
     color: $neutral-primary-4;
     font-weight: $font-weight-medium;
-  }
-  &__button {
-    margin: $unit-4 0 $unit-4 0;
-    &:hover {
-      span {
-        svg {
-          path {
-            fill: $white;
-          }
-        }
-      }
-    }
-    span {
-      display: flex;
-      place-items: center;
-      span {
-        padding-left: $unit-1;
-      }
-    }
   }
   &__attention {
     font-size: $unit-3;

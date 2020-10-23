@@ -11,14 +11,8 @@
         <el-step title="Liên kết mục tiêu"></el-step>
       </el-steps>
       <create-objective v-if="active === 0" :active.sync="active" />
-      <!-- <step-add-key-results
-        v-if="active === 1"
-        :active.sync="active"
-        :visible-dialog.sync="syncCreateOkrsDialog"
-        :is-company-okrs="isCompanyOkrs"
-        :reload-data="reloadData"
-      />
-      <step-add-align-objective
+      <create-key-result v-if="active === 1" :active.sync="active" />
+      <!--<step-add-align-objective
         v-if="active === 2 && !isCompanyOkrs"
         :active.sync="active"
         :visible-dialog.sync="syncCreateOkrsDialog"
@@ -33,11 +27,13 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { DispatchAction } from '@/constants/app.vuex';
 import { confirmWarningConfig } from '@/constants/app.constant';
 import CreateObjective from '@/components/okrs/items/add/CreateObjective.vue';
+import CreateKeyResult from '@/components/okrs/items/add/CreateKeyResult.vue';
 
 @Component<AddOkrs>({
   name: 'AddOkrs',
   components: {
     CreateObjective,
+    CreateKeyResult,
   },
 })
 export default class AddOkrs extends Vue {
