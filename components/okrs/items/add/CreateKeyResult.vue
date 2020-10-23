@@ -1,6 +1,5 @@
 <template>
   <div class="add-krs-step">
-    <p class="add-krs-step__objective -text-center">Objective: {{ objectiveTitle }}</p>
     <div v-loading="formLoading">
       <!-- <krs-form
         v-for="(item, index) in krFormItems"
@@ -11,9 +10,11 @@
         @deleteKr="deleteKrForm($event)"
       /> -->
     </div>
-    <el-button v-if="!formLoading" class="el-button el-button--white el-button--small add-krs-step__button" @click="addNewKRs">
-      <span>Thêm KRs</span>
-    </el-button>
+    <div class="-text-center">
+      <el-button class="el-button el-button--small el-button--purple" @click="addNewKRs">
+        Thêm KRs
+      </el-button>
+    </div>
     <div class="add-krs-step__attention">
       <p class="add-krs-step__attention--title">Lưu ý:</p>
       <div v-for="(attention, i) in attentionsText" :key="attention[i]" class="add-krs-step__attention--content">
@@ -21,10 +22,10 @@
         <span>{{ attention }}</span>
       </div>
     </div>
-    <div class="add-krs-step__action">
+
+    <div class="okrs-button-action">
       <el-button class="el-button--white el-button--modal" @click="backToStepOne">Quay lại</el-button>
-      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="nextStepThree">Tiếp theo</el-button>
-      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createRootOkrs">Tạo OKRs</el-button>
+      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="nextStepTwo">Tiếp theo</el-button>
     </div>
   </div>
 </template>
@@ -204,11 +205,6 @@ export default class CreateObjectiveStep extends Vue {
 
 .add-krs-step {
   padding: 0 $unit-5;
-  &__objective {
-    padding-bottom: $unit-3;
-    color: $neutral-primary-4;
-    font-weight: $font-weight-medium;
-  }
   &__attention {
     font-size: $unit-3;
     color: $neutral-primary-4;
@@ -227,11 +223,8 @@ export default class CreateObjectiveStep extends Vue {
       }
     }
   }
-  &__action {
+  .okrs-button-action {
     @include okrs-button-action;
-    width: 800px;
-    margin-left: -$unit-5;
-    padding-right: $unit-5;
   }
 }
 </style>
