@@ -1,19 +1,7 @@
 <template>
   <div class="add-krs-step">
     <div v-loading="formLoading">
-      <!-- <krs-form
-        v-for="(item, index) in krFormItems"
-        :key="index"
-        ref="krsForm"
-        :index-kr-form="index"
-        :key-result.sync="item"
-        @deleteKr="deleteKrForm($event)"
-      /> -->
-    </div>
-    <div class="-text-center">
-      <el-button class="el-button el-button--small el-button--purple" @click="addNewKRs">
-        Thêm KRs
-      </el-button>
+      <KeyResult />
     </div>
     <div class="add-krs-step__attention">
       <p class="add-krs-step__attention--title">Lưu ý:</p>
@@ -33,6 +21,7 @@
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
+import KeyResult from './KeyResult.vue';
 import IconAttention from '@/assets/images/okrs/attention.svg';
 
 import { PayloadOkrs } from '@/constants/app.interface';
@@ -46,12 +35,7 @@ import OkrsRepository from '@/repositories/OkrsRepository';
   name: 'CreateObjectiveStep',
   components: {
     IconAttention,
-  },
-  created() {
-    this.objectiveTitle = this.$store.state.okrs.objective.title;
-    if (this.$store.state.okrs.keyResults) {
-      this.krFormItems = this.$store.state.okrs.keyResults.length !== 0 ? this.$store.state.okrs.keyResults.map((item) => ({ ...item })) : [];
-    }
+    KeyResult,
   },
   mounted() {
     console.log(this.$route.query.objectiveId);
@@ -61,26 +45,9 @@ export default class CreateObjectiveStep extends Vue {
   @PropSync('active', Number) private syncActive!: number;
   @PropSync('visibleDialog', Boolean) private syncVisibleDialog!: boolean;
 
-  private formLoading: boolean = false;
   private loading: boolean = false;
   private objectiveTitle: string = '';
-  private krFormItems: any[] = [];
   private attentionsText: string[] = ['Nên có ít nhất phải có 2 kết quả then chốt', 'Không nên quá 5 kết quả then chốt cho 1 mục tiêu'];
-
-  private addNewKRs() {
-    this.formLoading = true;
-    this.krFormItems.push({
-      startValue: 0,
-      targetValue: 100,
-      content: '',
-      linkPlans: '',
-      linkResults: '',
-      measureUnitId: 1,
-    });
-    setTimeout(() => {
-      this.formLoading = false;
-    }, 500);
-  }
 
   private closeKrsForm() {
     this.$confirm('Bạn có chắc chắn muốn thoát quá trình này không?', {
@@ -93,110 +60,110 @@ export default class CreateObjectiveStep extends Vue {
     });
   }
 
-  private async createRootOkrs() {
-    const payload: any = {};
-    const krs: any[] = [];
-    let validForm: number = 0;
+  // private async createRootOkrs() {
+  //   const payload: any = {};
+  //   const krs: any[] = [];
+  //   const validForm: number = 0;
 
-    this.loading = true;
-    if (this.krFormItems.length === 0) {
-      setTimeout(() => {
-        this.loading = false;
-      }, 300);
-      this.$message.error('Cần có ít nhất 1 kết quả then chốt');
-    } else {
-      (this.$refs.krsForm as any).forEach((form) => {
-        (form.$refs.keyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
-          if (isValid) {
-            validForm++;
-          }
-        });
-        krs.push(Object.freeze(form.syncTempKr));
-      });
-      if (validForm === krs.length) {
-        // Set this is root objective
-        const payload: PayloadOkrs = {
-          objective: Object.assign({}, this.$store.state.okrs.objective, { isRootObjective: true }),
-          keyResult: krs,
-        };
-        try {
-          await OkrsRepository.createOrUpdateOkrs(payload).then((res) => {
-            this.loading = false;
-            this.syncVisibleDialog = false;
-            this.krFormItems = [];
-            this.$store.dispatch(DispatchAction.CLEAR_OKRS);
-            this.$notify.success({
-              ...notificationConfig,
-              message: 'Tạo OKRs thành công',
-            });
-          });
-        } catch (error) {
-          this.loading = false;
-        }
-      } else {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-        this.$message.error('Vui lòng nhập đúng các trường yêu cầu');
-      }
-    }
-  }
+  //   this.loading = true;
+  // if (this.krFormItems.length === 0) {
+  //   setTimeout(() => {
+  //     this.loading = false;
+  //   }, 300);
+  //   this.$message.error('Cần có ít nhất 1 kết quả then chốt');
+  // } else {
+  //   (this.$refs.krsForm as any).forEach((form) => {
+  //     (form.$refs.keyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
+  //       if (isValid) {
+  //         validForm++;
+  //       }
+  //     });
+  //     krs.push(Object.freeze(form.syncTempKr));
+  //   });
+  //   if (validForm === krs.length) {
+  //     // Set this is root objective
+  //     const payload: PayloadOkrs = {
+  //       objective: Object.assign({}, this.$store.state.okrs.objective, { isRootObjective: true }),
+  //       keyResult: krs,
+  //     };
+  //     try {
+  //       await OkrsRepository.createOrUpdateOkrs(payload).then((res) => {
+  //         this.loading = false;
+  //         this.syncVisibleDialog = false;
+  //         this.krFormItems = [];
+  //         this.$store.dispatch(DispatchAction.CLEAR_OKRS);
+  //         this.$notify.success({
+  //           ...notificationConfig,
+  //           message: 'Tạo OKRs thành công',
+  //         });
+  //       });
+  //     } catch (error) {
+  //       this.loading = false;
+  //     }
+  //   } else {
+  //     setTimeout(() => {
+  //       this.loading = false;
+  //     }, 300);
+  //     this.$message.error('Vui lòng nhập đúng các trường yêu cầu');
+  //   }
+  // }
+  // }
 
   private backToStepOne() {
     this.$store.commit(MutationState.CLEAR_KRS);
-    if (this.krFormItems.length !== 0) {
-      const tempKrs: any[] = [];
-      (this.$refs.krsForm as any).forEach((form) => {
-        tempKrs.push(form.syncTempKr);
-      });
-      this.$store.commit(MutationState.SET_KRS, tempKrs);
-      this.syncActive--;
-    }
-    this.syncActive--;
+    // if (this.krFormItems.length !== 0) {
+    //   const tempKrs: any[] = [];
+    //   (this.$refs.krsForm as any).forEach((form) => {
+    //     tempKrs.push(form.syncTempKr);
+    //   });
+    //   this.$store.commit(MutationState.SET_KRS, tempKrs);
+    //   this.syncActive--;
+    // }
+    // this.syncActive--;
   }
 
-  private nextStepThree() {
-    const krs: any[] = [];
-    let validForm: number = 0;
+  // private nextStepThree() {
+  //   const krs: any[] = [];
+  //   let validForm: number = 0;
 
-    this.loading = true;
-    if (this.krFormItems.length === 0) {
-      setTimeout(() => {
-        this.loading = false;
-      }, 300);
-      this.$message.error('Cần có ít nhất 1 kết quả then chốt');
-    } else {
-      (this.$refs.krsForm as any).forEach((form) => {
-        (form.$refs.keyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
-          if (isValid) {
-            validForm++;
-          }
-        });
-        krs.push(Object.freeze(form.syncTempKr));
-      });
-      if (validForm === krs.length) {
-        // Set this is not root objective
-        const tempObjective = Object.assign({}, this.$store.state.okrs.objective, { isRootObjective: false });
-        this.$store.commit(MutationState.SET_KRS, krs);
-        this.$store.commit(MutationState.SET_OBJECTIVE, tempObjective);
-        this.syncActive++;
-        this.loading = false;
-      } else {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-        this.$message.error('Vui lòng nhập đúng các trường yêu cầu');
-      }
-    }
-  }
+  //   this.loading = true;
+  //   if (this.krFormItems.length === 0) {
+  //     setTimeout(() => {
+  //       this.loading = false;
+  //     }, 300);
+  //     this.$message.error('Cần có ít nhất 1 kết quả then chốt');
+  //   } else {
+  //     (this.$refs.krsForm as any).forEach((form) => {
+  //       (form.$refs.keyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
+  //         if (isValid) {
+  //           validForm++;
+  //         }
+  //       });
+  //       krs.push(Object.freeze(form.syncTempKr));
+  //     });
+  //     if (validForm === krs.length) {
+  //       // Set this is not root objective
+  //       const tempObjective = Object.assign({}, this.$store.state.okrs.objective, { isRootObjective: false });
+  //       this.$store.commit(MutationState.SET_KRS, krs);
+  //       this.$store.commit(MutationState.SET_OBJECTIVE, tempObjective);
+  //       this.syncActive++;
+  //       this.loading = false;
+  //     } else {
+  //       setTimeout(() => {
+  //         this.loading = false;
+  //       }, 300);
+  //       this.$message.error('Vui lòng nhập đúng các trường yêu cầu');
+  //     }
+  //   }
+  // }
 
-  private deleteKrForm(indexForm: number) {
-    this.formLoading = true;
-    this.krFormItems.splice(indexForm, 1);
-    setTimeout(() => {
-      this.formLoading = false;
-    }, 300);
-  }
+  // private deleteKrForm(indexForm: number) {
+  //   this.formLoading = true;
+  //   this.krFormItems.splice(indexForm, 1);
+  //   setTimeout(() => {
+  //     this.formLoading = false;
+  //   }, 300);
+  // }
 }
 </script>
 <style lang="scss" scoped>
