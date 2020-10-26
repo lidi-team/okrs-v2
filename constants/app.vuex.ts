@@ -27,4 +27,6 @@ export enum MutationState {
   SET_OKRS_DETAIL = 'okrs/setOkrsDetail',
   SET_TEMP_CYCLE = 'cycle/setTempCycle',
   SET_ALL_CYCLES = 'cycle/setAllCycles',
+  SET_IS_DIALOG_OKRS = 'okrs/setIsDialogOKRs',
+  SET_OBJECTIVE_PARENT = 'okrs/setObjectiveParent',
 }

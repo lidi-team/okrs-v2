@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div>
-      <el-button class="el-button el-button--small el-button--purple" icon="el-icon-plus" @click="createOkrs">Tạo OKRs</el-button>
-    </div>
     <el-dialog title="Tạo OKRs" :visible.sync="isShowDialog" width="800px" placement="center" :before-close="handleCloseDialog" class="company-okrs">
       <el-steps :active="active" finish-status="success" :align-center="true">
         <el-step title="Mục tiêu"></el-step>

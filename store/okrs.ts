@@ -3,6 +3,8 @@ import { ObjectiveDTO, KeyResultDTO } from '@/constants/DTO/okrs';
 import OkrsRepository from '@/repositories/OkrsRepository';
 
 export enum OkrsMutation {
+  SET_ISDIALOGOKRS = 'setIsDialogOKRs',
+  SET_OBJECTIVE_PARENT = 'setObjectiveParent',
   SET_OBJECTIVE = 'setObjective',
   SET_KEY_RESULTS = 'setKeyResults',
   CLEAR_KRS = 'clearKrs',
@@ -10,12 +12,16 @@ export enum OkrsMutation {
 }
 
 export interface OkrsState {
+  isDialogOKRs: Boolean;
+  objectiveParent: Number;
   objective: ObjectiveDTO;
   keyResults: KeyResultDTO[] | null;
   staffOkrs: any[] | null;
 }
 
 export const state = (): OkrsState => ({
+  isDialogOKRs: false,
+  objectiveParent: 0,
   objective: {
     id: 0,
     title: '',
@@ -39,16 +45,20 @@ export const state = (): OkrsState => ({
 export type RootState = ReturnType<typeof state>;
 
 export const getters: GetterTree<RootState, RootState> = {
+  isDialogOKRs: (state) => state.isDialogOKRs,
+  objectiveParent: (state) => state.objectiveParent,
   objective: (state) => state.objective,
   keyResults: (state) => state.keyResults,
   staffOkrs: (state) => state.staffOkrs,
 };
 
 export const mutations: MutationTree<RootState> = {
-  [OkrsMutation.SET_OBJECTIVE]: (state, objective: ObjectiveDTO) => (state.objective = objective),
-  [OkrsMutation.SET_KEY_RESULTS]: (state, keyResults: KeyResultDTO[]) => (state.keyResults = [...keyResults]),
+  [OkrsMutation.SET_ISDIALOGOKRS]: (state, data: Boolean) => (state.isDialogOKRs = data),
+  [OkrsMutation.SET_OBJECTIVE_PARENT]: (state, data: Number) => (state.objectiveParent = data),
+  [OkrsMutation.SET_OBJECTIVE]: (state, data: ObjectiveDTO) => (state.objective = data),
+  [OkrsMutation.SET_KEY_RESULTS]: (state, data: KeyResultDTO[]) => (state.keyResults = [...data]),
   [OkrsMutation.CLEAR_KRS]: (state) => (state.keyResults = []),
-  [OkrsMutation.SET_STAFF_OKRS]: (state, staffOkrs: any) => (state.staffOkrs = staffOkrs),
+  [OkrsMutation.SET_STAFF_OKRS]: (state, data: any) => (state.staffOkrs = data),
 };
 
 export interface OKRsAction<S, R> extends ActionTree<S, R> {
