@@ -4,6 +4,7 @@
 
 <script>
 import { MutationState } from '@/constants/app.vuex';
+
 export default {
   methods: {
     showDialog() {

@@ -13,6 +13,8 @@ export enum GetterState {
   USER = 'auth/user',
   CYCLE_TEMP = 'cycle/cycleTemp',
   CYCLE_CURRENT = 'cycle/cycleCurrent',
+  OKRS_IS_DIALOG_OKRS = 'okrs/isDialogOKRs',
+  OKRS_OBJECTIVE_PARENT = 'okrs/objectiveParent',
 }
 
 export enum MutationState {

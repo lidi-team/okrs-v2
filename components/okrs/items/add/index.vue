@@ -1,32 +1,31 @@
 <template>
-  <div>
-    <el-dialog title="Tạo OKRs" :visible.sync="isShowDialog" width="800px" placement="center" :before-close="handleCloseDialog" class="company-okrs">
-      <el-steps :active="active" finish-status="success" :align-center="true">
-        <el-step title="Mục tiêu"></el-step>
-        <el-step title="Các kết quả then chốt"></el-step>
-        <el-step title="Liên kết mục tiêu"></el-step>
-      </el-steps>
-      <create-objective v-if="active === 0" :active.sync="active" />
-      <create-key-result
-        v-if="active === 1"
-        :active.sync="active"
-        :visible-dialog.sync="syncCreateOkrsDialog"
-        :is-company-okrs="isCompanyOkrs"
-        :reload-data="reloadData"
-      />
-      <!--<step-add-align-objective
+  <el-dialog title="Tạo OKRs" :visible.sync="isDialogOKRs" width="800px" placement="center" :before-close="handleCloseDialog" class="company-okrs">
+    <el-steps :active="active" finish-status="success" :align-center="true">
+      <el-step title="Mục tiêu"></el-step>
+      <el-step title="Các kết quả then chốt"></el-step>
+      <el-step title="Liên kết mục tiêu"></el-step>
+    </el-steps>
+    <create-objective v-if="active === 0" :active.sync="active" />
+    <create-key-result
+      v-if="active === 1"
+      :active.sync="active"
+      :visible-dialog.sync="syncCreateOkrsDialog"
+      :is-company-okrs="isCompanyOkrs"
+      :reload-data="reloadData"
+    />
+    <!--<step-add-align-objective
         v-if="active === 2 && !isCompanyOkrs"
         :active.sync="active"
         :visible-dialog.sync="syncCreateOkrsDialog"
         :reload-data="reloadData"
       /> -->
-    </el-dialog>
-  </div>
+  </el-dialog>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { DispatchAction } from '@/constants/app.vuex';
+import { mapGetters } from 'vuex';
+import { DispatchAction, MutationState, GetterState } from '@/constants/app.vuex';
 import { confirmWarningConfig } from '@/constants/app.constant';
 import CreateObjective from '@/components/okrs/items/add/CreateObjective.vue';
 import CreateKeyResult from '@/components/okrs/items/add/CreateKeyResult.vue';
@@ -37,20 +36,20 @@ import CreateKeyResult from '@/components/okrs/items/add/CreateKeyResult.vue';
     CreateObjective,
     CreateKeyResult,
   },
+  computed: {
+    ...mapGetters({
+      isDialogOKRs: GetterState.OKRS_IS_DIALOG_OKRS,
+    }),
+  },
 })
 export default class AddOkrs extends Vue {
-  private isShowDialog: Boolean = false;
   private active: Number = 0;
-
-  private createOkrs() {
-    this.isShowDialog = true;
-  }
 
   private handleCloseDialog() {
     this.$confirm('Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?', { ...confirmWarningConfig })
       .then(() => {
         this.$store.dispatch(DispatchAction.CLEAR_OKRS);
-        this.isShowDialog = false;
+        this.$store.commit(MutationState.SET_IS_DIALOG_OKRS, false);
         this.active = 0;
       })
       .catch((err) => console.log(err));
