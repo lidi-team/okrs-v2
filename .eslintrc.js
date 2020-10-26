@@ -16,5 +16,6 @@ module.exports = {
     'no-console': 0,
     'standard/no-callback-literal': 0,
     'vue/no-v-html': 0,
+    'vue/valid-v-bind-sync': 0,
   },
 };

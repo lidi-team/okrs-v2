@@ -1,6 +1,5 @@
 <template>
   <div class="add-krs-step">
-    <p class="add-krs-step__objective">{{ objectiveTitle }}</p>
     <div v-loading="formLoading">
       <key-result
         v-for="(item, index) in krFormItems"
@@ -12,7 +11,6 @@
       />
     </div>
     <el-button v-if="!formLoading" class="el-button el-button--white el-button--small add-krs-step__button" @click="addNewKRs">
-      <icon-add-krs />
       <span>Thêm KRs</span>
     </el-button>
     <div class="add-krs-step__attention">
@@ -25,7 +23,6 @@
     <div class="add-krs-step__action">
       <el-button class="el-button--white el-button--modal" @click="backToStepOne">Quay lại</el-button>
       <el-button v-if="!isCompanyOkrs" class="el-button--purple el-button--modal" :loading="loading" @click="nextStepThree">Tiếp theo</el-button>
-      <el-button v-else class="el-button--purple el-button--modal" :loading="loading" @click="createRootOkrs">Tạo OKRs</el-button>
     </div>
   </div>
 </template>
@@ -34,7 +31,6 @@ import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import KeyResult from './KeyResult.vue';
 import IconAttention from '@/assets/images/okrs/attention.svg';
-import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
 import { PayloadOkrs } from '@/constants/app.interface';
 import { MutationState, DispatchAction } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
@@ -45,7 +41,6 @@ import { KeyResultDTO } from '@/constants/DTO/okrs';
   name: 'CreateObjectiveStep',
   components: {
     IconAttention,
-    IconAddKrs,
     KeyResult,
   },
   created() {

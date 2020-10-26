@@ -88,7 +88,8 @@ import KeyResult from '@/components/okrs/items/kr.vue';
     }),
   },
   async mounted() {
-    const { data } = await DrillDownRepository.get(this.cycleCurrent.id, 0);
+    const objectiveId = this.$route.query.objectiveId;
+    const { data } = await DrillDownRepository.get(this.cycleCurrent.id, objectiveId);
     console.log('data drill down', data);
     this.title = data.title;
     this.dataObjectives = data.childObjectives;

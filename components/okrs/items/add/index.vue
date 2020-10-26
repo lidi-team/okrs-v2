@@ -1,10 +1,9 @@
 <template>
   <div>
     <div>
-      <el-button class="el-button el-button--small el-button--purple" icon="el-icon-plus" @click="createOkrs('personal')">Tạo OKRs cá nhân</el-button>
-      <el-button class="el-button el-button--purple el-button--small" icon="el-icon-plus" @click="createOkrs('company')">Tạo OKRs công ty</el-button>
+      <el-button class="el-button el-button--small el-button--purple" icon="el-icon-plus" @click="createOkrs">Tạo OKRs</el-button>
     </div>
-    <el-dialog :title="title" :visible.sync="isShowDialog" width="800px" placement="center" :before-close="handleCloseDialog" class="company-okrs">
+    <el-dialog title="Tạo OKRs" :visible.sync="isShowDialog" width="800px" placement="center" :before-close="handleCloseDialog" class="company-okrs">
       <el-steps :active="active" finish-status="success" :align-center="true">
         <el-step title="Mục tiêu"></el-step>
         <el-step title="Các kết quả then chốt"></el-step>
@@ -43,13 +42,11 @@ import CreateKeyResult from '@/components/okrs/items/add/CreateKeyResult.vue';
   },
 })
 export default class AddOkrs extends Vue {
-  private title: String = 'Thêm mới mục tiêu...';
   private isShowDialog: Boolean = false;
   private active: Number = 0;
 
-  private createOkrs(type: String) {
+  private createOkrs() {
     this.isShowDialog = true;
-    this.title = type === 'personal' ? 'Thêm mới mục tiêu cá nhân' : 'Thêm mới mục tiêu công ty';
   }
 
   private handleCloseDialog() {
