@@ -3,8 +3,8 @@
     <div :class="['control-collapse', hovering ? 'hovering' : '']" @mouseenter="hovering = true" @mouseleave="hovering = false">
       <div class="control-collapse__expand" @click="expandForm">
         <span :class="['control-collapse__expand--caret', 'el-icon-caret-right', isExpanded ? 'expanded' : '']" />
-        <span v-if="syncTempKr.content.length !== 0" class="control-collapse__expand--content">{{ syncTempKr.content }}</span>
-        <span v-if="syncTempKr.content.length === 0" class="control-collapse__expand--content example">Ấn vào đây để chỉnh sửa</span>
+        <span v-if="tempKeyResult.content.length !== 0" class="control-collapse__expand--content">{{ tempKeyResult.content }}</span>
+        <span v-if="tempKeyResult.content.length === 0" class="control-collapse__expand--content example">Ấn vào đây để chỉnh sửa</span>
       </div>
       <el-popover v-model="popoverVisisble" placement="top-start" width="200" trigger="click">
         <div class="control-collapse__popover">
@@ -20,9 +20,9 @@
       </el-popover>
     </div>
     <div :class="['content-collapse', isExpanded ? 'margin-form' : '']" :style="isExpanded ? `max-height: ${scrollHeight}px` : 'max-height: 0'">
-      <el-form ref="keyResult" :model="syncTempKr" :rules="rules" label-position="left" class="krs-form">
+      <el-form ref="keyResult" :model="tempKeyResult" :rules="rules" label-position="left" class="krs-form">
         <el-form-item prop="content">
-          <el-input v-model="syncTempKr.content" placeholder="Nhập kết quả then chốt" tabindex="1" />
+          <el-input v-model="tempKeyResult.content" placeholder="Nhập kết quả then chốt" tabindex="1" />
         </el-form-item>
         <div class="krs-form__detail">
           <div class="krs-form__detail--value">
@@ -30,7 +30,7 @@
               <el-col :span="7">
                 <el-form-item label="Đơn vị" class="custom-label" label-width="65px">
                   <el-select
-                    v-model.number="syncTempKr.measureUnitId"
+                    v-model.number="tempKeyResult.measureUnitId"
                     size="medium"
                     filterable
                     no-match-text="Không tìm thấy kết quả"
@@ -42,22 +42,35 @@
               </el-col>
               <el-col :span="7">
                 <el-form-item class="custom-label krs-form__detail--value--start" prop="startValue" label="Giá trị bắt đầu" label-width="100px">
-                  <el-input v-model.number="syncTempKr.startValue" size="medium" tabindex="3" />
+                  <el-input v-model.number="tempKeyResult.startValue" size="medium" tabindex="3" />
                 </el-form-item>
               </el-col>
               <el-col :span="10">
                 <el-form-item prop="targetValue" label="Mục tiêu" class="custom-label" label-width="80px">
-                  <el-input v-model.number="syncTempKr.targetValue" size="medium" tabindex="4" />
+                  <el-input v-model.number="tempKeyResult.targetValue" size="medium" tabindex="4" />
                 </el-form-item>
               </el-col>
             </el-row>
           </div>
+          <div>
+            <el-form-item prop="parentId" label="Mục tiêu cấp trên" class="custom-label" label-width="120px">
+              <el-select
+                v-model="tempKeyResult.keyResultParentId"
+                filterable
+                no-match-text="Không tìm thấy kết quả"
+                placeholder="Chọn mục tiêu cấp trên"
+                :loading="loadingKeyResultParent"
+              >
+                <el-option v-for="keyResult in keyResultParent" :key="keyResult.id" :label="keyResult.name" :value="keyResult.id" />
+              </el-select>
+            </el-form-item>
+          </div>
           <div class="krs-form__detail--links">
             <el-form-item prop="linkPlans" label="Link kế hoạch" label-width="120px">
-              <el-input v-model.number="syncTempKr.linkPlans" size="small" type="url" placeholder="Điền link kế hoạch " />
+              <el-input v-model.number="tempKeyResult.linkPlans" size="small" type="url" placeholder="Điền link kế hoạch " />
             </el-form-item>
             <el-form-item prop="linkResults" label="Link kết quả" label-width="120px">
-              <el-input v-model.number="syncTempKr.linkResults" size="small" type="url" placeholder="Điền link kết quả" />
+              <el-input v-model.number="tempKeyResult.linkResults" size="small" type="url" placeholder="Điền link kết quả" />
             </el-form-item>
           </div>
         </div>
@@ -73,17 +86,18 @@ import { Maps, Rule } from '@/constants/app.type';
 import IconDelete from '@/assets/images/common/delete.svg';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { notificationConfig } from '@/constants/app.constant';
+import { SelectDropdownDTO } from '@/constants/DTO/common';
 
-@Component<KrsForm>({
+@Component<KeyResult>({
   name: 'KrsForm',
   components: {
     IconDelete,
   },
   created() {
-    this.units = Object.freeze(this.$store.state.measureUnit.measureUnits);
+    this.units = Object.freeze(this.$store.state.measure);
   },
 })
-export default class KrsForm extends Vue {
+export default class KeyResult extends Vue {
   @PropSync('keyResult', {
     type: Object,
     required: true,
@@ -91,12 +105,15 @@ export default class KrsForm extends Vue {
       startValue: 0,
       targetValue: 100,
       content: '',
+      keyResultParentId: null,
       linkPlans: '',
       linkResults: '',
       measureUnitId: 1,
     }),
   })
-  private syncTempKr!: any;
+  private tempKeyResult!: any;
+
+  private keyResultsParent: Array<SelectDropdownDTO> = [];
 
   @Prop(Number) private indexKrForm!: number;
 
@@ -178,7 +195,7 @@ export default class KrsForm extends Vue {
     if (value < 0) {
       return callback('Giá trị phải là số không âm');
     }
-    if (value > this.syncTempKr.targetValue) {
+    if (value > this.tempKeyResult.targetValue) {
       return callback('Giá trị bắt đầu đang lớn hơn giá trị mục tiêu');
     }
     return callback();
@@ -188,7 +205,7 @@ export default class KrsForm extends Vue {
     if (value <= 0) {
       return callback('Giá trị phải lớn hơn 0');
     }
-    if (value < this.syncTempKr.startValue) {
+    if (value < this.tempKeyResult.startValue) {
       return callback('Giá trị mục tiêu phải lớn hơn bắt đầu');
     }
     return callback();
@@ -203,11 +220,11 @@ export default class KrsForm extends Vue {
 
   public clearForm() {
     (this.$refs.keyResult as Form).clearValidate();
-    this.syncTempKr.content = '';
-    this.syncTempKr.targetvalue = 1;
-    this.syncTempKr.linkPlans = '';
-    this.syncTempKr.linkResults = '';
-    this.syncTempKr.measureUnitId = 1;
+    this.tempKeyResult.content = '';
+    this.tempKeyResult.targetvalue = 1;
+    this.tempKeyResult.linkPlans = '';
+    this.tempKeyResult.linkResults = '';
+    this.tempKeyResult.measureUnitId = 1;
   }
 
   private expandForm() {

@@ -21,3 +21,8 @@ export interface AdminParams extends ParamsQuery {
 export interface ParamsCFR extends ParamsQuery {
   status?: number;
 }
+
+export interface SelectDropdownDTO {
+  id: number;
+  name: string;
+}

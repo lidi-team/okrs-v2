@@ -74,9 +74,11 @@ export const actions: OKRsAction<OkrsState, RootState> = {
       commit(OkrsMutation.SET_STAFF_OKRS, Object.freeze(data.data));
     } catch (error) {}
   },
+
   clearStaffOkrs({ commit }) {
     commit(OkrsMutation.SET_STAFF_OKRS, []);
   },
+
   clearOkrs({ commit }): void {
     commit(OkrsMutation.SET_OBJECTIVE, null);
     commit(OkrsMutation.CLEAR_KRS);

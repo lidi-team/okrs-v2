@@ -1,16 +1,14 @@
 <template>
   <div class="add-krs-step">
-    <div v-loading="formLoading">
-      <key-result
-        v-for="(item, index) in krFormItems"
-        :key="index"
-        ref="krsForm"
-        :index-kr-form="index"
-        :key-result.sync="item"
-        @deleteKr="deleteKrForm($event)"
-      />
-    </div>
-    <el-button v-if="!formLoading" class="el-button el-button--white el-button--small add-krs-step__button" @click="addNewKRs">
+    <key-result
+      v-for="(item, index) in keyResults"
+      :key="index"
+      ref="krsForm"
+      :index-kr-form="index"
+      :key-result.sync="item"
+      @deleteKr="deleteKrForm($event)"
+    />
+    <el-button class="el-button el-button--white el-button--small add-krs-step__button" @click="addNewKRs">
       <span>Thêm KRs</span>
     </el-button>
     <div class="add-krs-step__attention">
@@ -46,7 +44,7 @@ import { KeyResultDTO } from '@/constants/DTO/okrs';
   created() {
     this.objectiveTitle = this.$store.state.okrs.objective.title;
     if (this.$store.state.okrs.keyResults) {
-      this.krFormItems = this.$store.state.okrs.keyResults.length !== 0 ? this.$store.state.okrs.keyResults.map((item) => ({ ...item })) : [];
+      this.keyResults = this.$store.state.okrs.keyResults.length !== 0 ? this.$store.state.okrs.keyResults.map((item) => ({ ...item })) : [];
     }
   },
 })
@@ -56,15 +54,13 @@ export default class CreateObjectiveStep extends Vue {
   @PropSync('active', Number) private syncActive!: number;
   @PropSync('visibleDialog', Boolean) private syncVisibleDialog!: boolean;
 
-  private formLoading: boolean = false;
   private loading: boolean = false;
   private objectiveTitle: string = '';
-  private krFormItems: any[] = [];
+  private keyResults: any[] = [];
   private attentionsText: string[] = ['Nên có ít nhất phải có 2 kết quả then chốt', 'Không nên quá 5 kết quả then chốt cho 1 mục tiêu'];
 
   private addNewKRs() {
-    this.formLoading = true;
-    this.krFormItems.push({
+    this.keyResults.push({
       startValue: 0,
       targetValue: 100,
       content: '',
@@ -72,9 +68,6 @@ export default class CreateObjectiveStep extends Vue {
       linkResults: '',
       measureUnitId: 1,
     });
-    setTimeout(() => {
-      this.formLoading = false;
-    }, 500);
   }
 
   private closeKrsForm() {
@@ -94,7 +87,7 @@ export default class CreateObjectiveStep extends Vue {
     let validForm: number = 0;
 
     this.loading = true;
-    if (this.krFormItems.length === 0) {
+    if (this.keyResults.length === 0) {
       setTimeout(() => {
         this.loading = false;
       }, 300);
@@ -118,7 +111,7 @@ export default class CreateObjectiveStep extends Vue {
           await OkrsRepository.createOrUpdateOkrs(payload).then(async (res) => {
             this.loading = false;
             this.syncVisibleDialog = false;
-            this.krFormItems = [];
+            this.keyResults = [];
             this.$store.dispatch(DispatchAction.CLEAR_OKRS);
             await this.reloadData();
             this.$notify.success({
@@ -140,7 +133,7 @@ export default class CreateObjectiveStep extends Vue {
 
   private backToStepOne() {
     this.$store.commit(MutationState.CLEAR_KRS);
-    if (this.krFormItems.length !== 0) {
+    if (this.keyResults.length !== 0) {
       const tempKrs: any[] = [];
       (this.$refs.krsForm as any).forEach((form) => {
         tempKrs.push(form.syncTempKr);
@@ -156,7 +149,7 @@ export default class CreateObjectiveStep extends Vue {
     let validForm: number = 0;
 
     this.loading = true;
-    if (this.krFormItems.length === 0) {
+    if (this.keyResults.length === 0) {
       setTimeout(() => {
         this.loading = false;
       }, 300);
@@ -187,11 +180,7 @@ export default class CreateObjectiveStep extends Vue {
   }
 
   private deleteKrForm(indexForm: number) {
-    this.formLoading = true;
-    this.krFormItems.splice(indexForm, 1);
-    setTimeout(() => {
-      this.formLoading = false;
-    }, 300);
+    this.keyResults.splice(indexForm, 1);
   }
 }
 </script>
