@@ -66,7 +66,7 @@ import { max255Char } from '@/constants/account.constant';
     }
   },
   beforeDestroy() {
-    this.$store.dispatch(DispatchAction.SET_MEASURE_UNITS);
+    this.$store.dispatch(DispatchAction.GET_MEASURE);
   },
 })
 export default class CreateObjectiveStep extends Vue {

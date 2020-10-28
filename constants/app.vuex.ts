@@ -5,8 +5,8 @@ export enum DispatchAction {
   CLEAR_OKRS = 'okrs/clearOkrs',
   SET_STAFF_OKRS = 'okrs/setStaffOkrs',
   CLEAR_STAFF_OKRS = 'okrs/clearStaffOkrs',
-  SET_MEASURE_UNITS = 'measureUnit/setMeasureUnits',
-  CLEAR_MEASURE_UNITS = 'measureUnit/clearMeasureUnits',
+  GET_MEASURE = 'measure/getMeasure',
+  CLEAR_MEASURE = 'measure/clearMeasure',
 }
 
 export enum GetterState {

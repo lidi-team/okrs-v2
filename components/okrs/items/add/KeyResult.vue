@@ -36,7 +36,7 @@
                     no-match-text="Không tìm thấy kết quả"
                     placeholder="Chọn đơn vị"
                   >
-                    <el-option v-for="unit in units" :key="unit.id" :label="unit.type" :value="unit.id" tabindex="2" />
+                    <el-option v-for="unit in units" :key="unit.id" :label="unit.name" :value="unit.id" tabindex="2" />
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -52,7 +52,7 @@
               </el-col>
             </el-row>
           </div>
-          <div>
+          <!-- <div>
             <el-form-item prop="parentId" label="Mục tiêu cấp trên" class="custom-label" label-width="120px">
               <el-select
                 v-model="tempKeyResult.keyResultParentId"
@@ -64,7 +64,7 @@
                 <el-option v-for="keyResult in keyResultParent" :key="keyResult.id" :label="keyResult.name" :value="keyResult.id" />
               </el-select>
             </el-form-item>
-          </div>
+          </div> -->
           <div class="krs-form__detail--links">
             <el-form-item prop="linkPlans" label="Link kế hoạch" label-width="120px">
               <el-input v-model.number="tempKeyResult.linkPlans" size="small" type="url" placeholder="Điền link kế hoạch " />
@@ -81,20 +81,22 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
+import { mapActions } from 'vuex';
 import { max255Char } from '@/constants/account.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import IconDelete from '@/assets/images/common/delete.svg';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { notificationConfig } from '@/constants/app.constant';
 import { SelectDropdownDTO } from '@/constants/DTO/common';
+import { DispatchAction } from '@/constants/app.vuex';
 
 @Component<KeyResult>({
   name: 'KrsForm',
   components: {
     IconDelete,
   },
-  created() {
-    this.units = Object.freeze(this.$store.state.measure);
+  async mounted() {
+    this.units = await this.$store.dispatch(DispatchAction.GET_MEASURE);
   },
 })
 export default class KeyResult extends Vue {

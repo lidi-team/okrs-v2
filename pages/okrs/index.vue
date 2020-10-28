@@ -71,7 +71,7 @@ import CommonTopSearchCycle from '@/components/common/TopSearchCycle.vue';
       this.loadingComponent = false;
     }, 500);
     setTimeout(() => {
-      this.$store.dispatch(DispatchAction.SET_MEASURE_UNITS);
+      this.$store.dispatch(DispatchAction.GET_MEASURE);
     }, 2000);
   },
   beforeDestroy() {
