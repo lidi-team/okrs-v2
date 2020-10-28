@@ -6,13 +6,7 @@
       <el-step title="Liên kết mục tiêu"></el-step>
     </el-steps>
     <create-objective v-if="active === 0" :active.sync="active" />
-    <create-key-result
-      v-if="active === 1"
-      :active.sync="active"
-      :visible-dialog.sync="syncCreateOkrsDialog"
-      :is-company-okrs="isCompanyOkrs"
-      :reload-data="reloadData"
-    />
+    <create-key-result v-if="active === 1" :active.sync="active" />
     <!--<step-add-align-objective
         v-if="active === 2 && !isCompanyOkrs"
         :active.sync="active"

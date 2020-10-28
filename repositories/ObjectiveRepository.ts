@@ -1,5 +1,5 @@
 import { AxiosResponse } from 'axios';
-import { baseUrlV1, baseUrl } from './BaseRepository';
+import { baseUrl } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
 
 export enum enpoint {

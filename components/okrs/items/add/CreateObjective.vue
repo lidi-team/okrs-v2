@@ -43,16 +43,16 @@ import ObjectiveRepository from '@/repositories/ObjectiveRepository';
   computed: {
     ...mapGetters({
       cycleCurrent: GetterState.CYCLE_CURRENT,
+      objectiveParent: GetterState.OKRS_OBJECTIVE_PARENT,
     }),
   },
   async mounted() {
-    const { data } = await ObjectiveRepository.getObjectivesParent(this.ObjectiveId);
+    const { data } = await ObjectiveRepository.getObjectivesParent(this.objectiveParent);
     this.listObjectiveParent = data.objectives;
     this.loadingObjective = false;
   },
 })
 export default class CreateObjective extends Vue {
-  @Prop({ type: Number, default: 0 }) public ObjectiveId!: Number;
   @PropSync('active', Number) private syncActive!: number;
 
   private rules: Maps<Rule[]> = {
