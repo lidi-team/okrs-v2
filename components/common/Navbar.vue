@@ -10,7 +10,7 @@
       <div class="side-right__list">
         <el-dropdown class="side-right__item item" trigger="click">
           <div class="item__wrapper">
-            <img :src="user.imageUrl" alt="avatar" class="item__avatar" />
+            <img :src="user.avatarUrl" alt="avatar" class="item__avatar" />
             <div class="item__info info">
               <span class="info__name">
                 {{ user.fullName }}
