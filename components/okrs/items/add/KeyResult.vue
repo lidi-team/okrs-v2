@@ -53,13 +53,14 @@
             </el-row>
           </div>
           <div>
-            <el-form-item prop="parentId" label="Mục tiêu cấp trên" class="custom-label" label-width="120px">
+            <el-form-item prop="parentId" label="Liên kết kết quả then chốt" class="custom-label" label-width="190px">
               <el-select
                 v-model="tempKeyResult.keyResultParentId"
                 filterable
                 no-match-text="Không tìm thấy kết quả"
-                placeholder="Chọn mục tiêu cấp trên"
+                placeholder="Chọn kết quả then chốt "
                 :loading="loading"
+                width="100%"
               >
                 <el-option v-for="keyResult in keyResultsParent" :key="keyResult.id" :label="keyResult.name" :value="keyResult.id" />
               </el-select>
