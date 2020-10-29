@@ -52,19 +52,19 @@
               </el-col>
             </el-row>
           </div>
-          <!-- <div>
+          <div>
             <el-form-item prop="parentId" label="Mục tiêu cấp trên" class="custom-label" label-width="120px">
               <el-select
                 v-model="tempKeyResult.keyResultParentId"
                 filterable
                 no-match-text="Không tìm thấy kết quả"
                 placeholder="Chọn mục tiêu cấp trên"
-                :loading="loadingKeyResultParent"
+                :loading="loading"
               >
-                <el-option v-for="keyResult in keyResultParent" :key="keyResult.id" :label="keyResult.name" :value="keyResult.id" />
+                <el-option v-for="keyResult in keyResultsParent" :key="keyResult.id" :label="keyResult.name" :value="keyResult.id" />
               </el-select>
             </el-form-item>
-          </div> -->
+          </div>
           <div class="krs-form__detail--links">
             <el-form-item prop="linkPlans" label="Link kế hoạch" label-width="120px">
               <el-input v-model.number="tempKeyResult.linkPlans" size="small" type="url" placeholder="Điền link kế hoạch " />
@@ -78,6 +78,7 @@
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue, Prop, Emit, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
@@ -85,10 +86,12 @@ import { mapActions } from 'vuex';
 import { max255Char } from '@/constants/account.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import IconDelete from '@/assets/images/common/delete.svg';
-import OkrsRepository from '@/repositories/OkrsRepository';
 import { notificationConfig } from '@/constants/app.constant';
 import { SelectDropdownDTO } from '@/constants/DTO/common';
 import { DispatchAction } from '@/constants/app.vuex';
+
+import OkrsRepository from '@/repositories/OkrsRepository';
+import KeyResultRepository from '@/repositories/KeyResultRepository';
 
 @Component<KeyResult>({
   name: 'KrsForm',
@@ -96,7 +99,11 @@ import { DispatchAction } from '@/constants/app.vuex';
     IconDelete,
   },
   async mounted() {
+    this.loading = true;
     this.units = await this.$store.dispatch(DispatchAction.GET_MEASURE);
+    const { data } = await KeyResultRepository.getKeyResultOfParent(this.$store.state.okrs.objective.parentId);
+    this.keyResultsParent = data;
+    this.loading = false;
   },
 })
 export default class KeyResult extends Vue {
@@ -124,6 +131,7 @@ export default class KeyResult extends Vue {
   private isExpanded: boolean = false;
   private scrollHeight: number = 0;
   private tempContentKr: string = 'Ấn vào đây để chỉnh sửa';
+  private loading: Boolean = false;
 
   private units: any[] = [];
 
