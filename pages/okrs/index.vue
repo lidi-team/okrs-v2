@@ -9,7 +9,7 @@
           >Tạo OKRs</el-button
         >
         <el-popover v-else v-model="visible" placement="bottom" width="160">
-          <div style="text-align: center;">
+          <div style="text-align: center">
             <el-button class="okrs-page__item el-button el-button--white el-button--small" @click="handleCommand('personal')"
               >Tạo OKRs cá nhân</el-button
             >

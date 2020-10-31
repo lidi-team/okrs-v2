@@ -14,9 +14,7 @@
           Vui lòng kiểm tra lại đường link bạn nhập có đúng hay không, hoặc nhấn vào nút phía dưới để trở về trang chủ.
         </div>
         <nuxt-link rel="canonical" to="/">
-          <el-button class="el-button--purple">
-            Trở về trang chủ
-          </el-button>
+          <el-button class="el-button--purple">Trở về trang chủ</el-button>
         </nuxt-link>
       </div>
     </div>

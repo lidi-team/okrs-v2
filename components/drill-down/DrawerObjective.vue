@@ -1,7 +1,7 @@
 <template>
   <div class="item">
     <p class="item__header">{{ title }}</p>
-    <el-table :data="dataObjectives" style="width: 100%;" header-row-class-name="item__table-header">
+    <el-table :data="dataObjectives" style="width: 100%" header-row-class-name="item__table-header">
       <el-table-column label="Mục tiêu">
         <template v-slot="{ row }">
           <span>{{ row.title }}</span>
@@ -10,7 +10,7 @@
       <el-table-column prop="author" label="Kết quả then chốt" width="250" align="center">
         <template v-slot="{ row }">
           <p v-if="row.keyResults.length" class="item__krs" @click="showKeyResult(row.keyResults)">{{ row.keyResults | filterKeyresults }}</p>
-          <p v-else style="color: #212b36;">{{ row.keyResults | filterKeyresults }}</p>
+          <p v-else style="color: #212b36">{{ row.keyResults | filterKeyresults }}</p>
         </template>
       </el-table-column>
       <el-table-column prop="author" label="Tiến độ" width="260" align="center">

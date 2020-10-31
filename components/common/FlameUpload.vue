@@ -384,7 +384,6 @@ export default {
   },
   created() {
     // 绑定按键esc隐藏此插件事件
-    // eslint-disable-next-line nuxt/no-globals-in-created
     document.addEventListener('keyup', (e) => {
       if (this.value && (e.key === 'Escape' || e.keyCode === 27)) {
         this.off();

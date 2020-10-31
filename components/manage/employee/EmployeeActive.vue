@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table v-loading="loadingTable" empty-text="Không có dữ liệu" class="employee-active" :data="tableData" style="width: 100%;">
+    <el-table v-loading="loadingTable" empty-text="Không có dữ liệu" class="employee-active" :data="tableData" style="width: 100%">
       <el-table-column prop="fullName" label="Tên đầy đủ" min-width="150"></el-table-column>
       <el-table-column prop="email" label="Email" min-width="150"></el-table-column>
       <el-table-column label="Phòng ban" min-width="150">
@@ -55,7 +55,7 @@
             :rules="rules"
             :model="tempUpdateUser"
             label-position="top"
-            style="width: 100%;"
+            style="width: 100%"
           >
             <el-form-item label="Tên đầy đủ:" prop="fullName" class="custom-label">
               <el-input v-model="tempUpdateUser.fullName" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateUser)" />

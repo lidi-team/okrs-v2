@@ -4,7 +4,7 @@
       <h1 class="wrap-editor__title">{{ $nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi' ? 'Thêm mới bài học OKRs' : 'Cập nhật bài học OKRs' }}</h1>
       <el-row :gutter="10">
         <el-col :span="24">
-          <el-form ref="editorForm" :model="formLesson" label-position="top" style="width: 100%;" :rules="rules">
+          <el-form ref="editorForm" :model="formLesson" label-position="top" style="width: 100%" :rules="rules">
             <el-form-item label="Tiêu đề:" prop="title" class="custom-label">
               <el-input v-model="formLesson.title" placeholder="Nhập tiêu đề bài viết" />
             </el-form-item>

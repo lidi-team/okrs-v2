@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
-import { baseUrlV1, baseUrl } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
+import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export enum enpoint {
   objectivesParent = 'objective/parent-okr',

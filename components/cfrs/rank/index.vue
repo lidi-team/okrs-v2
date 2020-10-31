@@ -40,7 +40,7 @@
       </el-col>
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <div class="rank__col">
-          <p class="rank__col__header" style="padding-bottom: 20px;">BXH lũy kế</p>
+          <p class="rank__col__header" style="padding-bottom: 20px">BXH lũy kế</p>
           <p v-if="!accumulatedRanking.length" class="history__col__empty">Không có dữ liệu</p>
           <div v-for="(item, index) in accumulatedRanking" v-else :key="item.id" class="rank-item">
             <div class="rank-item__left">

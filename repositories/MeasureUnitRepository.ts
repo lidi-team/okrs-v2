@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios';
-import { baseUrlV1 } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { AdminParams } from '@/constants/DTO/common';
+import { baseUrlV1 } from './BaseRepository';
 
 export default class MeasureUnitRepository {
   public static get(params: AdminParams): Promise<AxiosResponse<any>> {

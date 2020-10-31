@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table v-loading="loading" empty-text="Không có dữ liệu" class="myOKRs" :data="tableData" style="width: 100%;">
+    <el-table v-loading="loading" empty-text="Không có dữ liệu" class="myOKRs" :data="tableData" style="width: 100%">
       <el-table-column label="Mục tiêu" min-width="250">
         <template slot-scope="{ row }">
           <span>{{ row.title }}</span>
@@ -73,7 +73,7 @@
     >
       <el-row>
         <el-col :span="24">
-          <el-table empty-text="Không có dữ liệu" class="myOKRs" :data="keyResults.keyResults" style="width: 100%;">
+          <el-table empty-text="Không có dữ liệu" class="myOKRs" :data="keyResults.keyResults" style="width: 100%">
             <el-table-column label="Kết quả chính" min-width="150">
               <template slot-scope="{ row }">
                 <span>{{ row.content }}</span>

@@ -101,6 +101,7 @@
 <script lang="ts">
 import { Component, Vue, Provide } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
+// import AWS from 'aws-sdk';
 import { Form } from 'element-ui';
 import { max255Char } from '@/constants/account.constant';
 import { ProfileDTO } from '@/constants/app.interface';
@@ -258,6 +259,86 @@ export default class ViewProfile extends Vue {
     }
     return user.role.name;
   }
+
+  // AWS.config.region = 'ap-southeast-1'
+  //       AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+  //           IdentityPoolId: 'ap-southeast-1:1539452e-c7bf-4855-ad74-d7d6a6785918'
+  //       })
+  //       //Bucket Configurations
+  //       var myCredentials = new AWS.CognitoIdentityCredentials({
+  //           IdentityPoolId: 'ap-southeast-1:1539452e-c7bf-4855-ad74-d7d6a6785918'
+  //       })
+  //       var myConfig = new AWS.Config({
+  //           credentials: myCredentials,
+  //           region: 'ap-southeast-1'
+  //       })
+  //       var bucketName = 'bluemarble-hep1';
+  //       var bucketRegion = 'ap-southeast-1';
+  //       var IdentityPoolId = 'ap-southeast-1:1539452e-c7bf-4855-ad74-d7d6a6785918';
+
+  //       AWS.config.update({
+  //           region: bucketRegion,
+  //           credentials: new AWS.CognitoIdentityCredentials({
+  //               IdentityPoolId: IdentityPoolId
+  //           })
+  //       })
+
+  //       var s3 = new AWS.S3({
+  //           apiVersion: '2006-03-01',
+  //           params: {
+  //               Bucket: bucketName
+  //           }
+  //       })
+
+  //       //function here
+
+  //       function s3upload() {
+  //           var files = document.getElementById('fileUpload').files;
+  //           if (files) {
+  //               var file = files[0];
+  //               var fileName = file.name;
+  //               var filePath = 'my-first-bucket-path/' + fileName;
+  //               var fileUrl = 'https://' + bucketName + '.s3-' + bucketRegion + '.amazonaws.com/my-first-bucket/' +
+  //                   filePath;
+
+  //               s3.upload({
+  //                   Key: filePath,
+  //                   Body: file,
+  //                   ACL: 'public-read'
+  //               }, function (err, data) {
+  //                   if (err) {
+  //                       reject('error');
+  //                   }
+
+  //                   alert('Successfully Uploaded!');
+  //               }).on('httpUploadProgress', function (progress) {
+  //                   var uploaded = parseInt((progress.loaded * 100) / progress.total);
+  //                   $("progress").attr('value', uploaded);
+  //               });
+  //           }
+  //       }
+
+  //       function showimage() {
+  //           let imageTest = document.getElementById('imgTest')
+  //           s3.getObject({
+  //               Bucket: 'bluemarble-hep1',
+  //               Key: "my-first-bucket-path/clipdealer_A139079369_preview.jpg"
+  //           }, function (errtxt, file) {
+  //               if (errtxt) {
+  //                   console.Log("lireFic", "ERR " + errtxt);
+  //               } else {
+  //                   console.log('lecture OK')
+  //                   imageTest.src = "data:image/png;base64," + encode(file.Body);
+  //               }
+  //           });
+  //       }
+
+  //       function encode(data) {
+  //           var str = data.reduce(function (a, b) {
+  //               return a + String.fromCharCode(b)
+  //           }, '');
+  //           return btoa(str).replace(/.{76}(?=.)/g, '$&\n');
+  //       }
 }
 </script>
 

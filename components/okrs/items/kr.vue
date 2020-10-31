@@ -8,7 +8,7 @@
     <el-table-column label="Tiến độ" width="150">
       <template v-slot="{ row }">
         <div>
-          <el-progress style="width: 80%;" :percentage="getProgressKrs(row)" :color="customColors" :text-inside="true" :stroke-width="20" />
+          <el-progress style="width: 80%" :percentage="getProgressKrs(row)" :color="customColors" :text-inside="true" :stroke-width="20" />
         </div>
       </template>
     </el-table-column>

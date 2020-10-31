@@ -9,7 +9,7 @@
         <el-button class="el-button--purple el-button--small el-button--create" icon="el-icon-plus" @click="handleCreate">Thêm bài mới</el-button>
       </div>
     </div>
-    <el-table v-loading="loading" empty-text="Không có dữ liệu" class="table-lesson__content" :data="tableLesson" style="width: 100%;">
+    <el-table v-loading="loading" empty-text="Không có dữ liệu" class="table-lesson__content" :data="tableLesson" style="width: 100%">
       <el-table-column label="Tiêu đề" min-width="650">
         <template slot-scope="{ row }">
           <span class="table-lesson__title" @click="handleClickTitle(row.slug)">{{ row.title }}</span>

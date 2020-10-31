@@ -3,7 +3,7 @@
     <slot name="chartOKRs" />
     <div v-if="user">
       <el-form ref="checkinRuleForm" label-position="left" :model="syncCheckin" :rules="rules">
-        <el-table empty-text="Không có dữ liệu" class="checkinDetail__form" :data="syncCheckin.checkinDetail" style="width: 100%;">
+        <el-table empty-text="Không có dữ liệu" class="checkinDetail__form" :data="syncCheckin.checkinDetail" style="width: 100%">
           <el-table-column label="Kết quả chính" min-width="250">
             <template slot-scope="scope">
               <p>{{ scope.row.keyResult.content }}</p>
