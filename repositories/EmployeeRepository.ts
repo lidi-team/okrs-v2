@@ -1,11 +1,11 @@
 import { ResourcesEnpoint } from '@/constants/app.enum';
 import { EmployeeDTO } from '@/constants/app.interface';
 import { ParamsUser } from '@/constants/DTO/common';
-import { baseUrlV1 } from './BaseRepository';
+import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export default class EmployeeRepository {
-  public static get(params: ParamsUser) {
-    return baseUrlV1.get(`${ResourcesEnpoint.Users}`, { params });
+  public static get(params: Object) {
+    return baseUrl.get(`${ResourcesEnpoint.Users}/listStaffPaging`, { params });
   }
 
   public static update(payload: EmployeeDTO) {

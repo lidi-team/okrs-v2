@@ -62,24 +62,34 @@ export default class ManageEmployee extends Vue {
     limit: pageLimit,
   };
 
+  private paramsTest: Object = {
+    paging: 0,
+    size: pageLimit,
+    sortWith: 'email',
+  };
+
   private currentTab: string =
     this.$route.query.tab === 'deactive' ? UserStatus.Inactive : this.$route.query.tab === 'pending' ? UserStatus.Pending : UserStatus.Active;
 
   @Watch('$route.query')
   private async getListUsers() {
-    this.paramsUser = {
-      status: this.$route.query.tab === 'deactive' ? -1 : this.$route.query.tab === 'pending' ? 0 : 1,
-      text: this.$route.query.text ? String(this.$route.query.text) : '',
-      page: this.$route.query.page ? Number(this.$route.query.page) : 1,
-      limit: pageLimit,
-    };
+    // this.paramsUser = {
+    //   status: this.$route.query.tab === 'deactive' ? -1 : this.$route.query.tab === 'pending' ? 0 : 1,
+    //   text: this.$route.query.text ? String(this.$route.query.text) : '',
+    //   page: this.$route.query.page ? Number(this.$route.query.page) : 1,
+    //   limit: pageLimit,
+    // };
     this.currentTab =
       this.$route.query.tab === 'deactive' ? UserStatus.Inactive : this.$route.query.tab === 'pending' ? UserStatus.Pending : UserStatus.Active;
     try {
-      const { data } = await EmployeeRepository.get(this.paramsUser);
-      this.tableData = data.data.items;
-      this.meta = data.data.meta;
-    } catch (error) {}
+      const { data } = await EmployeeRepository.get(this.paramsTest);
+      console.log('data: ', data);
+
+      this.tableData = data;
+      // this.meta = data.data.meta;
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   private async getDataCommons() {

@@ -5,27 +5,27 @@
       <el-table-column prop="email" label="Email" min-width="150"></el-table-column>
       <el-table-column label="Phòng ban" min-width="150">
         <template slot-scope="{ row }">
-          <span>{{ row.team.name }}</span>
+          <span>{{ row.department.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Vị trí công việc" min-width="150">
+      <el-table-column label="Giới tính" min-width="150">
         <template slot-scope="{ row }">
-          <span>{{ row.jobPosition.name }}</span>
+          <span>{{ row.gender == 0 ? 'Nữ' : 'Nam' }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="role" label="Vai trò">
         <template slot-scope="{ row }">
-          <span>{{ row.role.name === 'ADMIN' ? 'Admin' : row.isLeader ? 'Team Leader' : row.role.name }}</span>
+          <span>{{ displayRoleName(row.roles) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
         <template slot-scope="{ row }">
-          <div v-if="row.role.name === 'ADMIN' && user.role.name === 'ADMIN'">
+          <div v-if="row.roles.includes('ROLE_ADMIN_HR') && user.roles.includes('ROLE_ADMIN')">
             <el-tooltip class="employee-active__icon" content="Sửa" placement="left-end">
               <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
             </el-tooltip>
           </div>
-          <div v-if="row.role.name !== 'ADMIN'">
+          <div v-if="!row.roles.includes('ROLE_ADMIN_HR')">
             <el-tooltip class="employee-active__icon" content="Sửa" placement="left-end">
               <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
             </el-tooltip>
@@ -244,6 +244,25 @@ export default class EmployeeActive extends Vue {
         this.getListUsers();
       } catch (error) {}
     });
+  }
+
+  private displayRoleName(roles: any) {
+    // if (user.isLeader && user.role.name !== 'ADMIN' && user.role.name !== 'HR') {
+    //   return 'LEADER';
+    // }
+    // return user.role.name;
+    switch (roles[0]) {
+      case 'ROLE_DIRECTOR':
+        return 'Giám đốc';
+      case 'ROLE_ADMIN':
+        return 'Kĩ thuật';
+      case 'ROLE_ADMIN_HR':
+        return 'Quản lý nhân sự';
+      case 'ROLE_PM':
+        return 'Quản lý dự án';
+      default:
+        return 'Nhân viên';
+    }
   }
 }
 </script>

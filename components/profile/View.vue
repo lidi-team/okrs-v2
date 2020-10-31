@@ -90,7 +90,7 @@
                 </el-col>
               </el-row>
             </div>
-            <el-button class="el-button el-button--purple el-button--update" :loading="loading" @click="updateProfile">Cập nhật</el-button>
+            <!-- <el-button class="el-button el-button--purple el-button--update" :loading="loading" @click="updateProfile">Cập nhật</el-button> -->
           </div>
         </el-col>
       </el-row>

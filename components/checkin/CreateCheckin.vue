@@ -62,7 +62,7 @@
               <el-radio :label="1">Không ổn lắm</el-radio>
             </el-radio-group>
           </el-form-item>
-          <el-row v-if="user.role.name === 'ADMIN'">
+          <el-row v-if="user.roles.includes('ROLE_ADMIN')">
             <el-col :sm="24" :lg="12">
               <el-form-item label-width="30%" :prop="'nextCheckinDate'" label="Ngày check-in tiếp theo">
                 <el-date-picker
@@ -96,7 +96,7 @@
         </div>
       </el-form>
     </div>
-    <div v-if="user.role.name === 'ADMIN'" class="checkinDetail__footer">
+    <div v-if="user.roles.includes('ROLE_ADMIN')" class="checkinDetail__footer">
       <el-button :disabled="syncCheckin.isCompleted" class="el-button--white" @click="handleDraftCheckinAdmin">Lưu nháp</el-button>
       <el-button class="el-button--purple" :loading="loading" @click="handleSubmitCheckinAdmin">Check-in</el-button>
     </div>
