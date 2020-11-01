@@ -7,12 +7,7 @@
     </el-steps>
     <create-objective v-if="active === 0" :active.sync="active" />
     <create-key-result v-if="active === 1" :active.sync="active" />
-    <!--<step-add-align-objective
-        v-if="active === 2 && !isCompanyOkrs"
-        :active.sync="active"
-        :visible-dialog.sync="syncCreateOkrsDialog"
-        :reload-data="reloadData"
-      /> -->
+    <create-align-objective v-if="active === 2" :active.sync="active" />
   </el-dialog>
 </template>
 
@@ -23,12 +18,14 @@ import { DispatchAction, MutationState, GetterState } from '@/constants/app.vuex
 import { confirmWarningConfig } from '@/constants/app.constant';
 import CreateObjective from '@/components/okrs/items/add/CreateObjective.vue';
 import CreateKeyResult from '@/components/okrs/items/add/CreateKeyResult.vue';
+import CreateAlignObjective from '@/components/okrs/items/add/CreateAlignObjective.vue';
 
 @Component<AddOkrs>({
   name: 'AddOkrs',
   components: {
     CreateObjective,
     CreateKeyResult,
+    CreateAlignObjective,
   },
   computed: {
     ...mapGetters({
