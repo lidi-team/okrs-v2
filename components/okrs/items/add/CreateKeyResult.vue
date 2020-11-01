@@ -20,7 +20,7 @@
     </div>
     <div class="add-krs-step__action">
       <el-button class="el-button--white el-button--modal" @click="backToStepOne">Quay lại</el-button>
-      <el-button v-if="!isCompanyOkrs" class="el-button--purple el-button--modal" :loading="loading" @click="nextStepThree">Tiếp theo</el-button>
+      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="nextStepThree">Tiếp theo</el-button>
     </div>
   </div>
 </template>
@@ -81,62 +81,12 @@ export default class CreateObjectiveStep extends Vue {
     });
   }
 
-  private async createRootOkrs() {
-    const payload: any = {};
-    const krs: any[] = [];
-    let validForm: number = 0;
-
-    this.loading = true;
-    if (this.keyResults.length === 0) {
-      setTimeout(() => {
-        this.loading = false;
-      }, 300);
-      this.$message.error('Cần có ít nhất 1 kết quả then chốt');
-    } else {
-      (this.$refs.krsForm as any).forEach((form) => {
-        (form.$refs.keyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
-          if (isValid) {
-            validForm++;
-          }
-        });
-        krs.push(Object.freeze(form.syncTempKr));
-      });
-      if (validForm === krs.length) {
-        // Set this is root objective
-        const payload: PayloadOkrs = {
-          objective: Object.assign({}, this.$store.state.okrs.objective, { isRootObjective: true }),
-          keyResult: krs,
-        };
-        try {
-          await OkrsRepository.createOrUpdateOkrs(payload).then(async (res) => {
-            this.loading = false;
-            this.syncVisibleDialog = false;
-            this.keyResults = [];
-            this.$store.dispatch(DispatchAction.CLEAR_OKRS);
-            await this.reloadData();
-            this.$notify.success({
-              ...notificationConfig,
-              message: 'Tạo OKRs thành công',
-            });
-          });
-        } catch (error) {
-          this.loading = false;
-        }
-      } else {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-        this.$message.error('Vui lòng nhập đúng các trường yêu cầu');
-      }
-    }
-  }
-
   private backToStepOne() {
     this.$store.commit(MutationState.CLEAR_KRS);
     if (this.keyResults.length !== 0) {
       const tempKrs: any[] = [];
       (this.$refs.krsForm as any).forEach((form) => {
-        tempKrs.push(form.syncTempKr);
+        tempKrs.push(form.tempKeyResult);
       });
       this.$store.commit(MutationState.SET_KRS, tempKrs);
       this.syncActive--;
@@ -161,13 +111,11 @@ export default class CreateObjectiveStep extends Vue {
             validForm++;
           }
         });
-        krs.push(Object.freeze(form.syncTempKr));
+        krs.push(Object.freeze(form.tempKeyResult));
       });
       if (validForm === krs.length) {
         // Set this is not root objective
-        const tempObjective = Object.assign({}, this.$store.state.okrs.objective, { isRootObjective: false });
         this.$store.commit(MutationState.SET_KRS, krs);
-        this.$store.commit(MutationState.SET_OBJECTIVE, tempObjective);
         this.syncActive++;
         this.loading = false;
       } else {

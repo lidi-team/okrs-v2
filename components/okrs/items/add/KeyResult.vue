@@ -102,7 +102,7 @@ import KeyResultRepository from '@/repositories/KeyResultRepository';
   async mounted() {
     this.loading = true;
     this.units = await this.$store.dispatch(DispatchAction.GET_MEASURE);
-    const { data } = await KeyResultRepository.getKeyResultOfParent(this.$store.state.okrs.objective.parentId);
+    const { data } = await KeyResultRepository.getKeyResult(this.$store.state.okrs.objective.parentId);
     this.keyResultsParent = data;
     this.loading = false;
   },
@@ -233,6 +233,7 @@ export default class KeyResult extends Vue {
     (this.$refs.keyResult as Form).clearValidate();
     this.tempKeyResult.content = '';
     this.tempKeyResult.targetvalue = 1;
+    this.tempKeyResult.keyResultParentId = 0;
     this.tempKeyResult.linkPlans = '';
     this.tempKeyResult.linkResults = '';
     this.tempKeyResult.measureUnitId = 1;

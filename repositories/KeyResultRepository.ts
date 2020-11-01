@@ -2,11 +2,11 @@ import { AxiosResponse } from 'axios';
 import { baseUrl } from './BaseRepository';
 
 export enum enpoint {
-  keyResultOfParent = 'objective/parent-key_result',
+  keyResult = 'objective/key_result',
 }
 
 export default class ObjectiveRepository {
-  public static getKeyResultOfParent(id: Number): Promise<AxiosResponse<any>> {
-    return baseUrl.get(`${enpoint.keyResultOfParent}/${id}`);
+  public static getKeyResult(id: Number): Promise<AxiosResponse<any>> {
+    return baseUrl.get(`${enpoint.keyResult}/${id}`);
   }
 }
