@@ -9,8 +9,8 @@
         <common-pagination
           class="manage-employee__pagination"
           :total="meta.totalItems"
-          :page.sync="paramsUser.page"
-          :limit.sync="paramsUser.limit"
+          :page.sync="indexPage"
+          :limit.sync="paramsUser.size"
           @pagination="handlePagination($event)"
         />
       </div>
@@ -55,34 +55,25 @@ export default class ManageEmployee extends Vue {
   private roles: Array<object> = [];
   private linkInvite: string = '';
   private meta: object = {};
+  private indexPage: number = this.$route.query.page ? Number(this.$route.query.page) : 1;
   private paramsUser: ParamsUser = {
-    status: this.$route.query.tab === 'deactive' ? -1 : this.$route.query.tab === 'pending' ? 0 : 1,
-    text: this.$route.query.text ? String(this.$route.query.text) : '',
-    page: this.$route.query.page ? Number(this.$route.query.page) : 1,
-    limit: pageLimit,
-  };
-
-  private paramsTest: Object = {
-    paging: 0,
+    paging: this.indexPage - 1,
     size: pageLimit,
-    sortWith: 'email',
+    sortWith: 'id',
   };
 
-  private currentTab: string =
-    this.$route.query.tab === 'deactive' ? UserStatus.Inactive : this.$route.query.tab === 'pending' ? UserStatus.Pending : UserStatus.Active;
+  private currentTab: string = this.$route.query.tab === 'all' ? UserStatus.All : UserStatus.Staff;
 
   @Watch('$route.query')
   private async getListUsers() {
-    // this.paramsUser = {
-    //   status: this.$route.query.tab === 'deactive' ? -1 : this.$route.query.tab === 'pending' ? 0 : 1,
-    //   text: this.$route.query.text ? String(this.$route.query.text) : '',
-    //   page: this.$route.query.page ? Number(this.$route.query.page) : 1,
-    //   limit: pageLimit,
-    // };
-    this.currentTab =
-      this.$route.query.tab === 'deactive' ? UserStatus.Inactive : this.$route.query.tab === 'pending' ? UserStatus.Pending : UserStatus.Active;
+    this.paramsUser = {
+      paging: this.indexPage - 1,
+      size: pageLimit,
+      sortWith: 'id',
+    };
+    console.log('this.$route.query.page: ', this.$route.query.page);
     try {
-      const { data } = await EmployeeRepository.get(this.paramsTest);
+      const { data } = await EmployeeRepository.get(this.paramsUser);
       console.log('data: ', data);
 
       this.tableData = data;
@@ -108,13 +99,13 @@ export default class ManageEmployee extends Vue {
   }
 
   private handleSearch(textSearch: string) {
-    this.paramsUser.page = 1;
-    const tab = this.$route.query.tab === undefined ? 'active' : this.$route.query.tab;
+    this.paramsUser.paging = 1;
+    const tab = this.$route.query.tab === undefined ? 'staff' : this.$route.query.tab;
     this.$router.push(`?tab=${tab}&text=${textSearch}`);
   }
 
   private handlePagination(pagination: any) {
-    const tab = this.$route.query.tab === undefined ? 'active' : this.$route.query.tab;
+    const tab = this.$route.query.tab === undefined ? 'staff' : this.$route.query.tab;
     this.$route.query.text === undefined
       ? this.$router.push(`?tab=${tab}&page=${pagination.page}`)
       : this.$router.push(`?tab=${tab}&text=${this.$route.query.text}&page=${pagination.page}`);
@@ -124,19 +115,22 @@ export default class ManageEmployee extends Vue {
 
   private handleClick(currentTab: string) {
     this.paramsUser.text = '';
-    this.paramsUser.page = 1;
-    this.paramsUser.status = currentTab === UserStatus.Active ? 1 : currentTab === UserStatus.Pending ? 0 : -1;
-    this.$router.push(`?tab=${currentTab === UserStatus.Active ? 'active' : currentTab === UserStatus.Pending ? 'pending' : 'deactive'}`);
+    this.paramsUser.paging = 1;
+    // this.paramsUser.status = currentTab === UserStatus.Active ? 1 : currentTab === UserStatus.Pending ? 0 : -1;
+    // this.$router.push(`?tab=${currentTab === UserStatus.Active ? 'active' : currentTab === UserStatus.Pending ? 'pending' : 'deactive'}`);
+    // this.paramsUser.status = currentTab === UserStatus.Active ? 1 : currentTab === UserStatus.Pending ? 0 : -1;
+    this.$router.push(`?tab=${currentTab === UserStatus.All ? 'all' : 'staff'}`);
   }
 
   private get currentTabComponent() {
-    if (this.$route.query.tab === 'deactive') {
-      return EmployeeDeactive;
-    } else if (this.$route.query.tab === 'pending') {
-      return EmployeePending;
-    } else {
-      return EmployeeActive;
-    }
+    // if (this.$route.query.tab === 'deactive') {
+    //   return EmployeeDeactive;
+    // } else if (this.$route.query.tab === 'pending') {
+    //   return EmployeePending;
+    // } else {
+
+    // }
+    return EmployeeActive;
   }
 }
 </script>

@@ -5,6 +5,7 @@ import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export default class EmployeeRepository {
   public static get(params: Object) {
+    console.log('param: ', params);
     return baseUrl.get(`${ResourcesEnpoint.Users}/listStaffPaging`, { params });
   }
 

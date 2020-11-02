@@ -37,9 +37,8 @@ export enum elComponent {
 }
 
 export enum UserStatus {
-  Active = 'Hoạt động',
-  Pending = 'Đang chờ',
-  Inactive = 'Không hoạt động',
+  Staff = 'Nhận viên',
+  All = 'Tất cả',
 }
 
 export enum TabCfr {

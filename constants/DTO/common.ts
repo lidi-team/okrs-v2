@@ -1,6 +1,6 @@
 export interface ParamsQuery {
-  page?: number;
-  limit?: number;
+  paging?: number;
+  size?: number;
   text?: string;
 }
 
@@ -11,7 +11,7 @@ export interface HistoryCfrsParams extends ParamsQuery {
 }
 
 export interface ParamsUser extends ParamsQuery {
-  status?: number;
+  sortWith: string;
 }
 
 export interface AdminParams extends ParamsQuery {
