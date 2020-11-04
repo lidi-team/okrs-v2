@@ -1,5 +1,5 @@
 <template>
-  <el-button class="el-button el-button--small el-button--purple" icon="el-icon-plus" @click="showDialog">Tạo OKRs</el-button>
+  <el-button class="el-button el-button--small el-button--purple" icon="el-icon-plus" @click="showDialog">Tạo OKRs dự án</el-button>
 </template>
 
 <script>

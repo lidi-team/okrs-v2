@@ -1,6 +1,11 @@
 <template>
   <div>
     <el-form ref="tempObjective" :model="tempObjective" :rules="rules" class="create-objective" label-position="top">
+      <el-form-item prop="parentId" label="Mục tiêu cấp trên" class="custom-label" label-width="120px">
+        <el-select v-model="tempObjective.projectId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn dự án" :loading="loading">
+          <el-option v-for="objective in listObjectiveParent" :key="objective.id" :label="objective.name" :value="objective.id" />
+        </el-select>
+      </el-form-item>
       <el-form-item prop="title" class="custom-label" label-width="120px">
         <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="sizeConfig"></el-input>
       </el-form-item>
@@ -10,7 +15,7 @@
           filterable
           no-match-text="Không tìm thấy kết quả"
           placeholder="Chọn mục tiêu cấp trên"
-          :loading="loadingObjective"
+          :loading="loading"
         >
           <el-option v-for="objective in listObjectiveParent" :key="objective.id" :label="objective.name" :value="objective.id" />
         </el-select>
@@ -37,6 +42,7 @@ import { DispatchAction, MutationState, GetterState } from '@/constants/app.vuex
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import ObjectiveRepository from '@/repositories/ObjectiveRepository';
+import ProjectRepository from '@/repositories/ProjectRepository';
 
 @Component<CreateObjective>({
   name: 'CreateObjective',
@@ -46,11 +52,12 @@ import ObjectiveRepository from '@/repositories/ObjectiveRepository';
       objectiveParent: GetterState.OKRS_OBJECTIVE_PARENT,
     }),
   },
-  async mounted() {
-    const { data } = await ObjectiveRepository.getObjectivesParent(this.objectiveParent);
-    this.listObjectiveParent = data.objectives;
-    this.loadingObjective = false;
-  },
+  // async mounted() {
+  //   const { data } = await ObjectiveRepository.getObjectivesParent(this.objectiveParent);
+  //   this.listObjectiveParent = data.objectives;
+  //   const { data } = await ProjectRepository.getProjectByUser();
+  //   this.loading = false;
+  // },
 })
 export default class CreateObjective extends Vue {
   @PropSync('active', Number) private syncActive!: number;
@@ -61,7 +68,7 @@ export default class CreateObjective extends Vue {
     parentObjectiveId: [{ type: 'number', required: true, message: 'Vui lòng chọn OKRs cấp trên', trigger: 'blur' }],
   };
 
-  private loadingObjective: boolean = true;
+  private loading: boolean = true;
 
   public tempObjective: any = {
     title: '',
