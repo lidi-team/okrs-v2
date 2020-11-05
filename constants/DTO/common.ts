@@ -1,6 +1,6 @@
 export interface ParamsQuery {
-  paging?: number;
-  size?: number;
+  page?: number;
+  limit?: number;
   text?: string;
 }
 

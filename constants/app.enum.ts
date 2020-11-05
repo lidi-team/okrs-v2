@@ -37,7 +37,7 @@ export enum elComponent {
 }
 
 export enum UserStatus {
-  Staff = 'Nhận viên',
+  Staff = 'Nhân viên',
   All = 'Tất cả',
 }
 

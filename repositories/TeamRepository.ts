@@ -4,7 +4,7 @@ import { ResourcesEnpoint } from '@/constants/app.enum';
 import { TeamDTO } from '@/constants/app.interface';
 import { baseUrlV1, baseUrl } from './BaseRepository';
 
-export default class TeamRepository {
+export default class DepartmentRepository {
   public static get(params: AdminParams): Promise<AxiosResponse<any>> {
     return baseUrlV1.get(`${ResourcesEnpoint.Team}`, { params });
   }
@@ -22,6 +22,6 @@ export default class TeamRepository {
   }
 
   public static getMetaData() {
-    return baseUrlV1.get(`${ResourcesEnpoint.MetaData}/teams`);
+    return baseUrl.get(`${ResourcesEnpoint.MetaData}/departments`);
   }
 }

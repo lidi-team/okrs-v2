@@ -9,8 +9,8 @@
         <common-pagination
           class="manage-employee__pagination"
           :total="meta.totalItems"
-          :page.sync="indexPage"
-          :limit.sync="paramsUser.size"
+          :page.sync="paramsUser.page"
+          :limit.sync="paramsUser.limit"
           @pagination="handlePagination($event)"
         />
       </div>
@@ -57,27 +57,21 @@ export default class ManageEmployee extends Vue {
   private meta: object = {};
   private indexPage: number = this.$route.query.page ? Number(this.$route.query.page) : 1;
   private paramsUser: ParamsUser = {
-    paging: this.indexPage - 1,
-    size: pageLimit,
+    page: this.indexPage,
+    limit: pageLimit,
     sortWith: 'id',
   };
 
-  private currentTab: string = this.$route.query.tab === 'all' ? UserStatus.All : UserStatus.Staff;
+  private currentTab: UserStatus = this.$route.query.tab === 'all' ? UserStatus.All : UserStatus.Staff;
 
   @Watch('$route.query')
   private async getListUsers() {
-    this.paramsUser = {
-      paging: this.indexPage - 1,
-      size: pageLimit,
-      sortWith: 'id',
-    };
-    console.log('this.$route.query.page: ', this.$route.query.page);
-    try {
-      const { data } = await EmployeeRepository.get(this.paramsUser);
-      console.log('data: ', data);
+    console.log(this.teams);
 
-      this.tableData = data;
-      // this.meta = data.data.meta;
+    try {
+      const { data } = await EmployeeRepository.get(this.paramsUser, this.currentTab);
+      this.tableData = data.data;
+      this.meta = data.meta;
     } catch (error) {
       console.log(error);
     }
@@ -85,21 +79,29 @@ export default class ManageEmployee extends Vue {
 
   private async getDataCommons() {
     try {
-      const [teams, jobs, roles, link] = await Promise.all([
+      const [
+        teams,
+        // jobs, roles, link
+      ] = await Promise.all([
         TeamRepository.getMetaData(),
-        JobRepository.getMetaData(),
-        RoleRepository.get(),
-        AuthRepository.generateLinkInivte(),
+        // JobRepository.getMetaData(),
+        // RoleRepository.get(),
+        // AuthRepository.generateLinkInivte(),
       ]);
-      this.teams = teams.data.data;
-      this.jobs = jobs.data.data;
-      this.roles = roles.data.data;
-      this.linkInvite = link.data.data.url;
+      console.log(teams);
+
+      this.teams = teams.data;
+      // this.jobs = jobs.data.data;
+      // this.roles = roles.data.data;
+      // this.linkInvite = link.data.data.url;
+      this.jobs = [];
+      this.roles = [];
+      this.linkInvite = 'link.data.data.url';
     } catch (error) {}
   }
 
   private handleSearch(textSearch: string) {
-    this.paramsUser.paging = 1;
+    this.paramsUser.page = 1;
     const tab = this.$route.query.tab === undefined ? 'staff' : this.$route.query.tab;
     this.$router.push(`?tab=${tab}&text=${textSearch}`);
   }
@@ -115,11 +117,11 @@ export default class ManageEmployee extends Vue {
 
   private handleClick(currentTab: string) {
     this.paramsUser.text = '';
-    this.paramsUser.paging = 1;
+    this.paramsUser.page = 1;
     // this.paramsUser.status = currentTab === UserStatus.Active ? 1 : currentTab === UserStatus.Pending ? 0 : -1;
     // this.$router.push(`?tab=${currentTab === UserStatus.Active ? 'active' : currentTab === UserStatus.Pending ? 'pending' : 'deactive'}`);
     // this.paramsUser.status = currentTab === UserStatus.Active ? 1 : currentTab === UserStatus.Pending ? 0 : -1;
-    this.$router.push(`?tab=${currentTab === UserStatus.All ? 'all' : 'staff'}`);
+    this.$router.push(`?tab=${currentTab === UserStatus.All ? UserStatus.All : UserStatus.Staff}`);
   }
 
   private get currentTabComponent() {
