@@ -66,8 +66,6 @@ export default class ManageEmployee extends Vue {
 
   @Watch('$route.query')
   private async getListUsers() {
-    console.log(this.teams);
-
     try {
       const { data } = await EmployeeRepository.get(this.paramsUser, this.currentTab);
       this.tableData = data.data;
@@ -126,7 +124,7 @@ export default class ManageEmployee extends Vue {
 
   private get currentTabComponent() {
     // if (this.$route.query.tab === 'deactive') {
-    //   return EmployeeDeactive;
+    // return EmployeeDeactive;
     // } else if (this.$route.query.tab === 'pending') {
     //   return EmployeePending;
     // } else {

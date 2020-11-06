@@ -2,20 +2,25 @@
   <div>
     <el-table v-loading="loadingTable" empty-text="Không có dữ liệu" class="employee-active" :data="tableData" style="width: 100%">
       <el-table-column prop="fullName" label="Tên đầy đủ" min-width="150"></el-table-column>
-      <el-table-column prop="email" label="Email" min-width="150"></el-table-column>
+      <el-table-column prop="email" label="Email" min-width="180"></el-table-column>
       <el-table-column label="Phòng ban" min-width="150">
         <template slot-scope="{ row }">
           <span>{{ row.department.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Giới tính" min-width="150">
+      <el-table-column prop="role" label="Vai trò" min-width="150">
+        <template slot-scope="{ row }">
+          <span>{{ displayRoleName(row.roles) }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Giới tính">
         <template slot-scope="{ row }">
           <span>{{ row.gender == 0 ? 'Nữ' : 'Nam' }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="role" label="Vai trò">
+      <el-table-column label="Trạng thái">
         <template slot-scope="{ row }">
-          <span>{{ displayRoleName(row.roles) }}</span>
+          <span>{{ row.isActive == 1 ? 'hoạt động' : 'tạm khóa' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
@@ -244,33 +249,33 @@ export default class EmployeeActive extends Vue {
     },
   };
 
-  // private deactiveUser(row) {
-  //   this.tempUpdateUser = {
-  //     id: row.id,
-  //     fullName: row.fullName,
-  //     email: row.email,
-  //     roleId: row.role.id,
-  //     teamId: row.team.id,
-  //     jobPositionId: row.jobPosition.id,
-  //     isLeader: row.isLeader,
-  //     isActive: false,
-  //   };
-  //   this.$confirm('Bạn có chắc chắn muốn deactive user này?', {
-  //     confirmButtonText: 'Đồng ý',
-  //     cancelButtonText: 'Hủy bỏ',
-  //     type: 'warning',
-  //   }).then(async () => {
-  //     try {
-  //       await EmployeeRepository.update(this.tempUpdateUser).then((res: any) => {
-  //         this.$notify.success({
-  //           ...notificationConfig,
-  //           message: 'Cập nhật thành viên thành công',
-  //         });
-  //       });
-  //       this.getListUsers();
-  //     } catch (error) {}
-  //   });
-  // }
+  private deactiveUser(row) {
+    this.tempUpdateUser = {
+      id: row.id,
+      fullName: row.fullName,
+      email: row.email,
+      roles: row.roles,
+      departmentId: row.department.id,
+      gender: row.gender,
+      dob: row.dob ? formatDateToDD(row.dob) : '',
+      isActive: false,
+    };
+    this.$confirm('Bạn có chắc chắn muốn deactive user này?', {
+      confirmButtonText: 'Đồng ý',
+      cancelButtonText: 'Hủy bỏ',
+      type: 'warning',
+    }).then(async () => {
+      try {
+        await EmployeeRepository.update(this.tempUpdateUser).then((res: any) => {
+          this.$notify.success({
+            ...notificationConfig,
+            message: 'Cập nhật thành viên thành công',
+          });
+        });
+        this.getListUsers();
+      } catch (error) {}
+    });
+  }
 
   private displayRoleName(roles: any) {
     // if (user.isLeader && user.role.name !== 'ADMIN' && user.role.name !== 'HR') {

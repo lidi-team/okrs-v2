@@ -4,19 +4,19 @@ import { ParamsUser } from '@/constants/DTO/common';
 import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export default class EmployeeRepository {
-  public static get(params: any, currentTab: UserStatus) {
-    params.page = params.page - 1;
+  public static get(params: ParamsUser, currentTab: UserStatus) {
+    const paramsResize: ParamsUser = Object.assign({}, params);
+    paramsResize.page = paramsResize.page ? --paramsResize.page : 0;
     switch (currentTab) {
       case UserStatus.Staff:
-        return baseUrl.get(`${ResourcesEnpoint.Users}/list-staff-paging`, { params });
+        return baseUrl.get(`${ResourcesEnpoint.Users}/list-staff-paging`, { params: paramsResize });
       default:
-        return baseUrl.get(`${ResourcesEnpoint.Users}/all-paging`, { params });
+        return baseUrl.get(`${ResourcesEnpoint.Users}/all-paging`, { params: paramsResize });
     }
   }
 
   public static update(payload: EmployeeDTO) {
-    // return baseUrl.put(`${ResourcesEnpoint.Users}/${payload.id}`, payload);
-    return baseUrl.put(`${ResourcesEnpoint.Users}/update-infor`, payload);
+    return baseUrl.put(`${ResourcesEnpoint.Users}/${payload.id}`, payload);
   }
 
   public static approveAll(payload: Array<number>) {
