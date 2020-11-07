@@ -3,7 +3,7 @@
     <el-popover placement="top" trigger="click">
       <div class="okrs-tooltip__popover">
         <p @click="viewDetailOkrs">Xem chi tiết</p>
-        <div v-if="editable">
+        <div v-if="isManage">
           <p @click="openUpdateDialog(1)">Cập nhật</p>
           <p v-if="!isRootOkrs" @click="openUpdateDialog(2)">Liên kết</p>
           <p style="color: #e53e3e;" @click="handleDeleteOKrs">Xóa</p>
@@ -30,7 +30,7 @@ export default class OkrsActionTooltip extends Vue {
   @PropSync('okrsId', { type: Number, required: true }) private syncOkrsId!: number;
   @Prop(Object) private tempOkrs!: object;
   @Prop(Function) private reloadData!: Function;
-  @Prop(Boolean) private editable!: boolean;
+  @Prop(Boolean) private isManage!: boolean;
   @Prop({ required: false, type: Boolean }) private isRootOkrs!: boolean;
 
   private viewDetailOkrs() {

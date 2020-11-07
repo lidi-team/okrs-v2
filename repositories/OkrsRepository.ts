@@ -1,14 +1,21 @@
 import { AxiosResponse } from 'axios';
-import { baseUrlV1 } from './BaseRepository';
+import { baseUrlV1, baseUrl } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
 import { PayloadOkrs } from '@/constants/app.interface';
 
+export const enpoint = {
+  listOkrByCycleId: 'objective/project-list',
+};
 export default class OkrsRepository {
+  public static getListOkrsByCycleId(cycleId: Number): Promise<AxiosResponse<any>> {
+    return baseUrl.get(`${enpoint.listOkrByCycleId}?cycleId=${cycleId}`);
+  }
   /**
    * When the type = 1 --> All Root Okrs
    * When the type = 2 --> All leader Okrs
    * When the type = 3 --> All Okrs, except root okrs
    */
+
   public static getListOkrs(cycleId: number, type: number): Promise<AxiosResponse<any>> {
     return baseUrlV1.get(`${ResourcesEnpoint.Objective}/list_okrs?cycleId=${cycleId}&type=${type}`);
   }

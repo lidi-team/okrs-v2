@@ -1,6 +1,6 @@
 <template>
   <div v-loading="loadingComponent" class="okrs-page">
-    <el-row class="okrs-page__top" type="flex" justify="space-between">
+    <!-- <el-row class="okrs-page__top" type="flex" justify="space-between">
       <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
         <common-top-search-cycle @changeCycleData="changeCycleData($event)" />
       </el-col>
@@ -20,14 +20,14 @@
           <el-button slot="reference" class="el-button el-button--purple el-button-medium" icon="el-icon-plus">Tạo OKRs</el-button>
         </el-popover>
       </el-col>
-    </el-row>
+    </el-row>-->
     <div v-loading="loadingForm">
       <item-okrs
-        v-for="(item, index) in itemOKRsData"
-        :key="item.textHeader"
-        :index-item="index"
-        :text-header="item.textHeader"
-        :table-data="item.tableData"
+        v-for="item in projects"
+        :key="item.id"
+        :title="item.name"
+        :table-data="item.objectives"
+        :isManage="item.pm"
         :reload-data="getDashBoardOkrs"
         @openDrawer="openDrawer($event)"
       />
@@ -41,7 +41,7 @@
       />
     </transition>
     <transition name="el-zoom-in-center">
-      <okrs-dialog-detail-krs v-if="visibleDetailKrs" :list-krs="listKrs" :visible-detail-krs.sync="visibleDetailKrs" />
+      <detail-keyresult v-if="visibleDetailKrs" :list-krs="listKrs" :visible-detail-krs.sync="visibleDetailKrs" />
     </transition>
   </div>
 </template>
@@ -51,10 +51,14 @@ import { MutationState, DispatchAction } from '@/constants/app.vuex';
 import OkrsRepository from '@/repositories/OkrsRepository';
 // components
 import CommonTopSearchCycle from '@/components/common/TopSearchCycle.vue';
+import ItemOkrs from '@/components/okrs/ItemOkrs.vue';
+import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
 @Component<OKRsPage>({
   name: 'OKRsPage',
   components: {
     CommonTopSearchCycle,
+    ItemOkrs,
+    DetailKeyresult,
   },
   head() {
     return {
@@ -64,25 +68,10 @@ import CommonTopSearchCycle from '@/components/common/TopSearchCycle.vue';
   async created() {
     await this.getDashBoardOkrs();
   },
-  mounted() {
-    this.loadingComponent = true;
-    this.$store.dispatch(DispatchAction.SET_STAFF_OKRS, { cycleId: this.$store.state.cycle.cycle.id, type: 3 });
-    setTimeout(() => {
-      this.loadingComponent = false;
-    }, 500);
-    setTimeout(() => {
-      this.$store.dispatch(DispatchAction.GET_MEASURE);
-    }, 2000);
-  },
-  beforeDestroy() {
-    this.$store.commit(MutationState.SET_TEMP_CYCLE, this.$store.state.cycle.cycle.id);
-    this.$store.commit(MutationState.SET_TEMP_USER, null);
-    this.$store.dispatch(DispatchAction.CLEAR_STAFF_OKRS);
-  },
 })
 export default class OKRsPage extends Vue {
-  private isCompanyOkrs: boolean = false;
   private loadingForm: boolean = false;
+  private isCompanyOkrs: boolean = false;
   private loadingComponent: boolean = false;
   private visibleCreateOkrsDialog = false;
   private visible: boolean = false;
@@ -109,11 +98,7 @@ export default class OKRsPage extends Vue {
     this.visibleCreateOkrsDialog = true;
   }
 
-  private itemOKRsData: any[] = [
-    { textHeader: 'OKRs toàn công ty', tableData: null },
-    { textHeader: 'OKRs nhóm', tableData: null },
-    { textHeader: 'OKRs cá nhân', tableData: null },
-  ];
+  private projects: any[] = [];
 
   @Watch('$store.state.user.tempUser.id', { immediate: false })
   private async getDashboarUser(userId: number) {
@@ -123,24 +108,27 @@ export default class OKRsPage extends Vue {
   private async getDashBoardOkrs(
     userId: number = this.$store.state.user.tempUser ? this.$store.state.user.tempUser.id : this.$store.state.auth.user.id,
   ) {
-    this.loadingForm = true;
+    // this.loadingForm = true;
     try {
-      const cycleId = this.$store.state.cycle.cycleTemp ? this.$store.state.cycle.cycleTemp : this.$store.state.cycle.cycle.id;
-      const { data } = await OkrsRepository.getOkrsDashboard(cycleId, userId);
-      this.itemOKRsData[0].tableData = Object.freeze(data.data.root);
-      if (this.$store.state.user.tempUser) {
-        if (this.$store.state.user.tempUser.role.name === 'ADMIN') {
-          this.itemOKRsData[1].tableData = null;
-        } else {
-          this.itemOKRsData[1].tableData = Object.freeze(data.data.team);
-        }
-      } else if (this.$store.state.auth.user.role.name !== 'ADMIN') {
-        this.itemOKRsData[1].tableData = Object.freeze(data.data.team);
-      }
-      this.itemOKRsData[2].tableData = Object.freeze(data.data.personal);
-      setTimeout(() => {
-        this.loadingForm = false;
-      }, 500);
+      // const cycleId = this.$store.state.cycle.cycleTemp ? this.$store.state.cycle.cycleTemp : this.$store.state.cycle.cycle.id;
+      // const { data } = await OkrsRepository.getOkrsDashboard(cycleId, userId);
+      const { data } = await OkrsRepository.getListOkrsByCycleId(3);
+      console.log(data);
+      this.projects = Object.freeze(data);
+      this.loadingForm = false;
+      // if (this.$store.state.user.tempUser) {
+      //   if (this.$store.state.user.tempUser.role.name === 'ADMIN') {
+      //     this.itemOKRsData[1].tableData = null;
+      //   } else {
+      //     this.itemOKRsData[1].tableData = Object.freeze(data.data.team);
+      //   }
+      // } else if (this.$store.state.auth.user.role.name !== 'ADMIN') {
+      //   this.itemOKRsData[1].tableData = Object.freeze(data.data.team);
+      // }
+      // this.itemOKRsData[2].tableData = Object.freeze(data.data.personal);
+      // setTimeout(() => {
+      //   this.loadingForm = false;
+      // }, 500);
     } catch (error) {
       setTimeout(() => {
         this.loadingForm = false;
