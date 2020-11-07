@@ -6,10 +6,16 @@
 import { MutationState } from '@/constants/app.vuex';
 
 export default {
+  props: {
+    listObjectiveParent: {
+      type: Array,
+      default: () => [],
+    },
+  },
   methods: {
     showDialog() {
       this.$store.commit(MutationState.SET_IS_DIALOG_OKRS, true);
-      this.$store.commit(MutationState.SET_OBJECTIVE_PARENT, Number(this.$route.query.objectiveId));
+      this.$store.commit(MutationState.SET_LIST_OBJECTIVE_PARENT, this.listObjectiveParent);
     },
   },
 };

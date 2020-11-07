@@ -9,7 +9,7 @@
       <el-table-column label="Tiến độ" width="150">
         <template v-slot="{ row }">
           <div class="krs-detail__progress">
-            <el-progress style="width: 80%;" :percentage="getProgressKrs(row)" :color="customColors" :text-inside="true" :stroke-width="20" />
+            <el-progress style="width: 80%;" :percentage="row.process" :color="customColors" :text-inside="true" :stroke-width="20" />
           </div>
         </template>
       </el-table-column>
@@ -43,9 +43,6 @@ export default class DetailKrsDialog extends Vue {
   }
 
   private customColors = customColors;
-  private getProgressKrs(krs: any) {
-    return Math.floor(krs.valueObtained / krs.targetValue) * 100;
-  }
 }
 </script>
 <style lang="scss">

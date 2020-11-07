@@ -1,22 +1,11 @@
 <template>
   <div>
     <el-form ref="tempObjective" :model="tempObjective" :rules="rules" class="create-objective" label-position="top">
-      <el-form-item prop="parentId" label="Mục tiêu cấp trên" class="custom-label" label-width="120px">
-        <el-select v-model="tempObjective.projectId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn dự án" :loading="loading">
-          <el-option v-for="objective in listObjectiveParent" :key="objective.id" :label="objective.name" :value="objective.id" />
-        </el-select>
-      </el-form-item>
       <el-form-item prop="title" class="custom-label" label-width="120px">
         <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="sizeConfig"></el-input>
       </el-form-item>
       <el-form-item prop="parentId" label="Mục tiêu cấp trên" class="custom-label" label-width="120px">
-        <el-select
-          v-model="tempObjective.parentId"
-          filterable
-          no-match-text="Không tìm thấy kết quả"
-          placeholder="Chọn mục tiêu cấp trên"
-          :loading="loading"
-        >
+        <el-select v-model="tempObjective.parentId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn mục tiêu cấp trên">
           <el-option v-for="objective in listObjectiveParent" :key="objective.id" :label="objective.name" :value="objective.id" />
         </el-select>
       </el-form-item>
@@ -50,14 +39,9 @@ import ProjectRepository from '@/repositories/ProjectRepository';
     ...mapGetters({
       cycleCurrent: GetterState.CYCLE_CURRENT,
       objectiveParent: GetterState.OKRS_OBJECTIVE_PARENT,
+      listObjectiveParent: GetterState.OKRS_LIST_OBJECTIVE_PARENT,
     }),
   },
-  // async mounted() {
-  //   const { data } = await ObjectiveRepository.getObjectivesParent(this.objectiveParent);
-  //   this.listObjectiveParent = data.objectives;
-  //   const { data } = await ProjectRepository.getProjectByUser();
-  //   this.loading = false;
-  // },
 })
 export default class CreateObjective extends Vue {
   @PropSync('active', Number) private syncActive!: number;
@@ -68,15 +52,12 @@ export default class CreateObjective extends Vue {
     parentObjectiveId: [{ type: 'number', required: true, message: 'Vui lòng chọn OKRs cấp trên', trigger: 'blur' }],
   };
 
-  private loading: boolean = true;
-
   public tempObjective: any = {
     title: '',
     parentId: null,
     cycle: this.$store.state.cycle.cycleCurrent.id,
   };
 
-  private listObjectiveParent: any[] = [];
   private sizeConfig = { minRows: 2, maxRows: 2 };
   private listDataParams: ParamsQuery = {
     page: 1,

@@ -15,6 +15,7 @@ export enum GetterState {
   CYCLE_CURRENT = 'cycle/cycleCurrent',
   OKRS_IS_DIALOG_OKRS = 'okrs/isDialogOKRs',
   OKRS_OBJECTIVE_PARENT = 'okrs/objectiveParent',
+  OKRS_LIST_OBJECTIVE_PARENT = 'okrs/listObjectiveParent',
 }
 
 export enum MutationState {
@@ -31,4 +32,5 @@ export enum MutationState {
   SET_ALL_CYCLES = 'cycle/setAllCycles',
   SET_IS_DIALOG_OKRS = 'okrs/setIsDialogOKRs',
   SET_OBJECTIVE_PARENT = 'okrs/setObjectiveParent',
+  SET_LIST_OBJECTIVE_PARENT = 'okrs/setListObjectiveParent',
 }

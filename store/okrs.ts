@@ -4,15 +4,17 @@ import OkrsRepository from '@/repositories/OkrsRepository';
 
 export enum OkrsMutation {
   SET_ISDIALOGOKRS = 'setIsDialogOKRs',
-  SET_OBJECTIVE_PARENT = 'setObjectiveParent',
   SET_OBJECTIVE = 'setObjective',
   SET_KEY_RESULTS = 'setKeyResults',
   CLEAR_KRS = 'clearKrs',
   SET_STAFF_OKRS = 'setStaffOkrs',
+  SET_OBJECTIVE_PARENT = 'setObjectiveParent',
+  SET_LIST_OBJECTIVE_PARENT = 'setListObjectiveParent',
 }
 
 export interface OkrsState {
   isDialogOKRs: Boolean;
+  listObjectiveParent: any[];
   objectiveParent: Number;
   objective: ObjectiveDTO;
   keyResults: KeyResultDTO[] | null;
@@ -21,6 +23,7 @@ export interface OkrsState {
 
 export const state = (): OkrsState => ({
   isDialogOKRs: false,
+  listObjectiveParent: [],
   objectiveParent: 0,
   objective: {
     id: 0,
@@ -41,6 +44,7 @@ export type RootState = ReturnType<typeof state>;
 
 export const getters: GetterTree<RootState, RootState> = {
   isDialogOKRs: (state) => state.isDialogOKRs,
+  listObjectiveParent: (state) => state.listObjectiveParent,
   objectiveParent: (state) => state.objectiveParent,
   objective: (state) => state.objective,
   keyResults: (state) => state.keyResults,
@@ -50,6 +54,7 @@ export const getters: GetterTree<RootState, RootState> = {
 export const mutations: MutationTree<RootState> = {
   [OkrsMutation.SET_ISDIALOGOKRS]: (state, data: Boolean) => (state.isDialogOKRs = data),
   [OkrsMutation.SET_OBJECTIVE_PARENT]: (state, data: Number) => (state.objectiveParent = data),
+  [OkrsMutation.SET_LIST_OBJECTIVE_PARENT]: (state, data: any[]) => (state.listObjectiveParent = data),
   [OkrsMutation.SET_OBJECTIVE]: (state, data: ObjectiveDTO) => (state.objective = data),
   [OkrsMutation.SET_KEY_RESULTS]: (state, data: KeyResultDTO[]) => (state.keyResults = [...data]),
   [OkrsMutation.CLEAR_KRS]: (state) => (state.keyResults = []),

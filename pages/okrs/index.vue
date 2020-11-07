@@ -25,13 +25,17 @@
       <item-okrs
         v-for="item in projects"
         :key="item.id"
+        :project-id="item.id"
         :title="item.name"
-        :table-data="item.objectives"
-        :isManage="item.pm"
+        :objectives="item.objectives"
+        :is-manage="item.pm"
         :reload-data="getDashBoardOkrs"
         @openDrawer="openDrawer($event)"
       />
     </div>
+    <transition name="el-fade-in">
+      <add-okrs />
+    </transition>
     <transition name="el-fade-in">
       <create-okrs-dialog
         v-if="visibleCreateOkrsDialog"
@@ -53,12 +57,15 @@ import OkrsRepository from '@/repositories/OkrsRepository';
 import CommonTopSearchCycle from '@/components/common/TopSearchCycle.vue';
 import ItemOkrs from '@/components/okrs/ItemOkrs.vue';
 import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
+import AddOkrs from '@/components/okrs/items/add/index.vue';
+
 @Component<OKRsPage>({
   name: 'OKRsPage',
   components: {
     CommonTopSearchCycle,
     ItemOkrs,
     DetailKeyresult,
+    AddOkrs,
   },
   head() {
     return {

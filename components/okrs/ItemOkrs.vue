@@ -1,7 +1,12 @@
 <template>
-  <div v-if="tableData" class="item-okrs">
-    <p class="item__header">{{ title }}</p>
-    <el-table :data="tableData" header-row-class-name="item__table-header" style="width: 100%;">
+  <div v-if="objectives" class="item-okrs">
+    <div class="-display-flex -justify-content-between">
+      <h2 class="item__header">{{ title }}</h2>
+      <div class="-display-flex -align-items-center">
+        <button-create-okr v-if="isManage" :list-objective-parent="listObjectiveParent()" />
+      </div>
+    </div>
+    <el-table :data="objectives" header-row-class-name="item__table-header" style="width: 100%;">
       <el-table-column type="expand" width="20">
         <template v-slot="{ row }">
           <div v-for="objective in row.childObjectives" :key="objective.id" class="item__expand">
@@ -58,7 +63,7 @@
             <action-tooltip
               :reload-data="reloadData"
               :okrs-id.sync="row.id"
-              :isManage="isManage"
+              :is-manage="isManage"
               :temp-okrs="row"
               @updateTempOkrs="updateTempOkrs($event)"
             />
@@ -75,32 +80,45 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { customColors } from './okrs.constant';
 import IconEllipse from '@/assets/images/okrs/ellipse.svg';
 import { DialogTooltipAction } from '@/constants/app.interface';
+import { SelectDropdownDTO } from '@/constants/DTO/common';
 import ActionTooltip from '@/components/okrs/tooltip/ActionTooltip.vue';
+import ButtonCreateOkr from '@/components/okrs/items/button/index.vue';
 @Component<OKRsItem>({
   name: 'OKRsItem',
   components: {
     IconEllipse,
     ActionTooltip,
+    ButtonCreateOkr,
   },
 })
 export default class OKRsItem extends Vue {
   @Prop(String) private title!: string;
-  @Prop(Array) private tableData!: object[];
+  @Prop(Array) private objectives!: object[];
   @Prop(Function) private reloadData!: Function;
   @Prop(Boolean) private isManage!: Boolean;
+  @Prop(Number) private projectId!: Number;
 
   private tempOkrs: any = {};
   private changeValue: number = 0;
-  private visibleUpdateDialog: boolean = false;
-  private visibleAlignDialog: boolean = false;
+  private visibleUpdateDialog: Boolean = false;
+  private visibleAlignDialog: Boolean = false;
   private customColors = customColors;
 
   private emitDrawer(keyResults: any) {
     this.$emit('openDrawer', keyResults);
   }
 
-  private isUpProgress(progress: number): string {
+  private isUpProgress(progress: Number): string {
     return progress > 0 ? 'happy' : 'sad';
+  }
+
+  private listObjectiveParent() {
+    return this.objectives.map((item: any) => {
+      return {
+        id: item.id,
+        name: item.title,
+      };
+    });
   }
 
   private updateTempOkrs({ dialogType, okrs }: DialogTooltipAction) {
@@ -140,8 +158,8 @@ export default class OKRsItem extends Vue {
     border-radius: $border-radius-base;
     @include drop-shadow;
     &__header {
-      font-size: $text-2xl;
-      padding: $unit-5 0 $unit-5 $unit-5;
+      font-size: $text-xl;
+      padding: $unit-5 0 $unit-2 $unit-5;
       @include box-shadow;
       border-radius: $border-radius-base $border-radius-base 0px 0px;
     }
