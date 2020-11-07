@@ -1,0 +1,121 @@
+<template>
+  <div class="app-container">
+    <el-tabs v-model="tabActive" type="border-card" @tab-click="handleClick">
+      <el-tab-pane label="Tải lên file" name="excel">
+        <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
+        <el-button class="el-button--purple el-button--modal" :disabled="!hasData" @click="handleAddEmployee">Thêm nhân viên</el-button>
+        <el-table :data="tableData" border highlight-current-row style="width: 100%; margin-top: 20px">
+          <el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" />
+        </el-table>
+      </el-tab-pane>
+      <el-tab-pane label="Thêm một" name="once">Config</el-tab-pane>
+    </el-tabs>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import UploadExcelComponent from '@/components/UploadExcel/index.vue';
+import { formatDateFromExcel } from '@/utils/dateParser';
+import { dateFormat } from '@vuejs-community/vue-filter-date-format';
+import TeamRepository from '@/repositories/TeamRepository';
+import value from '*.png';
+import EmployeeRepository from '@/repositories/EmployeeRepository';
+import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
+
+@Component<CreateEmployee>({
+  name: 'CreateEmployee',
+  components: { UploadExcelComponent },
+  async created() {
+    await this.getDataCommons();
+  },
+})
+export default class CreateEmployee extends Vue {
+  private tableData: Array<Object> = [];
+  private tableHeader: Array<Object> = [];
+  private departments: Array<any> = [];
+  private tabActive: string = 'excel';
+  private hasData: boolean = false;
+
+  @Watch('tableData')
+  private checkData() {
+    this.hasData = this.tableData.length > 0;
+    console.log('this.hasData: ', this.hasData);
+  }
+
+  private beforeUpload(file) {
+    const isLt1M = file.size / 1024 / 1024 < 1;
+    if (isLt1M) {
+      return true;
+    }
+    this.$message({
+      message: 'Please do not upload files larger than 1m in size.',
+      type: 'warning',
+    });
+    return false;
+  }
+
+  private handleSuccess({ results, header }) {
+    this.handleTableData(results);
+
+    this.tableData = results;
+    this.tableHeader = header;
+  }
+
+  private handleTableData(data: Array<any>) {
+    const result = data.map((value, index) => {
+      return {
+        email: value.email,
+        fullName: value.fullName,
+        dob: formatDateFromExcel(value.dob),
+        phoneNumber: value.phoneNumber,
+        gender: !!value.gender && value.gender.toLowerCase() === 'nam' ? 1 : 0,
+        departmentId: this.getIdDepartment(value.department),
+      };
+    });
+    return result;
+  }
+
+  private async getDataCommons() {
+    try {
+      const departments = await TeamRepository.getMetaData();
+      this.departments = departments.data;
+    } catch (error) {}
+  }
+
+  private getIdDepartment(name: string) {
+    const dName: string = name.toLowerCase();
+    const result: number = -1;
+    if (this.departments.length > 0) {
+      const indexDepartment = this.departments.find((value) => value.name.toLowerCase() === dName);
+      return indexDepartment.id;
+    }
+    return result;
+  }
+
+  private handleClick(tab, event) {}
+
+  private async handleAddEmployee() {
+    const users: any = this.handleTableData(this.tableData);
+    try {
+      const response = await EmployeeRepository.create({ users });
+      console.log(response);
+      if (!!response && !!response.data) {
+        if (response.data.numberOfFailed === 0) {
+          this.$notify.success({
+            ...notificationConfig,
+            message: 'thêm nhân viên thành công',
+          });
+        } else {
+          this.$notify.warning({
+            ...notificationConfig,
+            message: `Thêm thành công: ${response.data.numberOfSuccess}` + '\n' + `Thất bại: ${response.data.numberOfFailed}`,
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
+</script>

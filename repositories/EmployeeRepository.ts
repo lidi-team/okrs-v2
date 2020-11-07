@@ -26,4 +26,8 @@ export default class EmployeeRepository {
   public static delete(id: number) {
     return baseUrlV1.delete(`${ResourcesEnpoint.Users}/${id}`);
   }
+
+  public static create(payload: any) {
+    return baseUrl.put(`${ResourcesEnpoint.Users}/add-staff`, payload);
+  }
 }

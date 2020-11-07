@@ -1,6 +1,9 @@
 <template>
   <div class="manage-employee">
-    <h1 class="manage-employee__title">Quản lý nhân sự</h1>
+    <div class="manage-employee__title">
+      <h1 class="manage-employee__title--text">Quản lý nhân sự</h1>
+      <el-button class="el-button--purple el-button--modal" @click="handleAddUsers">Thêm nhân viên</el-button>
+    </div>
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="manage-employee__content">
@@ -132,6 +135,10 @@ export default class ManageEmployee extends Vue {
     // }
     return EmployeeActive;
   }
+
+  private handleAddUsers() {
+    this.$router.push('/quan-ly/nhan-su/them');
+  }
 }
 </script>
 
@@ -140,7 +147,12 @@ export default class ManageEmployee extends Vue {
 .manage-employee {
   height: 100%;
   &__title {
-    font-size: $text-2xl;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    &--text {
+      font-size: $text-2xl;
+    }
   }
   &__content {
     background-color: $white;
