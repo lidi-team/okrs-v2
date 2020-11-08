@@ -10,7 +10,7 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="weight" label="Trọng số" class="custom-label" label-width="120px">
-        <el-slider v-model="tempObjective.weight" :step="1" show-stops></el-slider>
+        <el-slider v-model="tempObjective.weight" :step="1" show-stops :min="1" :max="5"></el-slider>
       </el-form-item>
     </el-form>
     <div class="okrs-button-action">
