@@ -30,7 +30,6 @@ import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 
 import { DispatchAction, MutationState } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
@@ -40,10 +39,6 @@ import AlignObjective from '@/components/okrs/items/add/AlignObjective.vue';
   name: 'CreateAlignObjective',
   components: {
     AlignObjective,
-  },
-  async created() {
-    const { data } = await ObjectiveRepository.getAlignObjective(this.$store.state.cycle.cycleCurrent.id, this.$store.state.okrs.objective.projectId);
-    this.$store.commit(MutationState.SET_LIST_OBJECTIVE_ALIGN, data);
   },
 })
 export default class CreateAlignObjective extends Vue {
@@ -69,17 +64,20 @@ export default class CreateAlignObjective extends Vue {
         alignObjectives.push(form.syncAlignOkrs.objectiveId);
       });
       if (validForm === alignObjectives.length) {
-        // add align OKRs ID
-        // payload.objective.alignObjectivesId = alignObjectives;
+        console.log(alignObjectives);
         try {
-          // await OkrsRepository.createOrUpdateOkrs(payload).then((res) => {
-          //   this.$store.dispatch(DispatchAction.CLEAR_OKRS);
-          //   this.syncActive = 0;
-          //   this.$notify.success({
-          //     ...notificationConfig,
-          //     message: 'Tạo OKRs thành công',
-          //   });
-          // });
+          this.$store.commit(MutationState.SET_OBJECTIVE, {
+            alignmentObjectives: alignObjectives,
+          });
+          const data = this.$store.state.okrs.objective;
+          await OkrsRepository.createOrUpdateOkrs(data).then((res) => {
+            this.$store.dispatch(DispatchAction.CLEAR_OKRS);
+            this.syncActive = 0;
+            this.$notify.success({
+              ...notificationConfig,
+              message: 'Tạo OKRs thành công',
+            });
+          });
         } catch (error) {}
       } else {
         setTimeout(() => {

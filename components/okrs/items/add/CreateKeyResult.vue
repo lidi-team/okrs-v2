@@ -32,6 +32,7 @@ import IconAttention from '@/assets/images/okrs/attention.svg';
 import { MutationState, DispatchAction } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import OkrsRepository from '@/repositories/OkrsRepository';
+import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 import { KeyResultDTO } from '@/constants/DTO/okrs';
 
 @Component<CreateObjectiveStep>({
@@ -93,7 +94,7 @@ export default class CreateObjectiveStep extends Vue {
     this.syncActive--;
   }
 
-  private nextStepThree() {
+  private async nextStepThree() {
     const krs: any[] = [];
     let validForm: number = 0;
 
@@ -113,9 +114,12 @@ export default class CreateObjectiveStep extends Vue {
         krs.push(Object.freeze(form.tempKeyResult));
       });
       if (validForm === krs.length) {
-        // Set this is not root objective
-        console.log(krs);
         this.$store.commit(MutationState.SET_KEY_RESULT, krs);
+        const { data } = await ObjectiveRepository.getAlignObjective(
+          this.$store.state.cycle.cycleCurrent.id,
+          this.$store.state.okrs.objective.projectId,
+        );
+        this.$store.commit(MutationState.SET_LIST_OBJECTIVE_ALIGN, data);
         this.syncActive++;
         this.loading = false;
       } else {
