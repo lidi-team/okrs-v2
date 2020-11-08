@@ -9,6 +9,9 @@
           <el-option v-for="objective in listObjectiveParent" :key="objective.id" :label="objective.name" :value="objective.id" />
         </el-select>
       </el-form-item>
+      <el-form-item prop="weight" label="Trọng số" class="custom-label" label-width="120px">
+        <el-slider v-model="tempObjective.weight" :step="1" show-stops></el-slider>
+      </el-form-item>
     </el-form>
     <div class="okrs-button-action">
       <el-button class="el-button--white el-button--modal" @click="closeObjectiveForm">Hủy</el-button>
@@ -48,14 +51,13 @@ export default class CreateObjective extends Vue {
 
   private rules: Maps<Rule[]> = {
     title: [{ type: 'string', required: true, message: 'Vui lòng nhập mục tiêu', trigger: 'blur' }, max255Char],
-    cycleId: [{ type: 'number', required: true, message: 'Vui lòng chọn chy kỳ', trigger: 'blur' }],
     parentObjectiveId: [{ type: 'number', required: true, message: 'Vui lòng chọn OKRs cấp trên', trigger: 'blur' }],
   };
 
   public tempObjective: any = {
     title: '',
     parentId: null,
-    cycle: this.$store.state.cycle.cycleCurrent.id,
+    weight: 1,
   };
 
   private sizeConfig = { minRows: 2, maxRows: 2 };

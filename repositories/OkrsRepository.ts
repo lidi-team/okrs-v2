@@ -1,15 +1,20 @@
 import { AxiosResponse } from 'axios';
 import { baseUrlV1, baseUrl } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
-import { PayloadOkrs } from '@/constants/app.interface';
 
 export const enpoint = {
   listOkrByCycleId: 'objective/project-list',
+  createOrUpdateOkrs: 'objective/add',
 };
 export default class OkrsRepository {
   public static getListOkrsByCycleId(cycleId: Number): Promise<AxiosResponse<any>> {
     return baseUrl.get(`${enpoint.listOkrByCycleId}?cycleId=${cycleId}`);
   }
+
+  public static createOrUpdateOkrs(data): Promise<AxiosResponse<any>> {
+    return baseUrl.post(`${enpoint.createOrUpdateOkrs}`, data);
+  }
+
   /**
    * When the type = 1 --> All Root Okrs
    * When the type = 2 --> All leader Okrs
@@ -26,10 +31,6 @@ export default class OkrsRepository {
 
   public static getOkrsDashboard(cycleId: number, userId: number): Promise<AxiosResponse<any>> {
     return baseUrlV1.get(`${ResourcesEnpoint.Objective}/view_list`, { params: { cycleId, userId } });
-  }
-
-  public static createOrUpdateOkrs(payload: PayloadOkrs): Promise<AxiosResponse<any>> {
-    return baseUrlV1.post(`${ResourcesEnpoint.Objective}`, payload);
   }
 
   public static deleteKr(id: number): Promise<AxiosResponse<any>> {

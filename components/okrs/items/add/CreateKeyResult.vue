@@ -29,7 +29,6 @@ import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import KeyResult from './KeyResult.vue';
 import IconAttention from '@/assets/images/okrs/attention.svg';
-import { PayloadOkrs } from '@/constants/app.interface';
 import { MutationState, DispatchAction } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import OkrsRepository from '@/repositories/OkrsRepository';
@@ -88,7 +87,7 @@ export default class CreateObjectiveStep extends Vue {
       (this.$refs.krsForm as any).forEach((form) => {
         tempKrs.push(form.tempKeyResult);
       });
-      this.$store.commit(MutationState.SET_KRS, tempKrs);
+      this.$store.commit(MutationState.SET_KEY_RESULT, tempKrs);
       this.syncActive--;
     }
     this.syncActive--;
@@ -115,7 +114,8 @@ export default class CreateObjectiveStep extends Vue {
       });
       if (validForm === krs.length) {
         // Set this is not root objective
-        this.$store.commit(MutationState.SET_KRS, krs);
+        console.log(krs);
+        this.$store.commit(MutationState.SET_KEY_RESULT, krs);
         this.syncActive++;
         this.loading = false;
       } else {

@@ -4,6 +4,7 @@ import { baseUrl } from './BaseRepository';
 export enum enpoint {
   objectivesParent = 'objective/parent-okr',
   createObjective = 'objective/add',
+  alignObjective = 'objective/align-objective',
 }
 
 export default class ObjectiveRepository {
@@ -13,5 +14,9 @@ export default class ObjectiveRepository {
 
   public static createObjective(data: any) {
     return baseUrl.post(enpoint.createObjective, data);
+  }
+
+  public static getAlignObjective(id: Number): Promise<AxiosResponse<any>> {
+    return baseUrl.get(`${enpoint.alignObjective}/${id}`);
   }
 }

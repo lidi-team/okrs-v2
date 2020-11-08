@@ -1,17 +1,15 @@
 <template>
   <div :class="['okrs-align', displayForm ? '' : 'confirm-button']">
     <div v-if="displayForm === false" class="okrs-align__confirm">
-      <el-button class="el-button el-button--white el-button--medium" :loading="loading" @click="createOkrs(false)">
-        Bỏ qua liên kết và tạo OKRs
-      </el-button>
-      <el-button class="el-button el-button--purple el-button--medium" @click="displayForm = !displayForm">
-        Liên kết mục tiêu
-      </el-button>
+      <el-button class="el-button el-button--white el-button--medium" :loading="loading" @click="createOkrs(false)"
+        >Bỏ qua liên kết và tạo OKRs</el-button
+      >
+      <el-button class="el-button el-button--purple el-button--medium" @click="displayForm = true">Liên kết mục tiêu</el-button>
     </div>
     <div v-else>
       <div class="okrs-align__content">
-        <!-- <div v-loading="formLoading" class="okrs-align__content--item">
-          <step-align-okrs-form
+        <div v-loading="formLoading" class="okrs-align__content--item">
+          <align-objective
             v-for="(item, index) in itemsAlignOkrs"
             :key="index"
             ref="alignForm"
@@ -19,7 +17,7 @@
             :align-okrs.sync="item"
             @deleteAlignOkrs="deleteAlignOkrs($event)"
           />
-        </div> -->
+        </div>
         <el-button class="el-button el-button--white el-button--small okrs-align__content--button" @click="addNewAlignOkrs">
           <span>Thêm Okrs liên kết chéo</span>
         </el-button>
@@ -34,17 +32,24 @@
 <script lang="ts">
 import { Form } from 'element-ui';
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
+
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';
+import ObjectiveRepository from '@/repositories/ObjectiveRepository';
+
 import { DispatchAction, MutationState } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
-import { PayloadOkrs } from '@/constants/app.interface';
-import StepAlignOkrsForm from '@/components/okrs/items/add/AlignObjective.vue';
+import AlignObjective from '@/components/okrs/items/add/AlignObjective.vue';
 
 @Component<CreateAlignObjective>({
   name: 'CreateAlignObjective',
   components: {
-    StepAlignOkrsForm,
+    AlignObjective,
+  },
+  async created() {
+    const { data } = await ObjectiveRepository.getAlignObjective(this.$store.state.okrs.objective.parentId);
+    console.log('itemsAlignOkrs', data);
+    this.itemsAlignOkrs = data;
   },
 })
 export default class CreateAlignObjective extends Vue {
@@ -65,14 +70,6 @@ export default class CreateAlignObjective extends Vue {
   }
 
   private async createOkrs(isAlignOkrs: boolean) {
-    const payload: PayloadOkrs = {
-      id: null,
-      content: '',
-      userId: this.$store.state.auth.user.id,
-      ...this.$store.state.okrs.objective,
-      keyResult: this.$store.state.okrs.keyResults,
-    };
-    console.log(payload);
     this.loading = true;
 
     if (isAlignOkrs === true) {
@@ -88,16 +85,16 @@ export default class CreateAlignObjective extends Vue {
       });
       if (validForm === alignObjectives.length) {
         // add align OKRs ID
-        payload.objective.alignObjectivesId = alignObjectives;
+        // payload.objective.alignObjectivesId = alignObjectives;
         try {
-          await OkrsRepository.createOrUpdateOkrs(payload).then((res) => {
-            this.$store.dispatch(DispatchAction.CLEAR_OKRS);
-            this.syncActive = 0;
-            this.$notify.success({
-              ...notificationConfig,
-              message: 'Tạo OKRs thành công',
-            });
-          });
+          // await OkrsRepository.createOrUpdateOkrs(payload).then((res) => {
+          //   this.$store.dispatch(DispatchAction.CLEAR_OKRS);
+          //   this.syncActive = 0;
+          //   this.$notify.success({
+          //     ...notificationConfig,
+          //     message: 'Tạo OKRs thành công',
+          //   });
+          // });
         } catch (error) {}
       } else {
         setTimeout(() => {
@@ -106,15 +103,15 @@ export default class CreateAlignObjective extends Vue {
       }
     } else {
       try {
-        // await OkrsRepository.createOrUpdateOkrs(payload).then((res) => {
-        //   this.loading = true;
-        //   this.$store.dispatch(DispatchAction.CLEAR_OKRS);
-        //   this.syncActive = 0;
-        //   this.$notify.success({
-        //     ...notificationConfig,
-        //     message: 'Tạo OKRs thành công',
-        //   });
-        // });
+        const data = this.$store.state.okrs.objective;
+        await OkrsRepository.createOrUpdateOkrs(data).then((res) => {
+          this.$store.dispatch(DispatchAction.CLEAR_OKRS);
+          this.syncActive = 0;
+          this.$notify.success({
+            ...notificationConfig,
+            message: 'Tạo OKRs thành công',
+          });
+        });
       } catch (error) {
         this.loading = true;
       }

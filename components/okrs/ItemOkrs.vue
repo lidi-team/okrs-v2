@@ -3,7 +3,13 @@
     <div class="-display-flex -justify-content-between">
       <h2 class="item__header">{{ title }}</h2>
       <div class="-display-flex -align-items-center">
-        <button-create-okr v-if="isManage" :list-objective-parent="listObjectiveParent()" />
+        <button-create-okr
+          v-if="isManage"
+          :list-objective-parent="listObjectiveParent()"
+          :type-objective="typeObjective"
+          :name-objective="nameObjective"
+          :project-id="projectId"
+        />
       </div>
     </div>
     <el-table :data="objectives" header-row-class-name="item__table-header" style="width: 100%;">
@@ -83,6 +89,7 @@ import { DialogTooltipAction } from '@/constants/app.interface';
 import { SelectDropdownDTO } from '@/constants/DTO/common';
 import ActionTooltip from '@/components/okrs/tooltip/ActionTooltip.vue';
 import ButtonCreateOkr from '@/components/okrs/items/button/index.vue';
+
 @Component<OKRsItem>({
   name: 'OKRsItem',
   components: {
@@ -97,6 +104,8 @@ export default class OKRsItem extends Vue {
   @Prop(Function) private reloadData!: Function;
   @Prop(Boolean) private isManage!: Boolean;
   @Prop(Number) private projectId!: Number;
+  @Prop(Number) private typeObjective!: Number;
+  @Prop(String) private nameObjective!: String;
 
   private tempOkrs: any = {};
   private changeValue: number = 0;

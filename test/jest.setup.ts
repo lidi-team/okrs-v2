@@ -43,6 +43,7 @@ export default ['@/components/account/Login.vue'].forEach((path) => {
   Vue.component(elComponent.ElPageHeader, () => import(/* webpackChunkName: 'element-ui-page-header' */ 'element-ui/lib/page-header'));
   Vue.component(elComponent.ElTag, () => import(/* webpackChunkName: 'element-ui-tag' */ 'element-ui/lib/tag'));
   Vue.component(elComponent.ElDrawer, () => import(/* webpackChunkName: 'element-ui-tag' */ 'element-ui/lib/drawer'));
+  Vue.component(elComponent.ElSlider, () => import(/* webpackChunkName: 'element-ui-tag' */ 'element-ui/lib/slider'));
 
   if (path.startsWith('@/components/account')) {
     prefix = 'Account';

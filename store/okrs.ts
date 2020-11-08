@@ -4,29 +4,30 @@ import OkrsRepository from '@/repositories/OkrsRepository';
 
 export enum OkrsMutation {
   SET_ISDIALOGOKRS = 'setIsDialogOKRs',
-  SET_OBJECTIVE = 'setObjective',
-  SET_KEY_RESULTS = 'setKeyResults',
   CLEAR_KRS = 'clearKrs',
   SET_STAFF_OKRS = 'setStaffOkrs',
   SET_OBJECTIVE_PARENT = 'setObjectiveParent',
   SET_LIST_OBJECTIVE_PARENT = 'setListObjectiveParent',
+  SET_LIST_OBJECTIVE_ALIGN = 'setListObjectiveAlign',
+  SET_OBJECTIVE = 'setObjective',
+  SET_KEY_RESULT = 'setKeyResult',
 }
 
 export interface OkrsState {
   isDialogOKRs: Boolean;
-  listObjectiveParent: any[];
   objectiveParent: Number;
+  listObjectiveParent: any[];
+  listObjectiveAlign: any[];
   objective: ObjectiveDTO;
-  keyResults: KeyResultDTO[] | null;
-  staffOkrs: any[] | null;
 }
 
 export const state = (): OkrsState => ({
   isDialogOKRs: false,
-  listObjectiveParent: [],
   objectiveParent: 0,
+  listObjectiveParent: [],
+  listObjectiveAlign: [],
   objective: {
-    id: 0,
+    id: null,
     title: '',
     projectId: 0,
     parentId: 0,
@@ -36,29 +37,26 @@ export const state = (): OkrsState => ({
     alignmentObjectives: [],
     keyResults: [],
   },
-  keyResults: null,
-  staffOkrs: null,
 });
 
 export type RootState = ReturnType<typeof state>;
 
 export const getters: GetterTree<RootState, RootState> = {
   isDialogOKRs: (state) => state.isDialogOKRs,
-  listObjectiveParent: (state) => state.listObjectiveParent,
   objectiveParent: (state) => state.objectiveParent,
+  listObjectiveParent: (state) => state.listObjectiveParent,
+  listObjectiveAlign: (state) => state.listObjectiveAlign,
   objective: (state) => state.objective,
-  keyResults: (state) => state.keyResults,
-  staffOkrs: (state) => state.staffOkrs,
 };
 
 export const mutations: MutationTree<RootState> = {
   [OkrsMutation.SET_ISDIALOGOKRS]: (state, data: Boolean) => (state.isDialogOKRs = data),
   [OkrsMutation.SET_OBJECTIVE_PARENT]: (state, data: Number) => (state.objectiveParent = data),
   [OkrsMutation.SET_LIST_OBJECTIVE_PARENT]: (state, data: any[]) => (state.listObjectiveParent = data),
-  [OkrsMutation.SET_OBJECTIVE]: (state, data: ObjectiveDTO) => (state.objective = data),
-  [OkrsMutation.SET_KEY_RESULTS]: (state, data: KeyResultDTO[]) => (state.keyResults = [...data]),
-  [OkrsMutation.CLEAR_KRS]: (state) => (state.keyResults = []),
-  [OkrsMutation.SET_STAFF_OKRS]: (state, data: any) => (state.staffOkrs = data),
+  [OkrsMutation.SET_LIST_OBJECTIVE_ALIGN]: (state, data: any) => (state.listObjectiveAlign = data),
+  [OkrsMutation.SET_OBJECTIVE]: (state, data: any) => (state.objective = { ...state.objective, ...data }),
+  [OkrsMutation.SET_KEY_RESULT]: (state, data: KeyResultDTO[]) => (state.objective.keyResults = [...data]),
+  [OkrsMutation.CLEAR_KRS]: (state) => (state.objective.keyResults = []),
 };
 
 export interface OKRsAction<S, R> extends ActionTree<S, R> {

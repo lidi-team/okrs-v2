@@ -81,6 +81,7 @@ Vue.component(elComponent.ElPopover, () => import(/* webpackChunkName: 'element-
 Vue.component(elComponent.ElPageHeader, () => import(/* webpackChunkName: 'element-ui-page-header' */ 'element-ui/lib/page-header'));
 Vue.component(elComponent.ElTag, () => import(/* webpackChunkName: 'element-tag' */ 'element-ui/lib/tag'));
 Vue.component(elComponent.ElDrawer, () => import(/* webpackChunkName: 'element-tag' */ 'element-ui/lib/drawer'));
+Vue.component(elComponent.ElSlider, () => import(/* webpackChunkName: 'element-tag' */ 'element-ui/lib/slider'));
 
 // import prototype Vue
 Vue.use(Loading.directive);
