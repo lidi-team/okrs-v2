@@ -16,7 +16,7 @@ export default class ObjectiveRepository {
     return baseUrl.post(enpoint.createObjective, data);
   }
 
-  public static getAlignObjective(id: Number): Promise<AxiosResponse<any>> {
-    return baseUrl.get(`${enpoint.alignObjective}/${id}`);
+  public static getAlignObjective(cycleId: Number, projectId: Number): Promise<AxiosResponse<any>> {
+    return baseUrl.get(enpoint.alignObjective, { params: { cycleId, projectId } });
   }
 }

@@ -53,30 +53,17 @@ export const mutations: MutationTree<RootState> = {
   [OkrsMutation.SET_ISDIALOGOKRS]: (state, data: Boolean) => (state.isDialogOKRs = data),
   [OkrsMutation.SET_OBJECTIVE_PARENT]: (state, data: Number) => (state.objectiveParent = data),
   [OkrsMutation.SET_LIST_OBJECTIVE_PARENT]: (state, data: any[]) => (state.listObjectiveParent = data),
-  [OkrsMutation.SET_LIST_OBJECTIVE_ALIGN]: (state, data: any) => (state.listObjectiveAlign = data),
+  [OkrsMutation.SET_LIST_OBJECTIVE_ALIGN]: (state, data: any[]) => (state.listObjectiveAlign = data),
   [OkrsMutation.SET_OBJECTIVE]: (state, data: any) => (state.objective = { ...state.objective, ...data }),
   [OkrsMutation.SET_KEY_RESULT]: (state, data: KeyResultDTO[]) => (state.objective.keyResults = [...data]),
   [OkrsMutation.CLEAR_KRS]: (state) => (state.objective.keyResults = []),
 };
 
 export interface OKRsAction<S, R> extends ActionTree<S, R> {
-  setStaffOkrs(context: ActionContext<S, R>, payload: any): Promise<void>;
-  clearStaffOkrs(context: ActionContext<S, R>, payload: any): void;
   clearOkrs(context: ActionContext<S, R>): void;
 }
 
 export const actions: OKRsAction<OkrsState, RootState> = {
-  async setStaffOkrs({ commit }, { cycleId, type }): Promise<void> {
-    try {
-      const { data } = await OkrsRepository.getListOkrs(cycleId, type);
-      commit(OkrsMutation.SET_STAFF_OKRS, Object.freeze(data.data));
-    } catch (error) {}
-  },
-
-  clearStaffOkrs({ commit }) {
-    commit(OkrsMutation.SET_STAFF_OKRS, []);
-  },
-
   clearOkrs({ commit }): void {
     commit(OkrsMutation.SET_OBJECTIVE, null);
     commit(OkrsMutation.CLEAR_KRS);

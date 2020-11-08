@@ -1,14 +1,8 @@
 <template>
-  <div :class="['okrs-align', displayForm ? '' : 'confirm-button']">
-    <div v-if="displayForm === false" class="okrs-align__confirm">
-      <el-button class="el-button el-button--white el-button--medium" :loading="loading" @click="createOkrs(false)"
-        >Bỏ qua liên kết và tạo OKRs</el-button
-      >
-      <el-button class="el-button el-button--purple el-button--medium" @click="displayForm = true">Liên kết mục tiêu</el-button>
-    </div>
-    <div v-else>
+  <div class="okrs-align">
+    <div>
       <div class="okrs-align__content">
-        <div v-loading="formLoading" class="okrs-align__content--item">
+        <div class="okrs-align__content--item">
           <align-objective
             v-for="(item, index) in itemsAlignOkrs"
             :key="index"
@@ -24,6 +18,7 @@
       </div>
       <div class="okrs-align__action">
         <el-button class="el-button--white el-button--modal" @click="backToStepTwo">Quay lại</el-button>
+        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createOkrs(false)">Bỏ qua và tạo OKRs</el-button>
         <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createOkrs(true)">Tạo OKRs</el-button>
       </div>
     </div>
@@ -47,31 +42,21 @@ import AlignObjective from '@/components/okrs/items/add/AlignObjective.vue';
     AlignObjective,
   },
   async created() {
-    const { data } = await ObjectiveRepository.getAlignObjective(this.$store.state.okrs.objective.parentId);
-    console.log('itemsAlignOkrs', data);
-    this.itemsAlignOkrs = data;
+    const { data } = await ObjectiveRepository.getAlignObjective(this.$store.state.cycle.cycleCurrent.id, this.$store.state.okrs.objective.projectId);
+    this.$store.commit(MutationState.SET_LIST_OBJECTIVE_ALIGN, data);
   },
 })
 export default class CreateAlignObjective extends Vue {
   @PropSync('active', Number) private syncActive!: number;
 
-  private displayForm: boolean = false;
   private loading: boolean = false;
   private itemsAlignOkrs: any[] = [{ objectiveId: null }];
 
-  private formLoading: boolean = false;
-
   private addNewAlignOkrs() {
-    this.formLoading = true;
     this.itemsAlignOkrs.push({ objectiveId: null });
-    setTimeout(() => {
-      this.formLoading = false;
-    }, 300);
   }
 
   private async createOkrs(isAlignOkrs: boolean) {
-    this.loading = true;
-
     if (isAlignOkrs === true) {
       let validForm: number = 0;
       const alignObjectives: any[] = [];
@@ -119,11 +104,7 @@ export default class CreateAlignObjective extends Vue {
   }
 
   private deleteAlignOkrs(indexForm: number) {
-    this.formLoading = true;
     this.itemsAlignOkrs.splice(indexForm, 1);
-    setTimeout(() => {
-      this.formLoading = false;
-    }, 300);
   }
 
   private backToStepTwo() {

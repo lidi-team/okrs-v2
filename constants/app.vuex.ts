@@ -32,4 +32,5 @@ export enum MutationState {
   SET_IS_DIALOG_OKRS = 'okrs/setIsDialogOKRs',
   SET_OBJECTIVE_PARENT = 'okrs/setObjectiveParent',
   SET_LIST_OBJECTIVE_PARENT = 'okrs/setListObjectiveParent',
+  SET_LIST_OBJECTIVE_ALIGN = 'okrs/setListObjectiveAlign',
 }

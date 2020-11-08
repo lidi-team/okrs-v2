@@ -20,13 +20,14 @@ import IconDelete from '@/assets/images/common/delete.svg';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { Maps, Rule } from '@/constants/app.type';
 import { ObjectiveAlignDTO } from '@/components/okrs/items/add/constants';
+import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 
 @Component<AlignObjective>({
   name: 'InputAlignOkrs',
   components: {
     IconDelete,
   },
-  mounted() {
+  created() {
     this.itemsAlignOkrs = this.$store.state.okrs.listObjectiveAlign;
   },
 })
@@ -42,11 +43,10 @@ export default class AlignObjective extends Vue {
 
   @Prop(Number) private indexAlignForm!: number;
 
-  private hovering: boolean = false;
   private itemsAlignOkrs: any[] = [];
 
   getLabel(data: ObjectiveAlignDTO): String {
-    return `[${data.user}] ${data.name}`;
+    return `[${data.user} - ${data.type === 2 ? 'Cá nhân' : 'Dự án'}] ${data.name}`;
   }
 
   private deleteAlignOkrs(indexAlignForm: number) {
