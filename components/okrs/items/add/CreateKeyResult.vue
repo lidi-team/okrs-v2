@@ -82,7 +82,6 @@ export default class CreateObjectiveStep extends Vue {
   }
 
   private backToStepOne() {
-    this.$store.commit(MutationState.CLEAR_KRS);
     if (this.keyResults.length !== 0) {
       const tempKrs: any[] = [];
       (this.$refs.krsForm as any).forEach((form) => {
@@ -184,9 +183,6 @@ export default class CreateObjectiveStep extends Vue {
   }
   &__action {
     @include okrs-button-action;
-    width: 800px;
-    margin-left: -$unit-5;
-    padding-right: $unit-5;
   }
 }
 </style>

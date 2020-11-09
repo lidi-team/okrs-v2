@@ -64,7 +64,6 @@ export default class CreateAlignObjective extends Vue {
         alignObjectives.push(form.syncAlignOkrs.objectiveId);
       });
       if (validForm === alignObjectives.length) {
-        console.log(alignObjectives);
         try {
           this.$store.commit(MutationState.SET_OBJECTIVE, {
             alignmentObjectives: alignObjectives,
