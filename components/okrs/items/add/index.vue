@@ -39,8 +39,7 @@ export default class AddOkrs extends Vue {
   private handleCloseDialog() {
     this.$confirm('Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?', { ...confirmWarningConfig })
       .then(() => {
-        this.$store.dispatch(DispatchAction.CLEAR_OKRS);
-        this.$store.commit(MutationState.SET_IS_DIALOG_OKRS, false);
+        this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
         this.active = 0;
       })
       .catch((err) => console.log(err));

@@ -51,8 +51,8 @@ export default class CreateAlignObjective extends Vue {
     this.itemsAlignOkrs.push({ objectiveId: null });
   }
 
-  private async createOkrs(isAlignOkrs: boolean) {
-    if (isAlignOkrs === true) {
+  private async createOkrs(hasAlignObjective: boolean) {
+    if (hasAlignObjective === true) {
       let validForm: number = 0;
       const alignObjectives: any[] = [];
       (this.$refs.alignForm as any).forEach((form) => {
@@ -70,7 +70,7 @@ export default class CreateAlignObjective extends Vue {
           });
           const data = this.$store.state.okrs.objective;
           await OkrsRepository.createOrUpdateOkrs(data).then((res) => {
-            this.$store.dispatch(DispatchAction.CLEAR_OKRS);
+            this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
             this.syncActive = 0;
             this.$notify.success({
               ...notificationConfig,
@@ -87,7 +87,8 @@ export default class CreateAlignObjective extends Vue {
       try {
         const data = this.$store.state.okrs.objective;
         await OkrsRepository.createOrUpdateOkrs(data).then((res) => {
-          this.$store.dispatch(DispatchAction.CLEAR_OKRS);
+          this.$store.commit(MutationState.SET_IS_DIALOG_OKRS, false);
+          this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
           this.syncActive = 0;
           this.$notify.success({
             ...notificationConfig,
@@ -155,8 +156,6 @@ export default class CreateAlignObjective extends Vue {
   }
   &__action {
     @include okrs-button-action;
-    width: 800px;
-    margin-left: -$unit-14;
   }
 }
 .confirm-button {

@@ -2,7 +2,7 @@ export enum DispatchAction {
   LOGIN = 'auth/login',
   LOGOUT = 'auth/logout',
   CLEAR_AUTH = 'auth/clear',
-  CLEAR_OKRS = 'okrs/clearOkrs',
+  CLOSE_DIALOG_OKRS = 'okrs/closeDialogOKRs',
   CLEAR_STAFF_OKRS = 'okrs/clearStaffOkrs',
   GET_MEASURE = 'measure/getMeasure',
   CLEAR_MEASURE = 'measure/clearMeasure',

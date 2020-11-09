@@ -11,6 +11,7 @@ export enum OkrsMutation {
   SET_LIST_OBJECTIVE_ALIGN = 'setListObjectiveAlign',
   SET_OBJECTIVE = 'setObjective',
   SET_KEY_RESULT = 'setKeyResult',
+  CLOSE_DIALOGOKRS = 'closeDialogOKRs',
 }
 
 export interface OkrsState {
@@ -21,22 +22,24 @@ export interface OkrsState {
   objective: ObjectiveDTO;
 }
 
+const initObjective: ObjectiveDTO = {
+  id: null,
+  title: '',
+  projectId: 0,
+  parentId: null,
+  type: 0,
+  weight: 0,
+  cycleId: 0,
+  alignmentObjectives: [],
+  keyResults: [],
+};
+
 export const state = (): OkrsState => ({
   isDialogOKRs: false,
   objectiveParent: 0,
   listObjectiveParent: [],
   listObjectiveAlign: [],
-  objective: {
-    id: null,
-    title: '',
-    projectId: 0,
-    parentId: null,
-    type: 0,
-    weight: 0,
-    cycleId: 0,
-    alignmentObjectives: [],
-    keyResults: [],
-  },
+  objective: initObjective,
 });
 
 export type RootState = ReturnType<typeof state>;
@@ -56,16 +59,16 @@ export const mutations: MutationTree<RootState> = {
   [OkrsMutation.SET_LIST_OBJECTIVE_ALIGN]: (state, data: any[]) => (state.listObjectiveAlign = data),
   [OkrsMutation.SET_OBJECTIVE]: (state, data: any) => (state.objective = { ...state.objective, ...data }),
   [OkrsMutation.SET_KEY_RESULT]: (state, data: KeyResultDTO[]) => (state.objective.keyResults = [...data]),
-  [OkrsMutation.CLEAR_KRS]: (state) => (state.objective.keyResults = []),
+  [OkrsMutation.CLOSE_DIALOGOKRS]: (state) => (state.objective = initObjective),
 };
 
 export interface OKRsAction<S, R> extends ActionTree<S, R> {
-  clearOkrs(context: ActionContext<S, R>): void;
+  closeDialogOKRs(context: ActionContext<S, R>): void;
 }
 
 export const actions: OKRsAction<OkrsState, RootState> = {
-  clearOkrs({ commit }): void {
-    commit(OkrsMutation.SET_OBJECTIVE, null);
-    commit(OkrsMutation.CLEAR_KRS);
+  closeDialogOKRs({ commit }): void {
+    commit(OkrsMutation.SET_ISDIALOGOKRS, false);
+    commit(OkrsMutation.CLOSE_DIALOGOKRS);
   },
 };
