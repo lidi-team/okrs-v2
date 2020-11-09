@@ -4,7 +4,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { MutationState, GetterState } from '@/constants/app.vuex';
+import { MutationState, GetterState, DispatchAction } from '@/constants/app.vuex';
 
 export default {
   props: {
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     showDialog() {
-      this.$store.commit(MutationState.SET_IS_DIALOG_OKRS, true);
+      this.$store.dispatch(DispatchAction.CREATE_DIALOG_OKRS);
       this.$store.commit(MutationState.SET_LIST_OBJECTIVE_PARENT, this.listObjectiveParent);
       this.$store.commit(MutationState.SET_OBJECTIVE, {
         projectId: this.projectId,

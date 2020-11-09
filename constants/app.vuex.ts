@@ -2,10 +2,11 @@ export enum DispatchAction {
   LOGIN = 'auth/login',
   LOGOUT = 'auth/logout',
   CLEAR_AUTH = 'auth/clear',
-  CLOSE_DIALOG_OKRS = 'okrs/closeDialogOKRs',
-  CLEAR_STAFF_OKRS = 'okrs/clearStaffOkrs',
   GET_MEASURE = 'measure/getMeasure',
   CLEAR_MEASURE = 'measure/clearMeasure',
+  CREATE_DIALOG_OKRS = 'okrs/createDialogOKRs',
+  UPDATE_DIALOG_OKRS = 'okrs/updateDialogOKRs',
+  CLOSE_DIALOG_OKRS = 'okrs/closeDialogOKRs',
 }
 
 export enum GetterState {
@@ -30,7 +31,6 @@ export enum MutationState {
   SET_OKRS_DETAIL = 'okrs/setOkrsDetail',
   SET_TEMP_CYCLE = 'cycle/setTempCycle',
   SET_ALL_CYCLES = 'cycle/setAllCycles',
-  SET_IS_DIALOG_OKRS = 'okrs/setIsDialogOKRs',
   SET_OBJECTIVE_PARENT = 'okrs/setObjectiveParent',
   SET_LIST_OBJECTIVE_PARENT = 'okrs/setListObjectiveParent',
   SET_LIST_OBJECTIVE_ALIGN = 'okrs/setListObjectiveAlign',

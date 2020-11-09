@@ -77,7 +77,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <update-okrs-dialog v-if="visibleUpdateDialog" :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleUpdateDialog" :reload-data="reloadData" />
     <align-okrs-dialog v-if="visibleAlignDialog" :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleAlignDialog" :reload-data="reloadData" />
   </div>
 </template>
@@ -89,6 +88,7 @@ import { DialogTooltipAction } from '@/constants/app.interface';
 import { SelectDropdownDTO } from '@/constants/DTO/common';
 import ActionTooltip from '@/components/okrs/tooltip/ActionTooltip.vue';
 import ButtonCreateOkr from '@/components/okrs/items/button/index.vue';
+import AlignOkrsDialog from '@/components/okrs/dialog/AlignOkrsDialog.vue';
 
 @Component<OKRsItem>({
   name: 'OKRsItem',
@@ -96,6 +96,7 @@ import ButtonCreateOkr from '@/components/okrs/items/button/index.vue';
     IconEllipse,
     ActionTooltip,
     ButtonCreateOkr,
+    AlignOkrsDialog,
   },
 })
 export default class OKRsItem extends Vue {

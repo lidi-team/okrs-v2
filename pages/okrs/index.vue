@@ -148,10 +148,6 @@ export default class OKRsPage extends Vue {
   private async changeCycleData(userId: number) {
     await this.getDashBoardOkrs(userId);
   }
-
-  private isNotAdminButton(): boolean {
-    return this.$store.state.auth.user.role.name !== 'ADMIN';
-  }
 }
 </script>
 <style lang="scss">
