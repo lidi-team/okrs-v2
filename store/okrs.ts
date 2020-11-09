@@ -30,7 +30,7 @@ export const state = (): OkrsState => ({
     id: null,
     title: '',
     projectId: 0,
-    parentId: 0,
+    parentId: null,
     type: 0,
     weight: 0,
     cycleId: 0,

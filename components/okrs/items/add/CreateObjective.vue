@@ -43,7 +43,17 @@ import ProjectRepository from '@/repositories/ProjectRepository';
       cycleCurrent: GetterState.CYCLE_CURRENT,
       objectiveParent: GetterState.OKRS_OBJECTIVE_PARENT,
       listObjectiveParent: GetterState.OKRS_LIST_OBJECTIVE_PARENT,
+      objective: GetterState.OKRS_OBJECTIVE,
     }),
+  },
+  mounted() {
+    const { title, parentId, weight } = this.objective;
+    this.tempObjective = {
+      title,
+      parentId,
+      weight,
+    };
+    console.log(this.tempObjective);
   },
 })
 export default class CreateObjective extends Vue {
@@ -69,7 +79,6 @@ export default class CreateObjective extends Vue {
   private nextStepTwo(): void {
     (this.$refs.tempObjective as Form).validate((isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
-        console.log('submit', this.tempObjective);
         this.$store.commit(MutationState.SET_OBJECTIVE, this.tempObjective);
         this.syncActive++;
       }

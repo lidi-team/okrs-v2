@@ -13,6 +13,7 @@ export enum GetterState {
   CYCLE_TEMP = 'cycle/cycleTemp',
   CYCLE_CURRENT = 'cycle/cycleCurrent',
   OKRS_IS_DIALOG_OKRS = 'okrs/isDialogOKRs',
+  OKRS_OBJECTIVE = 'okrs/objective',
   OKRS_OBJECTIVE_PARENT = 'okrs/objectiveParent',
   OKRS_LIST_OBJECTIVE_PARENT = 'okrs/listObjectiveParent',
 }

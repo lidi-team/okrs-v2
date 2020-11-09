@@ -10,10 +10,10 @@ export interface KeyResultDTO {
 }
 
 export interface ObjectiveDTO {
-  id: number | null;
+  id: Number | null;
   title: String;
   projectId: Number;
-  parentId: Number;
+  parentId: Number | null;
   type: Number;
   weight: Number;
   cycleId: Number;

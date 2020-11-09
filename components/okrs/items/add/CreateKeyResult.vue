@@ -88,7 +88,6 @@ export default class CreateObjectiveStep extends Vue {
         tempKrs.push(form.tempKeyResult);
       });
       this.$store.commit(MutationState.SET_KEY_RESULT, tempKrs);
-      this.syncActive--;
     }
     this.syncActive--;
   }
