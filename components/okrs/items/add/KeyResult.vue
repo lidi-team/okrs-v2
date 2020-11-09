@@ -127,11 +127,11 @@ export default class KeyResult extends Vue {
 
   @Prop(Number) private indexKrForm!: number;
 
-  private hovering: boolean = false;
-  private popoverVisisble: boolean = false;
-  private isExpanded: boolean = false;
-  private scrollHeight: number = 0;
-  private tempContentKr: string = 'Ấn vào đây để chỉnh sửa';
+  private hovering: Boolean = false;
+  private popoverVisisble: Boolean = false;
+  private isExpanded: Boolean = false;
+  private scrollHeight: Number = 0;
+  private tempContentKr: String = 'Ấn vào đây để chỉnh sửa';
   private loading: Boolean = false;
 
   private units: any[] = [];

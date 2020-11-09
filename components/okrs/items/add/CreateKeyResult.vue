@@ -1,21 +1,23 @@
 <template>
-  <div class="add-krs-step">
-    <key-result
-      v-for="(item, index) in keyResults"
-      :key="index"
-      ref="krsForm"
-      :index-kr-form="index"
-      :key-result.sync="item"
-      @deleteKr="deleteKrForm($event)"
-    />
-    <el-button class="el-button el-button--white el-button--small add-krs-step__button" @click="addNewKRs">
-      <span>Thêm KRs</span>
-    </el-button>
-    <div class="add-krs-step__attention">
-      <p class="add-krs-step__attention--title">Lưu ý:</p>
-      <div v-for="(attention, i) in attentionsText" :key="attention[i]" class="add-krs-step__attention--content">
-        <icon-attention />
-        <span>{{ attention }}</span>
+  <div>
+    <div class="add-krs-step">
+      <key-result
+        v-for="(item, index) in keyResults"
+        :key="index"
+        ref="krsForm"
+        :index-kr-form="index"
+        :key-result.sync="item"
+        @deleteKr="deleteKrForm($event)"
+      />
+      <el-button class="el-button el-button--white el-button--small add-krs-step__button" @click="addNewKRs">
+        <span>Thêm KRs</span>
+      </el-button>
+      <div class="add-krs-step__attention">
+        <p class="add-krs-step__attention--title">Lưu ý:</p>
+        <div v-for="(attention, i) in attentionsText" :key="attention[i]" class="add-krs-step__attention--content">
+          <icon-attention />
+          <span>{{ attention }}</span>
+        </div>
       </div>
     </div>
     <div class="add-krs-step__action">
@@ -56,7 +58,16 @@ export default class CreateObjectiveStep extends Vue {
 
   private loading: boolean = false;
   private objectiveTitle: string = '';
-  private keyResults: any[] = [];
+  private keyResults: any[] = [
+    {
+      startValue: 0,
+      targetValue: 100,
+      content: '',
+      linkPlans: '',
+      linkResults: '',
+      measureUnitId: 1,
+    },
+  ];
   private attentionsText: string[] = ['Nên có ít nhất phải có 2 kết quả then chốt', 'Không nên quá 5 kết quả then chốt cho 1 mục tiêu'];
 
   private addNewKRs() {
