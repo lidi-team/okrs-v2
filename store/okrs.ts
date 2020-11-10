@@ -29,7 +29,16 @@ const initObjective: ObjectiveDTO = {
   weight: 0,
   cycleId: 0,
   alignmentObjectives: [],
-  keyResults: [],
+  keyResults: [
+    {
+      startValue: 0,
+      targetValue: 100,
+      content: '',
+      linkPlans: '',
+      linkResults: '',
+      measureUnitId: 1,
+    },
+  ],
 };
 
 export const state = (): OkrsState => ({

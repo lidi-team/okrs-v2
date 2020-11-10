@@ -46,7 +46,7 @@ import { KeyResultDTO } from '@/constants/DTO/okrs';
   created() {
     this.objectiveTitle = this.$store.state.okrs.objective.title;
     if (this.$store.state.okrs.keyResults) {
-      this.keyResults = this.$store.state.okrs.keyResults.length !== 0 ? this.$store.state.okrs.keyResults.map((item) => ({ ...item })) : [];
+      this.keyResults = this.$store.state.okrs.objective.keyResults;
     }
   },
 })
@@ -58,16 +58,7 @@ export default class CreateObjectiveStep extends Vue {
 
   private loading: boolean = false;
   private objectiveTitle: string = '';
-  private keyResults: any[] = [
-    {
-      startValue: 0,
-      targetValue: 100,
-      content: '',
-      linkPlans: '',
-      linkResults: '',
-      measureUnitId: 1,
-    },
-  ];
+  private keyResults: any[] = [];
   private attentionsText: string[] = ['Nên có ít nhất phải có 2 kết quả then chốt', 'Không nên quá 5 kết quả then chốt cho 1 mục tiêu'];
 
   private addNewKRs() {
