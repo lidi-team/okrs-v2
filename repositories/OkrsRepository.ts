@@ -5,6 +5,7 @@ import { ResourcesEnpoint } from '@/constants/app.enum';
 export const enpoint = {
   listOkrByCycleId: 'objective/project-list',
   createOrUpdateOkrs: 'objective/add',
+  getDetailOkrsById: 'objective/detail',
 };
 export default class OkrsRepository {
   public static getListOkrsByCycleId(cycleId: Number): Promise<AxiosResponse<any>> {
@@ -13,6 +14,10 @@ export default class OkrsRepository {
 
   public static createOrUpdateOkrs(data): Promise<AxiosResponse<any>> {
     return baseUrl.post(`${enpoint.createOrUpdateOkrs}`, data);
+  }
+
+  public static getDetailOkrsById(okrsId: Number): Promise<AxiosResponse<any>> {
+    return baseUrl.get(`${enpoint.getDetailOkrsById}/${okrsId}`);
   }
 
   /**

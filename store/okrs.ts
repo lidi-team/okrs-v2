@@ -71,9 +71,9 @@ export const actions: OKRsAction<OkrsState, RootState> = {
     commit(OkrsMutation.SET_OBJECTIVE, initObjective);
   },
 
-  updateDialogOKRs({ commit }, data): void {
+  updateDialogOKRs({ commit }, data: ObjectiveDTO): void {
     commit(OkrsMutation.SET_DIALOG_OKRS, true);
-    commit(OkrsMutation.SET_OBJECTIVE, initObjective);
+    commit(OkrsMutation.SET_OBJECTIVE, data);
   },
 
   closeDialogOKRs({ commit }): void {

@@ -36,7 +36,7 @@
                   :editable="row.pm"
                   :okrs-id.sync="objective.id"
                   :temp-okrs="objective"
-                  @updateTempOkrs="updateTempOkrs($event)"
+                  @updateOKRs="updateOKRs(objective)"
                 />
               </div>
             </div>
@@ -66,13 +66,7 @@
         <template v-slot="{ row }">
           <div class="item__action">
             <p :class="isUpProgress(row.changing)">{{ row.changing }}%</p>
-            <action-tooltip
-              :reload-data="reloadData"
-              :okrs-id.sync="row.id"
-              :is-manage="isManage"
-              :temp-okrs="row"
-              @updateTempOkrs="updateTempOkrs($event)"
-            />
+            <action-tooltip :reload-data="reloadData" :okrs-id.sync="row.id" :is-manage="isManage" :temp-okrs="row" @updateOKRs="updateOKRs(row)" />
           </div>
         </template>
       </el-table-column>
@@ -89,6 +83,9 @@ import { SelectDropdownDTO } from '@/constants/DTO/common';
 import ActionTooltip from '@/components/okrs/tooltip/ActionTooltip.vue';
 import ButtonCreateOkr from '@/components/okrs/items/button/index.vue';
 import AlignOkrsDialog from '@/components/okrs/dialog/AlignOkrsDialog.vue';
+import OkrsRepository from '@/repositories/OkrsRepository';
+import { ObjectiveDTO } from '@/constants/DTO/okrs';
+import { DispatchAction } from '@/constants/app.vuex';
 
 @Component<OKRsItem>({
   name: 'OKRsItem',
@@ -131,12 +128,22 @@ export default class OKRsItem extends Vue {
     });
   }
 
-  private updateTempOkrs({ dialogType, okrs }: DialogTooltipAction) {
-    this.tempOkrs = okrs;
-    if (dialogType === 1) {
-      this.visibleUpdateDialog = true;
-    } else {
-      this.visibleAlignDialog = true;
+  private async updateOKRs(objective) {
+    const { id, title, type, weight, keyResults } = objective;
+    const { data } = await OkrsRepository.getDetailOkrsById(id);
+    if (data) {
+      const okrs: ObjectiveDTO = {
+        id,
+        title,
+        projectId: data.project.id,
+        parentId: data.parentObjective.id,
+        type,
+        weight,
+        cycleId: 3,
+        alignmentObjectives: data.alignmentObjectives,
+        keyResults,
+      };
+      this.$store.dispatch(DispatchAction.UPDATE_DIALOG_OKRS, okrs);
     }
   }
 
