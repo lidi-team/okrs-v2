@@ -7,7 +7,7 @@
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="manage-employee__content">
-        <head-employee :link-invite="linkInvite" :text.sync="paramsUser.text" @name="paramsUser.text = $event" @search="handleSearch($event)" />
+        <head-employee :text.sync="paramsUser.text" @name="paramsUser.text = $event" @search="handleSearch($event)" />
         <component :is="currentTabComponent" :get-list-users="getListUsers" :teams="teams" :roles="roles" :jobs="jobs" :table-data="tableData" />
         <common-pagination
           class="manage-employee__pagination"
@@ -35,11 +35,13 @@ import RoleRepository from '@/repositories/RoleRepository';
 import { pageLimit } from '@/constants/app.constant';
 // components
 import CommonPagination from '@/components/common/Pagination.vue';
+import HeadEmployee from '@/components/manage/employee/HeadEmployee.vue';
 @Component<ManageEmployee>({
   name: 'ManageEmployee',
   middleware: 'employeesPage',
   components: {
     CommonPagination,
+    HeadEmployee,
   },
   async created() {
     await this.getListUsers();

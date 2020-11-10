@@ -30,11 +30,11 @@
               <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
             </el-tooltip>
           </div>
-          <div v-if="!row.roles.includes('ROLE_ADMIN_HR')">
+          <div v-if="!row.roles.includes('ROLE_ADMIN_HR')" class="employee-active__action">
             <el-tooltip class="employee-active__icon" content="Sửa" placement="left-end">
               <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
             </el-tooltip>
-            <el-tooltip class="employee-active__icon" content="Deactive tài khoản" placement="right-end">
+            <el-tooltip v-if="row.isActive" class="employee-active__icon" content="Deactive tài khoản" placement="right-end">
               <i class="el-icon-warning icon--warning" @click="deactiveUser(row)"></i>
             </el-tooltip>
           </div>

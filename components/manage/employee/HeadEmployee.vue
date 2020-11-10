@@ -10,11 +10,11 @@
       />
       <el-button class="el-button--white el-button--small el-button--search" @click="handleSearch(syncedText)">Tìm kiếm</el-button>
     </div>
-    <div class="header-employee__right">
+    <!-- <div class="header-employee__right">
       <el-button class="el-button--purple el-button--small el-button--invite" icon="el-icon-plus" @click="showInviteDialog">Mời thành viên</el-button>
-    </div>
+    </div> -->
     <!-- dialog invite -->
-    <el-dialog class="dialog-invite" title="Thêm thành viên" :visible.sync="showInvite">
+    <!-- <el-dialog class="dialog-invite" title="Thêm thành viên" :visible.sync="showInvite">
       <el-row :gutter="10" class="dialog-invite__content content">
         <el-col :xs="24" :md="4">
           <span class="content__name">Đường dẫn</span>
@@ -29,7 +29,7 @@
       <span slot="footer" class="dialog-footer">
         <el-button class="el-button--purple el-button--modal" @click="showInvite = false">Xong</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <script lang="ts">

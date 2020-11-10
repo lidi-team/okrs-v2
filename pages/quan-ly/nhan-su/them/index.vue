@@ -4,11 +4,47 @@
       <el-tab-pane label="Tải lên file" name="excel">
         <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
         <el-button class="el-button--purple el-button--modal" :disabled="!hasData" @click="handleAddEmployee">Thêm nhân viên</el-button>
-        <el-table :data="tableData" border highlight-current-row style="width: 100%; margin-top: 20px">
-          <el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" />
+        <el-table :data="tableData" border highlight-current-row style="width: 100%; margin-top: 20px" fit>
+          <!-- <el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" /> -->
+          <el-table-column label="Email" prop="email" align="center" min-width="80">
+            <template slot-scope="{ row }">
+              <span>{{ row.email }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="Họ và tên" prop="fullName" align="center" min-width="80">
+            <template slot-scope="{ row }">
+              <span>{{ row.fullName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="Ngày sinh" prop="dob" align="center" min-width="80">
+            <template slot-scope="{ row }">
+              <span>{{ row.dob }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="Số điện thoại" prop="phoneNumber" align="center" min-width="80">
+            <template slot-scope="{ row }">
+              <span>{{ row.phoneNumber }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="Giới tính" prop="gender" align="center" min-width="80">
+            <template slot-scope="{ row }">
+              <span>{{ row.gender }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="Phòng ban" prop="department" align="center" min-width="80">
+            <template slot-scope="{ row }">
+              <span>{{ row.department }}</span>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+            <template slot-scope="{ row, $index }">
+              <el-button type="primary" size="mini" @click="handleUpdate(row)"> Sửa </el-button>
+              <el-button v-if="row.status != 'deleted'" size="mini" type="danger" @click="handleDelete(row, $index)"> Xóa </el-button>
+            </template>
+          </el-table-column> -->
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="Thêm một" name="once">Config</el-tab-pane>
+      <!-- <el-tab-pane label="Thêm một" name="once">Config</el-tab-pane> -->
     </el-tabs>
   </div>
 </template>
