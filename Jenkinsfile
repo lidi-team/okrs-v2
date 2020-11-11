@@ -13,6 +13,7 @@ pipeline {
         stage('Build') { 
             steps {
                 // sh 'export A=$(lsof -t -i:8082)'
+                sh 'apt update'
                 sh 'cp /home/ubuntu/.env /data/workspace/hep1-instance/.env'
                 sh 'npm install'
                 sh 'npm update'
