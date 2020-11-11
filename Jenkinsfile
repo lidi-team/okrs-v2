@@ -13,6 +13,7 @@ pipeline {
         stage('Build') { 
             steps {
                 // sh 'export A=$(lsof -t -i:8082)'
+                sh 'cp /home/ubuntu/.env /data/workspace/hep1-instance/.env'
                 sh 'yarn'
                 sh 'yarn build'
                 sh 'docker build -t frontend .'
