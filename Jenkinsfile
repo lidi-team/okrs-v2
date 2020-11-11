@@ -13,6 +13,7 @@ pipeline {
         stage('Build') { 
             steps {
                 // sh 'export A=$(lsof -t -i:8082)'
+                sh 'yarn'
                 sh 'yarn build'
                 sh 'docker build -t frontend .'
                 sh 'docker container run -d -p 80:80 --name my-frontend frontend'
