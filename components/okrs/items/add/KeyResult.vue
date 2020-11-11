@@ -47,13 +47,13 @@
               </el-col>
               <el-col :span="10">
                 <el-form-item prop="targetValue" label="Mục tiêu" class="custom-label" label-width="80px">
-                  <el-input v-model.number="tempKeyResult.targetValue" size="medium" tabindex="4" />
+                  <el-input v-model.number="tempKeyResult.targetedValue" size="medium" tabindex="4" />
                 </el-form-item>
               </el-col>
             </el-row>
           </div>
           <div>
-            <el-form-item prop="parentId" label="Liên kết kết quả then chốt" class="custom-label" label-width="190px">
+            <el-form-item prop="keyResultParentId" label="Liên kết kết quả then chốt" class="custom-label" label-width="190px">
               <el-select
                 v-model="tempKeyResult.keyResultParentId"
                 filterable
@@ -113,7 +113,7 @@ export default class KeyResult extends Vue {
     required: true,
     default: () => ({
       startValue: 0,
-      targetValue: 100,
+      targetedValue: 100,
       content: '',
       keyResultParentId: null,
       linkPlans: '',
@@ -186,7 +186,7 @@ export default class KeyResult extends Vue {
       { validator: this.validateIsValidNumber, trigger: 'blur' },
       { validator: this.validateStartValue, trigger: 'blur' },
     ],
-    targetValue: [
+    targetedValue: [
       { type: 'number', required: true, message: 'Vui lòng nhập giá trị', trigger: 'blur' },
       { validator: this.validateIsValidNumber, trigger: 'blur' },
       { validator: this.validateTargetValue, trigger: 'blur' },
@@ -227,16 +227,6 @@ export default class KeyResult extends Vue {
       return callback('Kết quả then chốt phải chứa số');
     }
     return callback();
-  }
-
-  public clearForm() {
-    (this.$refs.keyResult as Form).clearValidate();
-    this.tempKeyResult.content = '';
-    this.tempKeyResult.targetvalue = 1;
-    this.tempKeyResult.keyResultParentId = 0;
-    this.tempKeyResult.linkPlans = '';
-    this.tempKeyResult.linkResults = '';
-    this.tempKeyResult.measureUnitId = 1;
   }
 
   private expandForm() {

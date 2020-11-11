@@ -43,16 +43,12 @@ import { KeyResultDTO } from '@/constants/DTO/okrs';
     IconAttention,
     KeyResult,
   },
-  created() {
+  mounted() {
     this.objectiveTitle = this.$store.state.okrs.objective.title;
-    if (this.$store.state.okrs.keyResults) {
-      this.keyResults = this.$store.state.okrs.objective.keyResults;
-    }
+    this.keyResults = this.$store.state.okrs.objective.keyResults;
   },
 })
 export default class CreateObjectiveStep extends Vue {
-  @Prop(Function) public reloadData!: Function;
-  @Prop({ type: Boolean, default: false }) private isCompanyOkrs!: boolean;
   @PropSync('active', Number) private syncActive!: number;
   @PropSync('visibleDialog', Boolean) private syncVisibleDialog!: boolean;
 
@@ -64,8 +60,9 @@ export default class CreateObjectiveStep extends Vue {
   private addNewKRs() {
     this.keyResults.push({
       startValue: 0,
-      targetValue: 100,
+      targetedValue: 100,
       content: '',
+      keyResultParentId: null,
       linkPlans: '',
       linkResults: '',
       measureUnitId: 1,
