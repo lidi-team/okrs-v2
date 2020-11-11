@@ -34,5 +34,5 @@ export const formatDateFromExcel = (date): string => {
   if (month.length < 2) month = '0' + month;
   if (day.length < 2) day = '0' + day;
 
-  return [day, month, year].join('-');
+  return [day, month, year].join('/');
 };
