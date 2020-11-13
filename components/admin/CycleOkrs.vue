@@ -1,7 +1,12 @@
 <template>
   <div v-loading="loadingTable">
     <el-table :data="tableData" empty-text="Không có dữ liệu" class="cycle-okrs">
-      <el-table-column prop="name" label="Tên chu kỳ"></el-table-column>
+      <el-table-column prop="name" label="Tên chu kỳ">
+        <template v-slot="{ row }">
+          <!-- Vue Fileter Date Plugin -->
+          <span>{{ row.name }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="Ngày bắt đầu">
         <template v-slot="{ row }">
           <!-- Vue Fileter Date Plugin -->
@@ -18,9 +23,9 @@
           <el-tooltip class="cycle-okrs__icon" content="Sửa" placement="top">
             <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
-          <el-tooltip v-if="$store.state.cycle.cycle.id !== row.id" class="cycle-okrs__icon" content="Xóa" placement="top">
+          <!-- <el-tooltip v-if="$store.state.cycle.cycle.id !== row.id" class="cycle-okrs__icon" content="Xóa" placement="top">
             <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
-          </el-tooltip>
+          </el-tooltip> -->
         </template>
       </el-table-column>
     </el-table>

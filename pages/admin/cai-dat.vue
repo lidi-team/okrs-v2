@@ -55,11 +55,15 @@ import CycleRepository from '@/repositories/CycleRepository';
 import JobRepository from '@/repositories/JobRepository';
 import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
+import AdminSlot from '@/components/AdminSlot.vue';
 import { AdminParams } from '@/constants/DTO/common';
 import { pageLimit } from '@/constants/app.constant';
 import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 @Component<SettingCompanyPage>({
   name: 'SettingCompanyPage',
+  components: {
+    AdminSlot,
+  },
   head() {
     return {
       title: 'Cài đặt công ty',
@@ -158,30 +162,30 @@ export default class SettingCompanyPage extends Vue {
     };
     try {
       if (this.$route.query.tab === AdminTabsEn.CycleOKR || this.$route.query.tab === undefined) {
-        // await CycleRepository.get(this.adminParams).then((res) => {
+        await CycleRepository.get(this.adminParams).then((res) => {
+          this.tableData = res.data.items;
+          this.totalItems = res.data.meta.totalItems;
+        });
+      } else if (this.$route.query.tab === AdminTabsEn.Department) {
+        // await TeamRepository.get(this.adminParams).then((res) => {
         //   this.tableData = res.data.data.items;
         //   this.totalItems = res.data.data.meta.totalItems;
         // });
-      } else if (this.$route.query.tab === AdminTabsEn.Department) {
-        await TeamRepository.get(this.adminParams).then((res) => {
-          this.tableData = res.data.data.items;
-          this.totalItems = res.data.data.meta.totalItems;
-        });
       } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
-        await EvaluationCriteriaRepository.get(this.adminParams).then((res) => {
-          this.tableData = res.data.data.items;
-          this.totalItems = res.data.data.meta.totalItems;
-        });
+        // await EvaluationCriteriaRepository.get(this.adminParams).then((res) => {
+        //   this.tableData = res.data.data.items;
+        //   this.totalItems = res.data.data.meta.totalItems;
+        // });
       } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
-        await JobRepository.get(this.adminParams).then((res) => {
-          this.tableData = res.data.data.items;
-          this.totalItems = res.data.data.meta.totalItems;
-        });
+        // await JobRepository.get(this.adminParams).then((res) => {
+        //   this.tableData = res.data.data.items;
+        //   this.totalItems = res.data.data.meta.totalItems;
+        // });
       } else if (this.$route.query.tab === AdminTabsEn.MeasureUnit) {
-        await MeasureUnitRepository.get(this.adminParams).then((res) => {
-          this.tableData = res.data.data.items;
-          this.totalItems = res.data.data.meta.totalItems;
-        });
+        // await MeasureUnitRepository.get(this.adminParams).then((res) => {
+        //   this.tableData = res.data.data.items;
+        //   this.totalItems = res.data.data.meta.totalItems;
+        // });
       }
     } catch (error) {}
   }
