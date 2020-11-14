@@ -67,6 +67,7 @@ export default class ManageEmployee extends Vue {
     sortWith: 'id',
   };
 
+  private tabs: string[] = [...Object.values(UserStatus)];
   private currentTab: UserStatus = this.$route.query.tab === 'all' ? UserStatus.All : UserStatus.Staff;
 
   @Watch('$route.query')
@@ -115,8 +116,6 @@ export default class ManageEmployee extends Vue {
       ? this.$router.push(`?tab=${tab}&page=${pagination.page}`)
       : this.$router.push(`?tab=${tab}&text=${this.$route.query.text}&page=${pagination.page}`);
   }
-
-  private tabs: string[] = [...Object.values(UserStatus)];
 
   private handleClick(currentTab: string) {
     this.paramsUser.text = '';

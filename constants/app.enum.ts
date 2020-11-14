@@ -41,6 +41,12 @@ export enum UserStatus {
   All = 'Tất cả',
 }
 
+export enum ProjectStatus {
+  All = 'all',
+  Active = 'active',
+  Closed = 'closed',
+}
+
 export enum TabCfr {
   Feedback = 'Danh sách chờ phản hồi',
   History = 'Lịch sử',
@@ -103,6 +109,7 @@ export enum ResourcesEnpoint {
   Checkin = 'checkins',
   CFRs = 'cfrs',
   Dashboard = 'dashboard',
+  Project = 'projects',
 }
 
 export enum CFREnpoint {

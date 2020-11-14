@@ -35,6 +35,17 @@ export interface EmployeeDTO {
   isApproved?: boolean;
 }
 
+export interface ProjectDTO {
+  id?: number;
+  name: string;
+  startDate: string;
+  endDate: string;
+  status: string;
+  description: string;
+  pm?: string | Object;
+  staffs?: Object[];
+}
+
 export interface RegisterOption {
   lable?: string;
   value?: number;

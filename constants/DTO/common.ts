@@ -21,3 +21,8 @@ export interface AdminParams extends ParamsQuery {
 export interface ParamsCFR extends ParamsQuery {
   status?: number;
 }
+
+export interface ParamsProject extends ParamsQuery {
+  type?: string;
+  sortWith: string;
+}
