@@ -14,7 +14,7 @@
       </el-form-item>
     </el-form>
     <div class="okrs-button-action">
-      <el-button class="el-button--white el-button--modal" @click="closeObjectiveForm">Hủy</el-button>
+      <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
       <el-button class="el-button--purple el-button--modal" @click="nextStepTwo">Tiếp theo</el-button>
     </div>
   </div>
@@ -24,8 +24,9 @@
 import { Form } from 'element-ui';
 import { mapGetters } from 'vuex';
 import { Component, Vue, PropSync, Watch, Prop } from 'vue-property-decorator';
-import { max255Char } from '@/constants/account.constant';
 
+import { max255Char } from '@/constants/account.constant';
+import { confirmWarningConfig } from '@/constants/app.constant';
 import { ObjectiveDTO } from '@/constants/DTO/okrs';
 import { ParamsQuery, SelectDropdownDTO } from '@/constants/DTO/common';
 import { Maps, Rule } from '@/constants/app.type';
@@ -99,11 +100,12 @@ export default class CreateObjective extends Vue {
     });
   }
 
-  public closeObjectiveForm() {
-    (this.$refs.tempObjective as Form).clearValidate();
-    this.tempObjective.title = '';
-    this.$store.commit(MutationState.SET_OBJECTIVE, null);
-    this.tempObjective.parentObjectiveId = null;
+  private handleCloseDialog() {
+    this.$confirm('Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?', { ...confirmWarningConfig })
+      .then(() => {
+        this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
+      })
+      .catch((err) => console.log(err));
   }
 }
 </script>

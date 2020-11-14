@@ -52,14 +52,16 @@
   </div>
 </template>
 <script lang="ts">
+import { mapGetters } from 'vuex';
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { MutationState, DispatchAction } from '@/constants/app.vuex';
-import OkrsRepository from '@/repositories/OkrsRepository';
-// components
+import { MutationState, DispatchAction, GetterState } from '@/constants/app.vuex';
+
 import CommonTopSearchCycle from '@/components/common/TopSearchCycle.vue';
 import ItemOkrs from '@/components/okrs/ItemOkrs.vue';
 import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
 import AddOkrs from '@/components/okrs/items/add/index.vue';
+
+import OkrsRepository from '@/repositories/OkrsRepository';
 
 @Component<OKRsPage>({
   name: 'OKRsPage',
@@ -74,8 +76,13 @@ import AddOkrs from '@/components/okrs/items/add/index.vue';
       title: 'OKRs',
     };
   },
-  async created() {
-    await this.getDashBoardOkrs();
+  computed: {
+    ...mapGetters({
+      isDialog: GetterState.OKRS_IS_DIALOG_OKRS,
+    }),
+  },
+  mounted() {
+    this.getDashBoardOkrs();
   },
 })
 export default class OKRsPage extends Vue {
@@ -99,6 +106,14 @@ export default class OKRsPage extends Vue {
 
   private projects: any[] = [];
 
+  @Watch('isDialog')
+  private changeDialog(value) {
+    if (value === false) {
+      console.log('FSDFSFS');
+      this.getDashBoardOkrs();
+    }
+  }
+
   @Watch('$store.state.user.tempUser.id', { immediate: false })
   private async getDashboarUser(userId: number) {
     await this.getDashBoardOkrs(userId);
@@ -112,7 +127,6 @@ export default class OKRsPage extends Vue {
       // const cycleId = this.$store.state.cycle.cycleTemp ? this.$store.state.cycle.cycleTemp : this.$store.state.cycle.cycle.id;
       // const { data } = await OkrsRepository.getOkrsDashboard(cycleId, userId);
       const { data } = await OkrsRepository.getListOkrsByCycleId(3);
-      console.log('hello', data);
       this.projects = Object.freeze(data);
       this.loadingForm = false;
       // if (this.$store.state.user.tempUser) {
