@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loadingComponent" class="okrs-page" ref="okrs">
+  <div v-loading="loadingComponent" class="okrs-page">
     <!-- <el-row class="okrs-page__top" type="flex" justify="space-between">
       <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
         <common-top-search-cycle @changeCycleData="changeCycleData($event)" />

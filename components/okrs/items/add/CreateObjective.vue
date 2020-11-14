@@ -42,11 +42,26 @@ import ProjectRepository from '@/repositories/ProjectRepository';
     ...mapGetters({
       cycleCurrent: GetterState.CYCLE_CURRENT,
       objectiveParent: GetterState.OKRS_OBJECTIVE_PARENT,
-      objective: GetterState.OKRS_OBJECTIVE,
+      isDialog: GetterState.OKRS_IS_DIALOG_OKRS,
     }),
   },
-  async mounted() {
-    const { title, parentId, weight, projectId } = this.objective;
+  mounted() {
+    this.getData();
+  },
+})
+export default class CreateObjective extends Vue {
+  @PropSync('active', Number) private syncActive!: number;
+
+  @Watch('isDialog')
+  private changeDialog(value) {
+    if (value === true) {
+      this.getData();
+    }
+  }
+
+  private async getData() {
+    const { title, parentId, weight, projectId } = this.$store.state.okrs.objective;
+    console.log(this.$store.state.okrs.objective);
     this.tempObjective = {
       title,
       parentId,
@@ -54,10 +69,7 @@ import ProjectRepository from '@/repositories/ProjectRepository';
     };
     const { data } = await ObjectiveRepository.getObjectivesProject(3, projectId);
     this.listObjectiveParent = data || [];
-  },
-})
-export default class CreateObjective extends Vue {
-  @PropSync('active', Number) private syncActive!: number;
+  }
 
   private rules: Maps<Rule[]> = {
     title: [{ type: 'string', required: true, message: 'Vui lòng nhập mục tiêu', trigger: 'blur' }, max255Char],

@@ -19,6 +19,7 @@ export default {
     },
     projectId: {
       type: Number,
+      default: 0,
     },
   },
   computed: {

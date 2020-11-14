@@ -109,6 +109,7 @@ export default class CreateAlignObjective extends Vue {
   }
 }
 </script>
+
 <style lang="scss">
 @import '@/assets/scss/main.scss';
 .okrs-align {

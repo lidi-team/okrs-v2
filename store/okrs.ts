@@ -73,6 +73,7 @@ export const actions: OKRsAction<OkrsState, RootState> = {
   createDialogOKRs({ commit }): void {
     commit(OkrsMutation.SET_DIALOG_OKRS, true);
     commit(OkrsMutation.SET_OBJECTIVE, initObjective);
+    console.log('run clear');
   },
 
   updateDialogOKRs({ commit }, data: ObjectiveDTO): void {
