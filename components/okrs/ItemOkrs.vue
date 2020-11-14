@@ -3,13 +3,7 @@
     <div class="-display-flex -justify-content-between">
       <h2 class="item__header">{{ title }}</h2>
       <div class="-display-flex -align-items-center">
-        <button-create-okr
-          v-if="isManage"
-          :list-objective-parent="listObjectiveParent()"
-          :type-objective="typeObjective"
-          :name-objective="nameObjective"
-          :project-id="projectId"
-        />
+        <button-create-okr v-if="isManage" :type-objective="typeObjective" :name-objective="nameObjective" :project-id="projectId" />
       </div>
     </div>
     <el-table :data="objectives" header-row-class-name="item__table-header" style="width: 100%;">
@@ -74,6 +68,7 @@
     <align-okrs-dialog v-if="visibleAlignDialog" :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleAlignDialog" :reload-data="reloadData" />
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { customColors } from './okrs.constant';
@@ -119,15 +114,6 @@ export default class OKRsItem extends Vue {
     return progress > 0 ? 'happy' : 'sad';
   }
 
-  private listObjectiveParent() {
-    return this.objectives.map((item: any) => {
-      return {
-        id: item.id,
-        name: item.title,
-      };
-    });
-  }
-
   private async updateOKRs(objective) {
     const { id, title, type, weight, keyResults } = objective;
     const { data } = await OkrsRepository.getDetailOkrsById(id);
@@ -156,6 +142,7 @@ export default class OKRsItem extends Vue {
   }
 }
 </script>
+
 <style lang="scss">
 @import '@/assets/scss/main.scss';
 .item-okrs {

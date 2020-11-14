@@ -45,7 +45,8 @@ import { KeyResultDTO } from '@/constants/DTO/okrs';
   },
   mounted() {
     this.objectiveTitle = this.$store.state.okrs.objective.title;
-    this.keyResults = this.$store.state.okrs.objective.keyResults;
+    // this.keyResults = this.$store.state.okrs.objective.keyResults;
+    this.keyResults = [];
   },
 })
 export default class CreateObjectiveStep extends Vue {

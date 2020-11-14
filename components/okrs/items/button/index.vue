@@ -20,10 +20,6 @@ export default {
     projectId: {
       type: Number,
     },
-    listObjectiveParent: {
-      type: Array,
-      default: () => [],
-    },
   },
   computed: {
     ...mapGetters({
@@ -33,7 +29,6 @@ export default {
   methods: {
     showDialog() {
       this.$store.dispatch(DispatchAction.CREATE_DIALOG_OKRS);
-      this.$store.commit(MutationState.SET_LIST_OBJECTIVE_PARENT, this.listObjectiveParent);
       this.$store.commit(MutationState.SET_OBJECTIVE, {
         projectId: this.projectId,
         type: this.typeObjective,

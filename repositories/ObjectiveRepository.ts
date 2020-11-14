@@ -5,6 +5,7 @@ export enum enpoint {
   objectivesParent = 'objective/parent-okr',
   createObjective = 'objective/add',
   alignObjective = 'objective/align-objective',
+  objectivesProject = 'objective/align-objective-project',
 }
 
 export default class ObjectiveRepository {
@@ -18,5 +19,9 @@ export default class ObjectiveRepository {
 
   public static getAlignObjective(cycleId: Number, projectId: Number): Promise<AxiosResponse<any>> {
     return baseUrl.get(enpoint.alignObjective, { params: { cycleId, projectId } });
+  }
+
+  public static getObjectivesProject(cycleId: Number, projectId: Number): Promise<AxiosResponse<any>> {
+    return baseUrl.get(enpoint.objectivesProject, { params: { cycleId, projectId } });
   }
 }

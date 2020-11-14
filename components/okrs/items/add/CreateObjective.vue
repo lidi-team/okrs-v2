@@ -27,7 +27,7 @@ import { Component, Vue, PropSync, Watch, Prop } from 'vue-property-decorator';
 import { max255Char } from '@/constants/account.constant';
 
 import { ObjectiveDTO } from '@/constants/DTO/okrs';
-import { ParamsQuery } from '@/constants/DTO/common';
+import { ParamsQuery, SelectDropdownDTO } from '@/constants/DTO/common';
 import { Maps, Rule } from '@/constants/app.type';
 import { DispatchAction, MutationState, GetterState } from '@/constants/app.vuex';
 
@@ -42,18 +42,18 @@ import ProjectRepository from '@/repositories/ProjectRepository';
     ...mapGetters({
       cycleCurrent: GetterState.CYCLE_CURRENT,
       objectiveParent: GetterState.OKRS_OBJECTIVE_PARENT,
-      listObjectiveParent: GetterState.OKRS_LIST_OBJECTIVE_PARENT,
       objective: GetterState.OKRS_OBJECTIVE,
     }),
   },
-  mounted() {
-    const { title, parentId, weight } = this.objective;
+  async mounted() {
+    const { title, parentId, weight, projectId } = this.objective;
     this.tempObjective = {
       title,
       parentId,
       weight,
     };
-    console.log(this.tempObjective);
+    const { data } = await ObjectiveRepository.getObjectivesProject(3, projectId);
+    this.listObjectiveParent = data || [];
   },
 })
 export default class CreateObjective extends Vue {
@@ -69,6 +69,8 @@ export default class CreateObjective extends Vue {
     parentId: null,
     weight: 1,
   };
+
+  private listObjectiveParent: Array<SelectDropdownDTO> = [];
 
   private sizeConfig = { minRows: 2, maxRows: 2 };
   private listDataParams: ParamsQuery = {
@@ -93,6 +95,7 @@ export default class CreateObjective extends Vue {
   }
 }
 </script>
+
 <style lang="scss">
 @import '@/assets/scss/main.scss';
 .create-objective {

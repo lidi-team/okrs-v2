@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loadingComponent" class="okrs-page">
+  <div v-loading="loadingComponent" class="okrs-page" ref="okrs">
     <!-- <el-row class="okrs-page__top" type="flex" justify="space-between">
       <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
         <common-top-search-cycle @changeCycleData="changeCycleData($event)" />
@@ -92,16 +92,6 @@ export default class OKRsPage extends Vue {
     this.visibleDetailKrs = true;
   }
 
-  private handleCommand(command: string) {
-    if (command === 'company') {
-      this.visibleCreateOkrsDialog = true;
-      this.isCompanyOkrs = true;
-    } else {
-      this.isCompanyOkrs = false;
-      this.visibleCreateOkrsDialog = true;
-    }
-  }
-
   private addPersonalOkrs() {
     this.isCompanyOkrs = false;
     this.visibleCreateOkrsDialog = true;
@@ -122,7 +112,7 @@ export default class OKRsPage extends Vue {
       // const cycleId = this.$store.state.cycle.cycleTemp ? this.$store.state.cycle.cycleTemp : this.$store.state.cycle.cycle.id;
       // const { data } = await OkrsRepository.getOkrsDashboard(cycleId, userId);
       const { data } = await OkrsRepository.getListOkrsByCycleId(3);
-      console.log(data);
+      console.log('hello', data);
       this.projects = Object.freeze(data);
       this.loadingForm = false;
       // if (this.$store.state.user.tempUser) {
