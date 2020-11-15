@@ -19,7 +19,7 @@
               <p v-if="objective.keyResults.length" class="expand__infor--link" @click="emitDrawer(objective.keyResults)">
                 {{ objective.keyResults.length }} kết quả
               </p>
-              <p v-else style="width: 200px; color: #212b36">{{ objective.keyResults.length }} kết quả</p>
+              <p v-else style="width: 120px; color: #212b36">{{ objective.keyResults.length }} kết quả</p>
               <div class="expand__infor--progress">
                 <el-progress :percentage="+objective.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
               </div>
@@ -27,10 +27,9 @@
                 <span :class="isUpProgress(objective.changing)">{{ objective.changing }}%</span>
                 <action-tooltip
                   class="expand__infor--action__tooltip"
-                  :reload-data="reloadData"
-                  :editable="row.pm"
-                  :okrs-id.sync="objective.id"
-                  :temp-okrs="objective"
+                  :id="objective.id"
+                  :isManage="true"
+                  :canDelete="objective.delete"
                   @updateOKRs="updateOKRs(objective)"
                 />
               </div>
@@ -38,13 +37,13 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="Mục tiêu" min-width="500">
+      <el-table-column label="Mục tiêu" min-width="400">
         <template v-slot="{ row }">
           <span>{{ row.title }}</span>
           <el-tag type="info">{{ row.childObjectives.length }} mục tiêu</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="Kết quả then chốt" width="200">
+      <el-table-column label="Kết quả then chốt" width="120">
         <template v-slot="{ row }">
           <p v-if="row.keyResults.length" class="item__krs" @click="emitDrawer(row.keyResults)">{{ row.keyResults.length }} kết quả</p>
           <p v-else style="color: #212b36">{{ row.keyResults.length }} kết quả</p>
@@ -61,7 +60,7 @@
         <template v-slot="{ row }">
           <div class="item__action">
             <p :class="isUpProgress(row.changing)">{{ row.changing }}%</p>
-            <action-tooltip :reload-data="reloadData" :okrs-id.sync="row.id" :is-manage="isManage" :temp-okrs="row" @updateOKRs="updateOKRs(row)" />
+            <action-tooltip :id="row.id" :is-manage="isManage" :canDelete="row.delete" @updateOKRs="updateOKRs(row)" />
           </div>
         </template>
       </el-table-column>
@@ -76,12 +75,14 @@ import { customColors } from './okrs.constant';
 import IconEllipse from '@/assets/images/okrs/ellipse.svg';
 import { DialogTooltipAction } from '@/constants/app.interface';
 import { SelectDropdownDTO } from '@/constants/DTO/common';
+
 import ActionTooltip from '@/components/okrs/tooltip/ActionTooltip.vue';
 import ButtonCreateOkr from '@/components/okrs/items/button/index.vue';
 import AlignOkrsDialog from '@/components/okrs/dialog/AlignOkrsDialog.vue';
-import OkrsRepository from '@/repositories/OkrsRepository';
 import { ObjectiveDTO } from '@/constants/DTO/okrs';
 import { DispatchAction } from '@/constants/app.vuex';
+
+import OkrsRepository from '@/repositories/OkrsRepository';
 
 @Component<OKRsItem>({
   name: 'OKRsItem',
@@ -205,7 +206,7 @@ export default class OKRsItem extends Vue {
       .expand__infor {
         display: flex;
         &--link {
-          width: 200px;
+          width: 120px;
           color: $blue-primary-2;
           cursor: pointer;
         }

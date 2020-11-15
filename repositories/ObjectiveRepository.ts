@@ -6,6 +6,7 @@ export enum enpoint {
   createObjective = 'objective/add',
   alignObjective = 'objective/align-objective',
   objectivesProject = 'objective/align-objective-project',
+  deleteObjective = 'objective/delete',
 }
 
 export default class ObjectiveRepository {
@@ -23,5 +24,9 @@ export default class ObjectiveRepository {
 
   public static getObjectivesProject(cycleId: Number, projectId: Number): Promise<AxiosResponse<any>> {
     return baseUrl.get(enpoint.objectivesProject, { params: { cycleId, projectId } });
+  }
+
+  public static deleteObjective(id: Number): Promise<AxiosResponse<any>> {
+    return baseUrl.delete(`${enpoint.deleteObjective}/${id}`);
   }
 }
