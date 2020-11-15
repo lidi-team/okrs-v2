@@ -157,7 +157,7 @@ export default class OKRsPage extends Vue {
 <style lang="scss">
 @import '@/assets/scss/main.scss';
 .okrs-page {
-  width: 98%;
+  width: 100%;
   &__top {
     @include breakpoint-down(phone) {
       flex-direction: column;

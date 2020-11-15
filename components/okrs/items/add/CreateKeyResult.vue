@@ -44,8 +44,8 @@ import { KeyResultDTO } from '@/constants/DTO/okrs';
     KeyResult,
   },
   mounted() {
-    this.objectiveTitle = this.$store.state.okrs.objective.title;
-    // this.keyResults = this.$store.state.okrs.objective.keyResults;
+    const { title, keyResults } = this.$store.state.okrs.objective;
+    this.objectiveTitle = title;
     this.keyResults = [];
   },
 })
@@ -55,7 +55,7 @@ export default class CreateObjectiveStep extends Vue {
 
   private loading: boolean = false;
   private objectiveTitle: string = '';
-  private keyResults: any[] = [];
+  public keyResults: any[] = [];
   private attentionsText: string[] = ['Nên có ít nhất phải có 2 kết quả then chốt', 'Không nên quá 5 kết quả then chốt cho 1 mục tiêu'];
 
   private addNewKRs() {
@@ -74,7 +74,6 @@ export default class CreateObjectiveStep extends Vue {
     this.$confirm('Bạn có chắc chắn muốn thoát quá trình này không?', {
       ...confirmWarningConfig,
     }).then(() => {
-      // (this.$refs.krsComponent as TreeKrComponent).clearObjectiveForm();
       this.$store.commit(MutationState.SET_OBJECTIVE, null);
       this.syncActive = 0;
       this.syncVisibleDialog = false;

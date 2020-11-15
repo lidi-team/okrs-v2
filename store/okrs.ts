@@ -27,16 +27,7 @@ const initObjective: ObjectiveDTO = {
   weight: 0,
   cycleId: 0,
   alignmentObjectives: [],
-  keyResults: [
-    {
-      startValue: 0,
-      targetValue: 100,
-      content: '',
-      linkPlans: '',
-      linkResults: '',
-      measureUnitId: 1,
-    },
-  ],
+  keyResults: [],
 };
 
 export const state = (): OkrsState => ({
@@ -73,7 +64,6 @@ export const actions: OKRsAction<OkrsState, RootState> = {
   createDialogOKRs({ commit }): void {
     commit(OkrsMutation.SET_DIALOG_OKRS, true);
     commit(OkrsMutation.SET_OBJECTIVE, initObjective);
-    console.log('run clear');
   },
 
   updateDialogOKRs({ commit }, data: ObjectiveDTO): void {

@@ -112,13 +112,13 @@ export default class KeyResult extends Vue {
     type: Object,
     required: true,
     default: () => ({
-      startValue: 0,
-      targetedValue: 100,
       content: '',
       keyResultParentId: null,
       linkPlans: '',
       linkResults: '',
       measureUnitId: 1,
+      startValue: 0,
+      targetedValue: 100,
     }),
   })
   private tempKeyResult!: any;
@@ -237,6 +237,7 @@ export default class KeyResult extends Vue {
   }
 }
 </script>
+
 <style lang="scss">
 @import '@/assets/scss/main.scss';
 .hovering {

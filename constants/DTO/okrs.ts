@@ -18,5 +18,5 @@ export interface ObjectiveDTO {
   weight: Number;
   cycleId: Number;
   alignmentObjectives: Array<Number>;
-  keyResults: Array<any>;
+  keyResults: any;
 }
