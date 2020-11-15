@@ -3,7 +3,8 @@
     <div class="-display-flex -justify-content-between">
       <h2 class="item__header">{{ title }}</h2>
       <div class="-display-flex -align-items-center">
-        <button-create-okr v-if="isManage" :type-objective="typeObjective" :name-objective="nameObjective" :project-id="projectId" />
+        <button-create-okr v-if="isManage" :type-objective="typeObjective" name-objective="dự án" :project-id="0" />
+        <button-create-okr :type-objective="typeObjective" name-objective="cá nhân" :project-id="projectId" />
       </div>
     </div>
     <el-table :data="objectives" header-row-class-name="item__table-header" style="width: 100%;">
@@ -98,7 +99,6 @@ export default class OKRsItem extends Vue {
   @Prop(Boolean) private isManage!: Boolean;
   @Prop(Number) private projectId!: Number;
   @Prop(Number) private typeObjective!: Number;
-  @Prop(String) private nameObjective!: String;
 
   private tempOkrs: any = {};
   private changeValue: number = 0;

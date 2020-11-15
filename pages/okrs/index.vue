@@ -27,7 +27,6 @@
         :key="item.id"
         :project-id="item.id"
         :type-objective="2"
-        name-objective="cá nhân"
         :title="item.name"
         :objectives="item.objectives"
         :is-manage="item.pm"
