@@ -5,8 +5,7 @@
         <p @click="viewDetailOkrs">Xem chi tiết</p>
         <div v-if="isManage">
           <p @click="updateOKRs">Cập nhật</p>
-          <p @click="openUpdateDialog(2)">Liên kết</p>
-          <p style="color: #e53e3e" @click="handleDeleteOKrs">Xóa</p>
+          <p style="color: #e53e3e" v-if="canDelete" @click="handleDeleteOKrs">Xóa</p>
         </div>
       </div>
       <i slot="reference" class="el-icon-more okrs-tooltip__icon"></i>
@@ -15,11 +14,11 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-
 import IconSetting from '@/assets/images/okrs/setting.svg';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { DialogTooltipAction } from '@/constants/app.interface';
+
 @Component<OkrsActionTooltip>({
   name: 'OkrsActionTooltip',
   components: {
@@ -27,40 +26,43 @@ import { DialogTooltipAction } from '@/constants/app.interface';
   },
 })
 export default class OkrsActionTooltip extends Vue {
-  @PropSync('okrsId', { type: Number, required: true }) private syncOkrsId!: number;
-  @Prop(Boolean) private isManage!: boolean;
+  @Prop({ type: Number, required: true }) private id!: Number;
+  @Prop(Boolean) private isManage!: Boolean;
+  @Prop(Boolean) private canDelete!: Boolean;
 
   private viewDetailOkrs() {
-    this.$router.push(`/OKRs/chi-tiet/${this.syncOkrsId}`);
+    this.$router.push(`/OKRs/chi-tiet/${this.id}`);
   }
 
   private updateOKRs() {
     this.$emit('updateOKRs');
   }
 
-  private handleDeleteOKrs(id: number) {
-    this.$confirm('Bạn có chắc chắn muốn xóa mục tiêu này?', {
-      ...confirmWarningConfig,
-    }).then(async () => {
-      try {
-        await OkrsRepository.deleteOkrs(+this.syncOkrsId).then((res: any) => {
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'Xóa OKRs thành công',
-          });
-        });
-      } catch (error) {
-        if (error.response.data.statusCode === 481) {
-          this.$notify.error({
-            ...notificationConfig,
-            message: 'Không được xóa OKRs đang được liên kết',
-          });
-        }
-      }
-    });
+  private handleDeleteOKrs() {
+    // this.$confirm('Bạn có chắc chắn muốn xóa mục tiêu này?', {
+    //   ...confirmWarningConfig,
+    // }).then(async () => {
+    //   try {
+    //     await OkrsRepository.deleteOkrs(id).then((res: any) => {
+    //       this.$notify.success({
+    //         ...notificationConfig,
+    //         message: 'Xóa OKRs thành công',
+    //       });
+    //     });
+    //   } catch (error) {
+    //     if (error.response.data.statusCode === 481) {
+    //       this.$notify.error({
+    //         ...notificationConfig,
+    //         message: 'Không được xóa OKRs đang được liên kết',
+    //       });
+    //     }
+    //   }
+    // }
+    // );
   }
 }
 </script>
+
 <style lang="scss">
 @import '@/assets/scss/main.scss';
 .okrs-tooltip {
