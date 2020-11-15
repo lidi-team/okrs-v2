@@ -1,8 +1,8 @@
 export enum TAB_CHECKIN {
-  MyOkrs = 'OKRs của tôi',
+  MyOkrs = 'Check-in của tôi',
   CheckinResquest = 'Yêu cầu Check-in',
-  Inferior = 'OKRs cấp dưới',
-  CheckinCompany = 'OKRs công ty',
+  Inferior = 'Check-in cấp dưới',
+  CheckinCompany = 'Check-in công ty',
 }
 
 export enum ROUTER_CHECKIN {
