@@ -5,19 +5,16 @@
         <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="sizeConfig"></el-input>
       </el-form-item>
       <el-form-item prop="parentId" label="Mục tiêu cấp trên" class="custom-label" label-width="120px">
-        <el-select
-          v-model="tempObjective.parentId"
-          filterable
-          no-match-text="Không tìm thấy kết quả"
-          placeholder="Chọn mục tiêu cấp trên"
-          :loading="loadingObjective"
-        >
+        <el-select v-model="tempObjective.parentId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn mục tiêu cấp trên">
           <el-option v-for="objective in listObjectiveParent" :key="objective.id" :label="objective.name" :value="objective.id" />
         </el-select>
       </el-form-item>
+      <el-form-item prop="weight" label="Trọng số" class="custom-label" label-width="120px">
+        <el-slider v-model="tempObjective.weight" :step="1" show-stops :min="1" :max="5"></el-slider>
+      </el-form-item>
     </el-form>
     <div class="okrs-button-action">
-      <el-button class="el-button--white el-button--modal" @click="closeObjectiveForm">Hủy</el-button>
+      <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
       <el-button class="el-button--purple el-button--modal" @click="nextStepTwo">Tiếp theo</el-button>
     </div>
   </div>
@@ -27,49 +24,67 @@
 import { Form } from 'element-ui';
 import { mapGetters } from 'vuex';
 import { Component, Vue, PropSync, Watch, Prop } from 'vue-property-decorator';
-import { max255Char } from '@/constants/account.constant';
 
+import { max255Char } from '@/constants/account.constant';
+import { confirmWarningConfig } from '@/constants/app.constant';
 import { ObjectiveDTO } from '@/constants/DTO/okrs';
-import { ParamsQuery } from '@/constants/DTO/common';
+import { ParamsQuery, SelectDropdownDTO } from '@/constants/DTO/common';
 import { Maps, Rule } from '@/constants/app.type';
 import { DispatchAction, MutationState, GetterState } from '@/constants/app.vuex';
 
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import ObjectiveRepository from '@/repositories/ObjectiveRepository';
+import ProjectRepository from '@/repositories/ProjectRepository';
 
 @Component<CreateObjective>({
   name: 'CreateObjective',
   computed: {
     ...mapGetters({
       cycleCurrent: GetterState.CYCLE_CURRENT,
+      objectiveParent: GetterState.OKRS_OBJECTIVE_PARENT,
+      isDialog: GetterState.OKRS_IS_DIALOG_OKRS,
     }),
   },
-  async mounted() {
-    const { data } = await ObjectiveRepository.getObjectivesParent(this.ObjectiveId);
-    this.listObjectiveParent = data.objectives;
-    this.loadingObjective = false;
+  mounted() {
+    this.getData();
   },
 })
 export default class CreateObjective extends Vue {
-  @Prop({ type: Number, default: 0 }) public ObjectiveId!: Number;
   @PropSync('active', Number) private syncActive!: number;
+
+  @Watch('isDialog')
+  private changeDialog(value) {
+    if (value === true) {
+      this.getData();
+    }
+  }
+
+  private async getData() {
+    const { title, parentId, weight, projectId } = this.$store.state.okrs.objective;
+    console.log(this.$store.state.okrs.objective);
+    this.tempObjective = {
+      title,
+      parentId,
+      weight,
+    };
+    const { data } = await ObjectiveRepository.getObjectivesProject(3, projectId);
+    this.listObjectiveParent = data || [];
+  }
 
   private rules: Maps<Rule[]> = {
     title: [{ type: 'string', required: true, message: 'Vui lòng nhập mục tiêu', trigger: 'blur' }, max255Char],
-    cycleId: [{ type: 'number', required: true, message: 'Vui lòng chọn chy kỳ', trigger: 'blur' }],
     parentObjectiveId: [{ type: 'number', required: true, message: 'Vui lòng chọn OKRs cấp trên', trigger: 'blur' }],
   };
-
-  private loadingObjective: boolean = true;
 
   public tempObjective: any = {
     title: '',
     parentId: null,
-    cycle: this.$store.state.cycle.cycleCurrent.id,
+    weight: 1,
   };
 
-  private listObjectiveParent: any[] = [];
+  private listObjectiveParent: Array<SelectDropdownDTO> = [];
+
   private sizeConfig = { minRows: 2, maxRows: 2 };
   private listDataParams: ParamsQuery = {
     page: 1,
@@ -79,21 +94,22 @@ export default class CreateObjective extends Vue {
   private nextStepTwo(): void {
     (this.$refs.tempObjective as Form).validate((isValid: boolean, invalidatedFields: object) => {
       if (isValid) {
-        console.log('submit', this.tempObjective);
         this.$store.commit(MutationState.SET_OBJECTIVE, this.tempObjective);
         this.syncActive++;
       }
     });
   }
 
-  public closeObjectiveForm() {
-    (this.$refs.tempObjective as Form).clearValidate();
-    this.tempObjective.title = '';
-    this.$store.commit(MutationState.SET_OBJECTIVE, null);
-    this.tempObjective.parentObjectiveId = null;
+  private handleCloseDialog() {
+    this.$confirm('Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?', { ...confirmWarningConfig })
+      .then(() => {
+        this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
+      })
+      .catch((err) => console.log(err));
   }
 }
 </script>
+
 <style lang="scss">
 @import '@/assets/scss/main.scss';
 .create-objective {

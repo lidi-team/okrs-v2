@@ -25,14 +25,14 @@
           <p class="item-aligned__title">Liên kết chéo</p>
           <div class="item-aligned__items">
             <div class="item-aligned__items--form">
-              <step-align-okrs-form
+              <!-- <align-okrs-form
                 v-for="(item, index) in itemsAlignOkrs"
                 :key="index"
                 ref="alignForms"
                 :index-align-form="index"
                 :align-okrs.sync="item"
                 @deleteAlignOkrs="deleteAlignOkrs($event)"
-              />
+              /> -->
             </div>
             <el-button class="el-button el-button--white el-button--small align-okrs__form--button" @click="addNewAlignOkrs">
               <icon-add-krs />
@@ -52,16 +52,15 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import { PayloadOkrs } from '@/constants/app.interface';
 import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
 // components
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
-import StepAlignOkrsForm from '@/components/okrs/steps/alignOkrs/AlignOkrsForm.vue';
+import AlignOkrsForm from '@/components/okrs/items/add/AlignObjective.vue';
 @Component<AlignOkrsDialog>({
   name: 'AlignOkrsDialog',
   components: {
     IconAddKrs,
-    StepAlignOkrsForm,
+    AlignOkrsForm,
   },
   created() {
     this.getListOkrs();
@@ -153,7 +152,7 @@ export default class AlignOkrsDialog extends Vue {
         this.loading = false;
       }, 300);
     } else {
-      const payload: PayloadOkrs = {
+      const payload: any = {
         objective: Object.assign(
           {},
           { id: +this.temporaryOkrs.id },

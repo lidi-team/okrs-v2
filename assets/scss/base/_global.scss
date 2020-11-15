@@ -216,6 +216,10 @@ span {
 // End El checkbox
 
 // El Select
+.el-select {
+  width: 100%;
+}
+
 .el-select .el-input.is-focus .el-input__inner {
   border-color: $purple-primary-5;
 }

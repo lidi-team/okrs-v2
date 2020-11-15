@@ -61,7 +61,7 @@ import { notificationConfig, confirmWarningConfig } from '@/constants/app.consta
 import { Maps, Rule } from '@/constants/app.type';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { AdminTabsEn } from '@/constants/app.enum';
-import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
+import MeasureUnitRepository from '@/repositories/MeasureRepository';
 
 import CommonPagination from '@/components/common/Pagination.vue';
 

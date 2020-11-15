@@ -1,74 +1,78 @@
 import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
 import { ObjectiveDTO, KeyResultDTO } from '@/constants/DTO/okrs';
-import OkrsRepository from '@/repositories/OkrsRepository';
 
 export enum OkrsMutation {
-  SET_OBJECTIVE = 'setObjective',
-  SET_KEY_RESULTS = 'setKeyResults',
+  SET_DIALOG_OKRS = 'setIsDialogOKRs',
   CLEAR_KRS = 'clearKrs',
   SET_STAFF_OKRS = 'setStaffOkrs',
+  SET_OBJECTIVE_PARENT = 'setObjectiveParent',
+  SET_LIST_OBJECTIVE_ALIGN = 'setListObjectiveAlign',
+  SET_OBJECTIVE = 'setObjective',
+  SET_KEY_RESULT = 'setKeyResult',
 }
 
 export interface OkrsState {
+  isDialogOKRs: Boolean;
+  objectiveParent: Number;
+  listObjectiveAlign: any[];
   objective: ObjectiveDTO;
-  keyResults: KeyResultDTO[] | null;
-  staffOkrs: any[] | null;
 }
 
+const initObjective: ObjectiveDTO = {
+  id: null,
+  title: '',
+  projectId: 0,
+  parentId: null,
+  type: 0,
+  weight: 0,
+  cycleId: 0,
+  alignmentObjectives: [],
+  keyResults: [],
+};
+
 export const state = (): OkrsState => ({
-  objective: {
-    id: 0,
-    title: '',
-    content: '',
-    userId: 0,
-    projectId: 0,
-    parentId: 0,
-    type: 0,
-    weight: 0,
-    cycleId: 0,
-    changing: 0,
-    progress: 0,
-    status: '',
-    alignmentObjectives: [],
-    keyResults: [],
-  },
-  keyResults: null,
-  staffOkrs: null,
+  isDialogOKRs: false,
+  objectiveParent: 0,
+  listObjectiveAlign: [],
+  objective: initObjective,
 });
 
 export type RootState = ReturnType<typeof state>;
 
 export const getters: GetterTree<RootState, RootState> = {
+  isDialogOKRs: (state) => state.isDialogOKRs,
+  objectiveParent: (state) => state.objectiveParent,
+  listObjectiveAlign: (state) => state.listObjectiveAlign,
   objective: (state) => state.objective,
-  keyResults: (state) => state.keyResults,
-  staffOkrs: (state) => state.staffOkrs,
 };
 
 export const mutations: MutationTree<RootState> = {
-  [OkrsMutation.SET_OBJECTIVE]: (state, objective: ObjectiveDTO) => (state.objective = objective),
-  [OkrsMutation.SET_KEY_RESULTS]: (state, keyResults: KeyResultDTO[]) => (state.keyResults = [...keyResults]),
-  [OkrsMutation.CLEAR_KRS]: (state) => (state.keyResults = []),
-  [OkrsMutation.SET_STAFF_OKRS]: (state, staffOkrs: any) => (state.staffOkrs = staffOkrs),
+  [OkrsMutation.SET_DIALOG_OKRS]: (state, data: Boolean) => (state.isDialogOKRs = data),
+  [OkrsMutation.SET_OBJECTIVE_PARENT]: (state, data: Number) => (state.objectiveParent = data),
+  [OkrsMutation.SET_LIST_OBJECTIVE_ALIGN]: (state, data: any[]) => (state.listObjectiveAlign = data),
+  [OkrsMutation.SET_OBJECTIVE]: (state, data: any) => (state.objective = { ...state.objective, ...data }),
+  [OkrsMutation.SET_KEY_RESULT]: (state, data: KeyResultDTO[]) => (state.objective.keyResults = [...data]),
 };
 
 export interface OKRsAction<S, R> extends ActionTree<S, R> {
-  setStaffOkrs(context: ActionContext<S, R>, payload: any): Promise<void>;
-  clearStaffOkrs(context: ActionContext<S, R>, payload: any): void;
-  clearOkrs(context: ActionContext<S, R>): void;
+  createDialogOKRs(context: ActionContext<S, R>): void;
+  updateDialogOKRs(context: ActionContext<S, R>, data: any): void;
+  closeDialogOKRs(context: ActionContext<S, R>): void;
 }
 
 export const actions: OKRsAction<OkrsState, RootState> = {
-  async setStaffOkrs({ commit }, { cycleId, type }): Promise<void> {
-    try {
-      const { data } = await OkrsRepository.getListOkrs(cycleId, type);
-      commit(OkrsMutation.SET_STAFF_OKRS, Object.freeze(data.data));
-    } catch (error) {}
+  createDialogOKRs({ commit }): void {
+    commit(OkrsMutation.SET_DIALOG_OKRS, true);
+    commit(OkrsMutation.SET_OBJECTIVE, initObjective);
   },
-  clearStaffOkrs({ commit }) {
-    commit(OkrsMutation.SET_STAFF_OKRS, []);
+
+  updateDialogOKRs({ commit }, data: ObjectiveDTO): void {
+    commit(OkrsMutation.SET_DIALOG_OKRS, true);
+    commit(OkrsMutation.SET_OBJECTIVE, data);
   },
-  clearOkrs({ commit }): void {
-    commit(OkrsMutation.SET_OBJECTIVE, null);
-    commit(OkrsMutation.CLEAR_KRS);
+
+  closeDialogOKRs({ commit }): void {
+    commit(OkrsMutation.SET_DIALOG_OKRS, false);
+    commit(OkrsMutation.SET_OBJECTIVE, initObjective);
   },
 };

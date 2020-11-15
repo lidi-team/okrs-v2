@@ -1,6 +1,6 @@
 <template>
   <div v-if="user" class="dashboard">
-    <el-select
+    <!-- <el-select
       v-if="listCycles.length > 0"
       v-model="cycleId"
       no-match-text="Không tìm thấy chu kỳ"
@@ -9,7 +9,7 @@
       @change="handleSelectCycle(cycleId)"
     >
       <el-option v-for="cycle in listCycles" :key="cycle.value" :label="cycle.label" :value="cycle.value" />
-    </el-select>
+    </el-select> -->
     <dashboard-progress-bar :loading="loading" :data-okrs-progress="dataOkrsProgress" />
     <div v-if="user.role.name === 'ADMIN'" v-loading="loadingAdmin">
       <el-row v-if="dataCheckin.length > 0" class="col-container">

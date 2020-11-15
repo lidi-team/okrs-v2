@@ -1,31 +1,28 @@
 <template>
-  <div class="add-krs-step">
-    <p class="add-krs-step__objective">{{ objectiveTitle }}</p>
-    <div v-loading="formLoading">
+  <div>
+    <div class="add-krs-step">
       <key-result
-        v-for="(item, index) in krFormItems"
+        v-for="(item, index) in keyResults"
         :key="index"
         ref="krsForm"
         :index-kr-form="index"
         :key-result.sync="item"
         @deleteKr="deleteKrForm($event)"
       />
-    </div>
-    <el-button v-if="!formLoading" class="el-button el-button--white el-button--small add-krs-step__button" @click="addNewKRs">
-      <icon-add-krs />
-      <span>Thêm KRs</span>
-    </el-button>
-    <div class="add-krs-step__attention">
-      <p class="add-krs-step__attention--title">Lưu ý:</p>
-      <div v-for="(attention, i) in attentionsText" :key="attention[i]" class="add-krs-step__attention--content">
-        <icon-attention />
-        <span>{{ attention }}</span>
+      <el-button class="el-button el-button--white el-button--small add-krs-step__button" @click="addNewKRs">
+        <span>Thêm KRs</span>
+      </el-button>
+      <div class="add-krs-step__attention">
+        <p class="add-krs-step__attention--title">Lưu ý:</p>
+        <div v-for="(attention, i) in attentionsText" :key="attention[i]" class="add-krs-step__attention--content">
+          <icon-attention />
+          <span>{{ attention }}</span>
+        </div>
       </div>
     </div>
     <div class="add-krs-step__action">
       <el-button class="el-button--white el-button--modal" @click="backToStepOne">Quay lại</el-button>
-      <el-button v-if="!isCompanyOkrs" class="el-button--purple el-button--modal" :loading="loading" @click="nextStepThree">Tiếp theo</el-button>
-      <el-button v-else class="el-button--purple el-button--modal" :loading="loading" @click="createRootOkrs">Tạo OKRs</el-button>
+      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="nextStepThree">Tiếp theo</el-button>
     </div>
   </div>
 </template>
@@ -34,134 +31,72 @@ import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import KeyResult from './KeyResult.vue';
 import IconAttention from '@/assets/images/okrs/attention.svg';
-import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
-import { PayloadOkrs } from '@/constants/app.interface';
 import { MutationState, DispatchAction } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import OkrsRepository from '@/repositories/OkrsRepository';
+import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 import { KeyResultDTO } from '@/constants/DTO/okrs';
 
 @Component<CreateObjectiveStep>({
   name: 'CreateObjectiveStep',
   components: {
     IconAttention,
-    IconAddKrs,
     KeyResult,
   },
-  created() {
-    this.objectiveTitle = this.$store.state.okrs.objective.title;
-    if (this.$store.state.okrs.keyResults) {
-      this.krFormItems = this.$store.state.okrs.keyResults.length !== 0 ? this.$store.state.okrs.keyResults.map((item) => ({ ...item })) : [];
-    }
+  mounted() {
+    const { title, keyResults } = this.$store.state.okrs.objective;
+    this.objectiveTitle = title;
+    this.keyResults = [];
   },
 })
 export default class CreateObjectiveStep extends Vue {
-  @Prop(Function) public reloadData!: Function;
-  @Prop({ type: Boolean, default: false }) private isCompanyOkrs!: boolean;
   @PropSync('active', Number) private syncActive!: number;
   @PropSync('visibleDialog', Boolean) private syncVisibleDialog!: boolean;
 
-  private formLoading: boolean = false;
   private loading: boolean = false;
   private objectiveTitle: string = '';
-  private krFormItems: any[] = [];
+  public keyResults: any[] = [];
   private attentionsText: string[] = ['Nên có ít nhất phải có 2 kết quả then chốt', 'Không nên quá 5 kết quả then chốt cho 1 mục tiêu'];
 
   private addNewKRs() {
-    this.formLoading = true;
-    this.krFormItems.push({
+    this.keyResults.push({
       startValue: 0,
-      targetValue: 100,
+      targetedValue: 100,
       content: '',
+      keyResultParentId: null,
       linkPlans: '',
       linkResults: '',
       measureUnitId: 1,
     });
-    setTimeout(() => {
-      this.formLoading = false;
-    }, 500);
   }
 
   private closeKrsForm() {
     this.$confirm('Bạn có chắc chắn muốn thoát quá trình này không?', {
       ...confirmWarningConfig,
     }).then(() => {
-      // (this.$refs.krsComponent as TreeKrComponent).clearObjectiveForm();
       this.$store.commit(MutationState.SET_OBJECTIVE, null);
       this.syncActive = 0;
       this.syncVisibleDialog = false;
     });
   }
 
-  private async createRootOkrs() {
-    const payload: any = {};
-    const krs: any[] = [];
-    let validForm: number = 0;
-
-    this.loading = true;
-    if (this.krFormItems.length === 0) {
-      setTimeout(() => {
-        this.loading = false;
-      }, 300);
-      this.$message.error('Cần có ít nhất 1 kết quả then chốt');
-    } else {
-      (this.$refs.krsForm as any).forEach((form) => {
-        (form.$refs.keyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
-          if (isValid) {
-            validForm++;
-          }
-        });
-        krs.push(Object.freeze(form.syncTempKr));
-      });
-      if (validForm === krs.length) {
-        // Set this is root objective
-        const payload: PayloadOkrs = {
-          objective: Object.assign({}, this.$store.state.okrs.objective, { isRootObjective: true }),
-          keyResult: krs,
-        };
-        try {
-          await OkrsRepository.createOrUpdateOkrs(payload).then(async (res) => {
-            this.loading = false;
-            this.syncVisibleDialog = false;
-            this.krFormItems = [];
-            this.$store.dispatch(DispatchAction.CLEAR_OKRS);
-            await this.reloadData();
-            this.$notify.success({
-              ...notificationConfig,
-              message: 'Tạo OKRs thành công',
-            });
-          });
-        } catch (error) {
-          this.loading = false;
-        }
-      } else {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-        this.$message.error('Vui lòng nhập đúng các trường yêu cầu');
-      }
-    }
-  }
-
   private backToStepOne() {
-    this.$store.commit(MutationState.CLEAR_KRS);
-    if (this.krFormItems.length !== 0) {
+    if (this.keyResults.length !== 0) {
       const tempKrs: any[] = [];
       (this.$refs.krsForm as any).forEach((form) => {
-        tempKrs.push(form.syncTempKr);
+        tempKrs.push(form.tempKeyResult);
       });
-      this.$store.commit(MutationState.SET_KRS, tempKrs);
-      this.syncActive--;
+      this.$store.commit(MutationState.SET_KEY_RESULT, tempKrs);
     }
     this.syncActive--;
   }
 
-  private nextStepThree() {
+  private async nextStepThree() {
     const krs: any[] = [];
     let validForm: number = 0;
 
     this.loading = true;
-    if (this.krFormItems.length === 0) {
+    if (this.keyResults.length === 0) {
       setTimeout(() => {
         this.loading = false;
       }, 300);
@@ -173,13 +108,15 @@ export default class CreateObjectiveStep extends Vue {
             validForm++;
           }
         });
-        krs.push(Object.freeze(form.syncTempKr));
+        krs.push(Object.freeze(form.tempKeyResult));
       });
       if (validForm === krs.length) {
-        // Set this is not root objective
-        const tempObjective = Object.assign({}, this.$store.state.okrs.objective, { isRootObjective: false });
-        this.$store.commit(MutationState.SET_KRS, krs);
-        this.$store.commit(MutationState.SET_OBJECTIVE, tempObjective);
+        this.$store.commit(MutationState.SET_KEY_RESULT, krs);
+        const { data } = await ObjectiveRepository.getAlignObjective(
+          this.$store.state.cycle.cycleCurrent.id,
+          this.$store.state.okrs.objective.projectId,
+        );
+        this.$store.commit(MutationState.SET_LIST_OBJECTIVE_ALIGN, data);
         this.syncActive++;
         this.loading = false;
       } else {
@@ -192,11 +129,7 @@ export default class CreateObjectiveStep extends Vue {
   }
 
   private deleteKrForm(indexForm: number) {
-    this.formLoading = true;
-    this.krFormItems.splice(indexForm, 1);
-    setTimeout(() => {
-      this.formLoading = false;
-    }, 300);
+    this.keyResults.splice(indexForm, 1);
   }
 }
 </script>
@@ -248,9 +181,6 @@ export default class CreateObjectiveStep extends Vue {
   }
   &__action {
     @include okrs-button-action;
-    width: 800px;
-    margin-left: -$unit-5;
-    padding-right: $unit-5;
   }
 }
 </style>

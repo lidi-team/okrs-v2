@@ -3,7 +3,7 @@
     <el-form ref="alignOkrs" :model="syncAlignOkrs" class="align-okrs-form__input">
       <el-form-item prop="objectiveId">
         <el-select v-model.number="syncAlignOkrs.objectiveId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn OKRs liên kết chéo">
-          <el-option v-for="item in itemsAlignOkrs" :key="item.id" :label="staffOkrsFormat(item)" :value="item.id" />
+          <el-option v-for="item in itemsAlignOkrs" :key="item.id" :label="getLabel(item)" :value="item.id" />
         </el-select>
       </el-form-item>
     </el-form>
@@ -19,16 +19,19 @@ import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import IconDelete from '@/assets/images/common/delete.svg';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { Maps, Rule } from '@/constants/app.type';
-@Component<InputAlignOkrs>({
+import { ObjectiveAlignDTO } from '@/components/okrs/items/add/constants';
+import ObjectiveRepository from '@/repositories/ObjectiveRepository';
+
+@Component<AlignObjective>({
   name: 'InputAlignOkrs',
   components: {
     IconDelete,
   },
-  mounted() {
-    this.itemsAlignOkrs = this.$store.state.okrs.staffOkrs.map((item) => ({ ...item }));
+  created() {
+    this.itemsAlignOkrs = this.$store.state.okrs.listObjectiveAlign;
   },
 })
-export default class InputAlignOkrs extends Vue {
+export default class AlignObjective extends Vue {
   @PropSync('alignOkrs', {
     type: Object,
     required: true,
@@ -40,19 +43,14 @@ export default class InputAlignOkrs extends Vue {
 
   @Prop(Number) private indexAlignForm!: number;
 
-  private hovering: boolean = false;
   private itemsAlignOkrs: any[] = [];
 
-  // private rules: Maps<Rule[]> = {
-  //   objectiveId: [{ type: 'number', required: true, message: 'Vui lòng chọn OKRs để liên kết', trigger: ['blur', 'change'] }],
-  // };
+  getLabel(data: ObjectiveAlignDTO): String {
+    return `[${data.user} - ${data.type === 2 ? 'Cá nhân' : 'Dự án'}] ${data.name}`;
+  }
 
   private deleteAlignOkrs(indexAlignForm: number) {
     this.$emit('deleteAlignOkrs', indexAlignForm);
-  }
-
-  private staffOkrsFormat(item) {
-    return `[${item.user.email}] ${item.title}`;
   }
 }
 </script>

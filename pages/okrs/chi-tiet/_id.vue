@@ -77,10 +77,10 @@ import { MutationState, DispatchAction } from '@/constants/app.vuex';
     this.tempOkrs = this.objective;
   },
   mounted() {
-    this.$store.dispatch(DispatchAction.SET_MEASURE_UNITS);
+    this.$store.dispatch(DispatchAction.GET_MEASURE);
   },
   beforeRouteLeave(_, __, next) {
-    this.$store.dispatch(DispatchAction.CLEAR_MEASURE_UNITS);
+    this.$store.dispatch(DispatchAction.CLEAR_MEASURE);
     next();
   },
 })
