@@ -1,6 +1,7 @@
-import { baseUrlV1, baseUrl } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
 import { LessonDTO } from '@/constants/app.interface';
+import { baseUrlV1, baseUrl } from './BaseRepository';
+
 export default class LessonRepository {
   public static get(params: any) {
     return baseUrlV1.get(`${ResourcesEnpoint.Lessons}`, { params });

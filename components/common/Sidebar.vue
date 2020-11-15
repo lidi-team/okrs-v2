@@ -30,8 +30,8 @@
       </nuxt-link>
       <!-- Start Role Permission action -->
 
-      <!-- <nuxt-link
-        v-if="user.role.name === 'ADMIN'"
+      <nuxt-link
+        v-if="user.roles.includes('ROLE_ADMIN')"
         to="/admin/cai-dat"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isSettingCompanyActive }]"
       >
@@ -41,12 +41,16 @@
           <p class="hidden-tablet">công ty</p>
         </div>
       </nuxt-link>
-      <nuxt-link v-if="user.role.name === 'HR'" to="/quan-ly/nhan-su" :class="['sidebar__link', { 'nuxt-link-exact-active': isHRsActive }]">
+      <nuxt-link
+        v-if="user.roles.includes('ROLE_ADMIN_HR')"
+        to="/quan-ly/nhan-su"
+        :class="['sidebar__link', { 'nuxt-link-exact-active': isHRsActive }]"
+      >
         <div class="sidebar__link__tab">
           <human-resources class="sidebar__link__tab__icon" />
           <span>Quản lý nhân sự</span>
         </div>
-      </nuxt-link> -->
+      </nuxt-link>
       <!-- End Role Permission action -->
     </el-row>
   </div>
@@ -71,6 +75,9 @@ import { GetterState } from '@/constants/app.vuex';
     OKRs,
     Setting,
     HumanResources,
+  },
+  created() {
+    console.log('user: ', this.user.roles.includes('ROLE_ADMIN'));
   },
   computed: {
     ...mapGetters({

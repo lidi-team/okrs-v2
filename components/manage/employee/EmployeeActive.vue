@@ -1,35 +1,40 @@
 <template>
   <div>
-    <el-table v-loading="loadingTable" empty-text="Không có dữ liệu" class="employee-active" :data="tableData" style="width: 100%;">
+    <el-table v-loading="loadingTable" empty-text="Không có dữ liệu" class="employee-active" :data="tableData" style="width: 100%">
       <el-table-column prop="fullName" label="Tên đầy đủ" min-width="150"></el-table-column>
-      <el-table-column prop="email" label="Email" min-width="150"></el-table-column>
+      <el-table-column prop="email" label="Email" min-width="180"></el-table-column>
       <el-table-column label="Phòng ban" min-width="150">
         <template slot-scope="{ row }">
-          <span>{{ row.team.name }}</span>
+          <span>{{ row.department.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Vị trí công việc" min-width="150">
+      <el-table-column prop="role" label="Vai trò" min-width="150">
         <template slot-scope="{ row }">
-          <span>{{ row.jobPosition.name }}</span>
+          <span>{{ displayRoleName(row.roles) }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="role" label="Vai trò">
+      <el-table-column label="Giới tính">
         <template slot-scope="{ row }">
-          <span>{{ row.role.name === 'ADMIN' ? 'Admin' : row.isLeader ? 'Team Leader' : row.role.name }}</span>
+          <span>{{ row.gender == 0 ? 'Nữ' : 'Nam' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="Trạng thái">
+        <template slot-scope="{ row }">
+          <span>{{ row.isActive == 1 ? 'hoạt động' : 'tạm khóa' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
         <template slot-scope="{ row }">
-          <div v-if="row.role.name === 'ADMIN' && user.role.name === 'ADMIN'">
+          <div v-if="row.roles.includes('ROLE_ADMIN_HR') && user.roles.includes('ROLE_ADMIN')">
             <el-tooltip class="employee-active__icon" content="Sửa" placement="left-end">
               <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
             </el-tooltip>
           </div>
-          <div v-if="row.role.name !== 'ADMIN'">
+          <div v-if="!row.roles.includes('ROLE_ADMIN_HR')" class="employee-active__action">
             <el-tooltip class="employee-active__icon" content="Sửa" placement="left-end">
               <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
             </el-tooltip>
-            <el-tooltip class="employee-active__icon" content="Deactive tài khoản" placement="right-end">
+            <el-tooltip v-if="row.isActive" class="employee-active__icon" content="Deactive tài khoản" placement="right-end">
               <i class="el-icon-warning icon--warning" @click="deactiveUser(row)"></i>
             </el-tooltip>
           </div>
@@ -55,7 +60,7 @@
             :rules="rules"
             :model="tempUpdateUser"
             label-position="top"
-            style="width: 100%;"
+            style="width: 100%"
           >
             <el-form-item label="Tên đầy đủ:" prop="fullName" class="custom-label">
               <el-input v-model="tempUpdateUser.fullName" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
@@ -63,9 +68,9 @@
             <el-form-item label="Email:" prop="email" class="custom-label">
               <el-input v-model="tempUpdateUser.email" placeholder="Nhập email" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
             </el-form-item>
-            <el-form-item v-if="tempUpdateUser.roleId !== Number(1)" label="Phòng ban:" class="custom-label" prop="teamId">
+            <el-form-item v-if="true" label="Phòng ban:" class="custom-label" prop="departmentId">
               <el-select
-                v-model="tempUpdateUser.teamId"
+                v-model="tempUpdateUser.departmentId"
                 class="custom-label"
                 placeholder="Chọn phòng ban"
                 @keyup.enter.native="handleUpdate(tempUpdateUser)"
@@ -73,7 +78,22 @@
                 <el-option v-for="item in teams" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
             </el-form-item>
-            <el-form-item label="Vị trí công việc:" class="custom-label" prop="jobPositionId">
+            <el-form-item v-if="true" label="giới tính:" class="custom-label" prop="gender">
+              <el-radio v-model="tempUpdateUser.gender" :label="1">Nam</el-radio>
+              <el-radio v-model="tempUpdateUser.gender" :label="0">Nữ</el-radio>
+            </el-form-item>
+            <el-form-item v-if="true" label="ngày sinh:" class="custom-label" prop="dob">
+              <el-date-picker
+                v-model="tempUpdateUser.dob"
+                format="dd/MM/yyyy"
+                value-format="dd/MM/yyyy"
+                :picker-options="pickerOptions"
+                type="date"
+                placeholder="Chọn ngày sinh"
+              ></el-date-picker>
+            </el-form-item>
+
+            <!-- <el-form-item label="Vị trí công việc:" class="custom-label" prop="jobPositionId">
               <el-select
                 v-model="tempUpdateUser.jobPositionId"
                 class="custom-label"
@@ -82,8 +102,8 @@
               >
                 <el-option v-for="item in jobs" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
-            </el-form-item>
-            <el-form-item v-if="tempUpdateUser.roleId !== Number(1)" label="Vai trò:" class="custom-label" prop="roleId">
+            </el-form-item> -->
+            <!-- <el-form-item v-if="tempUpdateUser.roleId !== Number(1)" label="Vai trò:" class="custom-label" prop="roleId">
               <el-select
                 v-model="tempUpdateUser.roleId"
                 class="custom-label"
@@ -92,8 +112,8 @@
               >
                 <el-option v-for="item in roles" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
-            </el-form-item>
-            <el-checkbox v-if="tempUpdateUser.roleId !== Number(1)" v-model="tempUpdateUser.isLeader">Trưởng nhóm</el-checkbox>
+            </el-form-item> -->
+            <!-- <el-checkbox v-if="tempUpdateUser.roleId !== Number(1)" v-model="tempUpdateUser.isLeader">Trưởng nhóm</el-checkbox> -->
           </el-form>
         </el-col>
       </el-row>
@@ -115,6 +135,7 @@ import { Maps, Rule } from '@/constants/app.type';
 import { EmployeeDTO } from '@/constants/app.interface';
 import { GetterState } from '@/constants/app.vuex';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
+import { formatDateToDD } from '@/utils/dateParser';
 @Component<EmployeeActive>({
   name: 'EmployeeActive',
   computed: {
@@ -132,8 +153,8 @@ import EmployeeRepository from '@/repositories/EmployeeRepository';
 export default class EmployeeActive extends Vue {
   @Prop(Array) readonly tableData!: Array<object>;
   @Prop(Array) readonly teams!: Array<object>;
-  @Prop(Array) readonly jobs!: Array<object>;
-  @Prop(Array) readonly roles!: Array<object>;
+  // @Prop(Array) readonly jobs!: Array<object>;
+  // @Prop(Array) readonly roles!: Array<object>;
   @Prop(Function) readonly getListUsers;
 
   private loadingTable: boolean = false;
@@ -143,10 +164,11 @@ export default class EmployeeActive extends Vue {
     id: 0,
     fullName: '',
     email: '',
-    roleId: 3,
-    teamId: 0,
-    jobPositionId: 0,
-    isLeader: false,
+    roles: [],
+    departmentId: 0,
+    gender: 0,
+    dob: '',
+    // isLeader: false,
     isActive: false,
   };
 
@@ -157,16 +179,19 @@ export default class EmployeeActive extends Vue {
       id: row.id,
       fullName: row.fullName,
       email: row.email,
-      roleId: row.role.id,
-      teamId: row.team.id,
-      jobPositionId: row.jobPosition.id,
-      isLeader: row.isLeader,
+      roles: row.roles,
+      departmentId: row.department.id,
+      gender: row.gender,
+      dob: row.dob ? formatDateToDD(row.dob) : '',
+      // isLeader: row.isLeader,
       isActive: row.isActive,
     };
     this.dialogUpdateVisible = true;
   }
 
   private handleUpdate(tempUpdateUser: EmployeeDTO) {
+    console.log('before update: ', tempUpdateUser);
+
     this.loading = true;
     (this.$refs.updateEmployeeForm as Form).validate((isValid: boolean, invalidFields: object) => {
       if (isValid) {
@@ -218,15 +243,21 @@ export default class EmployeeActive extends Vue {
     this.dialogUpdateVisible = false;
   }
 
+  private pickerOptions: any = {
+    disabledDate(time) {
+      return time.getTime() > Date.now();
+    },
+  };
+
   private deactiveUser(row) {
     this.tempUpdateUser = {
       id: row.id,
       fullName: row.fullName,
       email: row.email,
-      roleId: row.role.id,
-      teamId: row.team.id,
-      jobPositionId: row.jobPosition.id,
-      isLeader: row.isLeader,
+      roles: row.roles,
+      departmentId: row.department.id,
+      gender: row.gender,
+      dob: row.dob ? formatDateToDD(row.dob) : '',
       isActive: false,
     };
     this.$confirm('Bạn có chắc chắn muốn deactive user này?', {
@@ -244,6 +275,25 @@ export default class EmployeeActive extends Vue {
         this.getListUsers();
       } catch (error) {}
     });
+  }
+
+  private displayRoleName(roles: any) {
+    // if (user.isLeader && user.role.name !== 'ADMIN' && user.role.name !== 'HR') {
+    //   return 'LEADER';
+    // }
+    // return user.role.name;
+    switch (roles[0]) {
+      case 'ROLE_DIRECTOR':
+        return 'Giám đốc';
+      case 'ROLE_ADMIN':
+        return 'Kĩ thuật';
+      case 'ROLE_ADMIN_HR':
+        return 'Quản lý nhân sự';
+      case 'ROLE_PM':
+        return 'Quản lý dự án';
+      default:
+        return 'Nhân viên';
+    }
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow: hidden; height: 100vh;">
+  <div style="overflow: hidden; height: 100vh">
     <common-navbar />
     <div id="app">
       <common-sidebar />

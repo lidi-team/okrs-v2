@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="requestCheckin" style="width: 100%;">
+    <el-table v-loading="loading" :data="tableData" empty-text="Không có dữ liệu" class="requestCheckin" style="width: 100%">
       <el-table-column label="Họ và tên" min-width="150">
         <template slot-scope="{ row }">
           <span v-if="row.objective">{{ row.objective.user.fullName }}</span>

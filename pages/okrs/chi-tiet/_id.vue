@@ -17,7 +17,7 @@
         <span class="created">Được tạo bởi</span>
         <span class="username">{{ objective.user.fullName }}</span>
         <span class="alignedWith">Liên kết tới</span>
-        <span v-if="checkIsRootObjective(objective)" style="display: none;"></span>
+        <span v-if="checkIsRootObjective(objective)" style="display: none"></span>
         <a
           v-else
           :href="objective.parentObjective ? `${$config.baseURL}/OKRs/chi-tiet/${objective.parentObjective.id}` : null"

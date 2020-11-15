@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-table v-loading="loading" empty-text="Không có dữ liệu" class="inferiorOKRs" :data="tableData" style="width: 100%;">
+    <el-table v-loading="loading" empty-text="Không có dữ liệu" class="inferiorOKRs" :data="tableData" style="width: 100%">
       <el-table-column type="index" align="center" label="STT"></el-table-column>
       <el-table-column label="Họ và tên">
         <template slot-scope="{ row }">
@@ -26,7 +26,7 @@
     <el-dialog :visible.sync="showDialogKRs" width="90%" placement="bottom-start" title="Danh sách OKRs" :before-close="handleCloseDialog">
       <el-row v-loading="loadingDialogKRs">
         <el-col :span="24">
-          <el-table empty-text="Không có dữ liệu" class="myOKRs" :data="tempOKRs" style="width: 100%;">
+          <el-table empty-text="Không có dữ liệu" class="myOKRs" :data="tempOKRs" style="width: 100%">
             <el-table-column label="Mục tiêu" min-width="180">
               <template slot-scope="{ row }">
                 <span>{{ row.title }}</span>

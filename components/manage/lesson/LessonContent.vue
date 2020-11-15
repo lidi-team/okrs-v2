@@ -11,7 +11,7 @@
       <div class="lesson-content__author">
         <span class="lesson-content__name">OKRs V2</span>
         <div class="lesson-content__muted">
-          <span style="color: #757575;">{{ new Date(post.createdAt) | dateFormat('DD/MM/YYYY') }}</span>
+          <span style="color: #757575">{{ new Date(post.createdAt) | dateFormat('DD/MM/YYYY') }}</span>
           <img
             src="https://cdn-images-1.medium.com/proxy/1*dMba6LR4dsoQTHzQ5T7oaA.png"
             alt="Member only content"

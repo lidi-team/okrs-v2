@@ -11,11 +11,11 @@
       <el-form-item prop="receiverId" label="Người được ghi nhận" class="custom-label user">
         <el-select v-model="recognition.receiverId" filterable placeholder="Chọn người đươc ghi nhận" @change="handleSelectUser()">
           <el-option v-for="user in optionsMetadata.users" :key="user.id" :label="user.fullName" :value="user.id">
-            <div style="display: flex;">
-              <el-avatar :size="25" style="align-self: center;">
+            <div style="display: flex">
+              <el-avatar :size="25" style="align-self: center">
                 <img :src="user.avatarURL ? user.avatarURL : user.gravatarURL" alt="avatar" />
               </el-avatar>
-              <span style="margin-left: 0.5rem;">{{ user.fullName }}</span>
+              <span style="margin-left: 0.5rem">{{ user.fullName }}</span>
             </div>
           </el-option>
         </el-select>

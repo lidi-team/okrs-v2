@@ -11,7 +11,7 @@
       <el-option v-for="cycle in listCycles" :key="cycle.value" :label="cycle.label" :value="cycle.value" />
     </el-select> -->
     <dashboard-progress-bar :loading="loading" :data-okrs-progress="dataOkrsProgress" />
-    <div v-if="user.role.name === 'ADMIN'" v-loading="loadingAdmin">
+    <div v-if="user.roles.includes('ROLE_ADMIN')" v-loading="loadingAdmin">
       <el-row v-if="dataCheckin.length > 0" class="col-container">
         <el-col class="col" :md="24" :lg="8">
           <dashboard-okrs-status :data-progress="dataProgress" />

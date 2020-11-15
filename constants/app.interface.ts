@@ -12,14 +12,20 @@ export interface LessonDTO {
   title: string;
   content: string;
 }
+
+// export interface IEmployeeDepartment {
+//   id?: number;
+//   name?: string;
+// }
 export interface EmployeeDTO {
   id?: number;
   fullName: string;
   email: string;
-  roleId: number;
-  teamId: number;
-  jobPositionId: number;
-  isLeader: boolean;
+  roles: String[];
+  departmentId: number;
+  gender: number;
+  dob: string;
+  // isLeader: boolean;
   isActive?: boolean;
   isApproved?: boolean;
 }

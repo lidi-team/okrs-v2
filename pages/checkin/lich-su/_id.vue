@@ -3,7 +3,7 @@
     <el-page-header title="OKRs của tôi" @back="goBack" />
     <h1 class="listHistory__title">Lịch sử Check-in</h1>
     <div class="listHistory__content">
-      <el-table v-loading="loading" empty-text="Không có dữ liệu" class="myOKRs" :data="historyList" style="width: 100%;">
+      <el-table v-loading="loading" empty-text="Không có dữ liệu" class="myOKRs" :data="historyList" style="width: 100%">
         <el-table-column label="Mục tiêu" min-width="250">
           <template slot-scope="{ row }">
             <span>{{ row.objective.title }}</span>

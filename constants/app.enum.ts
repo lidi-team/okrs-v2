@@ -39,9 +39,8 @@ export enum elComponent {
 }
 
 export enum UserStatus {
-  Active = 'Hoạt động',
-  Pending = 'Đang chờ',
-  Inactive = 'Không hoạt động',
+  Staff = 'Nhân viên',
+  All = 'Tất cả',
 }
 
 export enum TabCfr {
@@ -83,7 +82,7 @@ export enum SidebarTabs {
 
 export enum ResourcesEnpoint {
   Auth = 'auth',
-  Users = 'users',
+  Users = 'user',
   Lessons = 'lessons',
   ResetPassword = 'reset_password',
   Me = 'me',

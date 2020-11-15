@@ -15,7 +15,7 @@
         <el-col :span="6" class="detail-feedback__attribute">Mục tiêu</el-col>
         <el-col :span="18" class="detail-feedback__value">{{ data.objective.title }}</el-col>
       </el-row>
-      <el-table :data="data.checkinDetails" style="width: 100%;">
+      <el-table :data="data.checkinDetails" style="width: 100%">
         <el-table-column prop="keyResult.content" label="Kết quả then chốt" min-width="300"></el-table-column>
         <el-table-column prop="keyResult.targetValue" label="Mục tiêu" width="100"></el-table-column>
         <el-table-column prop="valueObtained" label="Đạt được" width="100"></el-table-column>

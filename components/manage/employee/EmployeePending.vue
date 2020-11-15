@@ -8,7 +8,7 @@
       :data="tableData"
       class="employee-pending"
       empty-text="Không có dữ liệu"
-      style="width: 100%;"
+      style="width: 100%"
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection"></el-table-column>
@@ -26,7 +26,7 @@
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
         <template slot-scope="{ row }">
-          <div style="display: flex; align-item: center; justify-content: center;">
+          <div style="display: flex; align-item: center; justify-content: center">
             <el-tooltip class="employee-pending__icon" content="Duyệt" placement="left-end">
               <icon-add class="icon--add" @click="handleOpenDialogUpdate(row)" />
             </el-tooltip>
@@ -56,7 +56,7 @@
             :model="tempUpdateUser"
             :rules="rules"
             label-position="top"
-            style="width: 100%;"
+            style="width: 100%"
           >
             <el-form-item label="Tên đầy đủ:" prop="fullName" class="custom-label">
               <el-input v-model="tempUpdateUser.fullName" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateUser)" />

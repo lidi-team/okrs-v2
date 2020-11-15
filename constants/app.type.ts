@@ -22,4 +22,4 @@ export type Maps<T> = ConfigMaps<T>;
 export type Rule = FormRule;
 export type Rules = Maps<FormRule[]>;
 
-export type UserRole = 'Admin' | 'HR' | 'Staff' | null;
+export type UserRole = 'ROLE_ADMIN' | 'ROLE_ADMIN_HR' | 'ROLE_USER' | null;

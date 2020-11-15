@@ -9,22 +9,18 @@
       <el-table-column label="Tiến độ" width="150">
         <template v-slot="{ row }">
           <div class="krs-detail__progress">
-            <el-progress style="width: 80%;" :percentage="row.process" :color="customColors" :text-inside="true" :stroke-width="20" />
+            <el-progress style="width: 80%" :percentage="row.process" :color="customColors" :text-inside="true" :stroke-width="20" />
           </div>
         </template>
       </el-table-column>
       <el-table-column label="Link kế hoạch" width="150">
         <template v-slot="{ row }">
-          <a class="krs-detail__link" :href="`${row.linkPlans}`" target="_blank">
-            {{ row.linkPlans }}
-          </a>
+          <a class="krs-detail__link" :href="`${row.linkPlans}`" target="_blank">{{ row.linkPlans }}</a>
         </template>
       </el-table-column>
       <el-table-column label="Link kết quả" width="150">
         <template v-slot="{ row }">
-          <a class="krs-detail__link" :href="`${row.linkPlans}`" target="_blank">
-            {{ row.linkPlans }}
-          </a>
+          <a class="krs-detail__link" :href="`${row.linkPlans}`" target="_blank">{{ row.linkPlans }}</a>
         </template>
       </el-table-column>
     </el-table>

@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios';
-import { baseUrlV1, baseUrl } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
 import { CycleDTO } from '@/constants/app.interface';
+import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export enum enpoint {
   cycles = 'meta_data/cycles',

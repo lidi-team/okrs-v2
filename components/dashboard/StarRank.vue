@@ -18,7 +18,7 @@
             </div>
             <div class="star-item__right">
               <p>{{ item.numberofstar }}</p>
-              <icon-star class="star__col__icon" style="margin-left: 5px;" />
+              <icon-star class="star__col__icon" style="margin-left: 5px" />
             </div>
           </div>
           <div v-if="noDataRe === true" class="star-item--nodata">
@@ -43,7 +43,7 @@
             </div>
             <div class="star-item__right">
               <p>{{ item.numberofstar }}</p>
-              <icon-star class="star__col__icon" style="margin-left: 5px;" />
+              <icon-star class="star__col__icon" style="margin-left: 5px" />
             </div>
           </div>
           <div v-if="noDataFeedback" class="star-item--nodata">

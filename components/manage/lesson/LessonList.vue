@@ -4,9 +4,7 @@
       <tbody>
         <tr>
           <td>
-            <h1 class="list-lesson__title table">
-              Bài Học OKRs
-            </h1>
+            <h1 class="list-lesson__title table">Bài Học OKRs</h1>
             <table v-for="post in posts" :key="post.id" class="table__wrap-content">
               <tbody>
                 <tr class="table__tr">
@@ -30,7 +28,7 @@
                       {{ post.abstract }}
                     </div>
                     <div class="xs-marginTop10 table__author">
-                      <span style="color: #757575;">{{ new Date(post.createdAt) | dateFormat('DD/MM/YYYY') }}</span
+                      <span style="color: #757575">{{ new Date(post.createdAt) | dateFormat('DD/MM/YYYY') }}</span
                       ><img
                         src="https://cdn-images-1.medium.com/proxy/1*dMba6LR4dsoQTHzQ5T7oaA.png"
                         alt="Member only content"

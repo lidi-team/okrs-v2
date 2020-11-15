@@ -2,7 +2,7 @@
   <div>
     <slot name="chartCheckin" />
     <div class="historyDetail">
-      <el-table empty-text="Không có dữ liệu" class="historyDetail__form" :data="historyDetail.checkinDetails" style="width: 100%;">
+      <el-table empty-text="Không có dữ liệu" class="historyDetail__form" :data="historyDetail.checkinDetails" style="width: 100%">
         <el-table-column label="Kết quả chính" min-width="250">
           <template slot-scope="{ row }">
             <span>{{ row.keyResult.content }}</span>

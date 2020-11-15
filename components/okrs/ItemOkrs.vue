@@ -7,7 +7,7 @@
         <button-create-okr :type-objective="typeObjective" name-objective="cá nhân" :project-id="projectId" />
       </div>
     </div>
-    <el-table :data="objectives" header-row-class-name="item__table-header" style="width: 100%;">
+    <el-table :data="objectives" header-row-class-name="item__table-header" style="width: 100%">
       <el-table-column type="expand" width="20">
         <template v-slot="{ row }">
           <div v-for="objective in row.childObjectives" :key="objective.id" class="item__expand">
@@ -19,7 +19,7 @@
               <p v-if="objective.keyResults.length" class="expand__infor--link" @click="emitDrawer(objective.keyResults)">
                 {{ objective.keyResults.length }} kết quả
               </p>
-              <p v-else style="width: 200px; color: #212b36;">{{ objective.keyResults.length }} kết quả</p>
+              <p v-else style="width: 200px; color: #212b36">{{ objective.keyResults.length }} kết quả</p>
               <div class="expand__infor--progress">
                 <el-progress :percentage="+objective.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
               </div>
@@ -47,7 +47,7 @@
       <el-table-column label="Kết quả then chốt" width="200">
         <template v-slot="{ row }">
           <p v-if="row.keyResults.length" class="item__krs" @click="emitDrawer(row.keyResults)">{{ row.keyResults.length }} kết quả</p>
-          <p v-else style="color: #212b36;">{{ row.keyResults.length }} kết quả</p>
+          <p v-else style="color: #212b36">{{ row.keyResults.length }} kết quả</p>
         </template>
       </el-table-column>
       <el-table-column label="Tiến độ" width="250">

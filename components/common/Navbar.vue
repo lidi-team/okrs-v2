@@ -16,7 +16,7 @@
                 {{ user.fullName }}
                 <i class="el-icon-caret-bottom" />
               </span>
-              <!-- <span class="info__role">{{ displayRoleName(user) }}</span> -->
+              <span class="info__role">{{ displayRoleName(user) }}</span>
             </div>
           </div>
           <el-dropdown-menu slot="dropdown">
@@ -28,15 +28,15 @@
                 </div>
               </el-dropdown-item>
             </nuxt-link>
-            <!-- <nuxt-link v-if="user.role.name === 'ADMIN'" to="/admin/cai-dat">
+            <nuxt-link v-if="user.roles.includes('ROLE_ADMIN') || user.roles.includes('ROLE_DIRECTOR')" to="/admin/cai-dat">
               <el-dropdown-item>
                 <div class="item__div">
                   <icon-setting class="item__div--icon" />
                   <span>Cài đặt công ty</span>
                 </div>
               </el-dropdown-item>
-            </nuxt-link> 
-            <nuxt-link v-if="user.role.name === 'HR' || user.role.name === 'ADMIN'" to="/quan-ly/nhan-su">
+            </nuxt-link>
+            <nuxt-link v-if="user.roles.includes('ROLE_ADMIN_HR') || user.roles.includes('ROLE_ADMIN')" to="/quan-ly/nhan-su">
               <el-dropdown-item>
                 <div class="item__div">
                   <icon-hr class="item__div--icon item__div--icon--hr" />
@@ -44,14 +44,14 @@
                 </div>
               </el-dropdown-item>
             </nuxt-link>
-            <nuxt-link v-if="user.role.name === 'HR' || user.role.name === 'ADMIN'" to="/bai-hoc-okrs">
+            <nuxt-link v-if="user.roles.includes('ROLE_ADMIN_HR') || user.roles.includes('ROLE_ADMIN')" to="/bai-hoc-okrs">
               <el-dropdown-item>
                 <div class="item__div">
                   <icon-lesson class="item__div--icon" />
                   <span>Quản lý bài học OKRs</span>
                 </div>
               </el-dropdown-item>
-            </nuxt-link> -->
+            </nuxt-link>
             <nuxt-link to="/hoc-okrs">
               <el-dropdown-item>
                 <div class="item__div">
@@ -119,10 +119,22 @@ export default class Navbar extends Vue {
   }
 
   private displayRoleName(user: any) {
-    if (user.isLeader && user.role.name !== 'ADMIN' && user.role.name !== 'HR') {
-      return 'LEADER';
+    // if (user.isLeader && user.role.name !== 'ADMIN' && user.role.name !== 'HR') {
+    //   return 'LEADER';
+    // }
+    // return user.role.name;
+    switch (user.roles[0]) {
+      case 'ROLE_DIRECTOR':
+        return 'Giám đốc';
+      case 'ROLE_ADMIN':
+        return 'Kĩ thuật';
+      case 'ROLE_ADMIN_HR':
+        return 'Quản lý nhân sự';
+      case 'ROLE_PM':
+        return 'Quản lý dự án';
+      default:
+        return 'Nhân viên';
     }
-    return user.role.name;
   }
 }
 </script>

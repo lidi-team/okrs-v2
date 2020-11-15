@@ -1,6 +1,6 @@
-import { baseUrlV1, baseUrl } from './BaseRepository';
-import { ChangePasswordDTO } from '@/constants/app.interface';
 import { formatDateToYYYY } from '@/utils/dateParser';
+import { ChangePasswordDTO } from '@/constants/app.interface';
+import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export enum enpoint {
   Users = 'users',
