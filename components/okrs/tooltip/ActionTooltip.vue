@@ -3,9 +3,9 @@
     <el-popover placement="top" trigger="click">
       <div class="okrs-tooltip__popover">
         <p @click="viewDetailOkrs">Xem chi tiết</p>
-        <div v-if="editable">
-          <p @click="openUpdateDialog(1)">Cập nhật</p>
-          <p v-if="!isRootOkrs" @click="openUpdateDialog(2)">Liên kết</p>
+        <div v-if="isManage">
+          <p @click="updateOKRs">Cập nhật</p>
+          <p @click="openUpdateDialog(2)">Liên kết</p>
           <p style="color: #e53e3e" @click="handleDeleteOKrs">Xóa</p>
         </div>
       </div>
@@ -28,18 +28,14 @@ import { DialogTooltipAction } from '@/constants/app.interface';
 })
 export default class OkrsActionTooltip extends Vue {
   @PropSync('okrsId', { type: Number, required: true }) private syncOkrsId!: number;
-  @Prop(Object) private tempOkrs!: object;
-  @Prop(Function) private reloadData!: Function;
-  @Prop(Boolean) private editable!: boolean;
-  @Prop({ required: false, type: Boolean }) private isRootOkrs!: boolean;
+  @Prop(Boolean) private isManage!: boolean;
 
   private viewDetailOkrs() {
     this.$router.push(`/OKRs/chi-tiet/${this.syncOkrsId}`);
   }
 
-  private openUpdateDialog(dialogType: number) {
-    const payload: DialogTooltipAction = { okrs: this.tempOkrs, dialogType };
-    this.$emit('updateTempOkrs', payload);
+  private updateOKRs() {
+    this.$emit('updateOKRs');
   }
 
   private handleDeleteOKrs(id: number) {
@@ -48,7 +44,6 @@ export default class OkrsActionTooltip extends Vue {
     }).then(async () => {
       try {
         await OkrsRepository.deleteOkrs(+this.syncOkrsId).then((res: any) => {
-          this.reloadData();
           this.$notify.success({
             ...notificationConfig,
             message: 'Xóa OKRs thành công',

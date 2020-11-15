@@ -10,18 +10,13 @@ export interface KeyResultDTO {
 }
 
 export interface ObjectiveDTO {
-  id: number | null;
+  id: Number | null;
   title: String;
-  content: String;
-  userId: Number;
   projectId: Number;
-  parentId: Number;
+  parentId: Number | null;
   type: Number;
   weight: Number;
   cycleId: Number;
-  changing: Number;
-  progress: Number;
-  status: String;
-  alignmentObjectives: Array<any>;
-  keyResults: Array<KeyResultDTO>;
+  alignmentObjectives: Array<Number>;
+  keyResults: any;
 }

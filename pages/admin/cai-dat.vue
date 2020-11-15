@@ -53,7 +53,7 @@ import NewJobDialog from '@/components/admin/dialog/NewJobDialog.vue';
 import TeamRepository from '@/repositories/TeamRepository';
 import CycleRepository from '@/repositories/CycleRepository';
 import JobRepository from '@/repositories/JobRepository';
-import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
+import MeasureUnitRepository from '@/repositories/MeasureRepository';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import { AdminParams } from '@/constants/DTO/common';
 import { pageLimit } from '@/constants/app.constant';
@@ -178,7 +178,7 @@ export default class SettingCompanyPage extends Vue {
           this.totalItems = res.data.data.meta.totalItems;
         });
       } else if (this.$route.query.tab === AdminTabsEn.MeasureUnit) {
-        await MeasureUnitRepository.get(this.adminParams).then((res) => {
+        await MeasureUnitRepository.get().then((res) => {
           this.tableData = res.data.data.items;
           this.totalItems = res.data.data.meta.totalItems;
         });

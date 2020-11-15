@@ -1,12 +1,16 @@
 import { AxiosResponse } from 'axios';
+import { baseUrlV1, baseUrl } from './BaseRepository';
 import { ResourcesEnpoint } from '@/constants/app.enum';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { AdminParams } from '@/constants/DTO/common';
-import { baseUrlV1 } from './BaseRepository';
+
+export const enpoint = {
+  getMeasureUnit: 'meta_data/measureUnit',
+};
 
 export default class MeasureUnitRepository {
-  public static get(params: AdminParams): Promise<AxiosResponse<any>> {
-    return baseUrlV1.get(`${ResourcesEnpoint.MeasureUnit}`, { params });
+  public static get(): Promise<AxiosResponse<any>> {
+    return baseUrl.get(enpoint.getMeasureUnit);
   }
 
   public static update(payload: MeasureUnitDTO): Promise<AxiosResponse<any>> {

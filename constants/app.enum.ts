@@ -34,6 +34,8 @@ export enum elComponent {
   ElPageHeader = 'ElPageHeader',
   ElTag = 'ElTag',
   ElDrawer = 'ElDrawer',
+  ElSlider = 'ElSlider',
+  ElInputNumber = 'ElInputNumber',
 }
 
 export enum UserStatus {
@@ -51,13 +53,6 @@ export enum TabCfrEng {
   Feedback = 'feedback',
   History = 'history',
   Rank = 'rank',
-}
-
-export enum TabCheckins {
-  MyOkrs = 'OKRs của tôi',
-  CheckinResquest = 'Yêu cầu Check-in',
-  Inferior = 'OKRs cấp dưới',
-  CheckinCompany = 'OKRs công ty',
 }
 
 export enum AdminTabsVn {
