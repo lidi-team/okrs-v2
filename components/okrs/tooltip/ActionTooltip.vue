@@ -16,8 +16,9 @@
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import IconSetting from '@/assets/images/okrs/setting.svg';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
-import OkrsRepository from '@/repositories/OkrsRepository';
 import { DialogTooltipAction } from '@/constants/app.interface';
+
+import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 
 @Component<OkrsActionTooltip>({
   name: 'OkrsActionTooltip',
@@ -39,26 +40,16 @@ export default class OkrsActionTooltip extends Vue {
   }
 
   private handleDeleteOKrs() {
-    // this.$confirm('Bạn có chắc chắn muốn xóa mục tiêu này?', {
-    //   ...confirmWarningConfig,
-    // }).then(async () => {
-    //   try {
-    //     await OkrsRepository.deleteOkrs(id).then((res: any) => {
-    //       this.$notify.success({
-    //         ...notificationConfig,
-    //         message: 'Xóa OKRs thành công',
-    //       });
-    //     });
-    //   } catch (error) {
-    //     if (error.response.data.statusCode === 481) {
-    //       this.$notify.error({
-    //         ...notificationConfig,
-    //         message: 'Không được xóa OKRs đang được liên kết',
-    //       });
-    //     }
-    //   }
-    // }
-    // );
+    this.$confirm('Bạn có chắc chắn muốn xóa mục tiêu này?', {
+      ...confirmWarningConfig,
+    }).then(async () => {
+      await ObjectiveRepository.deleteObjective(this.id).then((res: any) => {
+        this.$notify.success({
+          ...notificationConfig,
+          message: 'Xóa OKRs thành công',
+        });
+      });
+    });
   }
 }
 </script>
