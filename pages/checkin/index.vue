@@ -9,67 +9,34 @@
     >
       <el-option v-for="cycle in cycles" :key="cycle.id" :label="cycle.name" :value="cycle.id" />
     </el-select>
-    <p>hello</p>
-    <!-- <el-tabs
-      v-if="user.role.name === 'ADMIN'"
-      v-model="currentTab"
-      @tab-click="handleClick(currentTab)"
-    >
+
+    <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <div class="checkins__content">
-        <component
-          :is="currentTabComponent"
-          :current-cycle-id="currentCycleId"
-          :loading="loading"
-          :table-data="tableData"
-        />
-        <common-pagination
+        <component :is="currentTabComponent" :current-cycle-id="currentCycleId" :loading="loading" :table-data="tableData" />
+        <!-- <common-pagination
           v-if="$route.query.tab === 'request-checkin' || $route.query.tab === 'inferior'"
           class="checkins__pagination"
           :total="meta.totalItems"
           :page.sync="paramsCheckin.page"
           :limit.sync="paramsCheckin.limit"
           @pagination="handlePagination"
-        />
+        /> -->
       </div>
     </el-tabs>
-    <el-tabs v-else-if="user.isLeader" v-model="currentTab" @tab-click="handleClick(currentTab)">
-      <el-tab-pane v-for="tab in tabs.slice(0, 3)" :key="tab" :label="tab" :name="tab"></el-tab-pane>
-      <div class="checkins__content">
-        <component
-          :is="currentTabComponent"
-          :current-cycle-id="currentCycleId"
-          :loading="loading"
-          :table-data="tableData"
-        />
-        <common-pagination
-          v-if="$route.query.tab === 'request-checkin' || $route.query.tab === 'inferior'"
-          class="checkins__pagination"
-          :total="meta.totalItems"
-          :page.sync="paramsCheckin.page"
-          :limit.sync="paramsCheckin.limit"
-          @pagination="handlePagination"
-        />
-      </div>
-    </el-tabs>
-    <el-tabs v-else v-model="currentTab" @tab-click="handleClick(currentTab)">
-      <el-tab-pane v-for="tab in tabs.slice(0, 1)" :key="tab" :label="tab" :name="tab"></el-tab-pane>
-      <div class="checkins__content">
-        <component :is="currentTabComponent" :loading="loading" :table-data="tableData" />
-      </div>
-    </el-tabs>-->
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 
+import Inferior from '@/components/checkin/Inferior.vue';
 import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
 import MyOkrsCheckin from '@/components/checkin/MyOkrsCheckin.vue';
 import CheckinCompany from '@/components/checkin/CheckinCompany.vue';
+
 import { notificationConfig, pageLimit } from '@/constants/app.constant';
-import { TabCheckins } from '@/constants/app.enum';
-import Inferior from '@/components/checkin/Inferior.vue';
+import { TAB_CHECKIN, ROUTER_CHECKIN } from '@/components/checkin/constants.enum';
 import { SelectOptionDTO } from '@/constants/app.interface';
 import { GetterState, MutationState } from '@/constants/app.vuex';
 
@@ -97,40 +64,42 @@ import CommonPagination from '@/components/common/Pagination.vue';
   // },
 })
 export default class CheckinPage extends Vue {
-  // private tableData: any[] = [];
-  // private tabs: string[] = [...Object.values(TabCheckins)];
-  // private loading: boolean = false;
+  private tableData: any[] = [];
+  private tabs: string[] = [...Object.values(TAB_CHECKIN)];
+  private loading: boolean = false;
   private cycles: any[] = [];
   private currentCycleId: number = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id;
-
   // private meta: any = {};
-  // private currentTab: string =
-  //   this.$route.query.tab === 'request-checkin'
-  //     ? TabCheckins.CheckinResquest
-  //     : this.$route.query.tab === 'checkin-company'
-  //     ? TabCheckins.CheckinCompany
-  //     : this.$route.query.tab === 'inferior'
-  //     ? TabCheckins.Inferior
-  //     : TabCheckins.MyOkrs;
+  private currentTab: string =
+    this.$route.query.tab === ROUTER_CHECKIN.MyOkrs
+      ? TAB_CHECKIN.MyOkrs
+      : this.$route.query.tab === ROUTER_CHECKIN.CheckinResquest
+      ? TAB_CHECKIN.CheckinResquest
+      : this.$route.query.tab === ROUTER_CHECKIN.CheckinCompany
+      ? TAB_CHECKIN.CheckinCompany
+      : TAB_CHECKIN.Inferior; // okrs-cap-duoi
+
   private paramsCheckin = {
     page: this.$route.query.page ? Number(this.$route.query.page) : 1,
     cycleId: this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id,
     limit: pageLimit,
   };
-  // private get currentTabComponent() {
-  //   if (this.$route.query.tab === 'request-checkin') {
-  //     return RequestCheckin;
-  //   } else if (this.$route.query.tab === 'checkin-company') {
-  //     return CheckinCompany;
-  //   } else if (this.$route.query.tab === 'inferior') {
-  //     return Inferior;
-  //   } else {
-  //     return MyOkrsCheckin;
-  //   }
-  // }
+
+  private get currentTabComponent() {
+    switch (this.$route.query.tab) {
+      case ROUTER_CHECKIN.MyOkrs:
+        return MyOkrsCheckin;
+      case ROUTER_CHECKIN.CheckinResquest:
+        return RequestCheckin;
+      case ROUTER_CHECKIN.CheckinCompany:
+        return CheckinCompany;
+      default:
+        return Inferior;
+    }
+  }
   private handleSelectCycle(cycleId) {
     this.paramsCheckin.page = 1;
-    const tab = this.$route.query.tab === undefined ? 'MyOkrs' : this.$route.query.tab;
+    const tab = this.$route.query.tab === undefined ? ROUTER_CHECKIN.MyOkrs : this.$route.query.tab;
     this.paramsCheckin.cycleId = cycleId;
     this.$router.push(`?tab=${tab}&cycleId=${cycleId}`);
   }
@@ -244,20 +213,20 @@ export default class CheckinPage extends Vue {
     //   } catch (error) {}
     // }
   }
-  // private handleClick(currentTab: string) {
-  //   this.paramsCheckin.page = 1;
-  //   this.$router.push(
-  //     `?tab=${
-  //       currentTab === TabCheckins.MyOkrs
-  //         ? 'myOKRs'
-  //         : currentTab === TabCheckins.CheckinResquest
-  //         ? 'request-checkin'
-  //         : currentTab === TabCheckins.Inferior
-  //         ? 'inferior'
-  //         : 'checkin-company'
-  //     }`,
-  //   );
-  // }
+  private handleClick(currentTab: string) {
+    this.paramsCheckin.page = 1;
+    this.$router.push(
+      `?tab=${
+        currentTab === TAB_CHECKIN.MyOkrs
+          ? ROUTER_CHECKIN.MyOkrs
+          : currentTab === TAB_CHECKIN.CheckinResquest
+          ? ROUTER_CHECKIN.CheckinResquest
+          : currentTab === TAB_CHECKIN.CheckinCompany
+          ? ROUTER_CHECKIN.CheckinCompany
+          : ROUTER_CHECKIN.Inferior
+      }`,
+    );
+  }
 }
 </script>
 <style lang="scss" scoped>

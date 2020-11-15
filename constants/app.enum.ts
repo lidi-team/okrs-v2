@@ -56,13 +56,6 @@ export enum TabCfrEng {
   Rank = 'rank',
 }
 
-export enum TabCheckins {
-  MyOkrs = 'OKRs của tôi',
-  CheckinResquest = 'Yêu cầu Check-in',
-  Inferior = 'OKRs cấp dưới',
-  CheckinCompany = 'OKRs công ty',
-}
-
 export enum AdminTabsVn {
   CycleOKR = 'Quản lý chu kỳ',
   Department = 'Quản lý phòng ban',
