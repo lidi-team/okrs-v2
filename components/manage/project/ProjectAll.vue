@@ -48,7 +48,7 @@
     </el-table>
 
     <!-- update user dialog -->
-    <!--<el-dialog
+    <el-dialog
       class="update-employee"
       :visible.sync="dialogUpdateVisible"
       width="40%"
@@ -63,33 +63,16 @@
             :hide-required-asterisk="false"
             :status-icon="true"
             :rules="rules"
-            :model="tempUpdateUser"
+            :model="tempUpdateProject"
             label-position="top"
             style="width: 100%"
           >
-            <el-form-item label="Tên đầy đủ:" prop="fullName" class="custom-label">
-              <el-input v-model="tempUpdateUser.fullName" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
+            <el-form-item label="Tên dự án:" prop="name" class="custom-label">
+              <el-input v-model="tempUpdateProject.name" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
             </el-form-item>
-            <el-form-item label="Email:" prop="email" class="custom-label">
-              <el-input v-model="tempUpdateUser.email" placeholder="Nhập email" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
-            </el-form-item>
-            <el-form-item v-if="true" label="Phòng ban:" class="custom-label" prop="departmentId">
-              <el-select
-                v-model="tempUpdateUser.departmentId"
-                class="custom-label"
-                placeholder="Chọn phòng ban"
-                @keyup.enter.native="handleUpdate(tempUpdateUser)"
-              >
-                <el-option v-for="item in teams" :key="item.id" :label="item.name" :value="item.id" />
-              </el-select>
-            </el-form-item>
-            <el-form-item v-if="true" label="giới tính:" class="custom-label" prop="gender">
-              <el-radio v-model="tempUpdateUser.gender" :label="1">Nam</el-radio>
-              <el-radio v-model="tempUpdateUser.gender" :label="0">Nữ</el-radio>
-            </el-form-item>
-            <el-form-item v-if="true" label="ngày sinh:" class="custom-label" prop="dob">
+            <el-form-item v-if="true" label="ngày bắt đầu:" class="custom-label" prop="startDate">
               <el-date-picker
-                v-model="tempUpdateUser.dob"
+                v-model="tempUpdateProject.startDate"
                 format="dd/MM/yyyy"
                 value-format="dd/MM/yyyy"
                 :picker-options="pickerOptions"
@@ -97,36 +80,69 @@
                 placeholder="Chọn ngày sinh"
               ></el-date-picker>
             </el-form-item>
-
-            &lt;!&ndash; <el-form-item label="Vị trí công việc:" class="custom-label" prop="jobPositionId">
+            <el-form-item v-if="true" label="ngày kết thuc:" class="custom-label" prop="endDate">
+              <el-date-picker
+                v-model="tempUpdateProject.endDate"
+                format="dd/MM/yyyy"
+                value-format="dd/MM/yyyy"
+                :picker-options="pickerOptions"
+                type="date"
+                placeholder="Chọn ngày sinh"
+              ></el-date-picker>
+            </el-form-item>
+            <el-form-item label="Mô tả:" prop="description" class="custom-label">
+              <el-input v-model="tempUpdateProject.description" placeholder="Nhập mô tả" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
+            </el-form-item>
+            <el-form-item label="trạng thái:" class="custom-label" prop="status">
+              <el-radio v-model="tempUpdateProject.status" :label="1">Hoạt động</el-radio>
+              <el-radio v-model="tempUpdateProject.status" :label="0">Kết thúc</el-radio>
+            </el-form-item>
+            <!--<el-form-item v-if="true" label="Phòng ban:" class="custom-label" prop="departmentId">
               <el-select
-                v-model="tempUpdateUser.jobPositionId"
+                v-model="tempUpdateProject.departmentId"
+                class="custom-label"
+                placeholder="Chọn phòng ban"
+                @keyup.enter.native="handleUpdate(tempUpdateProject)"
+              >
+                <el-option v-for="item in teams" :key="item.id" :label="item.name" :value="item.id" />
+              </el-select>
+            </el-form-item>
+            &lt;!&ndash;
+            <el-form-item label="Vị trí công việc:" class="custom-label" prop="jobPositionId">
+              <el-select
+                v-model="tempUpdateProject.jobPositionId"
                 class="custom-label"
                 placeholder="Chọn vị trí công việc"
-                @keyup.enter.native="handleUpdate(tempUpdateUser)"
+                @keyup.enter.native="handleUpdate(tempUpdateProject)"
               >
                 <el-option v-for="item in jobs" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
             </el-form-item> &ndash;&gt;
-            &lt;!&ndash; <el-form-item v-if="tempUpdateUser.roleId !== Number(1)" label="Vai trò:" class="custom-label" prop="roleId">
+            &lt;!&ndash;
+            <el-form-item v-if="tempUpdateProject.roleId !== Number(1)" label="Vai trò:" class="custom-label"
+                          prop="roleId">
               <el-select
-                v-model="tempUpdateUser.roleId"
+                v-model="tempUpdateProject.roleId"
                 class="custom-label"
                 placeholder="Chọn vai trò"
-                @keyup.enter.native="handleUpdate(tempUpdateUser)"
+                @keyup.enter.native="handleUpdate(tempUpdateProject)"
               >
                 <el-option v-for="item in roles" :key="item.id" :label="item.name" :value="item.id" />
               </el-select>
-            </el-form-item> &ndash;&gt;
-            &lt;!&ndash; <el-checkbox v-if="tempUpdateUser.roleId !== Number(1)" v-model="tempUpdateUser.isLeader">Trưởng nhóm</el-checkbox> &ndash;&gt;
+            </el-form-item>
+            &ndash;&gt; &lt;!&ndash;
+            <el-checkbox v-if="tempUpdateProject.roleId !== Number(1)" v-model="tempUpdateProject.isLeader">Trưởng nhóm
+            </el-checkbox> &ndash;&gt;-->
           </el-form>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button class="el-button&#45;&#45;white el-button&#45;&#45;modal" @click="handleCloseDialog">Hủy</el-button>
-        <el-button class="el-button&#45;&#45;purple el-button&#45;&#45;modal" :loading="loading" @click="handleUpdate(tempUpdateUser)">Cập nhật</el-button>
+        <el-button class="el-button&#45;&#45;purple el-button&#45;&#45;modal" :loading="loading" @click="handleUpdate(tempUpdateProject)"
+          >Cập nhật</el-button
+        >
       </span>
-    </el-dialog>-->
+    </el-dialog>
     <!-- end update user dialog -->
   </div>
 </template>
@@ -136,6 +152,9 @@ import { ProjectDTO } from '@/constants/app.interface';
 import { formatDateToDD } from '@/utils/dateParser';
 import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
+import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
+import ProjectRepository from '@/repositories/ProjectRepository';
+import { Form } from 'element-ui';
 
 @Component<ProjectAll>({
   name: 'ProjectAll',
@@ -161,7 +180,7 @@ export default class ProjectAll extends Vue {
   private loadingTable: boolean = false;
   private loading: boolean = false;
   private dialogUpdateVisible: boolean = false;
-  private tempUpdateUser: ProjectDTO = {
+  private tempUpdateProject: ProjectDTO = {
     id: 0,
     name: '',
     startDate: '',
@@ -172,7 +191,7 @@ export default class ProjectAll extends Vue {
   };
 
   private handleOpenDialogUpdate(row) {
-    this.tempUpdateUser = {
+    this.tempUpdateProject = {
       id: row.id,
       name: row.name,
       startDate: row.startDate ? formatDateToDD(row.startDate) : '',
@@ -184,68 +203,68 @@ export default class ProjectAll extends Vue {
     this.dialogUpdateVisible = true;
   }
 
-  // private handleUpdate(tempUpdateUser: EmployeeDTO) {
-  //   console.log('before update: ', tempUpdateUser);
-  //
-  //   this.loading = true;
-  //   (this.$refs.updateEmployeeForm as Form).validate((isValid: boolean, invalidFields: object) => {
-  //     if (isValid) {
-  //       this.$confirm(`Bạn có chắc chắn muốn cập nhật user này?`, {
-  //         ...confirmWarningConfig,
-  //       })
-  //         .then(async () => {
-  //           await EmployeeRepository.update(tempUpdateUser)
-  //             .then((res) => {
-  //               setTimeout(() => {
-  //                 console.log('aa');
-  //                 this.loading = false;
-  //               }, 300);
-  //               this.$notify.success({
-  //                 ...notificationConfig,
-  //                 message: 'Cập nhật thành viên thành công',
-  //               });
-  //               this.getListUsers();
-  //               this.dialogUpdateVisible = false;
-  //             })
-  //             .catch((error) => {
-  //               if (error.response.data.statusCode === 430) {
-  //                 this.$notify.error({
-  //                   ...notificationConfig,
-  //                   message: 'Team Leader đã tồn tại',
-  //                 });
-  //               }
-  //               setTimeout(() => {
-  //                 this.loading = false;
-  //               }, 300);
-  //             });
-  //         })
-  //         .catch(() => {
-  //           setTimeout(() => {
-  //             this.loading = false;
-  //           }, 300);
-  //         });
-  //     } else {
-  //       setTimeout(() => {
-  //         this.loading = false;
-  //       }, 300);
-  //     }
-  //   });
-  // }
+  private handleUpdate(tempUpdateProject: ProjectDTO) {
+    console.log('before update: ', tempUpdateProject);
 
-  // private handleCloseDialog() {
-  //   const updateUserForm = this.$refs.updateEmployeeForm as Form;
-  //   updateUserForm.clearValidate();
-  //   this.dialogUpdateVisible = false;
-  // }
-  //
-  // private pickerOptions: any = {
-  //   disabledDate(time) {
-  //     return time.getTime() > Date.now();
-  //   },
-  // };
+    this.loading = true;
+    (this.$refs.updateEmployeeForm as Form).validate((isValid: boolean, invalidFields: object) => {
+      if (isValid) {
+        this.$confirm(`Bạn có chắc chắn muốn cập nhật user này?`, {
+          ...confirmWarningConfig,
+        })
+          .then(async () => {
+            await ProjectRepository.update(tempUpdateProject)
+              .then((res) => {
+                setTimeout(() => {
+                  console.log('aa');
+                  this.loading = false;
+                }, 300);
+                this.$notify.success({
+                  ...notificationConfig,
+                  message: 'Cập nhật thành viên thành công',
+                });
+                // this.getListUsers();
+                this.dialogUpdateVisible = false;
+              })
+              .catch((error) => {
+                if (error.response.data.statusCode === 430) {
+                  this.$notify.error({
+                    ...notificationConfig,
+                    message: 'Team Leader đã tồn tại',
+                  });
+                }
+                setTimeout(() => {
+                  this.loading = false;
+                }, 300);
+              });
+          })
+          .catch(() => {
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+          });
+      } else {
+        setTimeout(() => {
+          this.loading = false;
+        }, 300);
+      }
+    });
+  }
+
+  private handleCloseDialog() {
+    const updateUserForm = this.$refs.updateEmployeeForm as Form;
+    updateUserForm.clearValidate();
+    this.dialogUpdateVisible = false;
+  }
+
+  private pickerOptions: any = {
+    disabledDate(time) {
+      return time.getTime() > Date.now();
+    },
+  };
 
   // private deactiveUser(row) {
-  //   this.tempUpdateUser = {
+  //   this.tempUpdateProject = {
   //     id: row.id,
   //     name: row.name,
   //     startDate: row.startDate,
@@ -260,7 +279,7 @@ export default class ProjectAll extends Vue {
   //     type: 'warning',
   //   }).then(async () => {
   //     try {
-  //       await EmployeeRepository.update(this.tempUpdateUser).then((res: any) => {
+  //       await EmployeeRepository.update(this.tempUpdateProject).then((res: any) => {
   //         this.$notify.success({
   //           ...notificationConfig,
   //           message: 'Cập nhật thành viên thành công',

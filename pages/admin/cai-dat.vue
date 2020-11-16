@@ -167,25 +167,25 @@ export default class SettingCompanyPage extends Vue {
           this.totalItems = res.data.meta.totalItems;
         });
       } else if (this.$route.query.tab === AdminTabsEn.Department) {
-        // await TeamRepository.get(this.adminParams).then((res) => {
-        //   this.tableData = res.data.data.items;
-        //   this.totalItems = res.data.data.meta.totalItems;
-        // });
+        await TeamRepository.get(this.adminParams).then((res) => {
+          this.tableData = res.data.items;
+          this.totalItems = res.data.meta.totalItems;
+        });
       } else if (this.$route.query.tab === AdminTabsEn.EvaluationCriterial) {
-        // await EvaluationCriteriaRepository.get(this.adminParams).then((res) => {
-        //   this.tableData = res.data.data.items;
-        //   this.totalItems = res.data.data.meta.totalItems;
-        // });
+        await EvaluationCriteriaRepository.get(this.adminParams).then((res) => {
+          this.tableData = res.data.items;
+          this.totalItems = res.data.meta.totalItems;
+        });
       } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
-        // await JobRepository.get(this.adminParams).then((res) => {
-        //   this.tableData = res.data.data.items;
-        //   this.totalItems = res.data.data.meta.totalItems;
-        // });
+        await JobRepository.get(this.adminParams).then((res) => {
+          this.tableData = res.data.items;
+          this.totalItems = res.data.meta.totalItems;
+        });
       } else if (this.$route.query.tab === AdminTabsEn.MeasureUnit) {
-        // await MeasureUnitRepository.get(this.adminParams).then((res) => {
-        //   this.tableData = res.data.data.items;
-        //   this.totalItems = res.data.data.meta.totalItems;
-        // });
+        await MeasureUnitRepository.get(this.adminParams).then((res) => {
+          this.tableData = res.data.items;
+          this.totalItems = res.data.meta.totalItems;
+        });
       }
     } catch (error) {}
   }
