@@ -18,6 +18,7 @@ pipeline {
                 sh 'npm update'
                 sh 'yarn'
                 sh 'yarn build &'
+                sh 'sleep 7'
                 sh 'docker build -t frontend .'
                 sh 'docker container run -d -p 80:80 --name my-frontend frontend'
             }
