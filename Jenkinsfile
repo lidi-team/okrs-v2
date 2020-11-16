@@ -18,6 +18,7 @@ pipeline {
                 sh 'npm update'
                 sh 'chmod -R 777 .'
                 sh 'yarn'
+                sh 'chmod -R 777 .'
                 sh 'yarn build &'
                 sh 'docker build -t frontend .'
                 sh 'docker container run -d -p 80:80 --name my-frontend frontend'
