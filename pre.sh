@@ -4,6 +4,7 @@ if test -d "$FILE"; then
 
     echo "file exists"
     killall node
+    whoami
     docker container stop my-frontend
     docker container prune -f
     chmod 777 ./dist
