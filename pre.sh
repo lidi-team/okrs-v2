@@ -1,10 +1,12 @@
 #!/bin/bash
-# pgrep -x node >/dev/null && echo "Process found" && killall node && yarn build || echo "Process not found" && yarn build
-SERVICE="node"
-if pgrep -x "$SERVICE" >/dev/null
-then
-    echo "$SERVICE is running"
+FILE=./dist
+if test -d "$FILE"; then
+
+    echo "file exists"
     killall node
-else    
-    echo "$SERVICE stopped"
+    docker container stop my-frontend
+    docker container prune -f
+else 
+    echo "file does not exist"
 fi
+
