@@ -18,7 +18,7 @@ pipeline {
                 sh 'npm update'
                 sh 'whoami'
                 sh 'pwd'
-                sh 'chmod -R 777 .'
+                sh 'ls -la'
                 sh 'yarn'
                 sh 'yarn build &'
                 sh 'docker build -t frontend .'
