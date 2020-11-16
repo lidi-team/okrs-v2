@@ -16,6 +16,8 @@ pipeline {
                 sh 'cp /home/ubuntu/.env /var/lib/jenkins/workspace/hep1-instance/.env'
                 sh 'npm install'
                 sh 'npm update'
+                sh 'whoami'
+                sh 'pwd'
                 sh 'chmod -R 777 .'
                 sh 'yarn'
                 sh 'yarn build &'
