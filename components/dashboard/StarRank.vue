@@ -5,7 +5,7 @@
         <div class="star__col star__income">
           <div class="star__col__header">
             <icon-star-dashboard class="star__col__icon" />
-            <p class="star__col__title">Top sao nhận được</p>
+            <p class="star__col__title">Top sao đã được nhận</p>
           </div>
           <div v-for="(item, index) in dataStarInCome" :key="item.id" class="star-item">
             <div class="star-item__left">
