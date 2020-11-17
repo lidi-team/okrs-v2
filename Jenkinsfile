@@ -20,8 +20,8 @@ pipeline {
                 sh 'pwd'
                 sh 'ls -la'
                 sh 'yarn'
-                sh 'yarn build &'
-                sh 'sleep 100'
+                sh 'yarn build'
+                sh 'sleep 150'
                 sh 'docker build -t frontend .'
                 sh 'docker container run -d -p 80:80 --name my-frontend frontend'
             }
