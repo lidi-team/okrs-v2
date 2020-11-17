@@ -53,41 +53,45 @@ export default class CreateAlignObjective extends Vue {
 
   private async createOkrs(hasAlignObjective: boolean) {
     if (hasAlignObjective === true) {
-      let validForm: number = 0;
-      const alignObjectives: any[] = [];
-      (this.$refs.alignForm as any).forEach((form) => {
-        (form.$refs.alignOkrs as Form).validate((isValid: boolean, invalidatedFields: object) => {
-          if (isValid) {
-            validForm++;
-          }
+      try {
+        let validForm: number = 0;
+        const alignObjectives: any[] = [];
+        (this.$refs.alignForm as any).forEach((form) => {
+          (form.$refs.alignOkrs as Form).validate((isValid: boolean, invalidatedFields: object) => {
+            if (isValid) {
+              validForm++;
+            }
+          });
+          alignObjectives.push(form.syncAlignOkrs.objectiveId);
         });
-        alignObjectives.push(form.syncAlignOkrs.objectiveId);
-      });
-      if (validForm === alignObjectives.length) {
-        try {
+        if (validForm === alignObjectives.length) {
           this.$store.commit(MutationState.SET_OBJECTIVE, {
             alignmentObjectives: alignObjectives,
           });
           const data = this.$store.state.okrs.objective;
           await OkrsRepository.createOrUpdateOkrs(data).then((res) => {
             this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
+            this.$store.commit(MutationState.SET_FLAG);
             this.syncActive = 0;
             this.$notify.success({
               ...notificationConfig,
               message: 'Tạo OKRs thành công',
             });
           });
-        } catch (error) {}
-      } else {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
+        } else {
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
+        }
+      } catch (error) {
+        console.error(error);
       }
     } else {
       try {
         const data = this.$store.state.okrs.objective;
         await OkrsRepository.createOrUpdateOkrs(data).then((res) => {
           this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
+          this.$store.commit(MutationState.SET_FLAG);
           this.syncActive = 0;
           this.$notify.success({
             ...notificationConfig,

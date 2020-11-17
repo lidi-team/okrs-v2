@@ -77,7 +77,7 @@ import OkrsRepository from '@/repositories/OkrsRepository';
   },
   computed: {
     ...mapGetters({
-      isDialog: GetterState.OKRS_IS_DIALOG_OKRS,
+      flag: GetterState.OKRS_FLAG,
     }),
   },
   mounted() {
@@ -105,10 +105,9 @@ export default class OKRsPage extends Vue {
 
   private projects: any[] = [];
 
-  @Watch('isDialog')
+  @Watch('flag')
   private changeDialog(value) {
     if (value === false) {
-      console.log('FSDFSFS');
       this.getDashBoardOkrs();
     }
   }

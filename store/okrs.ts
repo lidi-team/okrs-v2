@@ -2,6 +2,7 @@ import { ActionContext, ActionTree, GetterTree, MutationTree } from 'vuex';
 import { ObjectiveDTO, KeyResultDTO } from '@/constants/DTO/okrs';
 
 export enum OkrsMutation {
+  SET_FLAG = 'setFlag',
   SET_DIALOG_OKRS = 'setIsDialogOKRs',
   CLEAR_KRS = 'clearKrs',
   SET_STAFF_OKRS = 'setStaffOkrs',
@@ -12,6 +13,7 @@ export enum OkrsMutation {
 }
 
 export interface OkrsState {
+  flag: Boolean;
   isDialogOKRs: Boolean;
   objectiveParent: Number;
   listObjectiveAlign: any[];
@@ -31,6 +33,7 @@ const initObjective: ObjectiveDTO = {
 };
 
 export const state = (): OkrsState => ({
+  flag: false,
   isDialogOKRs: false,
   objectiveParent: 0,
   listObjectiveAlign: [],
@@ -40,6 +43,7 @@ export const state = (): OkrsState => ({
 export type RootState = ReturnType<typeof state>;
 
 export const getters: GetterTree<RootState, RootState> = {
+  flag: (state) => state.flag,
   isDialogOKRs: (state) => state.isDialogOKRs,
   objectiveParent: (state) => state.objectiveParent,
   listObjectiveAlign: (state) => state.listObjectiveAlign,
@@ -47,6 +51,7 @@ export const getters: GetterTree<RootState, RootState> = {
 };
 
 export const mutations: MutationTree<RootState> = {
+  [OkrsMutation.SET_FLAG]: (state) => (state.flag = !state.flag),
   [OkrsMutation.SET_DIALOG_OKRS]: (state, data: Boolean) => (state.isDialogOKRs = data),
   [OkrsMutation.SET_OBJECTIVE_PARENT]: (state, data: Number) => (state.objectiveParent = data),
   [OkrsMutation.SET_LIST_OBJECTIVE_ALIGN]: (state, data: any[]) => (state.listObjectiveAlign = data),
