@@ -160,12 +160,12 @@ const nuxtConfig: NuxtConfig = {
       }
       if (isDev && isClient && module) {
         // Enabling eslint:
-        module.rules.push({
-          enforce: 'pre',
-          test: /\.(js|ts|vue)$/u,
-          loader: 'eslint-loader',
-          exclude: /(node_modules)/u,
-        });
+        // module.rules.push({
+        //   enforce: 'pre',
+        //   test: /\.(js|ts|vue)$/u,
+        //   loader: 'eslint-loader',
+        //   exclude: /(node_modules)/u,
+        // });
       }
     },
   },

@@ -6,11 +6,6 @@ export interface LinkMeta {
   href: string;
 }
 
-export interface PayloadOkrs {
-  objective: any;
-  keyResult?: any[];
-}
-
 export interface LessonDTO {
   id?: number;
   index: number;

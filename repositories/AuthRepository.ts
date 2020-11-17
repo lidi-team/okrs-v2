@@ -7,7 +7,7 @@ export const enpoint = {
   login: 'auth/signin',
   generateLink: 'auth/link_invite',
   logout: 'users/me/logout',
-  resetPassword: 'reset_password',
+  resetPassword: 'auth/reset-password',
 };
 
 export default class AuthRepository {
@@ -24,7 +24,7 @@ export default class AuthRepository {
   }
 
   public static sendMailToResetPassword(payload: MailResetPassDTO): Promise<AxiosResponse<void>> {
-    return baseUrlV1.post<void>(enpoint.resetPassword, payload);
+    return baseUrl.post<void>(enpoint.resetPassword, payload);
   }
 
   public static resetPasswordWithToken(data: ResetPasswordActionDTO) {

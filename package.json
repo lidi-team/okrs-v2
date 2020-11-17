@@ -7,7 +7,7 @@
     "build": "run-s build:*",
     "build:nuxt": "cross-env NODE_ENV=production nuxt-ts build && nuxt-ts start",
     "ci": "run-s test build",
-    "start:production": "cross-env NODE_ENV=production yarn nuxt-ts generate && yarn nuxt-ts start --port 8080",
+    "start:production": "cross-env NODE_ENV=production yarn nuxt-ts generate && yarn nuxt-ts start --port 9999",
     "analyze": "nuxt-ts build --analyze",
     "lint": "run-s lint:*",
     "lint:files": "ls-lint",
