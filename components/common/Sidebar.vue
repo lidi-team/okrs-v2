@@ -43,7 +43,7 @@
       </nuxt-link>
       <nuxt-link
         v-if="user.roles.includes('ROLE_ADMIN')"
-        to="/du-an/quan-ly"
+        to="/du-an"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isSettingProjectActive }]"
       >
         <div class="sidebar__link__tab">
@@ -123,7 +123,7 @@ export default class SideBar extends Vue {
   }
 
   private get isSettingProjectActive() {
-    return !!this.$route.path.startsWith('/du-an/quan-ly');
+    return !!this.$route.path.startsWith('/du-an');
   }
 
   private get isHRsActive() {

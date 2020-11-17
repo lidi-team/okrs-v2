@@ -6,7 +6,7 @@ import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export default class JobRepository {
   public static get(params: AdminParams): Promise<AxiosResponse<any>> {
-    return baseUrlV1.get(`${ResourcesEnpoint.Job}`, { params });
+    return baseUrl.get(`${ResourcesEnpoint.Job}`, { params });
   }
 
   public static update(payload: JobPositionDTO): Promise<AxiosResponse<any>> {
