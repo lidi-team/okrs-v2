@@ -8,5 +8,7 @@ if test -d "$FILE"; then
     docker container prune -f
 else 
     echo "file does not exist"
+    docker container stop my-frontend
+    docker container prune -f
 fi
 
