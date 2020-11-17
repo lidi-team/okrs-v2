@@ -1,7 +1,7 @@
 <template>
   <el-row class="login-form">
     <div class="login-form__title">
-      <span>Đăng nhập tài khoản</span>
+      <span>Đăng nhập vào tài khoản</span>
     </div>
     <el-form
       ref="loginForm"
