@@ -10,15 +10,15 @@ export default class JobRepository {
   }
 
   public static update(payload: JobPositionDTO): Promise<AxiosResponse<any>> {
-    return baseUrlV1.put(`${ResourcesEnpoint.Job}/${payload.id}`, payload);
+    return baseUrl.put(`${ResourcesEnpoint.Job}/${payload.id}`, payload);
   }
 
   public static post(payload: JobPositionDTO): Promise<AxiosResponse<any>> {
-    return baseUrlV1.post(`${ResourcesEnpoint.Job}`, payload);
+    return baseUrl.post(`${ResourcesEnpoint.Job}`, payload);
   }
 
   public static delete(id: number): Promise<AxiosResponse<any>> {
-    return baseUrlV1.delete(`${ResourcesEnpoint.Job}/${id}`);
+    return baseUrl.delete(`${ResourcesEnpoint.Job}/${id}`);
   }
 
   public static getMetaData() {

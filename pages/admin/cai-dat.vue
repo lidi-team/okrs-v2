@@ -53,7 +53,7 @@ import NewJobDialog from '@/components/admin/dialog/NewJobDialog.vue';
 import TeamRepository from '@/repositories/TeamRepository';
 import CycleRepository from '@/repositories/CycleRepository';
 import JobRepository from '@/repositories/JobRepository';
-import MeasureUnitRepository from '@/repositories/MeasureUnitRepository';
+import MeasureUnitRepository from '@/repositories/MeasureRepository';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import AdminSlot from '@/components/AdminSlot.vue';
 import { AdminParams } from '@/constants/DTO/common';

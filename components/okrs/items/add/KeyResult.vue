@@ -88,7 +88,7 @@ import { max255Char } from '@/constants/account.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import IconDelete from '@/assets/images/common/delete.svg';
 import { notificationConfig } from '@/constants/app.constant';
-import { SelectDropdownDTO } from '@/constants/DTO/common';
+// import { SelectDropdownDTO } from '@/constants/DTO/common';
 import { DispatchAction } from '@/constants/app.vuex';
 
 import OkrsRepository from '@/repositories/OkrsRepository';
@@ -123,7 +123,7 @@ export default class KeyResult extends Vue {
   })
   private tempKeyResult!: any;
 
-  private keyResultsParent: Array<SelectDropdownDTO> = [];
+  private keyResultsParent: Array<any> = [];
 
   @Prop(Number) private indexKrForm!: number;
 

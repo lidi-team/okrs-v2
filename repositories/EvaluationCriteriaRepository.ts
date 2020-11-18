@@ -10,15 +10,15 @@ export default class EvaluationCriteriorRepository {
   }
 
   public static update(payload: EvaluationCriteriorDTO): Promise<AxiosResponse<any>> {
-    return baseUrlV1.put(`${ResourcesEnpoint.EvaluationCriterial}/${payload.id}`, payload);
+    return baseUrl.put(`${ResourcesEnpoint.EvaluationCriterial}/${payload.id}`, payload);
   }
 
   public static post(payload: EvaluationCriteriorDTO): Promise<AxiosResponse<any>> {
-    return baseUrlV1.post(`${ResourcesEnpoint.EvaluationCriterial}`, payload);
+    return baseUrl.post(`${ResourcesEnpoint.EvaluationCriterial}`, payload);
   }
 
   public static delete(id: number): Promise<AxiosResponse<any>> {
-    return baseUrlV1.delete(`${ResourcesEnpoint.EvaluationCriterial}/${id}`);
+    return baseUrl.delete(`${ResourcesEnpoint.EvaluationCriterial}/${id}`);
   }
 
   public static getCombobox(type: EvaluationCriteriaEnum): Promise<AxiosResponse<any>> {

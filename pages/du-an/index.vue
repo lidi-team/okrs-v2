@@ -49,7 +49,7 @@ import ProjectAll from '@/components/manage/project/ProjectAll.vue';
 export default class ManageProject extends Vue {
   private tableData: Array<object> = [];
   private tabs: string[] = [...Object.values(ProjectStatus)];
-  private currentTab: ProjectStatus = this.$route.query.tab === ProjectStatus.Active ? ProjectStatus.Active : ProjectStatus.All;
+  private currentTab: ProjectStatus = ProjectStatus.All;
   private meta: object = {};
   private indexPage: number = this.$route.query.page ? Number(this.$route.query.page) : 1;
 
@@ -77,15 +77,15 @@ export default class ManageProject extends Vue {
     // this.paramsUser.status = currentTab === UserStatus.Active ? 1 : currentTab === UserStatus.Pending ? 0 : -1;
     // this.$router.push(`?tab=${currentTab === UserStatus.Active ? 'active' : currentTab === UserStatus.Pending ? 'pending' : 'deactive'}`);
     // this.paramsUser.status = currentTab === UserStatus.Active ? 1 : currentTab === UserStatus.Pending ? 0 : -1;
-    this.$router.push(`?tab=${currentTab === ProjectStatus.All ? ProjectStatus.All : ProjectStatus.Active}`);
+    this.$router.push(`?tab=${ProjectStatus.All}`);
   }
 
   private convertLabel(tab: ProjectStatus) {
     switch (tab) {
       case ProjectStatus.All:
         return 'Tất cả';
-      case ProjectStatus.Active:
-        return 'Đang hoạt động';
+      // case ProjectStatus.Active:
+      //   return 'Đang hoạt động';
       default:
         return 'Đã đóng';
     }

@@ -10,15 +10,15 @@ export default class DepartmentRepository {
   }
 
   public static update(payload: TeamDTO): Promise<AxiosResponse<any>> {
-    return baseUrlV1.put(`${ResourcesEnpoint.Department}/${payload.id}`, payload);
+    return baseUrl.put(`${ResourcesEnpoint.Department}/${payload.id}`, payload);
   }
 
   public static post(payload: TeamDTO): Promise<AxiosResponse<any>> {
-    return baseUrlV1.post(`${ResourcesEnpoint.Department}`, payload);
+    return baseUrl.post(`${ResourcesEnpoint.Department}`, payload);
   }
 
   public static delete(id: number): Promise<AxiosResponse<any>> {
-    return baseUrlV1.delete(`${ResourcesEnpoint.Department}/${id}`);
+    return baseUrl.delete(`${ResourcesEnpoint.Department}/${id}`);
   }
 
   public static getMetaData() {

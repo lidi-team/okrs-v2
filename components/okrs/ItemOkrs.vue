@@ -74,7 +74,6 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { customColors } from './okrs.constant';
 import IconEllipse from '@/assets/images/okrs/ellipse.svg';
 import { DialogTooltipAction } from '@/constants/app.interface';
-import { SelectDropdownDTO } from '@/constants/DTO/common';
 
 import ActionTooltip from '@/components/okrs/tooltip/ActionTooltip.vue';
 import ButtonCreateOkr from '@/components/okrs/items/button/index.vue';

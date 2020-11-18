@@ -19,7 +19,7 @@ export default class CycleRepository {
   }
 
   public static get(params: AdminParams): Promise<AxiosResponse<any>> {
-    return baseUrl.get(`${enpoint.cycles}/all`, { params });
+    return baseUrl.get(`${ResourcesEnpoint.CycleOKRs}/all`, { params });
   }
 
   /**
@@ -27,18 +27,18 @@ export default class CycleRepository {
    * @param cycleId if equal 0 then return cycle with time current, else then return cycle with id inputmeta_data/cycles
    */
   public static getCycleCurrent(cycleId: Number): Promise<AxiosResponse<any>> {
-    return baseUrl.get(`${enpoint.cycleCurrent}/${cycleId}`);
+    return baseUrl.get(`${ResourcesEnpoint.CycleOKRs}/${cycleId}`);
   }
 
   public static update(payload: CycleDTO): Promise<AxiosResponse<any>> {
-    return baseUrl.put(`${enpoint.cycles}/update/${payload.id}`, payload);
+    return baseUrl.put(`${ResourcesEnpoint.CycleOKRs}/update/${payload.id}`, payload);
   }
 
   public static post(payload: CycleDTO): Promise<AxiosResponse<any>> {
-    return baseUrlV1.post(`${ResourcesEnpoint.CycleOKRs}`, payload);
+    return baseUrl.post(`${ResourcesEnpoint.CycleOKRs}/create`, payload);
   }
 
   public static delete(id: number): Promise<AxiosResponse<any>> {
-    return baseUrlV1.delete(`${ResourcesEnpoint.CycleOKRs}/${id}`);
+    return baseUrl.delete(`${ResourcesEnpoint.CycleOKRs}/${id}`);
   }
 }

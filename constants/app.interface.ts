@@ -72,7 +72,7 @@ export interface JobPositionDTO {
 
 export interface MeasureUnitDTO {
   id?: number | any;
-  preset: string;
+  present: string;
   type: string;
   index: number;
 }

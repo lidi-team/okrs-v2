@@ -45,8 +45,8 @@ export enum UserStatus {
 
 export enum ProjectStatus {
   All = 'all',
-  Active = 'active',
-  Closed = 'closed',
+  // Active = 'active',
+  // Closed = 'closed',
 }
 
 export enum TabCfr {
@@ -95,9 +95,9 @@ export enum ResourcesEnpoint {
   Job = 'positions',
   Department = 'departments',
   Role = 'roles',
-  CycleOKRs = 'cycles',
+  CycleOKRs = 'cycle',
   EvaluationCriterial = 'evaluations',
-  MeasureUnit = 'measure',
+  MeasureUnit = 'measures',
   MetaData = 'meta_data',
   Objective = 'objectives',
   KeyResults = 'key_results',

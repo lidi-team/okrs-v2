@@ -64,13 +64,12 @@
             :status-icon="true"
             :rules="rules"
             :model="tempUpdateProject"
-            label-position="top"
             style="width: 100%"
           >
-            <el-form-item label="Tên dự án:" prop="name" class="custom-label">
+            <el-form-item label="Tên dự án:" prop="name" class="custom-label" label-width="120px">
               <el-input v-model="tempUpdateProject.name" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
             </el-form-item>
-            <el-form-item v-if="true" label="ngày bắt đầu:" class="custom-label" prop="startDate">
+            <el-form-item v-if="true" label="Ngày bắt đầu:" class="custom-label" prop="startDate" label-width="120px">
               <el-date-picker
                 v-model="tempUpdateProject.startDate"
                 format="dd/MM/yyyy"
@@ -80,7 +79,7 @@
                 placeholder="Chọn ngày sinh"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item v-if="true" label="ngày kết thuc:" class="custom-label" prop="endDate">
+            <el-form-item v-if="true" label="Ngày kết thúc:" class="custom-label" prop="endDate" label-width="120px">
               <el-date-picker
                 v-model="tempUpdateProject.endDate"
                 format="dd/MM/yyyy"
@@ -93,7 +92,7 @@
             <el-form-item label="Mô tả:" prop="description" class="custom-label">
               <el-input v-model="tempUpdateProject.description" placeholder="Nhập mô tả" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
             </el-form-item>
-            <el-form-item label="trạng thái:" class="custom-label" prop="status">
+            <el-form-item label="trạng thái:" class="custom-label" prop="status" label-width="120px">
               <el-radio v-model="tempUpdateProject.status" :label="1">Hoạt động</el-radio>
               <el-radio v-model="tempUpdateProject.status" :label="0">Kết thúc</el-radio>
             </el-form-item>

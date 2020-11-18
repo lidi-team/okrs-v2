@@ -23,9 +23,9 @@
           <el-tooltip class="cycle-okrs__icon" content="Sửa" placement="top">
             <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
-          <!-- <el-tooltip v-if="$store.state.cycle.cycle.id !== row.id" class="cycle-okrs__icon" content="Xóa" placement="top">
+          <el-tooltip v-if="$store.state.cycle.cycleCurrent.id !== row.id" class="cycle-okrs__icon" content="Xóa" placement="top">
             <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
-          </el-tooltip> -->
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
@@ -79,15 +79,15 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
+import { Component, Prop, PropSync, Vue } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { max255Char } from '@/constants/account.constant';
-import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
+import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import { AdminTabsEn } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 import { CycleDTO } from '@/constants/app.interface';
 import CycleRepository from '@/repositories/CycleRepository';
-import { formatDateToDD, formatDateToYYYY, compareTwoDate } from '@/utils/dateParser';
+import { compareTwoDate, formatDateToDD, formatDateToYYYY } from '@/utils/dateParser';
 
 import CommonPagination from '@/components/common/Pagination.vue';
 
@@ -147,6 +147,7 @@ export default class ManageCycleOkrs extends Vue {
   }
 
   private handleOpenDialogUpdate(row: CycleDTO): void {
+    console.log(this.$store.state);
     this.temporaryUpdateCycle = {
       id: row.id,
       name: row.name,
@@ -219,16 +220,20 @@ export default class ManageCycleOkrs extends Vue {
 </script>
 <style lang="scss">
 @import '@/assets/scss/main.scss';
+
 .cycle-okrs {
   width: 100%;
+
   &__icon {
     cursor: pointer;
     margin: 0 $unit-1;
   }
 }
+
 .pagination-bottom {
   margin-top: $unit-8;
 }
+
 .cycle-okrs-dialog {
   .el-date-editor.el-input {
     width: 100%;
