@@ -89,7 +89,7 @@
                 placeholder="Chọn ngày sinh"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="Mô tả:" prop="description" class="custom-label">
+            <el-form-item label="Mô tả:" prop="description" class="custom-label" label-width="120px">
               <el-input v-model="tempUpdateProject.description" placeholder="Nhập mô tả" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
             </el-form-item>
             <el-form-item label="trạng thái:" class="custom-label" prop="status" label-width="120px">

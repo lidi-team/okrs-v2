@@ -41,7 +41,7 @@ export default class MeasureUnitDialog extends Vue {
   private dateFormat: string = 'dd/MM/yyyy';
   private tempCreateUnit: MeasureUnitDTO = {
     type: '',
-    preset: '',
+    present: '',
     index: 1,
   };
 
@@ -94,7 +94,7 @@ export default class MeasureUnitDialog extends Vue {
 
   private clearForm(): void {
     this.tempCreateUnit.type = '';
-    this.tempCreateUnit.preset = '';
+    this.tempCreateUnit.present = '';
     this.tempCreateUnit.index = 1;
   }
 }

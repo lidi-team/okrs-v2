@@ -19,7 +19,7 @@ export default class CycleRepository {
   }
 
   public static get(params: AdminParams): Promise<AxiosResponse<any>> {
-    return baseUrl.get(`${ResourcesEnpoint.CycleOKRs}/all`, { params });
+    return baseUrl.get(`${ResourcesEnpoint.CycleOKRs}`, { params });
   }
 
   /**
@@ -31,11 +31,11 @@ export default class CycleRepository {
   }
 
   public static update(payload: CycleDTO): Promise<AxiosResponse<any>> {
-    return baseUrl.put(`${ResourcesEnpoint.CycleOKRs}/update/${payload.id}`, payload);
+    return baseUrl.put(`${ResourcesEnpoint.CycleOKRs}/${payload.id}`, payload);
   }
 
   public static post(payload: CycleDTO): Promise<AxiosResponse<any>> {
-    return baseUrl.post(`${ResourcesEnpoint.CycleOKRs}/create`, payload);
+    return baseUrl.post(`${ResourcesEnpoint.CycleOKRs}`, payload);
   }
 
   public static delete(id: number): Promise<AxiosResponse<any>> {
