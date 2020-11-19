@@ -107,9 +107,7 @@ export default class OKRsPage extends Vue {
 
   @Watch('flag')
   private changeDialog(value) {
-    if (value === false) {
-      this.getDashBoardOkrs();
-    }
+    this.getDashBoardOkrs();
   }
 
   @Watch('$store.state.user.tempUser.id', { immediate: false })

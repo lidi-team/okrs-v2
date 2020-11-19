@@ -5,7 +5,13 @@
         <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="sizeConfig"></el-input>
       </el-form-item>
       <el-form-item prop="parentId" label="Mục tiêu cấp trên" class="custom-label" label-width="120px">
-        <el-select v-model="tempObjective.parentId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn mục tiêu cấp trên">
+        <el-select
+          v-model="tempObjective.parentId"
+          filterable
+          no-match-text="Không tìm thấy kết quả"
+          placeholder="Chọn mục tiêu cấp trên"
+          :loading="loading"
+        >
           <el-option v-for="objective in listObjectiveParent" :key="objective.id" :label="objective.name" :value="objective.id" />
         </el-select>
       </el-form-item>
@@ -47,7 +53,9 @@ import ProjectRepository from '@/repositories/ProjectRepository';
     }),
   },
   mounted() {
+    this.loading = true;
     this.getData();
+    this.loading = false;
   },
 })
 export default class CreateObjective extends Vue {
@@ -60,9 +68,10 @@ export default class CreateObjective extends Vue {
     }
   }
 
+  private loading: Boolean = false;
+
   private async getData() {
     const { title, parentId, weight, projectId } = this.$store.state.okrs.objective;
-    console.log(this.$store.state.okrs.objective);
     this.tempObjective = {
       title,
       parentId,
@@ -79,7 +88,7 @@ export default class CreateObjective extends Vue {
 
   public tempObjective: any = {
     title: '',
-    parentId: null,
+    parentId: 1,
     weight: 1,
   };
 
