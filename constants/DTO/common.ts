@@ -22,7 +22,7 @@ export interface ParamsCFR extends ParamsQuery {
   status?: number;
 }
 
-export interface SelectDropdownDTO {
-  id: number;
-  name: string;
+export interface ParamsProject extends ParamsQuery {
+  type?: string;
+  sortWith: string;
 }

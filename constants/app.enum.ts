@@ -43,6 +43,12 @@ export enum UserStatus {
   All = 'Tất cả',
 }
 
+export enum ProjectStatus {
+  All = 'all',
+  // Active = 'active',
+  // Closed = 'closed',
+}
+
 export enum TabCfr {
   Feedback = 'Danh sách chờ phản hồi',
   History = 'Lịch sử',
@@ -86,18 +92,19 @@ export enum ResourcesEnpoint {
   Lessons = 'lessons',
   ResetPassword = 'reset_password',
   Me = 'me',
-  Job = 'jobs',
-  Team = 'teams',
+  Job = 'positions',
+  Department = 'departments',
   Role = 'roles',
-  CycleOKRs = 'cycles',
-  EvaluationCriterial = 'evaluation_criterias',
-  MeasureUnit = 'measure_units',
+  CycleOKRs = 'cycle',
+  EvaluationCriterial = 'evaluations',
+  MeasureUnit = 'measures',
   MetaData = 'meta_data',
   Objective = 'objectives',
   KeyResults = 'key_results',
   Checkin = 'checkins',
   CFRs = 'cfrs',
   Dashboard = 'dashboard',
+  Project = 'projects',
 }
 
 export enum CFREnpoint {

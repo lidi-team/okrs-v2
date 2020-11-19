@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loadingTable">
     <el-table :data="tableData" empty-text="Không có dữ liệu" class="criteria-admin">
-      <el-table-column prop="content" label="Tiêu chí đánh giá" min-width="400px"></el-table-column>
+      <el-table-column prop="content" label="Tiêu chí đánh giá" min-width="350px"></el-table-column>
       <el-table-column label="Số sao" min-width="70px">
         <template v-slot="{ row }">
           <span>
@@ -10,17 +10,17 @@
           </span>
         </template>
       </el-table-column>
-      <el-table-column label="Kiểu" min-width="300px">
+      <el-table-column label="Kiểu" min-width="200px">
         <template v-slot="{ row }">
           <span>{{ row.type | typeFormatter(row.type) }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Ngày cập nhật" min-width="120px">
+      <!--<el-table-column label="Ngày cập nhật" min-width="120px">
         <template v-slot="{ row }">
           <span>{{ new Date(row.updatedAt) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
-      </el-table-column>
-      <el-table-column label="Thao tác" align="center" min-width="400px">
+      </el-table-column>-->
+      <el-table-column label="Thao tác" align="center">
         <template v-slot="{ row }">
           <el-tooltip class="criteria-admin__icon" content="Sửa" placement="top">
             <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>

@@ -16,7 +16,7 @@ export const initNewDate = (dateFormat: string = 'dd/MM/yyyy'): string => {
 };
 
 export const formatDateToYYYY = (date: string): string => {
-  return format(parseToDate(date), 'yyyy/MM/dd');
+  return format(parseToDate(date), 'dd/MM/yyyy');
 };
 
 export const compareTwoDate = (startDate: string, endDate: string): number => {
@@ -34,5 +34,5 @@ export const formatDateFromExcel = (date): string => {
   if (month.length < 2) month = '0' + month;
   if (day.length < 2) day = '0' + day;
 
-  return [day, month, year].join('-');
+  return [day, month, year].join('/');
 };

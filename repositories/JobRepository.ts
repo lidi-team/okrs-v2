@@ -6,19 +6,19 @@ import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export default class JobRepository {
   public static get(params: AdminParams): Promise<AxiosResponse<any>> {
-    return baseUrlV1.get(`${ResourcesEnpoint.Job}`, { params });
+    return baseUrl.get(`${ResourcesEnpoint.Job}`, { params });
   }
 
   public static update(payload: JobPositionDTO): Promise<AxiosResponse<any>> {
-    return baseUrlV1.put(`${ResourcesEnpoint.Job}/${payload.id}`, payload);
+    return baseUrl.put(`${ResourcesEnpoint.Job}/${payload.id}`, payload);
   }
 
   public static post(payload: JobPositionDTO): Promise<AxiosResponse<any>> {
-    return baseUrlV1.post(`${ResourcesEnpoint.Job}`, payload);
+    return baseUrl.post(`${ResourcesEnpoint.Job}`, payload);
   }
 
   public static delete(id: number): Promise<AxiosResponse<any>> {
-    return baseUrlV1.delete(`${ResourcesEnpoint.Job}/${id}`);
+    return baseUrl.delete(`${ResourcesEnpoint.Job}/${id}`);
   }
 
   public static getMetaData() {
