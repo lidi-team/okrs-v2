@@ -3,6 +3,7 @@ import { ObjectiveDTO, KeyResultDTO } from '@/constants/DTO/okrs';
 
 export enum OkrsMutation {
   SET_FLAG = 'setFlag',
+  SET_TITLE_DIALOG_OKRS = 'setTitleDialogOkrs',
   SET_DIALOG_OKRS = 'setIsDialogOKRs',
   CLEAR_KRS = 'clearKrs',
   SET_STAFF_OKRS = 'setStaffOkrs',
@@ -14,6 +15,7 @@ export enum OkrsMutation {
 
 export interface OkrsState {
   flag: Boolean;
+  titleDialogOkrs: String;
   isDialogOKRs: Boolean;
   objectiveParent: Number;
   listObjectiveAlign: any[];
@@ -34,6 +36,7 @@ const initObjective: ObjectiveDTO = {
 
 export const state = (): OkrsState => ({
   flag: false,
+  titleDialogOkrs: '',
   isDialogOKRs: false,
   objectiveParent: 0,
   listObjectiveAlign: [],
@@ -44,6 +47,7 @@ export type RootState = ReturnType<typeof state>;
 
 export const getters: GetterTree<RootState, RootState> = {
   flag: (state) => state.flag,
+  titleDialogOkrs: (state) => state.titleDialogOkrs,
   isDialogOKRs: (state) => state.isDialogOKRs,
   objectiveParent: (state) => state.objectiveParent,
   listObjectiveAlign: (state) => state.listObjectiveAlign,
@@ -52,6 +56,7 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   [OkrsMutation.SET_FLAG]: (state) => (state.flag = !state.flag),
+  [OkrsMutation.SET_TITLE_DIALOG_OKRS]: (state, data: String) => (state.titleDialogOkrs = data),
   [OkrsMutation.SET_DIALOG_OKRS]: (state, data: Boolean) => (state.isDialogOKRs = data),
   [OkrsMutation.SET_OBJECTIVE_PARENT]: (state, data: Number) => (state.objectiveParent = data),
   [OkrsMutation.SET_LIST_OBJECTIVE_ALIGN]: (state, data: any[]) => (state.listObjectiveAlign = data),
@@ -67,11 +72,13 @@ export interface OKRsAction<S, R> extends ActionTree<S, R> {
 
 export const actions: OKRsAction<OkrsState, RootState> = {
   createDialogOKRs({ commit }): void {
+    commit(OkrsMutation.SET_TITLE_DIALOG_OKRS, 'Tạo OKRs');
     commit(OkrsMutation.SET_DIALOG_OKRS, true);
     commit(OkrsMutation.SET_OBJECTIVE, initObjective);
   },
 
   updateDialogOKRs({ commit }, data: ObjectiveDTO): void {
+    commit(OkrsMutation.SET_TITLE_DIALOG_OKRS, 'Cập nhật OKRs');
     commit(OkrsMutation.SET_DIALOG_OKRS, true);
     commit(OkrsMutation.SET_OBJECTIVE, data);
   },
