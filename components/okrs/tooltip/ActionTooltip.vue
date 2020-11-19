@@ -17,6 +17,7 @@ import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import IconSetting from '@/assets/images/okrs/setting.svg';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import { DialogTooltipAction } from '@/constants/app.interface';
+import { MutationState } from '@/constants/app.vuex';
 
 import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 
@@ -44,6 +45,7 @@ export default class OkrsActionTooltip extends Vue {
       ...confirmWarningConfig,
     }).then(async () => {
       await ObjectiveRepository.deleteObjective(this.id).then((res: any) => {
+        this.$store.commit(MutationState.SET_FLAG);
         this.$notify.success({
           ...notificationConfig,
           message: 'Xóa OKRs thành công',

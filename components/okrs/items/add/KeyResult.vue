@@ -53,9 +53,9 @@
             </el-row>
           </div>
           <div>
-            <el-form-item prop="keyResultParentId" label="Liên kết kết quả then chốt" class="custom-label" label-width="190px">
+            <el-form-item prop="parentId" label="Liên kết kết quả then chốt" class="custom-label" label-width="190px">
               <el-select
-                v-model="tempKeyResult.keyResultParentId"
+                v-model="tempKeyResult.parentId"
                 filterable
                 no-match-text="Không tìm thấy kết quả"
                 placeholder="Chọn kết quả then chốt "
@@ -104,6 +104,7 @@ import KeyResultRepository from '@/repositories/KeyResultRepository';
     this.units = await this.$store.dispatch(DispatchAction.GET_MEASURE);
     const { data } = await KeyResultRepository.getKeyResult(this.$store.state.okrs.objective.parentId);
     this.keyResultsParent = data;
+    console.log(this.keyResult, 'hello');
     this.loading = false;
   },
 })
@@ -113,7 +114,7 @@ export default class KeyResult extends Vue {
     required: true,
     default: () => ({
       content: '',
-      keyResultParentId: null,
+      parentId: null,
       linkPlans: '',
       linkResults: '',
       measureUnitId: 1,
