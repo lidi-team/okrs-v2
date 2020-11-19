@@ -3,7 +3,7 @@
     <el-table :data="tableData" empty-text="Không có dữ liệu" class="unit-admin">
       <el-table-column prop="index" label="Thứ tự sắp xếp" />
       <el-table-column prop="type" label="Tên đơn vị" />
-      <el-table-column prop="preset" label="Tên viết tắt" />
+      <el-table-column prop="present" label="Tên viết tắt" />
       <el-table-column label="Thao tác" align="center">
         <template v-slot="{ row }">
           <el-tooltip class="unit-admin__icon" content="Sửa" placement="top">
@@ -37,7 +37,7 @@
               <el-input v-model="tempUpdateUnit.type" placeholder="Nhập tên đơn vị" @keyup.enter.native="handleUpdate(tempUpdateUnit)" />
             </el-form-item>
             <el-form-item label="Tên viết tắt" label-width="120px">
-              <el-input v-model="tempUpdateUnit.preset" placeholder="Nhập tên viết tắt" @keyup.enter.native="handleUpdate(tempUpdateUnit)" />
+              <el-input v-model="tempUpdateUnit.present" placeholder="Nhập tên viết tắt" @keyup.enter.native="handleUpdate(tempUpdateUnit)" />
             </el-form-item>
             <el-form-item label="Thứ tự hiển thị" prop="index" class="custom-label" label-width="120px">
               <el-input v-model.number="tempUpdateUnit.index" placeholder="Nhập thứ tự hiển thị" @keyup.enter.native="handleUpdate(tempUpdateUnit)" />
@@ -88,7 +88,7 @@ export default class ManageMeasureUnit extends Vue {
   private dialogUpdateVisible: boolean = false;
   private tempUpdateUnit: MeasureUnitDTO = {
     type: '',
-    preset: '',
+    present: '',
     index: 1,
   };
 
@@ -112,7 +112,7 @@ export default class ManageMeasureUnit extends Vue {
     this.tempUpdateUnit = {
       id: row.id,
       type: row.type,
-      preset: row.preset,
+      present: row.present,
       index: row.index,
     };
     this.dialogUpdateVisible = true;

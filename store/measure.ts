@@ -1,9 +1,9 @@
 import { ActionTree, GetterTree, MutationTree, ActionContext } from 'vuex';
 import MeasureRepository from '@/repositories/MeasureRepository';
-import { SelectDropdownDTO } from '@/constants/DTO/common';
+// import { SelectDropdownDTO } from '@/constants/DTO/common';
 
 export interface MeasureState {
-  measure: Array<SelectDropdownDTO>;
+  measure: Array<any>;
 }
 
 export const state = (): MeasureState => ({
@@ -21,7 +21,7 @@ export const mutations: MutationTree<RootState> = {
 };
 
 export interface MeasureUnitActions<S, R> extends ActionTree<S, R> {
-  getMeasure(context: ActionContext<S, R>): Promise<Array<SelectDropdownDTO>>;
+  getMeasure(context: ActionContext<S, R>): Promise<Array<any>>;
   clearMeasure(context: ActionContext<S, R>): void;
 }
 

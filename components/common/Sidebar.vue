@@ -42,6 +42,17 @@
         </div>
       </nuxt-link>
       <nuxt-link
+        v-if="user.roles.includes('ROLE_ADMIN')"
+        to="/du-an"
+        :class="['sidebar__link', { 'nuxt-link-exact-active': isSettingProjectActive }]"
+      >
+        <div class="sidebar__link__tab">
+          <project-manage class="sidebar__link__tab__icon" />
+          <p class="hidden-tablet">Quản lý</p>
+          <p class="hidden-tablet">dự án</p>
+        </div>
+      </nuxt-link>
+      <nuxt-link
         v-if="user.roles.includes('ROLE_ADMIN_HR')"
         to="/quan-ly/nhan-su"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isHRsActive }]"
@@ -65,6 +76,7 @@ import Checkin from '@/assets/images/common/sidebar/checkin.svg';
 import OKRs from '@/assets/images/common/sidebar/okrs.svg';
 import Setting from '@/assets/images/common/sidebar/setting.svg';
 import HumanResources from '@/assets/images/common/sidebar/nhan-su.svg';
+import ProjectManage from '@/assets/images/common/sidebar/project.svg';
 import { GetterState } from '@/constants/app.vuex';
 @Component<SideBar>({
   name: 'SideBar',
@@ -75,6 +87,7 @@ import { GetterState } from '@/constants/app.vuex';
     OKRs,
     Setting,
     HumanResources,
+    ProjectManage,
   },
   created() {
     console.log('user: ', this.user.roles.includes('ROLE_ADMIN'));
@@ -107,6 +120,10 @@ export default class SideBar extends Vue {
 
   private get isSettingCompanyActive() {
     return !!this.$route.path.startsWith('/admin/cai-dat');
+  }
+
+  private get isSettingProjectActive() {
+    return !!this.$route.path.startsWith('/du-an');
   }
 
   private get isHRsActive() {

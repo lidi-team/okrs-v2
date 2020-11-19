@@ -28,7 +28,7 @@ import { Component, Vue, PropSync, Watch, Prop } from 'vue-property-decorator';
 import { max255Char } from '@/constants/account.constant';
 import { confirmWarningConfig } from '@/constants/app.constant';
 import { ObjectiveDTO } from '@/constants/DTO/okrs';
-import { ParamsQuery, SelectDropdownDTO } from '@/constants/DTO/common';
+import { ParamsQuery } from '@/constants/DTO/common';
 import { Maps, Rule } from '@/constants/app.type';
 import { DispatchAction, MutationState, GetterState } from '@/constants/app.vuex';
 
@@ -83,7 +83,7 @@ export default class CreateObjective extends Vue {
     weight: 1,
   };
 
-  private listObjectiveParent: Array<SelectDropdownDTO> = [];
+  private listObjectiveParent: Array<any> = [];
 
   private sizeConfig = { minRows: 2, maxRows: 2 };
   private listDataParams: ParamsQuery = {

@@ -3,12 +3,12 @@
     <el-table :data="tableData" empty-text="Không có dữ liệu" class="team-admin">
       <el-table-column prop="name" label="Tên phòng ban"></el-table-column>
       <el-table-column prop="description" label="Mô tả"></el-table-column>
-      <el-table-column label="Ngày cập nhật">
+      <!--<el-table-column label="Ngày cập nhật">
         <template v-slot="{ row }">
-          <!-- Vue Fileter Date Plugin -->
+          &lt;!&ndash; Vue Fileter Date Plugin &ndash;&gt;
           <span>{{ new Date(row.updatedAt) | dateFormat('DD/MM/YYYY') }}</span>
         </template>
-      </el-table-column>
+      </el-table-column>-->
       <el-table-column label="Thao tác" align="center">
         <template v-slot="{ row }">
           <el-tooltip class="team-admin__icon" content="Sửa" placement="top">
