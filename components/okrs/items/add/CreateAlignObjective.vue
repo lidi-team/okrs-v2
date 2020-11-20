@@ -18,20 +18,23 @@
       </div>
       <div class="okrs-align__action">
         <el-button class="el-button--white el-button--modal" @click="backToStepTwo">Quay lại</el-button>
-        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createOkrs(false)">Bỏ qua và tạo OKRs</el-button>
-        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createOkrs(true)">Tạo OKRs</el-button>
+        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createOkrs(false)"
+          >Bỏ qua và {{ titleDialogOKRs }}</el-button
+        >
+        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createOkrs(true)">{{ titleDialogOKRs }}</el-button>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { Form } from 'element-ui';
+import { mapGetters } from 'vuex';
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';
 
-import { DispatchAction, MutationState } from '@/constants/app.vuex';
+import { DispatchAction, MutationState, GetterState } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import AlignObjective from '@/components/okrs/items/add/AlignObjective.vue';
 
@@ -39,6 +42,11 @@ import AlignObjective from '@/components/okrs/items/add/AlignObjective.vue';
   name: 'CreateAlignObjective',
   components: {
     AlignObjective,
+  },
+  computed: {
+    ...mapGetters({
+      titleDialogOKRs: GetterState.OKRS_TITLE_DIALOG_OKRS,
+    }),
   },
 })
 export default class CreateAlignObjective extends Vue {

@@ -1,7 +1,7 @@
 <template>
   <div class="grid-key-result">
     <span class="kr-content">{{ keyResult.content }}</span>
-    <span class="kr-target">{{ keyResult.targetValue }}</span>
+    <span class="kr-target">{{ keyResult.targetedValue }}</span>
     <span class="kr-start">{{ keyResult.startValue }}</span>
     <span class="kr-obtained">{{ keyResult.valueObtained }}</span>
     <span class="kr-progress">{{ keyResult.progress }}%</span>

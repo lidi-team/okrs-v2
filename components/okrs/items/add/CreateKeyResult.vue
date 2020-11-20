@@ -46,7 +46,7 @@ import { KeyResultDTO } from '@/constants/DTO/okrs';
   mounted() {
     const { title, keyResults } = this.$store.state.okrs.objective;
     this.objectiveTitle = title;
-    this.keyResults = [];
+    this.keyResults = JSON.parse(JSON.stringify(keyResults));
   },
 })
 export default class CreateObjectiveStep extends Vue {
@@ -94,7 +94,6 @@ export default class CreateObjectiveStep extends Vue {
   private async nextStepThree() {
     const krs: any[] = [];
     let validForm: number = 0;
-
     this.loading = true;
     if (this.keyResults.length === 0) {
       setTimeout(() => {

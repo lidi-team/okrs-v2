@@ -1,5 +1,12 @@
 <template>
-  <el-dialog title="Tạo OKRs" :visible.sync="isDialogOKRs" width="800px" placement="center" :before-close="handleCloseDialog" class="company-okrs">
+  <el-dialog
+    :title="titleDialogOKRs"
+    :visible.sync="isDialogOKRs"
+    width="800px"
+    placement="center"
+    :before-close="handleCloseDialog"
+    class="company-okrs"
+  >
     <el-steps :active="active" finish-status="success" :align-center="true">
       <el-step title="Mục tiêu"></el-step>
       <el-step title="Các kết quả then chốt"></el-step>
@@ -30,6 +37,7 @@ import CreateAlignObjective from '@/components/okrs/items/add/CreateAlignObjecti
   computed: {
     ...mapGetters({
       isDialogOKRs: GetterState.OKRS_IS_DIALOG_OKRS,
+      titleDialogOKRs: GetterState.OKRS_TITLE_DIALOG_OKRS,
     }),
   },
 })
