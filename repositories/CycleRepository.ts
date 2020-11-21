@@ -19,16 +19,16 @@ export default class CycleRepository {
     return baseUrl.get(enpoint.cyclesMetadata);
   }
 
-  public static get(params: AdminParams): Promise<AxiosResponse<any>> {
-    return baseUrl.get(`${ResourcesEnpoint.CycleOKRs}`, { params });
+  public static getCycleDetailById(cycleId: Number): Promise<AxiosResponse<any>> {
+    return baseUrl.get(`${enpoint.cycles}/${cycleId}`);
   }
 
-  /**
-   *
-   * @param cycleId if equal 0 then return cycle with time current, else then return cycle with id inputmeta_data/cycles
-   */
   public static getCycleCurrent(cycleId: Number): Promise<AxiosResponse<any>> {
-    return baseUrl.get(`${ResourcesEnpoint.CycleOKRs}/${cycleId}`);
+    return baseUrl.get(`${enpoint.cycleCurrent}/${cycleId}`);
+  }
+
+  public static get(params: AdminParams): Promise<AxiosResponse<any>> {
+    return baseUrl.get(`${ResourcesEnpoint.CycleOKRs}`, { params });
   }
 
   public static update(payload: CycleDTO): Promise<AxiosResponse<any>> {

@@ -63,9 +63,9 @@ import CycleRepository from '@/repositories/CycleRepository';
     }),
   },
   async mounted() {
+    this.currentCycleId = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id;
     await this.getDashBoardOkrs();
     await this.getCycles();
-    this.currentCycleId = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id;
   },
 })
 export default class OKRsPage extends Vue {

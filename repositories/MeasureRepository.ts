@@ -1,23 +1,31 @@
 import { AxiosResponse } from 'axios';
-import { ResourcesEnpoint } from '@/constants/app.enum';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { AdminParams } from '@/constants/DTO/common';
-import { baseUrl, baseUrlV1 } from './BaseRepository';
+import { baseUrl } from './BaseRepository';
+
+export enum enpoint {
+  measureUnit = 'measures',
+  listMeasure = 'meta_data/measureUnit',
+}
 
 export default class MeasureUnitRepository {
+  public static getListMeasure(): Promise<AxiosResponse<any>> {
+    return baseUrl.get(enpoint.listMeasure);
+  }
+
   public static get(params?: AdminParams): Promise<AxiosResponse<any>> {
-    return baseUrl.get(`${ResourcesEnpoint.MeasureUnit}`, { params });
+    return baseUrl.get(`${enpoint.measureUnit}`, { params });
   }
 
   public static update(payload: MeasureUnitDTO): Promise<AxiosResponse<any>> {
-    return baseUrl.put(`${ResourcesEnpoint.MeasureUnit}/${payload.id}`, payload);
+    return baseUrl.put(`${enpoint.measureUnit}/${payload.id}`, payload);
   }
 
   public static post(payload: MeasureUnitDTO): Promise<AxiosResponse<any>> {
-    return baseUrl.post(`${ResourcesEnpoint.MeasureUnit}`, payload);
+    return baseUrl.post(`${enpoint.measureUnit}`, payload);
   }
 
   public static delete(id: number): Promise<AxiosResponse<any>> {
-    return baseUrl.delete(`${ResourcesEnpoint.MeasureUnit}/${id}`);
+    return baseUrl.delete(`${enpoint.measureUnit}/${id}`);
   }
 }

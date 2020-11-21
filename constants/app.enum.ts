@@ -97,7 +97,6 @@ export enum ResourcesEnpoint {
   Role = 'roles',
   CycleOKRs = 'cycle',
   EvaluationCriterial = 'evaluations',
-  MeasureUnit = 'measures',
   MetaData = 'meta_data',
   Objective = 'objectives',
   KeyResults = 'key_results',
