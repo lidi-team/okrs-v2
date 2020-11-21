@@ -64,7 +64,6 @@ export default class NavbarCrfs extends Vue {
     } else {
       results = this.allUsers;
     }
-    // call callback function to return suggestions
     callback(results);
   }
 
@@ -82,7 +81,7 @@ export default class NavbarCrfs extends Vue {
       this.listCycles = this.$store.state.cycle.cycles;
     } else {
       try {
-        const { data } = await CycleRepository.getMetadata();
+        const { data } = await CycleRepository.getListMetadata();
         this.listCycles = data.data.all.map((item) => {
           return {
             id: item.id,

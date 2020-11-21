@@ -55,13 +55,7 @@ import CommonPagination from '@/components/common/Pagination.vue';
   },
   created() {
     this.getCycles();
-    // this.getList();
   },
-  // computed: {
-  //   ...mapGetters({
-  //     user: GetterState.USER,
-  //   }),
-  // },
 })
 export default class CheckinPage extends Vue {
   private tableData: any[] = [];
@@ -69,7 +63,6 @@ export default class CheckinPage extends Vue {
   private loading: boolean = false;
   private cycles: any[] = [];
   private currentCycleId: number = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id;
-  // private meta: any = {};
   private currentTab: string =
     this.$route.query.tab === ROUTER_CHECKIN.MyOkrs
       ? TAB_CHECKIN.MyOkrs
@@ -77,7 +70,7 @@ export default class CheckinPage extends Vue {
       ? TAB_CHECKIN.CheckinResquest
       : this.$route.query.tab === ROUTER_CHECKIN.CheckinCompany
       ? TAB_CHECKIN.CheckinCompany
-      : TAB_CHECKIN.Inferior; // okrs-cap-duoi
+      : TAB_CHECKIN.Inferior;
 
   private paramsCheckin = {
     page: this.$route.query.page ? Number(this.$route.query.page) : 1,
@@ -103,115 +96,9 @@ export default class CheckinPage extends Vue {
     this.paramsCheckin.cycleId = cycleId;
     this.$router.push(`?tab=${tab}&cycleId=${cycleId}`);
   }
-  // @Watch('$route.query')
-  // private async getList() {
-  //   this.loading = true;
-  //   this.currentTab =
-  //     this.$route.query.tab === 'request-checkin'
-  //       ? TabCheckins.CheckinResquest
-  //       : this.$route.query.tab === 'checkin-company'
-  //       ? TabCheckins.CheckinCompany
-  //       : this.$route.query.tab === 'inferior'
-  //       ? TabCheckins.Inferior
-  //       : TabCheckins.MyOkrs;
-  // this.paramsCheckin = {
-  //   page: this.$route.query.page ? Number(this.$route.query.page) : 1,
-  //   cycleId: this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycle.id,
-  //   limit: pageLimit,
-  // };
-  //   if (this.currentTab === TabCheckins.MyOkrs) {
-  //     try {
-  //       const paramsCheckin = {
-  //         cycleId: this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycle.id,
-  //       };
-  //       const { data } = await CheckinRepository.get(paramsCheckin);
-  //       this.tableData = data.data;
-  //       this.loading = false;
-  //     } catch (error) {
-  //       if (error.response.data.statusCode === 470) {
-  //         this.$notify.error({
-  //           ...notificationConfig,
-  //           message: 'Bạn không có quyền truy cập checkin này',
-  //         });
-  //       }
-  //       this.loading = false;
-  //     }
-  //   } else if (this.currentTab === TabCheckins.CheckinResquest) {
-  //     try {
-  //       const { data } = await CheckinRepository.getRequest(this.paramsCheckin);
-  //       this.tableData = data.data.items;
-  //       this.meta = data.data.meta;
-  //       this.loading = false;
-  //     } catch (error) {
-  //       if (error.response.data.statusCode === 470) {
-  //         this.$notify.error({
-  //           ...notificationConfig,
-  //           message: 'Bạn không có quyền truy cập checkin này',
-  //         });
-  //       }
-  //       this.$router.push('/checkin');
-  //       this.loading = false;
-  //     }
-  //   } else if (this.currentTab === TabCheckins.Inferior) {
-  //     try {
-  //       const { data } = await CheckinRepository.getListInferior(this.paramsCheckin);
-  //       this.tableData = data.data.items;
-  //       this.meta = data.data.meta;
-  //       this.loading = false;
-  //     } catch (error) {
-  //       if (error.response.data.statusCode === 470) {
-  //         this.$notify.error({
-  //           ...notificationConfig,
-  //           message: 'Bạn không có quyền truy cập checkin này',
-  //         });
-  //       }
-  //       this.$router.push('/checkin');
-  //       this.loading = false;
-  //     }
-  //   } else {
-  //     try {
-  //       const paramsCheckin = {
-  //         cycleId: this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycle.id,
-  //       };
-  //       const { data } = await CheckinRepository.getOKRsCompany(paramsCheckin);
-  //       this.tableData = data.data;
-  //       this.loading = false;
-  //     } catch (error) {
-  //       if (error.response.data.statusCode === 470) {
-  //         this.$notify.error({
-  //           ...notificationConfig,
-  //           message: 'Bạn không có quyền truy cập checkin này',
-  //         });
-  //       }
-  //       this.$router.push('/checkin');
-  //       this.loading = false;
-  //     }
-  //   }
-  // }
-  // private handlePagination(pagination: any) {
-  //   this.$route.query.cycleId === undefined
-  //     ? this.$router.push(`?tab=request-checkin&page=${pagination.page}`)
-  //     : this.$router.push(`?tab=request-checkin&cycleId=${Number(this.$route.query.cycleId)}&page=${pagination.page}`);
-  // }
   private async getCycles() {
-    const { data } = await CycleRepository.getList();
+    const { data } = await CycleRepository.getListMetadata();
     this.cycles = data || [];
-    // if (this.$store.state.cycle.cycles.length) {
-    //   this.cycles = this.$store.state.cycle.cycles;
-    //   this.currentCycleId = this.$store.state.cycle.cycle.id;
-    // } else {
-    //   try {
-    //     const { data } = await CycleRepository.getList();
-    //     console.log(data);
-    //     this.cycles = data.data.all.map((item) => {
-    //       return {
-    //         id: item.id,
-    //         label: item.name,
-    //       };
-    //     });
-    //     this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
-    //   } catch (error) {}
-    // }
   }
   private handleClick(currentTab: string) {
     this.paramsCheckin.page = 1;

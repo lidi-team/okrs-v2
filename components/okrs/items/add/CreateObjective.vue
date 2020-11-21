@@ -5,13 +5,7 @@
         <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="sizeConfig"></el-input>
       </el-form-item>
       <el-form-item prop="parentId" label="Mục tiêu cấp trên" class="custom-label" label-width="120px">
-        <el-select
-          v-model="tempObjective.parentId"
-          filterable
-          no-match-text="Không tìm thấy kết quả"
-          placeholder="Chọn mục tiêu cấp trên"
-          :loading="loading"
-        >
+        <el-select v-model="tempObjective.parentId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn mục tiêu cấp trên">
           <el-option v-for="objective in listObjectiveParent" :key="objective.id" :label="objective.name" :value="objective.id" />
         </el-select>
       </el-form-item>
@@ -47,18 +41,24 @@ import ProjectRepository from '@/repositories/ProjectRepository';
   name: 'CreateObjective',
   computed: {
     ...mapGetters({
-      cycleCurrent: GetterState.CYCLE_CURRENT,
+      currentCycle: GetterState.CYCLE_CURRENT,
       objectiveParent: GetterState.OKRS_OBJECTIVE_PARENT,
       isDialog: GetterState.OKRS_IS_DIALOG_OKRS,
     }),
   },
-  mounted() {
-    this.loading = true;
-    this.getData();
-    this.loading = false;
+  async mounted() {
+    await this.getData();
   },
 })
 export default class CreateObjective extends Vue {
+  private listObjectiveParent: any[] = [];
+  private sizeConfig = { minRows: 2, maxRows: 2 };
+  public tempObjective: any = {
+    title: '',
+    parentId: 1,
+    weight: 1,
+  };
+
   @PropSync('active', Number) private syncActive!: number;
 
   @Watch('isDialog')
@@ -67,8 +67,6 @@ export default class CreateObjective extends Vue {
       this.getData();
     }
   }
-
-  private loading: Boolean = false;
 
   private async getData() {
     const { title, parentId, weight, projectId } = this.$store.state.okrs.objective;
@@ -84,20 +82,6 @@ export default class CreateObjective extends Vue {
   private rules: Maps<Rule[]> = {
     title: [{ type: 'string', required: true, message: 'Vui lòng nhập mục tiêu', trigger: 'blur' }, max255Char],
     parentObjectiveId: [{ type: 'number', required: true, message: 'Vui lòng chọn OKRs cấp trên', trigger: 'blur' }],
-  };
-
-  public tempObjective: any = {
-    title: '',
-    parentId: 1,
-    weight: 1,
-  };
-
-  private listObjectiveParent: Array<any> = [];
-
-  private sizeConfig = { minRows: 2, maxRows: 2 };
-  private listDataParams: ParamsQuery = {
-    page: 1,
-    limit: 10,
   };
 
   private nextStepTwo(): void {
