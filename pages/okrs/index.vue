@@ -1,12 +1,13 @@
 <template>
-  <div v-loading="loadingComponent" class="okrs-page">
+  <div class="okrs-page">
     <el-select v-model="currentCycleId" no-match-text="Không tìm thấy chu kỳ" filterable placeholder="Chọn chu kỳ" @change="changeCycleData">
       <el-option v-for="cycle in cycles" :key="cycle.id" :label="cycle.name" :value="cycle.id" />
     </el-select>
-    <div v-loading="loadingForm">
+    <div>
       <item-okrs
         v-for="item in projects"
         :key="item.id"
+        :loading="loading"
         :project-id="item.id"
         :type-objective="2"
         :title="item.name"
@@ -64,17 +65,17 @@ import CycleRepository from '@/repositories/CycleRepository';
   async mounted() {
     await this.getDashBoardOkrs();
     await this.getCycles();
+    this.currentCycleId = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id;
   },
 })
 export default class OKRsPage extends Vue {
   private loadingForm: boolean = false;
   private isCompanyOkrs: boolean = false;
-  private loadingComponent: boolean = false;
   private visibleCreateOkrsDialog = false;
   private listKrs: any[] = [];
   private cycles: any[] = [];
   private visibleDetailKrs: boolean = false;
-  private currentCycleId: number = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id;
+  private currentCycleId: number = 0;
 
   private openDrawer(keyResults: any) {
     this.listKrs = keyResults;
@@ -83,13 +84,12 @@ export default class OKRsPage extends Vue {
   private projects: any[] = [];
 
   @Watch('flag')
-  private changeDialog(value) {
-    this.getDashBoardOkrs();
+  private async changeDialog(value) {
+    await this.getDashBoardOkrs();
   }
 
   private async getCycles() {
-    const { data } = await CycleRepository.getList();
-    console.log(data, 'hello');
+    const { data } = await CycleRepository.getListMetadata();
     this.cycles = data || [];
   }
 
@@ -105,8 +105,9 @@ export default class OKRsPage extends Vue {
     }
   }
 
-  private async changeCycleData() {
-    await this.getDashBoardOkrs();
+  private changeCycleData() {
+    this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.currentCycleId);
+    this.$store.commit(MutationState.SET_FLAG);
   }
 }
 </script>

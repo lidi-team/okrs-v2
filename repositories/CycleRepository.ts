@@ -7,6 +7,7 @@ import { AdminParams } from '@/constants/DTO/common';
 export enum enpoint {
   cycles = 'cycle',
   cycleCurrent = 'cycle/current',
+  cyclesMetadata = 'meta_data/cycles',
 }
 
 export default class CycleRepository {
@@ -14,8 +15,8 @@ export default class CycleRepository {
     return baseUrl.get(enpoint.cycles);
   }
 
-  public static getMetadata(): Promise<AxiosResponse<any>> {
-    return baseUrlV1.get(`${ResourcesEnpoint.MetaData}/cycles`);
+  public static getListMetadata(): Promise<AxiosResponse<any>> {
+    return baseUrl.get(enpoint.cyclesMetadata);
   }
 
   public static get(params: AdminParams): Promise<AxiosResponse<any>> {

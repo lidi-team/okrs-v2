@@ -6,6 +6,7 @@ export enum CycleMutation {
   SET_CURRENT_CYCLE = 'setCurrentCycle',
   SET_TEMP_CYCLE = 'setTempCycle',
 }
+
 export interface AuthState {
   cycles: any[];
   cycleCurrent: CycleDTO;

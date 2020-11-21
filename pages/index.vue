@@ -118,7 +118,7 @@ export default class HomePage extends Vue {
   }
 
   private async getAllCycles() {
-    await await CycleRepository.getMetadata()
+    await await CycleRepository.getListMetadata()
       .then(({ data }) => {
         this.listCycles = data.data.all.map((item) => {
           return {
@@ -131,8 +131,9 @@ export default class HomePage extends Vue {
         });
         this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
       })
-      // eslint-disable-next-line handle-callback-err
-      .catch((err) => {});
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   @Watch('$route.query')
