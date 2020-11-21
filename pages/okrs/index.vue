@@ -69,7 +69,7 @@ import CycleRepository from '@/repositories/CycleRepository';
   },
 })
 export default class OKRsPage extends Vue {
-  private loadingForm: boolean = false;
+  private loading: boolean = false;
   private isCompanyOkrs: boolean = false;
   private visibleCreateOkrsDialog = false;
   private listKrs: any[] = [];
@@ -97,10 +97,10 @@ export default class OKRsPage extends Vue {
     try {
       const { data } = await OkrsRepository.getListOkrsByCycleId(this.currentCycleId);
       this.projects = Object.freeze(data);
-      this.loadingForm = false;
+      this.loading = false;
     } catch (error) {
       setTimeout(() => {
-        this.loadingForm = false;
+        this.loading = false;
       }, 500);
     }
   }
