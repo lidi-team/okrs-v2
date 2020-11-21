@@ -5,7 +5,7 @@
         <p @click="viewDetailOkrs">Xem chi tiết</p>
         <div v-if="isManage">
           <p @click="updateOKRs">Cập nhật</p>
-          <p style="color: #e53e3e" v-if="canDelete" @click="handleDeleteOKrs">Xóa</p>
+          <p v-if="canDelete" style="color: #e53e3e" @click="handleDeleteOKrs">Xóa</p>
         </div>
       </div>
       <i slot="reference" class="el-icon-more okrs-tooltip__icon"></i>

@@ -12,17 +12,15 @@
 
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
-      <div class="checkins__content">
-        <component :is="currentTabComponent" :current-cycle-id="currentCycleId" :loading="loading" :table-data="tableData" />
-        <!-- <common-pagination
-          v-if="$route.query.tab === 'request-checkin' || $route.query.tab === 'inferior'"
-          class="checkins__pagination"
-          :total="meta.totalItems"
-          :page.sync="paramsCheckin.page"
-          :limit.sync="paramsCheckin.limit"
-          @pagination="handlePagination"
-        /> -->
-      </div>
+      <component :is="currentTabComponent" :current-cycle-id="currentCycleId" :loading="loading" :table-data="tableData" />
+      <!-- <common-pagination
+        v-if="$route.query.tab === 'request-checkin' || $route.query.tab === 'inferior'"
+        class="checkins__pagination"
+        :total="meta.totalItems"
+        :page.sync="paramsCheckin.page"
+        :limit.sync="paramsCheckin.limit"
+        @pagination="handlePagination"
+      /> -->
     </el-tabs>
   </div>
 </template>
@@ -32,7 +30,7 @@ import { mapGetters } from 'vuex';
 
 import Inferior from '@/components/checkin/Inferior.vue';
 import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
-import MyOkrsCheckin from '@/components/checkin/MyOkrsCheckin.vue';
+import MyCheckin from '@/components/checkin/MyCheckin.vue';
 import CheckinCompany from '@/components/checkin/CheckinCompany.vue';
 
 import { notificationConfig, pageLimit } from '@/constants/app.constant';
@@ -81,7 +79,7 @@ export default class CheckinPage extends Vue {
   private get currentTabComponent() {
     switch (this.$route.query.tab) {
       case ROUTER_CHECKIN.MyOkrs:
-        return MyOkrsCheckin;
+        return MyCheckin;
       case ROUTER_CHECKIN.CheckinResquest:
         return RequestCheckin;
       case ROUTER_CHECKIN.CheckinCompany:
@@ -116,15 +114,3 @@ export default class CheckinPage extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-@import '@/assets/scss/main.scss';
-.checkins {
-  &__content {
-    background-color: $white;
-    padding: $unit-8;
-  }
-  &__pagination {
-    margin-top: $unit-8;
-  }
-}
-</style>
