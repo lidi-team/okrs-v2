@@ -12,7 +12,7 @@
         </el-table-column>
         <el-table-column label="Kết quả then chốt" min-width="150">
           <template slot-scope="{ row }">
-            <span class="my-okrs__txtBlue" @click="showKRs(row)">{{ row.keyResults ? row.keyResults.length : 0 }} kết quả</span>
+            <span class="my-okrs__txtBlue" @click="showKRs(row.keyResults)">{{ row.keyResults ? row.keyResults.length : 0 }} kết quả</span>
           </template>
         </el-table-column>
         <el-table-column label="Tiến độ" min-width="180">
@@ -67,31 +67,30 @@
       </el-table>
     </div>
 
-    <!-- show dialog KRs -->
     <el-dialog
       v-if="showDialogKRs"
       :visible.sync="showDialogKRs"
       width="90%"
       placement="bottom-start"
-      :title="keyResults.title"
+      title="Kết quả then chốt"
       :before-close="handleCloseDialog"
     >
       <el-row>
         <el-col :span="24">
-          <el-table empty-text="Không có dữ liệu" class="myOKRs" :data="keyResults.keyResults" style="width: 100%">
+          <el-table empty-text="Không có dữ liệu" class="myOKRs" :data="keyResults" style="width: 100%">
             <el-table-column label="Kết quả chính" min-width="150">
               <template slot-scope="{ row }">
                 <span>{{ row.content }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="Mục tiêu" min-width="100">
+            <el-table-column align="center" label="Giá trị bắt đầu" min-width="100">
               <template slot-scope="{ row }">
-                <span>{{ row.targetValue }}</span>
+                <span>{{ row.startValue }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="Đơn vị" min-width="100">
-              <template v-slot="{ row }">
-                <span>{{ row.measureUnit.type }}</span>
+            <el-table-column align="center" label="Mục tiêu" min-width="100">
+              <template slot-scope="{ row }">
+                <span>{{ row.targetedValue }}</span>
               </template>
             </el-table-column>
             <el-table-column align="center" label="Đạt được" min-width="100">
@@ -99,9 +98,14 @@
                 <span>{{ row.valueObtained }}</span>
               </template>
             </el-table-column>
+            <el-table-column align="center" label="Đơn vị" min-width="100">
+              <template v-slot="{ row }">
+                <span>{{ row.measureUnitId }}</span>
+              </template>
+            </el-table-column>
             <el-table-column align="center" label="Tiến độ" min-width="100">
               <template slot-scope="{ row }">
-                <span>{{ krschange(row) }} %</span>
+                <span>{{ row.progress }} %</span>
               </template>
             </el-table-column>
           </el-table>
@@ -111,7 +115,6 @@
         <el-button class="el-button--purple el-button--modal" @click="handleCloseDialog">OK</el-button>
       </span>
     </el-dialog>
-    <!-- end dialog KRs -->
   </div>
 </template>
 
@@ -140,7 +143,6 @@ export default class MyOkrsCheckin extends Vue {
     const { data } = await CheckinRepository.getMyCheckin({
       cycleId: 3,
     });
-    console.log(data);
     this.projects = data || [];
   }
 
@@ -152,12 +154,9 @@ export default class MyOkrsCheckin extends Vue {
     }
   }
 
-  private krschange(row) {
-    return (row.valueObtained / row.targetValue) * 100;
-  }
-
-  private showKRs(row) {
-    this.keyResults = Object.assign({}, row);
+  private showKRs(keyResults) {
+    console.trace(keyResults);
+    this.keyResults = keyResults;
     this.showDialogKRs = true;
   }
 
