@@ -23,10 +23,6 @@ export default class CycleRepository {
     return baseUrl.get(`${ResourcesEnpoint.CycleOKRs}`, { params });
   }
 
-  /**
-   *
-   * @param cycleId if equal 0 then return cycle with time current, else then return cycle with id inputmeta_data/cycles
-   */
   public static getCycleCurrent(cycleId: Number): Promise<AxiosResponse<any>> {
     return baseUrl.get(`${ResourcesEnpoint.CycleOKRs}/${cycleId}`);
   }

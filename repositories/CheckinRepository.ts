@@ -1,8 +1,16 @@
 import { AxiosResponse } from 'axios';
 import { ResourcesEnpoint } from '@/constants/app.enum';
-import { baseUrlV1 } from './BaseRepository';
+import { baseUrlV1, baseUrl } from './BaseRepository';
+
+export enum enpoint {
+  myCheckin = 'checkin',
+}
 
 export default class CheckinRepository {
+  public static getMyCheckin(params: any) {
+    return baseUrl.get(enpoint.myCheckin, { params });
+  }
+
   public static get(params: any) {
     return baseUrlV1.get(`${ResourcesEnpoint.Checkin}`, { params });
   }
