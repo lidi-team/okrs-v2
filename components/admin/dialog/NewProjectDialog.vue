@@ -1,56 +1,9 @@
 <template>
   <div>
-    <el-table v-loading="loadingTable" empty-text="Không có dữ liệu" class="project-all" :data="tableData" style="width: 100%">
-      <el-table-column prop="name" label="Tên dự án" min-width="150"></el-table-column>
-      <el-table-column label="Ngày bắt đầu">
-        <template v-slot="{ row }">
-          <!-- Vue Fileter Date Plugin -->
-          <span>{{ new Date(row.startDate) | dateFormat('DD/MM/YYYY') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Ngày kết thúc">
-        <template v-slot="{ row }">
-          <!-- Vue Fileter Date Plugin -->
-          <span>{{ new Date(row.endDate) | dateFormat('DD/MM/YYYY') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Quản lý">
-        <template v-slot="{ row }">
-          <!-- Vue Fileter Date Plugin -->
-          <span>{{ row.pm }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Trạng thái">
-        <template slot-scope="{ row }">
-          <span>{{ row.status == 'Active' ? 'hoạt động' : 'Đã đóng' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Thao tác" align="center">
-        <template slot-scope="{ row }">
-          <div v-if="user.roles.includes('ROLE_ADMIN')">
-            <!--<el-tooltip class="project-all__icon" content="Xem" placement="left-end">
-              <i class="el-icon-edit icon&#45;&#45;info" @click="handleOpenDialogUpdate(row)"></i>
-            </el-tooltip>-->
-            <el-tooltip class="project-all__icon" content="Sửa" placement="right-end">
-              <i class="el-icon-edit icon&#45;&#45;info" @click="handleOpenDialogUpdate(row)"></i>
-            </el-tooltip>
-          </div>
-          <!--<div v-if="!row.roles.includes('ROLE_ADMIN_HR')" class="project-all__action">
-            <el-tooltip class="project-all__icon" content="Sửa" placement="left-end">
-              <i class="el-icon-edit icon&#45;&#45;info" @click="handleOpenDialogUpdate(row)"></i>
-            </el-tooltip>
-            <el-tooltip v-if="row.isActive" class="project-all__icon" content="Deactive tài khoản" placement="right-end">
-              <i class="el-icon-warning icon&#45;&#45;warning" @click="deactiveUser(row)"></i>
-            </el-tooltip>
-          </div>-->
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <!-- update user dialog -->
+    <!-- create project dialog -->
     <el-dialog
       class="update-employee"
-      :visible.sync="dialogUpdateVisible"
+      :visible.sync="syncProjectDialog"
       width="40%"
       placement="bottom-start"
       title="Cập nhật thông tin"
@@ -136,10 +89,11 @@
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="el-button&#45;&#45;white el-button&#45;&#45;modal" @click="handleCloseDialog">Hủy</el-button>
-        <el-button class="el-button&#45;&#45;purple el-button&#45;&#45;modal" :loading="loading" @click="handleUpdate(tempUpdateProject)"
-          >Cập nhật</el-button
-        >
+        <!--<el-button class="el-button&#45;&#45;white el-button&#45;&#45;modal" @click="handleCloseDialog">Hủy</el-button>
+        <el-button class="el-button&#45;&#45;purple el-button&#45;&#45;modal" :loading="loading"
+                   @click="handleUpdate(tempUpdateProject)">
+          Cập nhật
+        </el-button>-->
       </span>
     </el-dialog>
     <!-- end update user dialog -->
@@ -148,34 +102,29 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { ProjectDTO } from '@/constants/app.interface';
-import { formatDateToDD } from '@/utils/dateParser';
 import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import { Form } from 'element-ui';
-import { Maps, Rule } from '@/constants/app.type';
 
-@Component<ProjectAll>({
-  name: 'ProjectAll',
+@Component<ProjectDialog>({
+  name: 'ProjectDialog',
   computed: {
     ...mapGetters({
       user: GetterState.USER,
     }),
   },
   mounted() {
-    this.loadingTable = true;
-    setTimeout(() => {
-      this.loadingTable = false;
-    }, 500);
+    console.log(this.syncProjectDialog);
   },
 })
-export default class ProjectAll extends Vue {
-  @Prop(Array) readonly tableData!: Array<object>;
-
+export default class ProjectDialog extends Vue {
+  @Prop(Function) public reloadData!: Function;
+  // @PropSync('visibleDialog', { type: Boolean, required: true }) public syncProjectDialog!: boolean;
+  private syncProjectDialog: boolean = true;
   private loadingTable: boolean = false;
   private loading: boolean = false;
-  private dialogUpdateVisible: boolean = false;
   private tempUpdateProject: ProjectDTO = {
     id: 0,
     name: '',
@@ -185,19 +134,6 @@ export default class ProjectAll extends Vue {
     description: '',
     pm: '',
   };
-
-  private handleOpenDialogUpdate(row) {
-    this.tempUpdateProject = {
-      id: row.id,
-      name: row.name,
-      startDate: row.startDate ? formatDateToDD(row.startDate) : '',
-      endDate: row.endDate ? formatDateToDD(row.endDate) : '',
-      status: row.status,
-      description: row.description,
-      pm: row.pm,
-    };
-    this.dialogUpdateVisible = true;
-  }
 
   private handleUpdate(tempUpdateProject: ProjectDTO) {
     console.log('before update: ', tempUpdateProject);
@@ -220,7 +156,7 @@ export default class ProjectAll extends Vue {
                   message: 'Cập nhật thành viên thành công',
                 });
                 // this.getListUsers();
-                this.dialogUpdateVisible = false;
+                this.syncProjectDialog = false;
               })
               .catch((error) => {
                 if (error.response.data.statusCode === 430) {
@@ -250,7 +186,7 @@ export default class ProjectAll extends Vue {
   private handleCloseDialog() {
     const updateUserForm = this.$refs.updateEmployeeForm as Form;
     updateUserForm.clearValidate();
-    this.dialogUpdateVisible = false;
+    this.syncProjectDialog = false;
   }
 
   private pickerOptions: any = {
@@ -258,8 +194,6 @@ export default class ProjectAll extends Vue {
       return time.getTime() > Date.now();
     },
   };
-
-  private rules: Maps<Rule[]> = {};
 
   // private deactiveUser(row) {
   //   this.tempUpdateProject = {

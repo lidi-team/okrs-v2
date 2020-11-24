@@ -23,9 +23,9 @@
           <el-tooltip class="cycle-okrs__icon" content="Sửa" placement="top">
             <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
           </el-tooltip>
-          <el-tooltip v-if="$store.state.cycle.cycleCurrent.id !== row.id" class="cycle-okrs__icon" content="Xóa" placement="top">
-            <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
-          </el-tooltip>
+          <!--<el-tooltip v-if="$store.state.cycle.cycleCurrent.id !== row.id" class="cycle-okrs__icon" content="Xóa" placement="top">
+            <i class="el-icon-delete icon&#45;&#45;delete" @click="deleteRow(row)"></i>
+          </el-tooltip>-->
         </template>
       </el-table-column>
     </el-table>
