@@ -6,7 +6,7 @@
       <el-table v-loading="loading" empty-text="Không có dữ liệu" class="myOKRs" :data="historyList" style="width: 100%">
         <el-table-column label="Mục tiêu" min-width="250">
           <template slot-scope="{ row }">
-            <span>{{ row.objective.title }}</span>
+            <span>{{ row.objective.name }}</span>
           </template>
         </el-table-column>
         <el-table-column label="Ngày check-in" min-width="150">
@@ -68,7 +68,7 @@ export default class HistoryCheckin extends Vue {
     this.loading = true;
     await CheckinRepository.getHistory(Number(this.$route.params.id))
       .then((res) => {
-        this.historyList = res.data.data;
+        this.historyList = res.data;
         this.loading = false;
       })
       .catch((error) => {

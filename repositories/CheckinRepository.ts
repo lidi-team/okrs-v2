@@ -4,11 +4,16 @@ import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export enum enpoint {
   myCheckin = 'checkin',
+  history = 'checkin/history',
 }
 
 export default class CheckinRepository {
   public static getMyCheckin(params: any) {
     return baseUrl.get(enpoint.myCheckin, { params });
+  }
+
+  public static getHistory(id: Number) {
+    return baseUrl.get(`${enpoint.history}/${id}`);
   }
 
   public static get(params: any) {
@@ -53,10 +58,6 @@ export default class CheckinRepository {
 
   public static leaderUpdateCheckin(payload: any, id: number) {
     return baseUrlV1.put(`${ResourcesEnpoint.Checkin}/checkin_request/${id}`, payload);
-  }
-
-  public static getHistory(id: number) {
-    return baseUrlV1.get(`${ResourcesEnpoint.Checkin}/history/${id}`);
   }
 
   public static getDetailCheckin(id: number): Promise<AxiosResponse<any>> {
