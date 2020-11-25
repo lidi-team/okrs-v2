@@ -19,9 +19,11 @@
       <div class="okrs-align__action">
         <el-button class="el-button--white el-button--modal" @click="backToStepTwo">Quay lại</el-button>
         <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createOkrs(false)"
-          >Bỏ qua và {{ titleDialogOKRs }}</el-button
+          >Bỏ qua và {{ isCreate ? 'tạo OKRs' : 'cập nhật OKRs' }}</el-button
         >
-        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createOkrs(true)">{{ titleDialogOKRs }}</el-button>
+        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createOkrs(true)">
+          {{ isCreate ? 'Tạo OKRs' : 'Cập nhật OKRs' }}
+        </el-button>
       </div>
     </div>
   </div>
@@ -36,7 +38,7 @@ import OkrsRepository from '@/repositories/OkrsRepository';
 
 import { DispatchAction, MutationState, GetterState } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
-import AlignObjective from '@/components/okrs/items/add/AlignObjective.vue';
+import AlignObjective from '@/components/okrs/add-update/AlignObjective.vue';
 
 @Component<CreateAlignObjective>({
   name: 'CreateAlignObjective',
@@ -45,7 +47,7 @@ import AlignObjective from '@/components/okrs/items/add/AlignObjective.vue';
   },
   computed: {
     ...mapGetters({
-      titleDialogOKRs: GetterState.OKRS_TITLE_DIALOG_OKRS,
+      isCreate: GetterState.OKRS_IS_CREATE,
     }),
   },
 })

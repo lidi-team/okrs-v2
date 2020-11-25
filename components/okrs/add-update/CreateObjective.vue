@@ -4,7 +4,7 @@
       <el-form-item prop="title" class="custom-label" label-width="120px">
         <el-input v-model="tempObjective.title" type="textarea" placeholder="Nhập mục tiêu" :autosize="sizeConfig"></el-input>
       </el-form-item>
-      <el-form-item prop="parentId" label="Mục tiêu cấp trên" class="custom-label" label-width="120px">
+      <el-form-item v-if="isCreate" prop="parentId" label="Mục tiêu cấp trên" class="custom-label" label-width="120px">
         <el-select v-model="tempObjective.parentId" filterable no-match-text="Không tìm thấy kết quả" placeholder="Chọn mục tiêu cấp trên">
           <el-option v-for="objective in listObjectiveParent" :key="objective.id" :label="objective.name" :value="objective.id" />
         </el-select>
@@ -44,6 +44,7 @@ import ProjectRepository from '@/repositories/ProjectRepository';
       currentCycle: GetterState.CYCLE_CURRENT,
       objectiveParent: GetterState.OKRS_OBJECTIVE_PARENT,
       isDialog: GetterState.OKRS_IS_DIALOG_OKRS,
+      isCreate: GetterState.OKRS_IS_CREATE,
     }),
   },
   async mounted() {

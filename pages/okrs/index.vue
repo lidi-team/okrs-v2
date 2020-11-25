@@ -40,7 +40,7 @@ import { MutationState, DispatchAction, GetterState } from '@/constants/app.vuex
 
 import ItemOkrs from '@/components/okrs/ItemOkrs.vue';
 import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
-import AddOkrs from '@/components/okrs/items/add/index.vue';
+import AddOkrs from '@/components/okrs/add-update/index.vue';
 
 import OkrsRepository from '@/repositories/OkrsRepository';
 import CycleRepository from '@/repositories/CycleRepository';

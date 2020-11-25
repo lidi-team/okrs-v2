@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="titleDialogOKRs"
+    :title="isCreate ? 'Tạo OKRs' : 'Cập nhật OKRs'"
     :visible.sync="isDialogOKRs"
     width="800px"
     placement="center"
@@ -23,9 +23,9 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { DispatchAction, MutationState, GetterState } from '@/constants/app.vuex';
 import { confirmWarningConfig } from '@/constants/app.constant';
-import CreateObjective from '@/components/okrs/items/add/CreateObjective.vue';
-import CreateKeyResult from '@/components/okrs/items/add/CreateKeyResult.vue';
-import CreateAlignObjective from '@/components/okrs/items/add/CreateAlignObjective.vue';
+import CreateObjective from '@/components/okrs/add-update/CreateObjective.vue';
+import CreateKeyResult from '@/components/okrs/add-update/CreateKeyResult.vue';
+import CreateAlignObjective from '@/components/okrs/add-update/CreateAlignObjective.vue';
 
 @Component<AddOkrs>({
   name: 'AddOkrs',
@@ -37,7 +37,7 @@ import CreateAlignObjective from '@/components/okrs/items/add/CreateAlignObjecti
   computed: {
     ...mapGetters({
       isDialogOKRs: GetterState.OKRS_IS_DIALOG_OKRS,
-      titleDialogOKRs: GetterState.OKRS_TITLE_DIALOG_OKRS,
+      isCreate: GetterState.OKRS_IS_CREATE,
     }),
   },
 })

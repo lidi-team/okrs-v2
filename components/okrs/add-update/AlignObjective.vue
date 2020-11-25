@@ -19,7 +19,7 @@ import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import IconDelete from '@/assets/images/common/delete.svg';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { Maps, Rule } from '@/constants/app.type';
-import { ObjectiveAlignDTO } from '@/components/okrs/items/add/constants';
+import { ObjectiveAlignDTO } from '@/components/okrs/add-update/constants';
 import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 
 @Component<AlignObjective>({

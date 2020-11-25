@@ -10,8 +10,8 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import ItemOkrs from '@/components/okrs/items/index.vue';
-import AddOkrs from '@/components/okrs/items/add/index.vue';
-import ButtonCreate from '@/components/okrs/items/button/index.vue';
+import AddOkrs from '@/components/okrs/add-update/index.vue';
+import ButtonCreate from '@/components/okrs/common/Button.vue';
 
 @Component<DrillDownPage>({
   name: 'DrillDownPage',
