@@ -32,7 +32,7 @@ export const actions: MeasureUnitActions<MeasureState, RootState> = {
         if (state.measure.length !== 0) {
           resolve(state.measure);
         } else {
-          MeasureRepository.get().then(({ data }) => {
+          MeasureRepository.getListMeasure().then(({ data }) => {
             commit('setMeasure', data);
             resolve(data);
           });
