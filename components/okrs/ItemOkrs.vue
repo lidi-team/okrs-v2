@@ -7,7 +7,7 @@
         <button-create-okr :type-objective="typeObjective" name-objective="cá nhân" :project-id="projectId" />
       </div>
     </div>
-    <el-table :data="objectives" header-row-class-name="item__table-header" style="width: 100%">
+    <el-table :loading="loading" :data="objectives" header-row-class-name="item__table-header" style="width: 100%">
       <el-table-column type="expand" width="20">
         <template v-slot="{ row }">
           <div v-for="objective in row.childObjectives" :key="objective.id" class="item__expand">
@@ -26,8 +26,8 @@
               <div class="expand__infor--action">
                 <span :class="isUpProgress(objective.changing)">{{ objective.changing }}%</span>
                 <action-tooltip
-                  class="expand__infor--action__tooltip"
                   :id="objective.id"
+                  class="expand__infor--action__tooltip"
                   :isManage="true"
                   :canDelete="objective.delete"
                   @updateOKRs="updateOKRs(objective)"
@@ -99,6 +99,7 @@ export default class OKRsItem extends Vue {
   @Prop(Boolean) private isManage!: Boolean;
   @Prop(Number) private projectId!: Number;
   @Prop(Number) private typeObjective!: Number;
+  @Prop(Boolean) private loading!: Boolean;
 
   private tempOkrs: any = {};
   private changeValue: number = 0;

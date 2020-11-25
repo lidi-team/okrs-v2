@@ -3,7 +3,7 @@
     <el-page-header title="Okrs Dashboard" @back="goToOkrsDashboard" />
     <div class="okrs-detail--top-action">
       <span class="okrs-detail--top-action__title">Chi tiết mục tiêu</span>
-      <div v-if="checkDisplayButtons(objective.user.id)" class="okrs-detail--top-action__button">
+      <div class="okrs-detail--top-action__button">
         <el-button class="el-button el-button--white el-button--medium" @click="deleteOkrs(objective.id)">Xóa</el-button>
         <el-button class="el-button el-button--purple el-button--medium" @click="updateOkrs(objective.id)">Cập nhật</el-button>
       </div>
@@ -15,24 +15,22 @@
       </div>
       <div class="okrs-detail__content--align">
         <span class="created">Được tạo bởi</span>
-        <span class="username">{{ objective.user.fullName }}</span>
-        <span class="alignedWith">Liên kết tới</span>
-        <span v-if="checkIsRootObjective(objective)" style="display: none"></span>
+        <span class="username">{{ objective.user.name }}</span>
+        <span v-if="objective.parentObjective" class="alignedWith">Liên kết tới</span>
         <a
-          v-else
           :href="objective.parentObjective ? `${$config.baseURL}/OKRs/chi-tiet/${objective.parentObjective.id}` : null"
           target="_blank"
           class="parentOkrs"
         >
-          {{ objective.parentObjective ? objective.parentObjective.title : null }}
+          {{ objective.parentObjective ? objective.parentObjective.name : null }}
         </a>
-        <span v-if="!checkIsRootObjective(objective)" class="alignedBy">Được liên kết với</span>
+        <span class="alignedBy">Được liên kết với</span>
         <div v-if="objective.alignmentObjectives.length" class="list-aligned-okrs">
           <p v-for="item in objective.alignmentObjectives" :key="item.id" class="alignedOkrs">
-            <a :href="`${$config.baseURL}/OKRs/chi-tiet/${item.id}`" target="_blank">{{ item.title }}</a>
+            <a :href="`${$config.baseURL}/OKRs/chi-tiet/${item.id}`" target="_blank">{{ item.name }}</a>
           </p>
         </div>
-        <p v-if="objective.alignmentObjectives.length === 0" class="alignedOkrs">Không có</p>
+        <p v-else class="alignedOkrs">Không có</p>
       </div>
       <div class="okrs-detail__content--detail">
         <div class="okrs-detail__content--detail__header">
@@ -44,20 +42,21 @@
           <span class="plan">Link kế hoạch</span>
           <span class="result">Link kết quả</span>
         </div>
-        <template v-for="kr in objective.keyResults">
-          <grid-detail-okrs :key="kr.content.substring(0, 10)" :key-result="kr" />
+        <template v-for="keyresult in objective.keyResults">
+          <detail-okrs :key="`key-result-${keyresult.id}`" :key-result="keyresult" />
         </template>
       </div>
     </div>
-    <update-okrs-dialog :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleDialog" :reload-data="reloadData" />
+    <!-- <update-okrs-dialog :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleDialog" :reload-data="reloadData" />  -->
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
-
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import { MutationState, DispatchAction } from '@/constants/app.vuex';
+import DetailOkrs from '@/components/okrs/detail/DetailOkrs.vue';
+
 @Component<OkrsDetailPage>({
   name: 'OkrsDetailPage',
   head() {
@@ -65,13 +64,17 @@ import { MutationState, DispatchAction } from '@/constants/app.vuex';
       title: 'Chi tiết OKRs',
     };
   },
+  components: { DetailOkrs },
   async asyncData({ params }) {
     try {
-      const { data } = await OkrsRepository.getOkrsDetail(+params.id);
+      const { data } = await OkrsRepository.getDetailOkrsById(+params.id);
+      console.log('data', data);
       return {
-        objective: Object.freeze(data.data),
+        objective: Object.freeze(data),
       };
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   },
   created() {
     this.tempOkrs = this.objective;
@@ -95,7 +98,7 @@ export default class OkrsDetailPage extends Vue {
   }
 
   private checkIsRootObjective(objective: any) {
-    return objective.isRootObjective;
+    return objective.childObjectives.lenght !== 0;
   }
 
   private deleteOkrs(okrsId: number) {
