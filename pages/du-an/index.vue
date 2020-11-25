@@ -119,7 +119,6 @@ export default class ManageProject extends Vue {
 
   private addNew() {
     this.visibleDialog = true;
-    console.log('show add new', this.visibleDialog);
   }
 
   private currentDialogComponent() {

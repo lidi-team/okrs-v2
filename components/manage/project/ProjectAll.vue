@@ -25,6 +25,12 @@
           <span>{{ row.status == 'Active' ? 'hoạt động' : 'Đã đóng' }}</span>
         </template>
       </el-table-column>
+      <el-table-column label="Trọng số">
+        <template v-slot="{ row }">
+          <!-- Vue Fileter Date Plugin -->
+          <span>{{ row.weight }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="Thao tác" align="center">
         <template slot-scope="{ row }">
           <div v-if="user.roles.includes('ROLE_ADMIN')">
@@ -184,6 +190,7 @@ export default class ProjectAll extends Vue {
     status: '',
     description: '',
     pm: '',
+    weight: 0,
   };
 
   private handleOpenDialogUpdate(row) {

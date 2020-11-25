@@ -2,7 +2,7 @@
   <div>
     <!-- create project dialog -->
     <el-dialog
-      class="update-employee"
+      class="update-project"
       :visible.sync="syncProjectDialog"
       width="40%"
       placement="bottom-start"
@@ -12,7 +12,7 @@
       <el-row :gutter="10">
         <el-col :span="24">
           <el-form
-            ref="updateEmployeeForm"
+            ref="updateProjectForm"
             :hide-required-asterisk="false"
             :status-icon="true"
             :rules="rules"
@@ -47,7 +47,7 @@
             </el-form-item>
             <el-form-item label="trạng thái:" class="custom-label" prop="status" label-width="120px">
               <el-radio v-model="tempUpdateProject.status" :label="1">Hoạt động</el-radio>
-              <el-radio v-model="tempUpdateProject.status" :label="0">Kết thúc</el-radio>
+              <el-radio v-model="tempUpdateProject.status" :label="0">Đóng</el-radio>
             </el-form-item>
             <!--<el-form-item v-if="true" label="Phòng ban:" class="custom-label" prop="departmentId">
               <el-select
@@ -133,11 +133,10 @@ export default class ProjectDialog extends Vue {
     status: '',
     description: '',
     pm: '',
+    weight: 0,
   };
 
   private handleUpdate(tempUpdateProject: ProjectDTO) {
-    console.log('before update: ', tempUpdateProject);
-
     this.loading = true;
     (this.$refs.updateEmployeeForm as Form).validate((isValid: boolean, invalidFields: object) => {
       if (isValid) {
