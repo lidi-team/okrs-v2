@@ -1,7 +1,12 @@
 <template>
   <div class="manage-project">
-    <div class="manage-project__title">
-      <h1 class="manage-project__title--text">Quản lý dự án</h1>
+    <div class="manage-project__top">
+      <div class="manage-project__top__title">
+        <h1 class="manage-project__top__title--text">Quản lý dự án</h1>
+      </div>
+      <div class="manage-project__top__right">
+        <el-button class="el-button--purple el-button--invite" icon="el-icon-plus" @click="addNew"> Thêm mới </el-button>
+      </div>
     </div>
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="convertLabel(tab)" :name="tab"></el-tab-pane>
@@ -15,6 +20,7 @@
         @pagination="handlePagination($event)"
       />
     </el-tabs>
+    <component :is="currentDialogComponent" :visible-dialog.sync="visibleDialog" :reload-data="getListProjects" />
   </div>
 </template>
 
@@ -28,6 +34,7 @@ import CommonPagination from '@/components/common/Pagination.vue';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import HeadProject from '@/components/manage/project/HeadProject.vue';
 import ProjectAll from '@/components/manage/project/ProjectAll.vue';
+import NewProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
 
 @Component<ManageProject>({
   name: 'ManageProject',
@@ -52,12 +59,14 @@ export default class ManageProject extends Vue {
   private currentTab: ProjectStatus = ProjectStatus.All;
   private meta: object = {};
   private indexPage: number = this.$route.query.page ? Number(this.$route.query.page) : 1;
+  private visibleDialog: boolean = false;
 
   private paramsProject: ParamsProject = {
     page: this.indexPage,
     limit: pageLimit,
     sortWith: 'id',
     type: '',
+    text: '',
   };
 
   @Watch('$route.query')
@@ -107,24 +116,22 @@ export default class ManageProject extends Vue {
   private get currentTabComponent() {
     return ProjectAll;
   }
+
+  private addNew() {
+    this.visibleDialog = true;
+    console.log('show add new', this.visibleDialog);
+  }
+
+  private currentDialogComponent() {
+    return NewProjectDialog;
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
-
 .manage-project {
   height: 100%;
-
-  &__title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
-    &--text {
-      font-size: $text-2xl;
-    }
-  }
 
   &__content {
     background-color: $white;
@@ -133,6 +140,28 @@ export default class ManageProject extends Vue {
 
   &__pagination {
     margin-top: $unit-8;
+  }
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    &__left {
+      &--input {
+        width: calc(100vw * 5 / 24);
+      }
+    }
+    &__right {
+      height: 100%;
+    }
+    &__title {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      &--text {
+        font-size: $text-2xl;
+      }
+    }
   }
 }
 </style>

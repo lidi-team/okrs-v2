@@ -19,6 +19,7 @@ module.exports = {
     'vue/valid-v-bind-sync': 0,
     'lines-between-class-members': 0,
     'vue/attribute-hyphenation': 0,
+    'vue/attributes-order': 0,
     'prettier/prettier': [
       'error',
       {
