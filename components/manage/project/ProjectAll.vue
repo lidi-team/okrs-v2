@@ -22,13 +22,21 @@
       </el-table-column>
       <el-table-column label="Trạng thái">
         <template slot-scope="{ row }">
-          <span>{{ row.status == 'Active' ? 'hoạt động' : 'Đã đóng' }}</span>
+          <span :class="isProjectActive(row.status) ? 'project-all--status__active' : 'project-all--status__deactive'">{{
+            isProjectActive(row.status) ? 'hoạt động' : 'Đã đóng'
+          }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Trọng số">
         <template v-slot="{ row }">
           <!-- Vue Fileter Date Plugin -->
-          <span>{{ row.weight }}</span>
+          <el-progress
+            :text-inside="true"
+            :stroke-width="24"
+            :percentage="getPercentage(row.weight)"
+            :format="format"
+            :color="weightColor"
+          ></el-progress>
         </template>
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
@@ -178,6 +186,7 @@ import { Maps, Rule } from '@/constants/app.type';
 })
 export default class ProjectAll extends Vue {
   @Prop(Array) readonly tableData!: Array<object>;
+  private weightColor: string = '#50248f';
 
   private loadingTable: boolean = false;
   private loading: boolean = false;
@@ -294,6 +303,18 @@ export default class ProjectAll extends Vue {
   //     } catch (error) {}
   //   });
   // }
+
+  private isProjectActive(status: string) {
+    return status === 'Active';
+  }
+
+  private getPercentage(weight: number) {
+    return weight / 0.05;
+  }
+
+  private format(percentage: number) {
+    return percentage * 0.05 + '/5';
+  }
 }
 </script>
 
@@ -304,6 +325,14 @@ export default class ProjectAll extends Vue {
   &__icon {
     cursor: pointer;
     margin: 0 $unit-1;
+  }
+  &--status {
+    &__active {
+      color: #27ae60;
+    }
+    &__deactive {
+      color: #dd1100;
+    }
   }
 }
 </style>
