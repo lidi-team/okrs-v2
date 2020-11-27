@@ -50,6 +50,10 @@ import AlignObjective from '@/components/okrs/add-update/AlignObjective.vue';
       isCreate: GetterState.OKRS_IS_CREATE,
     }),
   },
+  mounted() {
+    const { listObjectiveAlign } = this.$store.state.okrs.objective;
+    console.log(listObjectiveAlign);
+  },
 })
 export default class CreateAlignObjective extends Vue {
   @PropSync('active', Number) private syncActive!: number;
