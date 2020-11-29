@@ -1,10 +1,7 @@
 <template>
   <div>
-    <div v-for="project in projects" :key="project.id" class="my-okrs">
-      <div class="-display-flex -justify-content-between">
-        <h2 class="my-okrs__header">{{ project.name }}</h2>
-      </div>
-      <el-table v-loading="loading" empty-text="Không có dữ liệu" :data="project.objectives" style="width: 100%">
+    <div class="my-okrs">
+      <el-table v-loading="loading" empty-text="Không có dữ liệu" :data="checkins" style="width: 100%">
         <el-table-column label="Mục tiêu" min-width="250">
           <template slot-scope="{ row }">
             <span>{{ row.title }}</span>
@@ -23,6 +20,11 @@
         <el-table-column align="center" label="Thay đổi" min-width="100">
           <template slot-scope="{ row }">
             <span :style="`color: ${customColorsChanging(row.change)}`">{{ row.change }}%</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="Dự án" min-width="100">
+          <template slot-scope="{ row }">
+            <span>{{ row.project.name }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="Lịch sử" min-width="150">
@@ -66,6 +68,13 @@
         </el-table-column>
       </el-table>
     </div>
+    <pagination
+      class="feedback__col__pagination"
+      :total="metaPagination.totalItem"
+      :page.sync="metaPagination.currentPage"
+      :limit.sync="metaPagination.limit"
+      @pagination="handlePagination($event)"
+    />
 
     <el-dialog
       v-if="showDialogKRs"
@@ -123,27 +132,55 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import { customColors } from '../okrs/okrs.constant';
 import { statusCheckin } from '@/constants/app.constant';
 import CheckinRepository from '@/repositories/CheckinRepository';
+import Pagination from '@/components/common/Pagination.vue';
 
 @Component<MyOkrsCheckin>({
   name: 'MyOkrsCheckin',
+  components: {
+    Pagination,
+  },
   async mounted() {
+    const { projectId = 0, page = 1, cycleId = this.$store.state.cycle.cycleCurrent.id } = this.$route.params;
+    this.metaPagination.projectId = projectId;
+    this.metaPagination.currentPage = page;
+    this.metaPagination.cycleId = cycleId;
     await this.getListCheckin();
   },
 })
 export default class MyOkrsCheckin extends Vue {
   @Prop(Array) readonly tableData!: Array<object>;
-  @Prop(Boolean) readonly loading!: boolean;
+  private loading: Boolean = false;
   private customColors = customColors;
   private status = statusCheckin;
   private keyResults: any = {};
   private showDialogKRs: boolean = false;
-  private projects: any[] = [];
+  private checkins: any[] = [];
+  private metaPagination: any = {
+    currentPage: 1,
+    totalItem: 10,
+    limit: 10,
+    projectId: 0,
+    cycleId: 0,
+  };
 
   private async getListCheckin() {
+    this.loading = true;
     const { data } = await CheckinRepository.getMyCheckin({
+      projectId: this.metaPagination.projectId,
+      page: this.metaPagination.currentPage,
+      limit: this.metaPagination.limit,
       cycleId: 3,
     });
-    this.projects = data || [];
+    this.checkins = data.items || [];
+    this.metaPagination.currentPage = data.meta.currentPage;
+    this.metaPagination.totalItem = data.meta.totalItems;
+    this.loading = false;
+  }
+
+  private async handlePagination(pagination: any) {
+    this.metaPagination.currentPage = pagination.page;
+    await this.getListCheckin();
+    // this.$router.push(`?tab=checkin-cua-toi&page=${pagination.page}`);
   }
 
   private customColorsChanging(change: number) {
@@ -155,7 +192,6 @@ export default class MyOkrsCheckin extends Vue {
   }
 
   private showKRs(keyResults) {
-    console.trace(keyResults);
     this.keyResults = keyResults;
     this.showDialogKRs = true;
   }

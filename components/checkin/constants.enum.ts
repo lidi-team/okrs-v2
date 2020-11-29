@@ -6,7 +6,7 @@ export enum TAB_CHECKIN {
 }
 
 export enum ROUTER_CHECKIN {
-  MyOkrs = 'okrs-cua-toi',
+  MyOkrs = 'check-in-cua-toi',
   CheckinResquest = 'yeu-cau-check-in',
   Inferior = 'check-in-cap-duoi',
   CheckinCompany = 'check-in-cong-ty',

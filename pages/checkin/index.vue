@@ -12,7 +12,7 @@
 
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
-      <component :is="currentTabComponent" :current-cycle-id="currentCycleId" :loading="loading" :table-data="tableData" />
+      <component :is="currentTabComponent" :current-cycle-id="currentCycleId" :table-data="tableData" />
       <!-- <common-pagination
         v-if="$route.query.tab === 'request-checkin' || $route.query.tab === 'inferior'"
         class="checkins__pagination"
@@ -20,7 +20,7 @@
         :page.sync="paramsCheckin.page"
         :limit.sync="paramsCheckin.limit"
         @pagination="handlePagination"
-      /> -->
+      />-->
     </el-tabs>
   </div>
 </template>
@@ -58,7 +58,6 @@ import CommonPagination from '@/components/common/Pagination.vue';
 export default class CheckinPage extends Vue {
   private tableData: any[] = [];
   private tabs: string[] = [...Object.values(TAB_CHECKIN)];
-  private loading: boolean = false;
   private cycles: any[] = [];
   private currentCycleId: number = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id;
   private currentTab: string =
