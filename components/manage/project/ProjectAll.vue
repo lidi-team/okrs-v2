@@ -22,8 +22,8 @@
       </el-table-column>
       <el-table-column label="Trạng thái">
         <template slot-scope="{ row }">
-          <span :class="isProjectActive(row.status) ? 'project-all--status__active' : 'project-all--status__deactive'">{{
-            isProjectActive(row.status) ? 'hoạt động' : 'Đã đóng'
+          <span :class="row.status ? 'project-all--status__active' : 'project-all--status__deactive'">{{
+            row.status ? 'hoạt động' : 'Đã đóng'
           }}</span>
         </template>
       </el-table-column>
@@ -65,7 +65,7 @@
     <el-dialog
       class="update-employee"
       :visible.sync="dialogUpdateVisible"
-      width="40%"
+      width="45%"
       placement="bottom-start"
       title="Cập nhật thông tin"
       :before-close="handleCloseDialog"
@@ -80,10 +80,10 @@
             :model="tempUpdateProject"
             style="width: 100%"
           >
-            <el-form-item label="Tên dự án:" prop="name" class="custom-label" label-width="120px">
+            <el-form-item label="Tên dự án:" prop="name" class="custom-label" label-width="150px">
               <el-input v-model="tempUpdateProject.name" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
             </el-form-item>
-            <el-form-item v-if="true" label="Ngày bắt đầu:" class="custom-label" prop="startDate" label-width="120px">
+            <el-form-item v-if="true" label="Ngày bắt đầu:" class="custom-label" prop="startDate" label-width="150px">
               <el-date-picker
                 v-model="tempUpdateProject.startDate"
                 format="dd/MM/yyyy"
@@ -93,7 +93,7 @@
                 placeholder="Chọn ngày sinh"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item v-if="true" label="Ngày kết thúc:" class="custom-label" prop="endDate" label-width="120px">
+            <el-form-item v-if="true" label="Ngày kết thúc:" class="custom-label" prop="endDate" label-width="150px">
               <el-date-picker
                 v-model="tempUpdateProject.endDate"
                 format="dd/MM/yyyy"
@@ -103,12 +103,25 @@
                 placeholder="Chọn ngày sinh"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="Mô tả:" prop="description" class="custom-label" label-width="120px">
-              <el-input v-model="tempUpdateProject.description" placeholder="Nhập mô tả" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
+            <el-form-item label="trọng số:" class="custom-label" prop="weight" label-width="150px">
+              <el-slider v-model="tempUpdateProject.weight" :step="1" :max="5" :min="0" show-stops> </el-slider>
             </el-form-item>
-            <el-form-item label="trạng thái:" class="custom-label" prop="status" label-width="120px">
+            <el-form-item label="Quản lý dự án:" class="custom-label" prop="pmId" label-width="150px">
+              <el-select v-model="tempUpdateProject.pmId" filterable placeholder="Chọn người quản lý dự án">
+                <el-option v-for="item in managers" :key="item.id" :label="item.name" :value="item.id"> </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="trạng thái:" class="custom-label" prop="status" label-width="150px">
               <el-radio v-model="tempUpdateProject.status" :label="1">Hoạt động</el-radio>
               <el-radio v-model="tempUpdateProject.status" :label="0">Kết thúc</el-radio>
+            </el-form-item>
+            <el-form-item label="Trực thuộc dự án:" prop="parentProjectId" label-width="150px">
+              <el-select v-model="tempUpdateProject.parentProjectId" clearable placeholder="Chọn dự án">
+                <el-option v-for="item in tableData" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Mô tả:" prop="description" label-width="150px">
+              <el-input v-model="tempUpdateProject.description" placeholder="Nhập mô tả" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
             </el-form-item>
             <!--<el-form-item v-if="true" label="Phòng ban:" class="custom-label" prop="departmentId">
               <el-select
@@ -177,6 +190,9 @@ import { Maps, Rule } from '@/constants/app.type';
       user: GetterState.USER,
     }),
   },
+  async created() {
+    await this.getCommonData();
+  },
   mounted() {
     this.loadingTable = true;
     setTimeout(() => {
@@ -186,11 +202,13 @@ import { Maps, Rule } from '@/constants/app.type';
 })
 export default class ProjectAll extends Vue {
   @Prop(Array) readonly tableData!: Array<object>;
+  private managers: Array<object> = [];
   private weightColor: string = '#50248f';
 
   private loadingTable: boolean = false;
   private loading: boolean = false;
   private dialogUpdateVisible: boolean = false;
+  private textPm: string = '';
   private tempUpdateProject: ProjectDTO = {
     id: 0,
     name: '',
@@ -199,7 +217,9 @@ export default class ProjectAll extends Vue {
     status: '',
     description: '',
     pm: '',
+    pmId: 0,
     weight: 0,
+    parentProjectId: -1,
   };
 
   private handleOpenDialogUpdate(row) {
@@ -211,6 +231,7 @@ export default class ProjectAll extends Vue {
       status: row.status,
       description: row.description,
       pm: row.pm,
+      weight: row.weight,
     };
     this.dialogUpdateVisible = true;
   }
@@ -221,19 +242,18 @@ export default class ProjectAll extends Vue {
     this.loading = true;
     (this.$refs.updateEmployeeForm as Form).validate((isValid: boolean, invalidFields: object) => {
       if (isValid) {
-        this.$confirm(`Bạn có chắc chắn muốn cập nhật user này?`, {
+        this.$confirm(`Bạn có chắc chắn muốn cập nhật dự án này?`, {
           ...confirmWarningConfig,
         })
           .then(async () => {
             await ProjectRepository.update(tempUpdateProject)
               .then((res) => {
                 setTimeout(() => {
-                  console.log('aa');
                   this.loading = false;
                 }, 300);
                 this.$notify.success({
                   ...notificationConfig,
-                  message: 'Cập nhật thành viên thành công',
+                  message: 'Cập nhật dự án thành công',
                 });
                 // this.getListUsers();
                 this.dialogUpdateVisible = false;
@@ -304,8 +324,13 @@ export default class ProjectAll extends Vue {
   //   });
   // }
 
-  private isProjectActive(status: string) {
-    return status === 'Active';
+  private async getCommonData() {
+    try {
+      const managers = await ProjectRepository.getManagers({ text: this.textPm });
+      this.managers = managers.data;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   private getPercentage(weight: number) {
@@ -326,10 +351,12 @@ export default class ProjectAll extends Vue {
     cursor: pointer;
     margin: 0 $unit-1;
   }
+
   &--status {
     &__active {
       color: #27ae60;
     }
+
     &__deactive {
       color: #dd1100;
     }

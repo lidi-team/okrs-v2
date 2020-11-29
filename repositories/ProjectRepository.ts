@@ -11,4 +11,8 @@ export default class ProjectRepository {
   public static update(params: ProjectDTO) {
     return baseUrl.post(`${ResourcesEnpoint.Project}/create`, { params });
   }
+
+  public static getManagers(params: any) {
+    return baseUrl.get(`${ResourcesEnpoint.Project}/pm`, { params });
+  }
 }

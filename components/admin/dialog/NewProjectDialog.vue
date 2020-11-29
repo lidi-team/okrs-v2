@@ -140,19 +140,18 @@ export default class ProjectDialog extends Vue {
     this.loading = true;
     (this.$refs.updateEmployeeForm as Form).validate((isValid: boolean, invalidFields: object) => {
       if (isValid) {
-        this.$confirm(`Bạn có chắc chắn muốn cập nhật user này?`, {
+        this.$confirm(`Bạn có chắc chắn muốn cập nhật project này?`, {
           ...confirmWarningConfig,
         })
           .then(async () => {
             await ProjectRepository.update(tempUpdateProject)
               .then((res) => {
                 setTimeout(() => {
-                  console.log('aa');
                   this.loading = false;
                 }, 300);
                 this.$notify.success({
                   ...notificationConfig,
-                  message: 'Cập nhật thành viên thành công',
+                  message: 'Cập nhật project thành công',
                 });
                 // this.getListUsers();
                 this.syncProjectDialog = false;
