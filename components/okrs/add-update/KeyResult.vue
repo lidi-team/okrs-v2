@@ -53,7 +53,7 @@
             </el-row>
           </div>
           <div>
-            <el-form-item prop="parentId" label="Liên kết kết quả then chốt" class="custom-label" label-width="190px">
+            <el-form-item v-if="isCreate" prop="parentId" label="Liên kết kết quả then chốt" class="custom-label" label-width="190px">
               <el-select
                 v-model="tempKeyResult.parentId"
                 filterable
@@ -83,21 +83,25 @@
 <script lang="ts">
 import { Component, Vue, Prop, Emit, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import { max255Char } from '@/constants/account.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import IconDelete from '@/assets/images/common/delete.svg';
 import { notificationConfig } from '@/constants/app.constant';
-// import { SelectDropdownDTO } from '@/constants/DTO/common';
-import { DispatchAction } from '@/constants/app.vuex';
+import { DispatchAction, GetterState } from '@/constants/app.vuex';
 
 import OkrsRepository from '@/repositories/OkrsRepository';
 import KeyResultRepository from '@/repositories/KeyResultRepository';
 
 @Component<KeyResult>({
-  name: 'KrsForm',
+  name: 'KeyResult',
   components: {
     IconDelete,
+  },
+  computed: {
+    ...mapGetters({
+      isCreate: GetterState.OKRS_IS_CREATE,
+    }),
   },
   async mounted() {
     this.loading = true;
