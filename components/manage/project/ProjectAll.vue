@@ -16,8 +16,7 @@
       </el-table-column>
       <el-table-column label="Quản lý">
         <template v-slot="{ row }">
-          <!-- Vue Fileter Date Plugin -->
-          <span>{{ row.pm }}</span>
+          <span>{{ getManager(row.pmId) }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Trạng thái">
@@ -115,9 +114,9 @@
               <el-radio v-model="tempUpdateProject.status" :label="1">Hoạt động</el-radio>
               <el-radio v-model="tempUpdateProject.status" :label="0">Kết thúc</el-radio>
             </el-form-item>
-            <el-form-item label="Trực thuộc dự án:" prop="parentProjectId" label-width="150px">
+            <el-form-item label="Trực thuộc dự án:" prop="parentId" label-width="150px">
               <el-select v-model="tempUpdateProject.parentProjectId" clearable placeholder="Chọn dự án">
-                <el-option v-for="item in tableData" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                <el-option v-for="item in originalProjects" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="Mô tả:" prop="description" label-width="150px">
@@ -202,7 +201,8 @@ import { Maps, Rule } from '@/constants/app.type';
 })
 export default class ProjectAll extends Vue {
   @Prop(Array) readonly tableData!: Array<object>;
-  private managers: Array<object> = [];
+  private managers: Array<any> = [];
+  private originalProjects: Array<object> = [];
   private weightColor: string = '#50248f';
 
   private loadingTable: boolean = false;
@@ -216,10 +216,9 @@ export default class ProjectAll extends Vue {
     endDate: '',
     status: '',
     description: '',
-    pm: '',
     pmId: 0,
     weight: 0,
-    parentProjectId: -1,
+    parentProjectId: 0,
   };
 
   private handleOpenDialogUpdate(row) {
@@ -230,8 +229,9 @@ export default class ProjectAll extends Vue {
       endDate: row.endDate ? formatDateToDD(row.endDate) : '',
       status: row.status,
       description: row.description,
-      pm: row.pm,
+      pmId: row.pmId,
       weight: row.weight,
+      parentProjectId: row.parentId,
     };
     this.dialogUpdateVisible = true;
   }
@@ -326,11 +326,26 @@ export default class ProjectAll extends Vue {
 
   private async getCommonData() {
     try {
-      const managers = await ProjectRepository.getManagers({ text: this.textPm });
+      const [managers, originalProjects] = await Promise.all([
+        ProjectRepository.getManagers({ text: this.textPm }),
+        ProjectRepository.getOriginalProjects(),
+      ]);
       this.managers = managers.data;
+      this.originalProjects = originalProjects.data;
     } catch (e) {
       console.log(e);
     }
+  }
+
+  getManager(pmId: number) {
+    let pm = '';
+    if (this.managers) {
+      const manager = this.managers.find((m) => {
+        return m.id === pmId;
+      });
+      pm = manager ? manager.name : '';
+    }
+    return pm;
   }
 
   private getPercentage(weight: number) {

@@ -8,11 +8,15 @@ export default class ProjectRepository {
     return baseUrl.get(`${ResourcesEnpoint.Project}`, { params });
   }
 
-  public static update(params: ProjectDTO) {
-    return baseUrl.post(`${ResourcesEnpoint.Project}/create`, { params });
+  public static update(payload: ProjectDTO) {
+    return baseUrl.post(`${ResourcesEnpoint.Project}/create`, payload);
   }
 
   public static getManagers(params: any) {
     return baseUrl.get(`${ResourcesEnpoint.Project}/pm`, { params });
+  }
+
+  public static getOriginalProjects() {
+    return baseUrl.get(`${ResourcesEnpoint.Project}/parents`);
   }
 }
