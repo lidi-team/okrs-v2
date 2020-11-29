@@ -3,21 +3,21 @@
     <div class="-display-flex">
       <el-select
         class="-mr-1"
-        v-model="currentCycleId"
+        v-model="paramsCheckin.cycleId"
         no-match-text="Không tìm thấy chu kỳ"
         filterable
         placeholder="Chọn chu kỳ"
-        @change="handleSelectCycle(currentCycleId)"
+        @change="handleSelectCycle(paramsCheckin.cycleId)"
       >
         <el-option v-for="cycle in cycles" :key="cycle.id" :label="`Chu kỳ: ${cycle.name}`" :value="cycle.id" />
       </el-select>
       <el-select
         class="-ml-1"
-        v-model="currentProjectId"
+        v-model="paramsCheckin.projectId"
         no-match-text="Không tìm thấy dự án"
         filterable
         placeholder="Chọn dự án"
-        @change="handleSelectCycle(currentCycleId)"
+        @change="handleSelectCycle(data)"
       >
         <el-option v-for="project in projects" :key="project.id" :label="`Dự án: ${project.name}`" :value="project.id" />
       </el-select>
@@ -25,7 +25,7 @@
 
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
-      <component :is="currentTabComponent" :current-cycle-id="currentCycleId" :table-data="tableData" />
+      <component :is="currentTabComponent" :table-data="tableData" />
     </el-tabs>
   </div>
 </template>
@@ -59,7 +59,7 @@ import ProjectRepository from '../../repositories/ProjectRepository';
   },
   created() {
     this.getCycles();
-    this.getListProjectCurrent();
+    this.getProjects();
   },
 })
 export default class CheckinPage extends Vue {
@@ -67,8 +67,6 @@ export default class CheckinPage extends Vue {
   private tabs: string[] = [...Object.values(TAB_CHECKIN)];
   private cycles: any[] = [];
   private projects: any[] = [];
-  private currentCycleId: Number = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id;
-  private currentProjectId: any = this.$route.query.projectId ? this.$route.query.projectId : '';
   private currentTab: string =
     this.$route.query.tab === ROUTER_CHECKIN.MyOkrs
       ? TAB_CHECKIN.MyOkrs
@@ -77,11 +75,12 @@ export default class CheckinPage extends Vue {
       : this.$route.query.tab === ROUTER_CHECKIN.CheckinCompany
       ? TAB_CHECKIN.CheckinCompany
       : TAB_CHECKIN.Inferior;
-
   private paramsCheckin = {
-    page: this.$route.query.page ? Number(this.$route.query.page) : 1,
-    cycleId: this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id,
-    limit: pageLimit,
+    tab: this.$route.query.tab ? this.$route.query.tab : ROUTER_CHECKIN.MyOkrs,
+    page: this.$route.query.page ? this.$route.query.page : 1,
+    cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycleCurrent.id,
+    limit: this.$route.query.limit ? this.$route.query.limit : 10,
+    projectId: this.$route.query.projectId ? this.$route.query.projectId : 0,
   };
 
   private get currentTabComponent() {
@@ -92,16 +91,15 @@ export default class CheckinPage extends Vue {
         return RequestCheckin;
       case ROUTER_CHECKIN.CheckinCompany:
         return CheckinCompany;
-      default:
+      case ROUTER_CHECKIN.Inferior:
         return Inferior;
+      default:
+        return MyCheckin;
     }
   }
 
   private handleSelectCycle(cycleId) {
-    this.paramsCheckin.page = 1;
-    const tab = this.$route.query.tab === undefined ? ROUTER_CHECKIN.MyOkrs : this.$route.query.tab;
-    this.paramsCheckin.cycleId = cycleId;
-    this.$router.push(`?tab=${tab}&cycleId=${cycleId}`);
+    this.$router.push(`?tab=${this.paramsCheckin.tab}&cycleId=${cycleId}&page=${this.paramsCheckin.page}&projectId=${this.paramsCheckin.projectId}`);
   }
 
   private async getCycles() {
@@ -109,13 +107,12 @@ export default class CheckinPage extends Vue {
     this.cycles = data || [];
   }
 
-  private async getListProjectCurrent() {
+  private async getProjects() {
     const { data } = await ProjectRepository.getListCurrent();
     this.projects = data || [];
   }
 
   private handleClick(currentTab: string) {
-    this.paramsCheckin.page = 1;
     this.$router.push(
       `?tab=${
         currentTab === TAB_CHECKIN.MyOkrs

@@ -4,12 +4,17 @@ import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export enum enpoint {
   myCheckin = 'checkin',
+  requestCheckin = 'checkin/checkin_request',
   history = 'checkin/history',
 }
 
 export default class CheckinRepository {
   public static getMyCheckin(params: any) {
     return baseUrl.get(enpoint.myCheckin, { params });
+  }
+
+  public static getRequestCheckin(params: any) {
+    return baseUrl.get(enpoint.requestCheckin, { params });
   }
 
   public static getHistory(id: Number) {

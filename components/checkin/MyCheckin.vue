@@ -68,13 +68,13 @@
         </el-table-column>
       </el-table>
     </div>
-    <pagination
+    <!-- <pagination
       class="feedback__col__pagination"
       :total="metaPagination.totalItem"
       :page.sync="metaPagination.currentPage"
       :limit.sync="metaPagination.limit"
       @pagination="handlePagination($event)"
-    />
+    /> -->
 
     <el-dialog
       v-if="showDialogKRs"
@@ -131,6 +131,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { customColors } from '../okrs/okrs.constant';
 import { statusCheckin } from '@/constants/app.constant';
+import { ROUTER_CHECKIN } from '@/components/checkin/constants.enum';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import Pagination from '@/components/common/Pagination.vue';
 
@@ -140,10 +141,6 @@ import Pagination from '@/components/common/Pagination.vue';
     Pagination,
   },
   async mounted() {
-    const { projectId = 0, page = 1, cycleId = this.$store.state.cycle.cycleCurrent.id } = this.$route.params;
-    this.metaPagination.projectId = projectId;
-    this.metaPagination.currentPage = page;
-    this.metaPagination.cycleId = cycleId;
     await this.getListCheckin();
   },
 })
@@ -155,30 +152,31 @@ export default class MyOkrsCheckin extends Vue {
   private keyResults: any = {};
   private showDialogKRs: boolean = false;
   private checkins: any[] = [];
-  private metaPagination: any = {
-    currentPage: 1,
-    totalItem: 10,
-    limit: 10,
-    projectId: 0,
-    cycleId: 0,
+  private totalItem: Number = 0;
+  private paramsCheckin = {
+    tab: this.$route.query.tab ? this.$route.query.tab : ROUTER_CHECKIN.MyOkrs,
+    page: this.$route.query.page ? this.$route.query.page : 1,
+    cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycleCurrent.id,
+    limit: this.$route.query.limit ? this.$route.query.limit : 10,
+    projectId: this.$route.query.projectId ? this.$route.query.projectId : 0,
   };
 
   private async getListCheckin() {
     this.loading = true;
+    const { page, projectId, limit, cycleId } = this.paramsCheckin;
     const { data } = await CheckinRepository.getMyCheckin({
-      projectId: this.metaPagination.projectId,
-      page: this.metaPagination.currentPage,
-      limit: this.metaPagination.limit,
-      cycleId: 3,
+      projectId,
+      page,
+      limit,
+      cycleId,
     });
     this.checkins = data.items || [];
-    this.metaPagination.currentPage = data.meta.currentPage;
-    this.metaPagination.totalItem = data.meta.totalItems;
+    this.totalItem = data.meta.totalItems;
     this.loading = false;
   }
 
   private async handlePagination(pagination: any) {
-    this.metaPagination.currentPage = pagination.page;
+    // this.metaPagination.currentPage = pagination.page;
     await this.getListCheckin();
     // this.$router.push(`?tab=checkin-cua-toi&page=${pagination.page}`);
   }
