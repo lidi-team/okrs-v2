@@ -1,26 +1,31 @@
 <template>
   <div class="checkins">
-    <el-select
-      v-model="currentCycleId"
-      no-match-text="Không tìm thấy chu kỳ"
-      filterable
-      placeholder="Chọn chu kỳ"
-      @change="handleSelectCycle(currentCycleId)"
-    >
-      <el-option v-for="cycle in cycles" :key="cycle.id" :label="cycle.name" :value="cycle.id" />
-    </el-select>
+    <div class="-display-flex">
+      <el-select
+        class="-mr-1"
+        v-model="currentCycleId"
+        no-match-text="Không tìm thấy chu kỳ"
+        filterable
+        placeholder="Chọn chu kỳ"
+        @change="handleSelectCycle(currentCycleId)"
+      >
+        <el-option v-for="cycle in cycles" :key="cycle.id" :label="`Chu kỳ: ${cycle.name}`" :value="cycle.id" />
+      </el-select>
+      <el-select
+        class="-ml-1"
+        v-model="currentProjectId"
+        no-match-text="Không tìm thấy dự án"
+        filterable
+        placeholder="Chọn dự án"
+        @change="handleSelectCycle(currentCycleId)"
+      >
+        <el-option v-for="project in projects" :key="project.id" :label="`Dự án: ${project.name}`" :value="project.id" />
+      </el-select>
+    </div>
 
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
       <component :is="currentTabComponent" :current-cycle-id="currentCycleId" :table-data="tableData" />
-      <!-- <common-pagination
-        v-if="$route.query.tab === 'request-checkin' || $route.query.tab === 'inferior'"
-        class="checkins__pagination"
-        :total="meta.totalItems"
-        :page.sync="paramsCheckin.page"
-        :limit.sync="paramsCheckin.limit"
-        @pagination="handlePagination"
-      />-->
     </el-tabs>
   </div>
 </template>
@@ -41,6 +46,7 @@ import { GetterState, MutationState } from '@/constants/app.vuex';
 import CycleRepository from '@/repositories/CycleRepository';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import CommonPagination from '@/components/common/Pagination.vue';
+import ProjectRepository from '../../repositories/ProjectRepository';
 @Component<CheckinPage>({
   name: 'CheckinPage',
   components: {
@@ -53,13 +59,16 @@ import CommonPagination from '@/components/common/Pagination.vue';
   },
   created() {
     this.getCycles();
+    this.getListProjectCurrent();
   },
 })
 export default class CheckinPage extends Vue {
   private tableData: any[] = [];
   private tabs: string[] = [...Object.values(TAB_CHECKIN)];
   private cycles: any[] = [];
-  private currentCycleId: number = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id;
+  private projects: any[] = [];
+  private currentCycleId: Number = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id;
+  private currentProjectId: any = this.$route.query.projectId ? this.$route.query.projectId : '';
   private currentTab: string =
     this.$route.query.tab === ROUTER_CHECKIN.MyOkrs
       ? TAB_CHECKIN.MyOkrs
@@ -87,16 +96,24 @@ export default class CheckinPage extends Vue {
         return Inferior;
     }
   }
+
   private handleSelectCycle(cycleId) {
     this.paramsCheckin.page = 1;
     const tab = this.$route.query.tab === undefined ? ROUTER_CHECKIN.MyOkrs : this.$route.query.tab;
     this.paramsCheckin.cycleId = cycleId;
     this.$router.push(`?tab=${tab}&cycleId=${cycleId}`);
   }
+
   private async getCycles() {
     const { data } = await CycleRepository.getListMetadata();
     this.cycles = data || [];
   }
+
+  private async getListProjectCurrent() {
+    const { data } = await ProjectRepository.getListCurrent();
+    this.projects = data || [];
+  }
+
   private handleClick(currentTab: string) {
     this.paramsCheckin.page = 1;
     this.$router.push(
