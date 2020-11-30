@@ -60,7 +60,7 @@
       </el-table-column>
     </el-table>
 
-    <!-- update user dialog -->
+    <!-- update project dialog -->
     <el-dialog
       class="update-employee"
       :visible.sync="dialogUpdateVisible"
@@ -103,7 +103,7 @@
               ></el-date-picker>
             </el-form-item>
             <el-form-item label="trọng số:" class="custom-label" prop="weight" label-width="150px">
-              <el-slider v-model="tempUpdateProject.weight" :step="1" :max="5" :min="0" show-stops> </el-slider>
+              <el-slider v-model="tempUpdateProject.weight" :step="1" :max="5" :min="1" show-stops> </el-slider>
             </el-form-item>
             <el-form-item label="Quản lý dự án:" class="custom-label" prop="pmId" label-width="150px">
               <el-select v-model="tempUpdateProject.pmId" filterable placeholder="Chọn người quản lý dự án">
@@ -115,49 +115,13 @@
               <el-radio v-model="tempUpdateProject.status" :label="0">Kết thúc</el-radio>
             </el-form-item>
             <el-form-item label="Trực thuộc dự án:" prop="parentId" label-width="150px">
-              <el-select v-model="tempUpdateProject.parentProjectId" clearable placeholder="Chọn dự án">
+              <el-select v-model="tempUpdateProject.parentId" clearable placeholder="Chọn dự án">
                 <el-option v-for="item in originalProjects" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="Mô tả:" prop="description" label-width="150px">
               <el-input v-model="tempUpdateProject.description" placeholder="Nhập mô tả" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
             </el-form-item>
-            <!--<el-form-item v-if="true" label="Phòng ban:" class="custom-label" prop="departmentId">
-              <el-select
-                v-model="tempUpdateProject.departmentId"
-                class="custom-label"
-                placeholder="Chọn phòng ban"
-                @keyup.enter.native="handleUpdate(tempUpdateProject)"
-              >
-                <el-option v-for="item in teams" :key="item.id" :label="item.name" :value="item.id" />
-              </el-select>
-            </el-form-item>
-            &lt;!&ndash;
-            <el-form-item label="Vị trí công việc:" class="custom-label" prop="jobPositionId">
-              <el-select
-                v-model="tempUpdateProject.jobPositionId"
-                class="custom-label"
-                placeholder="Chọn vị trí công việc"
-                @keyup.enter.native="handleUpdate(tempUpdateProject)"
-              >
-                <el-option v-for="item in jobs" :key="item.id" :label="item.name" :value="item.id" />
-              </el-select>
-            </el-form-item> &ndash;&gt;
-            &lt;!&ndash;
-            <el-form-item v-if="tempUpdateProject.roleId !== Number(1)" label="Vai trò:" class="custom-label"
-                          prop="roleId">
-              <el-select
-                v-model="tempUpdateProject.roleId"
-                class="custom-label"
-                placeholder="Chọn vai trò"
-                @keyup.enter.native="handleUpdate(tempUpdateProject)"
-              >
-                <el-option v-for="item in roles" :key="item.id" :label="item.name" :value="item.id" />
-              </el-select>
-            </el-form-item>
-            &ndash;&gt; &lt;!&ndash;
-            <el-checkbox v-if="tempUpdateProject.roleId !== Number(1)" v-model="tempUpdateProject.isLeader">Trưởng nhóm
-            </el-checkbox> &ndash;&gt;-->
           </el-form>
         </el-col>
       </el-row>
@@ -168,7 +132,7 @@
         >
       </span>
     </el-dialog>
-    <!-- end update user dialog -->
+    <!-- end update project dialog -->
   </div>
 </template>
 <script lang="ts">
@@ -189,9 +153,6 @@ import { Maps, Rule } from '@/constants/app.type';
       user: GetterState.USER,
     }),
   },
-  async created() {
-    await this.getCommonData();
-  },
   mounted() {
     this.loadingTable = true;
     setTimeout(() => {
@@ -201,14 +162,14 @@ import { Maps, Rule } from '@/constants/app.type';
 })
 export default class ProjectAll extends Vue {
   @Prop(Array) readonly tableData!: Array<object>;
-  private managers: Array<any> = [];
-  private originalProjects: Array<object> = [];
+  @Prop(Function) readonly getListProject;
+  @Prop(Array) readonly managers!: Array<any>;
+  @Prop(Array) readonly originalProjects!: Array<object>;
   private weightColor: string = '#50248f';
 
   private loadingTable: boolean = false;
   private loading: boolean = false;
   private dialogUpdateVisible: boolean = false;
-  private textPm: string = '';
   private tempUpdateProject: ProjectDTO = {
     id: 0,
     name: '',
@@ -217,8 +178,8 @@ export default class ProjectAll extends Vue {
     status: '',
     description: '',
     pmId: 0,
-    weight: 0,
-    parentProjectId: 0,
+    weight: 1,
+    parentId: 0,
   };
 
   private handleOpenDialogUpdate(row) {
@@ -231,7 +192,7 @@ export default class ProjectAll extends Vue {
       description: row.description,
       pmId: row.pmId,
       weight: row.weight,
-      parentProjectId: row.parentId,
+      parentId: row.parentId,
     };
     this.dialogUpdateVisible = true;
   }
@@ -255,7 +216,7 @@ export default class ProjectAll extends Vue {
                   ...notificationConfig,
                   message: 'Cập nhật dự án thành công',
                 });
-                // this.getListUsers();
+                this.getListProject();
                 this.dialogUpdateVisible = false;
               })
               .catch((error) => {
@@ -323,19 +284,6 @@ export default class ProjectAll extends Vue {
   //     } catch (error) {}
   //   });
   // }
-
-  private async getCommonData() {
-    try {
-      const [managers, originalProjects] = await Promise.all([
-        ProjectRepository.getManagers({ text: this.textPm }),
-        ProjectRepository.getOriginalProjects(),
-      ]);
-      this.managers = managers.data;
-      this.originalProjects = originalProjects.data;
-    } catch (e) {
-      console.log(e);
-    }
-  }
 
   getManager(pmId: number) {
     let pm = '';

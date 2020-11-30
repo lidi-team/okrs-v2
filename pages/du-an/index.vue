@@ -11,7 +11,13 @@
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="convertLabel(tab)" :name="tab"></el-tab-pane>
       <head-project :text.sync="paramsProject.text" @name="paramsProject.text = $event" @search="handleSearch($event)" />
-      <component :is="currentTabComponent" :table-data="tableData" />
+      <component
+        :is="currentTabComponent"
+        :table-data="tableData"
+        :get-list-project="getListProjects"
+        :managers="managers"
+        :original-projects="originalProjects"
+      />
       <common-pagination
         class="manage-project__pagination"
         :total="meta.totalItems"
@@ -20,7 +26,13 @@
         @pagination="handlePagination($event)"
       />
     </el-tabs>
-    <component :is="currentDialogComponent" :visible-dialog.sync="visibleDialog" :reload-data="getListProjects" />
+    <component
+      :is="currentDialogComponent"
+      :visible-dialog.sync="visibleDialog"
+      :reload-data="getListProjects"
+      :managers="managers"
+      :original-projects="originalProjects"
+    />
   </div>
 </template>
 
@@ -34,7 +46,7 @@ import CommonPagination from '@/components/common/Pagination.vue';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import HeadProject from '@/components/manage/project/HeadProject.vue';
 import ProjectAll from '@/components/manage/project/ProjectAll.vue';
-import NewProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
+import ProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
 
 @Component<ManageProject>({
   name: 'ManageProject',
@@ -45,7 +57,7 @@ import NewProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
   },
   async created() {
     await this.getListProjects();
-    // await this.getDataCommons();
+    await this.getDataCommon();
   },
   head() {
     return {
@@ -55,11 +67,14 @@ import NewProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
 })
 export default class ManageProject extends Vue {
   private tableData: Array<object> = [];
+  private managers: Array<any> = [];
+  private originalProjects: Array<object> = [];
   private tabs: string[] = [...Object.values(ProjectStatus)];
   private currentTab: ProjectStatus = ProjectStatus.All;
   private meta: object = {};
   private indexPage: number = this.$route.query.page ? Number(this.$route.query.page) : 1;
   private visibleDialog: boolean = false;
+  private textPm: String = '';
 
   private paramsProject: ParamsProject = {
     page: this.indexPage,
@@ -77,6 +92,19 @@ export default class ManageProject extends Vue {
       this.meta = data.meta;
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  private async getDataCommon() {
+    try {
+      const [managers, originalProjects] = await Promise.all([
+        ProjectRepository.getManagers({ text: this.textPm }),
+        ProjectRepository.getOriginalProjects(),
+      ]);
+      this.managers = managers.data;
+      this.originalProjects = originalProjects.data;
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -122,7 +150,7 @@ export default class ManageProject extends Vue {
   }
 
   private currentDialogComponent() {
-    return NewProjectDialog;
+    return ProjectDialog;
   }
 }
 </script>
