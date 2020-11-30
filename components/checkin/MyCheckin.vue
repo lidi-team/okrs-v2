@@ -68,13 +68,13 @@
         </el-table-column>
       </el-table>
     </div>
-    <!-- <pagination
+    <pagination
       class="feedback__col__pagination"
-      :total="metaPagination.totalItem"
-      :page.sync="metaPagination.currentPage"
-      :limit.sync="metaPagination.limit"
+      :total="pagination.totalItems"
+      :page.sync="pagination.currentPage"
+      :limit.sync="pagination.limit"
       @pagination="handlePagination($event)"
-    /> -->
+    />
 
     <el-dialog
       v-if="showDialogKRs"
@@ -153,7 +153,12 @@ export default class MyOkrsCheckin extends Vue {
   private keyResults: any = {};
   private showDialogKRs: boolean = false;
   private checkins: any[] = [];
-  private totalItem: Number = 0;
+
+  private pagination = {
+    totalItems: 0,
+    currentPage: this.$route.query.page ? Number(this.$route.query.page) : 1,
+    limit: 10,
+  };
 
   @Watch('$route.query')
   private watchQuery() {
@@ -167,7 +172,6 @@ export default class MyOkrsCheckin extends Vue {
     const cycleId = this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycleCurrent.id;
     const limit = this.$route.query.limit ? this.$route.query.limit : 10;
     const projectId = this.$route.query.projectId ? this.$route.query.projectId : 0;
-    console.log(cycleId);
     const { data } = await CheckinRepository.getMyCheckin({
       projectId,
       page,
@@ -175,14 +179,14 @@ export default class MyOkrsCheckin extends Vue {
       cycleId,
     });
     this.checkins = data.items || [];
-    this.totalItem = data.meta.totalItems;
+    this.pagination.totalItems = data.meta.totalItems;
     this.loading = false;
   }
 
-  private async handlePagination(pagination: any) {
-    // this.metaPagination.currentPage = pagination.page;
-    await this.getListCheckin();
-    // this.$router.push(`?tab=checkin-cua-toi&page=${pagination.page}`);
+  private handlePagination(pagination: any) {
+    this.$router.push(
+      `?tab=${this.$route.query.tab}&cycleId=${this.$route.query.cycleId}&page=${pagination.page}&projectId=${this.$route.query.projectId}`,
+    );
   }
 
   private customColorsChanging(change: number) {
