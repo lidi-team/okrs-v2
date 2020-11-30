@@ -128,7 +128,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { mapGetters } from 'vuex';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { customColors } from '../okrs/okrs.constant';
 import { statusCheckin } from '@/constants/app.constant';
 import { ROUTER_CHECKIN } from '@/components/checkin/constants.enum';
@@ -153,17 +154,20 @@ export default class MyOkrsCheckin extends Vue {
   private showDialogKRs: boolean = false;
   private checkins: any[] = [];
   private totalItem: Number = 0;
-  private paramsCheckin = {
-    tab: this.$route.query.tab ? this.$route.query.tab : ROUTER_CHECKIN.MyOkrs,
-    page: this.$route.query.page ? this.$route.query.page : 1,
-    cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycleCurrent.id,
-    limit: this.$route.query.limit ? this.$route.query.limit : 10,
-    projectId: this.$route.query.projectId ? this.$route.query.projectId : 0,
-  };
+
+  @Watch('$route.query')
+  private watchQuery() {
+    this.getListCheckin();
+  }
 
   private async getListCheckin() {
     this.loading = true;
-    const { page, projectId, limit, cycleId } = this.paramsCheckin;
+    const tab = this.$route.query.tab ? this.$route.query.tab : ROUTER_CHECKIN.MyOkrs;
+    const page = this.$route.query.page ? this.$route.query.page : 1;
+    const cycleId = this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycleCurrent.id;
+    const limit = this.$route.query.limit ? this.$route.query.limit : 10;
+    const projectId = this.$route.query.projectId ? this.$route.query.projectId : 0;
+    console.log(cycleId);
     const { data } = await CheckinRepository.getMyCheckin({
       projectId,
       page,

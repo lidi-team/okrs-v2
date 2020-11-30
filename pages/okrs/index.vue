@@ -107,7 +107,7 @@ export default class OKRsPage extends Vue {
 
   private changeCycleData() {
     this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.currentCycleId);
-    this.$store.commit(MutationState.SET_FLAG);
+    this.$store.commit(MutationState.OKRS_SET_FLAG);
   }
 }
 </script>

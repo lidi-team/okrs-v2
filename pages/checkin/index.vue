@@ -9,7 +9,7 @@
         placeholder="Chọn chu kỳ"
         @change="handleSelectCycle(paramsCheckin.cycleId)"
       >
-        <el-option v-for="cycle in cycles" :key="cycle.id" :label="`Chu kỳ: ${cycle.name}`" :value="cycle.id" />
+        <el-option v-for="cycle in cycles" :key="cycle.id" :label="`Chu kỳ: ${cycle.name}`" :value="String(cycle.id)" />
       </el-select>
       <el-select
         class="-ml-1"
