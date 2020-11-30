@@ -17,9 +17,9 @@
         no-match-text="Không tìm thấy dự án"
         filterable
         placeholder="Chọn dự án"
-        @change="handleSelectCycle(data)"
+        @change="handleSelectProject(paramsCheckin.projectId)"
       >
-        <el-option v-for="project in projects" :key="project.id" :label="`Dự án: ${project.name}`" :value="project.id" />
+        <el-option v-for="project in projects" :key="project.id" :label="`Dự án: ${project.name}`" :value="String(project.id)" />
       </el-select>
     </div>
 
@@ -80,7 +80,7 @@ export default class CheckinPage extends Vue {
     page: this.$route.query.page ? this.$route.query.page : 1,
     cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycleCurrent.id,
     limit: this.$route.query.limit ? this.$route.query.limit : 10,
-    projectId: this.$route.query.projectId ? this.$route.query.projectId : 0,
+    projectId: this.$route.query.projectId ? this.$route.query.projectId : '',
   };
 
   private get currentTabComponent() {
@@ -102,6 +102,10 @@ export default class CheckinPage extends Vue {
     this.$router.push(`?tab=${this.paramsCheckin.tab}&cycleId=${cycleId}&page=${this.paramsCheckin.page}&projectId=${this.paramsCheckin.projectId}`);
   }
 
+  private handleSelectProject(projectId) {
+    this.$router.push(`?tab=${this.paramsCheckin.tab}&cycleId=${this.paramsCheckin.cycleId}&page=${this.paramsCheckin.page}&projectId=${projectId}`);
+  }
+
   private async getCycles() {
     const { data } = await CycleRepository.getListMetadata();
     this.cycles = data || [];
@@ -109,7 +113,14 @@ export default class CheckinPage extends Vue {
 
   private async getProjects() {
     const { data } = await ProjectRepository.getListCurrent();
-    this.projects = data || [];
+    this.projects =
+      [
+        {
+          id: 0,
+          name: 'Tất cả',
+        },
+        ...data,
+      ] || [];
   }
 
   private handleClick(currentTab: string) {
@@ -122,7 +133,7 @@ export default class CheckinPage extends Vue {
           : currentTab === TAB_CHECKIN.CheckinCompany
           ? ROUTER_CHECKIN.CheckinCompany
           : ROUTER_CHECKIN.Inferior
-      }`,
+      }&cycleId=${this.paramsCheckin.cycleId}&page=${this.paramsCheckin.page}&projectId=${this.paramsCheckin.projectId}`,
     );
   }
 }
