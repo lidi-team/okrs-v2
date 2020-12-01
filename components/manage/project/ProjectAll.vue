@@ -41,9 +41,9 @@
       <el-table-column label="Thao tác" align="center">
         <template slot-scope="{ row }">
           <div v-if="user.roles.includes('ROLE_ADMIN')">
-            <!--<el-tooltip class="project-all__icon" content="Xem" placement="left-end">
-              <i class="el-icon-edit icon&#45;&#45;info" @click="handleOpenDialogUpdate(row)"></i>
-            </el-tooltip>-->
+            <el-tooltip class="project-all__icon" content="Quản lý" placement="left-end">
+              <i class="el-icon-s-order icon&#45;&#45;info" @click="handleControlProject(row)"></i>
+            </el-tooltip>
             <el-tooltip class="project-all__icon" content="Sửa" placement="right-end">
               <i class="el-icon-edit icon&#45;&#45;info" @click="handleOpenDialogUpdate(row)"></i>
             </el-tooltip>
@@ -103,11 +103,11 @@
               ></el-date-picker>
             </el-form-item>
             <el-form-item label="trọng số:" class="custom-label" prop="weight" label-width="150px">
-              <el-slider v-model="tempUpdateProject.weight" :step="1" :max="5" :min="1" show-stops> </el-slider>
+              <el-slider v-model="tempUpdateProject.weight" :step="1" :max="5" :min="1" show-stops></el-slider>
             </el-form-item>
             <el-form-item label="Quản lý dự án:" class="custom-label" prop="pmId" label-width="150px">
               <el-select v-model="tempUpdateProject.pmId" filterable placeholder="Chọn người quản lý dự án">
-                <el-option v-for="item in managers" :key="item.id" :label="item.name" :value="item.id"> </el-option>
+                <el-option v-for="item in managers" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="trạng thái:" class="custom-label" prop="status" label-width="150px">
@@ -258,33 +258,6 @@ export default class ProjectAll extends Vue {
 
   private rules: Maps<Rule[]> = {};
 
-  // private deactiveUser(row) {
-  //   this.tempUpdateProject = {
-  //     id: row.id,
-  //     name: row.name,
-  //     startDate: row.startDate,
-  //     endDate: row.endDate,
-  //     status: row.status,
-  //     description: row.description,
-  //     pm: row.pmi,
-  //   };
-  //   this.$confirm('Bạn có chắc chắn muốn deactive user này?', {
-  //     confirmButtonText: 'Đồng ý',
-  //     cancelButtonText: 'Hủy bỏ',
-  //     type: 'warning',
-  //   }).then(async () => {
-  //     try {
-  //       await EmployeeRepository.update(this.tempUpdateProject).then((res: any) => {
-  //         this.$notify.success({
-  //           ...notificationConfig,
-  //           message: 'Cập nhật thành viên thành công',
-  //         });
-  //       });
-  //       this.getListUsers();
-  //     } catch (error) {}
-  //   });
-  // }
-
   getManager(pmId: number) {
     let pm = '';
     if (this.managers) {
@@ -302,6 +275,10 @@ export default class ProjectAll extends Vue {
 
   private format(percentage: number) {
     return percentage * 0.05 + '/5';
+  }
+
+  private handleControlProject(row) {
+    this.$router.push('/du-an/quan-ly?id=' + row.id);
   }
 }
 </script>

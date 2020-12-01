@@ -3,7 +3,7 @@
     <!-- create project dialog -->
     <el-dialog
       class="update-employee"
-      :visible.sync="syncProjectDialog"
+      visible="true"
       width="45%"
       placement="bottom-start"
       title="Cập nhật thông tin"
@@ -11,65 +11,14 @@
     >
       <el-row :gutter="10">
         <el-col :span="24">
-          <el-form
-            ref="updateEmployeeForm"
-            :hide-required-asterisk="false"
-            :status-icon="true"
-            :rules="rules"
-            :model="tempUpdateProject"
-            style="width: 100%"
-          >
-            <el-form-item label="Tên dự án:" prop="name" class="custom-label" label-width="150px">
-              <el-input v-model="tempUpdateProject.name" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
-            </el-form-item>
-            <el-form-item v-if="true" label="Ngày bắt đầu:" class="custom-label" prop="startDate" label-width="150px">
-              <el-date-picker
-                v-model="tempUpdateProject.startDate"
-                format="dd/MM/yyyy"
-                value-format="dd/MM/yyyy"
-                :picker-options="pickerOptions"
-                type="date"
-                placeholder="Chọn ngày sinh"
-              ></el-date-picker>
-            </el-form-item>
-            <el-form-item v-if="true" label="Ngày kết thúc:" class="custom-label" prop="endDate" label-width="150px">
-              <el-date-picker
-                v-model="tempUpdateProject.endDate"
-                format="dd/MM/yyyy"
-                value-format="dd/MM/yyyy"
-                :picker-options="pickerOptions"
-                type="date"
-                placeholder="Chọn ngày sinh"
-              ></el-date-picker>
-            </el-form-item>
-            <el-form-item label="trọng số:" class="custom-label" prop="weight" label-width="150px">
-              <el-slider v-model="tempUpdateProject.weight" :step="1" :max="5" :min="1" show-stops> </el-slider>
-            </el-form-item>
-            <el-form-item label="Quản lý dự án:" class="custom-label" prop="pmId" label-width="150px">
-              <el-select v-model="tempUpdateProject.pmId" filterable placeholder="Chọn người quản lý dự án">
-                <el-option v-for="item in managers" :key="item.id" :label="item.name" :value="item.id"> </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="trạng thái:" class="custom-label" prop="status" label-width="150px">
-              <el-radio v-model="tempUpdateProject.status" :label="1">Hoạt động</el-radio>
-              <el-radio v-model="tempUpdateProject.status" :label="0">Kết thúc</el-radio>
-            </el-form-item>
-            <el-form-item label="Trực thuộc dự án:" prop="parentId" label-width="150px">
-              <el-select v-model="tempUpdateProject.parentId" clearable placeholder="Chọn dự án">
-                <el-option v-for="item in originalProjects" :key="item.id" :label="item.name" :value="item.id"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="Mô tả:" prop="description" label-width="150px">
-              <el-input v-model="tempUpdateProject.description" placeholder="Nhập mô tả" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
-            </el-form-item>
-          </el-form>
+          <span>oke</span>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="el-button&#45;&#45;white el-button&#45;&#45;modal" @click="handleCloseDialog">Hủy</el-button>
+        <!--<el-button class="el-button&#45;&#45;white el-button&#45;&#45;modal" @click="handleCloseDialog">Hủy</el-button>
         <el-button class="el-button&#45;&#45;purple el-button&#45;&#45;modal" :loading="loading" @click="handleCreate(tempUpdateProject)"
           >Cập nhật</el-button
-        >
+        >-->
       </span>
     </el-dialog>
     <!-- end create project dialog -->
@@ -78,30 +27,19 @@
 <script lang="ts">
 import { Component, Prop, Vue, PropSync } from 'vue-property-decorator';
 import { ProjectDTO } from '@/constants/app.interface';
-import { mapGetters } from 'vuex';
-import { GetterState } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import { Form } from 'element-ui';
 
 @Component<ProjectDialog>({
   name: 'ProjectDialog',
-  computed: {
-    ...mapGetters({
-      user: GetterState.USER,
-    }),
-  },
-  mounted() {
-    console.log(this.syncProjectDialog);
-  },
 })
 export default class ProjectDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
   @Prop(Array) readonly managers!: Array<any>;
   @Prop(Array) readonly originalProjects!: Array<object>;
   @PropSync('visibleDialog', { type: Boolean, required: true }) public syncProjectDialog!: boolean;
-  // private syncProjectDialog: boolean = true;
-  private loadingTable: boolean = false;
+
   private loading: boolean = false;
   private tempUpdateProject: ProjectDTO = {
     name: '',
@@ -207,6 +145,16 @@ export default class ProjectDialog extends Vue {
   &__icon {
     cursor: pointer;
     margin: 0 $unit-1;
+  }
+
+  &--status {
+    &__active {
+      color: #27ae60;
+    }
+
+    &__deactive {
+      color: #dd1100;
+    }
   }
 }
 </style>

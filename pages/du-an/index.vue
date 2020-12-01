@@ -12,7 +12,7 @@
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="convertLabel(tab)" :name="tab"></el-tab-pane>
       <head-project :text.sync="paramsProject.text" @name="paramsProject.text = $event" @search="handleSearch($event)" />
       <component
-        :is="currentTabComponent"
+        :is="tabComponent"
         :table-data="tableData"
         :get-list-project="getListProjects"
         :managers="managers"
@@ -27,7 +27,7 @@
       />
     </el-tabs>
     <component
-      :is="currentDialogComponent"
+      :is="dialogComponent"
       :visible-dialog.sync="visibleDialog"
       :reload-data="getListProjects"
       :managers="managers"
@@ -141,16 +141,17 @@ export default class ManageProject extends Vue {
       : this.$router.push(`?tab=${tab}&text=${this.$route.query.text}&page=${pagination.page}`);
   }
 
-  private get currentTabComponent() {
+  private get tabComponent() {
     return ProjectAll;
   }
 
-  private addNew() {
-    this.visibleDialog = true;
+  private dialogComponent() {
+    return ProjectDialog;
   }
 
-  private currentDialogComponent() {
-    return ProjectDialog;
+  private addNew() {
+    console.log('pressed');
+    this.visibleDialog = true;
   }
 }
 </script>
