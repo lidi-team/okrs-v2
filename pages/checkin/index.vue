@@ -99,11 +99,11 @@ export default class CheckinPage extends Vue {
   }
 
   private handleSelectCycle(cycleId) {
-    this.$router.push(`?tab=${this.paramsCheckin.tab}&cycleId=${cycleId}&page=${this.paramsCheckin.page}&projectId=${this.paramsCheckin.projectId}`);
+    this.$router.push(`?tab=${this.paramsCheckin.tab}&cycleId=${cycleId}&page=1&projectId=${this.paramsCheckin.projectId}`);
   }
 
   private handleSelectProject(projectId) {
-    this.$router.push(`?tab=${this.paramsCheckin.tab}&cycleId=${this.paramsCheckin.cycleId}&page=${this.paramsCheckin.page}&projectId=${projectId}`);
+    this.$router.push(`?tab=${this.paramsCheckin.tab}&cycleId=${this.paramsCheckin.cycleId}&page=1&projectId=${projectId}`);
   }
 
   private async getCycles() {

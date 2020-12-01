@@ -5,6 +5,8 @@ import { baseUrlV1, baseUrl } from './BaseRepository';
 export enum enpoint {
   myCheckin = 'checkin',
   requestCheckin = 'checkin/checkin_request',
+  inferiorCheckin = 'checkin/inferior',
+  listObjectiveInferior = 'checkin/inferior-objective',
   history = 'checkin/history',
 }
 
@@ -19,6 +21,14 @@ export default class CheckinRepository {
 
   public static getHistory(id: Number) {
     return baseUrl.get(`${enpoint.history}/${id}`);
+  }
+
+  public static getInferiorCheckin(params: any) {
+    return baseUrl.get(enpoint.inferiorCheckin, { params });
+  }
+
+  public static getListObjectiveInferior(params: any) {
+    return baseUrl.get(enpoint.listObjectiveInferior, { params });
   }
 
   public static get(params: any) {

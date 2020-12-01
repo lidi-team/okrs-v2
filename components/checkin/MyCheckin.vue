@@ -146,6 +146,11 @@ import Pagination from '@/components/common/Pagination.vue';
   },
 })
 export default class MyOkrsCheckin extends Vue {
+  @Watch('$route.query')
+  private watchQuery() {
+    this.getListCheckin();
+  }
+
   @Prop(Array) readonly tableData!: Array<object>;
   private loading: Boolean = false;
   private customColors = customColors;
@@ -159,11 +164,6 @@ export default class MyOkrsCheckin extends Vue {
     currentPage: this.$route.query.page ? Number(this.$route.query.page) : 1,
     limit: 10,
   };
-
-  @Watch('$route.query')
-  private watchQuery() {
-    this.getListCheckin();
-  }
 
   private async getListCheckin() {
     this.loading = true;
