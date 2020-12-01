@@ -36,7 +36,6 @@ import { mapGetters } from 'vuex';
 import Inferior from '@/components/checkin/Inferior.vue';
 import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
 import MyCheckin from '@/components/checkin/MyCheckin.vue';
-import CheckinCompany from '@/components/checkin/CheckinCompany.vue';
 
 import { notificationConfig, pageLimit } from '@/constants/app.constant';
 import { TAB_CHECKIN, ROUTER_CHECKIN } from '@/components/checkin/constants.enum';
@@ -72,8 +71,6 @@ export default class CheckinPage extends Vue {
       ? TAB_CHECKIN.MyOkrs
       : this.$route.query.tab === ROUTER_CHECKIN.CheckinResquest
       ? TAB_CHECKIN.CheckinResquest
-      : this.$route.query.tab === ROUTER_CHECKIN.CheckinCompany
-      ? TAB_CHECKIN.CheckinCompany
       : TAB_CHECKIN.Inferior;
   private paramsCheckin = {
     tab: this.$route.query.tab ? this.$route.query.tab : ROUTER_CHECKIN.MyOkrs,
@@ -89,8 +86,6 @@ export default class CheckinPage extends Vue {
         return MyCheckin;
       case ROUTER_CHECKIN.CheckinResquest:
         return RequestCheckin;
-      case ROUTER_CHECKIN.CheckinCompany:
-        return CheckinCompany;
       case ROUTER_CHECKIN.Inferior:
         return Inferior;
       default:
@@ -130,8 +125,6 @@ export default class CheckinPage extends Vue {
           ? ROUTER_CHECKIN.MyOkrs
           : currentTab === TAB_CHECKIN.CheckinResquest
           ? ROUTER_CHECKIN.CheckinResquest
-          : currentTab === TAB_CHECKIN.CheckinCompany
-          ? ROUTER_CHECKIN.CheckinCompany
           : ROUTER_CHECKIN.Inferior
       }&cycleId=${this.paramsCheckin.cycleId}&page=${this.paramsCheckin.page}&projectId=${this.paramsCheckin.projectId}`,
     );
