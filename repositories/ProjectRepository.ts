@@ -8,6 +8,10 @@ export default class ProjectRepository {
     return baseUrl.get(`${ResourcesEnpoint.Project}`, { params });
   }
 
+  public static getById(id: number) {
+    return baseUrl.get(`${ResourcesEnpoint.Project}/` + id);
+  }
+
   public static update(payload: ProjectDTO) {
     return baseUrl.post(`${ResourcesEnpoint.Project}/create`, payload);
   }
