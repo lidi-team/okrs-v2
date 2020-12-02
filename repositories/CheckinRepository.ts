@@ -3,7 +3,7 @@ import { ResourcesEnpoint } from '@/constants/app.enum';
 import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export enum enpoint {
-  myCheckin = 'checkin',
+  checkin = 'checkin',
   requestCheckin = 'checkin/checkin_request',
   inferiorCheckin = 'checkin/inferior',
   listObjectiveInferior = 'checkin/inferior-objective',
@@ -12,7 +12,7 @@ export enum enpoint {
 
 export default class CheckinRepository {
   public static getMyCheckin(params: any) {
-    return baseUrl.get(enpoint.myCheckin, { params });
+    return baseUrl.get(enpoint.checkin, { params });
   }
 
   public static getRequestCheckin(params: any) {
@@ -29,6 +29,10 @@ export default class CheckinRepository {
 
   public static getListObjectiveInferior(params: any) {
     return baseUrl.get(enpoint.listObjectiveInferior, { params });
+  }
+
+  public static getDetailCheckinByCheckinId(id: Number) {
+    return baseUrl.get(`${enpoint.checkin}/${id}`);
   }
 
   public static get(params: any) {
