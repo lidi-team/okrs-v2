@@ -151,14 +151,12 @@ export default class MyOkrsCheckin extends Vue {
     this.getListCheckin();
   }
 
-  @Prop(Array) readonly tableData!: Array<object>;
   private loading: Boolean = false;
   private customColors = customColors;
   private status = statusCheckin;
   private keyResults: any = {};
   private showDialogKRs: boolean = false;
   private checkins: any[] = [];
-
   private pagination = {
     totalItems: 0,
     currentPage: this.$route.query.page ? Number(this.$route.query.page) : 1,

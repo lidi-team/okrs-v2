@@ -67,17 +67,17 @@ export default class CheckinPage extends Vue {
   private cycles: any[] = [];
   private projects: any[] = [];
   private currentTab: string =
-    this.$route.query.tab === ROUTER_CHECKIN.MyOkrs
-      ? TAB_CHECKIN.MyOkrs
+    this.$route.query.tab === ROUTER_CHECKIN.Inferior
+      ? TAB_CHECKIN.Inferior
       : this.$route.query.tab === ROUTER_CHECKIN.CheckinResquest
       ? TAB_CHECKIN.CheckinResquest
-      : TAB_CHECKIN.Inferior;
+      : TAB_CHECKIN.MyOkrs;
   private paramsCheckin = {
     tab: this.$route.query.tab ? this.$route.query.tab : ROUTER_CHECKIN.MyOkrs,
     page: this.$route.query.page ? this.$route.query.page : 1,
-    cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycleCurrent.id,
+    cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : String(this.$store.state.cycle.cycleCurrent.id),
     limit: this.$route.query.limit ? this.$route.query.limit : 10,
-    projectId: this.$route.query.projectId ? this.$route.query.projectId : '',
+    projectId: this.$route.query.projectId ? this.$route.query.projectId : String(0),
   };
 
   private get currentTabComponent() {
