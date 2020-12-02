@@ -3,7 +3,7 @@
     <!-- create project dialog -->
     <el-dialog
       class="update-employee"
-      visible="true"
+      :visible.sync="syncProjectDialog"
       width="45%"
       placement="bottom-start"
       title="Cập nhật thông tin"
@@ -11,14 +11,61 @@
     >
       <el-row :gutter="10">
         <el-col :span="24">
-          <span>oke</span>
+          <el-form
+            ref="updateEmployeeForm"
+            :hide-required-asterisk="false"
+            :status-icon="true"
+            :rules="rules"
+            :model="tempUpdateProject"
+            style="width: 100%"
+          >
+            <el-form-item label="Tên dự án:" prop="name" class="custom-label" label-width="150px">
+              <el-input v-model="tempUpdateProject.name" placeholder="Nhập họ và tên" @keyup.enter.native="handleCreate(tempUpdateProject)" />
+            </el-form-item>
+            <el-form-item v-if="true" label="Ngày bắt đầu:" class="custom-label" prop="startDate" label-width="150px">
+              <el-date-picker
+                v-model="tempUpdateProject.startDate"
+                format="dd/MM/yyyy"
+                value-format="dd/MM/yyyy"
+                :picker-options="pickerOptions"
+                type="date"
+                placeholder="Chọn ngày sinh"
+              ></el-date-picker>
+            </el-form-item>
+            <el-form-item v-if="true" label="Ngày kết thúc:" class="custom-label" prop="endDate" label-width="150px">
+              <el-date-picker
+                v-model="tempUpdateProject.endDate"
+                format="dd/MM/yyyy"
+                value-format="dd/MM/yyyy"
+                :picker-options="pickerOptions"
+                type="date"
+                placeholder="Chọn ngày sinh"
+              ></el-date-picker>
+            </el-form-item>
+            <el-form-item label="trọng số:" class="custom-label" prop="weight" label-width="150px">
+              <el-slider v-model="tempUpdateProject.weight" :step="1" :max="5" :min="1" show-stops></el-slider>
+            </el-form-item>
+            <el-form-item label="Quản lý dự án:" class="custom-label" prop="pmId" label-width="150px">
+              <el-select v-model="tempUpdateProject.pmId" filterable placeholder="Chọn người quản lý dự án">
+                <el-option v-for="item in managers" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Trực thuộc dự án:" prop="parentId" label-width="150px">
+              <el-select v-model="tempUpdateProject.parentId" clearable placeholder="Chọn dự án">
+                <el-option v-for="item in originalProjects" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Mô tả:" prop="description" label-width="150px">
+              <el-input v-model="tempUpdateProject.description" placeholder="Nhập mô tả" @keyup.enter.native="handleCreate(tempUpdateProject)" />
+            </el-form-item>
+          </el-form>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <!--<el-button class="el-button&#45;&#45;white el-button&#45;&#45;modal" @click="handleCloseDialog">Hủy</el-button>
+        <el-button class="el-button&#45;&#45;white el-button&#45;&#45;modal" @click="handleCloseDialog">Hủy</el-button>
         <el-button class="el-button&#45;&#45;purple el-button&#45;&#45;modal" :loading="loading" @click="handleCreate(tempUpdateProject)"
-          >Cập nhật</el-button
-        >-->
+          >Tạo mới</el-button
+        >
       </span>
     </el-dialog>
     <!-- end create project dialog -->
@@ -45,7 +92,7 @@ export default class ProjectDialog extends Vue {
     name: '',
     startDate: '',
     endDate: '',
-    status: '',
+    status: 1,
     description: '',
     pmId: 0,
     weight: 1,
@@ -53,10 +100,12 @@ export default class ProjectDialog extends Vue {
   };
 
   private handleCreate(tempUpdateProject: ProjectDTO) {
+    console.log('before update: ', tempUpdateProject);
+
     this.loading = true;
     (this.$refs.updateEmployeeForm as Form).validate((isValid: boolean, invalidFields: object) => {
       if (isValid) {
-        this.$confirm(`Bạn có chắc chắn muốn tạo mới project này?`, {
+        this.$confirm(`Bạn có chắc chắn muốn cập nhật dự án này?`, {
           ...confirmWarningConfig,
         })
           .then(async () => {
@@ -67,9 +116,9 @@ export default class ProjectDialog extends Vue {
                 }, 300);
                 this.$notify.success({
                   ...notificationConfig,
-                  message: 'Khởi tạo project thành công',
+                  message: 'Cập nhật dự án thành công',
                 });
-                // this.getListUsers();
+                this.reloadData();
                 this.syncProjectDialog = false;
               })
               .catch((error) => {

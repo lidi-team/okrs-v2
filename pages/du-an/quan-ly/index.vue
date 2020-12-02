@@ -66,7 +66,7 @@ import { ProjectDTO } from '@/constants/app.interface';
   },
 })
 export default class ControlProject extends Vue {
-  private id: number = this.$route.query.id ? this.$route.query.id : 0;
+  private id: any = this.$route.query.id ? this.$route.query.id : 0;
   private managers: Array<any> = [];
   private originalProjects: Array<object> = [];
   private textPm: String = '';

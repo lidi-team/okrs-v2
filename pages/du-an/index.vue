@@ -5,7 +5,7 @@
         <h1 class="manage-project__top__title--text">Quản lý dự án</h1>
       </div>
       <div class="manage-project__top__right">
-        <el-button class="el-button--purple el-button--invite" icon="el-icon-plus" @click="addNew"> Thêm mới </el-button>
+        <el-button class="el-button--purple el-button--invite" icon="el-icon-plus" @click="addNew"> Thêm mới</el-button>
       </div>
     </div>
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
@@ -26,13 +26,7 @@
         @pagination="handlePagination($event)"
       />
     </el-tabs>
-    <component
-      :is="dialogComponent"
-      :visible-dialog.sync="visibleDialog"
-      :reload-data="getListProjects"
-      :managers="managers"
-      :original-projects="originalProjects"
-    />
+    <project-dialog :visible-dialog.sync="visibleDialog" :reload-data="getListProjects" :managers="managers" :original-projects="originalProjects" />
   </div>
 </template>
 
@@ -52,6 +46,7 @@ import ProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
   name: 'ManageProject',
   // middleware: 'employeesPage',
   components: {
+    ProjectDialog,
     CommonPagination,
     HeadProject,
   },
@@ -158,6 +153,7 @@ export default class ManageProject extends Vue {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
+
 .manage-project {
   height: 100%;
 
@@ -173,14 +169,17 @@ export default class ManageProject extends Vue {
   &__top {
     display: flex;
     justify-content: space-between;
+
     &__left {
       &--input {
         width: calc(100vw * 5 / 24);
       }
     }
+
     &__right {
       height: 100%;
     }
+
     &__title {
       display: flex;
       flex-direction: row;

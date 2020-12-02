@@ -35,9 +35,9 @@ export interface ProjectDTO {
   name: string;
   startDate: string;
   endDate: string;
-  status: string;
+  status: number | string;
   description: string;
-  parentId?: number;
+  parentId?: number | string;
   pm?: string | Object;
   pmId?: number;
   staffs?: Object[];
