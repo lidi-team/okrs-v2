@@ -61,7 +61,7 @@ export default class HistoryCheckin extends Vue {
   private historyList: Array<object> = [];
   private status = statusCheckin;
   private goBack() {
-    this.$router.push('/checkin');
+    this.$router.go(-1);
   }
 
   private async getList() {

@@ -77,9 +77,7 @@ export default class DetailHistoryPage extends Vue {
   }
 
   private goBack() {
-    if (this.checkin) {
-      this.$router.push(`/checkin/lich-su/${this.checkin.objective.id}`);
-    }
+    this.$router.go(-1);
   }
 }
 </script>

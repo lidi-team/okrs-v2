@@ -5,49 +5,49 @@
       <el-form ref="checkinRuleForm" label-position="left" :model="syncCheckin" :rules="rules">
         <el-table empty-text="Không có dữ liệu" class="checkinDetail__form" :data="syncCheckin.checkinDetail" style="width: 100%">
           <el-table-column label="Kết quả chính" min-width="250">
-            <template slot-scope="scope">
-              <p>{{ scope.row.keyResult.content }}</p>
+            <template slot-scope="{ row }">
+              <p>{{ row.keyResult.content }}</p>
             </template>
           </el-table-column>
           <el-table-column align="center" label="Mục tiêu" min-width="100">
-            <template slot-scope="scope">
+            <template slot-scope="{ row }">
               <el-form-item>
-                <el-input v-model.number="scope.row.keyResult.targetValue" :readonly="true"></el-input>
+                <el-input v-model.number="row.keyResult.targetValue" :readonly="true"></el-input>
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column align="center" label="Số đạt được" min-width="150">
-            <template v-slot="scope">
-              <el-form-item :prop="'checkinDetail.' + scope.$index + '.valueObtained'" :rules="rules.valueObtained">
-                <el-input v-model.number="scope.row.valueObtained"></el-input>
+            <template v-slot="{ row }">
+              <el-form-item :prop="'checkinDetail.' + $index + '.valueObtained'" :rules="rules.valueObtained">
+                <el-input v-model.number="row.valueObtained"></el-input>
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column align="center" label="Tiến độ" min-width="150">
-            <template slot-scope="scope">
-              <el-form-item :prop="'checkinDetail.' + scope.$index + '.progress'" :rules="rules.progress">
-                <el-input v-model="scope.row.progress" type="textarea" :rows="4" placeholder="Nhập tiến độ"></el-input>
+            <template slot-scope="{ row }">
+              <el-form-item :prop="'checkinDetail.' + $index + '.progress'" :rules="rules.progress">
+                <el-input v-model="row.progress" type="textarea" :rows="4" placeholder="Nhập tiến độ"></el-input>
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column align="center" label="Vấn đề" min-width="150">
-            <template slot-scope="scope">
-              <el-form-item :prop="'checkinDetail.' + scope.$index + '.problems'" :rules="rules.problems">
-                <el-input v-model="scope.row.problems" type="textarea" :rows="4" placeholder="Nhập vấn đề"></el-input>
+            <template slot-scope="{ row }">
+              <el-form-item :prop="'checkinDetail.' + $index + '.problems'" :rules="rules.problems">
+                <el-input v-model="row.problems" type="textarea" :rows="4" placeholder="Nhập vấn đề"></el-input>
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column align="center" label="Kế hoạch" min-width="150">
-            <template slot-scope="scope">
-              <el-form-item :prop="'checkinDetail.' + scope.$index + '.plans'" :rules="rules.plans">
-                <el-input v-model="scope.row.plans" type="textarea" :rows="4" placeholder="Nhập kế hoạch"></el-input>
+            <template slot-scope="{ row }">
+              <el-form-item :prop="'checkinDetail.' + $index + '.plans'" :rules="rules.plans">
+                <el-input v-model="row.plans" type="textarea" :rows="4" placeholder="Nhập kế hoạch"></el-input>
               </el-form-item>
             </template>
           </el-table-column>
           <el-table-column label="Độ tự tin" min-width="150">
-            <template slot-scope="scope">
-              <el-form-item :prop="'checkinDetail.' + scope.$index + '.confidentLevel'">
-                <el-select v-model="scope.row.confidentLevel" placeholder="Chọn độ tự tin">
+            <template slot-scope="{ row }">
+              <el-form-item :prop="'checkinDetail.' + $index + '.confidentLevel'">
+                <el-select v-model="row.confidentLevel" placeholder="Chọn độ tự tin">
                   <el-option v-for="item in dropdownConfident" :key="item.value" :label="item.label" :value="item.value" />
                 </el-select>
               </el-form-item>
@@ -125,7 +125,6 @@ import { Maps, Rule } from '@/constants/app.type';
 })
 export default class DetailHistory extends Vue {
   @PropSync('checkin', { type: Object }) syncCheckin!: any;
-  @Prop(Boolean) readonly isNew!: boolean;
   private tempCheckin: any;
   private status = statusCheckin;
   private dateFormat: string = 'dd/MM/yyyy';
@@ -195,178 +194,9 @@ export default class DetailHistory extends Vue {
     nextCheckinDate: [{ validator: this.validateDate, trigger: ['change', 'blur'] }],
   };
 
-  private handleDraftCheckin() {
-    const tempCheckin: any = {
-      checkin: {
-        confidentLevel: this.syncCheckin.confidentLevel,
-        objectiveId: this.syncCheckin.id,
-        status: 'Draft',
-        nextCheckinDate: formatDateToYYYY(this.syncCheckin.nextCheckinDate),
-      },
-      checkinDetails: [],
-    };
-    (this.$refs.checkinRuleForm as Form).validate(async (isValid) => {
-      if (isValid) {
-        if (this.isNew === true) {
-          this.syncCheckin.checkinDetail.map((item) => {
-            tempCheckin.checkinDetails.push({
-              targetValue: item.keyResult.targetValue,
-              valueObtained: item.valueObtained,
-              confidentLevel: item.confidentLevel,
-              progress: item.progress,
-              problems: item.problems,
-              plans: item.plans,
-              keyResultId: item.keyResult.id,
-            });
-          });
-          try {
-            await CheckinRepository.post(tempCheckin).then((res: any) => {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Lưu nháp thành công',
-              });
-              this.$router.push('/checkin');
-            });
-          } catch (error) {
-            if (error.response.data.statusCode === 476) {
-              this.$notify.error({
-                ...notificationConfig,
-                message: 'Bạn không thể tạo checkin với Objective này',
-              });
-            } else if (error.response.data.statusCode === 485) {
-              this.$notify.error({
-                ...notificationConfig,
-                message: 'Không thể tạo checkin do chưa có trưởng phòng',
-              });
-            }
-            this.$router.push('/checkin');
-          }
-        } else {
-          this.syncCheckin.checkinDetail.map((item) => {
-            tempCheckin.checkinDetails.push({
-              id: item.id,
-              targetValue: item.keyResult.targetValue,
-              valueObtained: item.valueObtained,
-              confidentLevel: item.confidentLevel,
-              progress: item.progress,
-              problems: item.problems,
-              plans: item.plans,
-              keyResultId: item.keyResult.id,
-            });
-          });
-          try {
-            await CheckinRepository.staffUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Lưu nháp thành công',
-              });
-              this.$router.push('/checkin');
-            });
-          } catch (error) {
-            if (error.response.data.statusCode === 476) {
-              this.$notify.error({
-                ...notificationConfig,
-                message: 'Bạn không thể tạo checkin với Objective này',
-              });
-            } else if (error.response.data.statusCode === 485) {
-              this.$notify.error({
-                ...notificationConfig,
-                message: 'Không thể tạo checkin do chưa có trưởng phòng',
-              });
-            }
-            this.$router.push('/checkin');
-          }
-        }
-      }
-    });
-  }
+  private handleDraftCheckin() {}
 
-  private handleDraftCheckinAdmin() {
-    const tempCheckin: any = {
-      checkin: {
-        confidentLevel: this.syncCheckin.confidentLevel,
-        objectiveId: this.syncCheckin.id,
-        status: 'Draft',
-        isCompleted: this.syncCheckin.isCompleted,
-        nextCheckinDate: formatDateToYYYY(this.syncCheckin.nextCheckinDate),
-      },
-      checkinDetails: [],
-    };
-    (this.$refs.checkinRuleForm as Form).validate(async (isValid) => {
-      if (isValid) {
-        if (this.isNew === true) {
-          this.syncCheckin.checkinDetail.map((item) => {
-            tempCheckin.checkinDetails.push({
-              targetValue: item.keyResult.targetValue,
-              valueObtained: item.valueObtained,
-              confidentLevel: item.confidentLevel,
-              progress: item.progress,
-              problems: item.problems,
-              plans: item.plans,
-              keyResultId: item.keyResult.id,
-            });
-          });
-          try {
-            await CheckinRepository.adminCreateCheckin(tempCheckin).then((res: any) => {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Lưu nháp thành công',
-              });
-              this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
-            });
-          } catch (error) {
-            if (error.response.data.statusCode === 476) {
-              this.$notify.error({
-                ...notificationConfig,
-                message: 'Bạn không thể tạo checkin với Objective này',
-              });
-            } else if (error.response.data.statusCode === 485) {
-              this.$notify.error({
-                ...notificationConfig,
-                message: 'Không thể tạo checkin do chưa có trưởng phòng',
-              });
-            }
-            this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
-          }
-        } else {
-          this.syncCheckin.checkinDetail.map((item) => {
-            tempCheckin.checkinDetails.push({
-              id: item.id,
-              targetValue: item.keyResult.targetValue,
-              valueObtained: item.valueObtained,
-              confidentLevel: item.confidentLevel,
-              progress: item.progress,
-              problems: item.problems,
-              plans: item.plans,
-              keyResultId: item.keyResult.id,
-            });
-          });
-          try {
-            await CheckinRepository.adminUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Lưu nháp thành công',
-              });
-              this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
-            });
-          } catch (error) {
-            if (error.response.data.statusCode === 476) {
-              this.$notify.error({
-                ...notificationConfig,
-                message: 'Bạn không thể tạo checkin với Objective này',
-              });
-            } else if (error.response.data.statusCode === 485) {
-              this.$notify.error({
-                ...notificationConfig,
-                message: 'Không thể tạo checkin do chưa có trưởng phòng',
-              });
-            }
-            this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
-          }
-        }
-      }
-    });
-  }
+  private handleDraftCheckinAdmin() {}
 
   private removeRules() {
     this.rules = {
@@ -430,267 +260,10 @@ export default class DetailHistory extends Vue {
     };
   }
 
-  private async handleSubmitCheckin() {
-    await this.setRules();
-    const tempCheckin: any = {
-      checkin: {
-        confidentLevel: this.syncCheckin.confidentLevel,
-        objectiveId: this.syncCheckin.id,
-        status: 'Pending',
-        nextCheckinDate: formatDateToYYYY(this.syncCheckin.nextCheckinDate),
-      },
-      checkinDetails: [],
-    };
-    this.loading = true;
-    (this.$refs.checkinRuleForm as Form).validate((isValid: boolean, invalidFileds: object) => {
-      if (isValid) {
-        if (this.isNew === true) {
-          this.syncCheckin.checkinDetail.map((item) => {
-            tempCheckin.checkinDetails.push({
-              targetValue: item.keyResult.targetValue,
-              valueObtained: item.valueObtained,
-              confidentLevel: item.confidentLevel,
-              progress: item.progress,
-              problems: item.problems,
-              plans: item.plans,
-              keyResultId: item.keyResult.id,
-            });
-          });
-          this.$confirm(`Bạn có chắc chắn muốn gửi yêu cầu check-in?`, {
-            confirmButtonText: 'Đồng ý',
-            cancelButtonText: 'Hủy bỏ',
-            type: 'warning',
-          })
-            .then(async () => {
-              try {
-                await CheckinRepository.post(tempCheckin).then((res: any) => {
-                  setTimeout(() => {
-                    this.loading = false;
-                  }, 300);
-                  this.$notify.success({
-                    ...notificationConfig,
-                    message: 'Gửi yêu cầu thành công',
-                  });
-                  this.$router.push('/checkin');
-                });
-              } catch (error) {
-                setTimeout(() => {
-                  this.loading = false;
-                }, 300);
-                if (error.response.data.statusCode === 476) {
-                  this.$notify.error({
-                    ...notificationConfig,
-                    message: 'Bạn không thể tạo checkin với Objective này',
-                  });
-                } else if (error.response.data.statusCode === 485) {
-                  this.$notify.error({
-                    ...notificationConfig,
-                    message: 'Không thể tạo checkin do chưa có trưởng phòng',
-                  });
-                }
-                this.$router.push('/checkin');
-              }
-            })
-            .catch((action) => {
-              setTimeout(() => {
-                this.loading = false;
-              }, 300);
-              this.removeRules();
-            });
-        } else {
-          this.syncCheckin.checkinDetail.map((item) => {
-            tempCheckin.checkinDetails.push({
-              id: item.id,
-              targetValue: item.keyResult.targetValue,
-              valueObtained: item.valueObtained,
-              confidentLevel: item.confidentLevel,
-              progress: item.progress,
-              problems: item.problems,
-              plans: item.plans,
-              keyResultId: item.keyResult.id,
-            });
-          });
-          this.$confirm(`Bạn có chắc chắn muốn gửi yêu cầu check-in?`, {
-            confirmButtonText: 'Đồng ý',
-            cancelButtonText: 'Hủy bỏ',
-            type: 'warning',
-          })
-            .then(async () => {
-              try {
-                await CheckinRepository.staffUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
-                  setTimeout(() => {
-                    this.loading = false;
-                  }, 300);
-                  this.$notify.success({
-                    ...notificationConfig,
-                    message: 'Gửi yêu cầu thành công',
-                  });
-                  this.$router.push('/checkin');
-                });
-              } catch (error) {
-                setTimeout(() => {
-                  this.loading = false;
-                }, 300);
-                if (error.response.data.statusCode === 476) {
-                  this.$notify.error({
-                    ...notificationConfig,
-                    message: 'Bạn không thể tạo checkin với Objective này',
-                  });
-                } else if (error.response.data.statusCode === 485) {
-                  this.$notify.error({
-                    ...notificationConfig,
-                    message: 'Không thể tạo checkin do chưa có trưởng phòng',
-                  });
-                }
-                this.$router.push('/checkin');
-              }
-            })
-            .catch((action) => {
-              setTimeout(() => {
-                this.loading = false;
-              }, 300);
-              this.removeRules();
-            });
-        }
-      }
-      if (invalidFileds) {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
-  }
+  private async handleSubmitCheckin() {}
 
   private async handleSubmitCheckinAdmin() {
     await this.setRules();
-    const tempCheckin: any = {
-      checkin: {
-        confidentLevel: this.syncCheckin.confidentLevel,
-        objectiveId: this.syncCheckin.id,
-        status: 'Done',
-        isCompleted: this.syncCheckin.isCompleted,
-        nextCheckinDate: formatDateToYYYY(this.syncCheckin.nextCheckinDate),
-      },
-      checkinDetails: [],
-    };
-    this.loading = true;
-    (this.$refs.checkinRuleForm as Form).validate((isValid: boolean, invalidFileds: object) => {
-      if (isValid) {
-        if (this.isNew === true) {
-          this.syncCheckin.checkinDetail.map((item) => {
-            tempCheckin.checkinDetails.push({
-              targetValue: item.keyResult.targetValue,
-              valueObtained: item.valueObtained,
-              confidentLevel: item.confidentLevel,
-              progress: item.progress,
-              problems: item.problems,
-              plans: item.plans,
-              keyResultId: item.keyResult.id,
-            });
-          });
-          this.$confirm(`Bạn có chắc chắn muốn check-in?`, {
-            confirmButtonText: 'Đồng ý',
-            cancelButtonText: 'Hủy bỏ',
-            type: 'warning',
-          })
-            .then(async () => {
-              try {
-                await CheckinRepository.adminCreateCheckin(tempCheckin).then((res: any) => {
-                  setTimeout(() => {
-                    this.loading = false;
-                  }, 300);
-                  this.$notify.success({
-                    ...notificationConfig,
-                    message: 'Check-in thành công',
-                  });
-                  this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
-                });
-              } catch (error) {
-                setTimeout(() => {
-                  this.loading = false;
-                }, 300);
-                if (error.response.data.statusCode === 476) {
-                  this.$notify.error({
-                    ...notificationConfig,
-                    message: 'Bạn không thể tạo checkin với Objective này',
-                  });
-                } else if (error.response.data.statusCode === 485) {
-                  this.$notify.error({
-                    ...notificationConfig,
-                    message: 'Không thể tạo checkin do chưa có trưởng phòng',
-                  });
-                }
-                this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
-              }
-            })
-            .catch((action) => {
-              setTimeout(() => {
-                this.loading = false;
-              }, 300);
-              this.removeRules();
-            });
-        } else {
-          this.syncCheckin.checkinDetail.map((item) => {
-            tempCheckin.checkinDetails.push({
-              id: item.id,
-              targetValue: item.keyResult.targetValue,
-              valueObtained: item.valueObtained,
-              confidentLevel: item.confidentLevel,
-              progress: item.progress,
-              problems: item.problems,
-              plans: item.plans,
-              keyResultId: item.keyResult.id,
-            });
-          });
-          this.$confirm(`Bạn có chắc chắn muốn check-in?`, {
-            confirmButtonText: 'Đồng ý',
-            cancelButtonText: 'Hủy bỏ',
-            type: 'warning',
-          })
-            .then(async () => {
-              try {
-                await CheckinRepository.adminUpdateCheckin(tempCheckin, this.syncCheckin.checkin.id).then((res: any) => {
-                  setTimeout(() => {
-                    this.loading = false;
-                  }, 300);
-                  this.$notify.success({
-                    ...notificationConfig,
-                    message: 'Check-in thành công',
-                  });
-                  this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
-                });
-              } catch (error) {
-                setTimeout(() => {
-                  this.loading = false;
-                }, 300);
-                if (error.response.data.statusCode === 476) {
-                  this.$notify.error({
-                    ...notificationConfig,
-                    message: 'Bạn không thể tạo checkin với Objective này',
-                  });
-                } else if (error.response.data.statusCode === 485) {
-                  this.$notify.error({
-                    ...notificationConfig,
-                    message: 'Không thể tạo checkin do chưa có trưởng phòng',
-                  });
-                }
-                this.$route.name === 'checkin-company-id' ? this.$router.push('/checkin?tab=checkin-company') : this.$router.push('/checkin');
-              }
-            })
-            .catch((action) => {
-              setTimeout(() => {
-                this.loading = false;
-              }, 300);
-              this.removeRules();
-            });
-        }
-      }
-      if (invalidFileds) {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
   }
 }
 </script>

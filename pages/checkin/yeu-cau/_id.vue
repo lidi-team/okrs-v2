@@ -68,12 +68,12 @@ export default class RequestPage extends Vue {
   private checkinAt: Array<object> = [];
 
   private goBack() {
-    this.$router.push('/checkin?tab=request-checkin');
+    this.$router.go(-1);
   }
 
   private async getCheckin() {
     this.loading = true;
-    await CheckinRepository.getDetailCheckin(+this.$route.params.id)
+    await CheckinRepository.getDetailCheckinByCheckinId(+this.$route.params.id)
       .then((res) => {
         this.historyDetail = Object.assign({}, res.data.data);
         res.data.data = Object.assign(res.data.data, {

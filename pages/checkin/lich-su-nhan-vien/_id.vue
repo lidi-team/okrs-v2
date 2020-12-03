@@ -61,7 +61,7 @@ export default class HistoryCheckinEmployee extends Vue {
   private historyList: Array<object> = [];
   private status = statusCheckin;
   private goBack() {
-    this.$router.push('/checkin?tab=inferior');
+    this.$router.go(-1);
   }
 
   private async getList() {

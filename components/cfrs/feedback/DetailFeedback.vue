@@ -60,7 +60,7 @@ export default class DetailFeedback extends Vue {
   private async getCheckinDetail() {
     if (this.detailCheckinInfo) {
       this.loading = true;
-      await CheckinRepository.getCheckinDetail(this.detailCheckinInfo.id).then((res) => {
+      await CheckinRepository.getDetailCheckinByCheckinId(this.detailCheckinInfo.id).then((res) => {
         this.data = res.data.data;
         this.loading = false;
       });
