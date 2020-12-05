@@ -28,7 +28,7 @@
                 format="dd/MM/yyyy"
                 value-format="dd/MM/yyyy"
                 type="date"
-                placeholder="Chọn ngày sinh"
+                placeholder="Chọn ngày bắt đầu"
               ></el-date-picker>
             </el-form-item>
             <el-form-item v-if="true" label="Ngày kết thúc:" class="custom-label" prop="endDate" label-width="150px">
@@ -37,7 +37,7 @@
                 format="dd/MM/yyyy"
                 value-format="dd/MM/yyyy"
                 type="date"
-                placeholder="Chọn ngày sinh"
+                placeholder="Chọn ngày kết thúc"
               ></el-date-picker>
             </el-form-item>
             <el-form-item label="trọng số:" class="custom-label" prop="weight" label-width="150px">

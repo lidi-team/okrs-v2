@@ -38,10 +38,29 @@ export interface ProjectDTO {
   status: number | string;
   description: string;
   parentId?: number;
-  pm?: string | Object;
+  pm?: ProjectPM;
   pmId?: number;
   staffs?: Object[];
   weight?: number;
+}
+
+export interface ProjectPM {
+  id: number;
+  name: string;
+  position: string;
+  Department: string;
+}
+
+export interface ProjectStaff {
+  id: number;
+  name: string;
+  position?: number;
+  department: number;
+  reviewerId: number;
+  email: string;
+  originalDepartment: number;
+  originalReviewerId: number;
+  edit?: boolean;
 }
 
 export interface RegisterOption {

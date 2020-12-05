@@ -22,6 +22,6 @@ export default class JobRepository {
   }
 
   public static getMetaData() {
-    return baseUrlV1.get(`${ResourcesEnpoint.MetaData}/job_positions`);
+    return baseUrl.get(`${ResourcesEnpoint.MetaData}/positions`);
   }
 }

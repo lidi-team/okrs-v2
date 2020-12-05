@@ -12,6 +12,18 @@ export default class ProjectRepository {
     return baseUrl.get(`${ResourcesEnpoint.Project}/` + id);
   }
 
+  public static getStaffsById(id: number) {
+    return baseUrl.get(`${ResourcesEnpoint.Project}/` + id + '/staff');
+  }
+
+  public static deleteStaffById(projectId: number, staffId: number) {
+    return baseUrl.delete(`${ResourcesEnpoint.Project}/` + projectId + '/staff/' + staffId);
+  }
+
+  public static getAllActiveStaff() {
+    return baseUrl.delete(`${ResourcesEnpoint.Users}/` + 'all');
+  }
+
   public static update(payload: ProjectDTO) {
     return baseUrl.post(`${ResourcesEnpoint.Project}/create`, payload);
   }
