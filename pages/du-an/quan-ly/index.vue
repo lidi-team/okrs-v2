@@ -230,7 +230,7 @@ export default class ControlProject extends Vue {
   }
 
   private getPositionById(id: number) {
-    let name = 'Unknown';
+    let name = 'Member';
     const a = this.positions.find((value) => value.id === id);
     if (a) {
       name = a.name;
