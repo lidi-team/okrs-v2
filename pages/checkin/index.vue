@@ -1,26 +1,31 @@
 <template>
   <div class="checkins">
-    <el-select
-      v-model="currentCycleId"
-      no-match-text="Không tìm thấy chu kỳ"
-      filterable
-      placeholder="Chọn chu kỳ"
-      @change="handleSelectCycle(currentCycleId)"
-    >
-      <el-option v-for="cycle in cycles" :key="cycle.id" :label="cycle.name" :value="cycle.id" />
-    </el-select>
+    <div class="-display-flex">
+      <el-select
+        class="-mr-1"
+        v-model="paramsCheckin.cycleId"
+        no-match-text="Không tìm thấy chu kỳ"
+        filterable
+        placeholder="Chọn chu kỳ"
+        @change="handleSelectCycle(paramsCheckin.cycleId)"
+      >
+        <el-option v-for="cycle in cycles" :key="cycle.id" :label="`Chu kỳ: ${cycle.name}`" :value="String(cycle.id)" />
+      </el-select>
+      <el-select
+        class="-ml-1"
+        v-model="paramsCheckin.projectId"
+        no-match-text="Không tìm thấy dự án"
+        filterable
+        placeholder="Chọn dự án"
+        @change="handleSelectProject(paramsCheckin.projectId)"
+      >
+        <el-option v-for="project in projects" :key="project.id" :label="`Dự án: ${project.name}`" :value="String(project.id)" />
+      </el-select>
+    </div>
 
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
-      <component :is="currentTabComponent" :current-cycle-id="currentCycleId" :loading="loading" :table-data="tableData" />
-      <!-- <common-pagination
-        v-if="$route.query.tab === 'request-checkin' || $route.query.tab === 'inferior'"
-        class="checkins__pagination"
-        :total="meta.totalItems"
-        :page.sync="paramsCheckin.page"
-        :limit.sync="paramsCheckin.limit"
-        @pagination="handlePagination"
-      /> -->
+      <component :is="currentTabComponent" :table-data="tableData" />
     </el-tabs>
   </div>
 </template>
@@ -31,7 +36,6 @@ import { mapGetters } from 'vuex';
 import Inferior from '@/components/checkin/Inferior.vue';
 import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
 import MyCheckin from '@/components/checkin/MyCheckin.vue';
-import CheckinCompany from '@/components/checkin/CheckinCompany.vue';
 
 import { notificationConfig, pageLimit } from '@/constants/app.constant';
 import { TAB_CHECKIN, ROUTER_CHECKIN } from '@/components/checkin/constants.enum';
@@ -41,6 +45,7 @@ import { GetterState, MutationState } from '@/constants/app.vuex';
 import CycleRepository from '@/repositories/CycleRepository';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import CommonPagination from '@/components/common/Pagination.vue';
+import ProjectRepository from '../../repositories/ProjectRepository';
 @Component<CheckinPage>({
   name: 'CheckinPage',
   components: {
@@ -53,27 +58,26 @@ import CommonPagination from '@/components/common/Pagination.vue';
   },
   created() {
     this.getCycles();
+    this.getProjects();
   },
 })
 export default class CheckinPage extends Vue {
   private tableData: any[] = [];
   private tabs: string[] = [...Object.values(TAB_CHECKIN)];
-  private loading: boolean = false;
   private cycles: any[] = [];
-  private currentCycleId: number = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id;
+  private projects: any[] = [];
   private currentTab: string =
-    this.$route.query.tab === ROUTER_CHECKIN.MyOkrs
-      ? TAB_CHECKIN.MyOkrs
+    this.$route.query.tab === ROUTER_CHECKIN.Inferior
+      ? TAB_CHECKIN.Inferior
       : this.$route.query.tab === ROUTER_CHECKIN.CheckinResquest
       ? TAB_CHECKIN.CheckinResquest
-      : this.$route.query.tab === ROUTER_CHECKIN.CheckinCompany
-      ? TAB_CHECKIN.CheckinCompany
-      : TAB_CHECKIN.Inferior;
-
+      : TAB_CHECKIN.MyOkrs;
   private paramsCheckin = {
-    page: this.$route.query.page ? Number(this.$route.query.page) : 1,
-    cycleId: this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id,
-    limit: pageLimit,
+    tab: this.$route.query.tab ? this.$route.query.tab : ROUTER_CHECKIN.MyOkrs,
+    page: this.$route.query.page ? this.$route.query.page : 1,
+    cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : String(this.$store.state.cycle.cycleCurrent.id),
+    limit: this.$route.query.limit ? this.$route.query.limit : 10,
+    projectId: this.$route.query.projectId ? this.$route.query.projectId : String(0),
   };
 
   private get currentTabComponent() {
@@ -82,34 +86,47 @@ export default class CheckinPage extends Vue {
         return MyCheckin;
       case ROUTER_CHECKIN.CheckinResquest:
         return RequestCheckin;
-      case ROUTER_CHECKIN.CheckinCompany:
-        return CheckinCompany;
-      default:
+      case ROUTER_CHECKIN.Inferior:
         return Inferior;
+      default:
+        return MyCheckin;
     }
   }
+
   private handleSelectCycle(cycleId) {
-    this.paramsCheckin.page = 1;
-    const tab = this.$route.query.tab === undefined ? ROUTER_CHECKIN.MyOkrs : this.$route.query.tab;
-    this.paramsCheckin.cycleId = cycleId;
-    this.$router.push(`?tab=${tab}&cycleId=${cycleId}`);
+    this.$router.push(`?tab=${this.paramsCheckin.tab}&cycleId=${cycleId}&page=1&projectId=${this.paramsCheckin.projectId}`);
   }
+
+  private handleSelectProject(projectId) {
+    this.$router.push(`?tab=${this.paramsCheckin.tab}&cycleId=${this.paramsCheckin.cycleId}&page=1&projectId=${projectId}`);
+  }
+
   private async getCycles() {
     const { data } = await CycleRepository.getListMetadata();
     this.cycles = data || [];
   }
+
+  private async getProjects() {
+    const { data } = await ProjectRepository.getListCurrent();
+    this.projects =
+      [
+        {
+          id: 0,
+          name: 'Tất cả',
+        },
+        ...data,
+      ] || [];
+  }
+
   private handleClick(currentTab: string) {
-    this.paramsCheckin.page = 1;
     this.$router.push(
       `?tab=${
         currentTab === TAB_CHECKIN.MyOkrs
           ? ROUTER_CHECKIN.MyOkrs
           : currentTab === TAB_CHECKIN.CheckinResquest
           ? ROUTER_CHECKIN.CheckinResquest
-          : currentTab === TAB_CHECKIN.CheckinCompany
-          ? ROUTER_CHECKIN.CheckinCompany
           : ROUTER_CHECKIN.Inferior
-      }`,
+      }&cycleId=${this.paramsCheckin.cycleId}&page=${this.paramsCheckin.page}&projectId=${this.paramsCheckin.projectId}`,
     );
   }
 }

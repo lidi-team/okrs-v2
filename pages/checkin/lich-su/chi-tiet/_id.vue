@@ -6,24 +6,30 @@
       <el-row>
         <el-col class="top-checkin__left" :sm="24" :lg="10">
           <h2 class="top-checkin__title">Check-in mục tiêu</h2>
-          <div v-if="historyDetail" class="top-checkin__content content">
+          <div class="top-checkin__content content">
             <table class="properties">
-              <tbody>
+              <tbody v-if="checkin">
                 <tr>
                   <th scope="row">Mục tiêu</th>
-                  <td>{{ historyDetail.objective.title }}</td>
+                  <td>{{ checkin.objective.title }}</td>
+                </tr>
+                <tr>
+                  <th scope="row">Trạng thái</th>
+                  <td>
+                    <el-tag :type="primary">{{ checkin.status }}</el-tag>
+                  </td>
                 </tr>
                 <tr>
                   <th scope="row">Tiến độ thực hiện</th>
-                  <td>{{ historyDetail.progress }} %</td>
+                  <td>{{ checkin.progress }} %</td>
                 </tr>
-                <tr v-if="historyDetail.checkinAt">
+                <tr v-if="checkin.checkinAt">
                   <th scope="row">Ngày check-in</th>
-                  <td>{{ new Date(historyDetail.checkinAt) | dateFormat('DD/MM/YYYY') }}</td>
+                  <td>{{ new Date(checkin.checkinAt) | dateFormat('DD/MM/YYYY') }}</td>
                 </tr>
-                <tr v-if="historyDetail.nextCheckinDate">
+                <tr v-if="checkin.nextCheckinDate">
                   <th scope="row">Ngày check-in kế tiếp</th>
-                  <td>{{ new Date(historyDetail.nextCheckinDate) | dateFormat('DD/MM/YYYY') }}</td>
+                  <td>{{ new Date(checkin.nextCheckinDate) | dateFormat('DD/MM/YYYY') }}</td>
                 </tr>
               </tbody>
             </table>
@@ -35,19 +41,16 @@
         </el-col>
       </el-row>
     </div>
-    <detail-history v-if="historyDetail" :history-detail="historyDetail">
+    <detail-history v-if="checkin" :checkin-detail="checkin.checkinDetails">
       <!-- <chart-checkin v-if="historyDetail" slot="chartCheckin" :history-detail="historyDetail" /> -->
     </detail-history>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-// import * as am4core from '@amcharts/amcharts4/core';
-// import * as am4charts from '@amcharts/amcharts4/charts';
-// import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { notificationConfig } from '@/constants/app.constant';
-// am4core.useTheme(am4themesAnimated);
+import DetailHistory from '@/components/checkin/DetailHistory.vue';
 @Component({
   name: 'DetailHistoryPage',
   head() {
@@ -55,86 +58,26 @@ import { notificationConfig } from '@/constants/app.constant';
       title: 'Chi tiết lịch sử Check-in',
     };
   },
-  async mounted() {
-    await this.getDetail();
-    await this.renderChart();
+  components: {
+    DetailHistory,
+  },
+  mounted() {
+    this.getDetail();
   },
 })
 export default class DetailHistoryPage extends Vue {
   private loading: boolean = false;
-  private historyDetail: any = null;
-  private checkinAt: Array<object> = [];
+  private checkin: any = null;
 
   private async getDetail() {
     this.loading = true;
-    await CheckinRepository.getDetailCheckin(+this.$route.params.id)
-      .then((result) => {
-        this.historyDetail = result.data.data;
-        this.loading = false;
-      })
-      .catch((error) => {
-        if (error.response.data.statusCode === 470) {
-          this.$notify.error({
-            ...notificationConfig,
-            message: 'Bạn không có quyền truy cập checkin này',
-          });
-        } else if (error.response.data.statusCode === 404) {
-          this.$notify.error({
-            ...notificationConfig,
-            message: 'Không thể tìm thấy dữ liệu',
-          });
-        }
-        this.$router.push('/checkin');
-        this.loading = false;
-      });
-  }
-
-  private renderChart() {
-    // this.checkinAt = this.historyDetail.chart.map(function (item: any) {
-    //   return new Date(item.checkinAt).toLocaleDateString('en');
-    // });
-    // for (let i = 0; i < this.historyDetail.chart.length; i++) {
-    //   const chartTotal = { checkinAt: '', progress: 0 };
-    //   chartTotal.checkinAt += this.checkinAt[i];
-    //   chartTotal.progress += this.historyDetail.chart[i].progress;
-    //   this.historyDetail.chart[i] = chartTotal;
-    // }
-    // const chart = am4core.create('chartCheckin', am4charts.XYChart);
-    // chart.numberFormatter.numberFormat = "#.#'%'";
-    // chart.data = this.historyDetail.chart.reverse();
-    // const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-    // dateAxis.renderer.grid.template.location = 0;
-    // dateAxis.renderer.minGridDistance = 50;
-    // dateAxis.dateFormats.setKey('day', 'dd/MM');
-    // dateAxis.periodChangeDateFormats.setKey('day', 'dd/MM');
-    // const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    // valueAxis.min = 0;
-    // function createSeries(this: any, field: string | undefined, color: string) {
-    //   const series = chart.series.push(new am4charts.LineSeries());
-    //   series.dataFields.valueY = field;
-    //   series.dataFields.dateX = 'checkinAt';
-    //   series.tooltipText = ' [b]{valueY}[/]';
-    //   series.fill = am4core.color(color);
-    //   series.strokeWidth = 2;
-    //   series.minHeight = 500;
-    //   series.responsive.enabled = true;
-    //   series.stroke = am4core.color(color);
-    //   const bullet = series.bullets.push(new am4charts.CircleBullet());
-    //   bullet.circle.fill = am4core.color(color);
-    //   bullet.circle.radius = 4;
-    //   bullet.circle.strokeWidth = 1;
-    //   return series;
-    // }
-    // createSeries('progress', '#9C6ADE');
-    // chart.cursor = new am4charts.XYCursor();
-    // chart.cursor.xAxis = dateAxis;
-    // chart.logo.disabled = true;
+    const { data } = await CheckinRepository.getDetailCheckinByCheckinId(+this.$route.params.id);
+    this.checkin = data;
+    this.loading = false;
   }
 
   private goBack() {
-    if (this.historyDetail) {
-      this.$router.push(`/checkin/lich-su/${this.historyDetail.objective.id}`);
-    }
+    this.$router.go(-1);
   }
 }
 </script>

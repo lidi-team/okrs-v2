@@ -153,7 +153,6 @@ export default class ManageProject extends Vue {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
-
 .manage-project {
   height: 100%;
 
@@ -169,7 +168,6 @@ export default class ManageProject extends Vue {
   &__top {
     display: flex;
     justify-content: space-between;
-
     &__left {
       &--input {
         width: calc(100vw * 5 / 24);

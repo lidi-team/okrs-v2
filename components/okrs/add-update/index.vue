@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="titleDialogOKRs"
+    :title="isCreate ? 'Tạo OKRs' : 'Cập nhật OKRs'"
     :visible.sync="isDialogOKRs"
     width="800px"
     placement="center"
@@ -12,9 +12,9 @@
       <el-step title="Các kết quả then chốt"></el-step>
       <el-step title="Liên kết mục tiêu"></el-step>
     </el-steps>
-    <create-objective v-if="active === 0" :active.sync="active" />
-    <create-key-result v-if="active === 1" :active.sync="active" />
-    <create-align-objective v-if="active === 2" :active.sync="active" />
+    <step-objective v-if="active === 0" :active.sync="active" />
+    <step-key-result v-if="active === 1" :active.sync="active" />
+    <step-align-objective v-if="active === 2" :active.sync="active" />
   </el-dialog>
 </template>
 
@@ -23,21 +23,21 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { DispatchAction, MutationState, GetterState } from '@/constants/app.vuex';
 import { confirmWarningConfig } from '@/constants/app.constant';
-import CreateObjective from '@/components/okrs/items/add/CreateObjective.vue';
-import CreateKeyResult from '@/components/okrs/items/add/CreateKeyResult.vue';
-import CreateAlignObjective from '@/components/okrs/items/add/CreateAlignObjective.vue';
+import StepObjective from '@/components/okrs/add-update/StepObjective.vue';
+import StepKeyResult from '@/components/okrs/add-update/StepKeyResult.vue';
+import StepAlignObjective from '@/components/okrs/add-update/StepAlignObjective.vue';
 
 @Component<AddOkrs>({
   name: 'AddOkrs',
   components: {
-    CreateObjective,
-    CreateKeyResult,
-    CreateAlignObjective,
+    StepObjective,
+    StepKeyResult,
+    StepAlignObjective,
   },
   computed: {
     ...mapGetters({
       isDialogOKRs: GetterState.OKRS_IS_DIALOG_OKRS,
-      titleDialogOKRs: GetterState.OKRS_TITLE_DIALOG_OKRS,
+      isCreate: GetterState.OKRS_IS_CREATE,
     }),
   },
 })

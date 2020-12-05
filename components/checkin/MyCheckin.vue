@@ -1,10 +1,7 @@
 <template>
   <div>
-    <div v-for="project in projects" :key="project.id" class="my-okrs">
-      <div class="-display-flex -justify-content-between">
-        <h2 class="my-okrs__header">{{ project.name }}</h2>
-      </div>
-      <el-table v-loading="loading" empty-text="Không có dữ liệu" :data="project.objectives" style="width: 100%">
+    <div class="my-okrs">
+      <el-table v-loading="loading" empty-text="Không có dữ liệu" :data="checkins" style="width: 100%">
         <el-table-column label="Mục tiêu" min-width="250">
           <template slot-scope="{ row }">
             <span>{{ row.title }}</span>
@@ -23,6 +20,11 @@
         <el-table-column align="center" label="Thay đổi" min-width="100">
           <template slot-scope="{ row }">
             <span :style="`color: ${customColorsChanging(row.change)}`">{{ row.change }}%</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="Dự án" min-width="100">
+          <template slot-scope="{ row }">
+            <span>{{ row.project.name }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="Lịch sử" min-width="150">
@@ -66,6 +68,13 @@
         </el-table-column>
       </el-table>
     </div>
+    <pagination
+      class="feedback__col__pagination"
+      :total="pagination.totalItems"
+      :page.sync="pagination.currentPage"
+      :limit.sync="pagination.limit"
+      @pagination="handlePagination($event)"
+    />
 
     <el-dialog
       v-if="showDialogKRs"
@@ -119,31 +128,63 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { mapGetters } from 'vuex';
+import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { customColors } from '../okrs/okrs.constant';
 import { statusCheckin } from '@/constants/app.constant';
+import { ROUTER_CHECKIN } from '@/components/checkin/constants.enum';
 import CheckinRepository from '@/repositories/CheckinRepository';
+import Pagination from '@/components/common/Pagination.vue';
 
 @Component<MyOkrsCheckin>({
   name: 'MyOkrsCheckin',
+  components: {
+    Pagination,
+  },
   async mounted() {
     await this.getListCheckin();
   },
 })
 export default class MyOkrsCheckin extends Vue {
-  @Prop(Array) readonly tableData!: Array<object>;
-  @Prop(Boolean) readonly loading!: boolean;
+  @Watch('$route.query')
+  private watchQuery() {
+    this.getListCheckin();
+  }
+
+  private loading: Boolean = false;
   private customColors = customColors;
   private status = statusCheckin;
   private keyResults: any = {};
   private showDialogKRs: boolean = false;
-  private projects: any[] = [];
+  private checkins: any[] = [];
+  private pagination = {
+    totalItems: 0,
+    currentPage: this.$route.query.page ? Number(this.$route.query.page) : 1,
+    limit: 10,
+  };
 
   private async getListCheckin() {
+    this.loading = true;
+    const tab = this.$route.query.tab ? this.$route.query.tab : ROUTER_CHECKIN.MyOkrs;
+    const page = this.$route.query.page ? this.$route.query.page : 1;
+    const cycleId = this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycleCurrent.id;
+    const limit = this.$route.query.limit ? this.$route.query.limit : 10;
+    const projectId = this.$route.query.projectId ? this.$route.query.projectId : 0;
     const { data } = await CheckinRepository.getMyCheckin({
-      cycleId: 3,
+      projectId,
+      page,
+      limit,
+      cycleId,
     });
-    this.projects = data || [];
+    this.checkins = data.items || [];
+    this.pagination.totalItems = data.meta.totalItems;
+    this.loading = false;
+  }
+
+  private handlePagination(pagination: any) {
+    this.$router.push(
+      `?tab=${this.$route.query.tab}&cycleId=${this.$route.query.cycleId}&page=${pagination.page}&projectId=${this.$route.query.projectId}`,
+    );
   }
 
   private customColorsChanging(change: number) {
@@ -155,7 +196,6 @@ export default class MyOkrsCheckin extends Vue {
   }
 
   private showKRs(keyResults) {
-    console.trace(keyResults);
     this.keyResults = keyResults;
     this.showDialogKRs = true;
   }

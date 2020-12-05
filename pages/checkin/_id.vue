@@ -17,6 +17,10 @@
                   <th scope="row">Tiến độ thực hiện</th>
                   <td>{{ checkin.progress }} %</td>
                 </tr>
+                <tr>
+                  <th scope="row">Tiến độ gợi ý</th>
+                  <td>{{ checkin.progressSuggest }} %</td>
+                </tr>
                 <tr v-if="checkin.checkin.checkinAt">
                   <th scope="row">Ngày check-in</th>
                   <td>{{ new Date(checkin.checkin.checkinAt) | dateFormat('DD/MM/YYYY') }}</td>
@@ -35,7 +39,7 @@
         </el-col>
       </el-row>
     </div>
-    <create-checkin v-if="checkin" :checkin.sync="checkin" :is-new="isNew">
+    <create-checkin v-if="checkin" :checkin.sync="checkin">
       <!-- <chart-okrs slot="chartOKRs" :checkin.sync="checkin" /> -->
     </create-checkin>
   </div>
@@ -43,13 +47,11 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-// import am4themesAnimated from '@amcharts/amcharts4/themes/animated';
-// import * as am4core from '@amcharts/amcharts4/core';
-// import * as am4charts from '@amcharts/amcharts4/charts';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { formatDateToDD, initNewDate } from '@/utils/dateParser';
 import { notificationConfig } from '@/constants/app.constant';
-// am4core.useTheme(am4themesAnimated);
+import CreateCheckin from '@/components/checkin/CreateCheckin.vue';
+
 @Component({
   name: 'CheckinPage',
   head() {
@@ -57,123 +59,26 @@ import { notificationConfig } from '@/constants/app.constant';
       title: 'Tạo Check-in',
     };
   },
+  components: {
+    CreateCheckin,
+  },
   async mounted() {
     await this.getCheckin();
-    await this.renderChart();
   },
 })
 export default class CheckinPage extends Vue {
   private loading: boolean = false;
   private checkin: any = null;
-  private isNew: boolean = false;
-  private checkinAt: Array<object> = [];
+
   private goBack() {
-    this.$router.push('/checkin');
+    this.$router.go(-1);
   }
 
   private async getCheckin() {
     this.loading = true;
-    await CheckinRepository.getDetail(+this.$route.params.id)
-      .then((res) => {
-        if (res.data.data.checkinDetail.length === 0) {
-          this.isNew = true;
-          res.data.data = Object.assign(res.data.data, {
-            confidentLevel: 3,
-            status: 'Draft',
-            isCompleted: false,
-            checkinAt: formatDateToDD(res.data.data.checkin.checkinAt),
-            nextCheckinDate: res.data.data.checkin.nextCheckinDate ? formatDateToDD(res.data.data.checkin.nextCheckinDate) : initNewDate(),
-          });
-          for (let index = 0; index < res.data.data.keyResults.length; index++) {
-            res.data.data.checkinDetail.push({
-              valueObtained: res.data.data.keyResults[index].valueObtained,
-              confidentLevel: 2,
-              progress: '',
-              problems: '',
-              plans: '',
-              keyResult: {
-                id: res.data.data.keyResults[index].id,
-                targetValue: res.data.data.keyResults[index].targetValue,
-                content: res.data.data.keyResults[index].content,
-              },
-            });
-          }
-        } else {
-          res.data.data = Object.assign(res.data.data, {
-            confidentLevel: res.data.data.checkin.confidentLevel,
-            status: res.data.data.checkin.status,
-            isCompleted: false,
-            checkinAt: formatDateToDD(res.data.data.checkin.checkinAt),
-            nextCheckinDate: formatDateToDD(res.data.data.checkin.nextCheckinDate),
-          });
-        }
-        this.checkin = res.data.data;
-        this.loading = false;
-      })
-      .catch((error) => {
-        if (error.response.data.statusCode === 470) {
-          this.$notify.error({
-            ...notificationConfig,
-            message: 'Bạn không có quyền truy cập checkin này',
-          });
-        } else if (error.response.data.statusCode === 404) {
-          this.$notify.error({
-            ...notificationConfig,
-            message: 'Không thể tìm thấy dữ liệu',
-          });
-        }
-        this.$router.push('/checkin');
-        this.loading = false;
-      });
-  }
-
-  private renderChart() {
-    this.checkinAt = this.checkin.chart.map(function (item: any) {
-      return new Date(item.checkinAt).toLocaleDateString('en');
-    });
-
-    for (let i = 0; i < this.checkin.chart.length; i++) {
-      const chartTotal = { checkinAt: '', progress: 0 };
-      chartTotal.checkinAt += this.checkinAt[i];
-      chartTotal.progress += this.checkin.chart[i].progress;
-
-      this.checkin.chart[i] = chartTotal;
-    }
-
-    // const chart = am4core.create('chartCheckin', am4charts.XYChart);
-    // chart.numberFormatter.numberFormat = "#.#'%'";
-    // chart.data = this.checkin.chart.reverse();
-
-    // const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-    // dateAxis.renderer.grid.template.location = 0;
-    // dateAxis.renderer.minGridDistance = 50;
-    // dateAxis.dateFormats.setKey('day', 'dd/MM');
-    // dateAxis.periodChangeDateFormats.setKey('day', 'dd/MM');
-    // const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    // valueAxis.min = 0;
-
-    // function createSeries(this: any, field: string | undefined, color: string) {
-    //   const series = chart.series.push(new am4charts.LineSeries());
-    //   series.dataFields.valueY = field;
-    //   series.dataFields.dateX = 'checkinAt';
-    //   series.tooltipText = ' [b]{valueY}[/]';
-    //   series.fill = am4core.color(color);
-    //   series.strokeWidth = 2;
-    //   series.minHeight = 500;
-    //   series.responsive.enabled = true;
-    //   series.stroke = am4core.color(color);
-    //   const bullet = series.bullets.push(new am4charts.CircleBullet());
-    //   bullet.circle.fill = am4core.color(color);
-    //   bullet.circle.radius = 4;
-    //   bullet.circle.strokeWidth = 1;
-
-    //   return series;
-    // }
-    // createSeries('progress', '#9C6ADE');
-
-    // chart.cursor = new am4charts.XYCursor();
-    // chart.cursor.xAxis = dateAxis;
-    // chart.logo.disabled = true;
+    const { data } = await CheckinRepository.getDetailCheckInByObjectiveId(+this.$route.params.id);
+    this.checkin = data;
+    this.loading = false;
   }
 }
 </script>
