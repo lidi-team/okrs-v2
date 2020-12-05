@@ -67,12 +67,12 @@ export default class CheckinPage extends Vue {
   private checkinAt: Array<object> = [];
   private isNew: boolean = false;
   private goBack() {
-    this.$router.push('/checkin?tab=checkin-company');
+    this.$router.go(-1);
   }
 
   private async getCheckin() {
     this.loading = true;
-    await CheckinRepository.getDetail(+this.$route.params.id)
+    await CheckinRepository.getListObjectiveInferior(+this.$route.params.id)
       .then((res) => {
         if (res.data.data.checkinDetail.length === 0) {
           this.isNew = true;

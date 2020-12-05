@@ -220,7 +220,6 @@ export default class ProjectDialog extends Vue {
     cursor: pointer;
     margin: 0 $unit-1;
   }
-
   &--status {
     &__active {
       color: #27ae60;

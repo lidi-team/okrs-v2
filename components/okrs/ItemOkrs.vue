@@ -75,8 +75,8 @@ import { customColors } from './okrs.constant';
 import IconEllipse from '@/assets/images/okrs/ellipse.svg';
 import { DialogTooltipAction } from '@/constants/app.interface';
 
-import ActionTooltip from '@/components/okrs/tooltip/ActionTooltip.vue';
-import ButtonCreateOkr from '@/components/okrs/items/button/index.vue';
+import ActionTooltip from '@/components/okrs/common/ActionTooltip.vue';
+import ButtonCreateOkr from '@/components/okrs/common/Button.vue';
 import AlignOkrsDialog from '@/components/okrs/dialog/AlignOkrsDialog.vue';
 import { ObjectiveDTO } from '@/constants/DTO/okrs';
 import { DispatchAction } from '@/constants/app.vuex';

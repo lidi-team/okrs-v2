@@ -2,7 +2,7 @@
   <div>
     <slot name="chartCheckin" />
     <div class="historyDetail">
-      <el-table empty-text="Không có dữ liệu" class="historyDetail__form" :data="historyDetail.checkinDetails" style="width: 100%">
+      <el-table empty-text="Không có dữ liệu" class="historyDetail__form" :data="checkinDetail" style="width: 100%">
         <el-table-column label="Kết quả chính" min-width="250">
           <template slot-scope="{ row }">
             <span>{{ row.keyResult.content }}</span>
@@ -42,13 +42,8 @@
         </el-table-column>
       </el-table>
     </div>
-    <div v-if="historyDetail.objective" class="historyDetail__footer">
-      <nuxt-link v-if="$route.name === 'checkin-lich-su-cong-ty-chi-tiet-id'" :to="`/checkin/lich-su-cong-ty/${historyDetail.objective.id}`">
-        <el-button class="el-button--purple">Xong</el-button>
-      </nuxt-link>
-      <nuxt-link v-else :to="`/checkin/lich-su/${historyDetail.objective.id}`">
-        <el-button class="el-button--purple">Xong</el-button>
-      </nuxt-link>
+    <div class="historyDetail__footer">
+      <el-button class="el-button--purple" @click="goBack">Quay lại</el-button>
     </div>
   </div>
 </template>
@@ -60,10 +55,14 @@ import { statusCheckin } from '@/constants/app.constant';
   name: 'DetailHistory',
 })
 export default class DetailHistory extends Vue {
-  @Prop(Object) readonly historyDetail!: any;
+  @Prop(Array) readonly checkinDetail!: any;
   private status = statusCheckin;
   private customColors(confident) {
     return confident === 1 ? '#DE3618' : confident === 2 ? '#47C1BF' : '#50B83C';
+  }
+
+  private goBack() {
+    this.$router.go(-1);
   }
 }
 </script>
