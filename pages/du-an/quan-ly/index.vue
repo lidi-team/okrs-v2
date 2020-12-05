@@ -25,7 +25,7 @@
             disabled
           ></el-date-picker>
         </el-form-item>
-        <el-form-item label="trọng số:" class="custom-label" prop="weight" label-width="150px">
+        <el-form-item label="Trọng số:" class="custom-label" prop="weight" label-width="150px">
           <el-slider v-model="projectData.weight" :step="1" :max="5" :min="1" show-stops disabled></el-slider>
         </el-form-item>
         <el-form-item label="Quản lý dự án:" class="custom-label" prop="pmId" label-width="150px">
@@ -43,7 +43,12 @@
           </el-select>
         </el-form-item>
         <el-form-item label="Mô tả:" prop="description" label-width="150px">
-          <el-input v-model="projectData.description" placeholder="Nhập mô tả" @keyup.enter.native="handleUpdate(projectData)" />
+          <el-input type="textarea" v-model="projectData.description" placeholder="Nhập mô tả" @keyup.enter.native="handleUpdate(projectData)" />
+        </el-form-item>
+        <el-form-item label="Thành viên:" prop="description" label-width="150px">
+          <el-select v-model="value" multiple filterable allow-create default-first-option placeholder="Chọn nhân viên cho đự án">
+            <el-option v-for="item in []" :key="item.value" :label="item.label" :value="item.value"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label-width="150px">
           <el-button type="primary" @click="UpdateProject">Cập nhật</el-button>

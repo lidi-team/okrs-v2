@@ -27,7 +27,6 @@
                 v-model="tempUpdateProject.startDate"
                 format="dd/MM/yyyy"
                 value-format="dd/MM/yyyy"
-                :picker-options="pickerOptions"
                 type="date"
                 placeholder="Chọn ngày sinh"
               ></el-date-picker>
@@ -37,7 +36,6 @@
                 v-model="tempUpdateProject.endDate"
                 format="dd/MM/yyyy"
                 value-format="dd/MM/yyyy"
-                :picker-options="pickerOptions"
                 type="date"
                 placeholder="Chọn ngày sinh"
               ></el-date-picker>
@@ -56,7 +54,12 @@
               </el-select>
             </el-form-item>
             <el-form-item label="Mô tả:" prop="description" label-width="150px">
-              <el-input v-model="tempUpdateProject.description" placeholder="Nhập mô tả" @keyup.enter.native="handleCreate(tempUpdateProject)" />
+              <el-input
+                type="textarea"
+                v-model="tempUpdateProject.description"
+                placeholder="Nhập mô tả"
+                @keyup.enter.native="handleCreate(tempUpdateProject)"
+              />
             </el-form-item>
           </el-form>
         </el-col>
@@ -77,6 +80,9 @@ import { ProjectDTO } from '@/constants/app.interface';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import { Form } from 'element-ui';
+import { Maps, Rule } from '@/constants/app.type';
+import { max255Char } from '@/constants/account.constant';
+import { compareTwoDate } from '@/utils/dateParser';
 
 @Component<ProjectDialog>({
   name: 'ProjectDialog',
@@ -94,9 +100,9 @@ export default class ProjectDialog extends Vue {
     endDate: '',
     status: 1,
     description: '',
-    pmId: 0,
+    pmId: undefined,
     weight: 1,
-    parentId: 0,
+    parentId: undefined,
   };
 
   private handleCreate(tempUpdateProject: ProjectDTO) {
@@ -152,11 +158,30 @@ export default class ProjectDialog extends Vue {
     this.syncProjectDialog = false;
   }
 
-  private pickerOptions: any = {
-    disabledDate(time) {
-      return time.getTime() > Date.now();
-    },
+  private rules: Maps<Rule[]> = {
+    name: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }, max255Char],
+    pmId: [{ required: true, message: 'Vui lòng chọn người quản lý', trigger: 'blur' }],
+    startDate: [{ required: true, message: 'Vui lòng chọn ngày bắt đầu', trigger: 'blur' }],
+    endDate: [
+      { required: true, message: 'Vui lòng chọn ngày kết thúc', trigger: 'blur' },
+      { validator: this.validateEndDate, trigger: ['blur', 'change'] },
+    ],
   };
+
+  private validateEndDate(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    if (compareTwoDate(value, this.tempUpdateProject.startDate) === 1) {
+      return callback('Ngày kết thúc phải lớn hơn ngày bắt đầu');
+    }
+    return callback();
+  }
+
+  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    const isEmpty = (value: string) => !value.trim().length;
+    if (value.length === 0) {
+      return callback('Vui lòng nhập tên dự án');
+    }
+    return callback();
+  }
 
   // private deactiveUser(row) {
   //   this.tempUpdateProject = {

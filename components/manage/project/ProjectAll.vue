@@ -120,7 +120,12 @@
               </el-select>
             </el-form-item>
             <el-form-item label="Mô tả:" prop="description" label-width="150px">
-              <el-input v-model="tempUpdateProject.description" placeholder="Nhập mô tả" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
+              <el-input
+                type="textarea"
+                v-model="tempUpdateProject.description"
+                placeholder="Nhập mô tả"
+                @keyup.enter.native="handleUpdate(tempUpdateProject)"
+              />
             </el-form-item>
           </el-form>
         </el-col>
@@ -138,13 +143,14 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { ProjectDTO } from '@/constants/app.interface';
-import { formatDateToDD } from '@/utils/dateParser';
+import { compareTwoDate, formatDateToDD } from '@/utils/dateParser';
 import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import { Form } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
+import { max255Char } from '@/constants/account.constant';
 
 @Component<ProjectAll>({
   name: 'ProjectAll',
@@ -177,9 +183,9 @@ export default class ProjectAll extends Vue {
     endDate: '',
     status: '',
     description: '',
-    pmId: 0,
+    pmId: undefined,
     weight: 1,
-    parentId: 0,
+    parentId: undefined,
   };
 
   private handleOpenDialogUpdate(row) {
@@ -192,7 +198,7 @@ export default class ProjectAll extends Vue {
       description: row.description,
       pmId: row.pmId,
       weight: row.weight,
-      parentId: row.parentId,
+      parentId: row.parentId === 0 ? undefined : row.parentId,
     };
     this.dialogUpdateVisible = true;
   }
@@ -256,8 +262,6 @@ export default class ProjectAll extends Vue {
     },
   };
 
-  private rules: Maps<Rule[]> = {};
-
   getManager(pmId: number) {
     let pm = '';
     if (this.managers) {
@@ -279,6 +283,31 @@ export default class ProjectAll extends Vue {
 
   private handleControlProject(row) {
     this.$router.push('/du-an/quan-ly?id=' + row.id);
+  }
+
+  private rules: Maps<Rule[]> = {
+    name: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }, max255Char],
+    pmId: [{ required: true, message: 'Vui lòng chọn người quản lý', trigger: 'blur' }],
+    startDate: [{ required: true, message: 'Vui lòng chọn ngày bắt đầu', trigger: 'blur' }],
+    endDate: [
+      { required: true, message: 'Vui lòng chọn ngày kết thúc', trigger: 'blur' },
+      { validator: this.validateEndDate, trigger: ['blur', 'change'] },
+    ],
+  };
+
+  private validateEndDate(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    if (compareTwoDate(value, this.tempUpdateProject.startDate) === 1) {
+      return callback('Ngày kết thúc phải lớn hơn ngày bắt đầu');
+    }
+    return callback();
+  }
+
+  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    const isEmpty = (value: string) => !value.trim().length;
+    if (value.length === 0) {
+      return callback('Vui lòng nhập tên dự án');
+    }
+    return callback();
   }
 }
 </script>
