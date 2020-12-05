@@ -4,7 +4,7 @@
     <el-dialog
       class="update-employee"
       :visible.sync="syncProjectDialog"
-      width="40%"
+      width="45%"
       placement="bottom-start"
       title="Cập nhật thông tin"
       :before-close="handleCloseDialog"
@@ -19,143 +19,112 @@
             :model="tempUpdateProject"
             style="width: 100%"
           >
-            <el-form-item label="Tên dự án:" prop="name" class="custom-label" label-width="120px">
-              <el-input v-model="tempUpdateProject.name" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
+            <el-form-item label="Tên dự án:" prop="name" class="custom-label" label-width="150px">
+              <el-input v-model="tempUpdateProject.name" placeholder="Nhập họ và tên" @keyup.enter.native="handleCreate(tempUpdateProject)" />
             </el-form-item>
-            <el-form-item v-if="true" label="Ngày bắt đầu:" class="custom-label" prop="startDate" label-width="120px">
+            <el-form-item v-if="true" label="Ngày bắt đầu:" class="custom-label" prop="startDate" label-width="150px">
               <el-date-picker
                 v-model="tempUpdateProject.startDate"
                 format="dd/MM/yyyy"
                 value-format="dd/MM/yyyy"
-                :picker-options="pickerOptions"
                 type="date"
-                placeholder="Chọn ngày sinh"
+                placeholder="Chọn ngày bắt đầu"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item v-if="true" label="Ngày kết thúc:" class="custom-label" prop="endDate" label-width="120px">
+            <el-form-item v-if="true" label="Ngày kết thúc:" class="custom-label" prop="endDate" label-width="150px">
               <el-date-picker
                 v-model="tempUpdateProject.endDate"
                 format="dd/MM/yyyy"
                 value-format="dd/MM/yyyy"
-                :picker-options="pickerOptions"
                 type="date"
-                placeholder="Chọn ngày sinh"
+                placeholder="Chọn ngày kết thúc"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="Mô tả:" prop="description" class="custom-label" label-width="120px">
-              <el-input v-model="tempUpdateProject.description" placeholder="Nhập mô tả" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
+            <el-form-item label="trọng số:" class="custom-label" prop="weight" label-width="150px">
+              <el-slider v-model="tempUpdateProject.weight" :step="1" :max="5" :min="1" show-stops></el-slider>
             </el-form-item>
-            <el-form-item label="trạng thái:" class="custom-label" prop="status" label-width="120px">
-              <el-radio v-model="tempUpdateProject.status" :label="1">Hoạt động</el-radio>
-              <el-radio v-model="tempUpdateProject.status" :label="0">Kết thúc</el-radio>
-            </el-form-item>
-            <!--<el-form-item v-if="true" label="Phòng ban:" class="custom-label" prop="departmentId">
-              <el-select
-                v-model="tempUpdateProject.departmentId"
-                class="custom-label"
-                placeholder="Chọn phòng ban"
-                @keyup.enter.native="handleUpdate(tempUpdateProject)"
-              >
-                <el-option v-for="item in teams" :key="item.id" :label="item.name" :value="item.id" />
+            <el-form-item label="Quản lý dự án:" class="custom-label" prop="pmId" label-width="150px">
+              <el-select v-model="tempUpdateProject.pmId" filterable placeholder="Chọn người quản lý dự án">
+                <el-option v-for="item in managers" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
-            &lt;!&ndash;
-            <el-form-item label="Vị trí công việc:" class="custom-label" prop="jobPositionId">
-              <el-select
-                v-model="tempUpdateProject.jobPositionId"
-                class="custom-label"
-                placeholder="Chọn vị trí công việc"
-                @keyup.enter.native="handleUpdate(tempUpdateProject)"
-              >
-                <el-option v-for="item in jobs" :key="item.id" :label="item.name" :value="item.id" />
-              </el-select>
-            </el-form-item> &ndash;&gt;
-            &lt;!&ndash;
-            <el-form-item v-if="tempUpdateProject.roleId !== Number(1)" label="Vai trò:" class="custom-label"
-                          prop="roleId">
-              <el-select
-                v-model="tempUpdateProject.roleId"
-                class="custom-label"
-                placeholder="Chọn vai trò"
-                @keyup.enter.native="handleUpdate(tempUpdateProject)"
-              >
-                <el-option v-for="item in roles" :key="item.id" :label="item.name" :value="item.id" />
+            <el-form-item label="Trực thuộc dự án:" prop="parentId" label-width="150px">
+              <el-select v-model="tempUpdateProject.parentId" clearable placeholder="Chọn dự án">
+                <el-option v-for="item in originalProjects" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
             </el-form-item>
-            &ndash;&gt; &lt;!&ndash;
-            <el-checkbox v-if="tempUpdateProject.roleId !== Number(1)" v-model="tempUpdateProject.isLeader">Trưởng nhóm
-            </el-checkbox> &ndash;&gt;-->
+            <el-form-item label="Mô tả:" prop="description" label-width="150px">
+              <el-input
+                type="textarea"
+                v-model="tempUpdateProject.description"
+                placeholder="Nhập mô tả"
+                @keyup.enter.native="handleCreate(tempUpdateProject)"
+              />
+            </el-form-item>
           </el-form>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <!--<el-button class="el-button&#45;&#45;white el-button&#45;&#45;modal" @click="handleCloseDialog">Hủy</el-button>
-        <el-button class="el-button&#45;&#45;purple el-button&#45;&#45;modal" :loading="loading"
-                   @click="handleUpdate(tempUpdateProject)">
-          Cập nhật
-        </el-button>-->
+        <el-button class="el-button&#45;&#45;white el-button&#45;&#45;modal" @click="handleCloseDialog">Hủy</el-button>
+        <el-button class="el-button&#45;&#45;purple el-button&#45;&#45;modal" :loading="loading" @click="handleCreate(tempUpdateProject)"
+          >Tạo mới</el-button
+        >
       </span>
     </el-dialog>
-    <!-- end update user dialog -->
+    <!-- end create project dialog -->
   </div>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop, Vue, PropSync } from 'vue-property-decorator';
 import { ProjectDTO } from '@/constants/app.interface';
-import { mapGetters } from 'vuex';
-import { GetterState } from '@/constants/app.vuex';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import { Form } from 'element-ui';
+import { Maps, Rule } from '@/constants/app.type';
+import { max255Char } from '@/constants/account.constant';
+import { compareTwoDate } from '@/utils/dateParser';
 
 @Component<ProjectDialog>({
   name: 'ProjectDialog',
-  computed: {
-    ...mapGetters({
-      user: GetterState.USER,
-    }),
-  },
-  mounted() {
-    console.log(this.syncProjectDialog);
-  },
 })
 export default class ProjectDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
-  // @PropSync('visibleDialog', { type: Boolean, required: true }) public syncProjectDialog!: boolean;
-  private syncProjectDialog: boolean = true;
-  private loadingTable: boolean = false;
+  @Prop(Array) readonly managers!: Array<any>;
+  @Prop(Array) readonly originalProjects!: Array<object>;
+  @PropSync('visibleDialog', { type: Boolean, required: true }) public syncProjectDialog!: boolean;
+
   private loading: boolean = false;
   private tempUpdateProject: ProjectDTO = {
-    id: 0,
     name: '',
     startDate: '',
     endDate: '',
-    status: '',
+    status: 1,
     description: '',
-    pm: '',
+    pmId: undefined,
+    weight: 1,
+    parentId: undefined,
   };
 
-  private handleUpdate(tempUpdateProject: ProjectDTO) {
+  private handleCreate(tempUpdateProject: ProjectDTO) {
     console.log('before update: ', tempUpdateProject);
 
     this.loading = true;
     (this.$refs.updateEmployeeForm as Form).validate((isValid: boolean, invalidFields: object) => {
       if (isValid) {
-        this.$confirm(`Bạn có chắc chắn muốn cập nhật user này?`, {
+        this.$confirm(`Bạn có chắc chắn muốn cập nhật dự án này?`, {
           ...confirmWarningConfig,
         })
           .then(async () => {
             await ProjectRepository.update(tempUpdateProject)
               .then((res) => {
                 setTimeout(() => {
-                  console.log('aa');
                   this.loading = false;
                 }, 300);
                 this.$notify.success({
                   ...notificationConfig,
-                  message: 'Cập nhật thành viên thành công',
+                  message: 'Cập nhật dự án thành công',
                 });
-                // this.getListUsers();
+                this.reloadData();
                 this.syncProjectDialog = false;
               })
               .catch((error) => {
@@ -189,11 +158,30 @@ export default class ProjectDialog extends Vue {
     this.syncProjectDialog = false;
   }
 
-  private pickerOptions: any = {
-    disabledDate(time) {
-      return time.getTime() > Date.now();
-    },
+  private rules: Maps<Rule[]> = {
+    name: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }, max255Char],
+    pmId: [{ required: true, message: 'Vui lòng chọn người quản lý', trigger: 'blur' }],
+    startDate: [{ required: true, message: 'Vui lòng chọn ngày bắt đầu', trigger: 'blur' }],
+    endDate: [
+      { required: true, message: 'Vui lòng chọn ngày kết thúc', trigger: 'blur' },
+      { validator: this.validateEndDate, trigger: ['blur', 'change'] },
+    ],
   };
+
+  private validateEndDate(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    if (compareTwoDate(value, this.tempUpdateProject.startDate) === 1) {
+      return callback('Ngày kết thúc phải lớn hơn ngày bắt đầu');
+    }
+    return callback();
+  }
+
+  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+    const isEmpty = (value: string) => !value.trim().length;
+    if (value.length === 0) {
+      return callback('Vui lòng nhập tên dự án');
+    }
+    return callback();
+  }
 
   // private deactiveUser(row) {
   //   this.tempUpdateProject = {
@@ -231,6 +219,15 @@ export default class ProjectDialog extends Vue {
   &__icon {
     cursor: pointer;
     margin: 0 $unit-1;
+  }
+  &--status {
+    &__active {
+      color: #27ae60;
+    }
+
+    &__deactive {
+      color: #dd1100;
+    }
   }
 }
 </style>

@@ -5,13 +5,19 @@
         <h1 class="manage-project__top__title--text">Quản lý dự án</h1>
       </div>
       <div class="manage-project__top__right">
-        <el-button class="el-button--purple el-button--invite" icon="el-icon-plus" @click="addNew"> Thêm mới </el-button>
+        <el-button class="el-button--purple el-button--invite" icon="el-icon-plus" @click="addNew"> Thêm mới</el-button>
       </div>
     </div>
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="convertLabel(tab)" :name="tab"></el-tab-pane>
       <head-project :text.sync="paramsProject.text" @name="paramsProject.text = $event" @search="handleSearch($event)" />
-      <component :is="currentTabComponent" :table-data="tableData" />
+      <component
+        :is="tabComponent"
+        :table-data="tableData"
+        :get-list-project="getListProjects"
+        :managers="managers"
+        :original-projects="originalProjects"
+      />
       <common-pagination
         class="manage-project__pagination"
         :total="meta.totalItems"
@@ -20,7 +26,7 @@
         @pagination="handlePagination($event)"
       />
     </el-tabs>
-    <component :is="currentDialogComponent" :visible-dialog.sync="visibleDialog" :reload-data="getListProjects" />
+    <project-dialog :visible-dialog.sync="visibleDialog" :reload-data="getListProjects" :managers="managers" :original-projects="originalProjects" />
   </div>
 </template>
 
@@ -34,18 +40,19 @@ import CommonPagination from '@/components/common/Pagination.vue';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import HeadProject from '@/components/manage/project/HeadProject.vue';
 import ProjectAll from '@/components/manage/project/ProjectAll.vue';
-import NewProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
+import ProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
 
 @Component<ManageProject>({
   name: 'ManageProject',
   // middleware: 'employeesPage',
   components: {
+    ProjectDialog,
     CommonPagination,
     HeadProject,
   },
   async created() {
     await this.getListProjects();
-    // await this.getDataCommons();
+    await this.getDataCommon();
   },
   head() {
     return {
@@ -55,11 +62,14 @@ import NewProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
 })
 export default class ManageProject extends Vue {
   private tableData: Array<object> = [];
+  private managers: Array<any> = [];
+  private originalProjects: Array<object> = [];
   private tabs: string[] = [...Object.values(ProjectStatus)];
   private currentTab: ProjectStatus = ProjectStatus.All;
   private meta: object = {};
   private indexPage: number = this.$route.query.page ? Number(this.$route.query.page) : 1;
   private visibleDialog: boolean = false;
+  private textPm: String = '';
 
   private paramsProject: ParamsProject = {
     page: this.indexPage,
@@ -77,6 +87,19 @@ export default class ManageProject extends Vue {
       this.meta = data.meta;
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  private async getDataCommon() {
+    try {
+      const [managers, originalProjects] = await Promise.all([
+        ProjectRepository.getManagers({ text: this.textPm }),
+        ProjectRepository.getOriginalProjects(),
+      ]);
+      this.managers = managers.data;
+      this.originalProjects = originalProjects.data;
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -113,17 +136,17 @@ export default class ManageProject extends Vue {
       : this.$router.push(`?tab=${tab}&text=${this.$route.query.text}&page=${pagination.page}`);
   }
 
-  private get currentTabComponent() {
+  private get tabComponent() {
     return ProjectAll;
   }
 
-  private addNew() {
-    this.visibleDialog = true;
-    console.log('show add new', this.visibleDialog);
+  private dialogComponent() {
+    return ProjectDialog;
   }
 
-  private currentDialogComponent() {
-    return NewProjectDialog;
+  private addNew() {
+    console.log('pressed');
+    this.visibleDialog = true;
   }
 }
 </script>
@@ -150,9 +173,11 @@ export default class ManageProject extends Vue {
         width: calc(100vw * 5 / 24);
       }
     }
+
     &__right {
       height: 100%;
     }
+
     &__title {
       display: flex;
       flex-direction: row;

@@ -13,11 +13,31 @@ export default class ProjectRepository {
     return baseUrl.get(enpoint.getList, { params });
   }
 
-  public static update(params: ProjectDTO) {
-    return baseUrl.post(enpoint.createUpdate, { params });
+  public static getById(id: number) {
+    return baseUrl.get(`${ResourcesEnpoint.Project}/` + id);
   }
 
-  public static getListCurrent() {
-    return baseUrl.get(enpoint.getListCurrent);
+  public static getStaffsById(id: number) {
+    return baseUrl.get(`${ResourcesEnpoint.Project}/` + id + '/staff');
+  }
+
+  public static deleteStaffById(projectId: number, staffId: number) {
+    return baseUrl.delete(`${ResourcesEnpoint.Project}/` + projectId + '/staff/' + staffId);
+  }
+
+  public static getAllActiveStaff() {
+    return baseUrl.delete(`${ResourcesEnpoint.Users}/` + 'all');
+  }
+
+  public static update(payload: ProjectDTO) {
+    return baseUrl.post(`${ResourcesEnpoint.Project}/create`, payload);
+  }
+
+  public static getManagers(params: any) {
+    return baseUrl.get(`${ResourcesEnpoint.Project}/pm`, { params });
+  }
+
+  public static getOriginalProjects() {
+    return baseUrl.get(`${ResourcesEnpoint.Project}/parents`);
   }
 }

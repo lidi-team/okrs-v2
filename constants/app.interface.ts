@@ -1,4 +1,4 @@
-import { dataType, ruleTrigger, Validator, PromiseValidtor } from './app.type';
+import { dataType, PromiseValidtor, ruleTrigger, Validator } from './app.type';
 import { EvaluationCriteriaEnum } from './app.enum';
 
 export interface LinkMeta {
@@ -35,10 +35,32 @@ export interface ProjectDTO {
   name: string;
   startDate: string;
   endDate: string;
-  status: string;
+  status: number | string;
   description: string;
-  pm?: string | Object;
+  parentId?: number;
+  pm?: ProjectPM;
+  pmId?: number;
   staffs?: Object[];
+  weight?: number;
+}
+
+export interface ProjectPM {
+  id: number;
+  name: string;
+  position: string;
+  Department: string;
+}
+
+export interface ProjectStaff {
+  id: number;
+  name: string;
+  position?: number;
+  department: number;
+  reviewerId: number;
+  email: string;
+  originalDepartment: number;
+  originalReviewerId: number;
+  edit?: boolean;
 }
 
 export interface RegisterOption {
@@ -105,6 +127,7 @@ export interface CycleDTO {
   startDate?: Date | string | any;
   endDate?: Date | string | any;
 }
+
 export interface Map<T> {
   key: string;
   name: T;
