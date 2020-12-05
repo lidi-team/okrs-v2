@@ -85,7 +85,7 @@ export default class CreateAlignObjective extends Vue {
           const data = this.$store.state.okrs.objective;
           await OkrsRepository.createOrUpdateOkrs(data).then((res) => {
             this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
-            this.$store.commit(MutationState.SET_FLAG);
+            this.$store.commit(MutationState.OKRS_SET_FLAG);
             this.syncActive = 0;
             this.$notify.success({
               ...notificationConfig,
@@ -105,7 +105,7 @@ export default class CreateAlignObjective extends Vue {
         const data = this.$store.state.okrs.objective;
         await OkrsRepository.createOrUpdateOkrs(data).then((res) => {
           this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
-          this.$store.commit(MutationState.SET_FLAG);
+          this.$store.commit(MutationState.OKRS_SET_FLAG);
           this.syncActive = 0;
           this.$notify.success({
             ...notificationConfig,

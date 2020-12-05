@@ -29,7 +29,7 @@ export enum MutationState {
   SET_OBJECTIVE = 'okrs/setObjective',
   SET_KEY_RESULT = 'okrs/setKeyResult',
   CLEAR_KRS = 'okrs/clearKrs',
-  SET_FLAG = 'okrs/setFlag',
+  OKRS_SET_FLAG = 'okrs/setFlag',
   SET_OKRS_DETAIL = 'okrs/setOkrsDetail',
   SET_TEMP_CYCLE = 'cycle/setTempCycle',
   SET_ALL_CYCLES = 'cycle/setAllCycles',

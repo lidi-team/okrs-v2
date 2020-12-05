@@ -67,7 +67,7 @@ export default class DetailHistoryPageCompany extends Vue {
   private checkinAt: Array<object> = [];
   private async getDetail() {
     this.loading = true;
-    await CheckinRepository.getDetailCheckin(+this.$route.params.id)
+    await CheckinRepository.getDetailCheckinByCheckinId(+this.$route.params.id)
       .then((result) => {
         this.historyDetail = result.data.data;
         this.loading = false;
@@ -139,9 +139,7 @@ export default class DetailHistoryPageCompany extends Vue {
   }
 
   private goBack() {
-    if (this.historyDetail) {
-      this.$router.push(`/checkin/lich-su-cong-ty/${this.historyDetail.objective.id}`);
-    }
+    this.$router.go(-1);
   }
 }
 </script>
