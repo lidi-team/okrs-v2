@@ -1,6 +1,7 @@
 import { ParamsUser } from '@/constants/DTO/common';
 import { baseUrl } from './BaseRepository';
 import { ProjectDTO } from '@/constants/app.interface';
+import { ResourcesEnpoint } from '@/constants/app.enum';
 
 const enpoint = {
   getList: 'projects',
