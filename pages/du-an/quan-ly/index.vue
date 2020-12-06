@@ -54,7 +54,7 @@
         <el-select v-model="selectUsers" multiple filterable default-first-option placeholder="Chọn nhân viên cho dự án">
           <el-option v-for="item in candidates" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
-        <el-button type="primary" @click="handleAddStaff">Thêm mới thành viên</el-button>
+        <el-button v-if="selectUsers.length" type="primary" @click="handleAddStaff">Thêm mới thành viên</el-button>
       </div>
       <br />
       <el-table v-loading="isloading" :data="projectStaffs" border fit highlight-current-row style="width: 100%">
@@ -228,7 +228,6 @@ export default class ControlProject extends Vue {
           });
           await this.getProjectStaffs(this.id);
         })
-        // eslint-disable-next-line handle-callback-err
         .catch((err) => {
           console.log(err);
           // this.$notify.error({
@@ -243,11 +242,22 @@ export default class ControlProject extends Vue {
 
   private async handleAddStaff() {
     try {
+      await this.$confirm(`Bạn có chắc chắn muốn thêm những nhân viên này?`, {
+        ...confirmWarningConfig,
+      });
       const data = await ProjectRepository.postStaffsById(this.id, this.selectUsers);
       this.selectUsers = [];
       await this.getProjectStaffs(this.id);
-      console.log('data: ', data);
-    } catch (e) {}
+      this.$notify.success({
+        ...notificationConfig,
+        message: 'Thêm mới nhân viên thành công',
+      });
+    } catch (e) {
+      this.$notify.warning({
+        ...notificationConfig,
+        message: 'Thêm mới nhân viên thất bại',
+      });
+    }
   }
 
   private getPositionById(id: number) {
