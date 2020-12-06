@@ -103,6 +103,7 @@ export enum ResourcesEnpoint {
   Checkin = 'checkins',
   CFRs = 'cfrs',
   Dashboard = 'dashboard',
+  Project = 'projects',
 }
 
 export enum CFREnpoint {
