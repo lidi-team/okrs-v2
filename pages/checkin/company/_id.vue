@@ -19,11 +19,21 @@
                 </tr>
                 <tr v-if="checkin.checkin.checkinAt">
                   <th scope="row">Ngày check-in</th>
-                  <td>{{ new Date(checkin.checkin.checkinAt) | dateFormat('DD/MM/YYYY') }}</td>
+                  <td>
+                    {{
+                      new Date(checkin.checkin.checkinAt)
+                        | dateFormat('DD/MM/YYYY')
+                    }}
+                  </td>
                 </tr>
                 <tr v-if="checkin.checkin.nextCheckinDate">
                   <th scope="row">Ngày check-in kế tiếp</th>
-                  <td>{{ new Date(checkin.checkin.nextCheckinDate) | dateFormat('DD/MM/YYYY') }}</td>
+                  <td>
+                    {{
+                      new Date(checkin.checkin.nextCheckinDate)
+                        | dateFormat('DD/MM/YYYY')
+                    }}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -81,9 +91,15 @@ export default class CheckinPage extends Vue {
             status: 'Draft',
             isCompleted: false,
             checkinAt: formatDateToDD(res.data.data.checkin.checkinAt),
-            nextCheckinDate: res.data.data.checkin.nextCheckinDate ? formatDateToDD(res.data.data.checkin.nextCheckinDate) : initNewDate(),
+            nextCheckinDate: res.data.data.checkin.nextCheckinDate
+              ? formatDateToDD(res.data.data.checkin.nextCheckinDate)
+              : initNewDate(),
           });
-          for (let index = 0; index < res.data.data.keyResults.length; index++) {
+          for (
+            let index = 0;
+            index < res.data.data.keyResults.length;
+            index++
+          ) {
             res.data.data.checkinDetail.push({
               valueObtained: res.data.data.keyResults[index].valueObtained,
               confidentLevel: 2,
@@ -103,7 +119,9 @@ export default class CheckinPage extends Vue {
             status: res.data.data.checkin.status,
             isCompleted: false,
             checkinAt: formatDateToDD(res.data.data.checkin.checkinAt),
-            nextCheckinDate: formatDateToDD(res.data.data.checkin.nextCheckinDate),
+            nextCheckinDate: formatDateToDD(
+              res.data.data.checkin.nextCheckinDate,
+            ),
           });
         }
         this.checkin = res.data.data;

@@ -1,7 +1,18 @@
 <template>
   <div class="okrs-page">
-    <el-select v-model="currentCycleId" no-match-text="Không tìm thấy chu kỳ" filterable placeholder="Chọn chu kỳ" @change="changeCycleData">
-      <el-option v-for="cycle in cycles" :key="cycle.id" :label="cycle.name" :value="cycle.id" />
+    <el-select
+      v-model="currentCycleId"
+      no-match-text="Không tìm thấy chu kỳ"
+      filterable
+      placeholder="Chọn chu kỳ"
+      @change="changeCycleData"
+    >
+      <el-option
+        v-for="cycle in cycles"
+        :key="cycle.id"
+        :label="cycle.name"
+        :value="cycle.id"
+      />
     </el-select>
     <div>
       <item-okrs
@@ -29,14 +40,22 @@
       />
     </transition>
     <transition name="el-zoom-in-center">
-      <detail-keyresult v-if="visibleDetailKrs" :list-krs="listKrs" :visible-detail-krs.sync="visibleDetailKrs" />
+      <detail-keyresult
+        v-if="visibleDetailKrs"
+        :list-krs="listKrs"
+        :visible-detail-krs.sync="visibleDetailKrs"
+      />
     </transition>
   </div>
 </template>
 <script lang="ts">
 import { mapGetters } from 'vuex';
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { MutationState, DispatchAction, GetterState } from '@/constants/app.vuex';
+import {
+  MutationState,
+  DispatchAction,
+  GetterState,
+} from '@/constants/app.vuex';
 
 import ItemOkrs from '@/components/okrs/ItemOkrs.vue';
 import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
@@ -63,7 +82,9 @@ import CycleRepository from '@/repositories/CycleRepository';
     }),
   },
   async mounted() {
-    this.currentCycleId = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycleCurrent.id;
+    this.currentCycleId = this.$route.query.cycleId
+      ? Number(this.$route.query.cycleId)
+      : this.$store.state.cycle.cycleCurrent.id;
     await this.getDashBoardOkrs();
     await this.getCycles();
   },
@@ -95,7 +116,9 @@ export default class OKRsPage extends Vue {
 
   private async getDashBoardOkrs() {
     try {
-      const { data } = await OkrsRepository.getListOkrsByCycleId(this.currentCycleId);
+      const { data } = await OkrsRepository.getListOkrsByCycleId(
+        this.currentCycleId,
+      );
       this.projects = Object.freeze(data);
       this.loading = false;
     } catch (error) {

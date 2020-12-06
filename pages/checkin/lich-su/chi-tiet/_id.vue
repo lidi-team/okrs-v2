@@ -25,11 +25,18 @@
                 </tr>
                 <tr v-if="checkin.checkinAt">
                   <th scope="row">Ngày check-in</th>
-                  <td>{{ new Date(checkin.checkinAt) | dateFormat('DD/MM/YYYY') }}</td>
+                  <td>
+                    {{ new Date(checkin.checkinAt) | dateFormat('DD/MM/YYYY') }}
+                  </td>
                 </tr>
                 <tr v-if="checkin.nextCheckinDate">
                   <th scope="row">Ngày check-in kế tiếp</th>
-                  <td>{{ new Date(checkin.nextCheckinDate) | dateFormat('DD/MM/YYYY') }}</td>
+                  <td>
+                    {{
+                      new Date(checkin.nextCheckinDate)
+                        | dateFormat('DD/MM/YYYY')
+                    }}
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -71,7 +78,9 @@ export default class DetailHistoryPage extends Vue {
 
   private async getDetail() {
     this.loading = true;
-    const { data } = await CheckinRepository.getDetailCheckinByCheckinId(+this.$route.params.id);
+    const { data } = await CheckinRepository.getDetailCheckinByCheckinId(
+      +this.$route.params.id,
+    );
     this.checkin = data;
     this.loading = false;
   }

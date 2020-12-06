@@ -1,7 +1,17 @@
 <template>
   <div>
-    <el-table v-loading="loadingTable" empty-text="Không có dữ liệu" class="project-all" :data="tableData" style="width: 100%">
-      <el-table-column prop="name" label="Tên dự án" min-width="150"></el-table-column>
+    <el-table
+      v-loading="loadingTable"
+      empty-text="Không có dữ liệu"
+      class="project-all"
+      :data="tableData"
+      style="width: 100%"
+    >
+      <el-table-column
+        prop="name"
+        label="Tên dự án"
+        min-width="150"
+      ></el-table-column>
       <el-table-column label="Ngày bắt đầu">
         <template v-slot="{ row }">
           <!-- Vue Fileter Date Plugin -->
@@ -21,9 +31,14 @@
       </el-table-column>
       <el-table-column label="Trạng thái">
         <template slot-scope="{ row }">
-          <span :class="row.status ? 'project-all--status__active' : 'project-all--status__deactive'">{{
-            row.status ? 'hoạt động' : 'Đã đóng'
-          }}</span>
+          <span
+            :class="
+              row.status
+                ? 'project-all--status__active'
+                : 'project-all--status__deactive'
+            "
+            >{{ row.status ? 'hoạt động' : 'Đã đóng' }}</span
+          >
         </template>
       </el-table-column>
       <el-table-column label="Trọng số">
@@ -41,11 +56,25 @@
       <el-table-column label="Thao tác" align="center">
         <template slot-scope="{ row }">
           <div v-if="user.roles.includes('ROLE_ADMIN')">
-            <el-tooltip class="project-all__icon" content="Quản lý" placement="left-end">
-              <i class="el-icon-s-order icon&#45;&#45;info" @click="handleControlProject(row)"></i>
+            <el-tooltip
+              class="project-all__icon"
+              content="Quản lý"
+              placement="left-end"
+            >
+              <i
+                class="el-icon-s-order icon&#45;&#45;info"
+                @click="handleControlProject(row)"
+              ></i>
             </el-tooltip>
-            <el-tooltip class="project-all__icon" content="Sửa" placement="right-end">
-              <i class="el-icon-edit icon&#45;&#45;info" @click="handleOpenDialogUpdate(row)"></i>
+            <el-tooltip
+              class="project-all__icon"
+              content="Sửa"
+              placement="right-end"
+            >
+              <i
+                class="el-icon-edit icon&#45;&#45;info"
+                @click="handleOpenDialogUpdate(row)"
+              ></i>
             </el-tooltip>
           </div>
           <!--<div v-if="!row.roles.includes('ROLE_ADMIN_HR')" class="project-all__action">
@@ -79,10 +108,25 @@
             :model="tempUpdateProject"
             style="width: 100%"
           >
-            <el-form-item label="Tên dự án:" prop="name" class="custom-label" label-width="150px">
-              <el-input v-model="tempUpdateProject.name" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateProject)" />
+            <el-form-item
+              label="Tên dự án:"
+              prop="name"
+              class="custom-label"
+              label-width="150px"
+            >
+              <el-input
+                v-model="tempUpdateProject.name"
+                placeholder="Nhập họ và tên"
+                @keyup.enter.native="handleUpdate(tempUpdateProject)"
+              />
             </el-form-item>
-            <el-form-item v-if="true" label="Ngày bắt đầu:" class="custom-label" prop="startDate" label-width="150px">
+            <el-form-item
+              v-if="true"
+              label="Ngày bắt đầu:"
+              class="custom-label"
+              prop="startDate"
+              label-width="150px"
+            >
               <el-date-picker
                 v-model="tempUpdateProject.startDate"
                 format="dd/MM/yyyy"
@@ -92,7 +136,13 @@
                 placeholder="Chọn ngày sinh"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item v-if="true" label="Ngày kết thúc:" class="custom-label" prop="endDate" label-width="150px">
+            <el-form-item
+              v-if="true"
+              label="Ngày kết thúc:"
+              class="custom-label"
+              prop="endDate"
+              label-width="150px"
+            >
               <el-date-picker
                 v-model="tempUpdateProject.endDate"
                 format="dd/MM/yyyy"
@@ -102,21 +152,68 @@
                 placeholder="Chọn ngày sinh"
               ></el-date-picker>
             </el-form-item>
-            <el-form-item label="trọng số:" class="custom-label" prop="weight" label-width="150px">
-              <el-slider v-model="tempUpdateProject.weight" :step="1" :max="5" :min="1" show-stops></el-slider>
+            <el-form-item
+              label="trọng số:"
+              class="custom-label"
+              prop="weight"
+              label-width="150px"
+            >
+              <el-slider
+                v-model="tempUpdateProject.weight"
+                :step="1"
+                :max="5"
+                :min="1"
+                show-stops
+              ></el-slider>
             </el-form-item>
-            <el-form-item label="Quản lý dự án:" class="custom-label" prop="pmId" label-width="150px">
-              <el-select v-model="tempUpdateProject.pmId" filterable placeholder="Chọn người quản lý dự án">
-                <el-option v-for="item in managers" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            <el-form-item
+              label="Quản lý dự án:"
+              class="custom-label"
+              prop="pmId"
+              label-width="150px"
+            >
+              <el-select
+                v-model="tempUpdateProject.pmId"
+                filterable
+                placeholder="Chọn người quản lý dự án"
+              >
+                <el-option
+                  v-for="item in managers"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="trạng thái:" class="custom-label" prop="status" label-width="150px">
-              <el-radio v-model="tempUpdateProject.status" :label="1">Hoạt động</el-radio>
-              <el-radio v-model="tempUpdateProject.status" :label="0">Kết thúc</el-radio>
+            <el-form-item
+              label="trạng thái:"
+              class="custom-label"
+              prop="status"
+              label-width="150px"
+            >
+              <el-radio v-model="tempUpdateProject.status" :label="1"
+                >Hoạt động</el-radio
+              >
+              <el-radio v-model="tempUpdateProject.status" :label="0"
+                >Kết thúc</el-radio
+              >
             </el-form-item>
-            <el-form-item label="Trực thuộc dự án:" prop="parentId" label-width="150px">
-              <el-select v-model="tempUpdateProject.parentId" clearable placeholder="Chọn dự án">
-                <el-option v-for="item in originalProjects" :key="item.id" :label="item.name" :value="item.id"></el-option>
+            <el-form-item
+              label="Trực thuộc dự án:"
+              prop="parentId"
+              label-width="150px"
+            >
+              <el-select
+                v-model="tempUpdateProject.parentId"
+                clearable
+                placeholder="Chọn dự án"
+              >
+                <el-option
+                  v-for="item in originalProjects"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="Mô tả:" prop="description" label-width="150px">
@@ -131,8 +228,15 @@
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="el-button&#45;&#45;white el-button&#45;&#45;modal" @click="handleCloseDialog">Hủy</el-button>
-        <el-button class="el-button&#45;&#45;purple el-button&#45;&#45;modal" :loading="loading" @click="handleUpdate(tempUpdateProject)"
+        <el-button
+          class="el-button&#45;&#45;white el-button&#45;&#45;modal"
+          @click="handleCloseDialog"
+          >Hủy</el-button
+        >
+        <el-button
+          class="el-button&#45;&#45;purple el-button&#45;&#45;modal"
+          :loading="loading"
+          @click="handleUpdate(tempUpdateProject)"
           >Cập nhật</el-button
         >
       </span>
@@ -146,7 +250,10 @@ import { ProjectDTO } from '@/constants/app.interface';
 import { compareTwoDate, formatDateToDD } from '@/utils/dateParser';
 import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
-import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
+import {
+  confirmWarningConfig,
+  notificationConfig,
+} from '@/constants/app.constant';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import { Form } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
@@ -207,47 +314,49 @@ export default class ProjectAll extends Vue {
     console.log('before update: ', tempUpdateProject);
 
     this.loading = true;
-    (this.$refs.updateEmployeeForm as Form).validate((isValid: boolean, invalidFields: object) => {
-      if (isValid) {
-        this.$confirm(`Bạn có chắc chắn muốn cập nhật dự án này?`, {
-          ...confirmWarningConfig,
-        })
-          .then(async () => {
-            await ProjectRepository.update(tempUpdateProject)
-              .then((res) => {
-                setTimeout(() => {
-                  this.loading = false;
-                }, 300);
-                this.$notify.success({
-                  ...notificationConfig,
-                  message: 'Cập nhật dự án thành công',
-                });
-                this.getListProject();
-                this.dialogUpdateVisible = false;
-              })
-              .catch((error) => {
-                if (error.response.data.statusCode === 430) {
-                  this.$notify.error({
-                    ...notificationConfig,
-                    message: 'Team Leader đã tồn tại',
-                  });
-                }
-                setTimeout(() => {
-                  this.loading = false;
-                }, 300);
-              });
+    (this.$refs.updateEmployeeForm as Form).validate(
+      (isValid: boolean, invalidFields: object) => {
+        if (isValid) {
+          this.$confirm(`Bạn có chắc chắn muốn cập nhật dự án này?`, {
+            ...confirmWarningConfig,
           })
-          .catch(() => {
-            setTimeout(() => {
-              this.loading = false;
-            }, 300);
-          });
-      } else {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
+            .then(async () => {
+              await ProjectRepository.update(tempUpdateProject)
+                .then((res) => {
+                  setTimeout(() => {
+                    this.loading = false;
+                  }, 300);
+                  this.$notify.success({
+                    ...notificationConfig,
+                    message: 'Cập nhật dự án thành công',
+                  });
+                  this.getListProject();
+                  this.dialogUpdateVisible = false;
+                })
+                .catch((error) => {
+                  if (error.response.data.statusCode === 430) {
+                    this.$notify.error({
+                      ...notificationConfig,
+                      message: 'Team Leader đã tồn tại',
+                    });
+                  }
+                  setTimeout(() => {
+                    this.loading = false;
+                  }, 300);
+                });
+            })
+            .catch(() => {
+              setTimeout(() => {
+                this.loading = false;
+              }, 300);
+            });
+        } else {
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
+        }
+      },
+    );
   }
 
   private handleCloseDialog() {
@@ -286,23 +395,50 @@ export default class ProjectAll extends Vue {
   }
 
   private rules: Maps<Rule[]> = {
-    name: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }, max255Char],
-    pmId: [{ required: true, message: 'Vui lòng chọn người quản lý', trigger: 'blur' }],
-    startDate: [{ required: true, message: 'Vui lòng chọn ngày bắt đầu', trigger: 'blur' }],
+    name: [
+      { validator: this.sanitizeInput, trigger: ['change', 'blur'] },
+      max255Char,
+    ],
+    pmId: [
+      {
+        required: true,
+        message: 'Vui lòng chọn người quản lý',
+        trigger: 'blur',
+      },
+    ],
+    startDate: [
+      {
+        required: true,
+        message: 'Vui lòng chọn ngày bắt đầu',
+        trigger: 'blur',
+      },
+    ],
     endDate: [
-      { required: true, message: 'Vui lòng chọn ngày kết thúc', trigger: 'blur' },
+      {
+        required: true,
+        message: 'Vui lòng chọn ngày kết thúc',
+        trigger: 'blur',
+      },
       { validator: this.validateEndDate, trigger: ['blur', 'change'] },
     ],
   };
 
-  private validateEndDate(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private validateEndDate(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     if (compareTwoDate(value, this.tempUpdateProject.startDate) === 1) {
       return callback('Ngày kết thúc phải lớn hơn ngày bắt đầu');
     }
     return callback();
   }
 
-  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private sanitizeInput(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     const isEmpty = (value: string) => !value.trim().length;
     if (value.length === 0) {
       return callback('Vui lòng nhập tên dự án');

@@ -1,147 +1,194 @@
 <template>
-  <div class="top-checkin">
-    <el-row>
-      <el-col class="top-checkin__left" :sm="24" :lg="10">
-        <h2 class="top-checkin__title">Check-in mục tiêu</h2>
-        <div v-if="historyDetail.objective" class="top-checkin__content content">
-          <table class="properties">
-            <tbody>
-              <tr>
-                <th scope="row">Mục tiêu</th>
-                <td>{{ historyDetail.objective.title }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Tiến độ thực hiện</th>
-                <td>{{ historyDetail.progress }} %</td>
-              </tr>
-              <tr v-if="historyDetail.checkinAt">
-                <th scope="row">Ngày check-in</th>
-                <td>{{ new Date(historyDetail.checkinAt) | dateFormat('DD/MM/YYYY') }}</td>
-              </tr>
-              <tr v-if="historyDetail.nextCheckinDate">
-                <th scope="row">Ngày check-in kế tiếp</th>
-                <td>{{ new Date(historyDetail.nextCheckinDate) | dateFormat('DD/MM/YYYY') }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </el-col>
-      <el-col :sm="24" :lg="14" class="top-checkin__right">
-        <h2 class="top-checkin__title">Tiến độ</h2>
-        <div id="chartCheckin" class="top-checkin__chart" />
-      </el-col>
-    </el-row>
+  <div class="chart-container">
+    <div :id="id" class="chart" :style="{ height: '100%', width: '100%' }" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { statusCheckin } from '@/constants/app.constant';
+import { init } from 'echarts';
+import resize from '@/mixins/resize';
+
 @Component<ChartCheckin>({
   name: 'ChartCheckin',
+  mixins: [resize],
   mounted() {
-    this.renderChart();
+    this.initChart();
   },
   beforeDestroy() {
-    if (this.chart) {
-      this.chart.dispose();
+    if (!this.chart) {
+      return;
     }
+    this.chart.dispose();
+    this.chart = null;
   },
 })
 export default class ChartCheckin extends Vue {
-  @Prop() historyDetail!: any;
-  private checkinAt: Array<object> = [];
-  private status = statusCheckin;
-  private customColors(confident) {
-    return confident === 1 ? '#DE3618' : confident === 2 ? '#47C1BF' : '#50B83C';
-  }
+  private chart: any = null;
+  private id: any = 'chart';
 
-  private renderChart() {
-    // this.checkinAt = this.historyDetail.chart.map(function (item: any) {
-    //   return new Date(item.checkinAt).toLocaleDateString('en');
-    // });
-    // for (let i = 0; i < this.historyDetail.chart.length; i++) {
-    //   const chartTotal = { checkinAt: '', progress: 0 };
-    //   chartTotal.checkinAt += this.checkinAt[i];
-    //   chartTotal.progress += this.historyDetail.chart[i].progress;
-    //   this.historyDetail.chart[i] = chartTotal;
-    // }
-    // const chart = am4core.create('chartCheckin', am4charts.XYChart);
-    // chart.numberFormatter.numberFormat = "#.#'%'";
-    // chart.data = this.historyDetail.chart.reverse();
-    // const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-    // dateAxis.renderer.grid.template.location = 0;
-    // dateAxis.renderer.minGridDistance = 50;
-    // dateAxis.dateFormats.setKey('day', 'dd/MM');
-    // dateAxis.periodChangeDateFormats.setKey('day', 'dd/MM');
-    // const valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-    // valueAxis.min = 0;
-    // function createSeries(this: any, field: string | undefined, color: string) {
-    //   const series = chart.series.push(new am4charts.LineSeries());
-    //   series.dataFields.valueY = field;
-    //   series.dataFields.dateX = 'checkinAt';
-    //   series.tooltipText = ' [b]{valueY}[/]';
-    //   series.fill = am4core.color(color);
-    //   series.strokeWidth = 2;
-    //   series.minHeight = 500;
-    //   series.responsive.enabled = true;
-    //   series.stroke = am4core.color(color);
-    //   const bullet = series.bullets.push(new am4charts.CircleBullet());
-    //   bullet.circle.fill = am4core.color(color);
-    //   bullet.circle.radius = 4;
-    //   bullet.circle.strokeWidth = 1;
-    //   return series;
-    // }
-    // createSeries('progress', '#9C6ADE');
-    // chart.cursor = new am4charts.XYCursor();
-    // chart.cursor.xAxis = dateAxis;
-    // chart.logo.disabled = true;
+  private initChart() {
+    this.chart = init(document.getElementById(this.id) as any);
+    const xData = (function () {
+      const data: Array<String> = [];
+      for (let i = 1; i < 13; i++) {
+        data.push(i + 'month');
+      }
+      return data;
+    })();
+    this.chart.setOption({
+      backgroundColor: 'white',
+      title: {
+        text: 'Tiến độ',
+        x: '25',
+        top: '30',
+        textStyle: {
+          color: '#212b36',
+          fontSize: '20',
+        },
+        subtextStyle: {
+          color: '#90979c',
+          fontSize: '16',
+        },
+      },
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          textStyle: {
+            color: '#fff',
+          },
+        },
+      },
+      grid: {
+        left: '7%',
+        right: '7%',
+        borderWidth: 0,
+        top: 95,
+        bottom: 95,
+        textStyle: {
+          color: '#230051',
+        },
+      },
+      calculable: true,
+      xAxis: [
+        {
+          type: 'category',
+          axisLine: {
+            lineStyle: {
+              color: '#90979c',
+            },
+          },
+          splitLine: {
+            show: false,
+          },
+          axisTick: {
+            show: false,
+          },
+          splitArea: {
+            show: false,
+          },
+          axisLabel: {
+            interval: 0,
+          },
+          data: xData,
+        },
+      ],
+      yAxis: [
+        {
+          type: 'value',
+          splitLine: {
+            show: false,
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#90979c',
+            },
+          },
+          axisTick: {
+            show: false,
+          },
+          axisLabel: {
+            interval: 0,
+          },
+          splitArea: {
+            show: false,
+          },
+        },
+      ],
+      dataZoom: [
+        {
+          show: true,
+          height: 30,
+          xAxisIndex: [0],
+          bottom: 30,
+          start: 10,
+          end: 80,
+          handleIcon:
+            'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
+          handleSize: '110%',
+          handleStyle: {
+            color: '#d3dee5',
+          },
+          textStyle: {
+            color: '#fff',
+          },
+          borderColor: '#90979c',
+        },
+        {
+          type: 'inside',
+          show: true,
+          height: 15,
+          start: 1,
+          end: 35,
+        },
+      ],
+      series: [
+        {
+          name: 'average',
+          type: 'line',
+          stack: 'total',
+          symbolSize: 10,
+          symbol: 'circle',
+          itemStyle: {
+            normal: {
+              color: '#230051',
+              barBorderRadius: 0,
+              label: {
+                show: true,
+                position: 'top',
+                formatter(p) {
+                  return p.value > 0 ? p.value : '';
+                },
+              },
+            },
+          },
+          data: [
+            1036,
+            3693,
+            2962,
+            3810,
+            2519,
+            1915,
+            1748,
+            4675,
+            6209,
+            4323,
+            2865,
+            4298,
+          ],
+        },
+      ],
+    });
   }
 }
 </script>
+
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
-.top-checkin {
-  margin-bottom: $unit-8;
-  background-color: $white;
-  &__title {
-    font-size: $unit-5;
-    font-style: normal;
-    font-weight: normal;
-    color: #212b36;
-    line-height: 28px;
-  }
-  &__chart {
-    width: 100%;
-    min-height: 350px;
-    font-size: $unit-3;
-  }
-  &__left {
-    padding: $unit-12 $unit-8;
-  }
-
-  &__right {
-    padding: $unit-4 $unit-6;
-  }
-
-  .content {
-    th {
-      font-size: 14px;
-      border-width: 0;
-      vertical-align: top;
-      text-align: left;
-      color: #454f5b;
-    }
-
-    td {
-      color: #454f5b;
-      font-size: 14px;
-      border-width: 0;
-      vertical-align: top;
-      text-align: left;
-      padding-left: $unit-2;
-      padding-right: $unit-2;
-    }
-  }
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 500px;
 }
 </style>

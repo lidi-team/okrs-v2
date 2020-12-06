@@ -9,7 +9,12 @@
         placeholder="Chọn chu kỳ"
         @change="handleSelectCycle(paramsCheckin.cycleId)"
       >
-        <el-option v-for="cycle in cycles" :key="cycle.id" :label="`Chu kỳ: ${cycle.name}`" :value="String(cycle.id)" />
+        <el-option
+          v-for="cycle in cycles"
+          :key="cycle.id"
+          :label="`Chu kỳ: ${cycle.name}`"
+          :value="String(cycle.id)"
+        />
       </el-select>
       <el-select
         class="-ml-1"
@@ -19,12 +24,22 @@
         placeholder="Chọn dự án"
         @change="handleSelectProject(paramsCheckin.projectId)"
       >
-        <el-option v-for="project in projects" :key="project.id" :label="`Dự án: ${project.name}`" :value="String(project.id)" />
+        <el-option
+          v-for="project in projects"
+          :key="project.id"
+          :label="`Dự án: ${project.name}`"
+          :value="String(project.id)"
+        />
       </el-select>
     </div>
 
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
-      <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab"></el-tab-pane>
+      <el-tab-pane
+        v-for="tab in tabs"
+        :key="tab"
+        :label="tab"
+        :name="tab"
+      ></el-tab-pane>
       <component :is="currentTabComponent" :table-data="tableData" />
     </el-tabs>
   </div>
@@ -38,7 +53,10 @@ import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
 import MyCheckin from '@/components/checkin/MyCheckin.vue';
 
 import { notificationConfig, pageLimit } from '@/constants/app.constant';
-import { TAB_CHECKIN, ROUTER_CHECKIN } from '@/components/checkin/constants.enum';
+import {
+  TAB_CHECKIN,
+  ROUTER_CHECKIN,
+} from '@/components/checkin/constants.enum';
 import { SelectOptionDTO } from '@/constants/app.interface';
 import { GetterState, MutationState } from '@/constants/app.vuex';
 
@@ -75,9 +93,13 @@ export default class CheckinPage extends Vue {
   private paramsCheckin = {
     tab: this.$route.query.tab ? this.$route.query.tab : ROUTER_CHECKIN.MyOkrs,
     page: this.$route.query.page ? this.$route.query.page : 1,
-    cycleId: this.$route.query.cycleId ? this.$route.query.cycleId : String(this.$store.state.cycle.cycleCurrent.id),
+    cycleId: this.$route.query.cycleId
+      ? this.$route.query.cycleId
+      : String(this.$store.state.cycle.cycleCurrent.id),
     limit: this.$route.query.limit ? this.$route.query.limit : 10,
-    projectId: this.$route.query.projectId ? this.$route.query.projectId : String(0),
+    projectId: this.$route.query.projectId
+      ? this.$route.query.projectId
+      : String(0),
   };
 
   private get currentTabComponent() {
@@ -94,11 +116,15 @@ export default class CheckinPage extends Vue {
   }
 
   private handleSelectCycle(cycleId) {
-    this.$router.push(`?tab=${this.paramsCheckin.tab}&cycleId=${cycleId}&page=1&projectId=${this.paramsCheckin.projectId}`);
+    this.$router.push(
+      `?tab=${this.paramsCheckin.tab}&cycleId=${cycleId}&page=1&projectId=${this.paramsCheckin.projectId}`,
+    );
   }
 
   private handleSelectProject(projectId) {
-    this.$router.push(`?tab=${this.paramsCheckin.tab}&cycleId=${this.paramsCheckin.cycleId}&page=1&projectId=${projectId}`);
+    this.$router.push(
+      `?tab=${this.paramsCheckin.tab}&cycleId=${this.paramsCheckin.cycleId}&page=1&projectId=${projectId}`,
+    );
   }
 
   private async getCycles() {
@@ -126,7 +152,9 @@ export default class CheckinPage extends Vue {
           : currentTab === TAB_CHECKIN.CheckinResquest
           ? ROUTER_CHECKIN.CheckinResquest
           : ROUTER_CHECKIN.Inferior
-      }&cycleId=${this.paramsCheckin.cycleId}&page=${this.paramsCheckin.page}&projectId=${this.paramsCheckin.projectId}`,
+      }&cycleId=${this.paramsCheckin.cycleId}&page=${
+        this.paramsCheckin.page
+      }&projectId=${this.paramsCheckin.projectId}`,
     );
   }
 }

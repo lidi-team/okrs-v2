@@ -8,30 +8,70 @@
   >
     <div v-loading="loading">
       <el-row :gutter="20">
-        <el-col :span="6" class="detail-feedback__attribute">Ngày feedback</el-col>
-        <el-col :span="18" class="detail-feedback__value">{{ new Date(data.checkinAt) | dateFormat('DD/MM/YYYY') }}</el-col>
+        <el-col :span="6" class="detail-feedback__attribute"
+          >Ngày feedback</el-col
+        >
+        <el-col :span="18" class="detail-feedback__value">{{
+          new Date(data.checkinAt) | dateFormat('DD/MM/YYYY')
+        }}</el-col>
       </el-row>
       <el-row :gutter="20">
         <el-col :span="6" class="detail-feedback__attribute">Mục tiêu</el-col>
-        <el-col :span="18" class="detail-feedback__value">{{ data.objective.title }}</el-col>
+        <el-col :span="18" class="detail-feedback__value">{{
+          data.objective.title
+        }}</el-col>
       </el-row>
       <el-table :data="data.checkinDetails" style="width: 100%">
-        <el-table-column prop="keyResult.content" label="Kết quả then chốt" min-width="300"></el-table-column>
-        <el-table-column prop="keyResult.targetValue" label="Mục tiêu" width="100"></el-table-column>
-        <el-table-column prop="valueObtained" label="Đạt được" width="100"></el-table-column>
-        <el-table-column prop="progress" label="Tiến độ" width="200"></el-table-column>
-        <el-table-column prop="problems" label="Vấn đề" width="200"></el-table-column>
-        <el-table-column prop="plans" label="Kế hoạch" width="200"></el-table-column>
+        <el-table-column
+          prop="keyResult.content"
+          label="Kết quả then chốt"
+          min-width="300"
+        ></el-table-column>
+        <el-table-column
+          prop="keyResult.targetValue"
+          label="Mục tiêu"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          prop="valueObtained"
+          label="Đạt được"
+          width="100"
+        ></el-table-column>
+        <el-table-column
+          prop="progress"
+          label="Tiến độ"
+          width="200"
+        ></el-table-column>
+        <el-table-column
+          prop="problems"
+          label="Vấn đề"
+          width="200"
+        ></el-table-column>
+        <el-table-column
+          prop="plans"
+          label="Kế hoạch"
+          width="200"
+        ></el-table-column>
         <el-table-column label="Mức độ tự tin" width="140">
           <template v-slot="{ row }">
-            <el-tag :type="row.confidentLevel | filterConfidentTag">{{ row.confidentLevel | filterConfident }}</el-tag>
+            <el-tag :type="row.confidentLevel | filterConfidentTag">{{
+              row.confidentLevel | filterConfident
+            }}</el-tag>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div slot="footer" class="detail-feedback__action">
-      <el-button class="el-button--white el-button--modal" @click="syncVisibleDialog = false">Hủy</el-button>
-      <el-button class="el-button--purple el-button--modal" @click="createFeedback">Tạo phản hồi</el-button>
+      <el-button
+        class="el-button--white el-button--modal"
+        @click="syncVisibleDialog = false"
+        >Hủy</el-button
+      >
+      <el-button
+        class="el-button--purple el-button--modal"
+        @click="createFeedback"
+        >Tạo phản hồi</el-button
+      >
     </div>
   </el-dialog>
 </template>
@@ -46,7 +86,11 @@ import CheckinRepository from '@/repositories/CheckinRepository';
   },
   filters: {
     filterConfident(value: Number) {
-      return value === 1 ? 'Không ổn lắm' : value === 2 ? 'Bình thường' : 'Ổn định';
+      return value === 1
+        ? 'Không ổn lắm'
+        : value === 2
+        ? 'Bình thường'
+        : 'Ổn định';
     },
     filterConfidentTag(value: Number) {
       return value === 1 ? 'danger' : value === 2 ? 'info' : 'success';
@@ -55,12 +99,15 @@ import CheckinRepository from '@/repositories/CheckinRepository';
 })
 export default class DetailFeedback extends Vue {
   @Prop({ type: Object, required: true }) private detailCheckinInfo!: any;
-  @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncVisibleDialog!: boolean;
+  @PropSync('visibleDialog', { type: Boolean, required: true, default: false })
+  public syncVisibleDialog!: boolean;
 
   private async getCheckinDetail() {
     if (this.detailCheckinInfo) {
       this.loading = true;
-      await CheckinRepository.getDetailCheckinByCheckinId(this.detailCheckinInfo.id).then((res) => {
+      await CheckinRepository.getDetailCheckinByCheckinId(
+        this.detailCheckinInfo.id,
+      ).then((res) => {
         this.data = res.data.data;
         this.loading = false;
       });

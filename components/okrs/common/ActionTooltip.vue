@@ -1,11 +1,18 @@
 <template>
-  <el-tooltip class="okrs-tooltip" content="Hành động" placement="right-start" effect="dark">
+  <el-tooltip
+    class="okrs-tooltip"
+    content="Hành động"
+    placement="right-start"
+    effect="dark"
+  >
     <el-popover placement="top" trigger="click">
       <div class="okrs-tooltip__popover">
         <p @click="viewDetailOkrs">Xem chi tiết</p>
         <div v-if="isManage">
           <p @click="updateOKRs">Cập nhật</p>
-          <p v-if="canDelete" style="color: #e53e3e" @click="handleDeleteOKrs">Xóa</p>
+          <p v-if="canDelete" style="color: #e53e3e" @click="handleDeleteOKrs">
+            Xóa
+          </p>
         </div>
       </div>
       <i slot="reference" class="el-icon-more okrs-tooltip__icon"></i>
@@ -15,7 +22,10 @@
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import IconSetting from '@/assets/images/okrs/setting.svg';
-import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
+import {
+  confirmWarningConfig,
+  notificationConfig,
+} from '@/constants/app.constant';
 import { DialogTooltipAction } from '@/constants/app.interface';
 import { MutationState } from '@/constants/app.vuex';
 

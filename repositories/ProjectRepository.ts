@@ -23,7 +23,10 @@ export default class ProjectRepository {
   }
 
   public static postStaffsById(id: number, payload: number[]) {
-    return baseUrl.post(`${ResourcesEnpoint.Project}/` + id + '/staff', payload);
+    return baseUrl.post(
+      `${ResourcesEnpoint.Project}/` + id + '/staff',
+      payload,
+    );
   }
 
   public static putStaffsById(id: number, payload: IProjectStaffState[]) {
@@ -31,7 +34,9 @@ export default class ProjectRepository {
   }
 
   public static deleteStaffById(projectId: number, staffId: number) {
-    return baseUrl.delete(`${ResourcesEnpoint.Project}/` + projectId + '/staff/' + staffId);
+    return baseUrl.delete(
+      `${ResourcesEnpoint.Project}/` + projectId + '/staff/' + staffId,
+    );
   }
 
   public static getActiveCandidates(id: number) {

@@ -7,6 +7,7 @@ export enum enpoint {
   listObjectiveInferior = 'checkin/inferior-objective',
   detailCheckinByObjectiveId = 'checkin/objective',
   history = 'checkin/history',
+  add = 'checkin/add',
 }
 
 export default class CheckinRepository {
@@ -36,5 +37,9 @@ export default class CheckinRepository {
 
   public static getDetailCheckInByObjectiveId(id: Number) {
     return baseUrl.get(`${enpoint.detailCheckinByObjectiveId}/${id}`);
+  }
+
+  public static createCheckin(payload: any) {
+    return baseUrl.post(enpoint.add, payload);
   }
 }

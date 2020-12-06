@@ -1,6 +1,12 @@
 <template>
   <div>
-    <el-table v-loading="loading" :data="checkins" empty-text="Không có dữ liệu" class="requestCheckin" style="width: 100%">
+    <el-table
+      v-loading="loading"
+      :data="checkins"
+      empty-text="Không có dữ liệu"
+      class="requestCheckin"
+      style="width: 100%"
+    >
       <el-table-column label="Họ và tên" min-width="150">
         <template slot-scope="{ row }">
           <span>{{ row.objective.user.fullName || '' }}</span>
@@ -24,7 +30,9 @@
       <el-table-column label="Hành động" align="center" width="180">
         <template slot-scope="{ row }">
           <nuxt-link :to="`checkin/yeu-cau/${row.id}`">
-            <el-button class="el-button--purple el-button--checkin">Duyệt Check-in</el-button>
+            <el-button class="el-button--purple el-button--checkin"
+              >Duyệt Check-in</el-button
+            >
           </nuxt-link>
         </template>
       </el-table-column>
@@ -70,9 +78,13 @@ export default class RequestCheckin extends Vue {
   private async getListCheckin() {
     this.loading = true;
     const page = this.$route.query.page ? this.$route.query.page : 1;
-    const cycleId = this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycleCurrent.id;
+    const cycleId = this.$route.query.cycleId
+      ? this.$route.query.cycleId
+      : this.$store.state.cycle.cycleCurrent.id;
     const limit = this.$route.query.limit ? this.$route.query.limit : 10;
-    const projectId = this.$route.query.projectId ? this.$route.query.projectId : 0;
+    const projectId = this.$route.query.projectId
+      ? this.$route.query.projectId
+      : 0;
     const { data } = await CheckinRepository.getRequestCheckin({
       projectId,
       page,
