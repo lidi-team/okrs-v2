@@ -102,12 +102,12 @@
         <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
             <template v-if="row.edit">
-              <el-button type="success" size="small" icon="el-icon-circle-check-outline" @click="confirmEdit(row)"> Ok </el-button>
-              <el-button class="cancel-btn" size="small" icon="el-icon-refresh" type="warning" @click="cancelEdit(row)"> cancel </el-button>
+              <el-button type="success" size="small" icon="el-icon-circle-check-outline" @click="confirmEdit(row)"> Đồng ý </el-button>
+              <el-button class="cancel-btn" size="small" icon="el-icon-refresh" type="warning" @click="cancelEdit(row)"> Hủy </el-button>
             </template>
             <template v-else>
-              <el-button type="primary" size="small" icon="el-icon-edit" @click="handleEditRow(row)"> Edit</el-button>
-              <el-button size="mini" type="danger" @click="handleDelete(row, id)"> Delete</el-button>
+              <el-button type="primary" size="small" icon="el-icon-edit" @click="handleEditRow(row)"> Cập nhật </el-button>
+              <el-button size="mini" type="danger" @click="handleDelete(row, id)"> Xóa </el-button>
             </template>
           </template>
         </el-table-column>
@@ -288,7 +288,9 @@ export default class ControlProject extends Vue {
   }
 
   private getReviewers(id: number) {
-    return this.projectStaffs.filter((value) => value.id !== id);
+    const data = this.projectStaffs.filter((value) => value.id !== id);
+    data.push(this.projectData.pm);
+    return data;
   }
 
   private cancelEdit(row: ProjectStaff) {
@@ -301,13 +303,30 @@ export default class ControlProject extends Vue {
     });
   }
 
-  private confirmEdit(row: ProjectStaff) {
-    row.edit = false;
-    // row.originalTitle = row.title;
-    this.$message({
-      message: 'The title has been edited',
-      type: 'success',
-    });
+  private async confirmEdit(row: ProjectStaff) {
+    try {
+      if (!!this.draftEditStaff.positionId && !!this.draftEditStaff.reviewerId) {
+        const { data } = await ProjectRepository.putStaffsById(this.id, [this.draftEditStaff]);
+        row.edit = false;
+        this.draftEditStaff.reviewerId = undefined;
+        this.draftEditStaff.positionId = undefined;
+        this.$notify.success({
+          ...notificationConfig,
+          message: 'Cập nhật nhân viên thành công',
+        });
+        await this.getProjectStaffs(this.id);
+      } else {
+        this.$notify.warning({
+          ...notificationConfig,
+          message: 'Vui lòng chọn vị trí và quản lý cho nhân viên.',
+        });
+      }
+    } catch (e) {
+      this.$notify.warning({
+        ...notificationConfig,
+        message: 'Cập nhật nhân viên thất bại',
+      });
+    }
   }
 
   private handleEditRow(row: ProjectStaff) {
