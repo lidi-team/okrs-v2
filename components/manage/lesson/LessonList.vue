@@ -5,10 +5,17 @@
         <tr>
           <td>
             <h1 class="list-lesson__title table">Bài Học OKRs</h1>
-            <table v-for="post in posts" :key="post.id" class="table__wrap-content">
+            <table
+              v-for="post in posts"
+              :key="post.id"
+              class="table__wrap-content"
+            >
               <tbody>
                 <tr class="table__tr">
-                  <td class="table__td--left xs-block xs-fillWidth xs-paddingBottom12" width="150">
+                  <td
+                    class="table__td--left xs-block xs-fillWidth xs-paddingBottom12"
+                    width="150"
+                  >
                     <nuxt-link :to="`/hoc-okrs/${post.slug}`">
                       <div
                         class="xs-fillWidth table__image"
@@ -18,7 +25,9 @@
                       ></div>
                     </nuxt-link>
                   </td>
-                  <td class="table__td--right xs-paddingLeft0 xs-block xs-fillWidth">
+                  <td
+                    class="table__td--right xs-paddingLeft0 xs-block xs-fillWidth"
+                  >
                     <nuxt-link :to="`/hoc-okrs/${post.slug}`">
                       <h1 class="table__title digestPostTitle">
                         {{ post.title }}
@@ -28,7 +37,9 @@
                       {{ post.abstract }}
                     </div>
                     <div class="xs-marginTop10 table__author">
-                      <span style="color: #757575">{{ new Date(post.createdAt) | dateFormat('DD/MM/YYYY') }}</span
+                      <span style="color: #757575">{{
+                        new Date(post.createdAt) | dateFormat('DD/MM/YYYY')
+                      }}</span
                       ><img
                         src="https://cdn-images-1.medium.com/proxy/1*dMba6LR4dsoQTHzQ5T7oaA.png"
                         alt="Member only content"

@@ -19,7 +19,9 @@ export default class CycleRepository {
     return baseUrl.get(enpoint.cyclesMetadata);
   }
 
-  public static getCycleDetailById(cycleId: Number): Promise<AxiosResponse<any>> {
+  public static getCycleDetailById(
+    cycleId: Number,
+  ): Promise<AxiosResponse<any>> {
     return baseUrl.get(`${enpoint.cycles}/${cycleId}`);
   }
 

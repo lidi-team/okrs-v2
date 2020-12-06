@@ -32,7 +32,11 @@ $breakpoints: (
   $raw-query: map-get($breakpoints, $breakpoint);
 
   @if $raw-query {
-    $query: if(type-of($raw-query) == 'string', unquote($raw-query), inspect($raw-query));
+    $query: if(
+      type-of($raw-query) == 'string',
+      unquote($raw-query),
+      inspect($raw-query)
+    );
 
     @media #{$query} {
       @content;
@@ -49,7 +53,13 @@ $breakpoints: (
 // .class {
 //   @include position(absolute, 10px, 10px, 10px, 10px);
 // }
-@mixin position($position, $top: null, $right: null, $bottom: null, $left: null) {
+@mixin position(
+  $position,
+  $top: null,
+  $right: null,
+  $bottom: null,
+  $left: null
+) {
   position: $position;
   top: $top;
   right: $right;
@@ -164,7 +174,11 @@ $breakpoints: (
 // .class {
 //   @include truncate-multiline-old({ $line-number: 2 });
 // }
-@mixin truncate-multiline-old($line-height: 1.2em, $line-number: 1, $bg-color: $white) {
+@mixin truncate-multiline-old(
+  $line-height: 1.2em,
+  $line-number: 1,
+  $bg-color: $white
+) {
   overflow: hidden;
   position: relative;
   line-height: $line-height;
@@ -230,7 +244,8 @@ $breakpoints: (
 }
 
 @mixin drop-shadow {
-  filter: drop-shadow(0px 0px 0px rgba(63, 63, 68, 0.05)), drop-shadow(0px 1px 3px rgba(63, 63, 68, 0.15));
+  filter: drop-shadow(0px 0px 0px rgba(63, 63, 68, 0.05)),
+    drop-shadow(0px 1px 3px rgba(63, 63, 68, 0.15));
 }
 
 @mixin box-shadow {

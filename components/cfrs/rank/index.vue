@@ -12,22 +12,44 @@
               placeholder="Chọn chu kỳ"
               class="rank__col__header--dropdown"
             >
-              <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.label" :value="cycle.id" />
+              <el-option
+                v-for="cycle in listCycles"
+                :key="cycle.id"
+                :label="cycle.label"
+                :value="cycle.id"
+              />
             </el-select>
           </div>
-          <p v-if="!currentRanking.length" v-loading="loadingCurrentRanking" class="history__col__empty">Không có dữ liệu</p>
+          <p
+            v-if="!currentRanking.length"
+            v-loading="loadingCurrentRanking"
+            class="history__col__empty"
+          >
+            Không có dữ liệu
+          </p>
           <div v-else v-loading="loadingCurrentRanking">
-            <div v-for="(item, index) in currentRanking" :key="item.id" class="rank-item">
+            <div
+              v-for="(item, index) in currentRanking"
+              :key="item.id"
+              class="rank-item"
+            >
               <div class="rank-item__left">
                 <div :class="['rank-item__left__index', topRanking(index)]">
                   <span>{{ index + 1 }}</span>
                 </div>
                 <el-avatar :size="40">
-                  <img :src="item.avatarURL ? item.avatarURL : item.gravatarURL" alt="avatar" />
+                  <img
+                    :src="item.avatarURL ? item.avatarURL : item.gravatarURL"
+                    alt="avatar"
+                  />
                 </el-avatar>
                 <div class="rank-item__left__info">
-                  <p class="rank-item__left__info--fullname">{{ item.user_fullName }}</p>
-                  <p class="rank-item__left__info--department">{{ displayDepartment(item) }}</p>
+                  <p class="rank-item__left__info--fullname">
+                    {{ item.user_fullName }}
+                  </p>
+                  <p class="rank-item__left__info--department">
+                    {{ displayDepartment(item) }}
+                  </p>
                 </div>
               </div>
               <div class="rank-item__right">
@@ -40,19 +62,35 @@
       </el-col>
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <div class="rank__col">
-          <p class="rank__col__header" style="padding-bottom: 20px">BXH lũy kế</p>
-          <p v-if="!accumulatedRanking.length" class="history__col__empty">Không có dữ liệu</p>
-          <div v-for="(item, index) in accumulatedRanking" v-else :key="item.id" class="rank-item">
+          <p class="rank__col__header" style="padding-bottom: 20px">
+            BXH lũy kế
+          </p>
+          <p v-if="!accumulatedRanking.length" class="history__col__empty">
+            Không có dữ liệu
+          </p>
+          <div
+            v-for="(item, index) in accumulatedRanking"
+            v-else
+            :key="item.id"
+            class="rank-item"
+          >
             <div class="rank-item__left">
               <div :class="['rank-item__left__index', topRanking(index)]">
                 <span>{{ index + 1 }}</span>
               </div>
               <el-avatar :size="40">
-                <img :src="item.avatarURL ? item.avatarURL : item.gravatarURL" alt="avatar" />
+                <img
+                  :src="item.avatarURL ? item.avatarURL : item.gravatarURL"
+                  alt="avatar"
+                />
               </el-avatar>
               <div class="rank-item__left__info">
-                <p class="rank-item__left__info--fullname">{{ item.user_fullName }}</p>
-                <p class="rank-item__left__info--department">{{ displayDepartment(item) }}</p>
+                <p class="rank-item__left__info--fullname">
+                  {{ item.user_fullName }}
+                </p>
+                <p class="rank-item__left__info--department">
+                  {{ displayDepartment(item) }}
+                </p>
               </div>
             </div>
             <div class="rank-item__right">
@@ -127,7 +165,13 @@ export default class Rank extends Vue {
   }
 
   private topRanking(index: number): String {
-    return index === 1 ? 'top1' : index === 2 ? 'top2' : index === 3 ? 'top3' : 'topdown';
+    return index === 1
+      ? 'top1'
+      : index === 2
+      ? 'top2'
+      : index === 3
+      ? 'top3'
+      : 'topdown';
   }
 
   private displayDepartment(item: any): String {

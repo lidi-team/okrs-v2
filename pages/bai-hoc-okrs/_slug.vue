@@ -1,6 +1,10 @@
 <template>
   <lesson-content :post="post">
-    <el-page-header slot="header" title="Quản lý bài học OKRs" @back="goBack()" />
+    <el-page-header
+      slot="header"
+      title="Quản lý bài học OKRs"
+      @back="goBack()"
+    />
   </lesson-content>
 </template>
 <script lang="ts">

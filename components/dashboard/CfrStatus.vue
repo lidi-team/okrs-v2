@@ -11,15 +11,38 @@
       </div>
     </div>
     <div class="cfr-status__content">
-      <div v-for="(item, index) in dataCfr" :key="item.name" class="cfr-status__item item">
+      <div
+        v-for="(item, index) in dataCfr"
+        :key="item.name"
+        class="cfr-status__item item"
+      >
         <div class="item__left">
-          <span v-if="index === 0" style="background-color: #32c8ff; border-color: #32c8ff" class="item__circle">F</span>
-          <span v-else-if="index === 1" style="background-color: #ffc832; border-color: #ffc832" class="item__circle">R</span>
-          <span v-else style="background-color: #ff0064; border-color: #ff0064" class="item__circle">U</span>
+          <span
+            v-if="index === 0"
+            style="background-color: #32c8ff; border-color: #32c8ff"
+            class="item__circle"
+            >F</span
+          >
+          <span
+            v-else-if="index === 1"
+            style="background-color: #ffc832; border-color: #ffc832"
+            class="item__circle"
+            >R</span
+          >
+          <span
+            v-else
+            style="background-color: #ff0064; border-color: #ff0064"
+            class="item__circle"
+            >U</span
+          >
           <span class="item__cfr">{{ item.value }} {{ item.name }}</span>
         </div>
         <div class="item__right">
-          <span class="item__change" :style="`color: ${customColors(item.changing)}`">{{ item.changing }}</span>
+          <span
+            class="item__change"
+            :style="`color: ${customColors(item.changing)}`"
+            >{{ item.changing }}</span
+          >
         </div>
       </div>
     </div>

@@ -1,7 +1,15 @@
 <template>
-  <el-row class="reset-password-page" type="flex" justify="center" align="center">
+  <el-row
+    class="reset-password-page"
+    type="flex"
+    justify="center"
+    align="center"
+  >
     <el-col :xs="24" :sm="24" :md="8" :lg="8" class="reset-password__image">
-      <img src="@/assets/images/account/tiny-reset-password.png" alt="reset password image" />
+      <img
+        src="@/assets/images/account/tiny-reset-password.png"
+        alt="reset password image"
+      />
     </el-col>
     <el-col :xs="24" :sm="24" :md="8" :lg="8">
       <account-reset-password :token="token" />

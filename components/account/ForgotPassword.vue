@@ -14,26 +14,38 @@
       @submit.native.prevent="handleForgotPasswordForm"
     >
       <el-form-item prop="email" label="Email liên kết" class="custom-label">
-        <el-input v-model="forgotPasswordForm.email" class="fpass__email" placeholder="Tên đăng nhập hoặc email"></el-input>
+        <el-input
+          v-model="forgotPasswordForm.email"
+          class="fpass__email"
+          placeholder="Tên đăng nhập hoặc email"
+        ></el-input>
       </el-form-item>
       <el-row type="flex" justify="space-between" class="fpass__warning">
         <el-col :span="1" class="fpass__warning--star">(*)</el-col>
         <el-col :span="23">
           <p>
-            <strong>Quên mật khẩu ?</strong> Điền email liên kết với tài khoản của bạn. Chúng tôi sẽ gửi đến địa chỉ email đó một link liên kết giúp
-            bạn đặt lại mật khẩu mới.
+            <strong>Quên mật khẩu ?</strong> Điền email liên kết với tài khoản
+            của bạn. Chúng tôi sẽ gửi đến địa chỉ email đó một link liên kết
+            giúp bạn đặt lại mật khẩu mới.
           </p>
         </el-col>
       </el-row>
 
       <el-row class="fpass__action" type="flex" justify="space-between">
         <el-col :span="24">
-          <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handleForgotPasswordForm">
+          <el-button
+            :loading="loading"
+            class="el-button el-button--purple el-button--medium"
+            @click="handleForgotPasswordForm"
+          >
             Lấy lại mật khẩu
           </el-button>
         </el-col>
         <el-col :span="24">
-          <nuxt-link to="/dang-nhap"><strong>Quay lại trang</strong> <span class="fpass__action--login">Đăng nhập</span></nuxt-link>
+          <nuxt-link to="/dang-nhap"
+            ><strong>Quay lại trang</strong>
+            <span class="fpass__action--login">Đăng nhập</span></nuxt-link
+          >
         </el-col>
       </el-row>
     </el-form>
@@ -60,34 +72,46 @@ export default class ForgotPassword extends Vue {
 
   private handleForgotPasswordForm(): void {
     this.loading = true;
-    (this.$refs.forgotPasswordForm as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
-      if (isValid) {
-        try {
-          await AuthRepository.sendMailToResetPassword(this.forgotPasswordForm);
-          this.loading = false;
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'Đã gửi yêu cầu. Vui lòng kiểm tra email của bạn',
-          });
-          this.$router.push('/dang-nhap');
-        } catch (error) {
+    (this.$refs.forgotPasswordForm as Form).validate(
+      async (isValid: boolean, invalidatedFields: object) => {
+        if (isValid) {
+          try {
+            await AuthRepository.sendMailToResetPassword(
+              this.forgotPasswordForm,
+            );
+            this.loading = false;
+            this.$notify.success({
+              ...notificationConfig,
+              message: 'Đã gửi yêu cầu. Vui lòng kiểm tra email của bạn',
+            });
+            this.$router.push('/dang-nhap');
+          } catch (error) {
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+          }
+        }
+        if (invalidatedFields) {
           setTimeout(() => {
             this.loading = false;
           }, 300);
         }
-      }
-      if (invalidatedFields) {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
+      },
+    );
   }
 
   public rules: Maps<Rule[]> = {
     email: [
-      { required: true, message: 'Vui lòng nhập địa chỉ email', trigger: 'blur' },
-      { type: 'email', message: 'Vui lòng nhập đúng địa chỉ email', trigger: 'blur' },
+      {
+        required: true,
+        message: 'Vui lòng nhập địa chỉ email',
+        trigger: 'blur',
+      },
+      {
+        type: 'email',
+        message: 'Vui lòng nhập đúng địa chỉ email',
+        trigger: 'blur',
+      },
       max255Char,
     ],
   };

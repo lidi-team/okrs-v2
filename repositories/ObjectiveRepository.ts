@@ -18,12 +18,22 @@ export default class ObjectiveRepository {
     return baseUrl.post(enpoint.createObjective, data);
   }
 
-  public static getAlignObjective(cycleId: Number, projectId: Number): Promise<AxiosResponse<any>> {
-    return baseUrl.get(enpoint.alignObjective, { params: { cycleId, projectId } });
+  public static getAlignObjective(
+    cycleId: Number,
+    projectId: Number,
+  ): Promise<AxiosResponse<any>> {
+    return baseUrl.get(enpoint.alignObjective, {
+      params: { cycleId, projectId },
+    });
   }
 
-  public static getObjectivesProject(cycleId: Number, projectId: Number): Promise<AxiosResponse<any>> {
-    return baseUrl.get(enpoint.objectivesProject, { params: { cycleId, projectId } });
+  public static getObjectivesProject(
+    cycleId: Number,
+    projectId: Number,
+  ): Promise<AxiosResponse<any>> {
+    return baseUrl.get(enpoint.objectivesProject, {
+      params: { cycleId, projectId },
+    });
   }
 
   public static deleteObjective(id: Number): Promise<AxiosResponse<any>> {

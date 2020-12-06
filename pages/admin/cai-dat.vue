@@ -13,15 +13,29 @@
             />
           </div>
           <div class="admin__top__right">
-            <el-button class="el-button--purple el-button--invite" icon="el-icon-plus" @click="addNew">
+            <el-button
+              class="el-button--purple el-button--invite"
+              icon="el-icon-plus"
+              @click="addNew"
+            >
               Thêm mới {{ topChange.buttonName }}
             </el-button>
           </div>
         </div>
       </template>
       <template #tab>
-        <el-tabs v-model="currentTab" class="admin__tab" @tab-click="switchTabs(currentTab)">
-          <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab" :lazy="true" />
+        <el-tabs
+          v-model="currentTab"
+          class="admin__tab"
+          @tab-click="switchTabs(currentTab)"
+        >
+          <el-tab-pane
+            v-for="tab in tabs"
+            :key="tab"
+            :label="tab"
+            :name="tab"
+            :lazy="true"
+          />
           <div class="admin__tab__table">
             <component
               :is="currentTabComponent"
@@ -35,7 +49,11 @@
         </el-tabs>
       </template>
     </admin-slot>
-    <component :is="currentDialogComponent" :visible-dialog.sync="visibleDialog" :reload-data="getListData" />
+    <component
+      :is="currentDialogComponent"
+      :visible-dialog.sync="visibleDialog"
+      :reload-data="getListData"
+    />
   </div>
 </template>
 <script lang="ts">
@@ -161,7 +179,10 @@ export default class SettingCompanyPage extends Vue {
       text: this.$route.query.text ? String(this.$route.query.text) : '',
     };
     try {
-      if (this.$route.query.tab === AdminTabsEn.CycleOKR || this.$route.query.tab === undefined) {
+      if (
+        this.$route.query.tab === AdminTabsEn.CycleOKR ||
+        this.$route.query.tab === undefined
+      ) {
         await CycleRepository.get(this.adminParams).then((res) => {
           this.tableData = res.data.items;
           this.totalItems = res.data.meta.totalItems;
@@ -191,7 +212,10 @@ export default class SettingCompanyPage extends Vue {
   }
 
   private get currentTabComponent() {
-    if (this.$route.query.tab === undefined || this.$route.query.tab === AdminTabsEn.CycleOKR) {
+    if (
+      this.$route.query.tab === undefined ||
+      this.$route.query.tab === AdminTabsEn.CycleOKR
+    ) {
       return ManageCycleOkrs;
     } else if (this.$route.query.tab === AdminTabsEn.Department) {
       return ManageDepartment;
@@ -219,7 +243,10 @@ export default class SettingCompanyPage extends Vue {
   }
 
   private get topChange() {
-    if (this.$route.query.tab === undefined || this.$route.query.tab === AdminTabsEn.CycleOKR) {
+    if (
+      this.$route.query.tab === undefined ||
+      this.$route.query.tab === AdminTabsEn.CycleOKR
+    ) {
       return {
         buttonName: 'chu kỳ',
         textPlaceholder: 'Tìm kiếm chu kỳ',

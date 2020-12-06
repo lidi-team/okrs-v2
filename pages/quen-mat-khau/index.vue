@@ -1,7 +1,21 @@
 <template>
-  <el-row class="forgot-password-page" type="flex" justify="center" align="center">
-    <el-col :xs="24" :sm="24" :md="8" :lg="8" class="forgot-password-page__image">
-      <img src="@/assets/images/account/tiny-forgot-password.png" alt="login image" />
+  <el-row
+    class="forgot-password-page"
+    type="flex"
+    justify="center"
+    align="center"
+  >
+    <el-col
+      :xs="24"
+      :sm="24"
+      :md="8"
+      :lg="8"
+      class="forgot-password-page__image"
+    >
+      <img
+        src="@/assets/images/account/tiny-forgot-password.png"
+        alt="login image"
+      />
     </el-col>
     <el-col :xs="24" :sm="24" :md="8" :lg="8">
       <account-forgot-password />

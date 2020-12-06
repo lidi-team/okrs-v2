@@ -1,13 +1,20 @@
 <template>
   <div v-loading="loadingTable">
-    <el-table :data="tableData" empty-text="Không có dữ liệu" class="unit-admin">
+    <el-table
+      :data="tableData"
+      empty-text="Không có dữ liệu"
+      class="unit-admin"
+    >
       <el-table-column prop="index" label="Thứ tự sắp xếp" />
       <el-table-column prop="type" label="Tên đơn vị" />
       <el-table-column prop="present" label="Tên viết tắt" />
       <el-table-column label="Thao tác" align="center">
         <template v-slot="{ row }">
           <el-tooltip class="unit-admin__icon" content="Sửa" placement="top">
-            <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
+            <i
+              class="el-icon-edit icon--info"
+              @click="handleOpenDialogUpdate(row)"
+            ></i>
           </el-tooltip>
           <el-tooltip class="unit-admin__icon" content="Xóa" placement="top">
             <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
@@ -32,22 +39,58 @@
     >
       <el-row>
         <el-col :span="24">
-          <el-form ref="tempUpdateUnit" :model="tempUpdateUnit" :hide-required-asterisk="false" :status-icon="true" :rules="rules">
-            <el-form-item label="Tên đơn vị" prop="type" class="custom-label" label-width="120px">
-              <el-input v-model="tempUpdateUnit.type" placeholder="Nhập tên đơn vị" @keyup.enter.native="handleUpdate(tempUpdateUnit)" />
+          <el-form
+            ref="tempUpdateUnit"
+            :model="tempUpdateUnit"
+            :hide-required-asterisk="false"
+            :status-icon="true"
+            :rules="rules"
+          >
+            <el-form-item
+              label="Tên đơn vị"
+              prop="type"
+              class="custom-label"
+              label-width="120px"
+            >
+              <el-input
+                v-model="tempUpdateUnit.type"
+                placeholder="Nhập tên đơn vị"
+                @keyup.enter.native="handleUpdate(tempUpdateUnit)"
+              />
             </el-form-item>
             <el-form-item label="Tên viết tắt" label-width="120px">
-              <el-input v-model="tempUpdateUnit.present" placeholder="Nhập tên viết tắt" @keyup.enter.native="handleUpdate(tempUpdateUnit)" />
+              <el-input
+                v-model="tempUpdateUnit.present"
+                placeholder="Nhập tên viết tắt"
+                @keyup.enter.native="handleUpdate(tempUpdateUnit)"
+              />
             </el-form-item>
-            <el-form-item label="Thứ tự hiển thị" prop="index" class="custom-label" label-width="120px">
-              <el-input v-model.number="tempUpdateUnit.index" placeholder="Nhập thứ tự hiển thị" @keyup.enter.native="handleUpdate(tempUpdateUnit)" />
+            <el-form-item
+              label="Thứ tự hiển thị"
+              prop="index"
+              class="custom-label"
+              label-width="120px"
+            >
+              <el-input
+                v-model.number="tempUpdateUnit.index"
+                placeholder="Nhập thứ tự hiển thị"
+                @keyup.enter.native="handleUpdate(tempUpdateUnit)"
+              />
             </el-form-item>
           </el-form>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-        <el-button class="el-button--purple el-button--modal" @click="handleUpdate">Cập nhật</el-button>
+        <el-button
+          class="el-button--white el-button--modal"
+          @click="handleCloseDialog"
+          >Hủy</el-button
+        >
+        <el-button
+          class="el-button--purple el-button--modal"
+          @click="handleUpdate"
+          >Cập nhật</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -57,7 +100,10 @@ import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
 import { max255Char } from '@/constants/account.constant';
-import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
+import {
+  notificationConfig,
+  confirmWarningConfig,
+} from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { AdminTabsEn } from '@/constants/app.enum';
@@ -82,7 +128,8 @@ export default class ManageMeasureUnit extends Vue {
   @Prop(Function) public reloadData!: Function;
   @Prop({ type: Number, required: true }) public total!: number;
   @PropSync('page', { type: Number, required: true }) public syncPage!: number;
-  @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
+  @PropSync('limit', { type: Number, required: true })
+  public syncLimit!: number;
 
   public loadingTable: boolean = false;
   private dialogUpdateVisible: boolean = false;
@@ -94,10 +141,22 @@ export default class ManageMeasureUnit extends Vue {
 
   private rules: Maps<Rule[]> = {
     type: [{ validator: this.sanitizeInput, trigger: 'blur' }, max255Char],
-    index: [{ type: 'number', min: 1, required: true, message: 'Thứ tự phải là 1 số nguyên không âm', trigger: 'blur' }],
+    index: [
+      {
+        type: 'number',
+        min: 1,
+        required: true,
+        message: 'Thứ tự phải là 1 số nguyên không âm',
+        trigger: 'blur',
+      },
+    ],
   };
 
-  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private sanitizeInput(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     const isEmpty = (value: string) => !value.trim().length;
     if (value.length === 0) {
       return callback('Vui lòng nhập tên đơn vị');
@@ -119,24 +178,28 @@ export default class ManageMeasureUnit extends Vue {
   }
 
   private handleUpdate(): void {
-    (this.$refs.tempUpdateUnit as Form).validate((isValid: boolean, invalidatedFields: object) => {
-      if (isValid) {
-        this.$confirm(`Bạn có chắc chắn muốn cập nhật đơn vị này không?`, {
-          ...confirmWarningConfig,
-        }).then(async () => {
-          try {
-            await MeasureUnitRepository.update(this.tempUpdateUnit).then((res) => {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Cập nhật đơn vị thành công',
-              });
-            });
-            this.reloadData();
-            this.dialogUpdateVisible = false;
-          } catch (error) {}
-        });
-      }
-    });
+    (this.$refs.tempUpdateUnit as Form).validate(
+      (isValid: boolean, invalidatedFields: object) => {
+        if (isValid) {
+          this.$confirm(`Bạn có chắc chắn muốn cập nhật đơn vị này không?`, {
+            ...confirmWarningConfig,
+          }).then(async () => {
+            try {
+              await MeasureUnitRepository.update(this.tempUpdateUnit).then(
+                (res) => {
+                  this.$notify.success({
+                    ...notificationConfig,
+                    message: 'Cập nhật đơn vị thành công',
+                  });
+                },
+              );
+              this.reloadData();
+              this.dialogUpdateVisible = false;
+            } catch (error) {}
+          });
+        }
+      },
+    );
   }
 
   private deleteRow(row: MeasureUnitDTO): void {
@@ -156,7 +219,9 @@ export default class ManageMeasureUnit extends Vue {
   }
 
   private handlePagination(pagination: any) {
-    this.$router.push(`?tab=${AdminTabsEn.MeasureUnit}&page=${pagination.page}`);
+    this.$router.push(
+      `?tab=${AdminTabsEn.MeasureUnit}&page=${pagination.page}`,
+    );
   }
 
   private handleCloseDialog(): void {

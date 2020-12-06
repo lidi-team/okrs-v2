@@ -1,8 +1,19 @@
 <template>
   <el-row v-if="currentTabComponent === 'history'" class="navbar-history">
     <el-col :xs="8" :sm="8" :md="8" :lg="8">
-      <el-select v-if="listCycles.length > 0" v-model.number="cycleId" filterable placeholder="Nhập chu kỳ" no-match-text="Không tìm thấy chu kỳ">
-        <el-option v-for="cycle in listCycles" :key="cycle.id" :label="cycle.label" :value="cycle.id" />
+      <el-select
+        v-if="listCycles.length > 0"
+        v-model.number="cycleId"
+        filterable
+        placeholder="Nhập chu kỳ"
+        no-match-text="Không tìm thấy chu kỳ"
+      >
+        <el-option
+          v-for="cycle in listCycles"
+          :key="cycle.id"
+          :label="cycle.label"
+          :value="cycle.id"
+        />
       </el-select>
     </el-col>
     <el-col :xs="12" :sm="12" :md="12" :lg="12">
@@ -17,11 +28,18 @@
         <template v-slot="{ item }">
           <div class="navbar-history__search">
             <el-avatar :size="30">
-              <img :src="item.avatarURL ? item.avatarURL : item.gravatarURL" alt="avatar" />
+              <img
+                :src="item.avatarURL ? item.avatarURL : item.gravatarURL"
+                alt="avatar"
+              />
             </el-avatar>
             <div class="navbar-history__search--info">
-              <b class="navbar-history__search--info--fullName">{{ item.fullName }}</b>
-              <p class="navbar-history__search--info--department">{{ getInforUser(item) }}</p>
+              <b class="navbar-history__search--info--fullName">{{
+                item.fullName
+              }}</b>
+              <p class="navbar-history__search--info--department">
+                {{ getInforUser(item) }}
+              </p>
             </div>
           </div>
         </template>

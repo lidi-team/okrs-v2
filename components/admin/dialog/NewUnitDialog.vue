@@ -1,23 +1,52 @@
 <template>
-  <el-dialog title="Thêm mới đơn vị" :visible.sync="syncMeasureUnitDialog" width="30%" placement="center" :before-close="handleCloseDialog">
+  <el-dialog
+    title="Thêm mới đơn vị"
+    :visible.sync="syncMeasureUnitDialog"
+    width="30%"
+    placement="center"
+    :before-close="handleCloseDialog"
+  >
     <el-row>
       <el-col :span="24">
         <el-form ref="tempCreateUnit" :model="tempCreateUnit" :rules="rules">
-          <el-form-item label="Tên đơn vị" prop="name" class="custom-label" label-width="120px">
-            <el-input v-model="tempCreateUnit.type" placeholder="Nhập tên đơn vị" />
+          <el-form-item
+            label="Tên đơn vị"
+            prop="name"
+            class="custom-label"
+            label-width="120px"
+          >
+            <el-input
+              v-model="tempCreateUnit.type"
+              placeholder="Nhập tên đơn vị"
+            />
           </el-form-item>
           <el-form-item label="Tên viết tắt" label-width="120px">
-            <el-input v-model="tempCreateUnit.preset" placeholder="Nhập tên viết tắt" />
+            <el-input
+              v-model="tempCreateUnit.preset"
+              placeholder="Nhập tên viết tắt"
+            />
           </el-form-item>
           <el-form-item label="Thứ tự hiển thị" label-width="120px">
-            <el-input v-model.number="tempCreateUnit.index" placeholder="Nhập thứ tự hiển thị" />
+            <el-input
+              v-model.number="tempCreateUnit.index"
+              placeholder="Nhập thứ tự hiển thị"
+            />
           </el-form-item>
         </el-form>
       </el-col>
     </el-row>
     <span slot="footer">
-      <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-      <el-button :loading="loading" class="el-button--purple el-button--modal" @click="createTeam">Thêm mới</el-button>
+      <el-button
+        class="el-button--white el-button--modal"
+        @click="handleCloseDialog"
+        >Hủy</el-button
+      >
+      <el-button
+        :loading="loading"
+        class="el-button--purple el-button--modal"
+        @click="createTeam"
+        >Thêm mới</el-button
+      >
     </span>
   </el-dialog>
 </template>
@@ -35,7 +64,8 @@ import { max255Char } from '@/constants/account.constant';
 })
 export default class MeasureUnitDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
-  @PropSync('visibleDialog', { type: Boolean, required: true }) public syncMeasureUnitDialog!: boolean;
+  @PropSync('visibleDialog', { type: Boolean, required: true })
+  public syncMeasureUnitDialog!: boolean;
 
   private loading: boolean = false;
   private dateFormat: string = 'dd/MM/yyyy';
@@ -46,10 +76,17 @@ export default class MeasureUnitDialog extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    type: [{ validator: this.sanitizeInput, trigger: ['change', 'blur'] }, max255Char],
+    type: [
+      { validator: this.sanitizeInput, trigger: ['change', 'blur'] },
+      max255Char,
+    ],
   };
 
-  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private sanitizeInput(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     const isEmpty = (value: string) => !value.trim().length;
     if (value.length === 0) {
       return callback('Vui lòng nhập tên đơn vị');
@@ -62,29 +99,33 @@ export default class MeasureUnitDialog extends Vue {
 
   private createTeam() {
     this.loading = true;
-    (this.$refs.tempCreateUnit as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
-      if (isValid) {
-        try {
-          await MeasureUnitRepository.post(this.tempCreateUnit).then((res) => {
-            this.$notify.success({
-              ...notificationConfig,
-              message: 'Tạo đơn vị mới thành công',
-            });
-          });
-          this.clearForm();
-          this.loading = false;
-          this.reloadData();
-          this.syncMeasureUnitDialog = false;
-        } catch (error) {
-          this.loading = false;
+    (this.$refs.tempCreateUnit as Form).validate(
+      async (isValid: boolean, invalidatedFields: object) => {
+        if (isValid) {
+          try {
+            await MeasureUnitRepository.post(this.tempCreateUnit).then(
+              (res) => {
+                this.$notify.success({
+                  ...notificationConfig,
+                  message: 'Tạo đơn vị mới thành công',
+                });
+              },
+            );
+            this.clearForm();
+            this.loading = false;
+            this.reloadData();
+            this.syncMeasureUnitDialog = false;
+          } catch (error) {
+            this.loading = false;
+          }
         }
-      }
-      if (invalidatedFields) {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
+        if (invalidatedFields) {
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
+        }
+      },
+    );
   }
 
   private handleCloseDialog() {

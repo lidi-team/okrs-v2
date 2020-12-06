@@ -2,17 +2,41 @@
   <div class="table-lesson">
     <div class="table-lesson__search search">
       <div class="search__left">
-        <el-input v-model="paramsLesson.text" class="search__input" placeholder="Từ khoá tìm kiếm" prefix-icon="el-icon-search" />
-        <el-button class="el-button--white el-button--small el-button--search" @click="handleSearch(paramsLesson.text)">Tìm kiếm</el-button>
+        <el-input
+          v-model="paramsLesson.text"
+          class="search__input"
+          placeholder="Từ khoá tìm kiếm"
+          prefix-icon="el-icon-search"
+        />
+        <el-button
+          class="el-button--white el-button--small el-button--search"
+          @click="handleSearch(paramsLesson.text)"
+          >Tìm kiếm</el-button
+        >
       </div>
       <div class="search__right">
-        <el-button class="el-button--purple el-button--small el-button--create" icon="el-icon-plus" @click="handleCreate">Thêm bài mới</el-button>
+        <el-button
+          class="el-button--purple el-button--small el-button--create"
+          icon="el-icon-plus"
+          @click="handleCreate"
+          >Thêm bài mới</el-button
+        >
       </div>
     </div>
-    <el-table v-loading="loading" empty-text="Không có dữ liệu" class="table-lesson__content" :data="tableLesson" style="width: 100%">
+    <el-table
+      v-loading="loading"
+      empty-text="Không có dữ liệu"
+      class="table-lesson__content"
+      :data="tableLesson"
+      style="width: 100%"
+    >
       <el-table-column label="Tiêu đề" min-width="650">
         <template slot-scope="{ row }">
-          <span class="table-lesson__title" @click="handleClickTitle(row.slug)">{{ row.title }}</span>
+          <span
+            class="table-lesson__title"
+            @click="handleClickTitle(row.slug)"
+            >{{ row.title }}</span
+          >
         </template>
       </el-table-column>
       <el-table-column label="Ngày tạo" min-width="150">
@@ -76,7 +100,9 @@ export default class TableLesson extends Vue {
   private handlePagination() {
     this.$route.query.text === undefined
       ? this.$router.push(`?page=${this.paramsLesson.page}`)
-      : this.$router.push(`?text=${this.$route.query.text}&page=${this.paramsLesson.page}`);
+      : this.$router.push(
+          `?text=${this.$route.query.text}&page=${this.paramsLesson.page}`,
+        );
   }
 
   private handleCreate() {

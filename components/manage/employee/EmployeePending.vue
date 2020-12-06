@@ -1,6 +1,10 @@
 <template>
   <div>
-    <el-button v-if="id.length !== 0" class="el-button--purple el-button--small" icon="el-icon-plus" @click="handleApproveAll"
+    <el-button
+      v-if="id.length !== 0"
+      class="el-button--purple el-button--small"
+      icon="el-icon-plus"
+      @click="handleApproveAll"
       >Duyệt tất cả</el-button
     >
     <el-table
@@ -12,8 +16,16 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection"></el-table-column>
-      <el-table-column prop="fullName" label="Tên đầy đủ" min-width="150"></el-table-column>
-      <el-table-column prop="email" label="Email" min-width="150"></el-table-column>
+      <el-table-column
+        prop="fullName"
+        label="Tên đầy đủ"
+        min-width="150"
+      ></el-table-column>
+      <el-table-column
+        prop="email"
+        label="Email"
+        min-width="150"
+      ></el-table-column>
       <el-table-column label="Phòng ban" min-width="150">
         <template slot-scope="{ row }">
           <span>{{ row.team.name }}</span>
@@ -26,11 +38,24 @@
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
         <template slot-scope="{ row }">
-          <div style="display: flex; align-item: center; justify-content: center">
-            <el-tooltip class="employee-pending__icon" content="Duyệt" placement="left-end">
-              <icon-add class="icon--add" @click="handleOpenDialogUpdate(row)" />
+          <div
+            style="display: flex; align-item: center; justify-content: center"
+          >
+            <el-tooltip
+              class="employee-pending__icon"
+              content="Duyệt"
+              placement="left-end"
+            >
+              <icon-add
+                class="icon--add"
+                @click="handleOpenDialogUpdate(row)"
+              />
             </el-tooltip>
-            <el-tooltip class="employee-pending__icon" content="Từ chối" placement="right-end">
+            <el-tooltip
+              class="employee-pending__icon"
+              content="Từ chối"
+              placement="right-end"
+            >
               <icon-reject class="icon--rejected" @click="handleDelete(row)" />
             </el-tooltip>
           </div>
@@ -58,11 +83,23 @@
             label-position="top"
             style="width: 100%"
           >
-            <el-form-item label="Tên đầy đủ:" prop="fullName" class="custom-label">
-              <el-input v-model="tempUpdateUser.fullName" placeholder="Nhập họ và tên" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
+            <el-form-item
+              label="Tên đầy đủ:"
+              prop="fullName"
+              class="custom-label"
+            >
+              <el-input
+                v-model="tempUpdateUser.fullName"
+                placeholder="Nhập họ và tên"
+                @keyup.enter.native="handleUpdate(tempUpdateUser)"
+              />
             </el-form-item>
             <el-form-item label="Email:" prop="email" class="custom-label">
-              <el-input v-model="tempUpdateUser.email" placeholder="Nhập email" @keyup.enter.native="handleUpdate(tempUpdateUser)" />
+              <el-input
+                v-model="tempUpdateUser.email"
+                placeholder="Nhập email"
+                @keyup.enter.native="handleUpdate(tempUpdateUser)"
+              />
             </el-form-item>
             <el-form-item label="Phòng ban:" class="custom-label" prop="teamId">
               <el-select
@@ -71,17 +108,31 @@
                 placeholder="Chọn phòng ban"
                 @keyup.enter.native="handleUpdate(tempUpdateUser)"
               >
-                <el-option v-for="item in teams" :key="item.id" :label="item.name" :value="item.id" />
+                <el-option
+                  v-for="item in teams"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
               </el-select>
             </el-form-item>
-            <el-form-item label="Vị trí công việc:" class="custom-label" prop="jobPositionId">
+            <el-form-item
+              label="Vị trí công việc:"
+              class="custom-label"
+              prop="jobPositionId"
+            >
               <el-select
                 v-model="tempUpdateUser.jobPositionId"
                 class="custom-label"
                 placeholder="Chọn vị trí công việc"
                 @keyup.enter.native="handleUpdate(tempUpdateUser)"
               >
-                <el-option v-for="item in jobs" :key="item.id" :label="item.name" :value="item.id" />
+                <el-option
+                  v-for="item in jobs"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
               </el-select>
             </el-form-item>
             <el-form-item label="Vai trò:" class="custom-label" prop="roleId">
@@ -91,16 +142,32 @@
                 placeholder="Chọn vai trò"
                 @keyup.enter.native="handleUpdate(tempUpdateUser)"
               >
-                <el-option v-for="item in roles" :key="item.id" :label="item.name" :value="item.id" />
+                <el-option
+                  v-for="item in roles"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                />
               </el-select>
             </el-form-item>
-            <el-checkbox v-model="tempUpdateUser.isLeader">Trưởng nhóm</el-checkbox>
+            <el-checkbox v-model="tempUpdateUser.isLeader"
+              >Trưởng nhóm</el-checkbox
+            >
           </el-form>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="handleUpdate(tempUpdateUser)">Xác nhận</el-button>
+        <el-button
+          class="el-button--white el-button--modal"
+          @click="handleCloseDialog"
+          >Hủy</el-button
+        >
+        <el-button
+          class="el-button--purple el-button--modal"
+          :loading="loading"
+          @click="handleUpdate(tempUpdateUser)"
+          >Xác nhận</el-button
+        >
       </span>
     </el-dialog>
     <!-- end update user dialog -->
@@ -110,7 +177,10 @@
 import { Form } from 'element-ui';
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { employeeRules } from './employee.constant';
-import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
+import {
+  notificationConfig,
+  confirmWarningConfig,
+} from '@/constants/app.constant';
 import { EmployeeDTO } from '@/constants/app.interface';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 import IconReject from '@/assets/images/employee/rejected.svg';
@@ -192,47 +262,49 @@ export default class EmployeePending extends Vue {
   }
 
   private handleUpdate(tempUpdateUser: EmployeeDTO) {
-    (this.$refs.updateEmployeeForm as Form).validate((isValid: boolean, invalidFields: object) => {
-      if (isValid) {
-        this.$confirm(`Bạn có chắc chắn muốn active user này?`, {
-          ...confirmWarningConfig,
-        })
-          .then(async () => {
-            await EmployeeRepository.update(tempUpdateUser)
-              .then((res) => {
-                setTimeout(() => {
-                  this.loading = false;
-                }, 300);
-                this.$notify.success({
-                  ...notificationConfig,
-                  message: 'Cập nhật thành viên thành công',
-                });
-                this.getListUsers();
-                this.dialogUpdateVisible = false;
-              })
-              .catch((error) => {
-                if (error.response.data.statusCode === 430) {
-                  this.$notify.error({
-                    ...notificationConfig,
-                    message: 'Team Leader đã tồn tại',
-                  });
-                }
-                setTimeout(() => {
-                  this.loading = false;
-                }, 300);
-              });
+    (this.$refs.updateEmployeeForm as Form).validate(
+      (isValid: boolean, invalidFields: object) => {
+        if (isValid) {
+          this.$confirm(`Bạn có chắc chắn muốn active user này?`, {
+            ...confirmWarningConfig,
           })
-          .catch(() => {
-            setTimeout(() => {
-              this.loading = false;
-            }, 300);
-          });
-      } else {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
+            .then(async () => {
+              await EmployeeRepository.update(tempUpdateUser)
+                .then((res) => {
+                  setTimeout(() => {
+                    this.loading = false;
+                  }, 300);
+                  this.$notify.success({
+                    ...notificationConfig,
+                    message: 'Cập nhật thành viên thành công',
+                  });
+                  this.getListUsers();
+                  this.dialogUpdateVisible = false;
+                })
+                .catch((error) => {
+                  if (error.response.data.statusCode === 430) {
+                    this.$notify.error({
+                      ...notificationConfig,
+                      message: 'Team Leader đã tồn tại',
+                    });
+                  }
+                  setTimeout(() => {
+                    this.loading = false;
+                  }, 300);
+                });
+            })
+            .catch(() => {
+              setTimeout(() => {
+                this.loading = false;
+              }, 300);
+            });
+        } else {
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
+        }
+      },
+    );
   }
 
   private handleCloseDialog() {

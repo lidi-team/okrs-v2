@@ -8,7 +8,10 @@
     "dumpEventTimeStamp": "1603248635678",
     "processId": 11228,
     "cwd": "D:\\LIDI\\okrs-v2",
-    "commandLine": ["C:\\Program Files\\nodejs\\node.exe", "D:\\LIDI\\okrs-v2\\node_modules\\.bin\\\\..\\@nuxt\\typescript-runtime\\bin\\nuxt-ts.js"],
+    "commandLine": [
+      "C:\\Program Files\\nodejs\\node.exe",
+      "D:\\LIDI\\okrs-v2\\node_modules\\.bin\\\\..\\@nuxt\\typescript-runtime\\bin\\nuxt-ts.js"
+    ],
     "nodejsVersion": "v12.14.1",
     "wordSize": 64,
     "arch": "x64",

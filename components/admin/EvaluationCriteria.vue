@@ -1,7 +1,15 @@
 <template>
   <div v-loading="loadingTable">
-    <el-table :data="tableData" empty-text="Không có dữ liệu" class="criteria-admin">
-      <el-table-column prop="content" label="Tiêu chí đánh giá" min-width="350px"></el-table-column>
+    <el-table
+      :data="tableData"
+      empty-text="Không có dữ liệu"
+      class="criteria-admin"
+    >
+      <el-table-column
+        prop="content"
+        label="Tiêu chí đánh giá"
+        min-width="350px"
+      ></el-table-column>
       <el-table-column label="Số sao" min-width="70px">
         <template v-slot="{ row }">
           <span>
@@ -22,10 +30,21 @@
       </el-table-column>-->
       <el-table-column label="Thao tác" align="center">
         <template v-slot="{ row }">
-          <el-tooltip class="criteria-admin__icon" content="Sửa" placement="top">
-            <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
+          <el-tooltip
+            class="criteria-admin__icon"
+            content="Sửa"
+            placement="top"
+          >
+            <i
+              class="el-icon-edit icon--info"
+              @click="handleOpenDialogUpdate(row)"
+            ></i>
           </el-tooltip>
-          <el-tooltip class="criteria-admin__icon" content="Xóa" placement="top">
+          <el-tooltip
+            class="criteria-admin__icon"
+            content="Xóa"
+            placement="top"
+          >
             <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
           </el-tooltip>
         </template>
@@ -48,28 +67,69 @@
     >
       <el-row>
         <el-col :span="24">
-          <el-form ref="tempUpdateCriteria" :model="tempUpdateCriteria" :hide-required-asterisk="false" :status-icon="true" :rules="rules">
-            <el-form-item label="Tên tiêu chí" prop="content" class="custom-label" label-width="120px">
-              <el-input v-model="tempUpdateCriteria.content" placeholder="Nhập tên tiêu chí" @keyup.enter.native="handleUpdate(tempUpdateCriteria)" />
+          <el-form
+            ref="tempUpdateCriteria"
+            :model="tempUpdateCriteria"
+            :hide-required-asterisk="false"
+            :status-icon="true"
+            :rules="rules"
+          >
+            <el-form-item
+              label="Tên tiêu chí"
+              prop="content"
+              class="custom-label"
+              label-width="120px"
+            >
+              <el-input
+                v-model="tempUpdateCriteria.content"
+                placeholder="Nhập tên tiêu chí"
+                @keyup.enter.native="handleUpdate(tempUpdateCriteria)"
+              />
             </el-form-item>
-            <el-form-item label="Số sao" prop="numberOfStar" class="custom-label" label-width="120px">
+            <el-form-item
+              label="Số sao"
+              prop="numberOfStar"
+              class="custom-label"
+              label-width="120px"
+            >
               <el-input
                 v-model.number="tempUpdateCriteria.numberOfStar"
                 placeholder="Nhập số sao"
                 @keyup.enter.native="handleUpdate(tempUpdateCriteria)"
               />
             </el-form-item>
-            <el-form-item prop="type" label="Kiểu" class="custom-label" label-width="120px">
-              <el-select v-model="tempUpdateCriteria.type" placeholder="Chọn kiểu">
-                <el-option v-for="item in typeCriterias" :key="item.value" :label="item.label" :value="item.value" />
+            <el-form-item
+              prop="type"
+              label="Kiểu"
+              class="custom-label"
+              label-width="120px"
+            >
+              <el-select
+                v-model="tempUpdateCriteria.type"
+                placeholder="Chọn kiểu"
+              >
+                <el-option
+                  v-for="item in typeCriterias"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
               </el-select>
             </el-form-item>
           </el-form>
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-        <el-button class="el-button--purple el-button--modal" @click="handleUpdate">Cập nhật</el-button>
+        <el-button
+          class="el-button--white el-button--modal"
+          @click="handleCloseDialog"
+          >Hủy</el-button
+        >
+        <el-button
+          class="el-button--purple el-button--modal"
+          @click="handleUpdate"
+          >Cập nhật</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -79,9 +139,15 @@ import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
 import { max255Char } from '@/constants/account.constant';
-import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
+import {
+  notificationConfig,
+  confirmWarningConfig,
+} from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
-import { EvaluationCriteriorDTO, SelectOptionDTO } from '@/constants/app.interface';
+import {
+  EvaluationCriteriorDTO,
+  SelectOptionDTO,
+} from '@/constants/app.interface';
 import { EvaluationCriteriaEnum, AdminTabsEn } from '@/constants/app.enum';
 import EvaluationCriteriorRepository from '@/repositories/EvaluationCriteriaRepository';
 import StarIcon from '@/assets/images/admin/star.svg';
@@ -115,11 +181,18 @@ export default class ManageEvaluationCriteria extends Vue {
   @Prop(Function) public reloadData!: Function;
   @Prop({ type: Number, required: true }) public total!: number;
   @PropSync('page', { type: Number, required: true }) public syncPage!: number;
-  @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
+  @PropSync('limit', { type: Number, required: true })
+  public syncLimit!: number;
 
   private typeCriterias: SelectOptionDTO[] = [
-    { label: 'Cấp trên đánh giá thành viên', value: EvaluationCriteriaEnum.LEADER_TO_MEMBER },
-    { label: 'Thành viên đánh giá cấp trên', value: EvaluationCriteriaEnum.MEMBER_TO_LEADER },
+    {
+      label: 'Cấp trên đánh giá thành viên',
+      value: EvaluationCriteriaEnum.LEADER_TO_MEMBER,
+    },
+    {
+      label: 'Thành viên đánh giá cấp trên',
+      value: EvaluationCriteriaEnum.MEMBER_TO_LEADER,
+    },
     { label: 'Ghi nhận', value: EvaluationCriteriaEnum.RECOGNITION },
   ];
 
@@ -135,13 +208,35 @@ export default class ManageEvaluationCriteria extends Vue {
   private rules: Maps<Rule[]> = {
     content: [{ validator: this.sanitizeInput, trigger: 'change' }, max255Char],
     numberOfStar: [
-      { type: 'number', required: true, message: 'Số sao phải là 1 số nguyên', trigger: 'blur' },
-      { type: 'number', min: 1, max: 100, message: 'Số sao tối thiểu là 1 và tối đa là 100', trigger: 'blur' },
+      {
+        type: 'number',
+        required: true,
+        message: 'Số sao phải là 1 số nguyên',
+        trigger: 'blur',
+      },
+      {
+        type: 'number',
+        min: 1,
+        max: 100,
+        message: 'Số sao tối thiểu là 1 và tối đa là 100',
+        trigger: 'blur',
+      },
     ],
-    type: [{ type: 'string', required: true, message: 'Vui lòng chọn kiểu của tiêu chí', trigger: 'change' }],
+    type: [
+      {
+        type: 'string',
+        required: true,
+        message: 'Vui lòng chọn kiểu của tiêu chí',
+        trigger: 'change',
+      },
+    ],
   };
 
-  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private sanitizeInput(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     const isEmpty = (value: string) => !value.trim().length;
     if (value.length === 0) {
       return callback('Vui lòng nhập tên tiêu chí');
@@ -163,24 +258,28 @@ export default class ManageEvaluationCriteria extends Vue {
   }
 
   private handleUpdate(): void {
-    (this.$refs.tempUpdateCriteria as Form).validate((isValid: boolean, invalidatedFields: object) => {
-      if (isValid) {
-        this.$confirm(`Bạn có chắc chắn muốn cập nhật tiêu chí này không?`, {
-          ...confirmWarningConfig,
-        }).then(async () => {
-          try {
-            await EvaluationCriteriorRepository.update(this.tempUpdateCriteria).then((res) => {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Cập nhật tiêu chí thành công',
+    (this.$refs.tempUpdateCriteria as Form).validate(
+      (isValid: boolean, invalidatedFields: object) => {
+        if (isValid) {
+          this.$confirm(`Bạn có chắc chắn muốn cập nhật tiêu chí này không?`, {
+            ...confirmWarningConfig,
+          }).then(async () => {
+            try {
+              await EvaluationCriteriorRepository.update(
+                this.tempUpdateCriteria,
+              ).then((res) => {
+                this.$notify.success({
+                  ...notificationConfig,
+                  message: 'Cập nhật tiêu chí thành công',
+                });
               });
-            });
-            this.reloadData();
-            this.dialogUpdateVisible = false;
-          } catch (error) {}
-        });
-      }
-    });
+              this.reloadData();
+              this.dialogUpdateVisible = false;
+            } catch (error) {}
+          });
+        }
+      },
+    );
   }
 
   private deleteRow(row: EvaluationCriteriorDTO): void {
@@ -200,7 +299,9 @@ export default class ManageEvaluationCriteria extends Vue {
   }
 
   private handlePagination(pagination: any) {
-    this.$router.push(`?tab=${AdminTabsEn.EvaluationCriterial}&page=${pagination.page}`);
+    this.$router.push(
+      `?tab=${AdminTabsEn.EvaluationCriterial}&page=${pagination.page}`,
+    );
   }
 
   private handleCloseDialog(): void {

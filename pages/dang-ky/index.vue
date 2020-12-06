@@ -1,7 +1,10 @@
 <template>
   <el-row class="register-page">
     <el-col :xs="24" :sm="24" :md="8" :lg="8" class="register-page__image">
-      <img src="@/assets/images/account/tiny-register.png" alt="register image" />
+      <img
+        src="@/assets/images/account/tiny-register.png"
+        alt="register image"
+      />
     </el-col>
     <el-col :xs="24" :sm="24" :md="7" :lg="7">
       <account-register :token="token" />
