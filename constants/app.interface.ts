@@ -63,6 +63,12 @@ export interface ProjectStaff {
   edit?: boolean;
 }
 
+export interface IProjectStaffState {
+  userId: number;
+  positionId?: number;
+  reviewerId?: number;
+}
+
 export interface RegisterOption {
   lable?: string;
   value?: number;

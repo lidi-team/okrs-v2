@@ -22,12 +22,16 @@ export default class ProjectRepository {
     return baseUrl.get(`${ResourcesEnpoint.Project}/` + id + '/staff');
   }
 
+  public static postStaffsById(id: number, payload: number[]) {
+    return baseUrl.post(`${ResourcesEnpoint.Project}/` + id + '/staff', payload);
+  }
+
   public static deleteStaffById(projectId: number, staffId: number) {
     return baseUrl.delete(`${ResourcesEnpoint.Project}/` + projectId + '/staff/' + staffId);
   }
 
-  public static getAllActiveStaff() {
-    return baseUrl.delete(`${ResourcesEnpoint.Users}/` + 'all');
+  public static getActiveCandidates(id: number) {
+    return baseUrl.get(`${ResourcesEnpoint.Project}/` + id + '/candidate');
   }
 
   public static update(payload: ProjectDTO) {

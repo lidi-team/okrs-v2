@@ -151,12 +151,11 @@ export default class Feedback extends Vue {
     this.loadingInferior = true;
     try {
       this.paramsContext.page = +page;
-      await CfrsRepository.getListWaitingFeedback(this.paramsContext).then(({ data }) => {
-        this.listWatingFeedback.inferior = Object.freeze(data.data.inferior);
-        setTimeout(() => {
-          this.loadingInferior = false;
-        }, 300);
-      });
+      const data = await CfrsRepository.getListWaitingFeedback(this.paramsContext);
+      this.listWatingFeedback.inferior = Object.freeze(data.data.inferior);
+      setTimeout(() => {
+        this.loadingInferior = false;
+      }, 300);
     } catch (error) {
       setTimeout(() => {
         this.loadingInferior = false;
@@ -178,11 +177,11 @@ export default class Feedback extends Vue {
 
   private async getListWatingFeedbacks() {
     try {
-      await CfrsRepository.getListWaitingFeedback(this.paramsContext).then(({ data }) => {
-        this.listWatingFeedback.inferior = Object.freeze(data.data.inferior);
-        this.listWatingFeedback.superior = Object.freeze(data.data.superior);
-        this.totalItems = Object.freeze(data.data.inferior.checkins.meta.totalItems);
-      });
+      const data = await CfrsRepository.getListWaitingFeedback(this.paramsContext);
+      console.log('data: ', data);
+      // this.listWatingFeedback.inferior = Object.freeze(data.data.inferior);
+      // this.listWatingFeedback.superior = Object.freeze(data.data.superior);
+      // this.totalItems = Object.freeze(data.data.inferior.checkins.meta.totalItems);
     } catch (error) {}
   }
 
@@ -210,28 +209,29 @@ export default class Feedback extends Vue {
   }
 
   private displayHeader(type: string, superior?: any) {
+    console.log('this.$store.state.auth.user.role.name', this.$store.state.auth.users);
     if (type === 'inferior') {
       // Feedback cho Team member
-      if (this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
-        return 'Phản hồi cho Team Member';
-      }
-      // Feedback cho Team Leader
-      if (this.$store.state.auth.user.role.name === 'ADMIN') {
-        return 'Phản hồi cho Team Leader';
-      }
+      // if (this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
+      //   return 'Phản hồi cho Team Member';
+      // }
+      // // Feedback cho Team Leader
+      // if (this.$store.state.auth.user.role.name === 'ADMIN') {
+      //   return 'Phản hồi cho Team Leader';
+      // }
     } else {
       // Feedback cho Team Leader
-      if (!this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
-        return 'Phản hồi cho Team Leader';
-      }
-      // Feedback cho Admin
-      if (this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
-        return 'Phản hồi cho Admin';
-      }
-      // Feedback cho bạn -- admin
-      if (this.$store.state.auth.user.role.name === 'ADMIN') {
-        return 'Phản hồi cho tôi';
-      }
+      // if (!this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
+      //   return 'Phản hồi cho Team Leader';
+      // }
+      // // Feedback cho Admin
+      // if (this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
+      //   return 'Phản hồi cho Admin';
+      // }
+      // // Feedback cho bạn -- admin
+      // if (this.$store.state.auth.user.role.name === 'ADMIN') {
+      //   return 'Phản hồi cho tôi';
+      // }
     }
   }
 

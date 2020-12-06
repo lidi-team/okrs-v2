@@ -51,10 +51,10 @@
         </el-form-item>
       </el-form>
       <div>
-        <el-select v-model="selectUsers" multiple filterable allow-create default-first-option placeholder="Chọn nhân viên cho dự án">
-          <el-option v-for="item in employees" :key="item.id" :label="item.fullName" :value="item.id"></el-option>
+        <el-select v-model="selectUsers" multiple filterable default-first-option placeholder="Chọn nhân viên cho dự án">
+          <el-option v-for="item in candidates" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
-        <el-button type="primary" @click="UpdateProject">Cập nhật</el-button>
+        <el-button type="primary" @click="handleAddStaff">Thêm mới thành viên</el-button>
       </div>
       <br />
       <el-table v-loading="isloading" :data="projectStaffs" border fit highlight-current-row style="width: 100%">
@@ -63,12 +63,12 @@
             <span>{{ row.id }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Tên thành viên" min-width="150px" align="center">
+        <el-table-column label="Tên thành viên" min-width="150" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Email" min-width="200" align="center">
+        <el-table-column label="Email" min-width="160" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.email }}</span>
           </template>
@@ -79,28 +79,35 @@
             <el-tag>{{ getDepartmentById(row.department) }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Vị trí trong dự án" align="center">
+        <el-table-column label="Vị trí trong dự án" align="center" min-width="150">
           <template slot-scope="{ row }">
             <template v-if="row.edit">
-              <el-select v-model="value" placeholder="Chọn vị trí thành viên">
-                <el-option v-for="item in positions" :key="item.id" :label="item.name" :value="item.id"> </el-option>
+              <el-select v-model="draftEditStaff.positionId" placeholder="Chọn vị trí thành viên">
+                <el-option v-for="item in positions" :key="item.id" :label="item.name" :value="item.id"></el-option>
               </el-select>
-              <el-button class="cancel-btn" size="small" icon="el-icon-refresh" type="warning" @click="cancelEdit(row)"> cancel </el-button>
             </template>
-            <el-tag>{{ getPositionById(row.position) }}</el-tag>
+            <el-tag v-if="getPositionById(row.position) && !row.edit">{{ getPositionById(row.position) }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Người Review" align="center">
+        <el-table-column label="Người Review" align="center" min-width="130">
           <template slot-scope="{ row }">
-            <span style="color: green">{{ getReviewerById(row.reviewerId) }}</span>
+            <template v-if="row.edit">
+              <el-select v-model="draftEditStaff.reviewerId" placeholder="Chọn người quản lý">
+                <el-option v-for="item in getReviewers(row.id)" :key="item.id" :label="item.name" :value="item.id"></el-option>
+              </el-select>
+            </template>
+            <span v-else style="color: green">{{ getReviewerById(row.reviewerId) }}</span>
           </template>
         </el-table-column>
         <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
           <template slot-scope="{ row }">
-            <el-button v-if="row.edit" type="success" size="small" icon="el-icon-circle-check-outline" @click="confirmEdit(row)"> Ok </el-button>
+            <template v-if="row.edit">
+              <el-button type="success" size="small" icon="el-icon-circle-check-outline" @click="confirmEdit(row)"> Ok </el-button>
+              <el-button class="cancel-btn" size="small" icon="el-icon-refresh" type="warning" @click="cancelEdit(row)"> cancel </el-button>
+            </template>
             <template v-else>
-              <el-button type="primary" size="small" icon="el-icon-edit" @click="row.edit = !row.edit"> Edit </el-button>
-              <el-button size="mini" type="danger" @click="handleDelete(row, id)"> Delete </el-button>
+              <el-button type="primary" size="small" icon="el-icon-edit" @click="handleEditRow(row)"> Edit</el-button>
+              <el-button size="mini" type="danger" @click="handleDelete(row, id)"> Delete</el-button>
             </template>
           </template>
         </el-table-column>
@@ -111,7 +118,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import ProjectRepository from '@/repositories/ProjectRepository';
-import { ProjectDTO, ProjectStaff } from '@/constants/app.interface';
+import { IProjectStaffState, ProjectDTO, ProjectStaff } from '@/constants/app.interface';
 import TeamRepository from '@/repositories/TeamRepository';
 import JobRepository from '@/repositories/JobRepository';
 import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
@@ -119,10 +126,10 @@ import { confirmWarningConfig, notificationConfig } from '@/constants/app.consta
 @Component<ControlProject>({
   name: 'ControlProject',
   async created() {
-    await this.getProject();
     await this.getDataCommon();
-    await this.getProjectStaffs();
-    await this.getAllActiveStaffs();
+    await this.getProject(this.id);
+    await this.getProjectStaffs(this.id);
+    await this.getActiveCandidates(this.id);
   },
 })
 export default class ControlProject extends Vue {
@@ -131,9 +138,9 @@ export default class ControlProject extends Vue {
   private originalProjects: Array<object> = [];
   private positions: Array<any> = [];
   private departments: Array<any> = [];
-  private employees: Array<any> = [];
+  private candidates: Array<any> = [];
   private projectStaffs: Array<ProjectStaff> = [];
-  private selectUsers: Array<ProjectStaff> = [];
+  private selectUsers: Array<number> = [];
   private textPm: String = '';
   private isloading: boolean = false;
   private tabActive: String = 'active';
@@ -148,19 +155,24 @@ export default class ControlProject extends Vue {
     pm: undefined,
     weight: 1,
   };
+  private draftEditStaff: IProjectStaffState = {
+    userId: 0,
+    positionId: undefined,
+    reviewerId: undefined,
+  };
 
-  private async getProject() {
+  private async getProject(id: number) {
     try {
-      const { data } = await ProjectRepository.getById(this.id);
+      const { data } = await ProjectRepository.getById(id);
       this.projectData = data;
     } catch (error) {
       console.log(error);
     }
   }
 
-  private async getProjectStaffs() {
+  private async getProjectStaffs(id: number) {
     try {
-      const { data } = await ProjectRepository.getStaffsById(this.id);
+      const { data } = await ProjectRepository.getStaffsById(id);
       if (!!data && data.length > 0) {
         this.projectStaffs = data.map((v) => {
           this.$set(v, 'edit', false);
@@ -174,10 +186,10 @@ export default class ControlProject extends Vue {
     }
   }
 
-  private async getAllActiveStaffs() {
+  private async getActiveCandidates(id: number) {
     try {
-      const { data } = await ProjectRepository.getAllActiveStaff();
-      this.employees = data;
+      const { data } = await ProjectRepository.getActiveCandidates(id);
+      this.candidates = data;
     } catch (error) {
       console.log(error);
     }
@@ -214,7 +226,7 @@ export default class ControlProject extends Vue {
             ...notificationConfig,
             message: 'Cập nhật dự án thành công',
           });
-          await this.getProjectStaffs();
+          await this.getProjectStaffs(this.id);
         })
         // eslint-disable-next-line handle-callback-err
         .catch((err) => {
@@ -229,8 +241,17 @@ export default class ControlProject extends Vue {
     }
   }
 
+  private async handleAddStaff() {
+    try {
+      const data = await ProjectRepository.postStaffsById(this.id, this.selectUsers);
+      this.selectUsers = [];
+      await this.getProjectStaffs(this.id);
+      console.log('data: ', data);
+    } catch (e) {}
+  }
+
   private getPositionById(id: number) {
-    let name = 'Member';
+    let name = null;
     const a = this.positions.find((value) => value.id === id);
     if (a) {
       name = a.name;
@@ -256,13 +277,17 @@ export default class ControlProject extends Vue {
     return name;
   }
 
+  private getReviewers(id: number) {
+    return this.projectStaffs.filter((value) => value.id !== id);
+  }
+
   private cancelEdit(row: ProjectStaff) {
     row.department = row.originalDepartment;
     row.reviewerId = row.originalReviewerId;
     row.edit = false;
     this.$notify.warning({
       ...notificationConfig,
-      message: 'Hủy',
+      message: 'Hủy bỏ',
     });
   }
 
@@ -273,6 +298,11 @@ export default class ControlProject extends Vue {
       message: 'The title has been edited',
       type: 'success',
     });
+  }
+
+  private handleEditRow(row: ProjectStaff) {
+    row.edit = !row.edit;
+    this.draftEditStaff.userId = row.id;
   }
 
   private async UpdateProject() {}

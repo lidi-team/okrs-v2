@@ -6,12 +6,7 @@
           <cfrs-navbar :current-tab-component="currentTabEng" />
         </el-col>
         <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
-          <el-button
-            v-if="displayButton()"
-            class="el-button el-button--purple el-button-medium"
-            icon="el-icon-plus"
-            @click="visibleCreateDialog = true"
-          >
+          <el-button class="el-button el-button--purple el-button-medium" icon="el-icon-plus" @click="visibleCreateDialog = true">
             Tạo ghi nhận
           </el-button>
         </el-col>
@@ -55,7 +50,7 @@ import CfrsRecognition from '@/components/cfrs/recognition/index.vue';
     };
   },
   created() {
-    this.$store.commit(MutationState.SET_TEMP_CYCLE, this.$store.state.cycle.cycle.id);
+    this.$store.commit(MutationState.SET_TEMP_CYCLE, this.$store.state.cycle.cycleCurrent.id);
   },
 })
 export default class CFRs extends Vue {
@@ -77,11 +72,11 @@ export default class CFRs extends Vue {
       ? TabCfr.History
       : TabCfr.Rank;
 
-  private displayButton(): Boolean {
-    return (
-      this.$store.state.auth.user.role.name === 'ADMIN' || this.$store.state.auth.user.isLeader || this.$store.state.auth.user.role.name === 'HR'
-    );
-  }
+  // private displayButton(): Boolean {
+  //   return (
+  //     this.$store.state.auth.user.role.name === 'ADMIN' || this.$store.state.auth.user.isLeader || this.$store.state.auth.user.role.name === 'HR'
+  //   );
+  // }
 
   private get currentTabEng(): String {
     return this.$route.query.tab === 'feedback' || this.$route.query.tab === undefined
