@@ -41,4 +41,8 @@ export default class ProjectRepository {
   public static getOriginalProjects() {
     return baseUrl.get(`${ResourcesEnpoint.Project}/parents`);
   }
+
+  public static getListCurrent() {
+    return baseUrl.get(enpoint.getListCurrent);
+  }
 }
