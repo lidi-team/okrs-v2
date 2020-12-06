@@ -5,12 +5,27 @@
         <h1 class="manage-project__top__title--text">Quản lý dự án</h1>
       </div>
       <div class="manage-project__top__right">
-        <el-button class="el-button--purple el-button--invite" icon="el-icon-plus" @click="addNew"> Thêm mới</el-button>
+        <el-button
+          class="el-button--purple el-button--invite"
+          icon="el-icon-plus"
+          @click="addNew"
+        >
+          Thêm mới</el-button
+        >
       </div>
     </div>
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
-      <el-tab-pane v-for="tab in tabs" :key="tab" :label="convertLabel(tab)" :name="tab"></el-tab-pane>
-      <head-project :text.sync="paramsProject.text" @name="paramsProject.text = $event" @search="handleSearch($event)" />
+      <el-tab-pane
+        v-for="tab in tabs"
+        :key="tab"
+        :label="convertLabel(tab)"
+        :name="tab"
+      ></el-tab-pane>
+      <head-project
+        :text.sync="paramsProject.text"
+        @name="paramsProject.text = $event"
+        @search="handleSearch($event)"
+      />
       <component
         :is="tabComponent"
         :table-data="tableData"
@@ -26,7 +41,12 @@
         @pagination="handlePagination($event)"
       />
     </el-tabs>
-    <project-dialog :visible-dialog.sync="visibleDialog" :reload-data="getListProjects" :managers="managers" :original-projects="originalProjects" />
+    <project-dialog
+      :visible-dialog.sync="visibleDialog"
+      :reload-data="getListProjects"
+      :managers="managers"
+      :original-projects="originalProjects"
+    />
   </div>
 </template>
 
@@ -67,7 +87,9 @@ export default class ManageProject extends Vue {
   private tabs: string[] = [...Object.values(ProjectStatus)];
   private currentTab: ProjectStatus = ProjectStatus.All;
   private meta: object = {};
-  private indexPage: number = this.$route.query.page ? Number(this.$route.query.page) : 1;
+  private indexPage: number = this.$route.query.page
+    ? Number(this.$route.query.page)
+    : 1;
   private visibleDialog: boolean = false;
   private textPm: String = '';
 
@@ -125,15 +147,23 @@ export default class ManageProject extends Vue {
 
   private handleSearch(textSearch: string) {
     this.paramsProject.page = 1;
-    const tab = this.$route.query.tab === undefined ? ProjectStatus.All : this.$route.query.tab;
+    const tab =
+      this.$route.query.tab === undefined
+        ? ProjectStatus.All
+        : this.$route.query.tab;
     this.$router.push(`?tab=${tab}&text=${textSearch}`);
   }
 
   private handlePagination(pagination: any) {
-    const tab = this.$route.query.tab === undefined ? ProjectStatus.All : this.$route.query.tab;
+    const tab =
+      this.$route.query.tab === undefined
+        ? ProjectStatus.All
+        : this.$route.query.tab;
     this.$route.query.text === undefined
       ? this.$router.push(`?tab=${tab}&page=${pagination.page}`)
-      : this.$router.push(`?tab=${tab}&text=${this.$route.query.text}&page=${pagination.page}`);
+      : this.$router.push(
+          `?tab=${tab}&text=${this.$route.query.text}&page=${pagination.page}`,
+        );
   }
 
   private get tabComponent() {

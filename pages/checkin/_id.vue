@@ -3,45 +3,48 @@
     <el-page-header title="OKRs của tôi" @back="goBack" />
     <h1 class="createCheckinPage__title">Tạo checkin</h1>
     <div class="top-checkin">
-      <el-row>
-        <el-col class="top-checkin__left" :sm="24" :lg="10">
-          <h2 class="top-checkin__title">Check-in mục tiêu</h2>
-          <div v-if="checkin" class="top-checkin__content content">
-            <table class="properties">
-              <tbody>
-                <tr>
-                  <th scope="row">Mục tiêu</th>
-                  <td>{{ checkin.title }}</td>
-                </tr>
-                <tr>
-                  <th scope="row">Tiến độ thực hiện</th>
-                  <td>{{ checkin.progress }} %</td>
-                </tr>
-                <tr>
-                  <th scope="row">Tiến độ gợi ý</th>
-                  <td>{{ checkin.progressSuggest }} %</td>
-                </tr>
-                <tr v-if="checkin.checkin.checkinAt">
-                  <th scope="row">Ngày check-in</th>
-                  <td>{{ new Date(checkin.checkin.checkinAt) | dateFormat('DD/MM/YYYY') }}</td>
-                </tr>
-                <tr v-if="checkin.checkin.nextCheckinDate">
-                  <th scope="row">Ngày check-in kế tiếp</th>
-                  <td>{{ new Date(checkin.checkin.nextCheckinDate) | dateFormat('DD/MM/YYYY') }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </el-col>
-        <el-col :sm="24" :lg="14" class="top-checkin__right">
-          <h2 class="top-checkin__title">Tiến độ</h2>
-          <div id="chartCheckin" class="top-checkin__chart" />
-        </el-col>
-      </el-row>
+      <div class="top-checkin__left">
+        <h2 class="top-checkin__title">Check-in mục tiêu</h2>
+        <div v-if="checkin" class="top-checkin__content content">
+          <table class="properties">
+            <tbody>
+              <tr>
+                <th scope="row">Mục tiêu</th>
+                <td>{{ checkin.title }}</td>
+              </tr>
+              <tr>
+                <th scope="row">Tiến độ thực hiện</th>
+                <td>{{ checkin.progress }} %</td>
+              </tr>
+              <tr>
+                <th scope="row">Tiến độ gợi ý</th>
+                <td>{{ checkin.progressSuggest }} %</td>
+              </tr>
+              <tr v-if="checkin.checkin.checkinAt">
+                <th scope="row">Ngày check-in</th>
+                <td>
+                  {{
+                    new Date(checkin.checkin.checkinAt)
+                      | dateFormat('DD/MM/YYYY')
+                  }}
+                </td>
+              </tr>
+              <tr v-if="checkin.checkin.nextCheckinDate">
+                <th scope="row">Ngày check-in kế tiếp</th>
+                <td>
+                  {{
+                    new Date(checkin.checkin.nextCheckinDate)
+                      | dateFormat('DD/MM/YYYY')
+                  }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
-    <create-checkin v-if="checkin" :checkin.sync="checkin">
-      <!-- <chart-okrs slot="chartOKRs" :checkin.sync="checkin" /> -->
-    </create-checkin>
+    <chart-checkin class="top-checkin" :checkin.sync="checkin" />
+    <create-checkin v-if="checkin" :checkin.sync="checkin" />
   </div>
 </template>
 <script lang="ts">
@@ -51,6 +54,7 @@ import CheckinRepository from '@/repositories/CheckinRepository';
 import { formatDateToDD, initNewDate } from '@/utils/dateParser';
 import { notificationConfig } from '@/constants/app.constant';
 import CreateCheckin from '@/components/checkin/CreateCheckin.vue';
+import ChartCheckin from '@/components/checkin/ChartCheckin.vue';
 
 @Component({
   name: 'CheckinPage',
@@ -61,6 +65,7 @@ import CreateCheckin from '@/components/checkin/CreateCheckin.vue';
   },
   components: {
     CreateCheckin,
+    ChartCheckin,
   },
   async mounted() {
     await this.getCheckin();
@@ -76,7 +81,21 @@ export default class CheckinPage extends Vue {
 
   private async getCheckin() {
     this.loading = true;
-    const { data } = await CheckinRepository.getDetailCheckInByObjectiveId(+this.$route.params.id);
+    const { data } = await CheckinRepository.getDetailCheckInByObjectiveId(
+      +this.$route.params.id,
+    );
+    if (data.checkinDetail.length === 0) {
+      data.checkinDetail = data.keyResults.map((item) => {
+        return {
+          confidentLevel: 2,
+          keyResult: item,
+          plans: '',
+          problems: '',
+          progress: '',
+        };
+      });
+    }
+    console.log('hello', data);
     this.checkin = data;
     this.loading = false;
   }
@@ -95,9 +114,10 @@ export default class CheckinPage extends Vue {
   margin-bottom: $unit-8;
   background-color: $white;
   &__title {
+    font-weight: bold;
+    margin-bottom: 1.5rem;
     font-size: $unit-5;
     font-style: normal;
-    font-weight: normal;
     color: #212b36;
     line-height: 28px;
   }
@@ -107,11 +127,7 @@ export default class CheckinPage extends Vue {
     font-size: $unit-3;
   }
   &__left {
-    padding: $unit-12 $unit-8;
-  }
-
-  &__right {
-    padding: $unit-4 $unit-6;
+    padding: $unit-8;
   }
 
   .content {

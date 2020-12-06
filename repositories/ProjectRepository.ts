@@ -23,7 +23,9 @@ export default class ProjectRepository {
   }
 
   public static deleteStaffById(projectId: number, staffId: number) {
-    return baseUrl.delete(`${ResourcesEnpoint.Project}/` + projectId + '/staff/' + staffId);
+    return baseUrl.delete(
+      `${ResourcesEnpoint.Project}/` + projectId + '/staff/' + staffId,
+    );
   }
 
   public static getAllActiveStaff() {

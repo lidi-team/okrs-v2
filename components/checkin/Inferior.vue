@@ -1,11 +1,28 @@
 <template>
   <div>
-    <el-table v-loading="loading" empty-text="Không có dữ liệu" class="inferiorOKRs" :data="employees" style="width: 100%">
-      <el-table-column type="index" align="center" label="STT"></el-table-column>
+    <el-table
+      v-loading="loading"
+      empty-text="Không có dữ liệu"
+      class="inferiorOKRs"
+      :data="employees"
+      style="width: 100%"
+    >
+      <el-table-column
+        type="index"
+        align="center"
+        label="STT"
+      ></el-table-column>
       <el-table-column label="Họ và tên">
         <template slot-scope="{ row }">
           <div class="inferiorOKRs__info">
-            <img :src="row.avatarURL || 'https://bulma.io/images/placeholders/128x128.png'" class="inferiorOKRs__avatar" alt="avatar" />
+            <img
+              :src="
+                row.avatarURL ||
+                'https://bulma.io/images/placeholders/128x128.png'
+              "
+              class="inferiorOKRs__avatar"
+              alt="avatar"
+            />
             <span>{{ row.fullName || '' }}</span>
           </div>
         </template>
@@ -17,7 +34,9 @@
       </el-table-column>
       <el-table-column label="Hành động" align="center">
         <template slot-scope="{ row }">
-          <el-button class="el-button--purple" @click="showOKRs(row.id)">Xem OKRs</el-button>
+          <el-button class="el-button--purple" @click="showOKRs(row.id)"
+            >Xem OKRs</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -29,10 +48,21 @@
       @pagination="handlePagination($event)"
     />
 
-    <el-dialog :visible.sync="showDialogKRs" width="90%" placement="bottom-start" title="Danh sách OKRs" :before-close="handleCloseDialog">
+    <el-dialog
+      :visible.sync="showDialogKRs"
+      width="90%"
+      placement="bottom-start"
+      title="Danh sách OKRs"
+      :before-close="handleCloseDialog"
+    >
       <el-row v-loading="loadingDialogKRs">
         <el-col :span="24">
-          <el-table empty-text="Không có dữ liệu" class="myOKRs" :data="tempOKRs" style="width: 100%">
+          <el-table
+            empty-text="Không có dữ liệu"
+            class="myOKRs"
+            :data="tempOKRs"
+            style="width: 100%"
+          >
             <el-table-column label="Mục tiêu" min-width="180">
               <template slot-scope="{ row }">
                 <span>{{ row.title }}</span>
@@ -40,12 +70,19 @@
             </el-table-column>
             <el-table-column label="Tiến độ" min-width="150">
               <template v-slot="{ row }">
-                <el-progress :percentage="row.progress ? row.progress : 0" :color="customColors" :text-inside="true" :stroke-width="26" />
+                <el-progress
+                  :percentage="row.progress ? row.progress : 0"
+                  :color="customColors"
+                  :text-inside="true"
+                  :stroke-width="26"
+                />
               </template>
             </el-table-column>
             <el-table-column label="Ngày tạo">
               <template slot-scope="{ row }">
-                <span>{{ new Date(row.createAt) | dateFormat('DD/MM/YYYY') }}</span>
+                <span>{{
+                  new Date(row.createAt) | dateFormat('DD/MM/YYYY')
+                }}</span>
               </template>
             </el-table-column>
             <el-table-column align="center" label="Lịch sử">
@@ -59,7 +96,11 @@
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="el-button--purple el-button--modal" @click="handleCloseDialog">OK</el-button>
+        <el-button
+          class="el-button--purple el-button--modal"
+          @click="handleCloseDialog"
+          >OK</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -104,11 +145,17 @@ export default class Inferior extends Vue {
 
   private async getListCheckin() {
     this.loading = true;
-    const tab = this.$route.query.tab ? this.$route.query.tab : ROUTER_CHECKIN.MyOkrs;
+    const tab = this.$route.query.tab
+      ? this.$route.query.tab
+      : ROUTER_CHECKIN.MyOkrs;
     const page = this.$route.query.page ? this.$route.query.page : 1;
-    const cycleId = this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycleCurrent.id;
+    const cycleId = this.$route.query.cycleId
+      ? this.$route.query.cycleId
+      : this.$store.state.cycle.cycleCurrent.id;
     const limit = this.$route.query.limit ? this.$route.query.limit : 10;
-    const projectId = this.$route.query.projectId ? this.$route.query.projectId : 0;
+    const projectId = this.$route.query.projectId
+      ? this.$route.query.projectId
+      : 0;
     const { data } = await CheckinRepository.getInferiorCheckin({
       projectId,
       page,
@@ -130,8 +177,12 @@ export default class Inferior extends Vue {
     this.showDialogKRs = true;
     this.loadingDialogKRs = true;
     const userId = id;
-    const cycleId = this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycleCurrent.id;
-    const projectId = this.$route.query.projectId ? this.$route.query.projectId : 0;
+    const cycleId = this.$route.query.cycleId
+      ? this.$route.query.cycleId
+      : this.$store.state.cycle.cycleCurrent.id;
+    const projectId = this.$route.query.projectId
+      ? this.$route.query.projectId
+      : 0;
     const { data } = await CheckinRepository.getListObjectiveInferior({
       userId,
       cycleId,

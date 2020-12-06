@@ -8,7 +8,11 @@
         prefix-icon="el-icon-search"
         @keyup.enter.native="handleSearch(syncedText)"
       />
-      <el-button class="el-button--white el-button--small el-button--search" @click="handleSearch(syncedText)">Tìm kiếm</el-button>
+      <el-button
+        class="el-button--white el-button--small el-button--search"
+        @click="handleSearch(syncedText)"
+        >Tìm kiếm</el-button
+      >
     </div>
   </div>
 </template>

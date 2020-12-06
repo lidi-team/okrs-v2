@@ -2,7 +2,12 @@
   <div>
     <slot name="chartCheckin" />
     <div class="historyDetail">
-      <el-table empty-text="Không có dữ liệu" class="historyDetail__form" :data="checkinDetail" style="width: 100%">
+      <el-table
+        empty-text="Không có dữ liệu"
+        class="historyDetail__form"
+        :data="checkinDetail"
+        style="width: 100%"
+      >
         <el-table-column label="Kết quả chính" min-width="250">
           <template slot-scope="{ row }">
             <span>{{ row.keyResult.content }}</span>
@@ -20,23 +25,48 @@
         </el-table-column>
         <el-table-column align="center" label="Tiến độ" min-width="150">
           <template slot-scope="{ row }">
-            <el-input v-model="row.progress" :readonly="true" type="textarea" :rows="4" placeholder="Nhập tiến độ"> </el-input>
+            <el-input
+              v-model="row.progress"
+              :readonly="true"
+              type="textarea"
+              :rows="4"
+              placeholder="Nhập tiến độ"
+            >
+            </el-input>
           </template>
         </el-table-column>
         <el-table-column align="center" label="Vấn đề" min-width="150">
           <template slot-scope="{ row }">
-            <el-input v-model="row.problems" :readonly="true" type="textarea" :rows="4" placeholder="Nhập vấn đề"> </el-input>
+            <el-input
+              v-model="row.problems"
+              :readonly="true"
+              type="textarea"
+              :rows="4"
+              placeholder="Nhập vấn đề"
+            >
+            </el-input>
           </template>
         </el-table-column>
         <el-table-column align="center" label="Kế hoạch" min-width="150">
           <template slot-scope="{ row }">
-            <el-input v-model="row.plans" :readonly="true" type="textarea" :rows="4" placeholder="Nhập kế hoạch"> </el-input>
+            <el-input
+              v-model="row.plans"
+              :readonly="true"
+              type="textarea"
+              :rows="4"
+              placeholder="Nhập kế hoạch"
+            >
+            </el-input>
           </template>
         </el-table-column>
         <el-table-column label="Độ tự tin" min-width="150">
           <template v-slot="{ row }">
             <span :style="`color: ${customColors(row.confidentLevel)}`">{{
-              row.confidentLevel === 1 ? 'Không ổn lắm' : row.confidentLevel === 2 ? 'Bình thường' : 'Ổn định'
+              row.confidentLevel === 1
+                ? 'Không ổn lắm'
+                : row.confidentLevel === 2
+                ? 'Bình thường'
+                : 'Ổn định'
             }}</span>
           </template>
         </el-table-column>
@@ -58,7 +88,11 @@ export default class DetailHistory extends Vue {
   @Prop(Array) readonly checkinDetail!: any;
   private status = statusCheckin;
   private customColors(confident) {
-    return confident === 1 ? '#DE3618' : confident === 2 ? '#47C1BF' : '#50B83C';
+    return confident === 1
+      ? '#DE3618'
+      : confident === 2
+      ? '#47C1BF'
+      : '#50B83C';
   }
 
   private goBack() {

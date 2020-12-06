@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="my-okrs">
-      <el-table v-loading="loading" empty-text="Không có dữ liệu" :data="checkins" style="width: 100%">
+      <el-table
+        v-loading="loading"
+        empty-text="Không có dữ liệu"
+        :data="checkins"
+        style="width: 100%"
+      >
         <el-table-column label="Mục tiêu" min-width="250">
           <template slot-scope="{ row }">
             <span>{{ row.title }}</span>
@@ -9,17 +14,26 @@
         </el-table-column>
         <el-table-column label="Kết quả then chốt" min-width="150">
           <template slot-scope="{ row }">
-            <span class="my-okrs__txtBlue" @click="showKRs(row.keyResults)">{{ row.keyResults ? row.keyResults.length : 0 }} kết quả</span>
+            <span class="my-okrs__txtBlue" @click="showKRs(row.keyResults)"
+              >{{ row.keyResults ? row.keyResults.length : 0 }} kết quả</span
+            >
           </template>
         </el-table-column>
         <el-table-column label="Tiến độ" min-width="180">
           <template v-slot="{ row }">
-            <el-progress :percentage="row.progress ? row.progress : 0" :color="customColors" :text-inside="true" :stroke-width="26" />
+            <el-progress
+              :percentage="row.progress ? row.progress : 0"
+              :color="customColors"
+              :text-inside="true"
+              :stroke-width="26"
+            />
           </template>
         </el-table-column>
         <el-table-column align="center" label="Thay đổi" min-width="100">
           <template slot-scope="{ row }">
-            <span :style="`color: ${customColorsChanging(row.change)}`">{{ row.change }}%</span>
+            <span :style="`color: ${customColorsChanging(row.change)}`"
+              >{{ row.change }}%</span
+            >
           </template>
         </el-table-column>
         <el-table-column align="center" label="Dự án" min-width="100">
@@ -29,7 +43,10 @@
         </el-table-column>
         <el-table-column align="center" label="Lịch sử" min-width="150">
           <template slot-scope="{ row }">
-            <nuxt-link v-if="$route.query.tab === 'check-in-cong-ty'" :to="`/checkin/lich-su-cong-ty/${row.id}`">
+            <nuxt-link
+              v-if="$route.query.tab === 'check-in-cong-ty'"
+              :to="`/checkin/lich-su-cong-ty/${row.id}`"
+            >
               <span class="my-okrs__txtBlue">Xem lịch sử</span>
             </nuxt-link>
             <nuxt-link v-else :to="`/checkin/lich-su/${row.id}`">
@@ -37,32 +54,79 @@
             </nuxt-link>
           </template>
         </el-table-column>
-        <el-table-column v-if="$route.query.tab === 'check-in-cong-ty'" label="Hành động" align="center" width="180">
+        <el-table-column
+          v-if="$route.query.tab === 'check-in-cong-ty'"
+          label="Hành động"
+          align="center"
+          width="180"
+        >
           <template slot-scope="{ row }">
-            <nuxt-link v-if="row.status === status.OVERDUE" :to="`/checkin/company/${row.id}`">
-              <el-button type="danger" class="el-button--checkin">Quá hạn</el-button>
+            <nuxt-link
+              v-if="row.status === status.OVERDUE"
+              :to="`/checkin/company/${row.id}`"
+            >
+              <el-button type="danger" class="el-button--checkin"
+                >Quá hạn</el-button
+              >
             </nuxt-link>
-            <nuxt-link v-else-if="row.status === status.DRAFT" :to="`/checkin/company/${row.id}`">
-              <el-button type="warning" class="el-button--checkin">Sửa bản nháp</el-button>
+            <nuxt-link
+              v-else-if="row.status === status.DRAFT"
+              :to="`/checkin/company/${row.id}`"
+            >
+              <el-button type="warning" class="el-button--checkin"
+                >Sửa bản nháp</el-button
+              >
             </nuxt-link>
-            <el-button v-else-if="row.status === status.COMPLETED" type="success" disabled class="el-button--checkin">Đã hoàn thành</el-button>
+            <el-button
+              v-else-if="row.status === status.COMPLETED"
+              type="success"
+              disabled
+              class="el-button--checkin"
+              >Đã hoàn thành</el-button
+            >
             <nuxt-link v-else :to="`/checkin/company/${row.id}`">
-              <el-button class="el-button--purple el-button--checkin">Tạo Checkin</el-button>
+              <el-button class="el-button--purple el-button--checkin"
+                >Tạo Checkin</el-button
+              >
             </nuxt-link>
           </template>
         </el-table-column>
         <el-table-column v-else label="Hành động" align="center" width="180">
           <template slot-scope="{ row }">
-            <nuxt-link v-if="row.status === status.OVERDUE" :to="`/checkin/${row.id}`">
-              <el-button type="danger" class="el-button--checkin">Quá hạn</el-button>
+            <nuxt-link
+              v-if="row.status === status.OVERDUE"
+              :to="`/checkin/${row.id}`"
+            >
+              <el-button type="danger" class="el-button--checkin"
+                >Quá hạn</el-button
+              >
             </nuxt-link>
-            <nuxt-link v-else-if="row.status === status.DRAFT" :to="`/checkin/${row.id}`">
-              <el-button type="warning" class="el-button--checkin">Sửa bản nháp</el-button>
+            <nuxt-link
+              v-else-if="row.status === status.DRAFT"
+              :to="`/checkin/${row.id}`"
+            >
+              <el-button type="warning" class="el-button--checkin"
+                >Sửa bản nháp</el-button
+              >
             </nuxt-link>
-            <el-button v-else-if="row.status === status.PENDING" type="info" disabled class="el-button--checkin">Đang chờ duyệt</el-button>
-            <el-button v-else-if="row.status === status.COMPLETED" type="success" disabled class="el-button--checkin">Đã hoàn thành</el-button>
+            <el-button
+              v-else-if="row.status === status.PENDING"
+              type="info"
+              disabled
+              class="el-button--checkin"
+              >Đang chờ duyệt</el-button
+            >
+            <el-button
+              v-else-if="row.status === status.COMPLETED"
+              type="success"
+              disabled
+              class="el-button--checkin"
+              >Đã hoàn thành</el-button
+            >
             <nuxt-link v-else :to="`/checkin/${row.id}`">
-              <el-button class="el-button--purple el-button--checkin">Tạo Checkin</el-button>
+              <el-button class="el-button--purple el-button--checkin"
+                >Tạo Checkin</el-button
+              >
             </nuxt-link>
           </template>
         </el-table-column>
@@ -86,13 +150,22 @@
     >
       <el-row>
         <el-col :span="24">
-          <el-table empty-text="Không có dữ liệu" class="myOKRs" :data="keyResults" style="width: 100%">
+          <el-table
+            empty-text="Không có dữ liệu"
+            class="myOKRs"
+            :data="keyResults"
+            style="width: 100%"
+          >
             <el-table-column label="Kết quả chính" min-width="150">
               <template slot-scope="{ row }">
                 <span>{{ row.content }}</span>
               </template>
             </el-table-column>
-            <el-table-column align="center" label="Giá trị bắt đầu" min-width="100">
+            <el-table-column
+              align="center"
+              label="Giá trị bắt đầu"
+              min-width="100"
+            >
               <template slot-scope="{ row }">
                 <span>{{ row.startValue }}</span>
               </template>
@@ -121,7 +194,11 @@
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="el-button--purple el-button--modal" @click="handleCloseDialog">OK</el-button>
+        <el-button
+          class="el-button--purple el-button--modal"
+          @click="handleCloseDialog"
+          >OK</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -165,11 +242,17 @@ export default class MyOkrsCheckin extends Vue {
 
   private async getListCheckin() {
     this.loading = true;
-    const tab = this.$route.query.tab ? this.$route.query.tab : ROUTER_CHECKIN.MyOkrs;
+    const tab = this.$route.query.tab
+      ? this.$route.query.tab
+      : ROUTER_CHECKIN.MyOkrs;
     const page = this.$route.query.page ? this.$route.query.page : 1;
-    const cycleId = this.$route.query.cycleId ? this.$route.query.cycleId : this.$store.state.cycle.cycleCurrent.id;
+    const cycleId = this.$route.query.cycleId
+      ? this.$route.query.cycleId
+      : this.$store.state.cycle.cycleCurrent.id;
     const limit = this.$route.query.limit ? this.$route.query.limit : 10;
-    const projectId = this.$route.query.projectId ? this.$route.query.projectId : 0;
+    const projectId = this.$route.query.projectId
+      ? this.$route.query.projectId
+      : 0;
     const { data } = await CheckinRepository.getMyCheckin({
       projectId,
       page,

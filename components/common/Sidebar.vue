@@ -1,28 +1,46 @@
 <template>
-  <div :class="['wrap-sidebar', { 'hide-nav': isHide }]">
-    <div class="btn-group">
-      <div class="switch-btn" @click="isHide = !isHide"></div>
-    </div>
-    <el-row v-if="user" class="sidebar" type="flex" justify="start" align="center">
-      <nuxt-link to="/" :class="['sidebar__link', { 'nuxt-link-exact-active': isHome }]">
+  <div class="wrap-sidebar">
+    <el-row
+      v-if="user"
+      class="sidebar"
+      type="flex"
+      justify="start"
+      align="center"
+    >
+      <nuxt-link
+        to="/"
+        :class="['sidebar__link', { 'nuxt-link-exact-active': isHome }]"
+      >
         <div class="sidebar__link__tab">
           <Dashboard class="sidebar__link__tab__icon" />
           <span class="hidden-tablet">Dashboard</span>
         </div>
       </nuxt-link>
-      <nuxt-link to="/checkin" :class="['sidebar__link', { 'nuxt-link-exact-active': isCheckinActive }]">
+      <nuxt-link
+        to="/checkin"
+        :class="[
+          'sidebar__link',
+          { 'nuxt-link-exact-active': isCheckinActive },
+        ]"
+      >
         <div class="sidebar__link__tab">
           <Checkin class="sidebar__link__tab__icon" />
           <span class="hidden-tablet">Check-in</span>
         </div>
       </nuxt-link>
-      <nuxt-link to="/OKRs" :class="['sidebar__link', { 'nuxt-link-exact-active': isOkrsActive }]">
+      <nuxt-link
+        to="/OKRs"
+        :class="['sidebar__link', { 'nuxt-link-exact-active': isOkrsActive }]"
+      >
         <div class="sidebar__link__tab">
           <OKRs class="sidebar__link__tab__icon" />
           <span class="hidden-tablet">OKRs</span>
         </div>
       </nuxt-link>
-      <nuxt-link to="/CFRs" :class="['sidebar__link', { 'nuxt-link-exact-active': isCfrsActive }]">
+      <nuxt-link
+        to="/CFRs"
+        :class="['sidebar__link', { 'nuxt-link-exact-active': isCfrsActive }]"
+      >
         <div class="sidebar__link__tab">
           <CFRs class="sidebar__link__tab__icon" />
           <span class="hidden-tablet">CFRs</span>
@@ -33,7 +51,10 @@
       <nuxt-link
         v-if="user.roles.includes('ROLE_ADMIN')"
         to="/admin/cai-dat"
-        :class="['sidebar__link', { 'nuxt-link-exact-active': isSettingCompanyActive }]"
+        :class="[
+          'sidebar__link',
+          { 'nuxt-link-exact-active': isSettingCompanyActive },
+        ]"
       >
         <div class="sidebar__link__tab">
           <Setting class="sidebar__link__tab__icon" />
@@ -44,7 +65,10 @@
       <nuxt-link
         v-if="user.roles.includes('ROLE_ADMIN')"
         to="/du-an"
-        :class="['sidebar__link', { 'nuxt-link-exact-active': isSettingProjectActive }]"
+        :class="[
+          'sidebar__link',
+          { 'nuxt-link-exact-active': isSettingProjectActive },
+        ]"
       >
         <div class="sidebar__link__tab">
           <project-manage class="sidebar__link__tab__icon" />
@@ -99,9 +123,11 @@ import { GetterState } from '@/constants/app.vuex';
   },
 })
 export default class SideBar extends Vue {
-  private isHide: boolean = false;
   private get isHome() {
-    if (this.$route.path === '/' || (this.$route.path === '/' && this.$route.query.cycleId)) {
+    if (
+      this.$route.path === '/' ||
+      (this.$route.path === '/' && this.$route.query.cycleId)
+    ) {
       return true;
     }
   }
@@ -143,19 +169,6 @@ export default class SideBar extends Vue {
   background-color: $white;
   @include breakpoint-down(tablet) {
     width: 60px;
-  }
-  .switch-btn {
-    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABIklEQVRYR2NkGGDAOMD2M4w6AB4CDTM3c/1jYM5kYPjPS8to+f+f4dOXb4LT+4usvoPsgTugdua2pYwMDFG0tBxh9v/FTenecagOmLF1OyMjowd9HMCwvSndy2vQOaCZkZGxhh4h8P8/Q31zhlcTSgiAOA0ztpr8+c/EQ0tHsDAxfmpI9zgHs2O0HBg8IZA28wyrFOML0z9/mdlomQYYGRl+Mr/gON3Q4PhntCAaXAVR3YxtSxgYGaJpGf9464KGqft5/jD9MKGHA75+5z+JURvSw2JsdgyecmBQhEDt9G2G/xkY+WnpGEaG/x+bM73OY1RGtTO2NTIyMtTR0nKY2Vir49oR3yIaFAXRX+bvGYyM/2naIsLZLKdH4hstiAZlCAAAVGZ+IcIkyAcAAAAASUVORK5CYII=);
-    background-size: 16px;
-    background-repeat: no-repeat;
-    background-position: 50%;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    cursor: pointer;
-    background-color: #f2f4f6;
-    margin-top: 10px;
-    display: block;
   }
   .btn-group {
     position: absolute;

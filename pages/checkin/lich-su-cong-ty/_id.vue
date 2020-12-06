@@ -3,7 +3,13 @@
     <el-page-header title="OKRs công ty" @back="goBack" />
     <h1 class="listHistory__title">Lịch sử Check-in</h1>
     <div class="listHistory__content">
-      <el-table v-loading="loading" empty-text="Không có dữ liệu" class="myOKRs" :data="historyList" style="width: 100%">
+      <el-table
+        v-loading="loading"
+        empty-text="Không có dữ liệu"
+        class="myOKRs"
+        :data="historyList"
+        style="width: 100%"
+      >
         <el-table-column label="Mục tiêu" min-width="250">
           <template slot-scope="{ row }">
             <span>{{ row.objective.title }}</span>
@@ -11,27 +17,41 @@
         </el-table-column>
         <el-table-column label="Ngày check-in" min-width="150">
           <template slot-scope="{ row }">
-            <span v-if="row.checkinAt">{{ new Date(row.checkinAt) | dateFormat('DD/MM/YYYY') }}</span>
+            <span v-if="row.checkinAt">{{
+              new Date(row.checkinAt) | dateFormat('DD/MM/YYYY')
+            }}</span>
           </template>
         </el-table-column>
         <el-table-column label="Ngày check-in kế tiếp" min-width="150">
           <template v-slot="{ row }">
-            <span>{{ new Date(row.nextCheckinDate) | dateFormat('DD/MM/YYYY') }}</span>
+            <span>{{
+              new Date(row.nextCheckinDate) | dateFormat('DD/MM/YYYY')
+            }}</span>
           </template>
         </el-table-column>
         <el-table-column align="center" label="Trạng thái" min-width="100">
           <template slot-scope="{ row }">
-            <el-tag v-if="row.status === status.OVERDUE" type="danger">Quá hạn</el-tag>
-            <el-tag v-else-if="row.status === status.DRAFT" type="warning">Bản nháp</el-tag>
-            <el-tag v-else-if="row.status === status.PENDING" type="info">Đang chờ duyệt</el-tag>
-            <el-tag v-else-if="row.status === status.COMPLETED" type="success">Đã hoàn thành</el-tag>
+            <el-tag v-if="row.status === status.OVERDUE" type="danger"
+              >Quá hạn</el-tag
+            >
+            <el-tag v-else-if="row.status === status.DRAFT" type="warning"
+              >Bản nháp</el-tag
+            >
+            <el-tag v-else-if="row.status === status.PENDING" type="info"
+              >Đang chờ duyệt</el-tag
+            >
+            <el-tag v-else-if="row.status === status.COMPLETED" type="success"
+              >Đã hoàn thành</el-tag
+            >
             <el-tag v-else type="success">Đã duyệt</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="Hành động" align="center" width="180">
           <template slot-scope="{ row }">
             <nuxt-link :to="`/checkin/lich-su-cong-ty/chi-tiet/${row.id}`">
-              <el-button class="el-button--white el-button--checkin">Xem chi tiết</el-button>
+              <el-button class="el-button--white el-button--checkin"
+                >Xem chi tiết</el-button
+              >
             </nuxt-link>
           </template>
         </el-table-column>

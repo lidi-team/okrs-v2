@@ -19,11 +19,21 @@
                 </tr>
                 <tr v-if="historyDetail.checkinAt">
                   <th scope="row">Ngày check-in</th>
-                  <td>{{ new Date(historyDetail.checkinAt) | dateFormat('DD/MM/YYYY') }}</td>
+                  <td>
+                    {{
+                      new Date(historyDetail.checkinAt)
+                        | dateFormat('DD/MM/YYYY')
+                    }}
+                  </td>
                 </tr>
                 <tr v-if="historyDetail.nextCheckinDate">
                   <th scope="row">Ngày check-in kế tiếp</th>
-                  <td>{{ new Date(historyDetail.nextCheckinDate) | dateFormat('DD/MM/YYYY') }}</td>
+                  <td>
+                    {{
+                      new Date(historyDetail.nextCheckinDate)
+                        | dateFormat('DD/MM/YYYY')
+                    }}
+                  </td>
                 </tr>
               </tbody>
             </table>

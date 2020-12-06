@@ -12,16 +12,30 @@
             @deleteAlignOkrs="deleteAlignOkrs($event)"
           />
         </div>
-        <el-button class="el-button el-button--white el-button--small okrs-align__content--button" @click="addNewAlignOkrs">
+        <el-button
+          class="el-button el-button--white el-button--small okrs-align__content--button"
+          @click="addNewAlignOkrs"
+        >
           <span>Thêm Okrs liên kết chéo</span>
         </el-button>
       </div>
       <div class="okrs-align__action">
-        <el-button class="el-button--white el-button--modal" @click="backToStepTwo">Quay lại</el-button>
-        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createOkrs(false)"
+        <el-button
+          class="el-button--white el-button--modal"
+          @click="backToStepTwo"
+          >Quay lại</el-button
+        >
+        <el-button
+          class="el-button--purple el-button--modal"
+          :loading="loading"
+          @click="createOkrs(false)"
           >Bỏ qua và {{ isCreate ? 'tạo OKRs' : 'cập nhật OKRs' }}</el-button
         >
-        <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createOkrs(true)">
+        <el-button
+          class="el-button--purple el-button--modal"
+          :loading="loading"
+          @click="createOkrs(true)"
+        >
           {{ isCreate ? 'Tạo OKRs' : 'Cập nhật OKRs' }}
         </el-button>
       </div>
@@ -36,8 +50,15 @@ import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';
 
-import { DispatchAction, MutationState, GetterState } from '@/constants/app.vuex';
-import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
+import {
+  DispatchAction,
+  MutationState,
+  GetterState,
+} from '@/constants/app.vuex';
+import {
+  confirmWarningConfig,
+  notificationConfig,
+} from '@/constants/app.constant';
 import AlignObjective from '@/components/okrs/add-update/AlignObjective.vue';
 
 @Component<CreateAlignObjective>({
@@ -71,11 +92,13 @@ export default class CreateAlignObjective extends Vue {
         let validForm: number = 0;
         const alignObjectives: any[] = [];
         (this.$refs.alignForm as any).forEach((form) => {
-          (form.$refs.alignOkrs as Form).validate((isValid: boolean, invalidatedFields: object) => {
-            if (isValid) {
-              validForm++;
-            }
-          });
+          (form.$refs.alignOkrs as Form).validate(
+            (isValid: boolean, invalidatedFields: object) => {
+              if (isValid) {
+                validForm++;
+              }
+            },
+          );
           alignObjectives.push(form.syncAlignOkrs.objectiveId);
         });
         if (validForm === alignObjectives.length) {
