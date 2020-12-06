@@ -107,7 +107,7 @@ export default class CheckinPage extends Vue {
   }
 
   private async getProjects() {
-    const { data } = await ProjectRepository.getOriginalProjects();
+    const { data } = await ProjectRepository.getListCurrent();
     this.projects =
       [
         {
