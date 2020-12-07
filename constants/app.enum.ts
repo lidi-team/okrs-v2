@@ -107,9 +107,9 @@ export enum ResourcesEnpoint {
 }
 
 export enum CFREnpoint {
-  ListWaiting = 'list_waiting',
+  ListWaiting = 'list-waiting',
   History = 'history',
-  Rank = 'user_star',
+  Rank = 'user-star',
   Recognition = 'user_recognition',
   Objective = 'list_okrs',
 }

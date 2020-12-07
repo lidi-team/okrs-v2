@@ -102,7 +102,9 @@ export default class CFRs extends Vue {
 
   // private displayButton(): Boolean {
   //   return (
-  //     this.$store.state.auth.user.role.name === 'ADMIN' || this.$store.state.auth.user.isLeader || this.$store.state.auth.user.role.name === 'HR'
+  //     this.$store.state.auth.user.roles.includes('ROLE_ADMIN') ||
+  //     this.$store.state.auth.user.roles.includes('ROLE_ADMIN_HR') ||
+  //     this.$store.state.auth.user.roles.includes('ROLE_PM')
   //   );
   // }
 

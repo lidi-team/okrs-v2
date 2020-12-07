@@ -218,7 +218,7 @@ export default class CreateRecongnitionDialog extends Vue {
         this.optionsMetadata.criteria = Object.freeze(
           evaluationCriteria.data.data,
         );
-        this.optionsMetadata.users = Object.freeze(allUsers.data.data);
+        this.optionsMetadata.users = Object.freeze(allUsers.data);
       });
     } catch (error) {}
   }
