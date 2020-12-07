@@ -44,7 +44,7 @@
       </div>
     </div>
     <chart-checkin class="top-checkin" :checkin.sync="checkin" />
-    <create-checkin v-if="checkin" :checkin.sync="checkin" />
+    <create-checkin v-if="checkin" :checkin="checkin" />
   </div>
 </template>
 <script lang="ts">

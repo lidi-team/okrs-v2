@@ -21,7 +21,11 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-import { DispatchAction, MutationState, GetterState } from '@/constants/app.vuex';
+import {
+  DispatchAction,
+  MutationState,
+  GetterState,
+} from '@/constants/app.vuex';
 import { confirmWarningConfig } from '@/constants/app.constant';
 import StepObjective from '@/components/okrs/add-update/StepObjective.vue';
 import StepKeyResult from '@/components/okrs/add-update/StepKeyResult.vue';
@@ -45,7 +49,10 @@ export default class AddOkrs extends Vue {
   private active: Number = 0;
 
   private handleCloseDialog() {
-    this.$confirm('Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?', { ...confirmWarningConfig })
+    this.$confirm(
+      'Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?',
+      { ...confirmWarningConfig },
+    )
       .then(() => {
         this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
         this.active = 0;

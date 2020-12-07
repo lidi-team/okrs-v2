@@ -14,6 +14,7 @@ import resize from '@/mixins/resize';
   name: 'ChartCheckin',
   mixins: [resize],
   mounted() {
+    console.log('checkinaaa', this.syncCheckin);
     this.initChart();
   },
   beforeDestroy() {
@@ -25,17 +26,17 @@ import resize from '@/mixins/resize';
   },
 })
 export default class ChartCheckin extends Vue {
+  @Prop({ type: Object }) checkin!: any;
   private chart: any = null;
   private id: any = 'chart';
 
   private initChart() {
     this.chart = init(document.getElementById(this.id) as any);
-    const xData = (function () {
-      const data: Array<String> = [];
-      for (let i = 1; i < 13; i++) {
-        data.push(i + 'month');
+    const xData = (() => {
+      if (this.checkin && this.checkin.chart) {
+        return this.checkin.chart.checkinAt;
       }
-      return data;
+      return [1];
     })();
     this.chart.setOption({
       backgroundColor: 'white',
@@ -163,20 +164,10 @@ export default class ChartCheckin extends Vue {
               },
             },
           },
-          data: [
-            1036,
-            3693,
-            2962,
-            3810,
-            2519,
-            1915,
-            1748,
-            4675,
-            6209,
-            4323,
-            2865,
-            4298,
-          ],
+          data:
+            this.checkin && this.checkin.chart
+              ? this.checkin.chart.progress
+              : [],
         },
       ],
     });

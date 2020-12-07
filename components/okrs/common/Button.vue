@@ -1,10 +1,19 @@
 <template>
-  <el-button class="el-button el-button--small el-button--purple" icon="el-icon-plus" @click="showDialog">Tạo OKRs {{ nameObjective }}</el-button>
+  <el-button
+    class="el-button el-button--small el-button--purple"
+    icon="el-icon-plus"
+    @click="showDialog"
+    >Tạo OKRs {{ nameObjective }}</el-button
+  >
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import { MutationState, GetterState, DispatchAction } from '@/constants/app.vuex';
+import {
+  MutationState,
+  GetterState,
+  DispatchAction,
+} from '@/constants/app.vuex';
 
 export default {
   props: {

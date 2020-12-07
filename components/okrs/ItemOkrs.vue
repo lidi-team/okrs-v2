@@ -3,28 +3,59 @@
     <div class="-display-flex -justify-content-between">
       <h2 class="item__header">{{ title }}</h2>
       <div class="-display-flex -align-items-center">
-        <button-create-okr v-if="isManage" :type-objective="typeObjective" name-objective="dự án" :project-id="0" />
-        <button-create-okr :type-objective="typeObjective" name-objective="cá nhân" :project-id="projectId" />
+        <button-create-okr
+          v-if="isManage"
+          :type-objective="typeObjective"
+          name-objective="dự án"
+          :project-id="0"
+        />
+        <button-create-okr
+          :type-objective="typeObjective"
+          name-objective="cá nhân"
+          :project-id="projectId"
+        />
       </div>
     </div>
-    <el-table :loading="loading" :data="objectives" header-row-class-name="item__table-header" style="width: 100%">
+    <el-table
+      :loading="loading"
+      :data="objectives"
+      header-row-class-name="item__table-header"
+      style="width: 100%"
+    >
       <el-table-column type="expand" width="20">
         <template v-slot="{ row }">
-          <div v-for="objective in row.childObjectives" :key="objective.id" class="item__expand">
+          <div
+            v-for="objective in row.childObjectives"
+            :key="objective.id"
+            class="item__expand"
+          >
             <div class="expand__objective">
               <icon-ellipse v-if="objective" />
               <span>{{ objective.title }}</span>
             </div>
             <div class="expand__infor">
-              <p v-if="objective.keyResults.length" class="expand__infor--link" @click="emitDrawer(objective.keyResults)">
+              <p
+                v-if="objective.keyResults.length"
+                class="expand__infor--link"
+                @click="emitDrawer(objective.keyResults)"
+              >
                 {{ objective.keyResults.length }} kết quả
               </p>
-              <p v-else style="width: 120px; color: #212b36">{{ objective.keyResults.length }} kết quả</p>
+              <p v-else style="width: 120px; color: #212b36">
+                {{ objective.keyResults.length }} kết quả
+              </p>
               <div class="expand__infor--progress">
-                <el-progress :percentage="+objective.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
+                <el-progress
+                  :percentage="+objective.progress"
+                  :color="customColors"
+                  :text-inside="true"
+                  :stroke-width="26"
+                />
               </div>
               <div class="expand__infor--action">
-                <span :class="isUpProgress(objective.changing)">{{ objective.changing }}%</span>
+                <span :class="isUpProgress(objective.changing)"
+                  >{{ objective.changing }}%</span
+                >
                 <action-tooltip
                   :id="objective.id"
                   class="expand__infor--action__tooltip"
@@ -45,14 +76,27 @@
       </el-table-column>
       <el-table-column label="Kết quả then chốt" width="120">
         <template v-slot="{ row }">
-          <p v-if="row.keyResults.length" class="item__krs" @click="emitDrawer(row.keyResults)">{{ row.keyResults.length }} kết quả</p>
-          <p v-else style="color: #212b36">{{ row.keyResults.length }} kết quả</p>
+          <p
+            v-if="row.keyResults.length"
+            class="item__krs"
+            @click="emitDrawer(row.keyResults)"
+          >
+            {{ row.keyResults.length }} kết quả
+          </p>
+          <p v-else style="color: #212b36">
+            {{ row.keyResults.length }} kết quả
+          </p>
         </template>
       </el-table-column>
       <el-table-column label="Tiến độ" width="250">
         <template v-slot="{ row }">
           <div class="item__progress">
-            <el-progress :percentage="+row.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
+            <el-progress
+              :percentage="+row.progress"
+              :color="customColors"
+              :text-inside="true"
+              :stroke-width="26"
+            />
           </div>
         </template>
       </el-table-column>
@@ -60,12 +104,22 @@
         <template v-slot="{ row }">
           <div class="item__action">
             <p :class="isUpProgress(row.changing)">{{ row.changing }}%</p>
-            <action-tooltip :id="row.id" :is-manage="isManage" :canDelete="row.delete" @updateOKRs="updateOKRs(row)" />
+            <action-tooltip
+              :id="row.id"
+              :is-manage="isManage"
+              :canDelete="row.delete"
+              @updateOKRs="updateOKRs(row)"
+            />
           </div>
         </template>
       </el-table-column>
     </el-table>
-    <align-okrs-dialog v-if="visibleAlignDialog" :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleAlignDialog" :reload-data="reloadData" />
+    <align-okrs-dialog
+      v-if="visibleAlignDialog"
+      :temporary-okrs="tempOkrs"
+      :visible-dialog.sync="visibleAlignDialog"
+      :reload-data="reloadData"
+    />
   </div>
 </template>
 

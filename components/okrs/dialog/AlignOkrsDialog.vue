@@ -18,7 +18,12 @@
             no-match-text="Không tìm thấy kết quả"
             placeholder="Chọn OKRs cấp trên"
           >
-            <el-option v-for="okrs in listOkrs" :key="okrs.id" :label="okrsLeaderFormat(okrs)" :value="okrs.id" />
+            <el-option
+              v-for="okrs in listOkrs"
+              :key="okrs.id"
+              :label="okrsLeaderFormat(okrs)"
+              :value="okrs.id"
+            />
           </el-select>
         </div>
         <div class="item-aligned">
@@ -34,7 +39,10 @@
                 @deleteAlignOkrs="deleteAlignOkrs($event)"
               /> -->
             </div>
-            <el-button class="el-button el-button--white el-button--small align-okrs__form--button" @click="addNewAlignOkrs">
+            <el-button
+              class="el-button el-button--white el-button--small align-okrs__form--button"
+              @click="addNewAlignOkrs"
+            >
               <icon-add-krs />
               <span>Thêm Okrs liên kết chéo</span>
             </el-button>
@@ -43,8 +51,17 @@
       </div>
     </div>
     <span slot="footer">
-      <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-      <el-button :loading="loading" class="el-button--purple el-button--modal" @click="updateAlignOkrs">Cập nhật</el-button>
+      <el-button
+        class="el-button--white el-button--modal"
+        @click="handleCloseDialog"
+        >Hủy</el-button
+      >
+      <el-button
+        :loading="loading"
+        class="el-button--purple el-button--modal"
+        @click="updateAlignOkrs"
+        >Cập nhật</el-button
+      >
     </span>
   </el-dialog>
 </template>
@@ -52,7 +69,10 @@
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
+import {
+  notificationConfig,
+  confirmWarningConfig,
+} from '@/constants/app.constant';
 // components
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
 import AlignOkrsForm from '@/components/okrs/add-update/AlignObjective.vue';
@@ -65,11 +85,13 @@ import AlignOkrsForm from '@/components/okrs/add-update/AlignObjective.vue';
   created() {
     this.getListOkrs();
     if (this.temporaryOkrs.alignmentObjectives.length) {
-      this.itemsAlignOkrs = this.temporaryOkrs.alignmentObjectives.map((item) => {
-        return {
-          objectiveId: item.id,
-        };
-      });
+      this.itemsAlignOkrs = this.temporaryOkrs.alignmentObjectives.map(
+        (item) => {
+          return {
+            objectiveId: item.id,
+          };
+        },
+      );
     } else {
       this.itemsAlignOkrs = [{ objectiveId: null }];
     }
@@ -83,13 +105,16 @@ import AlignOkrsForm from '@/components/okrs/add-update/AlignObjective.vue';
 })
 export default class AlignOkrsDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
-  @PropSync('visibleDialog', { type: Boolean, required: true }) public syncAlignDialog!: boolean;
+  @PropSync('visibleDialog', { type: Boolean, required: true })
+  public syncAlignDialog!: boolean;
   @Prop({ type: Object, required: true }) public temporaryOkrs!: any;
 
   private itemsAlignOkrs: any = [];
   private loading: boolean = false;
   private formLoading: boolean = false;
-  private parentObjectiveId: number | any = this.temporaryOkrs.parentObjectiveId ? this.temporaryOkrs.parentObjectiveId : null;
+  private parentObjectiveId: number | any = this.temporaryOkrs.parentObjectiveId
+    ? this.temporaryOkrs.parentObjectiveId
+    : null;
   private listOkrs: any[] = [];
 
   private handleDataDialog() {
@@ -113,7 +138,10 @@ export default class AlignOkrsDialog extends Vue {
   }
 
   private handleCloseDialog() {
-    this.$confirm('Những thay đổi sẽ không được lưu, bạn có chắc chắn muốn thoát ra ngoài?', { ...confirmWarningConfig }).then(() => {
+    this.$confirm(
+      'Những thay đổi sẽ không được lưu, bạn có chắc chắn muốn thoát ra ngoài?',
+      { ...confirmWarningConfig },
+    ).then(() => {
       this.handleDataDialog();
     });
   }
@@ -126,11 +154,13 @@ export default class AlignOkrsDialog extends Vue {
     let invalidContent: number = 0;
     this.loading = true;
     (this.$refs.alignForms as any).forEach((form) => {
-      (form.$refs.alignOkrs as Form).validate((isValid: boolean, invalidatedFields: object) => {
-        if (!isValid) {
-          validForm++;
-        }
-      });
+      (form.$refs.alignOkrs as Form).validate(
+        (isValid: boolean, invalidatedFields: object) => {
+          if (!isValid) {
+            validForm++;
+          }
+        },
+      );
       if (form.syncAlignOkrs.objectiveId !== null) {
         if (!tempAlignOkrs.has(form.syncAlignOkrs.objectiveId)) {
           tempAlignOkrs.add(form.syncAlignOkrs.objectiveId);
@@ -146,7 +176,9 @@ export default class AlignOkrsDialog extends Vue {
       setTimeout(() => {
         this.loading = false;
       }, 300);
-      this.$message.error('Trùng lặp OKRs liên kết chéo, xin vui lòng chọn lại');
+      this.$message.error(
+        'Trùng lặp OKRs liên kết chéo, xin vui lòng chọn lại',
+      );
     } else if (validForm > 0) {
       setTimeout(() => {
         this.loading = false;
@@ -156,7 +188,11 @@ export default class AlignOkrsDialog extends Vue {
         objective: Object.assign(
           {},
           { id: +this.temporaryOkrs.id },
-          { alignObjectivesId: !tempAlignOkrs.size ? [] : Array.from(tempAlignOkrs) },
+          {
+            alignObjectivesId: !tempAlignOkrs.size
+              ? []
+              : Array.from(tempAlignOkrs),
+          },
           { parentObjectiveId: this.parentObjectiveId },
         ),
       };
@@ -185,7 +221,9 @@ export default class AlignOkrsDialog extends Vue {
   }
 
   private async getListOkrs() {
-    const cycleId = this.$store.state.cycle.cycleTemp ? this.$store.state.cycle.cycleTemp : this.$store.state.cycle.cycle.id;
+    const cycleId = this.$store.state.cycle.cycleTemp
+      ? this.$store.state.cycle.cycleTemp
+      : this.$store.state.cycle.cycle.id;
     if (this.isTeamLeader()) {
       await OkrsRepository.getListOkrs(cycleId, 1).then(({ data }) => {
         this.listOkrs = Object.freeze(data.data);
