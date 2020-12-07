@@ -3,18 +3,16 @@
     <div :id="id" class="chart" :style="{ height: '100%', width: '100%' }" />
   </div>
 </template>
-
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { statusCheckin } from '@/constants/app.constant';
+import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { init } from 'echarts';
 import resize from '@/mixins/resize';
+import { formatDate } from '@/utils/format';
 
-@Component<ChartCheckin>({
-  name: 'ChartCheckin',
+@Component<ChartProcessCheckin>({
+  name: 'ChartProcessCheckin',
   mixins: [resize],
   mounted() {
-    console.log('checkinaaa', this.syncCheckin);
     this.initChart();
   },
   beforeDestroy() {
@@ -25,18 +23,15 @@ import resize from '@/mixins/resize';
     this.chart = null;
   },
 })
-export default class ChartCheckin extends Vue {
-  @Prop({ type: Object }) checkin!: any;
+export default class ChartProcessCheckin extends Vue {
+  @PropSync('checkin', { type: Object }) syncCheckin!: any;
   private chart: any = null;
   private id: any = 'chart';
 
   private initChart() {
     this.chart = init(document.getElementById(this.id) as any);
     const xData = (() => {
-      if (this.checkin && this.checkin.chart) {
-        return this.checkin.chart.checkinAt;
-      }
-      return [1];
+      return this.syncCheckin.checkinAt.map((item) => formatDate(item));
     })();
     this.chart.setOption({
       backgroundColor: 'white',
@@ -164,10 +159,7 @@ export default class ChartCheckin extends Vue {
               },
             },
           },
-          data:
-            this.checkin && this.checkin.chart
-              ? this.checkin.chart.progress
-              : [],
+          data: this.syncCheckin.progress,
         },
       ],
     });

@@ -22,7 +22,11 @@
             placeholder="Nhập mật khẩu"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="matchPassword" class="custom-label" label="Nhập lại mật khẩu mới">
+        <el-form-item
+          prop="matchPassword"
+          class="custom-label"
+          label="Nhập lại mật khẩu mới"
+        >
           <el-input
             v-model="resetPasswordForm.matchPassword"
             type="password"
@@ -33,7 +37,10 @@
       </div>
       <el-row class="rpassword__action" type="flex" justify="space-between">
         <el-col :span="24">
-          <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handleResetPasswordForm"
+          <el-button
+            :loading="loading"
+            class="el-button el-button--purple el-button--medium"
+            @click="handleResetPasswordForm"
             >Đổi mật khẩu</el-button
           >
         </el-col>
@@ -73,7 +80,11 @@ export default class ResetPassword extends Vue {
 
   private rules: Maps<Rule[]> = {
     password: [
-      { required: true, message: 'Vui lòng nhập mật khẩu mới', trigger: 'blur' },
+      {
+        required: true,
+        message: 'Vui lòng nhập mật khẩu mới',
+        trigger: 'blur',
+      },
       { validator: this.validatePassword, trigger: ['blur', 'change'] },
       max255Char,
     ],
@@ -83,7 +94,11 @@ export default class ResetPassword extends Vue {
     ],
   };
 
-  private validatePassword(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private validatePassword(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     const valid: boolean = /^(?=.*\d)[0-9a-zA-Z]{8,}$/.test(value);
     if (!valid) {
       return callback('Mật khẩu chứ ít nhất 8 ký tự và 1 chữ số');
@@ -91,7 +106,11 @@ export default class ResetPassword extends Vue {
     return callback();
   }
 
-  private validateMatchPassword(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private validateMatchPassword(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     if (value !== this.resetPasswordForm.password) {
       return callback('Không trùng với mật khẩu mới');
     }
@@ -100,30 +119,34 @@ export default class ResetPassword extends Vue {
 
   private handleResetPasswordForm(): void {
     this.loading = true;
-    (this.$refs.resetPasswordForm as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
-      if (isValid) {
-        try {
-          delete this.resetPasswordForm.matchPassword;
-          await AuthRepository.resetPasswordWithToken(this.resetPasswordForm).then((res: any) => {
-            this.$notify.success({
-              ...notificationConfig,
-              message: 'Đổi mật khẩu thành công',
+    (this.$refs.resetPasswordForm as Form).validate(
+      async (isValid: boolean, invalidatedFields: object) => {
+        if (isValid) {
+          try {
+            delete this.resetPasswordForm.matchPassword;
+            await AuthRepository.resetPasswordWithToken(
+              this.resetPasswordForm,
+            ).then((res: any) => {
+              this.$notify.success({
+                ...notificationConfig,
+                message: 'Đổi mật khẩu thành công',
+              });
             });
-          });
-          this.loading = false;
-          this.$router.push('/dang-nhap');
-        } catch (error) {
+            this.loading = false;
+            this.$router.push('/dang-nhap');
+          } catch (error) {
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+          }
+        }
+        if (invalidatedFields) {
           setTimeout(() => {
             this.loading = false;
           }, 300);
         }
-      }
-      if (invalidatedFields) {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
+      },
+    );
   }
 }
 </script>

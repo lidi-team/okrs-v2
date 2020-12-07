@@ -1,22 +1,44 @@
 <template>
   <div class="item">
     <p class="item__header">{{ title }}</p>
-    <el-table :data="dataObjectives" style="width: 100%" header-row-class-name="item__table-header">
+    <el-table
+      :data="dataObjectives"
+      style="width: 100%"
+      header-row-class-name="item__table-header"
+    >
       <el-table-column label="Mục tiêu">
         <template v-slot="{ row }">
           <span>{{ row.title }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="author" label="Kết quả then chốt" width="250" align="center">
+      <el-table-column
+        prop="author"
+        label="Kết quả then chốt"
+        width="250"
+        align="center"
+      >
         <template v-slot="{ row }">
-          <p v-if="row.keyResults.length" class="item__krs" @click="showKeyResult(row.keyResults)">{{ row.keyResults | filterKeyresults }}</p>
-          <p v-else style="color: #212b36">{{ row.keyResults | filterKeyresults }}</p>
+          <p
+            v-if="row.keyResults.length"
+            class="item__krs"
+            @click="showKeyResult(row.keyResults)"
+          >
+            {{ row.keyResults | filterKeyresults }}
+          </p>
+          <p v-else style="color: #212b36">
+            {{ row.keyResults | filterKeyresults }}
+          </p>
         </template>
       </el-table-column>
       <el-table-column prop="author" label="Tiến độ" width="260" align="center">
         <template v-slot="{ row }">
           <div class="item__progress">
-            <el-progress :percentage="+row.progress" :color="customColors" :text-inside="true" :stroke-width="26" />
+            <el-progress
+              :percentage="+row.progress"
+              :color="customColors"
+              :text-inside="true"
+              :stroke-width="26"
+            />
           </div>
         </template>
       </el-table-column>
@@ -40,7 +62,8 @@
           </div>
         </template>
       </el-table-column> -->
-      <el-table-column label="Loại" width="200" prop="type" align="center"> </el-table-column>
+      <el-table-column label="Loại" width="200" prop="type" align="center">
+      </el-table-column>
       <el-table-column label="Hành động" align="right" width="150">
         <template v-slot="{ row }">
           <el-button
@@ -56,7 +79,13 @@
       <DrawerObjective :id-selected="idSelected" :width="80" />
     </el-drawer>
     <transition name="el-zoom-in-center">
-      <el-dialog class="krs-detail" title="Danh sách kết quả then chốt" :visible.sync="isShowKeyResult" width="50%" @close="isShowKeyResult = false">
+      <el-dialog
+        class="krs-detail"
+        title="Danh sách kết quả then chốt"
+        :visible.sync="isShowKeyResult"
+        width="50%"
+        @close="isShowKeyResult = false"
+      >
         <KeyResult :key-results="keyResults" />
       </el-dialog>
     </transition>
@@ -89,7 +118,10 @@ import KeyResult from '@/components/okrs/items/kr.vue';
   },
   async mounted() {
     const objectiveId = this.$route.query.objectiveId;
-    const { data } = await DrillDownRepository.get(this.cycleCurrent.id, objectiveId);
+    const { data } = await DrillDownRepository.get(
+      this.cycleCurrent.id,
+      objectiveId,
+    );
     this.title = data.title;
     this.dataObjectives = data.childObjectives;
   },

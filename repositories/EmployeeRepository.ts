@@ -9,9 +9,13 @@ export default class EmployeeRepository {
     paramsResize.page = paramsResize.page ? --paramsResize.page : 0;
     switch (currentTab) {
       case UserStatus.Staff:
-        return baseUrl.get(`${ResourcesEnpoint.Users}/list-staff-paging`, { params: paramsResize });
+        return baseUrl.get(`${ResourcesEnpoint.Users}/list-staff-paging`, {
+          params: paramsResize,
+        });
       default:
-        return baseUrl.get(`${ResourcesEnpoint.Users}/all-paging`, { params: paramsResize });
+        return baseUrl.get(`${ResourcesEnpoint.Users}/all-paging`, {
+          params: paramsResize,
+        });
     }
   }
 

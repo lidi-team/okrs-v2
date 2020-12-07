@@ -19,7 +19,11 @@ export const employeeRules: Maps<Rule[]> = {
   ],
   email: [
     { required: true, message: 'Vui lòng nhập địa chỉ email', trigger: 'blur' },
-    { type: 'email', message: 'Vui lòng nhập đúng địa chỉ email', trigger: 'blur' },
+    {
+      type: 'email',
+      message: 'Vui lòng nhập đúng địa chỉ email',
+      trigger: 'blur',
+    },
     max255Char,
   ],
   teamId: [

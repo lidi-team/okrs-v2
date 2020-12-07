@@ -23,7 +23,11 @@
             placeholder="Nhập mật khẩu cũ"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="newPassword" label="Mật khẩu mới" class="custom-label">
+        <el-form-item
+          prop="newPassword"
+          label="Mật khẩu mới"
+          class="custom-label"
+        >
           <el-input
             v-model="changePasswordForm.newPassword"
             type="password"
@@ -31,7 +35,11 @@
             placeholder="Nhập mật khẩu"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="matchPassword" label="Nhập lại mật khẩu mới" class="custom-label">
+        <el-form-item
+          prop="matchPassword"
+          label="Nhập lại mật khẩu mới"
+          class="custom-label"
+        >
           <el-input
             v-model="changePasswordForm.matchPassword"
             type="password"
@@ -40,16 +48,25 @@
           ></el-input>
         </el-form-item>
       </div>
-      <el-row class="change-password__form__action" type="flex" justify="space-between">
+      <el-row
+        class="change-password__form__action"
+        type="flex"
+        justify="space-between"
+      >
         <el-col :span="24">
-          <el-button :loading="loading" class="el-button el-button--purple el-button--medium" @click="handleUpdatePasswordForm"
+          <el-button
+            :loading="loading"
+            class="el-button el-button--purple el-button--medium"
+            @click="handleUpdatePasswordForm"
             >Đổi mật khẩu</el-button
           >
         </el-col>
         <el-col :span="24">
           <nuxt-link to="/">
             <strong>Quay lại trang</strong>
-            <span class="change-password__form__action--dashboard">Dashboard</span>
+            <span class="change-password__form__action--dashboard"
+              >Dashboard</span
+            >
           </nuxt-link>
         </el-col>
       </el-row>
@@ -78,9 +95,16 @@ export default class ChangePasswordDialog extends Vue {
   };
 
   private rules: Maps<Rule[]> = {
-    password: [{ required: true, message: 'Vui lòng nhập mật khẩu cũ', trigger: 'blur' }, max255Char],
+    password: [
+      { required: true, message: 'Vui lòng nhập mật khẩu cũ', trigger: 'blur' },
+      max255Char,
+    ],
     newPassword: [
-      { required: true, message: 'Vui lòng nhập mật khẩu mới', trigger: 'blur' },
+      {
+        required: true,
+        message: 'Vui lòng nhập mật khẩu mới',
+        trigger: 'blur',
+      },
       { validator: this.validatePassword, trigger: ['blur', 'change'] },
       max255Char,
     ],
@@ -90,7 +114,11 @@ export default class ChangePasswordDialog extends Vue {
     ],
   };
 
-  private validatePassword(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private validatePassword(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     const valid: boolean = /^(?=.*\d)[0-9a-zA-Z]{8,}$/.test(value);
     if (!valid) {
       return callback('Mật khẩu chứ ít nhất 8 ký tự và 1 chữ số');
@@ -100,7 +128,11 @@ export default class ChangePasswordDialog extends Vue {
     return callback();
   }
 
-  private validateMatchPassword(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private validateMatchPassword(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     if (value !== this.changePasswordForm.newPassword) {
       return callback('Không trùng với mật khẩu mới');
     }
@@ -109,40 +141,42 @@ export default class ChangePasswordDialog extends Vue {
 
   private handleUpdatePasswordForm(): void {
     this.loading = true;
-    (this.$refs.changePasswordForm as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
-      if (isValid) {
-        try {
-          delete this.changePasswordForm.matchPassword;
-          const form = this.changePasswordForm;
-          await UserRepository.changePassword({
-            oldPassword: form.password,
-            newPassword: form.newPassword,
-          });
-          this.loading = false;
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'Đổi mật khẩu thành công',
-          });
-          this.$store.dispatch(DispatchAction.CLEAR_AUTH);
-          this.$router.push('/');
-        } catch (error) {
+    (this.$refs.changePasswordForm as Form).validate(
+      async (isValid: boolean, invalidatedFields: object) => {
+        if (isValid) {
+          try {
+            delete this.changePasswordForm.matchPassword;
+            const form = this.changePasswordForm;
+            await UserRepository.changePassword({
+              oldPassword: form.password,
+              newPassword: form.newPassword,
+            });
+            this.loading = false;
+            this.$notify.success({
+              ...notificationConfig,
+              message: 'Đổi mật khẩu thành công',
+            });
+            this.$store.dispatch(DispatchAction.CLEAR_AUTH);
+            this.$router.push('/');
+          } catch (error) {
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+            if (error.response.data.statusCode === 409) {
+              this.$notify.error({
+                ...notificationConfig,
+                message: 'Mât khẩu không chính xác',
+              });
+            }
+          }
+        }
+        if (invalidatedFields) {
           setTimeout(() => {
             this.loading = false;
           }, 300);
-          if (error.response.data.statusCode === 409) {
-            this.$notify.error({
-              ...notificationConfig,
-              message: 'Mât khẩu không chính xác',
-            });
-          }
         }
-      }
-      if (invalidatedFields) {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
+      },
+    );
   }
 }
 </script>

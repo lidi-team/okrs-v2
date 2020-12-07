@@ -21,7 +21,10 @@ import CommonEditorMarkdown from '@/components/common/EditorMarkdown.vue';
   middleware: 'employeesPage',
   async asyncData({ params }) {
     try {
-      const [post, length] = await Promise.all([LessonRepository.getPost(params.slug), LessonRepository.getMetaData()]);
+      const [post, length] = await Promise.all([
+        LessonRepository.getPost(params.slug),
+        LessonRepository.getMetaData(),
+      ]);
       return {
         post: post.data.data,
         length: length.data.data.length,

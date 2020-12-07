@@ -7,13 +7,37 @@
     :before-close="handleCloseDialog"
     class="create-recognition-dialog"
   >
-    <el-form ref="recognition" v-loading="loadingForm" :model="recognition" label-width="180px" :rules="rules" label-position="left">
-      <el-form-item prop="receiverId" label="Người được ghi nhận" class="custom-label user">
-        <el-select v-model="recognition.receiverId" filterable placeholder="Chọn người đươc ghi nhận" @change="handleSelectUser()">
-          <el-option v-for="user in optionsMetadata.users" :key="user.id" :label="user.fullName" :value="user.id">
+    <el-form
+      ref="recognition"
+      v-loading="loadingForm"
+      :model="recognition"
+      label-width="180px"
+      :rules="rules"
+      label-position="left"
+    >
+      <el-form-item
+        prop="receiverId"
+        label="Người được ghi nhận"
+        class="custom-label user"
+      >
+        <el-select
+          v-model="recognition.receiverId"
+          filterable
+          placeholder="Chọn người đươc ghi nhận"
+          @change="handleSelectUser()"
+        >
+          <el-option
+            v-for="user in optionsMetadata.users"
+            :key="user.id"
+            :label="user.fullName"
+            :value="user.id"
+          >
             <div style="display: flex">
               <el-avatar :size="25" style="align-self: center">
-                <img :src="user.avatarURL ? user.avatarURL : user.gravatarURL" alt="avatar" />
+                <img
+                  :src="user.avatarURL ? user.avatarURL : user.gravatarURL"
+                  alt="avatar"
+                />
               </el-avatar>
               <span style="margin-left: 0.5rem">{{ user.fullName }}</span>
             </div>
@@ -21,13 +45,34 @@
         </el-select>
       </el-form-item>
       <el-form-item label="Mục tiêu" class="objective">
-        <el-select v-model="recognition.objectiveId" filterable placeholder="Chọn mục tiêu">
-          <el-option v-for="okrs in optionsMetadata.objectives" :key="okrs.id" :label="okrs.title" :value="okrs.id"></el-option>
+        <el-select
+          v-model="recognition.objectiveId"
+          filterable
+          placeholder="Chọn mục tiêu"
+        >
+          <el-option
+            v-for="okrs in optionsMetadata.objectives"
+            :key="okrs.id"
+            :label="okrs.title"
+            :value="okrs.id"
+          ></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item prop="evaluationCriteriaId" label="Tiêu chí" class="custom-label criteria">
-        <el-select v-model="recognition.evaluationCriteriaId" placeholder="Lựa chọn tiêu chí đánh giá">
-          <el-option v-for="criteria in optionsMetadata.criteria" :key="criteria.id" :label="criteria.content" :value="criteria.id">
+      <el-form-item
+        prop="evaluationCriteriaId"
+        label="Tiêu chí"
+        class="custom-label criteria"
+      >
+        <el-select
+          v-model="recognition.evaluationCriteriaId"
+          placeholder="Lựa chọn tiêu chí đánh giá"
+        >
+          <el-option
+            v-for="criteria in optionsMetadata.criteria"
+            :key="criteria.id"
+            :label="criteria.content"
+            :value="criteria.id"
+          >
             <div class="item-criteria">
               <div class="item-criteria__icon">
                 <span>{{ criteria.numberOfStar }}</span>
@@ -39,12 +84,26 @@
         </el-select>
       </el-form-item>
       <el-form-item prop="content" label="Nội dung" class="custom-label">
-        <el-input v-model="recognition.content" type="textarea" placeholder="Nhập nội dung feedback" :autosize="autoSizeConfig"></el-input>
+        <el-input
+          v-model="recognition.content"
+          type="textarea"
+          placeholder="Nhập nội dung feedback"
+          :autosize="autoSizeConfig"
+        ></el-input>
       </el-form-item>
     </el-form>
     <div slot="footer" class="create-recognition-dialog__action">
-      <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="createRecognition">Tạo ghi nhận</el-button>
+      <el-button
+        class="el-button--white el-button--modal"
+        @click="handleCloseDialog"
+        >Hủy</el-button
+      >
+      <el-button
+        class="el-button--purple el-button--modal"
+        :loading="loading"
+        @click="createRecognition"
+        >Tạo ghi nhận</el-button
+      >
     </div>
   </el-dialog>
 </template>
@@ -52,7 +111,10 @@
 import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
-import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
+import {
+  confirmWarningConfig,
+  notificationConfig,
+} from '@/constants/app.constant';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import UserRepository from '@/repositories/UserRepository';
@@ -83,7 +145,8 @@ import { CfrsDTO } from '@/constants/app.interface';
 })
 export default class CreateRecongnitionDialog extends Vue {
   @Prop(Function) public reloadData!: Function;
-  @PropSync('visibleDialog', { type: Boolean, required: true, default: false }) public syncCreateOkrsDialog!: boolean;
+  @PropSync('visibleDialog', { type: Boolean, required: true, default: false })
+  public syncCreateOkrsDialog!: boolean;
   private optionsMetadata: any = {
     criteria: [],
     users: [],
@@ -105,35 +168,67 @@ export default class CreateRecongnitionDialog extends Vue {
 
   public rules: Maps<Rule[]> = {
     content: [
-      { type: 'string', required: true, message: 'Vui lòng nhập nội dung phản hồi', trigger: 'blur' },
-      { type: 'string', min: 50, message: 'Nội dung ghi nhận ít nhất phải chứa 50 ký tự', trigger: 'blur' },
+      {
+        type: 'string',
+        required: true,
+        message: 'Vui lòng nhập nội dung phản hồi',
+        trigger: 'blur',
+      },
+      {
+        type: 'string',
+        min: 50,
+        message: 'Nội dung ghi nhận ít nhất phải chứa 50 ký tự',
+        trigger: 'blur',
+      },
       max255Char,
     ],
-    evaluationCriteriaId: [{ required: true, message: 'Vui lòng chọn tiêu chí đánh giá', trigger: 'blur' }],
-    receiverId: [{ required: true, message: 'Vui lòng chọn người được ghi nhận', trigger: 'blur' }],
+    evaluationCriteriaId: [
+      {
+        required: true,
+        message: 'Vui lòng chọn tiêu chí đánh giá',
+        trigger: 'blur',
+      },
+    ],
+    receiverId: [
+      {
+        required: true,
+        message: 'Vui lòng chọn người được ghi nhận',
+        trigger: 'blur',
+      },
+    ],
   };
 
   private handleCloseDialog() {
-    this.$confirm('Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?', { ...confirmWarningConfig }).then(() => {
+    this.$confirm(
+      'Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?',
+      { ...confirmWarningConfig },
+    ).then(() => {
       this.syncCreateOkrsDialog = false;
     });
   }
 
   private async getMetaDataRecognition() {
     try {
-      await Promise.all([EvaluationCriteriaRepository.getCombobox(EvaluationCriteriaEnum.RECOGNITION), UserRepository.getAllUsers()]).then(
-        ([evaluationCriteria, allUsers]) => {
-          this.optionsMetadata.criteria = Object.freeze(evaluationCriteria.data.data);
-          this.optionsMetadata.users = Object.freeze(allUsers.data.data);
-        },
-      );
+      await Promise.all([
+        EvaluationCriteriaRepository.getCombobox(
+          EvaluationCriteriaEnum.RECOGNITION,
+        ),
+        UserRepository.getAllUsers(),
+      ]).then(([evaluationCriteria, allUsers]) => {
+        this.optionsMetadata.criteria = Object.freeze(
+          evaluationCriteria.data.data,
+        );
+        this.optionsMetadata.users = Object.freeze(allUsers.data.data);
+      });
     } catch (error) {}
   }
 
   private async handleSelectUser() {
     this.loadingForm = true;
     try {
-      await CfrsRepository.getUserObjectives(Number(this.recognition.receiverId)).then((res) => {
+      await CfrsRepository.getUserObjectives(
+        Number(this.recognition.receiverId),
+      ).then((res) => {
         this.optionsMetadata.objectives = res.data.data;
       });
       setTimeout(() => {
@@ -146,34 +241,41 @@ export default class CreateRecongnitionDialog extends Vue {
 
   private createRecognition() {
     this.loading = true;
-    (this.$refs.recognition as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
-      if (isValid) {
-        try {
-          await CfrsRepository.postRecognition(this.recognition).then(() => {
-            this.$notify.success({ ...notificationConfig, message: 'Tạo ghi nhận thành công' });
-          });
-          this.isCreating = true;
-          this.syncCreateOkrsDialog = false;
+    (this.$refs.recognition as Form).validate(
+      async (isValid: boolean, invalidatedFields: object) => {
+        if (isValid) {
+          try {
+            await CfrsRepository.postRecognition(this.recognition).then(() => {
+              this.$notify.success({
+                ...notificationConfig,
+                message: 'Tạo ghi nhận thành công',
+              });
+            });
+            this.isCreating = true;
+            this.syncCreateOkrsDialog = false;
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+          } catch (error) {
+            this.loading = false;
+          }
+        }
+        if (invalidatedFields) {
           setTimeout(() => {
             this.loading = false;
           }, 300);
-        } catch (error) {
-          this.loading = false;
         }
-      }
-      if (invalidatedFields) {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
+      },
+    );
   }
 
   private reloadHistoryCfrs() {
     if (this.$route.query.tab === 'history') {
       // @ts-ignore
       const historyComponent: any = this.$parent.$children[1].$children[4];
-      const cycleId = this.$store.state.cycle.cycleTemp ? this.$store.state.cycle.cycleTemp : this.$store.state.cycle.cycle.id;
+      const cycleId = this.$store.state.cycle.cycleTemp
+        ? this.$store.state.cycle.cycleTemp
+        : this.$store.state.cycle.cycle.id;
       historyComponent.loadingTab = true;
       historyComponent.changeListDataOnCycle(cycleId);
       setTimeout(() => {

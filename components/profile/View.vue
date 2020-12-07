@@ -11,7 +11,14 @@
       :rules="rules"
     >
       <el-row class="profile">
-        <el-col :xs="24" :sm="24" :md="6" :lg="6" :xl="6" class="profile-common">
+        <el-col
+          :xs="24"
+          :sm="24"
+          :md="6"
+          :lg="6"
+          :xl="6"
+          class="profile-common"
+        >
           <common-flame-upload
             ref="uploader"
             v-model="show"
@@ -30,26 +37,48 @@
           <el-avatar :size="120">
             <img :src="avatarUrl" alt="avatar" />
           </el-avatar>
-          <el-button size="small" type="primary" class="el-button--margin el-button--white el-button--avatar" @click="toggleShow"
+          <el-button
+            size="small"
+            type="primary"
+            class="el-button--margin el-button--white el-button--avatar"
+            @click="toggleShow"
             >Cập nhật avatar</el-button
           >
           <p class="profile-common__name">{{ profileForm.fullName }}</p>
           <!-- <p class="profile-common__role">{{ displayRoleName(user) }}</p> -->
         </el-col>
-        <el-col :xs="24" :sm="24" :md="18" :lg="18" :xl="18" class="profile-right">
+        <el-col
+          :xs="24"
+          :sm="24"
+          :md="18"
+          :lg="18"
+          :xl="18"
+          class="profile-right"
+        >
           <div class="info">
             <h3 class="info__title">Thông tin chung</h3>
             <div class="info__row">
               <el-row class="info__row--custom" :gutter="20">
                 <el-col :sm="24" :md="12">
-                  <el-form-item class="custom-label" prop="fullName" label="Họ và tên">
-                    <el-input v-model="profileForm.fullName" placeholder="Nhập vào họ và tên"></el-input>
+                  <el-form-item
+                    class="custom-label"
+                    prop="fullName"
+                    label="Họ và tên"
+                  >
+                    <el-input
+                      v-model="profileForm.fullName"
+                      placeholder="Nhập vào họ và tên"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :sm="24" :md="12">
                   <el-form-item prop="gender" label="Giới tính">
-                    <el-radio v-model="profileForm.gender" :label="1">Nam</el-radio>
-                    <el-radio v-model="profileForm.gender" :label="0">Nữ</el-radio>
+                    <el-radio v-model="profileForm.gender" :label="1"
+                      >Nam</el-radio
+                    >
+                    <el-radio v-model="profileForm.gender" :label="0"
+                      >Nữ</el-radio
+                    >
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -57,8 +86,16 @@
             <div class="info__row">
               <el-row class="info__row--custom" :gutter="20">
                 <el-col :sm="24" :md="12">
-                  <el-form-item prop="email" label="Email" class="info-attribute__label">
-                    <el-input v-model="profileForm.email" :disabled="true" placeholder="Nhập email"></el-input>
+                  <el-form-item
+                    prop="email"
+                    label="Email"
+                    class="info-attribute__label"
+                  >
+                    <el-input
+                      v-model="profileForm.email"
+                      :disabled="true"
+                      placeholder="Nhập email"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :sm="24" :md="12">
@@ -80,12 +117,20 @@
               <el-row class="info__row--custom" :gutter="20">
                 <el-col :sm="24" :md="12">
                   <el-form-item prop="department" label="Phòng ban">
-                    <el-input v-model="profileForm.department" disabled placeholder="Hiển thị phòng ban"></el-input>
+                    <el-input
+                      v-model="profileForm.department"
+                      disabled
+                      placeholder="Hiển thị phòng ban"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :sm="24" :md="12">
                   <el-form-item prop="position" label="Vị trí">
-                    <el-input v-model="profileForm.position" disabled placeholder="Hiển thị vị trí"></el-input>
+                    <el-input
+                      v-model="profileForm.position"
+                      disabled
+                      placeholder="Hiển thị vị trí"
+                    ></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -221,40 +266,46 @@ export default class ViewProfile extends Vue {
 
   private updateProfile() {
     this.loading = true;
-    (this.$refs.updateProfileForm as Form).validate(async (isValid: boolean, invalidFields: object) => {
-      if (isValid) {
-        try {
-          await UserRepository.update(this.profileForm);
-          setTimeout(() => {
-            this.loading = false;
-          }, 300);
-          this.$notify.success({
-            title: 'Trạng thái',
-            message: 'Cập nhật thông tin cá nhân thành công',
-            duration: 2000,
-          });
-          const { data } = await UserRepository.me();
-          this.$store.commit(MutationState.SET_USER, data.data);
-          this.loadingProfile = true;
-          setTimeout(() => {
-            this.loadingProfile = false;
-          }, 300);
-        } catch (error) {
+    (this.$refs.updateProfileForm as Form).validate(
+      async (isValid: boolean, invalidFields: object) => {
+        if (isValid) {
+          try {
+            await UserRepository.update(this.profileForm);
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+            this.$notify.success({
+              title: 'Trạng thái',
+              message: 'Cập nhật thông tin cá nhân thành công',
+              duration: 2000,
+            });
+            const { data } = await UserRepository.me();
+            this.$store.commit(MutationState.SET_USER, data.data);
+            this.loadingProfile = true;
+            setTimeout(() => {
+              this.loadingProfile = false;
+            }, 300);
+          } catch (error) {
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+          }
+        }
+        if (invalidFields) {
           setTimeout(() => {
             this.loading = false;
           }, 300);
         }
-      }
-      if (invalidFields) {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
+      },
+    );
   }
 
   private displayRoleName(user: any) {
-    if (user.isLeader && user.role.name !== 'ADMIN' && user.role.name !== 'HR') {
+    if (
+      user.isLeader &&
+      user.role.name !== 'ADMIN' &&
+      user.role.name !== 'HR'
+    ) {
       return 'LEADER';
     }
     return user.role.name;

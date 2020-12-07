@@ -41,10 +41,17 @@
       <el-row type="flex" justify="space-between">
         <el-col :span="12"></el-col>
         <el-col :span="12">
-          <nuxt-link class="login-form__link" to="/quen-mat-khau">Quên mật khẩu ?</nuxt-link>
+          <nuxt-link class="login-form__link" to="/quen-mat-khau"
+            >Quên mật khẩu ?</nuxt-link
+          >
         </el-col>
       </el-row>
-      <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleLogin">Đăng nhập</el-button>
+      <el-button
+        :loading="loading"
+        class="el-button el-button--purple el-button--large"
+        @click="handleLogin"
+        >Đăng nhập</el-button
+      >
     </el-form>
   </el-row>
 </template>
@@ -69,29 +76,45 @@ export default class LoginSComponent extends Vue {
 
   public rules: Maps<Rule[]> = {
     email: [
-      { required: true, message: 'Vui lòng nhập địa chỉ email', trigger: 'blur' },
-      { type: 'email', message: 'Vui lòng nhập đúng địa chỉ email', trigger: 'blur' },
+      {
+        required: true,
+        message: 'Vui lòng nhập địa chỉ email',
+        trigger: 'blur',
+      },
+      {
+        type: 'email',
+        message: 'Vui lòng nhập đúng địa chỉ email',
+        trigger: 'blur',
+      },
       max255Char,
     ],
-    password: [{ required: true, message: 'Vui lòng nhập mật khẩu' }, max255Char],
+    password: [
+      { required: true, message: 'Vui lòng nhập mật khẩu' },
+      max255Char,
+    ],
   };
 
   private handleLogin(): any {
     this.loading = true;
-    (this.$refs.loginForm as LoginForm).validate(async (isValid: boolean, invalidatedFields: object) => {
-      if (isValid) {
-        const user = await this.$store.dispatch(DispatchAction.LOGIN, this.loginForm);
-        this.loading = false;
-        if (user) {
-          this.$router.push('/');
-        }
-      }
-      if (invalidatedFields) {
-        setTimeout(() => {
+    (this.$refs.loginForm as LoginForm).validate(
+      async (isValid: boolean, invalidatedFields: object) => {
+        if (isValid) {
+          const user = await this.$store.dispatch(
+            DispatchAction.LOGIN,
+            this.loginForm,
+          );
           this.loading = false;
-        }, 300);
-      }
-    });
+          if (user) {
+            this.$router.push('/');
+          }
+        }
+        if (invalidatedFields) {
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
+        }
+      },
+    );
   }
 }
 </script>

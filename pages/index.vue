@@ -10,7 +10,10 @@
     >
       <el-option v-for="cycle in listCycles" :key="cycle.value" :label="cycle.label" :value="cycle.value" />
     </el-select> -->
-    <dashboard-progress-bar :loading="loading" :data-okrs-progress="dataOkrsProgress" />
+    <dashboard-progress-bar
+      :loading="loading"
+      :data-okrs-progress="dataOkrsProgress"
+    />
     <div v-if="user.roles.includes('ROLE_ADMIN')" v-loading="loadingAdmin">
       <el-row v-if="dataCheckin.length > 0" class="col-container">
         <el-col class="col" :md="24" :lg="8">
@@ -81,7 +84,9 @@ import DashboardProgressBar from '@/components/dashboard/ProgressBar.vue';
   },
 })
 export default class HomePage extends Vue {
-  private cycleId: number = this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycle.id;
+  private cycleId: number = this.$route.query.cycleId
+    ? Number(this.$route.query.cycleId)
+    : this.$store.state.cycle.cycle.id;
   private loading: boolean = false;
   private loadingAdmin: boolean = false;
   private noDataFeedback: boolean = false;
@@ -96,22 +101,26 @@ export default class HomePage extends Vue {
   private dataCfr: Array<object> = [];
 
   private params = {
-    cycleId: this.$route.query.cycleId ? Number(this.$route.query.cycleId) : this.$store.state.cycle.cycle.id,
+    cycleId: this.$route.query.cycleId
+      ? Number(this.$route.query.cycleId)
+      : this.$store.state.cycle.cycle.id,
   };
 
   private async getDataAdmin() {
     this.loadingAdmin = true;
     try {
-      await Promise.all([DashboardRepository.getOKRsStatus(), DashboardRepository.getCheckinStatus(), DashboardRepository.getCfrStatus()]).then(
-        ([progress, checkin, cfrs]) => {
-          this.dataProgress = progress.data.data;
-          this.dataCheckin = checkin.data.data;
-          this.dataCfr = cfrs.data.data;
-          setTimeout(() => {
-            this.loadingAdmin = false;
-          }, 1000);
-        },
-      );
+      await Promise.all([
+        DashboardRepository.getOKRsStatus(),
+        DashboardRepository.getCheckinStatus(),
+        DashboardRepository.getCfrStatus(),
+      ]).then(([progress, checkin, cfrs]) => {
+        this.dataProgress = progress.data.data;
+        this.dataCheckin = checkin.data.data;
+        this.dataCfr = cfrs.data.data;
+        setTimeout(() => {
+          this.loadingAdmin = false;
+        }, 1000);
+      });
     } catch (error) {
       this.loadingAdmin = false;
     }
@@ -145,7 +154,9 @@ export default class HomePage extends Vue {
         DashboardRepository.getTopIncome(this.params.cycleId, 2),
         DashboardRepository.getOKRsProgress(this.params),
       ]).then(([income, outcome, progress]) => {
-        const tempCycle = this.listCycles.find((item) => item.id === Number(this.params.cycleId));
+        const tempCycle = this.listCycles.find(
+          (item) => item.id === Number(this.params.cycleId),
+        );
         this.dataOkrsProgress = Object.assign(
           {},
           {
@@ -161,7 +172,10 @@ export default class HomePage extends Vue {
         if (this.dataStarOutCome.length === 0) {
           this.noDataFeedback = true;
         }
-        this.dataOkrsProgress = Object.assign(this.dataOkrsProgress, progress.data.data);
+        this.dataOkrsProgress = Object.assign(
+          this.dataOkrsProgress,
+          progress.data.data,
+        );
         setTimeout(() => {
           this.loading = false;
         }, 1000);

@@ -2,10 +2,22 @@
   <div class="cfrs">
     <div class="cfrs-page">
       <el-row class="cfrs-page__top" type="flex" justify="space-between">
-        <el-col :xs="24" :sm="24" :md="12" :lg="12" class="okrs-page__top--searching">
+        <el-col
+          :xs="24"
+          :sm="24"
+          :md="12"
+          :lg="12"
+          class="okrs-page__top--searching"
+        >
           <cfrs-navbar :current-tab-component="currentTabEng" />
         </el-col>
-        <el-col :xs="24" :sm="24" :md="8" :lg="8" class="okrs-page__top--button">
+        <el-col
+          :xs="24"
+          :sm="24"
+          :md="8"
+          :lg="8"
+          class="okrs-page__top--button"
+        >
           <el-button
             v-if="displayButton()"
             class="el-button el-button--purple el-button-medium"
@@ -22,7 +34,10 @@
       <el-tab-pane v-for="tab in tabs" :key="tab" :label="tab" :name="tab" />
       <component :is="currentTabComponent" />
     </el-tabs>
-    <cfrs-recognition v-if="visibleCreateDialog" :visible-dialog.sync="visibleCreateDialog" />
+    <cfrs-recognition
+      v-if="visibleCreateDialog"
+      :visible-dialog.sync="visibleCreateDialog"
+    />
   </div>
 </template>
 
@@ -55,7 +70,10 @@ import CfrsRecognition from '@/components/cfrs/recognition/index.vue';
     };
   },
   created() {
-    this.$store.commit(MutationState.SET_TEMP_CYCLE, this.$store.state.cycle.cycle.id);
+    this.$store.commit(
+      MutationState.SET_TEMP_CYCLE,
+      this.$store.state.cycle.cycle.id,
+    );
   },
 })
 export default class CFRs extends Vue {
@@ -64,7 +82,13 @@ export default class CFRs extends Vue {
   private tabs: string[] = [...Object.values(TabCfr)];
 
   private params: ParamsCFR = {
-    status: this.$route.query.tab === 'feedback' || this.$route.query.tab === undefined ? -1 : this.$route.query.tab === 'history' ? 0 : 1,
+    status:
+      this.$route.query.tab === 'feedback' ||
+      this.$route.query.tab === undefined
+        ? -1
+        : this.$route.query.tab === 'history'
+        ? 0
+        : 1,
     text: this.$route.query.text ? String(this.$route.query.text) : '',
     page: this.$route.query.page ? Number(this.$route.query.page) : 1,
     limit: pageLimit,
@@ -79,12 +103,15 @@ export default class CFRs extends Vue {
 
   private displayButton(): Boolean {
     return (
-      this.$store.state.auth.user.role.name === 'ADMIN' || this.$store.state.auth.user.isLeader || this.$store.state.auth.user.role.name === 'HR'
+      this.$store.state.auth.user.role.name === 'ADMIN' ||
+      this.$store.state.auth.user.isLeader ||
+      this.$store.state.auth.user.role.name === 'HR'
     );
   }
 
   private get currentTabEng(): String {
-    return this.$route.query.tab === 'feedback' || this.$route.query.tab === undefined
+    return this.$route.query.tab === 'feedback' ||
+      this.$route.query.tab === undefined
       ? TabCfrEng.Feedback
       : this.$route.query.tab === 'history'
       ? TabCfrEng.History
@@ -93,12 +120,14 @@ export default class CFRs extends Vue {
 
   private get currentTabComponent() {
     this.currentTab =
-      this.$route.query.tab === 'feedback' || this.$route.query.tab === undefined
+      this.$route.query.tab === 'feedback' ||
+      this.$route.query.tab === undefined
         ? TabCfr.Feedback
         : this.$route.query.tab === 'history'
         ? TabCfr.History
         : TabCfr.Rank;
-    return this.$route.query.tab === undefined || this.$route.query.tab === 'feedback'
+    return this.$route.query.tab === undefined ||
+      this.$route.query.tab === 'feedback'
       ? Feedback
       : this.$route.query.tab === 'history'
       ? History
@@ -108,8 +137,21 @@ export default class CFRs extends Vue {
   private handleClick(currentTab: string) {
     this.params.text = '';
     this.params.page = 1;
-    this.params.status = currentTab === TabCfr.Feedback ? 1 : currentTab === TabCfr.History ? 0 : -1;
-    this.$router.push(`?tab=${currentTab === TabCfr.Feedback ? 'feedback' : currentTab === TabCfr.History ? 'history' : 'rank'}`);
+    this.params.status =
+      currentTab === TabCfr.Feedback
+        ? 1
+        : currentTab === TabCfr.History
+        ? 0
+        : -1;
+    this.$router.push(
+      `?tab=${
+        currentTab === TabCfr.Feedback
+          ? 'feedback'
+          : currentTab === TabCfr.History
+          ? 'history'
+          : 'rank'
+      }`,
+    );
   }
 }
 </script>

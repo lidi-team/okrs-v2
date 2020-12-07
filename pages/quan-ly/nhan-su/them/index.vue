@@ -2,36 +2,80 @@
   <div class="app-container">
     <el-tabs v-model="tabActive" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="Tải lên file" name="excel">
-        <upload-excel-component :on-success="handleSuccess" :before-upload="beforeUpload" />
-        <el-button class="el-button--purple el-button--modal" :disabled="!hasData" @click="handleAddEmployee">Thêm nhân viên</el-button>
-        <el-table :data="tableData" border highlight-current-row style="width: 100%; margin-top: 20px" fit>
+        <upload-excel-component
+          :on-success="handleSuccess"
+          :before-upload="beforeUpload"
+        />
+        <el-button
+          class="el-button--purple el-button--modal"
+          :disabled="!hasData"
+          @click="handleAddEmployee"
+          >Thêm nhân viên</el-button
+        >
+        <el-table
+          :data="tableData"
+          border
+          highlight-current-row
+          style="width: 100%; margin-top: 20px"
+          fit
+        >
           <!-- <el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" /> -->
-          <el-table-column label="Email" prop="email" align="center" min-width="80">
+          <el-table-column
+            label="Email"
+            prop="email"
+            align="center"
+            min-width="80"
+          >
             <template slot-scope="{ row }">
               <span>{{ row.email }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Họ và tên" prop="fullName" align="center" min-width="80">
+          <el-table-column
+            label="Họ và tên"
+            prop="fullName"
+            align="center"
+            min-width="80"
+          >
             <template slot-scope="{ row }">
               <span>{{ row.fullName }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Ngày sinh" prop="dob" align="center" min-width="80">
+          <el-table-column
+            label="Ngày sinh"
+            prop="dob"
+            align="center"
+            min-width="80"
+          >
             <template slot-scope="{ row }">
               <span>{{ row.dob }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Số điện thoại" prop="phoneNumber" align="center" min-width="80">
+          <el-table-column
+            label="Số điện thoại"
+            prop="phoneNumber"
+            align="center"
+            min-width="80"
+          >
             <template slot-scope="{ row }">
               <span>{{ row.phoneNumber }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Giới tính" prop="gender" align="center" min-width="80">
+          <el-table-column
+            label="Giới tính"
+            prop="gender"
+            align="center"
+            min-width="80"
+          >
             <template slot-scope="{ row }">
               <span>{{ row.gender }}</span>
             </template>
           </el-table-column>
-          <el-table-column label="Phòng ban" prop="department" align="center" min-width="80">
+          <el-table-column
+            label="Phòng ban"
+            prop="department"
+            align="center"
+            min-width="80"
+          >
             <template slot-scope="{ row }">
               <span>{{ row.department }}</span>
             </template>
@@ -57,7 +101,10 @@ import { dateFormat } from '@vuejs-community/vue-filter-date-format';
 import TeamRepository from '@/repositories/TeamRepository';
 import value from '*.png';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
-import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
+import {
+  notificationConfig,
+  confirmWarningConfig,
+} from '@/constants/app.constant';
 
 @Component<CreateEmployee>({
   name: 'CreateEmployee',
@@ -123,7 +170,9 @@ export default class CreateEmployee extends Vue {
     const dName: string = name.toLowerCase();
     const result: number = -1;
     if (this.departments.length > 0) {
-      const indexDepartment = this.departments.find((value) => value.name.toLowerCase() === dName);
+      const indexDepartment = this.departments.find(
+        (value) => value.name.toLowerCase() === dName,
+      );
       return indexDepartment.id;
     }
     return result;
@@ -145,7 +194,10 @@ export default class CreateEmployee extends Vue {
         } else {
           this.$notify.warning({
             ...notificationConfig,
-            message: `Thêm thành công: ${response.data.numberOfSuccess}` + '\n' + `Thất bại: ${response.data.numberOfFailed}`,
+            message:
+              `Thêm thành công: ${response.data.numberOfSuccess}` +
+              '\n' +
+              `Thất bại: ${response.data.numberOfFailed}`,
           });
         }
       }

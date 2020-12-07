@@ -2,7 +2,11 @@
   <div class="header">
     <nuxt-link to="/">
       <div class="header__logo">
-        <img class="header__img" src="@/assets/images/common/logoflame.png" alt="logo" />
+        <img
+          class="header__img"
+          src="@/assets/images/common/logoflame.png"
+          alt="logo"
+        />
         <span class="header__brandname">OKRs V2</span>
       </div>
     </nuxt-link>
@@ -28,7 +32,13 @@
                 </div>
               </el-dropdown-item>
             </nuxt-link>
-            <nuxt-link v-if="user.roles.includes('ROLE_ADMIN') || user.roles.includes('ROLE_DIRECTOR')" to="/admin/cai-dat">
+            <nuxt-link
+              v-if="
+                user.roles.includes('ROLE_ADMIN') ||
+                user.roles.includes('ROLE_DIRECTOR')
+              "
+              to="/admin/cai-dat"
+            >
               <el-dropdown-item>
                 <div class="item__div">
                   <icon-setting class="item__div--icon" />
@@ -36,7 +46,13 @@
                 </div>
               </el-dropdown-item>
             </nuxt-link>
-            <nuxt-link v-if="user.roles.includes('ROLE_ADMIN_HR') || user.roles.includes('ROLE_ADMIN')" to="/quan-ly/nhan-su">
+            <nuxt-link
+              v-if="
+                user.roles.includes('ROLE_ADMIN_HR') ||
+                user.roles.includes('ROLE_ADMIN')
+              "
+              to="/quan-ly/nhan-su"
+            >
               <el-dropdown-item>
                 <div class="item__div">
                   <icon-hr class="item__div--icon item__div--icon--hr" />
@@ -44,7 +60,13 @@
                 </div>
               </el-dropdown-item>
             </nuxt-link>
-            <nuxt-link v-if="user.roles.includes('ROLE_ADMIN_HR') || user.roles.includes('ROLE_ADMIN')" to="/bai-hoc-okrs">
+            <nuxt-link
+              v-if="
+                user.roles.includes('ROLE_ADMIN_HR') ||
+                user.roles.includes('ROLE_ADMIN')
+              "
+              to="/bai-hoc-okrs"
+            >
               <el-dropdown-item>
                 <div class="item__div">
                   <icon-lesson class="item__div--icon" />

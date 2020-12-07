@@ -1,5 +1,10 @@
 import { AxiosResponse } from 'axios';
-import { RegisterDTO, MailResetPassDTO, LoginDTO, ResetPasswordActionDTO } from '@/constants/DTO/auth';
+import {
+  RegisterDTO,
+  MailResetPassDTO,
+  LoginDTO,
+  ResetPasswordActionDTO,
+} from '@/constants/DTO/auth';
 import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export const enpoint = {
@@ -23,7 +28,9 @@ export default class AuthRepository {
     return baseUrlV1.post(enpoint.logout);
   }
 
-  public static sendMailToResetPassword(payload: MailResetPassDTO): Promise<AxiosResponse<void>> {
+  public static sendMailToResetPassword(
+    payload: MailResetPassDTO,
+  ): Promise<AxiosResponse<void>> {
     return baseUrl.post<void>(enpoint.resetPassword, payload);
   }
 

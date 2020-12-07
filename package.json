@@ -36,6 +36,7 @@
     "element-ui": "^2.13.2",
     "highlight.js": "^10.1.2",
     "js-cookie": "^2.2.1",
+    "moment": "^2.29.1",
     "node-sass": "^4.14.1",
     "nuxt": "2.14.4",
     "nuxt-clipboard2": "^0.2.1",

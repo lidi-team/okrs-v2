@@ -18,7 +18,7 @@
               </tr>
               <tr>
                 <th scope="row">Tiến độ gợi ý</th>
-                <td>{{ checkin.progressSuggest }} %</td>
+                <td>{{ checkin.progressSuggeest }} %</td>
               </tr>
               <tr v-if="checkin.checkin.checkinAt">
                 <th scope="row">Ngày check-in</th>
@@ -43,8 +43,12 @@
         </div>
       </div>
     </div>
-    <chart-checkin class="top-checkin" :checkin.sync="checkin" />
-    <create-checkin v-if="checkin" :checkin="checkin" />
+    <chart-process-checkin
+      class="top-checkin"
+      v-if="checkin"
+      :checkin.sync="checkin.chart"
+    />
+    <create-checkin v-if="checkin" :checkin.sync="checkin" />
   </div>
 </template>
 <script lang="ts">
@@ -55,6 +59,7 @@ import { formatDateToDD, initNewDate } from '@/utils/dateParser';
 import { notificationConfig } from '@/constants/app.constant';
 import CreateCheckin from '@/components/checkin/CreateCheckin.vue';
 import ChartCheckin from '@/components/checkin/ChartCheckin.vue';
+import ChartProcessCheckin from '@/components/checkin/ChartProcessCheckin.vue';
 
 @Component({
   name: 'CheckinPage',
@@ -66,6 +71,7 @@ import ChartCheckin from '@/components/checkin/ChartCheckin.vue';
   components: {
     CreateCheckin,
     ChartCheckin,
+    ChartProcessCheckin,
   },
   async mounted() {
     await this.getCheckin();

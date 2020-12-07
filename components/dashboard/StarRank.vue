@@ -7,7 +7,11 @@
             <icon-star-dashboard class="star__col__icon" />
             <p class="star__col__title">Top sao nhận được</p>
           </div>
-          <div v-for="(item, index) in dataStarInCome" :key="item.id" class="star-item">
+          <div
+            v-for="(item, index) in dataStarInCome"
+            :key="item.id"
+            class="star-item"
+          >
             <div class="star-item__left">
               <icon-star-first v-if="index === 0" class="star__col__icon" />
               <icon-star-second v-if="index === 1" class="star__col__icon" />
@@ -32,7 +36,11 @@
             <icon-star-dashboard class="star__col__icon" />
             <p class="star__col__title">Top sao cho đi</p>
           </div>
-          <div v-for="(item, index) in dataStarOutCome" :key="item.id" class="star-item">
+          <div
+            v-for="(item, index) in dataStarOutCome"
+            :key="item.id"
+            class="star-item"
+          >
             <div class="star-item__left">
               <icon-star-first v-if="index === 0" class="star__col__icon" />
               <icon-star-second v-if="index === 1" class="star__col__icon" />

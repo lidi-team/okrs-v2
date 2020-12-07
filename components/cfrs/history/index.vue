@@ -19,14 +19,28 @@
                   </div>
                   <div class="icon__avatar">
                     <el-avatar :size="30">
-                      <img :src="item.receiver.avatarURL ? item.receiver.avatarURL : item.receiver.gravatarURL" alt="avatar" />
+                      <img
+                        :src="
+                          item.receiver.avatarURL
+                            ? item.receiver.avatarURL
+                            : item.receiver.gravatarURL
+                        "
+                        alt="avatar"
+                      />
                     </el-avatar>
                   </div>
                 </div>
                 <div class="item__left--content">
-                  <p class="content__title">{{ item.evaluationCriteria.content }}</p>
-                  <p class="content__description">Gửi đến {{ item.receiver.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}</p>
-                  <p class="content__direction">{{ isLeaderToMember(item.evaluationCriteria.type) }}</p>
+                  <p class="content__title">
+                    {{ item.evaluationCriteria.content }}
+                  </p>
+                  <p class="content__description">
+                    Gửi đến {{ item.receiver.fullName }} -
+                    {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}
+                  </p>
+                  <p class="content__direction">
+                    {{ isLeaderToMember(item.evaluationCriteria.type) }}
+                  </p>
                 </div>
               </div>
               <div class="item__right">
@@ -34,7 +48,12 @@
                 <icon-star-dashboard />
               </div>
             </div>
-            <infinite-loading spinner="spiral" direction="bottom" :identifier="infiniteId" @infinite="infiniteSentHandler">
+            <infinite-loading
+              spinner="spiral"
+              direction="bottom"
+              :identifier="infiniteId"
+              @infinite="infiniteSentHandler"
+            >
               <span slot="no-more"></span>
               <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
             </infinite-loading>
@@ -43,9 +62,16 @@
       </el-col>
       <el-col :md="8" :lg="8">
         <div class="history__col">
-          <p class="history__col__header">CFRs {{ displayNameCfrs }} nhận được</p>
+          <p class="history__col__header">
+            CFRs {{ displayNameCfrs }} nhận được
+          </p>
           <div class="history__col--items">
-            <div v-for="item in receivedItems" :key="`received-${item.id}`" class="history-item" @click="viewDetailCfrs(item, 'received')">
+            <div
+              v-for="item in receivedItems"
+              :key="`received-${item.id}`"
+              class="history-item"
+              @click="viewDetailCfrs(item, 'received')"
+            >
               <div class="item__left">
                 <div class="item__left--icon">
                   <div :class="['icon__type', isFeedback(item.type)]">
@@ -53,14 +79,28 @@
                   </div>
                   <div class="icon__avatar">
                     <el-avatar :size="30">
-                      <img :src="item.sender.avatarURL ? item.sender.avatarURL : item.sender.gravatarURL" alt="avatar" />
+                      <img
+                        :src="
+                          item.sender.avatarURL
+                            ? item.sender.avatarURL
+                            : item.sender.gravatarURL
+                        "
+                        alt="avatar"
+                      />
                     </el-avatar>
                   </div>
                 </div>
                 <div class="item__left--content">
-                  <p class="content__title">{{ item.evaluationCriteria.content }}</p>
-                  <p class="content__description">Gửi bởi {{ item.sender.fullName }} - {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}</p>
-                  <p class="content__direction">{{ isLeaderToMember(item.evaluationCriteria.type) }}</p>
+                  <p class="content__title">
+                    {{ item.evaluationCriteria.content }}
+                  </p>
+                  <p class="content__description">
+                    Gửi bởi {{ item.sender.fullName }} -
+                    {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}
+                  </p>
+                  <p class="content__direction">
+                    {{ isLeaderToMember(item.evaluationCriteria.type) }}
+                  </p>
                 </div>
               </div>
               <div class="item__right">
@@ -68,7 +108,12 @@
                 <icon-star-dashboard />
               </div>
             </div>
-            <infinite-loading spinner="spiral" direction="bottom" :identifier="infiniteId" @infinite="infiniteReceivedHandler">
+            <infinite-loading
+              spinner="spiral"
+              direction="bottom"
+              :identifier="infiniteId"
+              @infinite="infiniteReceivedHandler"
+            >
               <span slot="no-more"></span>
               <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
             </infinite-loading>
@@ -79,7 +124,12 @@
         <div class="history__col">
           <p class="history__col__header">CFRs toàn công ty</p>
           <div class="history__col--items">
-            <div v-for="(item, index) in allItems" :key="`${index}-${item.id}`" class="history-item" @click="viewDetailCfrs(item, 'all')">
+            <div
+              v-for="(item, index) in allItems"
+              :key="`${index}-${item.id}`"
+              class="history-item"
+              @click="viewDetailCfrs(item, 'all')"
+            >
               <div class="item__left">
                 <div class="item__left--icon">
                   <div :class="['icon__type', isFeedback(item.type)]">
@@ -87,17 +137,29 @@
                   </div>
                   <div class="icon__avatar">
                     <el-avatar :size="30">
-                      <img :src="item.receiver.avatarURL ? item.receiver.avatarURL : item.receiver.gravatarURL" alt="avatar" />
+                      <img
+                        :src="
+                          item.receiver.avatarURL
+                            ? item.receiver.avatarURL
+                            : item.receiver.gravatarURL
+                        "
+                        alt="avatar"
+                      />
                     </el-avatar>
                   </div>
                 </div>
                 <div class="item__left--content">
-                  <p class="content__title">{{ item.evaluationCriteria.content }}</p>
+                  <p class="content__title">
+                    {{ item.evaluationCriteria.content }}
+                  </p>
                   <p class="content__description">
-                    {{ takeTwoLastNameUser(item.sender.fullName) }} đến {{ takeTwoLastNameUser(item.receiver.fullName) }} -
+                    {{ takeTwoLastNameUser(item.sender.fullName) }} đến
+                    {{ takeTwoLastNameUser(item.receiver.fullName) }} -
                     {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}
                   </p>
-                  <p class="content__direction">{{ isLeaderToMember(item.evaluationCriteria.type) }}</p>
+                  <p class="content__direction">
+                    {{ isLeaderToMember(item.evaluationCriteria.type) }}
+                  </p>
                 </div>
               </div>
               <div class="item__right">
@@ -105,7 +167,12 @@
                 <icon-star-dashboard />
               </div>
             </div>
-            <infinite-loading spinner="spiral" direction="bottom" :identifier="infiniteId" @infinite="infiniteAllHandler">
+            <infinite-loading
+              spinner="spiral"
+              direction="bottom"
+              :identifier="infiniteId"
+              @infinite="infiniteAllHandler"
+            >
               <span slot="no-more"></span>
               <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
             </infinite-loading>
@@ -143,7 +210,10 @@ import CfrsDetailHistory from '@/components/cfrs/history/DetailHistory.vue';
     CfrsDetailHistory,
   },
   beforeCreate() {
-    this.$store.commit(MutationState.SET_TEMP_USER, this.$store.state.auth.user);
+    this.$store.commit(
+      MutationState.SET_TEMP_USER,
+      this.$store.state.auth.user,
+    );
   },
   beforeMount() {
     this.loadingTab = true;
@@ -205,50 +275,68 @@ export default class History extends Vue {
   }
 
   private async infiniteSentHandler(stateChanger: StateChanger) {
-    this.sentContext.cycleId = this.$store.state.cycle.cycleTemp ? this.$store.state.cycle.cycleTemp : this.$store.state.cycle.cycle.id;
-    this.sentContext.userId = this.$store.state.user.tempUser ? this.$store.state.user.tempUser.id : this.$store.state.auth.user.id;
+    this.sentContext.cycleId = this.$store.state.cycle.cycleTemp
+      ? this.$store.state.cycle.cycleTemp
+      : this.$store.state.cycle.cycle.id;
+    this.sentContext.userId = this.$store.state.user.tempUser
+      ? this.$store.state.user.tempUser.id
+      : this.$store.state.auth.user.id;
     try {
-      await CfrsRepository.getHistoryCfrs(this.sentContext, 1).then(({ data }) => {
-        if (data.data.items.length) {
-          this.sentContext.page += 1;
-          this.sentItems.push(...Object.freeze(data.data.items));
-          stateChanger.loaded();
-        } else {
-          stateChanger.complete();
-        }
-      });
+      await CfrsRepository.getHistoryCfrs(this.sentContext, 1).then(
+        ({ data }) => {
+          if (data.data.items.length) {
+            this.sentContext.page += 1;
+            this.sentItems.push(...Object.freeze(data.data.items));
+            stateChanger.loaded();
+          } else {
+            stateChanger.complete();
+          }
+        },
+      );
     } catch (error) {}
   }
 
   private async infiniteReceivedHandler(stateChanger: StateChanger) {
-    this.receivedContext.cycleId = this.$store.state.cycle.cycleTemp ? this.$store.state.cycle.cycleTemp : this.$store.state.cycle.cycle.id;
-    this.receivedContext.userId = this.$store.state.user.tempUser ? this.$store.state.user.tempUser.id : this.$store.state.auth.user.id;
+    this.receivedContext.cycleId = this.$store.state.cycle.cycleTemp
+      ? this.$store.state.cycle.cycleTemp
+      : this.$store.state.cycle.cycle.id;
+    this.receivedContext.userId = this.$store.state.user.tempUser
+      ? this.$store.state.user.tempUser.id
+      : this.$store.state.auth.user.id;
     try {
-      await CfrsRepository.getHistoryCfrs(this.receivedContext, 2).then(({ data }) => {
-        if (data.data.items.length) {
-          this.receivedContext.page += 1;
-          this.receivedItems.push(...Object.freeze(data.data.items));
-          stateChanger.loaded();
-        } else {
-          stateChanger.complete();
-        }
-      });
+      await CfrsRepository.getHistoryCfrs(this.receivedContext, 2).then(
+        ({ data }) => {
+          if (data.data.items.length) {
+            this.receivedContext.page += 1;
+            this.receivedItems.push(...Object.freeze(data.data.items));
+            stateChanger.loaded();
+          } else {
+            stateChanger.complete();
+          }
+        },
+      );
     } catch (error) {}
   }
 
   private async infiniteAllHandler(stateChanger: StateChanger) {
-    this.allContext.cycleId = this.$store.state.cycle.cycleTemp ? this.$store.state.cycle.cycleTemp : this.$store.state.cycle.cycle.id;
-    this.allContext.userId = this.$store.state.user.tempUser ? this.$store.state.user.tempUser.id : this.$store.state.auth.user.id;
+    this.allContext.cycleId = this.$store.state.cycle.cycleTemp
+      ? this.$store.state.cycle.cycleTemp
+      : this.$store.state.cycle.cycle.id;
+    this.allContext.userId = this.$store.state.user.tempUser
+      ? this.$store.state.user.tempUser.id
+      : this.$store.state.auth.user.id;
     try {
-      await CfrsRepository.getHistoryCfrs(this.allContext, 3).then(({ data }) => {
-        if (data.data.items.length) {
-          this.allContext.page += 1;
-          this.allItems.push(...Object.freeze(data.data.items));
-          stateChanger.loaded();
-        } else {
-          stateChanger.complete();
-        }
-      });
+      await CfrsRepository.getHistoryCfrs(this.allContext, 3).then(
+        ({ data }) => {
+          if (data.data.items.length) {
+            this.allContext.page += 1;
+            this.allItems.push(...Object.freeze(data.data.items));
+            stateChanger.loaded();
+          } else {
+            stateChanger.complete();
+          }
+        },
+      );
     } catch (error) {}
   }
 

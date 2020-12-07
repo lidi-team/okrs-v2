@@ -15,5 +15,8 @@ module.exports = {
    */
   setupFilesAfterEnv: ['<rootDir>/test/jest.setup.ts'],
   collectCoverage: true,
-  collectCoverageFrom: ['<rootDir>/components/**/*.vue', '<rootDir>/pages/**/*.vue'],
+  collectCoverageFrom: [
+    '<rootDir>/components/**/*.vue',
+    '<rootDir>/pages/**/*.vue',
+  ],
 };

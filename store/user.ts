@@ -24,7 +24,8 @@ export const getters: GetterTree<RootState, RootState> = {
 };
 
 export const mutations: MutationTree<RootState> = {
-  [UserMutation.SET_TEMP_USER]: (state, tempUser: number | null) => (state.tempUser = tempUser),
+  [UserMutation.SET_TEMP_USER]: (state, tempUser: number | null) =>
+    (state.tempUser = tempUser),
   [UserMutation.SET_USERS]: (state, users: any[]) => (state.users = users),
 };
 

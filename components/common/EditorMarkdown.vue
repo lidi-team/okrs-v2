@@ -1,30 +1,70 @@
 <template>
   <div class="wrap-editor">
     <div class="wrap-editor__form">
-      <h1 class="wrap-editor__title">{{ $nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi' ? 'Thêm mới bài học OKRs' : 'Cập nhật bài học OKRs' }}</h1>
+      <h1 class="wrap-editor__title">
+        {{
+          $nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi'
+            ? 'Thêm mới bài học OKRs'
+            : 'Cập nhật bài học OKRs'
+        }}
+      </h1>
       <el-row :gutter="10">
         <el-col :span="24">
-          <el-form ref="editorForm" :model="formLesson" label-position="top" style="width: 100%" :rules="rules">
+          <el-form
+            ref="editorForm"
+            :model="formLesson"
+            label-position="top"
+            style="width: 100%"
+            :rules="rules"
+          >
             <el-form-item label="Tiêu đề:" prop="title" class="custom-label">
-              <el-input v-model="formLesson.title" placeholder="Nhập tiêu đề bài viết" />
+              <el-input
+                v-model="formLesson.title"
+                placeholder="Nhập tiêu đề bài viết"
+              />
             </el-form-item>
             <el-form-item label="Nội dung:" prop="content" class="custom-label">
-              <vue-simplemde ref="md" v-model="formLesson.content" :configs="config" preview-class="markdown-body" />
+              <vue-simplemde
+                ref="md"
+                v-model="formLesson.content"
+                :configs="config"
+                preview-class="markdown-body"
+              />
             </el-form-item>
             <el-form-item label="Mô tả:" prop="abstract">
-              <el-input v-model="formLesson.abstract" type="textarea" :rows="2" placeholder="Nhập mô tả bài viết"></el-input>
+              <el-input
+                v-model="formLesson.abstract"
+                type="textarea"
+                :rows="2"
+                placeholder="Nhập mô tả bài viết"
+              ></el-input>
             </el-form-item>
             <el-form-item label="Độ ưu tiên" class="custom-label" prop="index">
               <el-select v-model="formLesson.index" class="custom-label">
-                <el-option v-for="index in custom" :key="index" :label="index" :value="index" />
+                <el-option
+                  v-for="index in custom"
+                  :key="index"
+                  :label="index"
+                  :value="index"
+                />
               </el-select>
             </el-form-item>
           </el-form>
         </el-col>
         <div class="wrap-editor__footer">
-          <el-button class="el-button--white" @click="handleCancel">Hủy</el-button>
-          <el-button class="el-button--purple" :loading="loading" @click="handleSubmit(formLesson)">
-            {{ $nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi' ? 'Tạo bài' : 'Cập nhật' }}
+          <el-button class="el-button--white" @click="handleCancel"
+            >Hủy</el-button
+          >
+          <el-button
+            class="el-button--purple"
+            :loading="loading"
+            @click="handleSubmit(formLesson)"
+          >
+            {{
+              $nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi'
+                ? 'Tạo bài'
+                : 'Cập nhật'
+            }}
           </el-button>
         </div>
       </el-row>
@@ -114,62 +154,66 @@ export default class EditorMarkdown extends Vue {
 
   private handleSubmit(formLesson: LessonDTO) {
     this.loading = true;
-    (this.$refs.editorForm as Form).validate((isValid: boolean, invalidFileds: object) => {
-      if (isValid) {
-        if (this.$nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi') {
-          this.$confirm(`Bạn có chắc chắn muốn tạo bài viết này?`, {
-            confirmButtonText: 'Đồng ý',
-            cancelButtonText: 'Hủy bỏ',
-            type: 'warning',
-          }).then(async () => {
-            try {
-              await LessonRepository.create(formLesson).then((res: any) => {
+    (this.$refs.editorForm as Form).validate(
+      (isValid: boolean, invalidFileds: object) => {
+        if (isValid) {
+          if (this.$nuxt.$route.fullPath === '/bai-hoc-okrs/tao-moi') {
+            this.$confirm(`Bạn có chắc chắn muốn tạo bài viết này?`, {
+              confirmButtonText: 'Đồng ý',
+              cancelButtonText: 'Hủy bỏ',
+              type: 'warning',
+            }).then(async () => {
+              try {
+                await LessonRepository.create(formLesson).then((res: any) => {
+                  setTimeout(() => {
+                    this.loading = false;
+                  }, 300);
+                  this.$notify.success({
+                    ...notificationConfig,
+                    message: 'Tạo bài viết thành công',
+                  });
+                  this.$router.push('/bai-hoc-okrs');
+                });
+              } catch (error) {
                 setTimeout(() => {
                   this.loading = false;
                 }, 300);
-                this.$notify.success({
-                  ...notificationConfig,
-                  message: 'Tạo bài viết thành công',
-                });
-                this.$router.push('/bai-hoc-okrs');
-              });
-            } catch (error) {
-              setTimeout(() => {
-                this.loading = false;
-              }, 300);
-            }
-          });
-        } else {
-          this.$confirm(`Bạn có chắc chắn muốn cập nhật bài viết này?`, {
-            confirmButtonText: 'Đồng ý',
-            cancelButtonText: 'Hủy bỏ',
-            type: 'warning',
-          }).then(async () => {
-            try {
-              await LessonRepository.update(formLesson, this.post.id).then((res: any) => {
+              }
+            });
+          } else {
+            this.$confirm(`Bạn có chắc chắn muốn cập nhật bài viết này?`, {
+              confirmButtonText: 'Đồng ý',
+              cancelButtonText: 'Hủy bỏ',
+              type: 'warning',
+            }).then(async () => {
+              try {
+                await LessonRepository.update(formLesson, this.post.id).then(
+                  (res: any) => {
+                    setTimeout(() => {
+                      this.loading = false;
+                    }, 300);
+                    this.$notify.success({
+                      ...notificationConfig,
+                      message: 'Cập nhật bài viết thành công',
+                    });
+                    this.$router.push('/bai-hoc-okrs');
+                  },
+                );
+              } catch (error) {
                 setTimeout(() => {
                   this.loading = false;
                 }, 300);
-                this.$notify.success({
-                  ...notificationConfig,
-                  message: 'Cập nhật bài viết thành công',
-                });
-                this.$router.push('/bai-hoc-okrs');
-              });
-            } catch (error) {
-              setTimeout(() => {
-                this.loading = false;
-              }, 300);
-            }
-          });
+              }
+            });
+          }
         }
-      }
-      if (invalidFileds) {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
+        if (invalidFileds) {
+          setTimeout(() => {
+            this.loading = false;
+          }, 300);
+        }
+      },
+    );
   }
 
   private handleCancel() {
