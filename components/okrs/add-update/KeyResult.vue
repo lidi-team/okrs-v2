@@ -1,17 +1,48 @@
 <template>
   <div :id="indexKrForm">
-    <div :class="['control-collapse', hovering ? 'hovering' : '']" @mouseenter="hovering = true" @mouseleave="hovering = false">
+    <div
+      :class="['control-collapse', hovering ? 'hovering' : '']"
+      @mouseenter="hovering = true"
+      @mouseleave="hovering = false"
+    >
       <div class="control-collapse__expand" @click="expandForm">
-        <span :class="['control-collapse__expand--caret', 'el-icon-caret-right', isExpanded ? 'expanded' : '']" />
-        <span v-if="tempKeyResult.content.length !== 0" class="control-collapse__expand--content">{{ tempKeyResult.content }}</span>
-        <span v-if="tempKeyResult.content.length === 0" class="control-collapse__expand--content example">Ấn vào đây để chỉnh sửa</span>
+        <span
+          :class="[
+            'control-collapse__expand--caret',
+            'el-icon-caret-right',
+            isExpanded ? 'expanded' : '',
+          ]"
+        />
+        <span
+          v-if="tempKeyResult.content.length !== 0"
+          class="control-collapse__expand--content"
+          >{{ tempKeyResult.content }}</span
+        >
+        <span
+          v-if="tempKeyResult.content.length === 0"
+          class="control-collapse__expand--content example"
+          >Ấn vào đây để chỉnh sửa</span
+        >
       </div>
-      <el-popover v-model="popoverVisisble" placement="top-start" width="200" trigger="click">
+      <el-popover
+        v-model="popoverVisisble"
+        placement="top-start"
+        width="200"
+        trigger="click"
+      >
         <div class="control-collapse__popover">
           <p class="control-collapse__popover--title">Bạn muốn xóa KR này?</p>
           <div class="control-collapse__popover--action">
-            <el-button class="el-button--white el-button--small" @click="popoverVisisble = false">Không</el-button>
-            <el-button class="el-button--purple el-button--small" @click="deleteKr(keyResult)">Xóa bỏ</el-button>
+            <el-button
+              class="el-button--white el-button--small"
+              @click="popoverVisisble = false"
+              >Không</el-button
+            >
+            <el-button
+              class="el-button--purple el-button--small"
+              @click="deleteKr(keyResult)"
+              >Xóa bỏ</el-button
+            >
           </div>
         </div>
         <el-tooltip slot="reference" content="Xóa" placement="right-start">
@@ -19,16 +50,33 @@
         </el-tooltip>
       </el-popover>
     </div>
-    <div :class="['content-collapse', isExpanded ? 'margin-form' : '']" :style="isExpanded ? `max-height: ${scrollHeight}px` : 'max-height: 0'">
-      <el-form ref="keyResult" :model="tempKeyResult" :rules="rules" label-position="left" class="krs-form">
+    <div
+      :class="['content-collapse', isExpanded ? 'margin-form' : '']"
+      :style="isExpanded ? `max-height: ${scrollHeight}px` : 'max-height: 0'"
+    >
+      <el-form
+        ref="keyResult"
+        :model="tempKeyResult"
+        :rules="rules"
+        label-position="left"
+        class="krs-form"
+      >
         <el-form-item prop="content">
-          <el-input v-model="tempKeyResult.content" placeholder="Nhập kết quả then chốt" tabindex="1" />
+          <el-input
+            v-model="tempKeyResult.content"
+            placeholder="Nhập kết quả then chốt"
+            tabindex="1"
+          />
         </el-form-item>
         <div class="krs-form__detail">
           <div class="krs-form__detail--value">
             <el-row>
               <el-col :span="7">
-                <el-form-item label="Đơn vị" class="custom-label" label-width="65px">
+                <el-form-item
+                  label="Đơn vị"
+                  class="custom-label"
+                  label-width="65px"
+                >
                   <el-select
                     v-model.number="tempKeyResult.measureUnitId"
                     size="medium"
@@ -36,24 +84,54 @@
                     no-match-text="Không tìm thấy kết quả"
                     placeholder="Chọn đơn vị"
                   >
-                    <el-option v-for="unit in units" :key="unit.id" :label="unit.name" :value="unit.id" tabindex="2" />
+                    <el-option
+                      v-for="unit in units"
+                      :key="unit.id"
+                      :label="unit.name"
+                      :value="unit.id"
+                      tabindex="2"
+                    />
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="7">
-                <el-form-item class="custom-label krs-form__detail--value--start" prop="startValue" label="Giá trị bắt đầu" label-width="100px">
-                  <el-input v-model.number="tempKeyResult.startValue" size="medium" tabindex="3" />
+                <el-form-item
+                  class="custom-label krs-form__detail--value--start"
+                  prop="startValue"
+                  label="Giá trị bắt đầu"
+                  label-width="100px"
+                >
+                  <el-input
+                    v-model.number="tempKeyResult.startValue"
+                    size="medium"
+                    tabindex="3"
+                  />
                 </el-form-item>
               </el-col>
               <el-col :span="10">
-                <el-form-item prop="targetValue" label="Mục tiêu" class="custom-label" label-width="80px">
-                  <el-input v-model.number="tempKeyResult.targetedValue" size="medium" tabindex="4" />
+                <el-form-item
+                  prop="targetValue"
+                  label="Mục tiêu"
+                  class="custom-label"
+                  label-width="80px"
+                >
+                  <el-input
+                    v-model.number="tempKeyResult.targetedValue"
+                    size="medium"
+                    tabindex="4"
+                  />
                 </el-form-item>
               </el-col>
             </el-row>
           </div>
           <div>
-            <el-form-item v-if="isCreate" prop="parentId" label="Liên kết kết quả then chốt" class="custom-label" label-width="190px">
+            <el-form-item
+              v-if="isCreate"
+              prop="parentId"
+              label="Liên kết kết quả then chốt"
+              class="custom-label"
+              label-width="190px"
+            >
               <el-select
                 v-model="tempKeyResult.parentId"
                 filterable
@@ -62,16 +140,39 @@
                 :loading="loading"
                 width="100%"
               >
-                <el-option v-for="keyResult in keyResultsParent" :key="keyResult.id" :label="keyResult.name" :value="keyResult.id" />
+                <el-option
+                  v-for="keyResult in keyResultsParent"
+                  :key="keyResult.id"
+                  :label="keyResult.name"
+                  :value="keyResult.id"
+                />
               </el-select>
             </el-form-item>
           </div>
           <div class="krs-form__detail--links">
-            <el-form-item prop="linkPlans" label="Link kế hoạch" label-width="120px">
-              <el-input v-model.number="tempKeyResult.linkPlans" size="small" type="url" placeholder="Điền link kế hoạch " />
+            <el-form-item
+              prop="linkPlans"
+              label="Link kế hoạch"
+              label-width="120px"
+            >
+              <el-input
+                v-model.number="tempKeyResult.linkPlans"
+                size="small"
+                type="url"
+                placeholder="Điền link kế hoạch "
+              />
             </el-form-item>
-            <el-form-item prop="linkResults" label="Link kết quả" label-width="120px">
-              <el-input v-model.number="tempKeyResult.linkResults" size="small" type="url" placeholder="Điền link kết quả" />
+            <el-form-item
+              prop="linkResults"
+              label="Link kết quả"
+              label-width="120px"
+            >
+              <el-input
+                v-model.number="tempKeyResult.linkResults"
+                size="small"
+                type="url"
+                placeholder="Điền link kết quả"
+              />
             </el-form-item>
           </div>
         </div>
@@ -106,7 +207,9 @@ import KeyResultRepository from '@/repositories/KeyResultRepository';
   async mounted() {
     this.loading = true;
     this.units = await this.$store.dispatch(DispatchAction.GET_MEASURE);
-    const { data } = await KeyResultRepository.getKeyResult(this.$store.state.okrs.objective.parentId);
+    const { data } = await KeyResultRepository.getKeyResult(
+      this.$store.state.okrs.objective.parentId,
+    );
     this.keyResultsParent = data;
     console.log(this.keyResult, 'hello');
     this.loading = false;
@@ -182,32 +285,69 @@ export default class KeyResult extends Vue {
 
   private rules: Maps<Rule[]> = {
     content: [
-      { type: 'string', required: true, message: 'Vui lòng nhập kết quả then chốt', trigger: 'blur' },
+      {
+        type: 'string',
+        required: true,
+        message: 'Vui lòng nhập kết quả then chốt',
+        trigger: 'blur',
+      },
       { validator: this.validateContentKrs, trigger: 'blur' },
       max255Char,
     ],
     startValue: [
-      { type: 'number', required: true, message: 'Vui lòng nhập giá trị', trigger: 'blur' },
+      {
+        type: 'number',
+        required: true,
+        message: 'Vui lòng nhập giá trị',
+        trigger: 'blur',
+      },
       { validator: this.validateIsValidNumber, trigger: 'blur' },
       { validator: this.validateStartValue, trigger: 'blur' },
     ],
     targetedValue: [
-      { type: 'number', required: true, message: 'Vui lòng nhập giá trị', trigger: 'blur' },
+      {
+        type: 'number',
+        required: true,
+        message: 'Vui lòng nhập giá trị',
+        trigger: 'blur',
+      },
       { validator: this.validateIsValidNumber, trigger: 'blur' },
       { validator: this.validateTargetValue, trigger: 'blur' },
     ],
-    linkPlans: [{ type: 'url', message: 'Vui lòng nhập đúng định dạng đường link', trigger: 'blur' }, max255Char],
-    linkResults: [{ type: 'url', message: 'Vui lòng nhập đúng định dạng đường link', trigger: 'blur' }, max255Char],
+    linkPlans: [
+      {
+        type: 'url',
+        message: 'Vui lòng nhập đúng định dạng đường link',
+        trigger: 'blur',
+      },
+      max255Char,
+    ],
+    linkResults: [
+      {
+        type: 'url',
+        message: 'Vui lòng nhập đúng định dạng đường link',
+        trigger: 'blur',
+      },
+      max255Char,
+    ],
   };
 
-  private validateIsValidNumber(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private validateIsValidNumber(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     if (isNaN(value)) {
       return callback('Giá trị phải là số');
     }
     return callback();
   }
 
-  private validateStartValue(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private validateStartValue(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     if (value < 0) {
       return callback('Giá trị phải là số không âm');
     }
@@ -217,7 +357,11 @@ export default class KeyResult extends Vue {
     return callback();
   }
 
-  private validateTargetValue(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private validateTargetValue(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     if (value <= 0) {
       return callback('Giá trị phải lớn hơn 0');
     }
@@ -227,7 +371,11 @@ export default class KeyResult extends Vue {
     return callback();
   }
 
-  private validateContentKrs(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private validateContentKrs(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     if (!/\d/.test(value)) {
       return callback('Kết quả then chốt phải chứa số');
     }

@@ -56,12 +56,18 @@ export const getters: GetterTree<RootState, RootState> = {
 
 export const mutations: MutationTree<RootState> = {
   [OkrsMutation.SET_FLAG]: (state) => (state.flag = !state.flag),
-  [OkrsMutation.SET_IS_CREATE]: (state, data: Boolean) => (state.isCreate = data),
-  [OkrsMutation.SET_DIALOG_OKRS]: (state, data: Boolean) => (state.isDialogOKRs = data),
-  [OkrsMutation.SET_OBJECTIVE_PARENT]: (state, data: Number) => (state.objectiveParent = data),
-  [OkrsMutation.SET_LIST_OBJECTIVE_ALIGN]: (state, data: any[]) => (state.listObjectiveAlign = data),
-  [OkrsMutation.SET_OBJECTIVE]: (state, data: any) => (state.objective = { ...state.objective, ...data }),
-  [OkrsMutation.SET_KEY_RESULT]: (state, data: KeyResultDTO[]) => (state.objective.keyResults = [...data]),
+  [OkrsMutation.SET_IS_CREATE]: (state, data: Boolean) =>
+    (state.isCreate = data),
+  [OkrsMutation.SET_DIALOG_OKRS]: (state, data: Boolean) =>
+    (state.isDialogOKRs = data),
+  [OkrsMutation.SET_OBJECTIVE_PARENT]: (state, data: Number) =>
+    (state.objectiveParent = data),
+  [OkrsMutation.SET_LIST_OBJECTIVE_ALIGN]: (state, data: any[]) =>
+    (state.listObjectiveAlign = data),
+  [OkrsMutation.SET_OBJECTIVE]: (state, data: any) =>
+    (state.objective = { ...state.objective, ...data }),
+  [OkrsMutation.SET_KEY_RESULT]: (state, data: KeyResultDTO[]) =>
+    (state.objective.keyResults = [...data]),
 };
 
 export interface OKRsAction<S, R> extends ActionTree<S, R> {

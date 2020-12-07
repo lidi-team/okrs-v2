@@ -9,20 +9,36 @@
         :key-result.sync="item"
         @deleteKr="deleteKrForm($event)"
       />
-      <el-button class="el-button el-button--white el-button--small add-krs-step__button" @click="addNewKRs">
+      <el-button
+        class="el-button el-button--white el-button--small add-krs-step__button"
+        @click="addNewKRs"
+      >
         <span>Thêm KRs</span>
       </el-button>
       <div class="add-krs-step__attention">
         <p class="add-krs-step__attention--title">Lưu ý:</p>
-        <div v-for="(attention, i) in attentionsText" :key="attention[i]" class="add-krs-step__attention--content">
+        <div
+          v-for="(attention, i) in attentionsText"
+          :key="attention[i]"
+          class="add-krs-step__attention--content"
+        >
           <icon-attention />
           <span>{{ attention }}</span>
         </div>
       </div>
     </div>
     <div class="add-krs-step__action">
-      <el-button class="el-button--white el-button--modal" @click="backToStepOne">Quay lại</el-button>
-      <el-button class="el-button--purple el-button--modal" :loading="loading" @click="nextStepThree">Tiếp theo</el-button>
+      <el-button
+        class="el-button--white el-button--modal"
+        @click="backToStepOne"
+        >Quay lại</el-button
+      >
+      <el-button
+        class="el-button--purple el-button--modal"
+        :loading="loading"
+        @click="nextStepThree"
+        >Tiếp theo</el-button
+      >
     </div>
   </div>
 </template>
@@ -32,7 +48,10 @@ import { Form } from 'element-ui';
 import KeyResult from './KeyResult.vue';
 import IconAttention from '@/assets/images/okrs/attention.svg';
 import { MutationState, DispatchAction } from '@/constants/app.vuex';
-import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
+import {
+  confirmWarningConfig,
+  notificationConfig,
+} from '@/constants/app.constant';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 import { KeyResultDTO } from '@/constants/DTO/okrs';
@@ -56,7 +75,10 @@ export default class CreateObjectiveStep extends Vue {
   private loading: boolean = false;
   private objectiveTitle: string = '';
   public keyResults: any[] = [];
-  private attentionsText: string[] = ['Nên có ít nhất phải có 2 kết quả then chốt', 'Không nên quá 5 kết quả then chốt cho 1 mục tiêu'];
+  private attentionsText: string[] = [
+    'Nên có ít nhất phải có 2 kết quả then chốt',
+    'Không nên quá 5 kết quả then chốt cho 1 mục tiêu',
+  ];
 
   private addNewKRs() {
     this.keyResults.push({
@@ -102,11 +124,13 @@ export default class CreateObjectiveStep extends Vue {
       this.$message.error('Cần có ít nhất 1 kết quả then chốt');
     } else {
       (this.$refs.krsForm as any).forEach((form) => {
-        (form.$refs.keyResult as Form).validate((isValid: boolean, invalidatedFields: object) => {
-          if (isValid) {
-            validForm++;
-          }
-        });
+        (form.$refs.keyResult as Form).validate(
+          (isValid: boolean, invalidatedFields: object) => {
+            if (isValid) {
+              validForm++;
+            }
+          },
+        );
         krs.push(Object.freeze(form.tempKeyResult));
       });
       if (validForm === krs.length) {
