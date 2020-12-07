@@ -2,7 +2,7 @@
   <div v-loading="loadingTab" class="feedback">
     <el-row :gutter="30" class>
       <el-col
-        v-if="listWaitingFeedback.inferior && $store.state.auth.user.isLeader"
+        v-if="listWaitingFeedback.inferior"
         v-loading="loadingInferior"
         :md="12"
         :lg="12"
@@ -81,7 +81,7 @@
             Không có dữ liệu để phản hồi
           </p>
           <div
-            v-for="item in listWaitingFeedback.superior.checkins"
+            v-for="item in listWaitingFeedback.superior.checkins.items"
             v-else
             :key="item.id"
             class="cfr"
@@ -92,7 +92,7 @@
                 viewDetailCheckin(item, listWaitingFeedback.superior.type)
               "
             >
-              <el-avatar :size="30">
+              <!--<el-avatar :size="30">
                 <img
                   :src="
                     listWaitingFeedback.superior.user.avatarURL
@@ -101,7 +101,7 @@
                   "
                   alt="avatar"
                 />
-              </el-avatar>
+              </el-avatar>-->
               <div class="cfr__left__content">
                 <p class="cfr__left__content--title">
                   {{ item.objective.title }}
@@ -183,7 +183,10 @@ export default class Feedback extends Vue {
 
   private listWaitingFeedback: any = {
     superior: {
-      checkins: [],
+      checkins: {
+        items: [],
+        meta: {},
+      },
     },
     inferior: {
       checkins: {
@@ -281,32 +284,37 @@ export default class Feedback extends Vue {
   }
 
   private displayHeader(type: string, superior?: any) {
-    console.log(
-      'this.$store.state.auth.user.role.name',
-      this.$store.state.auth.users,
-    );
     if (type === 'inferior') {
       // Feedback cho Team member
-      // if (this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
-      //   return 'Phản hồi cho Team Member';
-      // }
+      if (
+        this.$store.state.auth.user.roles.includes('ROLE_PM') &&
+        !this.$store.state.auth.user.roles.includes('ROLE_ADMIN')
+      ) {
+        return 'Phản hồi cho Team Member';
+      }
       // // Feedback cho Team Leader
-      // if (this.$store.state.auth.user.role.name === 'ADMIN') {
-      //   return 'Phản hồi cho Team Leader';
-      // }
+      if (this.$store.state.auth.user.roles.includes('ROLE_ADMIN')) {
+        return 'Phản hồi cho Team Leader';
+      }
     } else {
       // Feedback cho Team Leader
-      // if (!this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
-      //   return 'Phản hồi cho Team Leader';
-      // }
-      // // Feedback cho Admin
-      // if (this.$store.state.auth.user.isLeader && this.$store.state.auth.user.role.name !== 'ADMIN') {
-      //   return 'Phản hồi cho Admin';
-      // }
-      // // Feedback cho bạn -- admin
-      // if (this.$store.state.auth.user.role.name === 'ADMIN') {
-      //   return 'Phản hồi cho tôi';
-      // }
+      if (
+        !this.$store.state.auth.user.roles.includes('ROLE_PM') &&
+        !this.$store.state.auth.user.roles.includes('ROLE_ADMIN')
+      ) {
+        return 'Phản hồi cho Team Leader';
+      }
+      // Feedback cho Admin
+      if (
+        this.$store.state.auth.user.roles.includes('ROLE_PM') &&
+        !this.$store.state.auth.user.roles.includes('ROLE_ADMIN')
+      ) {
+        return 'Phản hồi cho Admin';
+      }
+      // Feedback cho bạn -- admin
+      if (this.$store.state.auth.user.roles.includes('ROLE_ADMIN')) {
+        return 'Phản hồi cho tôi';
+      }
     }
   }
 
