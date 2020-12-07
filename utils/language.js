@@ -21,7 +21,8 @@ export default {
   vi: {
     hint: 'Nhấp hoặc kéo tệp vào đây để tải lên',
     loading: 'Đang xử lý…',
-    noSupported: 'Trình duyệt không được hỗ trợ, vui lòng sử dụng IE10 + hoặc các trình duyệt khác',
+    noSupported:
+      'Trình duyệt không được hỗ trợ, vui lòng sử dụng IE10 + hoặc các trình duyệt khác',
     success: 'Tải lên thành công',
     fail: 'Tải lên thất bại',
     preview: 'Xem trước',

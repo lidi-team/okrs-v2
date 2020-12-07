@@ -1,9 +1,28 @@
 <template>
   <div>
-    <input ref="excel-upload-input" class="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick" />
-    <div class="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
+    <input
+      ref="excel-upload-input"
+      class="excel-upload-input"
+      type="file"
+      accept=".xlsx, .xls"
+      @change="handleClick"
+    />
+    <div
+      class="drop"
+      @drop="handleDrop"
+      @dragover="handleDragover"
+      @dragenter="handleDragover"
+    >
       Thả tệp excel ở đây hoặc
-      <el-button :loading="loading" style="margin-left: 16px" size="mini" type="primary" @click="handleUpload"> Duyệt </el-button>
+      <el-button
+        :loading="loading"
+        style="margin-left: 16px"
+        size="mini"
+        type="primary"
+        @click="handleUpload"
+      >
+        Duyệt
+      </el-button>
     </div>
   </div>
 </template>
@@ -43,7 +62,9 @@ export default {
       const rawFile = files[0]; // only use files[0]
 
       if (!this.isExcel(rawFile)) {
-        this.$message.error('Only supports upload .xlsx, .xls, .csv suffix files');
+        this.$message.error(
+          'Only supports upload .xlsx, .xls, .csv suffix files',
+        );
         return false;
       }
       this.upload(rawFile);

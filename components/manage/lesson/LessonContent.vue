@@ -6,12 +6,18 @@
     <h1 class="lesson-content__title">{{ post.title }}</h1>
     <div class="lesson-content__des">
       <div>
-        <img alt="avatar-logo" class="lesson-content__avatar" src="@/assets/images/common/logoflame.png" />
+        <img
+          alt="avatar-logo"
+          class="lesson-content__avatar"
+          src="@/assets/images/common/logoflame.png"
+        />
       </div>
       <div class="lesson-content__author">
         <span class="lesson-content__name">OKRs V2</span>
         <div class="lesson-content__muted">
-          <span style="color: #757575">{{ new Date(post.createdAt) | dateFormat('DD/MM/YYYY') }}</span>
+          <span style="color: #757575">{{
+            new Date(post.createdAt) | dateFormat('DD/MM/YYYY')
+          }}</span>
           <img
             src="https://cdn-images-1.medium.com/proxy/1*dMba6LR4dsoQTHzQ5T7oaA.png"
             alt="Member only content"
@@ -29,11 +35,21 @@
     <div class="lesson-content__paginate paginate">
       <div class="paginate__link paginate__link--left">
         <div class="paginate__title">Bài trước</div>
-        <nuxt-link v-if="post.preLesson !== null" :to="`${post.preLesson.slug}`" class="paginate__slug">{{ post.preLesson.title }}</nuxt-link>
+        <nuxt-link
+          v-if="post.preLesson !== null"
+          :to="`${post.preLesson.slug}`"
+          class="paginate__slug"
+          >{{ post.preLesson.title }}</nuxt-link
+        >
       </div>
       <div class="paginate__link paginate__link--right">
         <div class="paginate__title">Bài tiếp theo</div>
-        <nuxt-link v-if="post.nextLesson !== null" :to="`${post.nextLesson.slug}`" class="paginate__slug">{{ post.nextLesson.title }}</nuxt-link>
+        <nuxt-link
+          v-if="post.nextLesson !== null"
+          :to="`${post.nextLesson.slug}`"
+          class="paginate__slug"
+          >{{ post.nextLesson.title }}</nuxt-link
+        >
       </div>
     </div>
   </div>

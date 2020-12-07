@@ -1,5 +1,9 @@
 import { NuxtConfig } from '@nuxt/types';
-import { Configuration as WebpackConfiguration, ExternalsFunctionCallback, ExternalsFunctionElement } from 'webpack';
+import {
+  Configuration as WebpackConfiguration,
+  ExternalsFunctionCallback,
+  ExternalsFunctionElement,
+} from 'webpack';
 
 const nuxtConfig: NuxtConfig = {
   /**
@@ -57,7 +61,8 @@ const nuxtConfig: NuxtConfig = {
     link: [
       {
         rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css?family=Merriweather:400,400i,700,700i&display=swap&subset=vietnamese',
+        href:
+          'https://fonts.googleapis.com/css?family=Merriweather:400,400i,700,700i&display=swap&subset=vietnamese',
       },
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
     ],
@@ -71,7 +76,12 @@ const nuxtConfig: NuxtConfig = {
   /*
    ** Global CSS
    */
-  css: ['simplemde/dist/simplemde.min.css', 'highlight.js/styles/github.css', '@/assets/scss/base/_global.scss', '@/assets/css/resetCss.css'],
+  css: [
+    'simplemde/dist/simplemde.min.css',
+    'highlight.js/styles/github.css',
+    '@/assets/scss/base/_global.scss',
+    '@/assets/css/resetCss.css',
+  ],
   /**
    * @description Plugins to load before mounting the App
    * @docs https://nuxtjs.org/guide/plugins
@@ -89,7 +99,12 @@ const nuxtConfig: NuxtConfig = {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ['@nuxt/typescript-build', '@nuxt/components', '@nuxtjs/dotenv', 'nuxt-clipboard2'],
+  buildModules: [
+    '@nuxt/typescript-build',
+    '@nuxt/components',
+    '@nuxtjs/dotenv',
+    'nuxt-clipboard2',
+  ],
   // purgeCSS: pureCssConfig,
   /*
    ** Nuxt.js modules

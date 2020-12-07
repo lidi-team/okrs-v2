@@ -9,11 +9,18 @@ export default class EvaluationCriteriorRepository {
     return baseUrl.get(`${ResourcesEnpoint.EvaluationCriterial}`, { params });
   }
 
-  public static update(payload: EvaluationCriteriorDTO): Promise<AxiosResponse<any>> {
-    return baseUrl.put(`${ResourcesEnpoint.EvaluationCriterial}/${payload.id}`, payload);
+  public static update(
+    payload: EvaluationCriteriorDTO,
+  ): Promise<AxiosResponse<any>> {
+    return baseUrl.put(
+      `${ResourcesEnpoint.EvaluationCriterial}/${payload.id}`,
+      payload,
+    );
   }
 
-  public static post(payload: EvaluationCriteriorDTO): Promise<AxiosResponse<any>> {
+  public static post(
+    payload: EvaluationCriteriorDTO,
+  ): Promise<AxiosResponse<any>> {
     return baseUrl.post(`${ResourcesEnpoint.EvaluationCriterial}`, payload);
   }
 
@@ -21,7 +28,12 @@ export default class EvaluationCriteriorRepository {
     return baseUrl.delete(`${ResourcesEnpoint.EvaluationCriterial}/${id}`);
   }
 
-  public static getCombobox(type: EvaluationCriteriaEnum): Promise<AxiosResponse<any>> {
-    return baseUrlV1.get(`${ResourcesEnpoint.MetaData}/${EvaluationCriteriaEnum.EvaluationCriteria}`, { params: { type } });
+  public static getCombobox(
+    type: EvaluationCriteriaEnum,
+  ): Promise<AxiosResponse<any>> {
+    return baseUrlV1.get(
+      `${ResourcesEnpoint.MetaData}/${EvaluationCriteriaEnum.EvaluationCriteria}`,
+      { params: { type } },
+    );
   }
 }

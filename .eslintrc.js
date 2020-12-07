@@ -4,7 +4,12 @@ module.exports = {
     browser: true,
     node: true,
   },
-  extends: ['@nuxtjs/eslint-config-typescript', 'prettier', 'prettier/vue', 'plugin:prettier/recommended'],
+  extends: [
+    '@nuxtjs/eslint-config-typescript',
+    'prettier',
+    'prettier/vue',
+    'plugin:prettier/recommended',
+  ],
   plugins: ['prettier'],
   rules: {
     'no-unused-vars': 'off',

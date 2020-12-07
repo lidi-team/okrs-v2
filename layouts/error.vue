@@ -2,16 +2,33 @@
   <div v-if="error.statusCode === 404" class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">
-        <img class="pic-404__parent" src="@/assets/images/error/404.png" alt="404" />
-        <img class="pic-404__child left" src="@/assets/images/error/404-cloud.png" alt="404" />
-        <img class="pic-404__child mid" src="@/assets/images/error/404-cloud.png" alt="404" />
-        <img class="pic-404__child right" src="@/assets/images/error/404-cloud.png" alt="404" />
+        <img
+          class="pic-404__parent"
+          src="@/assets/images/error/404.png"
+          alt="404"
+        />
+        <img
+          class="pic-404__child left"
+          src="@/assets/images/error/404-cloud.png"
+          alt="404"
+        />
+        <img
+          class="pic-404__child mid"
+          src="@/assets/images/error/404-cloud.png"
+          alt="404"
+        />
+        <img
+          class="pic-404__child right"
+          src="@/assets/images/error/404-cloud.png"
+          alt="404"
+        />
       </div>
       <div class="text-404">
         <div class="text-404__oops">OOPS!</div>
         <div class="text-404__headline">{{ message }}</div>
         <div class="text-404__info">
-          Vui lòng kiểm tra lại đường link bạn nhập có đúng hay không, hoặc nhấn vào nút phía dưới để trở về trang chủ.
+          Vui lòng kiểm tra lại đường link bạn nhập có đúng hay không, hoặc nhấn
+          vào nút phía dưới để trở về trang chủ.
         </div>
         <nuxt-link rel="canonical" to="/">
           <el-button class="el-button--purple">Trở về trang chủ</el-button>

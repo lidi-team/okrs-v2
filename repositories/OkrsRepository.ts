@@ -8,7 +8,9 @@ export const enpoint = {
   getDetailOkrsById: 'objective/detail',
 };
 export default class OkrsRepository {
-  public static getListOkrsByCycleId(cycleId: Number): Promise<AxiosResponse<any>> {
+  public static getListOkrsByCycleId(
+    cycleId: Number,
+  ): Promise<AxiosResponse<any>> {
     return baseUrl.get(`${enpoint.listOkrByCycleId}?cycleId=${cycleId}`);
   }
 
@@ -26,16 +28,26 @@ export default class OkrsRepository {
    * When the type = 3 --> All Okrs, except root okrs
    */
 
-  public static getListOkrs(cycleId: number, type: number): Promise<AxiosResponse<any>> {
-    return baseUrlV1.get(`${ResourcesEnpoint.Objective}/list_okrs?cycleId=${cycleId}&type=${type}`);
+  public static getListOkrs(
+    cycleId: number,
+    type: number,
+  ): Promise<AxiosResponse<any>> {
+    return baseUrlV1.get(
+      `${ResourcesEnpoint.Objective}/list_okrs?cycleId=${cycleId}&type=${type}`,
+    );
   }
 
   public static getOkrsDetail(okrsId: number): Promise<AxiosResponse<any>> {
     return baseUrlV1.get(`${ResourcesEnpoint.Objective}/detail/${okrsId}`);
   }
 
-  public static getOkrsDashboard(cycleId: number, userId: number): Promise<AxiosResponse<any>> {
-    return baseUrlV1.get(`${ResourcesEnpoint.Objective}/view_list`, { params: { cycleId, userId } });
+  public static getOkrsDashboard(
+    cycleId: number,
+    userId: number,
+  ): Promise<AxiosResponse<any>> {
+    return baseUrlV1.get(`${ResourcesEnpoint.Objective}/view_list`, {
+      params: { cycleId, userId },
+    });
   }
 
   public static deleteKr(id: number): Promise<AxiosResponse<any>> {

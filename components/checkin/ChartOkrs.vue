@@ -16,11 +16,21 @@
               </tr>
               <tr v-if="checkin.checkin.checkinAt">
                 <th scope="row">Ngày check-in</th>
-                <td>{{ new Date(checkin.checkin.checkinAt) | dateFormat('DD/MM/YYYY') }}</td>
+                <td>
+                  {{
+                    new Date(checkin.checkin.checkinAt)
+                      | dateFormat('DD/MM/YYYY')
+                  }}
+                </td>
               </tr>
               <tr v-if="checkin.checkin.nextCheckinDate">
                 <th scope="row">Ngày check-in kế tiếp</th>
-                <td>{{ new Date(checkin.checkin.nextCheckinDate) | dateFormat('DD/MM/YYYY') }}</td>
+                <td>
+                  {{
+                    new Date(checkin.checkin.nextCheckinDate)
+                      | dateFormat('DD/MM/YYYY')
+                  }}
+                </td>
               </tr>
             </tbody>
           </table>
@@ -57,7 +67,11 @@ export default class ChartOkrs extends Vue {
   private checkinAt: Array<object> = [];
   private status = statusCheckin;
   private customColors(confident) {
-    return confident === 1 ? '#DE3618' : confident === 2 ? '#47C1BF' : '#50B83C';
+    return confident === 1
+      ? '#DE3618'
+      : confident === 2
+      ? '#47C1BF'
+      : '#50B83C';
   }
 
   private renderChart() {

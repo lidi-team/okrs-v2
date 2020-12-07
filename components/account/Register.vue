@@ -14,7 +14,12 @@
       @submit.native.prevent="handleRegisterForm"
     >
       <el-form-item prop="email" label="Email" class="custom-label">
-        <el-input v-model="registerForm.email" size="medium" class="register-form__input__email" placeholder="Nhập email"></el-input>
+        <el-input
+          v-model="registerForm.email"
+          size="medium"
+          class="register-form__input__email"
+          placeholder="Nhập email"
+        ></el-input>
       </el-form-item>
       <el-form-item prop="password" label="Mật khẩu" class="custom-label">
         <el-input
@@ -25,7 +30,11 @@
           placeholder="Nhập mật khẩu"
         ></el-input>
       </el-form-item>
-      <el-form-item prop="matchPassword" label="Nhập lại mật khẩu" class="custom-label">
+      <el-form-item
+        prop="matchPassword"
+        label="Nhập lại mật khẩu"
+        class="custom-label"
+      >
         <el-input
           v-model="registerForm.matchPassword"
           size="medium"
@@ -35,25 +44,67 @@
         ></el-input>
       </el-form-item>
       <el-form-item prop="fullName" label="Họ và Tên" class="custom-label">
-        <el-input v-model="registerForm.fullName" size="medium" class="register-form__input__full-name" placeholder="Nhập họ tên"></el-input>
+        <el-input
+          v-model="registerForm.fullName"
+          size="medium"
+          class="register-form__input__full-name"
+          placeholder="Nhập họ tên"
+        ></el-input>
       </el-form-item>
-      <el-form-item prop="gender" label="Giới tính" class="register-form__input__gender custom-label">
+      <el-form-item
+        prop="gender"
+        label="Giới tính"
+        class="register-form__input__gender custom-label"
+      >
         <el-radio-group v-model="registerForm.gender">
           <el-radio :label="true">Nam</el-radio>
           <el-radio :label="false">Nữ</el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item prop="teamId" label="Phòng ban" class="register-form__input__team custom-label">
-        <el-select v-model="registerForm.teamId" size="medium" placeholder="Chọn phòng ban" :no-data-text="noDataText">
-          <el-option v-for="item in teams" :key="item.id" :label="item.name" :value="item.id" />
+      <el-form-item
+        prop="teamId"
+        label="Phòng ban"
+        class="register-form__input__team custom-label"
+      >
+        <el-select
+          v-model="registerForm.teamId"
+          size="medium"
+          placeholder="Chọn phòng ban"
+          :no-data-text="noDataText"
+        >
+          <el-option
+            v-for="item in teams"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
         </el-select>
       </el-form-item>
-      <el-form-item prop="jobPositionId" label="Vị trí" class="register-form__input__job-position custom-label">
-        <el-select v-model="registerForm.jobPositionId" size="medium" placeholder="Chọn vị trí" :no-data-text="noDataText">
-          <el-option v-for="item in jobs" :key="item.id" :label="item.name" :value="item.id" />
+      <el-form-item
+        prop="jobPositionId"
+        label="Vị trí"
+        class="register-form__input__job-position custom-label"
+      >
+        <el-select
+          v-model="registerForm.jobPositionId"
+          size="medium"
+          placeholder="Chọn vị trí"
+          :no-data-text="noDataText"
+        >
+          <el-option
+            v-for="item in jobs"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+          />
         </el-select>
       </el-form-item>
-      <el-button :loading="loading" class="el-button el-button--purple el-button--large" @click="handleRegisterForm">Gửi yêu cầu</el-button>
+      <el-button
+        :loading="loading"
+        class="el-button el-button--purple el-button--large"
+        @click="handleRegisterForm"
+        >Gửi yêu cầu</el-button
+      >
     </el-form>
   </el-row>
 </template>
@@ -98,7 +149,10 @@ export default class RegisterComponent extends Vue {
 
   private async getDataCommons() {
     try {
-      const [teams, jobs] = await Promise.all([TeamRepository.getMetaData(), JobRepository.getMetaData()]);
+      const [teams, jobs] = await Promise.all([
+        TeamRepository.getMetaData(),
+        JobRepository.getMetaData(),
+      ]);
       this.teams = teams.data.data;
       this.jobs = jobs.data.data;
     } catch (error) {}
@@ -106,11 +160,23 @@ export default class RegisterComponent extends Vue {
 
   private rules: Maps<Rule[]> = {
     email: [
-      { required: true, message: 'Vui lòng nhập địa chỉ email', trigger: 'blur' },
-      { type: 'email', message: 'Vui lòng nhập đúng địa chỉ email', trigger: 'blur' },
+      {
+        required: true,
+        message: 'Vui lòng nhập địa chỉ email',
+        trigger: 'blur',
+      },
+      {
+        type: 'email',
+        message: 'Vui lòng nhập đúng địa chỉ email',
+        trigger: 'blur',
+      },
       max255Char,
     ],
-    password: [{ required: true, message: 'Vui lòng nhập mật khẩu' }, max255Char, { validator: this.validatePassword, trigger: ['blur', 'change'] }],
+    password: [
+      { required: true, message: 'Vui lòng nhập mật khẩu' },
+      max255Char,
+      { validator: this.validatePassword, trigger: ['blur', 'change'] },
+    ],
     matchPassword: [
       { required: true, message: 'Vui lòng nhập lại mật khẩu' },
       max255Char,
@@ -118,10 +184,16 @@ export default class RegisterComponent extends Vue {
     ],
     fullName: [{ required: true, message: 'Vui lòng nhập họ tên' }, max255Char],
     teamId: [{ required: true, message: 'Vui lòng chọn phòng ban' }],
-    jobPositionId: [{ required: true, message: 'Vui lòng chọn vị trí công việc' }],
+    jobPositionId: [
+      { required: true, message: 'Vui lòng chọn vị trí công việc' },
+    ],
   };
 
-  private validatePassword(rule: any, value: string, callback: (message?: string) => any): (message?: string) => any {
+  private validatePassword(
+    rule: any,
+    value: string,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     const valid: boolean = regexPassword.test(value.trim());
     if (!valid) {
       return callback('Mật khẩu chứ ít nhất 8 ký tự và 1 chữ số');
@@ -129,7 +201,11 @@ export default class RegisterComponent extends Vue {
     return callback();
   }
 
-  private validateMatchPassword(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private validateMatchPassword(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     if (value !== this.registerForm.password) {
       return callback('Không trùng với mật khẩu');
     }
@@ -138,31 +214,35 @@ export default class RegisterComponent extends Vue {
 
   private handleRegisterForm() {
     this.loading = true;
-    (this.$refs.registerForm as Form).validate(async (isValid: boolean, invalidatedFields: object) => {
-      if (isValid) {
-        try {
-          delete this.registerForm.matchPassword;
-          await AuthRepository.register(this.registerForm).then((res: any) => {
-            this.$notify.success({
-              ...notificationConfig,
-              message: 'Gửi yêu cầu đăng ký thành công',
-            });
-          });
-          this.loading = false;
-          this.$router.push('/dang-nhap');
-        } catch (error) {
+    (this.$refs.registerForm as Form).validate(
+      async (isValid: boolean, invalidatedFields: object) => {
+        if (isValid) {
+          try {
+            delete this.registerForm.matchPassword;
+            await AuthRepository.register(this.registerForm).then(
+              (res: any) => {
+                this.$notify.success({
+                  ...notificationConfig,
+                  message: 'Gửi yêu cầu đăng ký thành công',
+                });
+              },
+            );
+            this.loading = false;
+            this.$router.push('/dang-nhap');
+          } catch (error) {
+            setTimeout(() => {
+              this.loading = false;
+            }, 300);
+            notifyErrorRegister(error);
+          }
+        }
+        if (invalidatedFields) {
           setTimeout(() => {
             this.loading = false;
           }, 300);
-          notifyErrorRegister(error);
         }
-      }
-      if (invalidatedFields) {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
+      },
+    );
   }
 }
 </script>

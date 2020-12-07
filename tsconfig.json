@@ -19,7 +19,13 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "types": ["@nuxt/types", "@nuxtjs/axios", "@types/node", "@types/jest", "@nuxtjs/markdownit"]
+    "types": [
+      "@nuxt/types",
+      "@nuxtjs/axios",
+      "@types/node",
+      "@types/jest",
+      "@nuxtjs/markdownit"
+    ]
   },
   "exclude": ["node_modules"]
 }

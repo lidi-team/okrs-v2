@@ -1,6 +1,10 @@
 <template>
   <div v-loading="loadingTable">
-    <el-table :data="tableData" empty-text="Không có dữ liệu" class="team-admin">
+    <el-table
+      :data="tableData"
+      empty-text="Không có dữ liệu"
+      class="team-admin"
+    >
       <el-table-column prop="name" label="Tên phòng ban"></el-table-column>
       <el-table-column prop="description" label="Mô tả"></el-table-column>
       <!--<el-table-column label="Ngày cập nhật">
@@ -12,7 +16,10 @@
       <el-table-column label="Thao tác" align="center">
         <template v-slot="{ row }">
           <el-tooltip class="team-admin__icon" content="Sửa" placement="top">
-            <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
+            <i
+              class="el-icon-edit icon--info"
+              @click="handleOpenDialogUpdate(row)"
+            ></i>
           </el-tooltip>
           <el-tooltip class="team-admin__icon" content="Xóa" placement="top">
             <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
@@ -37,9 +44,24 @@
     >
       <el-row>
         <el-col :span="24">
-          <el-form ref="tempUpdateTeam" :model="tempUpdateTeam" :hide-required-asterisk="false" :status-icon="true" :rules="rules">
-            <el-form-item label="Tên phòng ban" prop="name" class="custom-label" label-width="120px">
-              <el-input v-model="tempUpdateTeam.name" placeholder="Nhập tên phòng ban" @keyup.enter.native="handleUpdate(tempUpdateTeam)" />
+          <el-form
+            ref="tempUpdateTeam"
+            :model="tempUpdateTeam"
+            :hide-required-asterisk="false"
+            :status-icon="true"
+            :rules="rules"
+          >
+            <el-form-item
+              label="Tên phòng ban"
+              prop="name"
+              class="custom-label"
+              label-width="120px"
+            >
+              <el-input
+                v-model="tempUpdateTeam.name"
+                placeholder="Nhập tên phòng ban"
+                @keyup.enter.native="handleUpdate(tempUpdateTeam)"
+              />
             </el-form-item>
             <el-form-item label="Mô tả" prop="description" label-width="120px">
               <el-input
@@ -54,8 +76,16 @@
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-        <el-button class="el-button--purple el-button--modal" @click="handleUpdate">Cập nhật</el-button>
+        <el-button
+          class="el-button--white el-button--modal"
+          @click="handleCloseDialog"
+          >Hủy</el-button
+        >
+        <el-button
+          class="el-button--purple el-button--modal"
+          @click="handleUpdate"
+          >Cập nhật</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -65,7 +95,10 @@ import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
 import { max255Char } from '@/constants/account.constant';
-import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
+import {
+  notificationConfig,
+  confirmWarningConfig,
+} from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { TeamDTO } from '@/constants/app.interface';
 import TeamRepository from '@/repositories/TeamRepository';
@@ -90,7 +123,8 @@ export default class ManageDepartment extends Vue {
   @Prop(Function) public reloadData!: Function;
   @Prop({ type: Number, required: true }) public total!: number;
   @PropSync('page', { type: Number, required: true }) public syncPage!: number;
-  @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
+  @PropSync('limit', { type: Number, required: true })
+  public syncLimit!: number;
 
   public loadingTable: boolean = false;
   private autoSizeConfig = { minRows: 2, maxRows: 4 };
@@ -107,7 +141,11 @@ export default class ManageDepartment extends Vue {
     description: [max255Char],
   };
 
-  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private sanitizeInput(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     const isEmpty = (value: string) => !value.trim().length;
     if (value.length === 0) {
       return callback('Vui lòng nhập tên phòng ban');
@@ -128,24 +166,26 @@ export default class ManageDepartment extends Vue {
   }
 
   private handleUpdate(): void {
-    (this.$refs.tempUpdateTeam as Form).validate((isValid: boolean, invalidatedFields: object) => {
-      if (isValid) {
-        this.$confirm(`Bạn có chắc chắn muốn cập nhật phòng ban này không?`, {
-          ...confirmWarningConfig,
-        }).then(async () => {
-          try {
-            await TeamRepository.update(this.tempUpdateTeam).then((res) => {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Cập nhật phòng ban thành công',
+    (this.$refs.tempUpdateTeam as Form).validate(
+      (isValid: boolean, invalidatedFields: object) => {
+        if (isValid) {
+          this.$confirm(`Bạn có chắc chắn muốn cập nhật phòng ban này không?`, {
+            ...confirmWarningConfig,
+          }).then(async () => {
+            try {
+              await TeamRepository.update(this.tempUpdateTeam).then((res) => {
+                this.$notify.success({
+                  ...notificationConfig,
+                  message: 'Cập nhật phòng ban thành công',
+                });
               });
-            });
-            this.reloadData();
-            this.dialogUpdateVisible = false;
-          } catch (error) {}
-        });
-      }
-    });
+              this.reloadData();
+              this.dialogUpdateVisible = false;
+            } catch (error) {}
+          });
+        }
+      },
+    );
   }
 
   private deleteRow(row: TeamDTO): void {

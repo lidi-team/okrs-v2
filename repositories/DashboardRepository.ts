@@ -7,12 +7,19 @@ export default class DashboardRepository {
    * @param: cycleId: cycle id in dropdown list
    * @param: type = 1: income  | type = 2: outcome
    */
-  public static getTopIncome(cycleId: number, type: number): Promise<AxiosResponse<any>> {
-    return baseUrlV1.get(`${ResourcesEnpoint.Dashboard}/top_stars?`, { params: { cycleId, type } });
+  public static getTopIncome(
+    cycleId: number,
+    type: number,
+  ): Promise<AxiosResponse<any>> {
+    return baseUrlV1.get(`${ResourcesEnpoint.Dashboard}/top_stars?`, {
+      params: { cycleId, type },
+    });
   }
 
   public static getOKRsProgress(params: any): Promise<AxiosResponse<any>> {
-    return baseUrlV1.get(`${ResourcesEnpoint.Dashboard}/view_progress`, { params });
+    return baseUrlV1.get(`${ResourcesEnpoint.Dashboard}/view_progress`, {
+      params,
+    });
   }
 
   public static getOKRsStatus(): Promise<AxiosResponse<any>> {

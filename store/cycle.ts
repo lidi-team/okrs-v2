@@ -33,9 +33,12 @@ export const getters: GetterTree<RootState, RootState> = {
 };
 
 export const mutations: MutationTree<RootState> = {
-  [CycleMutation.SET_ALL_CYCLE]: (state, cycles: any) => (state.cycles = cycles),
-  [CycleMutation.SET_CURRENT_CYCLE]: (state, cycle: any) => (state.cycleCurrent = cycle),
-  [CycleMutation.SET_TEMP_CYCLE]: (state, cycleTemp: Number) => (state.cycleTemp = cycleTemp),
+  [CycleMutation.SET_ALL_CYCLE]: (state, cycles: any) =>
+    (state.cycles = cycles),
+  [CycleMutation.SET_CURRENT_CYCLE]: (state, cycle: any) =>
+    (state.cycleCurrent = cycle),
+  [CycleMutation.SET_TEMP_CYCLE]: (state, cycleTemp: Number) =>
+    (state.cycleTemp = cycleTemp),
 };
 
 export const actions: CycleAction<AuthState, RootState> = {};

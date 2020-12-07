@@ -12,7 +12,10 @@
       <el-table-column label="Thao tác" align="center">
         <template v-slot="{ row }">
           <el-tooltip class="job-admin__icon" content="Sửa" placement="top">
-            <i class="el-icon-edit icon--info" @click="handleOpenDialogUpdate(row)"></i>
+            <i
+              class="el-icon-edit icon--info"
+              @click="handleOpenDialogUpdate(row)"
+            ></i>
           </el-tooltip>
           <el-tooltip class="job-admin__icon" content="Xóa" placement="top">
             <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
@@ -37,9 +40,24 @@
     >
       <el-row>
         <el-col :span="24">
-          <el-form ref="tempUpdateJob" :model="tempUpdateJob" :hide-required-asterisk="false" :status-icon="true" :rules="rules">
-            <el-form-item label="Tên vị trí" prop="name" class="custom-label" label-width="120px">
-              <el-input v-model="tempUpdateJob.name" placeholder="Nhập tên vị trí" @keyup.enter.native="handleUpdate(tempUpdateJob)" />
+          <el-form
+            ref="tempUpdateJob"
+            :model="tempUpdateJob"
+            :hide-required-asterisk="false"
+            :status-icon="true"
+            :rules="rules"
+          >
+            <el-form-item
+              label="Tên vị trí"
+              prop="name"
+              class="custom-label"
+              label-width="120px"
+            >
+              <el-input
+                v-model="tempUpdateJob.name"
+                placeholder="Nhập tên vị trí"
+                @keyup.enter.native="handleUpdate(tempUpdateJob)"
+              />
             </el-form-item>
             <el-form-item label="Mô tả" prop="description" label-width="120px">
               <el-input
@@ -54,8 +72,16 @@
         </el-col>
       </el-row>
       <span slot="footer" class="dialog-footer">
-        <el-button class="el-button--white el-button--modal" @click="handleCloseDialog">Hủy</el-button>
-        <el-button class="el-button--purple el-button--modal" @click="handleUpdate">Cập nhật</el-button>
+        <el-button
+          class="el-button--white el-button--modal"
+          @click="handleCloseDialog"
+          >Hủy</el-button
+        >
+        <el-button
+          class="el-button--purple el-button--modal"
+          @click="handleUpdate"
+          >Cập nhật</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -65,7 +91,10 @@ import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
 import { max255Char } from '@/constants/account.constant';
-import { notificationConfig, confirmWarningConfig } from '@/constants/app.constant';
+import {
+  notificationConfig,
+  confirmWarningConfig,
+} from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { JobPositionDTO } from '@/constants/app.interface';
 import JobRepository from '@/repositories/JobRepository';
@@ -90,7 +119,8 @@ export default class ManageJobPosition extends Vue {
   @Prop(Function) public reloadData!: Function;
   @Prop({ type: Number, required: true }) public total!: number;
   @PropSync('page', { type: Number, required: true }) public syncPage!: number;
-  @PropSync('limit', { type: Number, required: true }) public syncLimit!: number;
+  @PropSync('limit', { type: Number, required: true })
+  public syncLimit!: number;
 
   public loadingTable: boolean = false;
   private loading: boolean = false;
@@ -108,7 +138,11 @@ export default class ManageJobPosition extends Vue {
     description: [max255Char],
   };
 
-  private sanitizeInput(rule: any, value: any, callback: (message?: string) => any): (message?: string) => any {
+  private sanitizeInput(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
     const isEmpty = (value: string) => !value.trim().length;
     if (value.length === 0) {
       return callback('Vui lòng nhập tên vị trí');
@@ -130,30 +164,32 @@ export default class ManageJobPosition extends Vue {
 
   private handleUpdate(): void {
     this.loading = true;
-    (this.$refs.tempUpdateJob as Form).validate((isValid: boolean, invalidatedFields: object) => {
-      if (isValid) {
-        this.$confirm(`Bạn có chắc chắn muốn cập nhật vị trí này không?`, {
-          ...confirmWarningConfig,
-        }).then(async () => {
-          try {
-            await JobRepository.update(this.tempUpdateJob).then((res) => {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Cập nhật vị trí thành công',
+    (this.$refs.tempUpdateJob as Form).validate(
+      (isValid: boolean, invalidatedFields: object) => {
+        if (isValid) {
+          this.$confirm(`Bạn có chắc chắn muốn cập nhật vị trí này không?`, {
+            ...confirmWarningConfig,
+          }).then(async () => {
+            try {
+              await JobRepository.update(this.tempUpdateJob).then((res) => {
+                this.$notify.success({
+                  ...notificationConfig,
+                  message: 'Cập nhật vị trí thành công',
+                });
               });
-            });
+              this.loading = false;
+              this.reloadData();
+              this.dialogUpdateVisible = false;
+            } catch (error) {}
+          });
+        }
+        if (invalidatedFields) {
+          setTimeout(() => {
             this.loading = false;
-            this.reloadData();
-            this.dialogUpdateVisible = false;
-          } catch (error) {}
-        });
-      }
-      if (invalidatedFields) {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-      }
-    });
+          }, 300);
+        }
+      },
+    );
   }
 
   private deleteRow(row: JobPositionDTO): void {
@@ -173,7 +209,9 @@ export default class ManageJobPosition extends Vue {
   }
 
   private handlePagination(pagination: any) {
-    this.$router.push(`?tab=${AdminTabsEn.JobPosition}&page=${pagination.page}`);
+    this.$router.push(
+      `?tab=${AdminTabsEn.JobPosition}&page=${pagination.page}`,
+    );
   }
 
   private handleCloseDialog(): void {

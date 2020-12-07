@@ -28,7 +28,9 @@ export default class UserRepository {
     const tempProfile = {
       fullName: payload.fullName,
       gender: payload.gender,
-      dateOfBirth: payload.dateOfBirth ? formatDateToYYYY(payload.dateOfBirth) : null,
+      dateOfBirth: payload.dateOfBirth
+        ? formatDateToYYYY(payload.dateOfBirth)
+        : null,
     };
     return baseUrlV1.put(`${enpoint.Users}/me`, tempProfile);
   }

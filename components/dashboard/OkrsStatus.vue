@@ -8,13 +8,25 @@
       </div>
     </div>
     <div class="okrs-status__content">
-      <div v-for="(item, index) in dataProgress" :key="item.name" class="okrs-status__item item">
+      <div
+        v-for="(item, index) in dataProgress"
+        :key="item.name"
+        class="okrs-status__item item"
+      >
         <div class="item__left">
-          <span :style="`border-color: ${customColors(index)}`" class="item__circle">{{ item.value }}</span>
+          <span
+            :style="`border-color: ${customColors(index)}`"
+            class="item__circle"
+            >{{ item.value }}</span
+          >
           <span class="item__okrs">{{ item.name }}</span>
         </div>
         <div class="item__right">
-          <span class="item__change" :style="`color: ${customColorsChanging(item.changing)}`">{{ item.changing }}</span>
+          <span
+            class="item__change"
+            :style="`color: ${customColorsChanging(item.changing)}`"
+            >{{ item.changing }}</span
+          >
         </div>
       </div>
     </div>
