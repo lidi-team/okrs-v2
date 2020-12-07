@@ -58,7 +58,6 @@ import CheckinRepository from '@/repositories/CheckinRepository';
 import { formatDateToDD, initNewDate } from '@/utils/dateParser';
 import { notificationConfig } from '@/constants/app.constant';
 import CreateCheckin from '@/components/checkin/CreateCheckin.vue';
-import ChartCheckin from '@/components/checkin/ChartCheckin.vue';
 import ChartProcessCheckin from '@/components/checkin/ChartProcessCheckin.vue';
 
 @Component({
@@ -70,7 +69,6 @@ import ChartProcessCheckin from '@/components/checkin/ChartProcessCheckin.vue';
   },
   components: {
     CreateCheckin,
-    ChartCheckin,
     ChartProcessCheckin,
   },
   async mounted() {
