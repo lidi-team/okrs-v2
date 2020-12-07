@@ -114,8 +114,8 @@ export default class ChartProcessCheckin extends Vue {
       ],
       dataZoom: [
         {
-          show: true,
-          height: 30,
+          show: false,
+          height: 20,
           xAxisIndex: [0],
           bottom: 30,
           start: 10,

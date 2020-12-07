@@ -125,21 +125,27 @@
       <el-button
         :disabled="syncCheckin.isCompleted"
         class="el-button--white"
+        v-if="checkin.role === 'user' || checkin.role === 'reviewer'"
         @click="handleDraftCheckin"
         >Lưu nháp</el-button
       >
-      <el-button class="el-button--purple" :loading="loading"
+      <el-button
+        class="el-button--purple"
+        :loading="loading"
+        v-if="checkin.role === 'reviewer'"
         >Check-in</el-button
       >
       <el-button
         class="el-button--purple"
         :loading="loading"
+        v-if="checkin.role === 'user'"
         @click="handleSubmitCheckin"
         >Gửi yêu cầu</el-button
       >
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
