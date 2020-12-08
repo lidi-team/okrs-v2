@@ -81,9 +81,6 @@ import { confirmWarningConfig } from '@/constants/app.constant';
 import CheckinRepository from '@/repositories/CheckinRepository';
 @Component<DetailFeedback>({
   name: 'DetailFeedback',
-  created() {
-    this.getCheckinDetail();
-  },
   filters: {
     filterConfident(value: Number) {
       return value === 1
@@ -101,18 +98,6 @@ export default class DetailFeedback extends Vue {
   @Prop({ type: Object, required: true }) private detailCheckinInfo!: any;
   @PropSync('visibleDialog', { type: Boolean, required: true, default: false })
   public syncVisibleDialog!: boolean;
-
-  private async getCheckinDetail() {
-    if (this.detailCheckinInfo) {
-      this.loading = true;
-      await CheckinRepository.getDetailCheckinByCheckinId(
-        this.detailCheckinInfo.id,
-      ).then((res) => {
-        this.data = res.data.data;
-        this.loading = false;
-      });
-    }
-  }
 
   private content: String = '';
   private autoSizeConfig = { minRows: 4, maxRows: 6 };

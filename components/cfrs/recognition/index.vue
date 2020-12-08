@@ -53,7 +53,7 @@
           <el-option
             v-for="okrs in optionsMetadata.objectives"
             :key="okrs.id"
-            :label="okrs.title"
+            :label="okrs.name"
             :value="okrs.id"
           ></el-option>
         </el-select>
@@ -96,19 +96,19 @@
       <el-button
         class="el-button--white el-button--modal"
         @click="handleCloseDialog"
-        >Hủy</el-button
-      >
+        >Hủy
+      </el-button>
       <el-button
         class="el-button--purple el-button--modal"
         :loading="loading"
         @click="createRecognition"
-        >Tạo ghi nhận</el-button
-      >
+        >Tạo ghi nhận
+      </el-button>
     </div>
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
+import { Component, Prop, PropSync, Vue } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import {
@@ -122,6 +122,7 @@ import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
 import { CfrsDTO } from '@/constants/app.interface';
+
 @Component<CreateRecongnitionDialog>({
   name: 'CreateRecongnitionDialog',
   async created() {
@@ -154,11 +155,12 @@ export default class CreateRecongnitionDialog extends Vue {
   };
 
   private recognition: CfrsDTO = {
-    type: 'recognition',
     receiverId: null,
     content: '',
     evaluationCriteriaId: null,
     objectiveId: null,
+    checkinId: null,
+    senderId: this.$store.state.auth.user.id,
   };
 
   private autoSizeConfig = { minRows: 4, maxRows: 6 };
@@ -226,11 +228,10 @@ export default class CreateRecongnitionDialog extends Vue {
   private async handleSelectUser() {
     this.loadingForm = true;
     try {
-      await CfrsRepository.getUserObjectives(
+      const { data } = await CfrsRepository.getUserObjectives(
         Number(this.recognition.receiverId),
-      ).then((res) => {
-        this.optionsMetadata.objectives = res.data.data;
-      });
+      );
+      this.optionsMetadata.objectives = data;
       setTimeout(() => {
         this.loadingForm = false;
       }, 500);
@@ -294,54 +295,66 @@ export default class CreateRecongnitionDialog extends Vue {
 </script>
 <style lang="scss">
 @import '@/assets/scss/main.scss';
+
 .item-criteria {
   display: flex;
   place-content: center flex-start;
   align-items: center;
+
   &__icon {
     display: flex;
     margin-right: $unit-4;
     width: $unit-10;
+
     &--star {
       align-self: center;
     }
   }
 }
+
 .create-recognition-dialog {
   padding: $unit-4;
+
   &__attribute {
     font-weight: bold;
     padding: $unit-3 0;
   }
+
   &__value {
     padding: $unit-3 0;
   }
+
   &__action {
     margin-top: $unit-4;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
   }
+
   .el-form-item {
     &__label {
       font-weight: $font-weight-medium;
       margin-top: -$unit-3;
     }
   }
+
   .el-form {
     .user {
       .el-select {
         width: 250px;
       }
+
       &__info {
         display: flex;
       }
     }
+
     .objective {
       .el-select {
         width: 100%;
       }
     }
+
     .criteria {
       .el-select {
         width: 100%;

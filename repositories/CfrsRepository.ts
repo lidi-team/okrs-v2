@@ -33,7 +33,8 @@ export default class CfrsRepository {
 
   public static getUserObjectives(userId: number): Promise<AxiosResponse<any>> {
     return baseUrl.get(
-      `${ResourcesEnpoint.Objective}/${CFREnpoint.Objective}/${userId}`,
+      `${ResourcesEnpoint.Objective}/${CFREnpoint.Objective}`,
+      { params: { userId } },
     );
   }
 

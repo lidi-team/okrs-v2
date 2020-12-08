@@ -98,7 +98,7 @@ export enum ResourcesEnpoint {
   CycleOKRs = 'cycle',
   EvaluationCriterial = 'evaluations',
   MetaData = 'meta_data',
-  Objective = 'objectives',
+  Objective = 'objective',
   KeyResults = 'key_results',
   Checkin = 'checkins',
   CFRs = 'cfrs',
@@ -111,7 +111,7 @@ export enum CFREnpoint {
   History = 'history',
   Rank = 'user-star',
   Recognition = 'user_recognition',
-  Objective = 'list_okrs',
+  Objective = 'meta-data',
 }
 
 export enum EvaluationCriteriaEnum {

@@ -192,13 +192,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import InfiniteLoading, { StateChanger } from 'vue-infinite-loading';
 import { itemCfrsDefault } from './history.const';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import { MutationState } from '@/constants/app.vuex';
-import { HistoryCfrsParams } from '@/constants/DTO/common';
 // components
 import CfrsDetailHistory from '@/components/cfrs/history/DetailHistory.vue';
 
@@ -282,17 +281,15 @@ export default class History extends Vue {
       ? this.$store.state.user.tempUser.id
       : this.$store.state.auth.user.id;
     try {
-      await CfrsRepository.getHistoryCfrs(this.sentContext, 1).then(
-        ({ data }) => {
-          if (data.data.items.length) {
-            this.sentContext.page += 1;
-            this.sentItems.push(...Object.freeze(data.data.items));
-            stateChanger.loaded();
-          } else {
-            stateChanger.complete();
-          }
-        },
-      );
+      const { data } = await CfrsRepository.getHistoryCfrs(this.sentContext, 1);
+      console.log(data);
+      if (data.items.length) {
+        this.sentContext.page += 1;
+        this.sentItems.push(...Object.freeze(data.items));
+        stateChanger.loaded();
+      } else {
+        stateChanger.complete();
+      }
     } catch (error) {}
   }
 
@@ -304,22 +301,21 @@ export default class History extends Vue {
       ? this.$store.state.user.tempUser.id
       : this.$store.state.auth.user.id;
     try {
-      await CfrsRepository.getHistoryCfrs(this.receivedContext, 2).then(
-        ({ data }) => {
-          if (data.data.items.length) {
-            this.receivedContext.page += 1;
-            this.receivedItems.push(...Object.freeze(data.data.items));
-            stateChanger.loaded();
-          } else {
-            stateChanger.complete();
-          }
-        },
+      const { data } = await CfrsRepository.getHistoryCfrs(
+        this.receivedContext,
+        2,
       );
+      if (data.items.length) {
+        this.receivedContext.page += 1;
+        this.receivedItems.push(...Object.freeze(data.items));
+        stateChanger.loaded();
+      } else {
+        stateChanger.complete();
+      }
     } catch (error) {}
   }
 
   private async infiniteAllHandler(stateChanger: StateChanger) {
-    console.log(this.$store.state);
     this.allContext.cycleId = this.$store.state.cycle.cycleTemp
       ? this.$store.state.cycle.cycleTemp
       : this.$store.state.cycle.cycleCurrent.id;
@@ -327,17 +323,14 @@ export default class History extends Vue {
       ? this.$store.state.user.tempUser.id
       : this.$store.state.auth.user.id;
     try {
-      await CfrsRepository.getHistoryCfrs(this.allContext, 3).then(
-        ({ data }) => {
-          if (data.data.items.length) {
-            this.allContext.page += 1;
-            this.allItems.push(...Object.freeze(data.data.items));
-            stateChanger.loaded();
-          } else {
-            stateChanger.complete();
-          }
-        },
-      );
+      const { data } = await CfrsRepository.getHistoryCfrs(this.allContext, 3);
+      if (data.items.length) {
+        this.allContext.page += 1;
+        this.allItems.push(...Object.freeze(data.items));
+        stateChanger.loaded();
+      } else {
+        stateChanger.complete();
+      }
     } catch (error) {}
   }
 
@@ -379,20 +372,24 @@ export default class History extends Vue {
 
 <style lang="scss">
 @import '@/assets/scss/main.scss';
+
 .history {
   color: $neutral-primary-4;
   margin-bottom: $unit-8;
   @include drop-shadow;
   border-radius: $border-radius-base;
+
   &__col {
     background-color: $white;
     padding: $unit-4 0 0;
     border-radius: $border-radius-base;
     @include box-shadow;
+
     &__empty {
       text-align: center;
       padding: $unit-3;
     }
+
     &__header {
       font-size: $text-2xl;
       padding: 0 0 $unit-4;
@@ -400,9 +397,11 @@ export default class History extends Vue {
       border-radius: $border-radius-base $border-radius-base 0px 0px;
       padding-left: $unit-4;
     }
+
     &--items {
       height: 60vh;
       overflow-y: scroll;
+
       .history-item {
         display: flex;
         flex-direction: row;
@@ -410,12 +409,15 @@ export default class History extends Vue {
         padding: $unit-2 0;
         @include box-shadow;
         cursor: pointer;
+
         .item__left {
           display: flex;
           padding-left: $unit-4;
+
           &--icon {
             display: flex;
             flex-direction: column;
+
             .icon__type {
               color: $white;
               background-color: $purple-primary-3;
@@ -426,36 +428,44 @@ export default class History extends Vue {
               @include circle($unit-8);
               text-align: center;
               padding-top: 0.15rem;
+
               span {
                 align-self: center;
                 font-size: $unit-4;
               }
             }
+
             .icon__avatar {
               margin-top: $unit-1;
             }
+
             .is-feedback {
               background-color: $orange-primary-1;
             }
           }
+
           &--content {
             display: flex;
             flex-direction: column;
             align-self: center;
             margin-left: $unit-4;
+
             p {
               @include text-ellipsis(1);
             }
+
             .content__title {
               margin: unset;
               font-weight: bold;
             }
+
             .content__description {
               margin: unset;
               font-size: 0.875rem;
               color: $neutral-primary-4;
               white-space: normal;
             }
+
             .content__direction {
               margin: unset;
               font-style: italic;
@@ -464,6 +474,7 @@ export default class History extends Vue {
             }
           }
         }
+
         .item__right {
           display: flex;
           place-content: center;
@@ -472,6 +483,7 @@ export default class History extends Vue {
           font-weight: $font-weight-medium;
           font-size: $unit-5;
           margin-left: $unit-2;
+
           svg {
             display: flex;
             align-self: center;

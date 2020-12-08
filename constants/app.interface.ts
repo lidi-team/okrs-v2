@@ -176,11 +176,10 @@ export interface DialogTooltipAction {
 }
 
 export interface CfrsDTO {
-  type: 'feedback' | 'recognition';
   senderId?: Number;
   receiverId?: Number | null;
   content: String;
   evaluationCriteriaId: Number | null;
   objectiveId?: Number | null;
-  checkinId?: Number;
+  checkinId?: Number | null;
 }
