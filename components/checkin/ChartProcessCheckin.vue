@@ -42,6 +42,7 @@ export default class ChartProcessCheckin extends Vue {
         textStyle: {
           color: '#212b36',
           fontSize: '20',
+          fontFamily: 'sans-serif',
         },
         subtextStyle: {
           color: '#90979c',
@@ -93,6 +94,9 @@ export default class ChartProcessCheckin extends Vue {
       yAxis: [
         {
           type: 'value',
+          name: '(%)',
+          min: 0,
+          max: 100,
           splitLine: {
             show: false,
           },
@@ -114,29 +118,29 @@ export default class ChartProcessCheckin extends Vue {
       ],
       dataZoom: [
         {
-          show: false,
-          height: 20,
+          show: true,
+          height: 18,
           xAxisIndex: [0],
           bottom: 30,
-          start: 10,
-          end: 80,
+          start: 0,
+          end: 100,
           handleIcon:
             'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
-          handleSize: '110%',
+          handleSize: '100%',
           handleStyle: {
-            color: '#d3dee5',
+            color: '#230051',
           },
           textStyle: {
-            color: '#fff',
+            color: '#230051',
           },
-          borderColor: '#90979c',
+          borderColor: 'white',
         },
         {
           type: 'inside',
-          show: true,
+          show: false,
           height: 15,
-          start: 1,
-          end: 35,
+          start: 0,
+          end: 100,
         },
       ],
       series: [
