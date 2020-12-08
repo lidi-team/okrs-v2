@@ -18,7 +18,9 @@ export default class CfrsRepository {
   }
 
   public static getRankingCfrs(cycleId?: number): Promise<AxiosResponse<any>> {
-    return baseUrl.get(`${CFREnpoint.Rank}`, { params: { cycleId } });
+    return baseUrl.get(`${ResourcesEnpoint.CFRs}/${CFREnpoint.Rank}`, {
+      params: { cycleId },
+    });
   }
 
   public static getHistoryCfrs(
