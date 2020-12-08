@@ -9,8 +9,8 @@ import { init } from 'echarts';
 import resize from '@/mixins/resize';
 import { formatDate } from '@/utils/format';
 
-@Component<ChartProcessCheckin>({
-  name: 'ChartProcessCheckin',
+@Component<CheckinChartProcess>({
+  name: 'CheckinChartProcess',
   mixins: [resize],
   mounted() {
     this.initChart();
@@ -23,7 +23,7 @@ import { formatDate } from '@/utils/format';
     this.chart = null;
   },
 })
-export default class ChartProcessCheckin extends Vue {
+export default class CheckinChartProcess extends Vue {
   @PropSync('checkin', { type: Object }) syncCheckin!: any;
   private chart: any = null;
   private id: any = 'chart';
