@@ -1,6 +1,6 @@
 <template>
   <div v-loading.fullscreen.lock="loading" class="createCheckinPage">
-    <el-page-header title="OKRs của tôi" @back="goBack" />
+    <el-page-header title="Quay lại" @back="goBack" />
     <h1 class="createCheckinPage__title">Tạo checkin</h1>
     <div class="top-checkin">
       <div class="top-checkin__left">
@@ -48,7 +48,7 @@
       v-if="checkin"
       :checkin.sync="checkin.chart"
     />
-    <create-checkin v-if="checkin" :checkin.sync="checkin" />
+    <checkin-detail v-if="checkin" :checkin.sync="checkin" />
   </div>
 </template>
 <script lang="ts">
@@ -57,7 +57,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { formatDateToDD, initNewDate } from '@/utils/dateParser';
 import { notificationConfig } from '@/constants/app.constant';
-import CreateCheckin from '@/components/checkin/CreateCheckin.vue';
+import CheckinDetail from '@/components/checkin/CheckinDetail.vue';
 import ChartProcessCheckin from '@/components/checkin/ChartProcessCheckin.vue';
 
 @Component({
@@ -68,7 +68,7 @@ import ChartProcessCheckin from '@/components/checkin/ChartProcessCheckin.vue';
     };
   },
   components: {
-    CreateCheckin,
+    CheckinDetail,
     ChartProcessCheckin,
   },
   async mounted() {

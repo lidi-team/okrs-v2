@@ -125,25 +125,16 @@
       <el-button
         :disabled="syncCheckin.isCompleted"
         class="el-button--white"
-        v-if="
-          (checkin.role === 'user' || checkin.role === 'reviewer') &&
-          checkinStatus === 'Draft'
-        "
-        @click="handleDraftCheckin"
+        v-if="checkinStatus === 'Draft'"
+        @click="handleCheckin('Draft')"
         >Lưu nháp</el-button
       >
       <el-button
         class="el-button--purple"
         :loading="loading"
         v-if="checkin.role === 'user' && checkinStatus === 'Draft'"
-        @click="handleSubmitCheckin"
+        @click="handleCheckin('Pending')"
         >Gửi yêu cầu</el-button
-      >
-      <el-button
-        class="el-button--purple"
-        :loading="loading"
-        v-if="checkin.role === 'reviewer' && checkinStatus === 'Pending'"
-        >Check-in</el-button
       >
     </div>
   </div>
@@ -234,14 +225,6 @@ export default class DetailHistory extends Vue {
     const data = await CheckinRepository.createCheckin(payload);
     console.log('hello', data);
   }
-
-  private handleDraftCheckin() {
-    this.handleCheckin('Draft');
-  }
-
-  private handleDraftCheckinAdmin() {}
-
-  private handleSubmitCheckin() {}
 }
 </script>
 
