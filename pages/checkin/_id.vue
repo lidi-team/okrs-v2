@@ -18,7 +18,7 @@
               </tr>
               <tr>
                 <th scope="row">Tiến độ gợi ý</th>
-                <td>{{ checkin.progressSuggeest }} %</td>
+                <td>{{ checkin.progressSuggest }} %</td>
               </tr>
               <tr v-if="checkin.checkin.checkinAt">
                 <th scope="row">Ngày check-in</th>
@@ -99,7 +99,6 @@ export default class CheckinPage extends Vue {
         };
       });
     }
-    console.log('hello', data);
     this.checkin = data;
     this.loading = false;
   }

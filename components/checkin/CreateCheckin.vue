@@ -125,22 +125,25 @@
       <el-button
         :disabled="syncCheckin.isCompleted"
         class="el-button--white"
-        v-if="checkin.role === 'user' || checkin.role === 'reviewer'"
+        v-if="
+          (checkin.role === 'user' || checkin.role === 'reviewer') &&
+          checkinStatus === 'Draft'
+        "
         @click="handleDraftCheckin"
         >Lưu nháp</el-button
       >
       <el-button
         class="el-button--purple"
         :loading="loading"
-        v-if="checkin.role === 'reviewer'"
-        >Check-in</el-button
+        v-if="checkin.role === 'user' && checkinStatus === 'Draft'"
+        @click="handleSubmitCheckin"
+        >Gửi yêu cầu</el-button
       >
       <el-button
         class="el-button--purple"
         :loading="loading"
-        v-if="checkin.role === 'user'"
-        @click="handleSubmitCheckin"
-        >Gửi yêu cầu</el-button
+        v-if="checkin.role === 'reviewer' && checkinStatus === 'Pending'"
+        >Check-in</el-button
       >
     </div>
   </div>
@@ -172,7 +175,9 @@ import { Maps, Rule } from '@/constants/app.type';
     }),
   },
   mounted() {
-    console.log('checkin', this.syncCheckin);
+    this.checkinStatus = this.syncCheckin.checkin.status
+      ? this.syncCheckin.checkin.status
+      : 'Draft';
   },
 })
 export default class DetailHistory extends Vue {
@@ -182,6 +187,7 @@ export default class DetailHistory extends Vue {
   private dateFormat: string = 'dd/MM/yyyy';
   private dropdownConfident = confidentLevel;
   private loading: boolean = false;
+  private checkinStatus: string = '';
 
   private customColors(confident) {
     return confident === 1
