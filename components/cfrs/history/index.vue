@@ -36,7 +36,7 @@
                   </p>
                   <p class="content__description">
                     Gửi đến {{ item.receiver.fullName }} -
-                    {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}
+                    {{ new Date(item.createAt) | dateFormat('DD/MM/YYYY') }}
                   </p>
                   <p class="content__direction">
                     {{ isLeaderToMember(item.evaluationCriteria.type) }}
@@ -96,7 +96,7 @@
                   </p>
                   <p class="content__description">
                     Gửi bởi {{ item.sender.fullName }} -
-                    {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}
+                    {{ new Date(item.createAt) | dateFormat('DD/MM/YYYY') }}
                   </p>
                   <p class="content__direction">
                     {{ isLeaderToMember(item.evaluationCriteria.type) }}
@@ -155,7 +155,7 @@
                   <p class="content__description">
                     {{ takeTwoLastNameUser(item.sender.fullName) }} đến
                     {{ takeTwoLastNameUser(item.receiver.fullName) }} -
-                    {{ new Date(item.createdAt) | dateFormat('DD/MM/YYYY') }}
+                    {{ new Date(item.createAt) | dateFormat('DD/MM/YYYY') }}
                   </p>
                   <p class="content__direction">
                     {{ isLeaderToMember(item.evaluationCriteria.type) }}
