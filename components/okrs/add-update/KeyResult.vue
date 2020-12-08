@@ -128,7 +128,7 @@
             <el-form-item
               v-if="isCreate"
               prop="parentId"
-              label="Liên kết kết quả then chốt"
+              label="Liên kết kết quả then chốt "
               class="custom-label"
               label-width="190px"
             >
