@@ -39,7 +39,7 @@
                 </div>
                 <el-avatar :size="40">
                   <img
-                    :src="item.avatarURL ? item.avatarURL : item.gravatarURL"
+                    :src="item.avatarUrl ? item.avatarUrl : item.gravatarURL"
                     alt="avatar"
                   />
                 </el-avatar>
@@ -48,7 +48,7 @@
                     {{ item.user_fullName }}
                   </p>
                   <p class="rank-item__left__info--department">
-                    {{ displayDepartment(item) }}
+                    phòng ban: {{ item.department }}
                   </p>
                 </div>
               </div>
@@ -80,7 +80,7 @@
               </div>
               <el-avatar :size="40">
                 <img
-                  :src="item.avatarURL ? item.avatarURL : item.gravatarURL"
+                  :src="item.avatarUrl ? item.avatarUrl : item.gravatarURL"
                   alt="avatar"
                 />
               </el-avatar>
@@ -89,7 +89,7 @@
                   {{ item.user_fullName }}
                 </p>
                 <p class="rank-item__left__info--department">
-                  {{ displayDepartment(item) }}
+                  phòng ban: {{ item.department }}
                 </p>
               </div>
             </div>
@@ -105,12 +105,12 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import CreateFeedback from './Create.vue';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import CycleRepository from '@/repositories/CycleRepository';
 import { MutationState } from '@/constants/app.vuex';
+
 @Component<Rank>({
   name: 'Rank',
   components: {
@@ -128,7 +128,7 @@ import { MutationState } from '@/constants/app.vuex';
   },
 })
 export default class Rank extends Vue {
-  private cycleId: number = this.$store.state.cycle.cycle.id;
+  private cycleId: number = this.$store.state.cycle.cycleCurrent.id;
   private loadingTab: boolean = false;
   private loadingCurrentRanking: boolean = false;
   private accumulatedRanking: any = [];
@@ -136,15 +136,16 @@ export default class Rank extends Vue {
   private dataDetail: object = {};
   private visibleCreateDialog = false;
   private listCycles: any[] = [];
+
   private async getListDataRanking() {
     this.loadingTab = true;
     try {
       const [accumulatedRanking, currentRanking] = await Promise.all([
-        CfrsRepository.getRankingCfrs(),
-        CfrsRepository.getRankingCfrs(this.$store.state.cycle.cycle.id),
+        CfrsRepository.getRankingCfrs(0),
+        CfrsRepository.getRankingCfrs(this.$store.state.cycle.cycleCurrent.id),
       ]);
-      this.accumulatedRanking = accumulatedRanking.data.data;
-      this.currentRanking = currentRanking.data.data;
+      this.accumulatedRanking = accumulatedRanking.data;
+      this.currentRanking = currentRanking.data;
     } catch (error) {}
     setTimeout(() => {
       this.loadingTab = false;
@@ -156,7 +157,7 @@ export default class Rank extends Vue {
     this.loadingCurrentRanking = true;
     try {
       await CfrsRepository.getRankingCfrs(cycleId).then((res) => {
-        this.currentRanking = res.data.data;
+        this.currentRanking = res.data;
       });
     } catch (error) {}
     setTimeout(() => {
@@ -178,9 +179,9 @@ export default class Rank extends Vue {
     if (item.rolename === 'ADMIN') {
       return 'OKRs Master';
     } else if (item.isLeader) {
-      return `Trưởng ${item.name.toLowerCase()}`;
+      return `Trưởng ${item.department.toLowerCase()}`;
     } else {
-      return `Thành viên ${item.name.toLowerCase()}`;
+      return `Thành viên ${item.department.toLowerCase()}`;
     }
   }
 
@@ -189,8 +190,8 @@ export default class Rank extends Vue {
       this.listCycles = this.$store.state.cycle.cycles;
     } else {
       try {
-        const { data } = await CycleRepository.getListMetadata();
-        this.listCycles = data.data.all.map((item) => {
+        const { data } = await CycleRepository.getList();
+        this.listCycles = data.all.map((item) => {
           return {
             id: item.id,
             label: item.name,
@@ -205,14 +206,17 @@ export default class Rank extends Vue {
 
 <style lang="scss">
 @import '@/assets/scss/main.scss';
+
 .rank {
   color: $neutral-primary-4;
   @include drop-shadow;
   border-radius: $border-radius-base;
+
   &__col {
     background-color: $white;
     padding: $unit-4 0 0;
     border-radius: $border-radius-base;
+
     &__header {
       font-size: $text-2xl;
       padding: 0 $unit-4 $unit-4;
@@ -220,23 +224,31 @@ export default class Rank extends Vue {
       border-radius: $border-radius-base $border-radius-base 0px 0px;
       display: flex;
       place-content: center space-between;
+
+      &--dropdown {
+        width: unset !important;
+      }
     }
+
     &__empty {
       text-align: center;
       padding: $unit-3;
     }
   }
 }
+
 .rank-item {
   display: flex;
   flex-direction: row;
   padding: $unit-2 $unit-4;
   @include box-shadow;
   justify-content: space-between;
+
   &__left {
     display: flex;
     flex-direction: row;
     place-content: center;
+
     &__index {
       color: $white;
       font-weight: $font-weight-bold;
@@ -245,37 +257,47 @@ export default class Rank extends Vue {
       border-radius: 50%;
       text-align: center;
       padding-top: 0.15rem;
+
       span {
         font-size: $unit-6;
       }
     }
+
     .el-avatar {
       align-self: center;
       margin: 0 $unit-2 0 $unit-6;
     }
+
     &__info {
       align-self: center;
+
       &--fullname {
         font-weight: $font-weight-medium;
       }
+
       &--department {
         color: $neutral-primary-2;
         font-size: $unit-3;
       }
     }
+
     .top1 {
       background-color: $yello-primary-1;
     }
+
     .top2 {
       background-color: $blue-primary-3;
     }
+
     .top3 {
       background-color: $orange-primary-1;
     }
+
     .topdown {
       background-color: $purple-primary-3;
     }
   }
+
   &__right {
     display: flex;
     flex-direction: row;

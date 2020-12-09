@@ -110,9 +110,9 @@ export default class CreateFeedbackDialog extends Vue {
 
   private listEvaluationCriterias: any[] = [];
   private contentFeedback: CfrsDTO = {
-    type: 'feedback',
     content: '',
     evaluationCriteriaId: null,
+    checkinId: null,
   };
 
   private autoSizeConfig = { minRows: 4, maxRows: 6 };

@@ -86,14 +86,14 @@ import CheckinRepository from '@/repositories/CheckinRepository';
   },
   filters: {
     filterConfident(value: Number) {
-      return value === 1
+      return value === 1.0
         ? 'Không ổn lắm'
-        : value === 2
+        : value === 2.0
         ? 'Bình thường'
         : 'Ổn định';
     },
     filterConfidentTag(value: Number) {
-      return value === 1 ? 'danger' : value === 2 ? 'info' : 'success';
+      return value === 1.0 ? 'danger' : value === 2.0 ? 'info' : 'success';
     },
   },
 })
@@ -105,12 +105,11 @@ export default class DetailFeedback extends Vue {
   private async getCheckinDetail() {
     if (this.detailCheckinInfo) {
       this.loading = true;
-      await CheckinRepository.getDetailCheckinByCheckinId(
+      const { data } = await CheckinRepository.getDetailCheckinCFRsByCheckinId(
         this.detailCheckinInfo.id,
-      ).then((res) => {
-        this.data = res.data.data;
-        this.loading = false;
-      });
+      );
+      this.data = data;
+      this.loading = false;
     }
   }
 
