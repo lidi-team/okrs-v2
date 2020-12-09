@@ -224,6 +224,10 @@ export default class Rank extends Vue {
       border-radius: $border-radius-base $border-radius-base 0px 0px;
       display: flex;
       place-content: center space-between;
+
+      &--dropdown {
+        width: unset !important;
+      }
     }
 
     &__empty {
