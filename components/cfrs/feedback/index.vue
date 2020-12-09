@@ -75,7 +75,7 @@
         <div class="feedback__col">
           <p class="feedback__col__header">{{ displayHeader('superior') }}</p>
           <p
-            v-if="notHaveSuperiorData(listWaitingFeedback.superior)"
+            v-if="!listWaitingFeedback.superior.checkins.items.length"
             class="none-cfr"
           >
             Không có dữ liệu để phản hồi
@@ -92,16 +92,16 @@
                 viewDetailCheckin(item, listWaitingFeedback.superior.type)
               "
             >
-              <!--<el-avatar :size="30">
+              <el-avatar :size="30">
                 <img
                   :src="
-                    listWaitingFeedback.superior.user.avatarURL
-                      ? listWaitingFeedback.superior.user.avatarURL
-                      : listWaitingFeedback.superior.user.gravatarURL
+                    item.objective.user.avatarURL
+                      ? item.objective.user.avatarURL
+                      : item.objective.user.gravatarURL
                   "
                   alt="avatar"
                 />
-              </el-avatar>-->
+              </el-avatar>
               <div class="cfr__left__content">
                 <p class="cfr__left__content--title">
                   {{ item.objective.title }}
