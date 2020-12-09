@@ -282,7 +282,6 @@ export default class History extends Vue {
       : this.$store.state.auth.user.id;
     try {
       const { data } = await CfrsRepository.getHistoryCfrs(this.sentContext, 1);
-      console.log(data);
       if (data.items.length) {
         this.sentContext.page += 1;
         this.sentItems.push(...Object.freeze(data.items));
