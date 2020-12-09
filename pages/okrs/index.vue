@@ -5,13 +5,13 @@
       no-match-text="Không tìm thấy chu kỳ"
       filterable
       placeholder="Chọn chu kỳ"
-      @change="changeCycleData"
+      @change="handleSelectCycle(currentCycleId)"
     >
       <el-option
         v-for="cycle in cycles"
         :key="cycle.id"
-        :label="cycle.name"
-        :value="cycle.id"
+        :label="`Chu kỳ: ${cycle.name}`"
+        :value="String(cycle.id)"
       />
     </el-select>
     <div>
@@ -81,10 +81,14 @@ import CycleRepository from '@/repositories/CycleRepository';
       flag: GetterState.OKRS_FLAG,
     }),
   },
+  created() {
+    if (!this.$route.query.cycleId) {
+      this.$router.push(`?cycleId=${this.$store.state.cycle.cycleCurrent.id}`);
+      this.currentCycleId = this.$store.state.cycle.cycleCurrent.id;
+    }
+  },
   async mounted() {
-    this.currentCycleId = this.$route.query.cycleId
-      ? Number(this.$route.query.cycleId)
-      : this.$store.state.cycle.cycleCurrent.id;
+    this.currentCycleId = this.$route.query.cycleId;
     await this.getDashBoardOkrs();
     await this.getCycles();
   },
@@ -96,7 +100,7 @@ export default class OKRsPage extends Vue {
   private listKrs: any[] = [];
   private cycles: any[] = [];
   private visibleDetailKrs: boolean = false;
-  private currentCycleId: number = 0;
+  private currentCycleId: string = '';
 
   private openDrawer(keyResults: any) {
     this.listKrs = keyResults;
@@ -104,7 +108,7 @@ export default class OKRsPage extends Vue {
   }
   private projects: any[] = [];
 
-  @Watch('flag')
+  @Watch('$route.query')
   private async changeDialog(value) {
     await this.getDashBoardOkrs();
   }
@@ -117,7 +121,9 @@ export default class OKRsPage extends Vue {
   private async getDashBoardOkrs() {
     try {
       const { data } = await OkrsRepository.getListOkrsByCycleId(
-        this.currentCycleId,
+        this.$route.query.cycleId
+          ? Number(this.$route.query.cycleId)
+          : Number(this.$store.state.cycle.cycleCurrent.id),
       );
       this.projects = Object.freeze(data);
       this.loading = false;
@@ -128,9 +134,8 @@ export default class OKRsPage extends Vue {
     }
   }
 
-  private changeCycleData() {
-    this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.currentCycleId);
-    this.$store.commit(MutationState.OKRS_SET_FLAG);
+  private handleSelectCycle(cycleId) {
+    this.$router.push(`?cycleId=${cycleId}`);
   }
 }
 </script>

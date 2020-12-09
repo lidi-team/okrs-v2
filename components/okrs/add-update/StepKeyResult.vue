@@ -63,6 +63,7 @@ import { KeyResultDTO } from '@/constants/DTO/okrs';
     KeyResult,
   },
   mounted() {
+    console.log('dddd', this.$store.state.cycle.cycleCurrent.id);
     const { title, keyResults } = this.$store.state.okrs.objective;
     this.objectiveTitle = title;
     this.keyResults = JSON.parse(JSON.stringify(keyResults));
@@ -136,7 +137,7 @@ export default class CreateObjectiveStep extends Vue {
       if (validForm === krs.length) {
         this.$store.commit(MutationState.SET_KEY_RESULT, krs);
         const { data } = await ObjectiveRepository.getAlignObjective(
-          this.$store.state.cycle.cycleCurrent.id,
+          3,
           this.$store.state.okrs.objective.projectId,
         );
         this.$store.commit(MutationState.SET_LIST_OBJECTIVE_ALIGN, data);

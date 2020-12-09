@@ -127,7 +127,7 @@
           <div>
             <el-form-item
               v-if="isCreate"
-              prop="parentId"
+              prop="parentObjectiveId"
               label="Liên kết kết quả then chốt "
               class="custom-label"
               label-width="190px"
@@ -329,6 +329,14 @@ export default class KeyResult extends Vue {
         trigger: 'blur',
       },
       max255Char,
+    ],
+    parentObjectiveId: [
+      {
+        type: 'number',
+        required: true,
+        message: 'Vui lòng chọn OKRs cấp trên',
+        trigger: 'blur',
+      },
     ],
   };
 

@@ -136,6 +136,13 @@
         @click="handleCheckin('Pending')"
         >Gửi yêu cầu</el-button
       >
+      <el-button
+        class="el-button--purple"
+        :loading="loading"
+        v-if="checkin.role === 'reviewer'"
+        @click="handleCheckin('Reviewed')"
+        >Duyệt Check-in</el-button
+      >
     </div>
   </div>
 </template>
@@ -241,6 +248,7 @@ export default class DetailHistory extends Vue {
   }
   &__footer {
     margin-top: $unit-4;
+    margin-bottom: $unit-4;
     float: right;
   }
 }

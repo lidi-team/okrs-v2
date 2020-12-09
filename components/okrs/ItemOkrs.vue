@@ -7,7 +7,7 @@
           v-if="isManage"
           :type-objective="typeObjective"
           name-objective="dự án"
-          :project-id="0"
+          :project-id="projectId"
         />
         <button-create-okr
           :type-objective="typeObjective"
