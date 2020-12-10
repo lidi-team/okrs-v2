@@ -34,7 +34,7 @@
       </el-table-column>
       <el-table-column label="Trạng thái">
         <template slot-scope="{ row }">
-          <span>{{ row.active == 1 ? 'hoạt động' : 'tạm khóa' }}</span>
+          <span>{{ row.isActive ? 'hoạt động' : 'tạm khóa' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
@@ -71,14 +71,19 @@
               ></i>
             </el-tooltip>
             <el-tooltip
-              v-if="row.isActive"
               class="employee-active__icon"
-              content="Deactive tài khoản"
+              :content="
+                row.isActive ? 'Deactive tài khoản' : 'Active tài khoản'
+              "
               placement="right-end"
             >
               <i
-                class="el-icon-warning icon--warning"
-                @click="deactiveUser(row)"
+                :class="
+                  row.isActive
+                    ? 'el-icon-lock icon--delete'
+                    : 'el-icon-unlock icon--warning'
+                "
+                @click="changeUserStatus(row)"
               ></i>
             </el-tooltip>
           </div>
@@ -248,7 +253,6 @@ export default class EmployeeActive extends Vue {
   @Prop(Function) readonly getListUsers;
 
   private loadingTable: boolean = false;
-  private loading: boolean = false;
   private dialogUpdateVisible: boolean = false;
   private tempUpdateUser: EmployeeDTO = {
     id: 0,
@@ -258,6 +262,7 @@ export default class EmployeeActive extends Vue {
     departmentId: 0,
     gender: 0,
     dob: '',
+    isActive: true,
     active: 0,
   };
 
@@ -272,6 +277,7 @@ export default class EmployeeActive extends Vue {
       departmentId: row.department.id,
       gender: row.gender,
       dob: row.dob ? formatDateToDD(row.dob) : '',
+      isActive: row.isActive,
       active: row.isActive ? 1 : 0,
     };
     this.dialogUpdateVisible = true;
@@ -280,7 +286,7 @@ export default class EmployeeActive extends Vue {
   private handleUpdate(tempUpdateUser: EmployeeDTO) {
     console.log('before update: ', tempUpdateUser);
 
-    this.loading = true;
+    this.loadingTable = true;
     (this.$refs.updateEmployeeForm as Form).validate(
       (isValid: boolean, invalidFields: object) => {
         if (isValid) {
@@ -292,7 +298,7 @@ export default class EmployeeActive extends Vue {
                 .then((res) => {
                   setTimeout(() => {
                     console.log('aa');
-                    this.loading = false;
+                    this.loadingTable = false;
                   }, 300);
                   this.$notify.success({
                     ...notificationConfig,
@@ -309,18 +315,18 @@ export default class EmployeeActive extends Vue {
                     });
                   }
                   setTimeout(() => {
-                    this.loading = false;
+                    this.loadingTable = false;
                   }, 300);
                 });
             })
             .catch(() => {
               setTimeout(() => {
-                this.loading = false;
+                this.loadingTable = false;
               }, 300);
             });
         } else {
           setTimeout(() => {
-            this.loading = false;
+            this.loadingTable = false;
           }, 300);
         }
       },
@@ -339,7 +345,7 @@ export default class EmployeeActive extends Vue {
     },
   };
 
-  private deactiveUser(row) {
+  private changeUserStatus(row) {
     this.tempUpdateUser = {
       id: row.id,
       fullName: row.fullName,
@@ -348,7 +354,7 @@ export default class EmployeeActive extends Vue {
       departmentId: row.department.id,
       gender: row.gender,
       dob: row.dob ? formatDateToDD(row.dob) : '',
-      active: false,
+      active: row.isActive ? 0 : 1,
     };
     this.$confirm('Bạn có chắc chắn muốn deactive user này?', {
       confirmButtonText: 'Đồng ý',
