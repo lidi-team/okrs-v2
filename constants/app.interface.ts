@@ -27,6 +27,7 @@ export interface EmployeeDTO {
   dob: string;
   // isLeader: boolean;
   isActive?: boolean;
+  active?: 1 | 0;
   isApproved?: boolean;
 }
 
