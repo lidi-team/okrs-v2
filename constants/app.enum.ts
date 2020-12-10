@@ -36,6 +36,7 @@ export enum elComponent {
   ElDrawer = 'ElDrawer',
   ElSlider = 'ElSlider',
   ElInputNumber = 'ElInputNumber',
+  ElCard = 'ElCard',
 }
 
 export enum UserStatus {

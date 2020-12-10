@@ -258,6 +258,10 @@ Vue.component(
       /* webpackChunkName: 'element-ui-input-number' */ 'element-ui/lib/input-number'
     ),
 );
+Vue.component(
+  elComponent.ElCard,
+  () => import(/* webpackChunkName: 'element-ui-card' */ 'element-ui/lib/card'),
+);
 
 // import prototype Vue
 Vue.use(Loading.directive);
