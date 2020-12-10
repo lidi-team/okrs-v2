@@ -191,7 +191,7 @@
           <el-option
             v-for="item in candidates"
             :key="item.id"
-            :label="item.name"
+            :label="item.email + ' (' + item.name + ')'"
             :value="item.id"
           ></el-option>
         </el-select>
