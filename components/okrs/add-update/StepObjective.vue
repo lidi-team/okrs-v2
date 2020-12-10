@@ -130,7 +130,7 @@ export default class CreateObjective extends Vue {
       weight,
     };
     const { data } = await ObjectiveRepository.getObjectivesProject(
-      this.$store.state.cycle.cycle.id,
+      3,
       projectId,
     );
     this.listObjectiveParent = data || [];
