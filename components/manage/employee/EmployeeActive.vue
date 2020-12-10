@@ -208,7 +208,7 @@
         >
         <el-button
           class="el-button--purple el-button--modal"
-          :loading="loading"
+          :loading="loadingTable"
           @click="handleUpdate(tempUpdateUser)"
           >Cập nhật</el-button
         >
@@ -356,11 +356,16 @@ export default class EmployeeActive extends Vue {
       dob: row.dob ? formatDateToDD(row.dob) : '',
       active: row.isActive ? 0 : 1,
     };
-    this.$confirm('Bạn có chắc chắn muốn deactive user này?', {
-      confirmButtonText: 'Đồng ý',
-      cancelButtonText: 'Hủy bỏ',
-      type: 'warning',
-    }).then(async () => {
+    this.$confirm(
+      `Bạn có chắc chắn muốn ${
+        row.isActive ? 'khóa' : 'kích hoạt'
+      } tài khoản này?`,
+      {
+        confirmButtonText: 'Đồng ý',
+        cancelButtonText: 'Hủy bỏ',
+        type: 'warning',
+      },
+    ).then(async () => {
       try {
         await EmployeeRepository.update(this.tempUpdateUser).then(
           (res: any) => {
