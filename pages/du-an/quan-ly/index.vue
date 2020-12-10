@@ -468,9 +468,6 @@ export default class ControlProject extends Vue {
 <style lang="scss" scoped>
 .project-detail {
   &__content {
-    width: 480px;
-    background-color: white;
-
     &--name {
       clear: both;
     }
