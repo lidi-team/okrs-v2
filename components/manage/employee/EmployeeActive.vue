@@ -34,7 +34,7 @@
       </el-table-column>
       <el-table-column label="Trạng thái">
         <template slot-scope="{ row }">
-          <span>{{ row.isActive == 1 ? 'hoạt động' : 'tạm khóa' }}</span>
+          <span>{{ row.active == 1 ? 'hoạt động' : 'tạm khóa' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
@@ -258,8 +258,7 @@ export default class EmployeeActive extends Vue {
     departmentId: 0,
     gender: 0,
     dob: '',
-    // isLeader: false,
-    isActive: false,
+    active: 0,
   };
 
   public rules: Maps<Rule[]> = employeeRules;
@@ -273,8 +272,7 @@ export default class EmployeeActive extends Vue {
       departmentId: row.department.id,
       gender: row.gender,
       dob: row.dob ? formatDateToDD(row.dob) : '',
-      // isLeader: row.isLeader,
-      isActive: row.isActive,
+      active: row.isActive ? 1 : 0,
     };
     this.dialogUpdateVisible = true;
   }
@@ -350,7 +348,7 @@ export default class EmployeeActive extends Vue {
       departmentId: row.department.id,
       gender: row.gender,
       dob: row.dob ? formatDateToDD(row.dob) : '',
-      isActive: false,
+      active: false,
     };
     this.$confirm('Bạn có chắc chắn muốn deactive user này?', {
       confirmButtonText: 'Đồng ý',

@@ -244,6 +244,11 @@ export default ['@/components/account/Login.vue'].forEach((path) => {
         /* webpackChunkName: 'element-ui-input-number' */ 'element-ui/lib/input-number'
       ),
   );
+  Vue.component(
+    elComponent.ElCard,
+    () =>
+      import(/* webpackChunkName: 'element-ui-card' */ 'element-ui/lib/card'),
+  );
 
   if (path.startsWith('@/components/account')) {
     prefix = 'Account';

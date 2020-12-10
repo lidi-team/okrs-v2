@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="create-employee">
     <el-tabs v-model="tabActive" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="Tải lên file" name="excel">
         <upload-excel-component
@@ -7,7 +7,7 @@
           :before-upload="beforeUpload"
         />
         <el-button
-          class="el-button--purple el-button--modal"
+          class="el-button--purple el-button--modal create-employee__button"
           :disabled="!hasData"
           @click="handleAddEmployee"
           >Thêm nhân viên</el-button
@@ -88,7 +88,9 @@
           </el-table-column> -->
         </el-table>
       </el-tab-pane>
-      <!-- <el-tab-pane label="Thêm một" name="once">Config</el-tab-pane> -->
+      <el-tab-pane label="Thêm một nhân viên" name="one">
+        <span>fine</span>
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -178,7 +180,9 @@ export default class CreateEmployee extends Vue {
     return result;
   }
 
-  private handleClick(tab, event) {}
+  private handleClick(tab, event) {
+    this.tabActive = tab.name;
+  }
 
   private async handleAddEmployee() {
     const users: any = this.handleTableData(this.tableData);
@@ -207,3 +211,13 @@ export default class CreateEmployee extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+@import '@/assets/scss/main.scss';
+.create-employee {
+  &__button {
+    margin: 20px 0;
+    float: right;
+  }
+}
+</style>
