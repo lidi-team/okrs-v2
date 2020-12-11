@@ -14,6 +14,12 @@
         :value="String(cycle.id)"
       />
     </el-select>
+    <button-create-okr
+      v-if="roles.includes('ROLE_DIRECTOR')"
+      :type-objective="2"
+      name-objective="Công ty"
+      class="btn-create-objective-company"
+    />
     <div>
       <item-okrs
         v-for="item in projects"
@@ -57,6 +63,7 @@ import {
   GetterState,
 } from '@/constants/app.vuex';
 
+import ButtonCreateOkr from '@/components/okrs/common/Button.vue';
 import ItemOkrs from '@/components/okrs/ItemOkrs.vue';
 import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
 import AddOkrs from '@/components/okrs/add-update/index.vue';
@@ -70,6 +77,7 @@ import CycleRepository from '@/repositories/CycleRepository';
     ItemOkrs,
     DetailKeyresult,
     AddOkrs,
+    ButtonCreateOkr,
   },
   head() {
     return {
@@ -79,6 +87,7 @@ import CycleRepository from '@/repositories/CycleRepository';
   computed: {
     ...mapGetters({
       flag: GetterState.OKRS_FLAG,
+      roles: GetterState.USER_ROLES,
     }),
   },
   created() {
@@ -139,7 +148,8 @@ export default class OKRsPage extends Vue {
   }
 }
 </script>
-<style lang="scss">
+
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .okrs-page {
   width: 100%;
@@ -174,6 +184,10 @@ export default class OKRsPage extends Vue {
   }
   .el-table__empty-block {
     width: 100% !important;
+  }
+  .btn-create-objective-company {
+    margin-top: 1rem;
+    width: 100%;
   }
 }
 .create-okr-dropdown {
