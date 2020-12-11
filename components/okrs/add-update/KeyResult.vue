@@ -333,7 +333,7 @@ export default class KeyResult extends Vue {
     parentObjectiveId: [
       {
         type: 'number',
-        required: true,
+        // required: true,
         message: 'Vui lòng chọn OKRs cấp trên',
         trigger: 'blur',
       },

@@ -129,11 +129,13 @@ export default class CreateObjective extends Vue {
       parentId,
       weight,
     };
-    const { data } = await ObjectiveRepository.getObjectivesProject(
-      3,
-      projectId,
-    );
-    this.listObjectiveParent = data || [];
+    if (this.$store.state.okrs.isCreate) {
+      const { data } = await ObjectiveRepository.getObjectivesProject(
+        this.$store.state.cycle.cycleCurrent.id,
+        projectId,
+      );
+      this.listObjectiveParent = data || [];
+    }
   }
 
   private rules: Maps<Rule[]> = {
