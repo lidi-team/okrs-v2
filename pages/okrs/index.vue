@@ -26,7 +26,6 @@
         :key="item.id"
         :loading="loading"
         :project-id="item.id"
-        :type-objective="2"
         :title="item.name"
         :objectives="item.objectives"
         :is-manage="item.pm"

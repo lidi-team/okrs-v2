@@ -129,12 +129,19 @@ export default class CreateObjective extends Vue {
       parentId,
       weight,
     };
-    if (this.$store.state.okrs.isCreate) {
+    console.log(this.$store.state.okrs.objective.type);
+    if (this.$store.state.okrs.objective.type === 2) {
       const { data } = await ObjectiveRepository.getObjectivesProject(
         this.$store.state.cycle.cycleCurrent.id,
         projectId,
       );
       this.listObjectiveParent = data || [];
+    } else if (this.$store.state.okrs.objective.type === 1) {
+      const { data } = await ObjectiveRepository.getListChildObjective(
+        this.$store.state.cycle.cycleCurrent.id,
+        0,
+      );
+      console.log(data);
     }
   }
 
