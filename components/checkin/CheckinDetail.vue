@@ -29,6 +29,7 @@
             <template v-slot="{ row }">
               <el-form-item>
                 <el-input
+                  :disabled="isDisable"
                   type="number"
                   v-model.number="row.valueObtained"
                 ></el-input>
@@ -39,6 +40,7 @@
             <template slot-scope="{ row }">
               <el-form-item>
                 <el-input
+                  :disabled="isDisable"
                   v-model="row.progress"
                   type="textarea"
                   :rows="4"
@@ -51,6 +53,7 @@
             <template slot-scope="{ row }">
               <el-form-item>
                 <el-input
+                  :disabled="isDisable"
                   v-model="row.problems"
                   type="textarea"
                   :rows="4"
@@ -63,6 +66,7 @@
             <template slot-scope="{ row }">
               <el-form-item>
                 <el-input
+                  :disabled="isDisable"
                   v-model="row.plans"
                   type="textarea"
                   :rows="4"
@@ -75,6 +79,7 @@
             <template slot-scope="{ row }">
               <el-form-item>
                 <el-select
+                  :disabled="isDisable"
                   v-model="row.confidentLevel"
                   placeholder="Chọn độ tự tin"
                 >
@@ -98,6 +103,7 @@
                 label="Ngày check-in tiếp theo"
               >
                 <el-date-picker
+                  :disabled="isDisable"
                   v-model="syncCheckin.nextCheckinDate"
                   :clearable="false"
                   type="date"
@@ -114,14 +120,17 @@
                 :prop="'isCompleted'"
                 label="Hoàn thành OKRs"
               >
-                <el-checkbox v-model="syncCheckin.isCompleted"></el-checkbox>
+                <el-checkbox
+                  :disabled="isDisable"
+                  v-model="syncCheckin.isCompleted"
+                ></el-checkbox>
               </el-form-item>
             </el-col>
           </el-row>
         </div>
       </el-form>
     </div>
-    <div class="checkinDetail__footer">
+    <div class="checkinDetail__footer" v-show="!isDisable">
       <el-button
         :disabled="syncCheckin.isCompleted"
         class="el-button--white"
@@ -180,12 +189,18 @@ import { Maps, Rule } from '@/constants/app.type';
 })
 export default class DetailHistory extends Vue {
   @PropSync('checkin', { type: Object }) syncCheckin!: any;
+  @Prop({ type: Boolean, required: true, default: false })
+  public readOnly!: Boolean;
   private tempCheckin: any;
   private status = statusCheckin;
   private dateFormat: string = 'dd/MM/yyyy';
   private dropdownConfident = confidentLevel;
   private loading: boolean = false;
   private checkinStatus: string = '';
+
+  private isDisable() {
+    return this.readOnly;
+  }
 
   private customColors(confident) {
     return confident === 1

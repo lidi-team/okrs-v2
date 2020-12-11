@@ -10,15 +10,15 @@
             <tbody>
               <tr>
                 <th scope="row">Mục tiêu</th>
-                <td>{{ checkin.title }}</td>
+                <td>{{ checkin.objective.title }}</td>
               </tr>
               <tr>
                 <th scope="row">Tiến độ thực hiện</th>
-                <td>{{ checkin.progress }} %</td>
+                <td>{{ checkin.objective.progress }} %</td>
               </tr>
               <tr>
                 <th scope="row">Tiến độ gợi ý</th>
-                <td>{{ checkin.progressSuggest }} %</td>
+                <td>{{ checkin.objective.progressSuggest }} %</td>
               </tr>
               <tr v-if="checkin.checkin.checkinAt">
                 <th scope="row">Ngày check-in</th>

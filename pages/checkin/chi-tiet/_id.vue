@@ -49,7 +49,7 @@
       v-if="checkin"
       :checkin.sync="checkin.chart"
     />
-    <checkin-detail v-if="checkin" :checkin.sync="checkin" />
+    <checkin-detail v-if="checkin" :checkin.sync="checkin" read-only />
   </div>
 </template>
 <script lang="ts">
