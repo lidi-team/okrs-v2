@@ -71,7 +71,7 @@ export default class NavbarCrfs extends Vue {
   private textSearch: string = '';
   private allUsers: any[] = [];
   private listCycles: any[] = [];
-  private cycleId: number = this.$store.state.cycle.cycle.id;
+  private cycleId: number = this.$store.state.cycle.cycleCurrent.id;
 
   private querySearch(textQuery: string, callback: any) {
     let results: any[] = [];
@@ -100,7 +100,7 @@ export default class NavbarCrfs extends Vue {
     } else {
       try {
         const { data } = await CycleRepository.getListMetadata();
-        this.listCycles = data.data.all.map((item) => {
+        this.listCycles = data.map((item) => {
           return {
             id: item.id,
             label: item.name,
@@ -123,12 +123,11 @@ export default class NavbarCrfs extends Vue {
 
   private async getAllUsers() {
     try {
-      await UserRepository.getAllUsers().then((res) => {
-        if (res.data.data.length) {
-          this.allUsers = Object.freeze(res.data.data);
-          this.$store.commit(MutationState.SET_USERS, this.allUsers);
-        }
-      });
+      const data = await UserRepository.getAllUsers();
+      if (data.data.length) {
+        this.allUsers = Object.freeze(data.data);
+        this.$store.commit(MutationState.SET_USERS, this.allUsers);
+      }
     } catch (error) {}
   }
 }

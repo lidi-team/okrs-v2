@@ -129,7 +129,6 @@ export default class CreateObjective extends Vue {
       parentId,
       weight,
     };
-    console.log(this.$store.state.okrs.objective.type);
     if (this.$store.state.okrs.objective.type === 2) {
       const { data } = await ObjectiveRepository.getObjectivesProject(
         this.$store.state.cycle.cycleCurrent.id,
@@ -141,7 +140,13 @@ export default class CreateObjective extends Vue {
         this.$store.state.cycle.cycleCurrent.id,
         0,
       );
-      console.log(data);
+      const listSelect = data.childObjectives.map((item) => {
+        return {
+          id: item.id,
+          name: item.title,
+        };
+      });
+      this.listObjectiveParent = listSelect || [];
     }
   }
 

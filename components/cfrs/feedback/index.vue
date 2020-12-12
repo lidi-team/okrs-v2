@@ -2,7 +2,7 @@
   <div v-loading="loadingTab" class="feedback">
     <el-row :gutter="30" class>
       <el-col
-        v-if="listWatingFeedback.inferior && $store.state.auth.user.isLeader"
+        v-if="listWaitingFeedback.inferior"
         v-loading="loadingInferior"
         :md="12"
         :lg="12"
@@ -10,20 +10,22 @@
         <div class="feedback__col">
           <p class="feedback__col__header">{{ displayHeader('inferior') }}</p>
           <p
-            v-if="!listWatingFeedback.inferior.checkins.items.length"
+            v-if="!listWaitingFeedback.inferior.checkins.items.length"
             class="none-cfr"
           >
             Không có dữ liệu để phản hồi
           </p>
           <div
-            v-for="item in listWatingFeedback.inferior.checkins.items"
+            v-for="item in listWaitingFeedback.inferior.checkins.items"
             v-else
             :key="item.id"
             class="cfr"
           >
             <div
               class="cfr__left"
-              @click="viewDetailCheckin(item, listWatingFeedback.inferior.type)"
+              @click="
+                viewDetailCheckin(item, listWaitingFeedback.inferior.type)
+              "
             >
               <el-avatar :size="30">
                 <img
@@ -51,7 +53,7 @@
                 @click="
                   showDialogCreatingFeedback(
                     item,
-                    listWatingFeedback.inferior.type,
+                    listWaitingFeedback.inferior.type,
                     false,
                   )
                 "
@@ -60,7 +62,7 @@
             </div>
           </div>
           <common-pagination
-            v-if="listWatingFeedback.inferior.checkins.items.length"
+            v-if="listWaitingFeedback.inferior.checkins.items.length"
             class="feedback__col__pagination"
             :total="totalItems"
             :page.sync="paramsContext.page"
@@ -69,31 +71,33 @@
           />
         </div>
       </el-col>
-      <el-col v-if="listWatingFeedback.superior" :md="12" :lg="12">
+      <el-col v-if="listWaitingFeedback.superior" :md="12" :lg="12">
         <div class="feedback__col">
           <p class="feedback__col__header">{{ displayHeader('superior') }}</p>
           <p
-            v-if="notHaveSuperiorData(listWatingFeedback.superior)"
+            v-if="!listWaitingFeedback.superior.checkins.items.length"
             class="none-cfr"
           >
             Không có dữ liệu để phản hồi
           </p>
           <div
-            v-for="item in listWatingFeedback.superior.checkins"
+            v-for="item in listWaitingFeedback.superior.checkins.items"
             v-else
             :key="item.id"
             class="cfr"
           >
             <div
               class="cfr__left"
-              @click="viewDetailCheckin(item, listWatingFeedback.superior.type)"
+              @click="
+                viewDetailCheckin(item, listWaitingFeedback.superior.type)
+              "
             >
               <el-avatar :size="30">
                 <img
                   :src="
-                    listWatingFeedback.superior.user.avatarURL
-                      ? listWatingFeedback.superior.user.avatarURL
-                      : listWatingFeedback.superior.user.gravatarURL
+                    item.objective.user.avatarURL
+                      ? item.objective.user.avatarURL
+                      : item.objective.user.gravatarURL
                   "
                   alt="avatar"
                 />
@@ -114,7 +118,7 @@
                 @click="
                   showDialogCreatingFeedback(
                     item,
-                    listWatingFeedback.superior.type,
+                    listWaitingFeedback.superior.type,
                     true,
                   )
                 "
@@ -157,7 +161,7 @@ import CfrsDetailFeedback from '@/components/cfrs/feedback/DetailFeedback.vue';
     CfrsDetailFeedback,
   },
   async created() {
-    await this.getListWatingFeedbacks();
+    await this.getlistWaitingFeedbacks();
   },
   beforeMount() {
     this.loadingTab = true;
@@ -177,9 +181,12 @@ export default class Feedback extends Vue {
     limit: 10,
   };
 
-  private listWatingFeedback: any = {
+  private listWaitingFeedback: any = {
     superior: {
-      checkins: [],
+      checkins: {
+        items: [],
+        meta: {},
+      },
     },
     inferior: {
       checkins: {
@@ -207,14 +214,13 @@ export default class Feedback extends Vue {
     this.loadingInferior = true;
     try {
       this.paramsContext.page = +page;
-      await CfrsRepository.getListWaitingFeedback(this.paramsContext).then(
-        ({ data }) => {
-          this.listWatingFeedback.inferior = Object.freeze(data.data.inferior);
-          setTimeout(() => {
-            this.loadingInferior = false;
-          }, 300);
-        },
+      const data = await CfrsRepository.getListWaitingFeedback(
+        this.paramsContext,
       );
+      this.listWaitingFeedback.inferior = Object.freeze(data.data.inferior);
+      setTimeout(() => {
+        this.loadingInferior = false;
+      }, 300);
     } catch (error) {
       setTimeout(() => {
         this.loadingInferior = false;
@@ -228,22 +234,21 @@ export default class Feedback extends Vue {
 
   private async reloadData() {
     this.loadingTab = true;
-    await this.getListWatingFeedbacks();
+    await this.getlistWaitingFeedbacks();
     setTimeout(() => {
       this.loadingTab = false;
     }, 500);
   }
 
-  private async getListWatingFeedbacks() {
+  private async getlistWaitingFeedbacks() {
     try {
-      await CfrsRepository.getListWaitingFeedback(this.paramsContext).then(
-        ({ data }) => {
-          this.listWatingFeedback.inferior = Object.freeze(data.data.inferior);
-          this.listWatingFeedback.superior = Object.freeze(data.data.superior);
-          this.totalItems = Object.freeze(
-            data.data.inferior.checkins.meta.totalItems,
-          );
-        },
+      const data = await CfrsRepository.getListWaitingFeedback(
+        this.paramsContext,
+      );
+      this.listWaitingFeedback.inferior = Object.freeze(data.data.inferior);
+      this.listWaitingFeedback.superior = Object.freeze(data.data.superior);
+      this.totalItems = Object.freeze(
+        data.data.inferior.checkins.meta.totalItems,
       );
     } catch (error) {}
   }
@@ -256,7 +261,7 @@ export default class Feedback extends Vue {
     this.dataFeedback = itemCheckin;
     this.dataFeedback.type = type;
     if (isSuperior) {
-      this.dataFeedback.user = this.listWatingFeedback.superior.user;
+      this.dataFeedback.user = this.listWaitingFeedback.superior.user;
     }
     this.dataFeedback.isSuperior = isSuperior;
     this.visibleCreateDialog = true;
@@ -282,32 +287,32 @@ export default class Feedback extends Vue {
     if (type === 'inferior') {
       // Feedback cho Team member
       if (
-        this.$store.state.auth.user.isLeader &&
-        this.$store.state.auth.user.role.name !== 'ADMIN'
+        this.$store.state.auth.user.roles.includes('ROLE_PM') &&
+        !this.$store.state.auth.user.roles.includes('ROLE_ADMIN')
       ) {
         return 'Phản hồi cho Team Member';
       }
-      // Feedback cho Team Leader
-      if (this.$store.state.auth.user.role.name === 'ADMIN') {
+      // // Feedback cho Team Leader
+      if (this.$store.state.auth.user.roles.includes('ROLE_ADMIN')) {
         return 'Phản hồi cho Team Leader';
       }
     } else {
       // Feedback cho Team Leader
       if (
-        !this.$store.state.auth.user.isLeader &&
-        this.$store.state.auth.user.role.name !== 'ADMIN'
+        !this.$store.state.auth.user.roles.includes('ROLE_PM') &&
+        !this.$store.state.auth.user.roles.includes('ROLE_ADMIN')
       ) {
         return 'Phản hồi cho Team Leader';
       }
       // Feedback cho Admin
       if (
-        this.$store.state.auth.user.isLeader &&
-        this.$store.state.auth.user.role.name !== 'ADMIN'
+        this.$store.state.auth.user.roles.includes('ROLE_PM') &&
+        !this.$store.state.auth.user.roles.includes('ROLE_ADMIN')
       ) {
         return 'Phản hồi cho Admin';
       }
       // Feedback cho bạn -- admin
-      if (this.$store.state.auth.user.role.name === 'ADMIN') {
+      if (this.$store.state.auth.user.roles.includes('ROLE_ADMIN')) {
         return 'Phản hồi cho tôi';
       }
     }

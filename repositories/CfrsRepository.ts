@@ -6,19 +6,21 @@ import {
 } from '@/constants/app.enum';
 import { CfrsDTO } from '@/constants/app.interface';
 import { HistoryCfrsParams, ParamsQuery } from '@/constants/DTO/common';
-import { baseUrlV1 } from './BaseRepository';
+import { baseUrl, baseUrlV1 } from './BaseRepository';
 
 export default class CfrsRepository {
   public static getListWaitingFeedback(
     params: ParamsQuery,
   ): Promise<AxiosResponse<any>> {
-    return baseUrlV1.get(`${ResourcesEnpoint.CFRs}/${CFREnpoint.ListWaiting}`, {
+    return baseUrl.get(`${ResourcesEnpoint.CFRs}/${CFREnpoint.ListWaiting}`, {
       params,
     });
   }
 
   public static getRankingCfrs(cycleId?: number): Promise<AxiosResponse<any>> {
-    return baseUrlV1.get(`${CFREnpoint.Rank}`, { params: { cycleId } });
+    return baseUrl.get(`${ResourcesEnpoint.CFRs}/${CFREnpoint.Rank}`, {
+      params: { cycleId },
+    });
   }
 
   public static getHistoryCfrs(
@@ -26,26 +28,27 @@ export default class CfrsRepository {
     type: 1 | 2 | 3,
   ): Promise<AxiosResponse<any>> {
     params = Object.assign(params, { type });
-    return baseUrlV1.get(`${ResourcesEnpoint.CFRs}/${CFREnpoint.History}`, {
+    return baseUrl.get(`${ResourcesEnpoint.CFRs}/${CFREnpoint.History}`, {
       params,
     });
   }
 
   public static getUserObjectives(userId: number): Promise<AxiosResponse<any>> {
-    return baseUrlV1.get(
-      `${ResourcesEnpoint.Objective}/${CFREnpoint.Objective}/${userId}`,
+    return baseUrl.get(
+      `${ResourcesEnpoint.Objective}/${CFREnpoint.Objective}`,
+      { params: { userId } },
     );
   }
 
   public static postRecognition(payload: CfrsDTO): Promise<AxiosResponse<any>> {
-    return baseUrlV1.post(`${ResourcesEnpoint.CFRs}`, payload);
+    return baseUrl.post(`${ResourcesEnpoint.CFRs}`, payload);
   }
 
   public static postFeedback(
     payload: CfrsDTO,
     type: EvaluationCriteriaEnum,
   ): Promise<AxiosResponse<any>> {
-    return baseUrlV1.post(`${ResourcesEnpoint.CFRs}`, payload, {
+    return baseUrl.post(`${ResourcesEnpoint.CFRs}`, payload, {
       params: { type },
     });
   }

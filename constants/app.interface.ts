@@ -27,6 +27,7 @@ export interface EmployeeDTO {
   dob: string;
   // isLeader: boolean;
   isActive?: boolean;
+  active?: 1 | 0;
   isApproved?: boolean;
 }
 
@@ -61,6 +62,12 @@ export interface ProjectStaff {
   originalDepartment: number;
   originalReviewerId: number;
   edit?: boolean;
+}
+
+export interface IProjectStaffState {
+  userId: number;
+  positionId?: number;
+  reviewerId?: number;
 }
 
 export interface RegisterOption {
@@ -170,11 +177,10 @@ export interface DialogTooltipAction {
 }
 
 export interface CfrsDTO {
-  type: 'feedback' | 'recognition';
   senderId?: Number;
   receiverId?: Number | null;
   content: String;
   evaluationCriteriaId: Number | null;
   objectiveId?: Number | null;
-  checkinId?: Number;
+  checkinId?: Number | null;
 }

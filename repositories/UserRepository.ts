@@ -3,7 +3,7 @@ import { ChangePasswordDTO } from '@/constants/app.interface';
 import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export enum enpoint {
-  Users = 'users',
+  Users = 'user',
   me = 'user/me',
 }
 
@@ -17,7 +17,7 @@ export default class UserRepository {
   }
 
   public static getAllUsers() {
-    return baseUrlV1.get(`${enpoint.Users}/all`);
+    return baseUrl.get(`${enpoint.Users}/all`);
   }
 
   public static changePassword(payload: Object) {

@@ -35,6 +35,10 @@ export default class CheckinRepository {
     return baseUrl.get(`${enpoint.checkin}/${id}`);
   }
 
+  public static getDetailCheckinCFRsByCheckinId(id: Number) {
+    return baseUrl.get(`${enpoint.checkin}/list-waiting-feedback/` + id);
+  }
+
   public static getDetailCheckInByObjectiveId(id: Number) {
     return baseUrl.get(`${enpoint.detailCheckinByObjectiveId}/${id}`);
   }

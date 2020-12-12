@@ -6,7 +6,7 @@
       :visible.sync="syncProjectDialog"
       width="45%"
       placement="bottom-start"
-      title="Cập nhật thông tin"
+      title="Thông tin dự án"
       :before-close="handleCloseDialog"
     >
       <el-row :gutter="10">
@@ -27,7 +27,7 @@
             >
               <el-input
                 v-model="tempUpdateProject.name"
-                placeholder="Nhập họ và tên"
+                placeholder="Nhập tên dự án"
                 @keyup.enter.native="handleCreate(tempUpdateProject)"
               />
             </el-form-item>
