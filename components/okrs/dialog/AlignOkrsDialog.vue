@@ -73,7 +73,7 @@ import {
   notificationConfig,
   confirmWarningConfig,
 } from '@/constants/app.constant';
-// components
+
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
 import AlignOkrsForm from '@/components/okrs/add-update/AlignObjective.vue';
 @Component<AlignOkrsDialog>({

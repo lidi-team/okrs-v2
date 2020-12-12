@@ -127,13 +127,13 @@
           <div>
             <el-form-item
               v-if="isCreate"
-              prop="parentObjectiveId"
+              prop="keyResultParentId"
               label="Liên kết kết quả then chốt "
               class="custom-label"
               label-width="190px"
             >
               <el-select
-                v-model="tempKeyResult.parentId"
+                v-model="tempKeyResult.keyResultParentId"
                 filterable
                 no-match-text="Không tìm thấy kết quả"
                 placeholder="Chọn kết quả then chốt "
@@ -211,7 +211,7 @@ import KeyResultRepository from '@/repositories/KeyResultRepository';
       this.$store.state.okrs.objective.parentId,
     );
     this.keyResultsParent = data;
-    console.log(this.keyResult, 'hello');
+    console.log(this.tempKeyResult, 'hello');
     this.loading = false;
   },
 })
@@ -221,7 +221,7 @@ export default class KeyResult extends Vue {
     required: true,
     default: () => ({
       content: '',
-      parentId: null,
+      keyResultParentId: null,
       linkPlans: '',
       linkResults: '',
       measureUnitId: 1,
@@ -330,10 +330,10 @@ export default class KeyResult extends Vue {
       },
       max255Char,
     ],
-    parentObjectiveId: [
+    keyResultParentId: [
       {
         type: 'number',
-        // required: true,
+        required: true,
         message: 'Vui lòng chọn OKRs cấp trên',
         trigger: 'blur',
       },

@@ -72,8 +72,16 @@ import AlignObjective from '@/components/okrs/add-update/AlignObjective.vue';
     }),
   },
   mounted() {
-    const { listObjectiveAlign } = this.$store.state.okrs.objective;
-    console.log(listObjectiveAlign);
+    const data = this.$store.state.okrs.objective.alignmentObjectives;
+    if (!data) {
+      this.itemsAlignOkrs = [{ objectiveId: null }];
+    } else {
+      this.itemsAlignOkrs = data.map((item) => {
+        return {
+          objectiveId: item.id,
+        };
+      });
+    }
   },
 })
 export default class CreateAlignObjective extends Vue {

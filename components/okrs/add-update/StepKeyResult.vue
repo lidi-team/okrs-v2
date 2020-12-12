@@ -137,7 +137,7 @@ export default class CreateObjectiveStep extends Vue {
       if (validForm === krs.length) {
         this.$store.commit(MutationState.SET_KEY_RESULT, krs);
         const { data } = await ObjectiveRepository.getAlignObjective(
-          3,
+          this.$store.state.cycle.cycleCurrent.id,
           this.$store.state.okrs.objective.projectId,
         );
         this.$store.commit(MutationState.SET_LIST_OBJECTIVE_ALIGN, data);
