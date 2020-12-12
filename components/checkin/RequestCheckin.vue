@@ -29,7 +29,7 @@
       </el-table-column>
       <el-table-column label="Hành động" align="center" width="180">
         <template slot-scope="{ row }">
-          <nuxt-link :to="`checkin/yeu-cau/${row.id}`">
+          <nuxt-link :to="`/checkin/chi-tiet/${row.id}`">
             <el-button class="el-button--purple el-button--checkin"
               >Duyệt Check-in</el-button
             >

@@ -3,18 +3,16 @@
     <div :id="id" class="chart" :style="{ height: '100%', width: '100%' }" />
   </div>
 </template>
-
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator';
-import { statusCheckin } from '@/constants/app.constant';
+import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { init } from 'echarts';
 import resize from '@/mixins/resize';
+import { formatDate } from '@/utils/format';
 
-@Component<ChartCheckin>({
-  name: 'ChartCheckin',
+@Component<CheckinChartProcess>({
+  name: 'CheckinChartProcess',
   mixins: [resize],
   mounted() {
-    console.log('checkinaaa', this.syncCheckin);
     this.initChart();
   },
   beforeDestroy() {
@@ -25,18 +23,15 @@ import resize from '@/mixins/resize';
     this.chart = null;
   },
 })
-export default class ChartCheckin extends Vue {
-  @Prop({ type: Object }) checkin!: any;
+export default class CheckinChartProcess extends Vue {
+  @PropSync('checkin', { type: Object }) syncCheckin!: any;
   private chart: any = null;
   private id: any = 'chart';
 
   private initChart() {
     this.chart = init(document.getElementById(this.id) as any);
     const xData = (() => {
-      if (this.checkin && this.checkin.chart) {
-        return this.checkin.chart.checkinAt;
-      }
-      return [1];
+      return this.syncCheckin.checkinAt.map((item) => formatDate(item));
     })();
     this.chart.setOption({
       backgroundColor: 'white',
@@ -47,6 +42,7 @@ export default class ChartCheckin extends Vue {
         textStyle: {
           color: '#212b36',
           fontSize: '20',
+          fontFamily: 'sans-serif',
         },
         subtextStyle: {
           color: '#90979c',
@@ -98,6 +94,9 @@ export default class ChartCheckin extends Vue {
       yAxis: [
         {
           type: 'value',
+          name: '(%)',
+          min: 0,
+          max: 100,
           splitLine: {
             show: false,
           },
@@ -120,28 +119,28 @@ export default class ChartCheckin extends Vue {
       dataZoom: [
         {
           show: true,
-          height: 30,
+          height: 18,
           xAxisIndex: [0],
           bottom: 30,
-          start: 10,
-          end: 80,
+          start: 0,
+          end: 100,
           handleIcon:
             'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
-          handleSize: '110%',
+          handleSize: '100%',
           handleStyle: {
-            color: '#d3dee5',
+            color: '#230051',
           },
           textStyle: {
-            color: '#fff',
+            color: '#230051',
           },
-          borderColor: '#90979c',
+          borderColor: 'white',
         },
         {
           type: 'inside',
-          show: true,
+          show: false,
           height: 15,
-          start: 1,
-          end: 35,
+          start: 0,
+          end: 100,
         },
       ],
       series: [
@@ -164,10 +163,7 @@ export default class ChartCheckin extends Vue {
               },
             },
           },
-          data:
-            this.checkin && this.checkin.chart
-              ? this.checkin.chart.progress
-              : [],
+          data: this.syncCheckin.progress,
         },
       ],
     });

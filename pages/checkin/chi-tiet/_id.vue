@@ -1,10 +1,10 @@
 <template>
   <div v-loading.fullscreen.lock="loading" class="historyDetailPage">
-    <el-page-header title="Lịch sử Check-in" @back="goBack" />
-    <h1 class="historyDetailPage__title">Chi tiết lịch sử Check-in</h1>
+    <el-page-header title="Quay lại" @back="goBack" />
+    <h1 class="historyDetailPage__title">Chi tiết Check-in</h1>
     <div class="top-checkin">
       <el-row>
-        <el-col class="top-checkin__left" :sm="24" :lg="10">
+        <el-col class="top-checkin__left">
           <h2 class="top-checkin__title">Check-in mục tiêu</h2>
           <div class="top-checkin__content content">
             <table class="properties">
@@ -16,7 +16,7 @@
                 <tr>
                   <th scope="row">Trạng thái</th>
                   <td>
-                    <el-tag :type="primary">{{ checkin.status }}</el-tag>
+                    {{ checkin.status }}
                   </td>
                 </tr>
                 <tr>
@@ -42,22 +42,23 @@
             </table>
           </div>
         </el-col>
-        <el-col :sm="24" :lg="14" class="top-checkin__right">
-          <h2 class="top-checkin__title">Tiến độ</h2>
-          <div id="chartCheckin" class="top-checkin__chart" />
-        </el-col>
       </el-row>
     </div>
-    <detail-history v-if="checkin" :checkin-detail="checkin.checkinDetails">
-      <!-- <chart-checkin v-if="historyDetail" slot="chartCheckin" :history-detail="historyDetail" /> -->
-    </detail-history>
+    <checkin-chart-process
+      class="top-checkin"
+      v-if="checkin"
+      :checkin.sync="checkin.chart"
+    />
+    <checkin-detail v-if="checkin" :checkin.sync="checkin" read-only />
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { notificationConfig } from '@/constants/app.constant';
-import DetailHistory from '@/components/checkin/DetailHistory.vue';
+import CheckinDetail from '@/components/checkin/CheckinDetail.vue';
+import CheckinChartProcess from '@/components/checkin/CheckinChartProcess.vue';
+
 @Component({
   name: 'DetailHistoryPage',
   head() {
@@ -66,7 +67,8 @@ import DetailHistory from '@/components/checkin/DetailHistory.vue';
     };
   },
   components: {
-    DetailHistory,
+    CheckinDetail,
+    CheckinChartProcess,
   },
   mounted() {
     this.getDetail();
@@ -103,8 +105,9 @@ export default class DetailHistoryPage extends Vue {
   background-color: $white;
   &__title {
     font-size: $unit-5;
+    margin-bottom: 1.5rem;
     font-style: normal;
-    font-weight: normal;
+    font-weight: bold;
     color: #212b36;
     line-height: 28px;
   }
@@ -114,7 +117,7 @@ export default class DetailHistoryPage extends Vue {
     font-size: $unit-3;
   }
   &__left {
-    padding: $unit-12 $unit-8;
+    padding: $unit-8;
   }
 
   &__right {

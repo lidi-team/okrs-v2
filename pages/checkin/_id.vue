@@ -1,6 +1,6 @@
 <template>
   <div v-loading.fullscreen.lock="loading" class="createCheckinPage">
-    <el-page-header title="OKRs của tôi" @back="goBack" />
+    <el-page-header title="Quay lại" @back="goBack" />
     <h1 class="createCheckinPage__title">Tạo checkin</h1>
     <div class="top-checkin">
       <div class="top-checkin__left">
@@ -10,15 +10,15 @@
             <tbody>
               <tr>
                 <th scope="row">Mục tiêu</th>
-                <td>{{ checkin.title }}</td>
+                <td>{{ checkin.objective.title }}</td>
               </tr>
               <tr>
                 <th scope="row">Tiến độ thực hiện</th>
-                <td>{{ checkin.progress }} %</td>
+                <td>{{ checkin.objective.progress }} %</td>
               </tr>
               <tr>
                 <th scope="row">Tiến độ gợi ý</th>
-                <td>{{ checkin.progressSuggest }} %</td>
+                <td>{{ checkin.objective.progressSuggest }} %</td>
               </tr>
               <tr v-if="checkin.checkin.checkinAt">
                 <th scope="row">Ngày check-in</th>
@@ -43,8 +43,12 @@
         </div>
       </div>
     </div>
-    <chart-checkin class="top-checkin" :checkin.sync="checkin" />
-    <create-checkin v-if="checkin" :checkin="checkin" />
+    <checkin-chart-process
+      class="top-checkin"
+      v-if="checkin"
+      :checkin.sync="checkin.chart"
+    />
+    <checkin-detail v-if="checkin" :checkin.sync="checkin" />
   </div>
 </template>
 <script lang="ts">
@@ -53,8 +57,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { formatDateToDD, initNewDate } from '@/utils/dateParser';
 import { notificationConfig } from '@/constants/app.constant';
-import CreateCheckin from '@/components/checkin/CreateCheckin.vue';
-import ChartCheckin from '@/components/checkin/ChartCheckin.vue';
+import CheckinDetail from '@/components/checkin/CheckinDetail.vue';
+import CheckinChartProcess from '@/components/checkin/CheckinChartProcess.vue';
 
 @Component({
   name: 'CheckinPage',
@@ -64,8 +68,8 @@ import ChartCheckin from '@/components/checkin/ChartCheckin.vue';
     };
   },
   components: {
-    CreateCheckin,
-    ChartCheckin,
+    CheckinDetail,
+    CheckinChartProcess,
   },
   async mounted() {
     await this.getCheckin();
@@ -95,7 +99,6 @@ export default class CheckinPage extends Vue {
         };
       });
     }
-    console.log('hello', data);
     this.checkin = data;
     this.loading = false;
   }

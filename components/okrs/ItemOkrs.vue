@@ -5,12 +5,12 @@
       <div class="-display-flex -align-items-center">
         <button-create-okr
           v-if="isManage"
-          :type-objective="typeObjective"
+          :type-objective="1"
           name-objective="dự án"
-          :project-id="0"
+          :project-id="projectId"
         />
         <button-create-okr
-          :type-objective="typeObjective"
+          :type-objective="2"
           name-objective="cá nhân"
           :project-id="projectId"
         />
@@ -152,7 +152,6 @@ export default class OKRsItem extends Vue {
   @Prop(Function) private reloadData!: Function;
   @Prop(Boolean) private isManage!: Boolean;
   @Prop(Number) private projectId!: Number;
-  @Prop(Number) private typeObjective!: Number;
   @Prop(Boolean) private loading!: Boolean;
 
   private tempOkrs: any = {};

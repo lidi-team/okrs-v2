@@ -7,6 +7,7 @@ export enum enpoint {
   alignObjective = 'objective/align-objective',
   objectivesProject = 'objective/align-objective-project',
   deleteObjective = 'objective/delete',
+  listChildObject = 'objective/child-objectives',
 }
 
 export default class ObjectiveRepository {
@@ -33,6 +34,15 @@ export default class ObjectiveRepository {
   ): Promise<AxiosResponse<any>> {
     return baseUrl.get(enpoint.objectivesProject, {
       params: { cycleId, projectId },
+    });
+  }
+
+  public static getListChildObjective(
+    cycleId: Number,
+    objectiveId: Number,
+  ): Promise<AxiosResponse<any>> {
+    return baseUrl.get(enpoint.listChildObject, {
+      params: { cycleId, objectiveId },
     });
   }
 
