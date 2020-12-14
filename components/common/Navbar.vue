@@ -74,14 +74,6 @@
                 </div>
               </el-dropdown-item>
             </nuxt-link>
-            <nuxt-link to="/hoc-okrs">
-              <el-dropdown-item>
-                <div class="item__div">
-                  <icon-lesson class="item__div--icon" />
-                  <span>Bài học OKRs</span>
-                </div>
-              </el-dropdown-item>
-            </nuxt-link>
             <nuxt-link to="/doi-mat-khau">
               <el-dropdown-item>
                 <div class="item__div">
