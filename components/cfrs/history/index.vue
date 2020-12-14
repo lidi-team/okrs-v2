@@ -21,9 +21,9 @@
                     <el-avatar :size="30">
                       <img
                         :src="
-                          item.receiver.avatarURL
-                            ? item.receiver.avatarURL
-                            : item.receiver.gravatarURL
+                          item.receiver.avatarUrl
+                            ? item.receiver.avatarUrl
+                            : item.receiver.gravatarUrl
                         "
                         alt="avatar"
                       />
@@ -81,9 +81,9 @@
                     <el-avatar :size="30">
                       <img
                         :src="
-                          item.sender.avatarURL
-                            ? item.sender.avatarURL
-                            : item.sender.gravatarURL
+                          item.sender.avatarUrl
+                            ? item.sender.avatarUrl
+                            : item.sender.gravatarUrl
                         "
                         alt="avatar"
                       />
@@ -139,9 +139,9 @@
                     <el-avatar :size="30">
                       <img
                         :src="
-                          item.receiver.avatarURL
-                            ? item.receiver.avatarURL
-                            : item.receiver.gravatarURL
+                          item.receiver.avatarUrl
+                            ? item.receiver.avatarUrl
+                            : item.receiver.gravatarUrl
                         "
                         alt="avatar"
                       />
@@ -152,7 +152,24 @@
                   <p class="content__title">
                     {{ item.evaluationCriteria.content }}
                   </p>
-                  <p class="content__description">
+                  <p
+                    class="content__description"
+                    v-if="$store.state.user.tempUser.id === item.sender.id"
+                  >
+                    Bạn đến
+                    {{ takeTwoLastNameUser(item.receiver.fullName) }} -
+                    {{ new Date(item.createAt) | dateFormat('DD/MM/YYYY') }}
+                  </p>
+                  <p
+                    class="content__description"
+                    v-else-if="
+                      $store.state.user.tempUser.id === item.receiver.id
+                    "
+                  >
+                    {{ takeTwoLastNameUser(item.sender.fullName) }} đến bạn -
+                    {{ new Date(item.createAt) | dateFormat('DD/MM/YYYY') }}
+                  </p>
+                  <p class="content__description" v-else>
                     {{ takeTwoLastNameUser(item.sender.fullName) }} đến
                     {{ takeTwoLastNameUser(item.receiver.fullName) }} -
                     {{ new Date(item.createAt) | dateFormat('DD/MM/YYYY') }}

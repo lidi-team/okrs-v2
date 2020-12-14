@@ -49,6 +49,7 @@
           v-model="recognition.objectiveId"
           filterable
           placeholder="Chọn mục tiêu"
+          :disabled="!recognition.receiverId"
         >
           <el-option
             v-for="okrs in optionsMetadata.objectives"
