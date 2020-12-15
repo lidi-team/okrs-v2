@@ -172,7 +172,7 @@ export default class ProjectDialog extends Vue {
     description: '',
     pmId: undefined,
     weight: 1,
-    parentId: null,
+    parentId: undefined,
   };
 
   private handleCreate(tempUpdateProject: ProjectDTO) {
