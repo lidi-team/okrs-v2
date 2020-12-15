@@ -8,11 +8,14 @@
           :type-objective="1"
           name-objective="dự án"
           :project-id="projectId"
+          :loading="loading"
         />
         <button-create-okr
           :type-objective="2"
           name-objective="cá nhân"
           :project-id="projectId"
+          :loading="loading"
+          :isDisable="oobjectives || objectives.length === 0"
         />
       </div>
     </div>
