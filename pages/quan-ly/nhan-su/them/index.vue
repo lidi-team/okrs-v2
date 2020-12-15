@@ -119,7 +119,7 @@
             <el-date-picker
               v-model="employee.dob"
               type="date"
-              placeholder="Chọn ngày sinh"
+              placeholder="Chọn ngày sinh dd/MM/yyyy"
               :format="dateFormat"
               :value-format="dateFormat"
               :picker-options="pickerOptions"
@@ -342,17 +342,22 @@ export default class CreateEmployee extends Vue {
       console.log(response);
       if (!!response && !!response.data) {
         if (response.data.numberOfFailed === 0) {
+          this.employee = {
+            fullName: '',
+            email: '',
+            roles: [],
+            departmentId: null,
+            gender: 1,
+            dob: '',
+          };
           this.$notify.success({
             ...notificationConfig,
             message: 'thêm nhân viên thành công',
           });
         } else {
-          this.$notify.warning({
+          this.$notify.error({
             ...notificationConfig,
-            message:
-              `Thêm thành công: ${response.data.numberOfSuccess}` +
-              '\n' +
-              `Thất bại: ${response.data.numberOfFailed}`,
+            message: `thêm nhân viên thất bại`,
           });
         }
       }
