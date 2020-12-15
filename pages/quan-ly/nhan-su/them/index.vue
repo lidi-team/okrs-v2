@@ -89,7 +89,77 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="Thêm một nhân viên" name="one">
-        <span>fine</span>
+        <!-- FORM -->
+        <el-form
+          ref="employee"
+          v-loading="loadingForm"
+          :model="employee"
+          label-width="180px"
+          label-position="left"
+          :rules="rules"
+        >
+          <el-form-item prop="email" label="Email" class="custom-label">
+            <el-input
+              v-model="employee.email"
+              size="medium"
+              class="register-form__input__email"
+              placeholder="Nhập email"
+              type="email"
+            ></el-input>
+          </el-form-item>
+          <el-form-item prop="fullName" label="Họ và tên" class="custom-label">
+            <el-input
+              v-model="employee.fullName"
+              size="medium"
+              class="register-form__input__full-name"
+              placeholder="Nhập họ tên"
+            ></el-input>
+          </el-form-item>
+          <el-form-item prop="dob" label="Ngày sinh" class="custom-label">
+            <el-date-picker
+              v-model="employee.dob"
+              type="date"
+              placeholder="Chọn ngày sinh dd/MM/yyyy"
+              :format="dateFormat"
+              :value-format="dateFormat"
+              :picker-options="pickerOptions"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item
+            prop="teamId"
+            label="Phòng ban"
+            class="register-form__input__team custom-label"
+          >
+            <el-select
+              v-model="employee.departmentId"
+              size="medium"
+              placeholder="Chọn phòng ban"
+              :no-data-text="noDataText"
+            >
+              <el-option
+                v-for="item in departments"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="gender" label="Giới tính">
+            <el-radio-group v-model="employee.gender">
+              <el-radio :label="1">Nam</el-radio>
+              <el-radio :label="0">Nữ</el-radio>
+            </el-radio-group>
+          </el-form-item>
+          <el-form-item class="create-member-dialog__action">
+            <el-button
+              class="el-button--purple el-button--modal"
+              :loading="loading"
+              @click="createEmployee"
+              >Thêm nhân viên
+            </el-button>
+          </el-form-item>
+        </el-form>
+        <!-- END FORM -->
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -98,7 +168,7 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import UploadExcelComponent from '@/components/UploadExcel/index.vue';
-import { formatDateFromExcel } from '@/utils/dateParser';
+import { compareTwoDate, formatDateFromExcel } from '@/utils/dateParser';
 import { dateFormat } from '@vuejs-community/vue-filter-date-format';
 import TeamRepository from '@/repositories/TeamRepository';
 import value from '*.png';
@@ -107,6 +177,9 @@ import {
   notificationConfig,
   confirmWarningConfig,
 } from '@/constants/app.constant';
+import { EmployeeDTO } from '@/constants/app.interface';
+import { Maps, Rule } from '@/constants/app.type';
+import { max255Char } from '@/constants/account.constant';
 
 @Component<CreateEmployee>({
   name: 'CreateEmployee',
@@ -121,6 +194,84 @@ export default class CreateEmployee extends Vue {
   private departments: Array<any> = [];
   private tabActive: string = 'excel';
   private hasData: boolean = false;
+  private loading: boolean = false;
+  private loadingForm: Boolean = false;
+  private noDataText: string = 'Không có dữ liệu';
+  private dateFormat: string = 'dd/MM/yyyy';
+
+  private employee: EmployeeDTO = {
+    fullName: '',
+    email: '',
+    roles: [],
+    departmentId: null,
+    gender: 1,
+    dob: '',
+  };
+
+  private validateEndDate(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
+    if (compareTwoDate(value, new Date().toString()) === 1) {
+      return callback('Ngày sinh phải nhỏ hơn ngày hiện tại');
+    }
+    return callback();
+  }
+
+  private rules: Maps<Rule[]> = {
+    email: [
+      {
+        required: true,
+        message: 'Vui lòng nhập địa chỉ email',
+        trigger: 'blur',
+      },
+      {
+        type: 'email',
+        message: 'Vui lòng nhập đúng địa chỉ email',
+        trigger: 'blur',
+      },
+      max255Char,
+    ],
+    fullName: [{ required: true, message: 'Vui lòng nhập họ tên' }, max255Char],
+    departmentId: [{ required: true, message: 'Vui lòng chọn phòng ban' }],
+    dob: [
+      {
+        required: true,
+        message: 'Vui lòng chọn ngày sinh',
+        trigger: ['blur', 'change'],
+      },
+      { validator: this.validateEndDate, trigger: ['blur', 'change'] },
+    ],
+  };
+
+  private async createEmployee() {
+    console.log('Employee', this.employee);
+    try {
+      const response = await EmployeeRepository.create({
+        users: [this.employee],
+      });
+      console.log(response);
+      if (!!response && !!response.data) {
+        if (response.data.numberOfFailed === 0) {
+          this.$notify.success({
+            ...notificationConfig,
+            message: 'thêm nhân viên thành công',
+          });
+        } else {
+          this.$notify.warning({
+            ...notificationConfig,
+            message:
+              `Thêm thành công: ${response.data.numberOfSuccess}` +
+              '\n' +
+              `Thất bại: ${response.data.numberOfFailed}`,
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   @Watch('tableData')
   private checkData() {
@@ -191,17 +342,22 @@ export default class CreateEmployee extends Vue {
       console.log(response);
       if (!!response && !!response.data) {
         if (response.data.numberOfFailed === 0) {
+          this.employee = {
+            fullName: '',
+            email: '',
+            roles: [],
+            departmentId: null,
+            gender: 1,
+            dob: '',
+          };
           this.$notify.success({
             ...notificationConfig,
             message: 'thêm nhân viên thành công',
           });
         } else {
-          this.$notify.warning({
+          this.$notify.error({
             ...notificationConfig,
-            message:
-              `Thêm thành công: ${response.data.numberOfSuccess}` +
-              '\n' +
-              `Thất bại: ${response.data.numberOfFailed}`,
+            message: `thêm nhân viên thất bại`,
           });
         }
       }
@@ -209,6 +365,12 @@ export default class CreateEmployee extends Vue {
       console.log(error);
     }
   }
+
+  private pickerOptions: any = {
+    disabledDate(time) {
+      return time.getTime() > Date.now();
+    },
+  };
 }
 </script>
 

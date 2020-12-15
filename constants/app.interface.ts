@@ -22,7 +22,7 @@ export interface EmployeeDTO {
   fullName: string;
   email: string;
   roles: String[];
-  departmentId: number;
+  departmentId: number | null;
   gender: number;
   dob: string;
   // isLeader: boolean;

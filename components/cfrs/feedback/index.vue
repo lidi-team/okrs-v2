@@ -30,9 +30,9 @@
               <el-avatar :size="30">
                 <img
                   :src="
-                    item.objective.user.avatarURL
-                      ? item.objective.user.avatarURL
-                      : item.objective.user.gravatarURL
+                    item.objective.user.avatarUrl
+                      ? item.objective.user.avatarUrl
+                      : item.objective.user.gravatarUrl
                   "
                   alt="avatar"
                 />
@@ -95,9 +95,9 @@
               <el-avatar :size="30">
                 <img
                   :src="
-                    item.objective.user.avatarURL
-                      ? item.objective.user.avatarURL
-                      : item.objective.user.gravatarURL
+                    item.objective.user.avatarUrl
+                      ? item.objective.user.avatarUrl
+                      : item.objective.user.gravatarUrl
                   "
                   alt="avatar"
                 />
@@ -290,11 +290,11 @@ export default class Feedback extends Vue {
         this.$store.state.auth.user.roles.includes('ROLE_PM') &&
         !this.$store.state.auth.user.roles.includes('ROLE_ADMIN')
       ) {
-        return 'Phản hồi cho Team Member';
+        return 'Phản hồi cho cấp dưới';
       }
       // // Feedback cho Team Leader
       if (this.$store.state.auth.user.roles.includes('ROLE_ADMIN')) {
-        return 'Phản hồi cho Team Leader';
+        return 'Phản hồi cho quản lý dự án';
       }
     } else {
       // Feedback cho Team Leader
@@ -302,14 +302,14 @@ export default class Feedback extends Vue {
         !this.$store.state.auth.user.roles.includes('ROLE_PM') &&
         !this.$store.state.auth.user.roles.includes('ROLE_ADMIN')
       ) {
-        return 'Phản hồi cho Team Leader';
+        return 'Phản hồi cho quản lý dự án';
       }
       // Feedback cho Admin
       if (
         this.$store.state.auth.user.roles.includes('ROLE_PM') &&
         !this.$store.state.auth.user.roles.includes('ROLE_ADMIN')
       ) {
-        return 'Phản hồi cho Admin';
+        return 'Phản hồi cho cấp trên';
       }
       // Feedback cho bạn -- admin
       if (this.$store.state.auth.user.roles.includes('ROLE_ADMIN')) {
