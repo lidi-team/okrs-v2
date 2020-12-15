@@ -1,52 +1,42 @@
 <template>
   <div class="okrs-align">
-    <div>
-      <div class="okrs-align__content">
-        <div class="okrs-align__content--item">
-          <align-objective
-            v-for="(item, index) in itemsAlignOkrs"
-            :key="index"
-            ref="alignForm"
-            :index-align-form="index"
-            :align-okrs.sync="item"
-            @deleteAlignOkrs="deleteAlignOkrs($event)"
-          />
-        </div>
-        <el-button
-          class="el-button el-button--white el-button--small okrs-align__content--button"
-          @click="addNewAlignOkrs"
-        >
-          <span>Thêm Okrs liên kết chéo</span>
-        </el-button>
-      </div>
-      <div class="okrs-align__action">
-        <el-button
-          class="el-button--white el-button--modal"
-          @click="backToStepTwo"
-          >Quay lại</el-button
-        >
-        <el-button
-          class="el-button--purple el-button--modal"
-          :loading="loading"
-          @click="createOkrs(false)"
-          >Bỏ qua và {{ isCreate ? 'tạo OKRs' : 'cập nhật OKRs' }}</el-button
-        >
-        <el-button
-          class="el-button--purple el-button--modal"
-          :loading="loading"
-          @click="createOkrs(true)"
-        >
-          {{ isCreate ? 'Tạo OKRs' : 'Cập nhật OKRs' }}
-        </el-button>
-      </div>
+    <div class="okrs-align__content">
+      <align-objective
+        v-for="(item, index) in itemsAlignOkrs"
+        :key="index"
+        ref="alignForm"
+        :index-align-form="index"
+        :align-okrs.sync="item"
+        @deleteAlignOkrs="deleteAlignOkrs($event)"
+      />
+    </div>
+    <el-button
+      class="el-button el-button--white el-button--small okrs-align__button"
+      @click="addNewAlignOkrs"
+    >
+      <span>Thêm OKRs liên kết chéo</span>
+    </el-button>
+    <div class="okrs-align__action">
+      <el-button
+        class="el-button--white el-button--modal"
+        @click="backToStepTwo"
+        >Quay lại</el-button
+      >
+      <el-button
+        class="el-button--purple el-button--modal"
+        :loading="loading"
+        @click="createOkrs(isCreate)"
+      >
+        {{ isCreate ? 'Tạo OKRs' : 'Cập nhật OKRs' }}
+      </el-button>
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import { Form } from 'element-ui';
 import { mapGetters } from 'vuex';
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-
 import CycleRepository from '@/repositories/CycleRepository';
 import OkrsRepository from '@/repositories/OkrsRepository';
 
@@ -72,13 +62,14 @@ import AlignObjective from '@/components/okrs/add-update/AlignObjective.vue';
     }),
   },
   mounted() {
-    const data = this.$store.state.okrs.objective.alignmentObjectives;
-    if (!data) {
-      this.itemsAlignOkrs = [{ objectiveId: null }];
+    const alignmentObjectives = this.$store.state.okrs.objective
+      .alignmentObjectives;
+    if (!alignmentObjectives) {
+      this.itemsAlignOkrs = [];
     } else {
-      this.itemsAlignOkrs = data.map((item) => {
+      this.itemsAlignOkrs = alignmentObjectives.map((item) => {
         return {
-          objectiveId: item.id,
+          id: item.id,
         };
       });
     }
@@ -88,65 +79,34 @@ export default class CreateAlignObjective extends Vue {
   @PropSync('active', Number) private syncActive!: number;
 
   private loading: boolean = false;
-  private itemsAlignOkrs: any[] = [{ objectiveId: null }];
+  private itemsAlignOkrs: any[] = [];
 
   private addNewAlignOkrs() {
-    this.itemsAlignOkrs.push({ objectiveId: null });
+    this.itemsAlignOkrs.push({ id: null });
   }
 
-  private async createOkrs(hasAlignObjective: boolean) {
-    if (hasAlignObjective === true) {
-      try {
-        let validForm: number = 0;
-        const alignObjectives: any[] = [];
-        (this.$refs.alignForm as any).forEach((form) => {
-          (form.$refs.alignOkrs as Form).validate(
-            (isValid: boolean, invalidatedFields: object) => {
-              if (isValid) {
-                validForm++;
-              }
-            },
-          );
-          alignObjectives.push(form.syncAlignOkrs.objectiveId);
-        });
-        if (validForm === alignObjectives.length) {
-          this.$store.commit(MutationState.SET_OBJECTIVE, {
-            alignmentObjectives: alignObjectives,
-          });
-          const data = this.$store.state.okrs.objective;
-          await OkrsRepository.createOrUpdateOkrs(data).then((res) => {
-            this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
-            this.$store.commit(MutationState.OKRS_SET_FLAG);
-            this.syncActive = 0;
-            this.$notify.success({
-              ...notificationConfig,
-              message: 'Tạo OKRs thành công',
-            });
-          });
-        } else {
-          setTimeout(() => {
-            this.loading = false;
-          }, 300);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      try {
-        const data = this.$store.state.okrs.objective;
-        await OkrsRepository.createOrUpdateOkrs(data).then((res) => {
-          this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
-          this.$store.commit(MutationState.OKRS_SET_FLAG);
-          this.syncActive = 0;
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'Tạo OKRs thành công',
-          });
-        });
-      } catch (error) {
-        this.loading = true;
-      }
+  private async createOkrs(isCreate: Boolean) {
+    this.loading = true;
+    const data = this.$store.state.okrs.objective;
+    let alignObjectives: Number[] = [];
+    if (this.itemsAlignOkrs.length !== 0) {
+      alignObjectives = this.itemsAlignOkrs.map((item) => item.id);
     }
+    this.$store.commit(MutationState.SET_OBJECTIVE, {
+      alignmentObjectives: alignObjectives,
+    });
+    await OkrsRepository.createOrUpdateOkrs(
+      this.$store.state.okrs.objective)
+      .then((res) => {
+      this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
+      this.$store.commit(MutationState.OKRS_SET_FLAG);
+      this.syncActive = 0;
+      });
+    this.$notify.success({
+      ...notificationConfig,
+      message: `${isCreate ? 'Tạo OKRs' : 'Cập nhật OKRs'} thành công`,
+    });
+    this.loading = false;
   }
 
   private deleteAlignOkrs(indexForm: number) {
@@ -159,7 +119,7 @@ export default class CreateAlignObjective extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .okrs-align {
   padding: 0 $unit-6 0 $unit-14;
@@ -170,42 +130,22 @@ export default class CreateAlignObjective extends Vue {
     place-content: center;
   }
   &__content {
-    display: flex;
-    flex-direction: row;
-    place-content: center space-between;
-    padding-bottom: $unit-8;
     .el-select {
       width: 100%;
     }
-    &--item {
-      width: 70%;
-      display: flex;
-      flex-direction: column;
-    }
-    &--button {
-      margin-left: $unit-10;
-      height: $unit-10;
-      &:hover {
-        span {
-          svg {
-            path {
-              fill: $white;
-            }
-          }
-        }
-      }
-      span {
-        display: flex;
-        place-items: center;
-        span {
-          padding-left: $unit-1;
-        }
-      }
-    }
   }
-  &__action {
-    @include okrs-button-action;
+  &__button {
+    margin-bottom: $unit-5;
+    width: calc(100% - 28px);
   }
+}
+.okrs-align__action {
+  display: flex;
+  align-content: center;
+  justify-content: flex-end;
+  place-content: center flex-end;
+  padding: 10px 1.25rem 0 1.25rem;
+  border-top: 1px solid #dfe3e8;
 }
 .confirm-button {
   padding: 0 $unit-6 0 $unit-6;

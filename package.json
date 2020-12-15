@@ -19,11 +19,6 @@
     "test:cov": "cross-env NODE_ENV=test jest --coverage --passWithNoTests",
     "test:e2e": " cross-env NODE_ENV=test jest --config ./test/jest-e2e.json"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "cross-env PRE_COMMIT=true ls-lint && lint-staged"
-    }
-  },
   "dependencies": {
     "@nuxt/types": "2.14.4",
     "@nuxt/typescript-runtime": "1.0.0",
