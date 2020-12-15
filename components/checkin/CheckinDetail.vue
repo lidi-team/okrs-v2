@@ -131,12 +131,14 @@
     <div class="checkinDetail__footer" v-if="role !== 'guest'">
       <el-button
         :disabled="isDisable"
+        v-if="role !== 'reviewer'"
         class="el-button--white"
         @click="handleCheckin('Draft')"
         >Lưu nháp</el-button
       >
       <el-button
         :disabled="isDisable"
+        v-if="role !== 'reviewer'"
         class="el-button--purple"
         :loading="loading"
         @click="handleCheckin('Pending')"
@@ -188,8 +190,8 @@ import { Maps, Rule } from '@/constants/app.type';
     if(role === 'guest') {
       this.isDisable = true
     } else if(role === 'user') {
-      this.checkinStatus === 'Draft' ? this.isDisable = false : this.isDisable = true
-    }else if(role === 'review') {
+      this.checkinStatus === 'Draft' || this.checkinStatus === 'Overdue' ? this.isDisable = false : this.isDisable = true
+    }else if(role === 'reviewer') {
       this.checkinStatus === 'Pending' ? this.isDisable = false : this.isDisable = true
     }
   },
