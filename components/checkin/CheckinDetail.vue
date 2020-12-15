@@ -104,12 +104,10 @@
               >
                 <el-date-picker
                   :disabled="isDisable"
-                  v-model="syncCheckin.nextCheckinDate"
+                  v-model="nextCheckinDate"
                   :clearable="false"
                   type="date"
                   :picker-options="pickerOptions"
-                  :format="dateFormat"
-                  :value-format="dateFormat"
                   placeholder="Chọn ngày checkin tiếp theo"
                 ></el-date-picker>
               </el-form-item>
@@ -122,7 +120,7 @@
               >
                 <el-checkbox
                   :disabled="isDisable"
-                  v-model="syncCheckin.isCompleted"
+                  v-model="isCompleted"
                 ></el-checkbox>
               </el-form-item>
             </el-col>
@@ -130,22 +128,22 @@
         </div>
       </el-form>
     </div>
-    <div class="checkinDetail__footer" v-show="!isDisable">
+    <div class="checkinDetail__footer" v-if="role !== 'guest'">
       <el-button
-        :disabled="syncCheckin.isCompleted"
+        :disabled="isDisable"
         class="el-button--white"
-        v-if="checkinStatus === 'Draft'"
         @click="handleCheckin('Draft')"
         >Lưu nháp</el-button
       >
       <el-button
+        :disabled="isDisable"
         class="el-button--purple"
         :loading="loading"
-        v-if="checkin.role === 'user' && checkinStatus === 'Draft'"
         @click="handleCheckin('Pending')"
         >Gửi yêu cầu</el-button
       >
       <el-button
+        :disabled="isDisable"
         class="el-button--purple"
         :loading="loading"
         v-if="checkin.role === 'reviewer'"
@@ -161,17 +159,14 @@ import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { Form } from 'element-ui';
 import { GetterState } from '@/constants/app.vuex';
+import { formatDate } from '@/utils/format';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import {
   statusCheckin,
   confidentLevel,
   notificationConfig,
 } from '@/constants/app.constant';
-import {
-  formatDateToYYYY,
-  formatDateToDD,
-  compareTwoDate,
-} from '@/utils/dateParser';
+import { formatDateToDD } from '@/utils/dateParser';
 import { Maps, Rule } from '@/constants/app.type';
 
 @Component<DetailHistory>({
@@ -182,25 +177,34 @@ import { Maps, Rule } from '@/constants/app.type';
     }),
   },
   mounted() {
-    this.checkinStatus = this.syncCheckin.checkin.status
-      ? this.syncCheckin.checkin.status
-      : 'Draft';
+    if(this.syncCheckin.checkin) {
+      const { status = 'Draft', nextCheckinDate = new Date(), id = null } =  this.syncCheckin.checkin
+      this.checkinStatus = status;
+      this.nextCheckinDate = nextCheckinDate;
+      this.idCheckin = id;
+    }
+    const { role = 'guest' } = this.syncCheckin
+    this.role = role
+    if(role === 'guest') {
+      this.isDisable = true
+    } else if(role === 'user') {
+      this.checkinStatus === 'Draft' ? this.isDisable = false : this.isDisable = true
+    }else if(role === 'review') {
+      this.checkinStatus === 'Pending' ? this.isDisable = false : this.isDisable = true
+    }
   },
 })
 export default class DetailHistory extends Vue {
   @PropSync('checkin', { type: Object }) syncCheckin!: any;
-  @Prop({ type: Boolean, required: true, default: false })
-  public readOnly!: Boolean;
   private tempCheckin: any;
-  private status = statusCheckin;
-  private dateFormat: string = 'dd/MM/yyyy';
   private dropdownConfident = confidentLevel;
   private loading: boolean = false;
-  private checkinStatus: string = '';
-
-  private isDisable() {
-    return this.readOnly;
-  }
+  private checkinStatus: string = 'Draft';
+  private isDisable: Boolean = false;
+  private nextCheckinDate: any = new Date();
+  private isCompleted: Boolean = false;
+  private idCheckin: Number | null = null;
+  private role: String = ''
 
   private customColors(confident) {
     return confident === 1
@@ -217,25 +221,23 @@ export default class DetailHistory extends Vue {
   };
 
   private async handleCheckin(status: String) {
+    this.loading = true
     const {
-      id,
-      nextCheckinDate,
-      progress,
+      objective,
       checkinDetail,
-      checkin,
     } = this.syncCheckin;
     const payload = {
-      id: checkin ? checkin.id : null,
-      objectiveId: id,
-      nextCheckinDate,
-      progress,
-      objectComplete: false,
+      id: this.idCheckin,
+      objectiveId: objective.id,
+      nextCheckinDate: formatDateToDD(this.nextCheckinDate),
+      progress: objective.progress ? objective.progress : 0,
+      objectComplete: this.isCompleted,
       status,
       checkinDetails: checkinDetail.map((item) => {
         return {
           id: item.id,
           targetValue: item.keyResult.targetedValue,
-          valueObtained: item.keyResult.targetedValue,
+          valueObtained: item.valueObtained,
           confidentLevel: item.confidentLevel,
           progress: item.progress,
           problems: item.problems,
@@ -245,7 +247,10 @@ export default class DetailHistory extends Vue {
       }),
     };
     const data = await CheckinRepository.createCheckin(payload);
-    console.log('hello', data);
+    if(status !== 'Draft') {
+      this.isDisable = true
+    }
+    this.loading = false
   }
 }
 </script>

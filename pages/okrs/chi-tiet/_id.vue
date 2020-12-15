@@ -15,10 +15,10 @@
         />
       </div>
       <div class="okrs-detail__content--align">
-        <span class="created">Được tạo bởi</span>
+        <span class="created">Được tạo bởi:</span>
         <span class="username">{{ objective.user.name }}</span>
         <span v-if="objective.parentObjective" class="alignedWith"
-          >Liên kết tới</span
+          >OKR cấp trên:</span
         >
         <nuxt-link
           :to="objective.parentObjective
@@ -31,7 +31,7 @@
             objective.parentObjective ? objective.parentObjective.name : ''
           }}
         </nuxt-link>
-        <span class="alignedBy">Được liên kết với</span>
+        <span class="alignedBy">Được liên kết với:</span>
         <div
           v-if="objective.alignmentObjectives.length"
           class="list-aligned-okrs"
