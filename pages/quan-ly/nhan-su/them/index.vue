@@ -122,13 +122,8 @@
               placeholder="Chọn ngày sinh"
               :format="dateFormat"
               :value-format="dateFormat"
+              :picker-options="pickerOptions"
             ></el-date-picker>
-          </el-form-item>
-          <el-form-item prop="gender" label="Giới tính">
-            <el-radio-group v-model="employee.gender">
-              <el-radio :label="1">Nam</el-radio>
-              <el-radio :label="0">Nữ</el-radio>
-            </el-radio-group>
           </el-form-item>
           <el-form-item
             prop="teamId"
@@ -148,6 +143,12 @@
                 :value="item.id"
               />
             </el-select>
+          </el-form-item>
+          <el-form-item prop="gender" label="Giới tính">
+            <el-radio-group v-model="employee.gender">
+              <el-radio :label="1">Nam</el-radio>
+              <el-radio :label="0">Nữ</el-radio>
+            </el-radio-group>
           </el-form-item>
           <el-form-item class="create-member-dialog__action">
             <el-button
@@ -198,6 +199,26 @@ export default class CreateEmployee extends Vue {
   private noDataText: string = 'Không có dữ liệu';
   private dateFormat: string = 'dd/MM/yyyy';
 
+  private employee: EmployeeDTO = {
+    fullName: '',
+    email: '',
+    roles: [],
+    departmentId: null,
+    gender: 1,
+    dob: '',
+  };
+
+  private validateEndDate(
+    rule: any,
+    value: any,
+    callback: (message?: string) => any,
+  ): (message?: string) => any {
+    if (compareTwoDate(value, new Date().toString()) === 1) {
+      return callback('Ngày sinh phải nhỏ hơn ngày hiện tại');
+    }
+    return callback();
+  }
+
   private rules: Maps<Rule[]> = {
     email: [
       {
@@ -223,26 +244,6 @@ export default class CreateEmployee extends Vue {
       { validator: this.validateEndDate, trigger: ['blur', 'change'] },
     ],
   };
-
-  private employee: EmployeeDTO = {
-    fullName: '',
-    email: '',
-    roles: [],
-    departmentId: null,
-    gender: 1,
-    dob: '',
-  };
-
-  private validateEndDate(
-    rule: any,
-    value: any,
-    callback: (message?: string) => any,
-  ): (message?: string) => any {
-    if (compareTwoDate(value, new Date().toString()) === 1) {
-      return callback('Ngày sinh phải nhỏ hơn ngày hiện tại');
-    }
-    return callback();
-  }
 
   private async createEmployee() {
     console.log('Employee', this.employee);
@@ -359,6 +360,12 @@ export default class CreateEmployee extends Vue {
       console.log(error);
     }
   }
+
+  private pickerOptions: any = {
+    disabledDate(time) {
+      return time.getTime() > Date.now();
+    },
+  };
 }
 </script>
 
