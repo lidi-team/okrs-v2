@@ -359,8 +359,8 @@ export default class KeyResult extends Vue {
     if (value < 0) {
       return callback('Giá trị phải là số không âm');
     }
-    if (value > this.tempKeyResult.targetValue) {
-      return callback('Giá trị bắt đầu đang lớn hơn giá trị mục tiêu');
+    if (value > this.tempKeyResult.targetedValue) {
+      return callback('Giá trị bắt đầu phải nhỏ hơn giá trị mục tiêu');
     }
     return callback();
   }
