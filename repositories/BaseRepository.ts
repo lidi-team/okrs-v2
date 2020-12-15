@@ -29,6 +29,12 @@ baseUrl.interceptors.request.use(
 
 baseUrl.interceptors.response.use(
   (response) => {
+    if (response.data.code === 201) {
+      Notification.success({
+        ...notificationConfig,
+        message: response.data.message,
+      });
+    }
     return response.data;
   },
   (error) => {
@@ -45,7 +51,13 @@ baseUrl.interceptors.response.use(
       case 404:
         window.location.href = `${process.env.baseURL}/404`;
         break;
-      case 440: // error already exist instance
+      case 400:
+        Notification.error({
+          ...notificationConfig,
+          message: error.response.data.message,
+        });
+        break;
+      case 440:
         Notification.error({
           ...notificationConfig,
           message: error.response.data.message,

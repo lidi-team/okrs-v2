@@ -29,7 +29,7 @@
       </el-table-column>
       <el-table-column label="Hành động" align="center" width="180">
         <template slot-scope="{ row }">
-          <nuxt-link :to="`checkin/yeu-cau/${row.id}`">
+          <nuxt-link :to="`/checkin/chi-tiet/${row.id}`">
             <el-button class="el-button--purple el-button--checkin"
               >Duyệt Check-in</el-button
             >
@@ -80,7 +80,7 @@ export default class RequestCheckin extends Vue {
     const page = this.$route.query.page ? this.$route.query.page : 1;
     const cycleId = this.$route.query.cycleId
       ? this.$route.query.cycleId
-      : this.$store.state.cycle.cycleCurrent.id;
+      : this.$store.state.cycle.cycleCurrent;
     const limit = this.$route.query.limit ? this.$route.query.limit : 10;
     const projectId = this.$route.query.projectId
       ? this.$route.query.projectId

@@ -248,7 +248,7 @@ export default class MyOkrsCheckin extends Vue {
     const page = this.$route.query.page ? this.$route.query.page : 1;
     const cycleId = this.$route.query.cycleId
       ? this.$route.query.cycleId
-      : this.$store.state.cycle.cycleCurrent.id;
+      : this.$store.state.cycle.cycleCurrent;
     const limit = this.$route.query.limit ? this.$route.query.limit : 10;
     const projectId = this.$route.query.projectId
       ? this.$route.query.projectId

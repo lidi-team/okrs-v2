@@ -127,13 +127,13 @@
           <div>
             <el-form-item
               v-if="isCreate"
-              prop="parentId"
-              label="Liên kết kết quả then chốt"
+              prop="keyResultParentId"
+              label="Liên kết kết quả then chốt "
               class="custom-label"
               label-width="190px"
             >
               <el-select
-                v-model="tempKeyResult.parentId"
+                v-model="tempKeyResult.keyResultParentId"
                 filterable
                 no-match-text="Không tìm thấy kết quả"
                 placeholder="Chọn kết quả then chốt "
@@ -211,7 +211,7 @@ import KeyResultRepository from '@/repositories/KeyResultRepository';
       this.$store.state.okrs.objective.parentId,
     );
     this.keyResultsParent = data;
-    console.log(this.keyResult, 'hello');
+    console.log(this.tempKeyResult, 'hello');
     this.loading = false;
   },
 })
@@ -221,7 +221,7 @@ export default class KeyResult extends Vue {
     required: true,
     default: () => ({
       content: '',
-      parentId: null,
+      keyResultParentId: null,
       linkPlans: '',
       linkResults: '',
       measureUnitId: 1,
@@ -330,6 +330,14 @@ export default class KeyResult extends Vue {
       },
       max255Char,
     ],
+    keyResultParentId: [
+      {
+        type: 'number',
+        required: true,
+        message: 'Vui lòng chọn OKRs cấp trên',
+        trigger: 'blur',
+      },
+    ],
   };
 
   private validateIsValidNumber(
@@ -351,8 +359,8 @@ export default class KeyResult extends Vue {
     if (value < 0) {
       return callback('Giá trị phải là số không âm');
     }
-    if (value > this.tempKeyResult.targetValue) {
-      return callback('Giá trị bắt đầu đang lớn hơn giá trị mục tiêu');
+    if (value > this.tempKeyResult.targetedValue) {
+      return callback('Giá trị bắt đầu phải nhỏ hơn giá trị mục tiêu');
     }
     return callback();
   }

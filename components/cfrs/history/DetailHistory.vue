@@ -9,7 +9,7 @@
     <el-row :gutter="20">
       <el-col :span="7" class="detail-history__attribute">Ngày Check-in</el-col>
       <el-col :span="17" class="detail-history__value">{{
-        new Date(itemData.createAt) | dateFormat('DD/MM/YYYY')
+        new Date(itemData.createdAt) | dateFormat('DD/MM/YYYY')
       }}</el-col>
     </el-row>
     <!-- Nếu là Recognition -->

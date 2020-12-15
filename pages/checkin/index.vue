@@ -95,7 +95,7 @@ export default class CheckinPage extends Vue {
     page: this.$route.query.page ? this.$route.query.page : 1,
     cycleId: this.$route.query.cycleId
       ? this.$route.query.cycleId
-      : String(this.$store.state.cycle.cycleCurrent.id),
+      : String(this.$store.state.cycle.cycleCurrent),
     limit: this.$route.query.limit ? this.$route.query.limit : 10,
     projectId: this.$route.query.projectId
       ? this.$route.query.projectId

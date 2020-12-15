@@ -44,7 +44,7 @@
               @click="addNewAlignOkrs"
             >
               <icon-add-krs />
-              <span>Thêm Okrs liên kết chéo</span>
+              <span>Thêm OKRs liên kết chéo</span>
             </el-button>
           </div>
         </div>
@@ -73,7 +73,6 @@ import {
   notificationConfig,
   confirmWarningConfig,
 } from '@/constants/app.constant';
-// components
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
 import AlignOkrsForm from '@/components/okrs/add-update/AlignObjective.vue';
 @Component<AlignOkrsDialog>({
@@ -108,7 +107,6 @@ export default class AlignOkrsDialog extends Vue {
   @PropSync('visibleDialog', { type: Boolean, required: true })
   public syncAlignDialog!: boolean;
   @Prop({ type: Object, required: true }) public temporaryOkrs!: any;
-
   private itemsAlignOkrs: any = [];
   private loading: boolean = false;
   private formLoading: boolean = false;
@@ -116,7 +114,6 @@ export default class AlignOkrsDialog extends Vue {
     ? this.temporaryOkrs.parentObjectiveId
     : null;
   private listOkrs: any[] = [];
-
   private handleDataDialog() {
     const numberForms = this.itemsAlignOkrs.length;
     const form = this.$refs.alignForms;
@@ -128,7 +125,6 @@ export default class AlignOkrsDialog extends Vue {
     }
     this.syncAlignDialog = false;
   }
-
   private addNewAlignOkrs() {
     this.formLoading = true;
     this.itemsAlignOkrs.push({ objectiveId: null });
@@ -136,7 +132,6 @@ export default class AlignOkrsDialog extends Vue {
       this.formLoading = false;
     }, 300);
   }
-
   private handleCloseDialog() {
     this.$confirm(
       'Những thay đổi sẽ không được lưu, bạn có chắc chắn muốn thoát ra ngoài?',
@@ -145,7 +140,6 @@ export default class AlignOkrsDialog extends Vue {
       this.handleDataDialog();
     });
   }
-
   private async updateAlignOkrs() {
     const tempAlignOkrs: Set<Number> = new Set();
     // Check validate each forms
@@ -211,7 +205,6 @@ export default class AlignOkrsDialog extends Vue {
       }
     }
   }
-
   private deleteAlignOkrs(indexForm: number) {
     this.formLoading = true;
     this.itemsAlignOkrs.splice(indexForm, 1);
@@ -219,7 +212,6 @@ export default class AlignOkrsDialog extends Vue {
       this.formLoading = false;
     }, 300);
   }
-
   private async getListOkrs() {
     const cycleId = this.$store.state.cycle.cycleTemp
       ? this.$store.state.cycle.cycleTemp
@@ -234,11 +226,9 @@ export default class AlignOkrsDialog extends Vue {
       });
     }
   }
-
   private isTeamLeader(): boolean {
     return this.$store.state.auth.user.isLeader;
   }
-
   private okrsLeaderFormat(item) {
     return `[${item.user.email}] ${item.title}`;
   }

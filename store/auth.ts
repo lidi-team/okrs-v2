@@ -29,6 +29,7 @@ export type RootState = ReturnType<typeof state>;
 export const getters: GetterTree<RootState, RootState> = {
   token: (state) => state.token,
   user: (state) => state.user,
+  roles: (state) => state.user.roles,
 };
 
 export const mutations: MutationTree<RootState> = {

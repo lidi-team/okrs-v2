@@ -1,20 +1,8 @@
 <template>
-  <div v-loading.fullscreen.lock="fullscreenLoading" class="okrs-detail">
-    <el-page-header title="Okrs Dashboard" @back="goToOkrsDashboard" />
+  <div class="okrs-detail">
+    <el-page-header title="Quay lại" @back="goBack" />
     <div class="okrs-detail--top-action">
       <span class="okrs-detail--top-action__title">Chi tiết mục tiêu</span>
-      <div class="okrs-detail--top-action__button">
-        <el-button
-          class="el-button el-button--white el-button--medium"
-          @click="deleteOkrs(objective.id)"
-          >Xóa</el-button
-        >
-        <el-button
-          class="el-button el-button--purple el-button--medium"
-          @click="updateOkrs(objective.id)"
-          >Cập nhật</el-button
-        >
-      </div>
     </div>
     <div class="okrs-detail__content">
       <div class="okrs-detail__content--overview">
@@ -32,19 +20,17 @@
         <span v-if="objective.parentObjective" class="alignedWith"
           >Liên kết tới</span
         >
-        <a
-          :href="
-            objective.parentObjective
-              ? `${$config.baseURL}/OKRs/chi-tiet/${objective.parentObjective.id}`
-              : null
+        <nuxt-link
+          :to="objective.parentObjective
+              ? `/OKRs/chi-tiet/${objective.parentObjective.id}`
+              : '#'
           "
-          target="_blank"
           class="parentOkrs"
         >
           {{
-            objective.parentObjective ? objective.parentObjective.name : null
+            objective.parentObjective ? objective.parentObjective.name : ''
           }}
-        </a>
+        </nuxt-link>
         <span class="alignedBy">Được liên kết với</span>
         <div
           v-if="objective.alignmentObjectives.length"
@@ -55,10 +41,7 @@
             :key="item.id"
             class="alignedOkrs"
           >
-            <a
-              :href="`${$config.baseURL}/OKRs/chi-tiet/${item.id}`"
-              target="_blank"
-              >{{ item.name }}</a
+            <nuxt-link :to="`/OKRs/chi-tiet/${item.id}`">{{ item.name }}</nuxt-link
             >
           </p>
         </div>
@@ -82,17 +65,12 @@
         </template>
       </div>
     </div>
-    <!-- <update-okrs-dialog :temporary-okrs="tempOkrs" :visible-dialog.sync="visibleDialog" :reload-data="reloadData" />  -->
   </div>
 </template>
+
 <script lang="ts">
-import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import {
-  confirmWarningConfig,
-  notificationConfig,
-} from '@/constants/app.constant';
-import { MutationState, DispatchAction } from '@/constants/app.vuex';
 import DetailOkrs from '@/components/okrs/detail/DetailOkrs.vue';
 
 @Component<OkrsDetailPage>({
@@ -114,81 +92,15 @@ import DetailOkrs from '@/components/okrs/detail/DetailOkrs.vue';
       console.log(error);
     }
   },
-  created() {
-    this.tempOkrs = this.objective;
-  },
-  mounted() {
-    this.$store.dispatch(DispatchAction.GET_MEASURE);
-  },
-  beforeRouteLeave(_, __, next) {
-    this.$store.dispatch(DispatchAction.CLEAR_MEASURE);
-    next();
-  },
 })
 export default class OkrsDetailPage extends Vue {
-  private visibleDialog: boolean = false;
-  private fullscreenLoading: boolean = false;
-
-  private tempOkrs: any = null;
-
-  private goToOkrsDashboard() {
-    this.$router.push('/OKRs');
-  }
-
-  private checkIsRootObjective(objective: any) {
-    return objective.childObjectives.lenght !== 0;
-  }
-
-  private deleteOkrs(okrsId: number) {
-    this.$confirm('Bạn có chắc chắn muốn xóa OKRs này không?', {
-      ...confirmWarningConfig,
-    }).then(async () => {
-      try {
-        await OkrsRepository.deleteOkrs(okrsId).then((res) => {
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'Xóa OKRs thành công',
-          });
-        });
-        this.$router.push('/OKRs');
-      } catch (error) {}
-    });
-  }
-
-  private async reloadData() {
-    this.fullscreenLoading = true;
-    try {
-      const { data } = await OkrsRepository.getOkrsDetail(
-        +this.$route.params.id,
-      );
-      // @ts-ignore
-      this.objective = Object.freeze(data.data);
-      // @ts-ignore
-      this.tempOkrs = this.objective;
-      setTimeout(() => {
-        this.fullscreenLoading = false;
-      }, 300);
-    } catch (error) {
-      setTimeout(() => {
-        this.fullscreenLoading = false;
-      }, 300);
-    }
-  }
-
-  /**
-   * Just display 2 buttons(Update & delete) when this user own this OKRs
-   */
-  private checkDisplayButtons(okrsId: number) {
-    const userId = +this.$store.state.auth.user.id;
-    return userId === okrsId;
-  }
-
-  private updateOkrs(okrsId: number) {
-    this.visibleDialog = true;
+  private goBack() {
+    this.$router.go(-1)
   }
 }
 </script>
-<style lang="scss">
+
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .okrs-detail {
   padding: $unit-12 $unit-10 0 $unit-8;
@@ -197,11 +109,6 @@ export default class OkrsDetailPage extends Vue {
     place-content: center space-between;
     &__title {
       font-size: $unit-7;
-    }
-    &__button {
-      button {
-        font-size: $unit-4;
-      }
     }
   }
   &__content {

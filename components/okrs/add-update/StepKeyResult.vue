@@ -13,7 +13,7 @@
         class="el-button el-button--white el-button--small add-krs-step__button"
         @click="addNewKRs"
       >
-        <span>Thêm KRs</span>
+        <span>Thêm key result</span>
       </el-button>
       <div class="add-krs-step__attention">
         <p class="add-krs-step__attention--title">Lưu ý:</p>
@@ -116,13 +116,10 @@ export default class CreateObjectiveStep extends Vue {
   private async nextStepThree() {
     const krs: any[] = [];
     let validForm: number = 0;
-    this.loading = true;
     if (this.keyResults.length === 0) {
-      setTimeout(() => {
-        this.loading = false;
-      }, 300);
       this.$message.error('Cần có ít nhất 1 kết quả then chốt');
     } else {
+      this.loading = true;
       (this.$refs.krsForm as any).forEach((form) => {
         (form.$refs.keyResult as Form).validate(
           (isValid: boolean, invalidatedFields: object) => {
@@ -132,21 +129,17 @@ export default class CreateObjectiveStep extends Vue {
           },
         );
         krs.push(Object.freeze(form.tempKeyResult));
+        this.loading = false;
       });
       if (validForm === krs.length) {
         this.$store.commit(MutationState.SET_KEY_RESULT, krs);
         const { data } = await ObjectiveRepository.getAlignObjective(
-          this.$store.state.cycle.cycleCurrent.id,
+          this.$store.state.cycle.cycleCurrent,
           this.$store.state.okrs.objective.projectId,
         );
         this.$store.commit(MutationState.SET_LIST_OBJECTIVE_ALIGN, data);
         this.syncActive++;
         this.loading = false;
-      } else {
-        setTimeout(() => {
-          this.loading = false;
-        }, 300);
-        this.$message.error('Vui lòng nhập đúng các trường yêu cầu');
       }
     }
   }
@@ -156,7 +149,7 @@ export default class CreateObjectiveStep extends Vue {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .add-krs-step {
   padding: 0 $unit-5;
@@ -166,23 +159,8 @@ export default class CreateObjectiveStep extends Vue {
     font-weight: $font-weight-medium;
   }
   &__button {
-    margin: $unit-4 0 $unit-4 0;
-    &:hover {
-      span {
-        svg {
-          path {
-            fill: $white;
-          }
-        }
-      }
-    }
-    span {
-      display: flex;
-      place-items: center;
-      span {
-        padding-left: $unit-1;
-      }
-    }
+    margin-bottom: $unit-5;
+    width: calc(100% - 28px);
   }
   &__attention {
     font-size: $unit-3;

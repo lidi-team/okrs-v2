@@ -129,11 +129,25 @@ export default class CreateObjective extends Vue {
       parentId,
       weight,
     };
-    const { data } = await ObjectiveRepository.getObjectivesProject(
-      3,
-      projectId,
-    );
-    this.listObjectiveParent = data || [];
+    if (this.$store.state.okrs.objective.type === 2) {
+      const { data } = await ObjectiveRepository.getObjectivesProject(
+        this.$store.state.cycle.cycleCurrent,
+        projectId,
+      );
+      this.listObjectiveParent = data || [];
+    } else if (this.$store.state.okrs.objective.type === 1) {
+      const { data } = await ObjectiveRepository.getListChildObjective(
+        this.$store.state.cycle.cycleCurrent,
+        0,
+      );
+      const listSelect = data.childObjectives.map((item) => {
+        return {
+          id: item.id,
+          name: item.title,
+        };
+      });
+      this.listObjectiveParent = listSelect || [];
+    }
   }
 
   private rules: Maps<Rule[]> = {
@@ -146,7 +160,7 @@ export default class CreateObjective extends Vue {
       },
       max255Char,
     ],
-    parentObjectiveId: [
+    parentId: [
       {
         type: 'number',
         required: true,

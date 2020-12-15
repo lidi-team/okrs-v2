@@ -5,22 +5,27 @@
       no-match-text="Không tìm thấy chu kỳ"
       filterable
       placeholder="Chọn chu kỳ"
-      @change="changeCycleData"
+      @change="handleSelectCycle(currentCycleId)"
     >
       <el-option
         v-for="cycle in cycles"
         :key="cycle.id"
-        :label="cycle.name"
-        :value="cycle.id"
+        :label="`Chu kỳ: ${cycle.name}`"
+        :value="String(cycle.id)"
       />
     </el-select>
+    <button-create-okr
+      v-if="roles.includes('ROLE_DIRECTOR')"
+      :type-objective="2"
+      name-objective="Công ty"
+      class="btn-create-objective-company"
+    />
     <div>
       <item-okrs
         v-for="item in projects"
         :key="item.id"
         :loading="loading"
         :project-id="item.id"
-        :type-objective="2"
         :title="item.name"
         :objectives="item.objectives"
         :is-manage="item.pm"
@@ -57,6 +62,7 @@ import {
   GetterState,
 } from '@/constants/app.vuex';
 
+import ButtonCreateOkr from '@/components/okrs/common/Button.vue';
 import ItemOkrs from '@/components/okrs/ItemOkrs.vue';
 import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
 import AddOkrs from '@/components/okrs/add-update/index.vue';
@@ -70,6 +76,7 @@ import CycleRepository from '@/repositories/CycleRepository';
     ItemOkrs,
     DetailKeyresult,
     AddOkrs,
+    ButtonCreateOkr,
   },
   head() {
     return {
@@ -79,12 +86,18 @@ import CycleRepository from '@/repositories/CycleRepository';
   computed: {
     ...mapGetters({
       flag: GetterState.OKRS_FLAG,
+      roles: GetterState.USER_ROLES,
     }),
   },
+  created() {
+    if (!this.$route.query.cycleId) {
+      this.$router.push(`?cycleId=${this.$store.state.cycle.cycleCurrent}`);
+    }
+    this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.$route.query.cycleId);
+    this.currentCycleId = this.$store.state.cycle.cycleCurrent;
+  },
   async mounted() {
-    this.currentCycleId = this.$route.query.cycleId
-      ? Number(this.$route.query.cycleId)
-      : this.$store.state.cycle.cycleCurrent.id;
+    this.currentCycleId = this.$route.query.cycleId;
     await this.getDashBoardOkrs();
     await this.getCycles();
   },
@@ -96,7 +109,7 @@ export default class OKRsPage extends Vue {
   private listKrs: any[] = [];
   private cycles: any[] = [];
   private visibleDetailKrs: boolean = false;
-  private currentCycleId: number = 0;
+  private currentCycleId: string = '';
 
   private openDrawer(keyResults: any) {
     this.listKrs = keyResults;
@@ -104,8 +117,12 @@ export default class OKRsPage extends Vue {
   }
   private projects: any[] = [];
 
-  @Watch('flag')
+  @Watch('$route.query')
   private async changeDialog(value) {
+    await this.getDashBoardOkrs();
+  }
+  @Watch('flag')
+  private async changeReload(value) {
     await this.getDashBoardOkrs();
   }
 
@@ -117,7 +134,9 @@ export default class OKRsPage extends Vue {
   private async getDashBoardOkrs() {
     try {
       const { data } = await OkrsRepository.getListOkrsByCycleId(
-        this.currentCycleId,
+        this.$route.query.cycleId
+          ? Number(this.$route.query.cycleId)
+          : Number(this.$store.state.cycle.cycleCurrent),
       );
       this.projects = Object.freeze(data);
       this.loading = false;
@@ -128,13 +147,14 @@ export default class OKRsPage extends Vue {
     }
   }
 
-  private changeCycleData() {
-    this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.currentCycleId);
-    this.$store.commit(MutationState.OKRS_SET_FLAG);
+  private handleSelectCycle(cycleId) {
+    this.$store.commit(MutationState.SET_CURRENT_CYCLE, cycleId);
+    this.$router.push(`?cycleId=${cycleId}`);
   }
 }
 </script>
-<style lang="scss">
+
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .okrs-page {
   width: 100%;
@@ -169,6 +189,10 @@ export default class OKRsPage extends Vue {
   }
   .el-table__empty-block {
     width: 100% !important;
+  }
+  .btn-create-objective-company {
+    margin-top: 1rem;
+    width: 100%;
   }
 }
 .create-okr-dropdown {

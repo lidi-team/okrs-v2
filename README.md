@@ -29,3 +29,9 @@ OKRs Tool
 | hiepdqse05627@fpt.edu.vn  | Leader      |
 | quangnvse05839@fpt.edu.vn | Admin       |
 | nhattqse05439@fpt.edu.vn  | Staff       |
+
+"husky": {
+"hooks": {
+"pre-commit": "cross-env PRE_COMMIT=true ls-lint && lint-staged"
+}
+},

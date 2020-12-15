@@ -128,7 +128,7 @@ import { MutationState } from '@/constants/app.vuex';
   },
 })
 export default class Rank extends Vue {
-  private cycleId: number = this.$store.state.cycle.cycleCurrent.id;
+  private cycleId: number = this.$store.state.cycle.cycleCurrent;
   private loadingTab: boolean = false;
   private loadingCurrentRanking: boolean = false;
   private accumulatedRanking: any = [];
@@ -142,7 +142,7 @@ export default class Rank extends Vue {
     try {
       const [accumulatedRanking, currentRanking] = await Promise.all([
         CfrsRepository.getRankingCfrs(0),
-        CfrsRepository.getRankingCfrs(this.$store.state.cycle.cycleCurrent.id),
+        CfrsRepository.getRankingCfrs(this.$store.state.cycle.cycleCurrent),
       ]);
       this.accumulatedRanking = accumulatedRanking.data;
       this.currentRanking = currentRanking.data;

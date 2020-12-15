@@ -11,6 +11,7 @@ export enum DispatchAction {
 
 export enum GetterState {
   USER = 'auth/user',
+  USER_ROLES = 'auth/roles',
   CYCLE_TEMP = 'cycle/cycleTemp',
   CYCLE_CURRENT = 'cycle/cycleCurrent',
   OKRS_FLAG = 'okrs/flag',

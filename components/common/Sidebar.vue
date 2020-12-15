@@ -29,7 +29,7 @@
         </div>
       </nuxt-link>
       <nuxt-link
-        to="/OKRs"
+        :to="`/okrs?cycleId=${this.$store.state.cycle.cycleCurrent}`"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isOkrsActive }]"
       >
         <div class="sidebar__link__tab">
@@ -141,7 +141,9 @@ export default class SideBar extends Vue {
   }
 
   private get isOkrsActive() {
-    return !!this.$route.path.startsWith('/OKRs');
+    return !!this.$route.path.startsWith(
+      `/okrs?cycleId=${this.$store.state.cycle.cycleCurrent}`,
+    );
   }
 
   private get isSettingCompanyActive() {

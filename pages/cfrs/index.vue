@@ -71,7 +71,7 @@ import CfrsRecognition from '@/components/cfrs/recognition/index.vue';
   created() {
     this.$store.commit(
       MutationState.SET_TEMP_CYCLE,
-      this.$store.state.cycle.cycleCurrent.id,
+      this.$store.state.cycle.cycleCurrent,
     );
   },
 })

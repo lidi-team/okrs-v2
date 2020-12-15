@@ -3,6 +3,7 @@
     class="el-button el-button--small el-button--purple"
     icon="el-icon-plus"
     @click="showDialog"
+    :disabled="isDisable"
     >Tạo OKRs {{ nameObjective }}</el-button
   >
 </template>
@@ -30,6 +31,10 @@ export default {
       type: Number,
       default: 0,
     },
+    isDisable: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     ...mapGetters({

@@ -7,7 +7,7 @@
     >
       <el-form-item prop="objectiveId">
         <el-select
-          v-model.number="syncAlignOkrs.objectiveId"
+          v-model.number="syncAlignOkrs.id"
           filterable
           no-match-text="Không tìm thấy kết quả"
           placeholder="Chọn OKRs liên kết chéo"
@@ -22,7 +22,6 @@
       </el-form-item>
     </el-form>
     <div
-      v-if="indexAlignForm !== 0"
       class="align-okrs-form__delete"
       @click="deleteAlignOkrs(indexAlignForm)"
     >
@@ -39,9 +38,10 @@ import OkrsRepository from '@/repositories/OkrsRepository';
 import { Maps, Rule } from '@/constants/app.type';
 import { ObjectiveAlignDTO } from '@/components/okrs/add-update/constants';
 import ObjectiveRepository from '@/repositories/ObjectiveRepository';
+import { itemCfrsDefault } from '@/components/cfrs/history/history.const';
 
 @Component<AlignObjective>({
-  name: 'InputAlignOkrs',
+  name: 'AlignObjective',
   components: {
     IconDelete,
   },
@@ -86,7 +86,7 @@ export default class AlignObjective extends Vue {
     &:hover {
       cursor: pointer;
     }
-    margin-right: -4.675rem;
+    margin-left: $unit-2;
     margin-top: $unit-2;
   }
 }

@@ -48,7 +48,7 @@
         </el-table-column>
         <el-table-column label="Hành động" align="center" width="180">
           <template slot-scope="{ row }">
-            <nuxt-link :to="`/checkin/lich-su/chi-tiet/${row.id}`">
+            <nuxt-link :to="`/checkin/chi-tiet/${row.id}`">
               <el-button class="el-button--white el-button--checkin"
                 >Xem chi tiết</el-button
               >
