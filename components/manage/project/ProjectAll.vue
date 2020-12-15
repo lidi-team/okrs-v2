@@ -131,9 +131,8 @@
                 v-model="tempUpdateProject.startDate"
                 format="dd/MM/yyyy"
                 value-format="dd/MM/yyyy"
-                :picker-options="pickerOptions"
                 type="date"
-                placeholder="Chọn ngày sinh"
+                placeholder="Chọn ngày bắt đầu"
               ></el-date-picker>
             </el-form-item>
             <el-form-item
@@ -147,9 +146,8 @@
                 v-model="tempUpdateProject.endDate"
                 format="dd/MM/yyyy"
                 value-format="dd/MM/yyyy"
-                :picker-options="pickerOptions"
                 type="date"
-                placeholder="Chọn ngày sinh"
+                placeholder="Chọn ngày kết thúc"
               ></el-date-picker>
             </el-form-item>
             <el-form-item
@@ -364,12 +362,6 @@ export default class ProjectAll extends Vue {
     updateUserForm.clearValidate();
     this.dialogUpdateVisible = false;
   }
-
-  private pickerOptions: any = {
-    disabledDate(time) {
-      return time.getTime() > Date.now();
-    },
-  };
 
   getManager(pmId: number) {
     let pm = '';
