@@ -71,7 +71,7 @@ export default class NavbarCrfs extends Vue {
   private textSearch: string = '';
   private allUsers: any[] = [];
   private listCycles: any[] = [];
-  private cycleId: number = this.$store.state.cycle.cycleCurrent.id;
+  private cycleId: number = this.$store.state.cycle.cycleCurrent;
 
   private querySearch(textQuery: string, callback: any) {
     let results: any[] = [];

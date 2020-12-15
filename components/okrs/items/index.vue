@@ -119,7 +119,7 @@ import KeyResult from '@/components/okrs/items/kr.vue';
   async mounted() {
     const objectiveId = this.$route.query.objectiveId;
     const { data } = await DrillDownRepository.get(
-      this.cycleCurrent.id,
+      this.cycleCurrent,
       objectiveId,
     );
     this.title = data.title;

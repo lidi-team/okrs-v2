@@ -122,7 +122,7 @@ import KeyResult from '@/components/okrs/items/kr.vue';
   },
   async mounted() {
     const { data } = await DrillDownRepository.get(
-      this.cycleCurrent.id,
+      this.cycleCurrent,
       this.idSelected,
     );
     console.log('data drill down', data);

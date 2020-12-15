@@ -91,9 +91,10 @@ import CycleRepository from '@/repositories/CycleRepository';
   },
   created() {
     if (!this.$route.query.cycleId) {
-      this.$router.push(`?cycleId=${this.$store.state.cycle.cycleCurrent.id}`);
-      this.currentCycleId = this.$store.state.cycle.cycleCurrent.id;
+      this.$router.push(`?cycleId=${this.$store.state.cycle.cycleCurrent}`);
     }
+    this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.$route.query.cycleId);
+    this.currentCycleId = this.$store.state.cycle.cycleCurrent;
   },
   async mounted() {
     this.currentCycleId = this.$route.query.cycleId;
@@ -135,7 +136,7 @@ export default class OKRsPage extends Vue {
       const { data } = await OkrsRepository.getListOkrsByCycleId(
         this.$route.query.cycleId
           ? Number(this.$route.query.cycleId)
-          : Number(this.$store.state.cycle.cycleCurrent.id),
+          : Number(this.$store.state.cycle.cycleCurrent),
       );
       this.projects = Object.freeze(data);
       this.loading = false;
@@ -147,6 +148,7 @@ export default class OKRsPage extends Vue {
   }
 
   private handleSelectCycle(cycleId) {
+    this.$store.commit(MutationState.SET_CURRENT_CYCLE, cycleId);
     this.$router.push(`?cycleId=${cycleId}`);
   }
 }

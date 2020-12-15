@@ -18,7 +18,7 @@ export default async function ({ redirect, store, query }) {
           CycleRepository.getCycleCurrent(query.cycleId ? query.cycleId : 5),
         ]);
         store.commit(MutationState.SET_USER, user.data);
-        store.commit(MutationState.SET_CURRENT_CYCLE, currentCycle.data);
+        store.commit(MutationState.SET_CURRENT_CYCLE, currentCycle.data.id);
       }
     }
   } catch (error) {

@@ -179,7 +179,7 @@ export default class OKRsItem extends Vue {
         parentId: data.parentObjective.id,
         type,
         weight,
-        cycleId: this.$store.state.cycle.cycleCurrent.id,
+        cycleId: this.$store.state.cycle.cycleCurrent,
         alignmentObjectives: data.alignmentObjectives,
         keyResults,
       };

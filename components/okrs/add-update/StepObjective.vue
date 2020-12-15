@@ -131,13 +131,13 @@ export default class CreateObjective extends Vue {
     };
     if (this.$store.state.okrs.objective.type === 2) {
       const { data } = await ObjectiveRepository.getObjectivesProject(
-        this.$store.state.cycle.cycleCurrent.id,
+        this.$store.state.cycle.cycleCurrent,
         projectId,
       );
       this.listObjectiveParent = data || [];
     } else if (this.$store.state.okrs.objective.type === 1) {
       const { data } = await ObjectiveRepository.getListChildObjective(
-        this.$store.state.cycle.cycleCurrent.id,
+        this.$store.state.cycle.cycleCurrent,
         0,
       );
       const listSelect = data.childObjectives.map((item) => {

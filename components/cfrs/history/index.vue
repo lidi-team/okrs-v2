@@ -230,7 +230,7 @@ export default class History extends Vue {
   private loadingTab: boolean = false;
 
   private visibleDetailDialog = false;
-  private cycleTempId: number = this.$store.state.cycle.cycleCurrent.id;
+  private cycleTempId: number = this.$store.state.cycle.cycleCurrent;
 
   private sentItems: any[] = [];
   private receivedItems: any[] = [];
@@ -276,7 +276,7 @@ export default class History extends Vue {
   private async infiniteSentHandler(stateChanger: StateChanger) {
     this.sentContext.cycleId = this.$store.state.cycle.cycleTemp
       ? this.$store.state.cycle.cycleTemp
-      : this.$store.state.cycle.cycleCurrent.id;
+      : this.$store.state.cycle.cycleCurrent;
     this.sentContext.userId = this.$store.state.user.tempUser
       ? this.$store.state.user.tempUser.id
       : this.$store.state.auth.user.id;
@@ -295,7 +295,7 @@ export default class History extends Vue {
   private async infiniteReceivedHandler(stateChanger: StateChanger) {
     this.receivedContext.cycleId = this.$store.state.cycle.cycleTemp
       ? this.$store.state.cycle.cycleTemp
-      : this.$store.state.cycle.cycleCurrent.id;
+      : this.$store.state.cycle.cycleCurrent;
     this.receivedContext.userId = this.$store.state.user.tempUser
       ? this.$store.state.user.tempUser.id
       : this.$store.state.auth.user.id;
@@ -317,7 +317,7 @@ export default class History extends Vue {
   private async infiniteAllHandler(stateChanger: StateChanger) {
     this.allContext.cycleId = this.$store.state.cycle.cycleTemp
       ? this.$store.state.cycle.cycleTemp
-      : this.$store.state.cycle.cycleCurrent.id;
+      : this.$store.state.cycle.cycleCurrent;
     this.allContext.userId = this.$store.state.user.tempUser
       ? this.$store.state.user.tempUser.id
       : this.$store.state.auth.user.id;
