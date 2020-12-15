@@ -120,6 +120,10 @@ export default class OKRsPage extends Vue {
   private async changeDialog(value) {
     await this.getDashBoardOkrs();
   }
+  @Watch('flag')
+  private async changeReload(value) {
+    await this.getDashBoardOkrs();
+  }
 
   private async getCycles() {
     const { data } = await CycleRepository.getListMetadata();

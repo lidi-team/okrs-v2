@@ -27,7 +27,7 @@ import {
   notificationConfig,
 } from '@/constants/app.constant';
 import { DialogTooltipAction } from '@/constants/app.interface';
-import { MutationState } from '@/constants/app.vuex';
+import { MutationState, DispatchAction } from '@/constants/app.vuex';
 
 import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 
@@ -61,6 +61,7 @@ export default class OkrsActionTooltip extends Vue {
           message: 'Xóa OKRs thành công',
         });
       });
+      this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
     });
   }
 }
