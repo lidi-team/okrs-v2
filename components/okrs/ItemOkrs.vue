@@ -1,8 +1,8 @@
 <template>
   <div v-if="objectives" class="item-okrs box-wrap">
-    <div class="-display-flex -justify-content-between">
+    <div class="-display-flex -justify-content-between item-okrs__header">
       <h2 class="item__header">{{ title }}</h2>
-      <div class="-display-flex -align-items-center">
+      <div class="-display-flex -align-items-center item-okrs__icon">
         <button-create-okr
           v-if="isManage"
           :type-objective="1"
@@ -65,6 +65,7 @@
                   class="expand__infor--action__tooltip"
                   :isManage="true"
                   :canDelete="objective.delete"
+                  :canUpdate="row.update"
                   @updateOKRs="updateOKRs(objective)"
                 />
               </div>
@@ -207,6 +208,12 @@ export default class OKRsItem extends Vue {
   transform: perspective(1px) translateZ(0);
   transition-property: transform;
   transition-duration: 0.3s;
+  &__header {
+    border-bottom: 1px $neutral-primary-1 solid;
+  }
+  &__icon {
+    padding: $unit-2 0;
+  }
   &:hover {
     transform: translateY(-3px);
   }
@@ -229,7 +236,7 @@ export default class OKRsItem extends Vue {
       font-size: $text-xl;
       text-shadow: 0px 4px 10px rgba(33, 43, 54, 0.15),
     0px 4px 40px rgba(33, 43, 54, 0.15);
-      padding: 0 0 $unit-2 0;
+      padding: $unit-2 0;
     }
     &__table-header {
       > th {
