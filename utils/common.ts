@@ -3,11 +3,11 @@ const mediumPercent: number = 70;
 
 export const customColors = (percentage: number): string => {
   if (percentage < lowPercent) {
-    return '#9f7aea'; // Purple-500
+    return '#DB2777';
   } else if (percentage < mediumPercent) {
-    return '#805ad5'; // Purple-600
+    return '#BE185D';
   } else {
-    return '#50248f'; // primary-purple-4
+    return '#9D174D';
   }
 };
 
