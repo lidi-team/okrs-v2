@@ -1,6 +1,6 @@
 <template>
   <div class="listHistory">
-    <el-page-header title="OKRs của tôi" @back="goBack" />
+    <el-page-header title="Quay lại" @back="goBack" />
     <h1 class="listHistory__title">Lịch sử Check-in</h1>
       <el-table
         v-loading="loading"

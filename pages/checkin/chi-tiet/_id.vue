@@ -1,11 +1,11 @@
 <template>
-  <div class="historyDetailPage">
+  <div>
     <el-page-header title="Quay lại" @back="goBack" />
     <h1>Chi tiết Check-in</h1>
-    <el-row :gutter="30">
-      <el-col :sm="24" :lg="12">
-        <div class="box-wrap">
-          <h2 class="-title-2 -border-header">Check-in mục tiêu</h2>
+    <el-row :gutter="32">
+      <el-col :sm="24" :lg="8">
+        <div class="box-wrap height-detail">
+          <h2 class="-title-2 -border-header">Thông tin chi tiết</h2>
           <div class="top-checkin__content content">
             <table class="properties">
               <tbody v-if="checkin">
@@ -43,19 +43,14 @@
           </div>
         </div>
       </el-col>
-      <el-col :sm="24" :lg="12">
-        <div class="box-wrap">
-          <h2 class="-title-2 -border-header">Cập nhật tiến độ</h2>
-          <p>hello</p>
-        </div>
+      <el-col :sm="24" :lg="16">
+        <checkin-chart-process
+          class="top-checkin"
+          v-if="checkin"
+          :checkin.sync="checkin.chart"
+        />
       </el-col>
     </el-row>
-    
-    <checkin-chart-process
-      class="top-checkin"
-      v-if="checkin"
-      :checkin.sync="checkin.chart"
-    />
     <checkin-detail v-if="checkin" :checkin.sync="checkin" read-only />
   </div>
 </template>
@@ -101,6 +96,9 @@ export default class DetailHistoryPage extends Vue {
 </script>
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
+.height-detail {
+  height: 500px;
+}
 .top-checkin {
   margin-bottom: $unit-8;
   background-color: $white;

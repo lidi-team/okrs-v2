@@ -1,9 +1,57 @@
 <template>
-  <div class="checkinDetail">
-    <slot name="chartOKRs" />
+  <el-form ref="checkinRuleForm" label-position="left" :model="syncCheckin" class="checkinDetail">
+    <el-row :gutter="32">
+       <el-col :sm="24" :lg="8">
+        <div class="box-wrap height-290">
+          <h2 class="-title-2 -border-header">Cài đặt</h2>
+          <el-form-item
+            class="-mt-3"
+            label-width="40%"
+            :prop="'nextCheckinDate'"
+            label="Ngày check-in tiếp theo"
+          >
+            <el-date-picker
+              :disabled="isDisable"
+              v-model="nextCheckinDate"
+              :clearable="false"
+              type="date"
+              :picker-options="pickerOptions"
+              placeholder="Chọn ngày checkin tiếp theo"
+            ></el-date-picker>
+          </el-form-item>
+           <el-form-item
+            label-width="40%"
+            :prop="'isCompleted'"
+            label="Hoàn thành OKRs"
+          >
+            <el-checkbox
+              :disabled="isDisable"
+              v-model="isCompleted"
+            >Hoàn thành</el-checkbox>
+          </el-form-item>
+        </div>
+      </el-col>
+      <el-col :sm="24" :lg="8">
+        <div class="box-wrap height-290">
+          <h2 class="-title-2 -border-header">Tiến độ thực tế</h2>
+          <div class="-text-center">
+            <el-progress class="-mt-3"  type="dashboard" :percentage="progress" :color="customColors" :stroke-width="10"></el-progress>
+            <el-input-number :disabled="isDisable" class="-display-block -m-auto" v-model="progress" :min="0"></el-input-number>
+          </div>
+        </div>
+      </el-col>
+      <el-col :sm="24" :lg="8">
+        <div class="box-wrap height-290">
+          <h2 class="-title-2 -border-header">Tiến độ gợi ý</h2>
+          <div class="-text-center">
+            <el-progress class="-mt-3" type="dashboard" :percentage="progressSuggest" :color="customColors" :stroke-width="10"></el-progress>
+          </div>
+        </div>
+      </el-col>
+    </el-row>
     <div v-if="user" class="box-wrap">
-      <h2 class="-title-2 -border-header">Cập nhật tiến độ</h2>
-      <el-form ref="checkinRuleForm" label-position="left" :model="syncCheckin">
+      <h2 class="-title-2 -border-header">Cập nhật chi tiết</h2>
+      <div>
         <el-table
           empty-text="Không có dữ liệu"
           class="checkinDetail__form"
@@ -109,50 +157,7 @@
             </template>
           </el-table-column>
         </el-table>
-        <div class="checkinDetail__bottom">
-          <el-row>
-            <el-col :sm="12" :lg="8">
-              <el-form-item
-                label-width="200"
-                :prop="'nextCheckinDate'"
-                label="Tiến độ thực tế"
-              >
-                <el-date-picker
-                  :disabled="isDisable"
-                  v-model="nextCheckinDate"
-                  :clearable="false"
-                  type="date"
-                  :picker-options="pickerOptions"
-                  placeholder="Chọn ngày checkin tiếp theo"
-                ></el-date-picker>
-              </el-form-item>
-               <el-form-item
-                label-width="200"
-                :prop="'isCompleted'"
-                label="Hoàn thành OKRs"
-              >
-                <el-checkbox
-                  :disabled="isDisable"
-                  v-model="isCompleted"
-                >Hoàn thành</el-checkbox>
-              </el-form-item>
-            </el-col>
-            <el-col :sm="6" :lg="8">
-              <div class="-text-center">
-                <h3>Tiến độ thực tế</h3>
-                <el-progress type="dashboard" :percentage="progress" :color="customColors" :stroke-width="10"></el-progress>
-                <el-input-number class="-display-block -m-auto" v-model="progress" :min="0"></el-input-number>
-              </div>
-            </el-col>
-            <el-col :sm="6" :lg="8">
-              <div class="-text-center">
-                <h3>Tiến độ gợi ý</h3>
-                <el-progress type="dashboard" :percentage="progressSuggest" :color="customColors" :stroke-width="10"></el-progress>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-      </el-form>
+      </div>
     </div>
     <div class="checkinDetail__footer" v-if="role !== 'guest'">
       <el-button
@@ -179,7 +184,7 @@
         >Duyệt Check-in</el-button
       >
     </div>
-  </div>
+  </el-form>
 </template>
 
 <script lang="ts">
@@ -304,15 +309,13 @@ export default class DetailHistory extends Vue {
   &__form {
     background-color: $white;
   }
-  &__bottom {
-    margin-top: $unit-4;
-    padding: $unit-6;
-    background-color: $white;
-  }
   &__footer {
     margin-top: $unit-4;
     margin-bottom: $unit-4;
     float: right;
   }
+}
+.height-290 {
+  height: 290px;
 }
 </style>
