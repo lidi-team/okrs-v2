@@ -276,7 +276,7 @@ export default class ProjectAll extends Vue {
   @Prop(Function) readonly getListProject;
   @Prop(Array) readonly managers!: Array<any>;
   @Prop(Array) readonly originalProjects!: Array<object>;
-  private weightColor: string = '#50248f';
+  private weightColor: string = '#9D174D';
 
   private loadingTable: boolean = false;
   private loading: boolean = false;
