@@ -2,7 +2,6 @@
   <div class="listHistory">
     <el-page-header title="OKRs của tôi" @back="goBack" />
     <h1 class="listHistory__title">Lịch sử Check-in</h1>
-    <div class="listHistory__content">
       <el-table
         v-loading="loading"
         empty-text="Không có dữ liệu"
@@ -56,7 +55,6 @@
           </template>
         </el-table-column>
       </el-table>
-    </div>
   </div>
 </template>
 <script lang="ts">
@@ -115,10 +113,6 @@ export default class HistoryCheckin extends Vue {
   &__title {
     font-size: $text-2xl;
     padding-bottom: $unit-10;
-  }
-  &__content {
-    background-color: $white;
-    padding: $unit-8;
   }
 }
 </style>

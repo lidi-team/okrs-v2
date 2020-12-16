@@ -117,8 +117,6 @@ export default class CheckinChartProcess extends Vue {
           },
         },
       ],
-      dataZoom: [
-      ],
       series: [
         {
           name: 'Tiến độ',

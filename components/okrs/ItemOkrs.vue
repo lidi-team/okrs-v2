@@ -112,6 +112,7 @@
               :id="row.id"
               :is-manage="isManage"
               :canDelete="row.delete"
+              :canUpdate="row.update"
               @updateOKRs="updateOKRs(row)"
             />
           </div>
