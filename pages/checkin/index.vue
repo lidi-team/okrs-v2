@@ -117,7 +117,7 @@ export default class CheckinPage extends Vue {
 
   private handleSelectCycle(cycleId) {
     this.$router.push(
-      `?tab=${this.paramsCheckin.tab}&cycleId=${cycleId}&page=1&projectId=${this.paramsCheckin.projectId}`,
+      `?tab=${this.$route.query.tab}&cycleId=${cycleId}&page=1&projectId=${this.paramsCheckin.projectId}`,
     );
   }
 
