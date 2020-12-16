@@ -172,6 +172,7 @@ export default class SideBar extends Vue {
   z-index: 99;
   width: 160px;
   background-color: $white;
+  border-right: 1px $purple-primary-7 solid;
   @include breakpoint-down(tablet) {
     width: 60px;
   }

@@ -134,7 +134,7 @@ export default class DetailFeedback extends Vue {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .detail-feedback {
   padding: $unit-4;

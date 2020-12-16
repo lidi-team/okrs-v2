@@ -2,6 +2,7 @@
 // Base :: Global like html, body, img, a, ul
 // ======================================================
 @import '/assets/scss/abstracts/variables';
+@import '/assets/scss/abstracts/mixins';
 
 body {
   font-size: $text-base;
@@ -337,6 +338,10 @@ span {
 }
 
 // El-table
+.el-table {
+  @include box-middle;
+}
+
 .el-table .cell {
   word-break: break-word;
   word-wrap: break-word;

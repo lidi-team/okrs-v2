@@ -30,7 +30,7 @@ export default class Layout extends Vue {}
 
 <style lang="scss">
 @import '@/assets/scss/main.scss';
-$bg-gray-common: #e5e5e5;
+$bg-gray-common: #f5f5f5;
 #app {
   height: 100vh;
   overflow: hidden;
@@ -41,7 +41,7 @@ $bg-gray-common: #e5e5e5;
     flex: 1;
     overflow: auto;
     width: 100%;
-    background-color: $bg-gray-common;
+    background: $bg-gray-common;
   }
   &__nuxt {
     padding: $unit-10;

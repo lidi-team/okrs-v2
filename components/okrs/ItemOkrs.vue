@@ -24,6 +24,7 @@
       :data="objectives"
       header-row-class-name="item__table-header"
       style="width: 100%"
+      class="item-okrs__table"
     >
       <el-table-column type="expand" width="20">
         <template v-slot="{ row }">
@@ -71,13 +72,13 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="Mục tiêu" min-width="400">
+      <el-table-column label="Mục tiêu" min-width="380">
         <template v-slot="{ row }">
           <span>{{ row.title }}</span>
           <el-tag type="info">{{ row.childObjectives.length }} mục tiêu</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="Kết quả then chốt" width="120">
+      <el-table-column label="Kết quả then chốt" width="140">
         <template v-slot="{ row }">
           <p
             v-if="row.keyResults.length"
@@ -198,9 +199,16 @@ export default class OKRsItem extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .item-okrs {
+  padding-top: $unit-5;
+  transform: perspective(1px) translateZ(0);
+  transition-property: transform;
+  transition-duration: 0.3s;
+  &:hover {
+    transform: translateY(-3px);
+  }
   .last-item {
     margin-bottom: $unit-5;
   }
@@ -214,13 +222,13 @@ export default class OKRsItem extends Vue {
     background: $white;
     color: $neutral-primary-4;
     margin-top: $unit-8;
-    border-radius: $border-radius-base;
     @include drop-shadow;
     &__header {
+      color: $purple-primary-8;
       font-size: $text-xl;
-      padding: $unit-5 0 $unit-2 $unit-5;
-      @include box-shadow;
-      border-radius: $border-radius-base $border-radius-base 0px 0px;
+      text-shadow: 0px 4px 10px rgba(33, 43, 54, 0.15),
+    0px 4px 40px rgba(33, 43, 54, 0.15);
+      padding: $unit-5 0 $unit-2 0;
     }
     &__table-header {
       > th {
@@ -230,7 +238,10 @@ export default class OKRsItem extends Vue {
       }
     }
     &__krs {
-      color: $blue-primary-2;
+      color: $purple-primary-8;
+      &:hover {
+        color: $purple-primary-7;
+      }
       cursor: pointer;
     }
     &__progress {
@@ -238,7 +249,6 @@ export default class OKRsItem extends Vue {
     }
     &__action {
       display: flex;
-      place-content: center space-between;
     }
 
     &__expand {
@@ -260,7 +270,7 @@ export default class OKRsItem extends Vue {
       .expand__infor {
         display: flex;
         &--link {
-          width: 120px;
+          width: 140px;
           color: $blue-primary-2;
           cursor: pointer;
         }
@@ -268,13 +278,13 @@ export default class OKRsItem extends Vue {
           width: 250px;
         }
         &--action {
-          width: 200px;
+          width: 180px;
           margin-right: -$unit-10;
           display: flex;
           align-items: center;
           place-content: center space-between;
           &__tooltip {
-            padding-right: 5.25rem;
+            padding-right: 105px;
           }
         }
       }
@@ -285,7 +295,6 @@ export default class OKRsItem extends Vue {
     .cell {
       white-space: unset;
     }
-    border-radius: $border-radius-base;
     .el-table__header-wrapper {
       .el-table__header {
         width: 100% !important;
