@@ -63,7 +63,7 @@
         </div>
       </nuxt-link>
       <nuxt-link
-        v-if="user.roles.includes('ROLE_ADMIN')"
+        v-if="user.projects.length"
         to="/du-an"
         :class="[
           'sidebar__link',
@@ -115,9 +115,6 @@ import { GetterState } from '@/constants/app.vuex';
     Setting,
     HumanResources,
     ProjectManage,
-  },
-  created() {
-    console.log('user: ', this.user.roles.includes('ROLE_ADMIN'));
   },
   computed: {
     ...mapGetters({

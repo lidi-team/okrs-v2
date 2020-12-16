@@ -175,28 +175,6 @@
                 placeholder="Chọn ngày sinh"
               ></el-date-picker>
             </el-form-item>
-
-            <!-- <el-form-item label="Vị trí công việc:" class="custom-label" prop="jobPositionId">
-              <el-select
-                v-model="tempUpdateUser.jobPositionId"
-                class="custom-label"
-                placeholder="Chọn vị trí công việc"
-                @keyup.enter.native="handleUpdate(tempUpdateUser)"
-              >
-                <el-option v-for="item in jobs" :key="item.id" :label="item.name" :value="item.id" />
-              </el-select>
-            </el-form-item> -->
-            <!-- <el-form-item v-if="tempUpdateUser.roleId !== Number(1)" label="Vai trò:" class="custom-label" prop="roleId">
-              <el-select
-                v-model="tempUpdateUser.roleId"
-                class="custom-label"
-                placeholder="Chọn vai trò"
-                @keyup.enter.native="handleUpdate(tempUpdateUser)"
-              >
-                <el-option v-for="item in roles" :key="item.id" :label="item.name" :value="item.id" />
-              </el-select>
-            </el-form-item> -->
-            <!-- <el-checkbox v-if="tempUpdateUser.roleId !== Number(1)" v-model="tempUpdateUser.isLeader">Trưởng nhóm</el-checkbox> -->
           </el-form>
         </el-col>
       </el-row>

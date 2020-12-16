@@ -1,54 +1,44 @@
 <template>
   <div class="project-detail">
     <el-page-header title="Projects Dashboard" @back="goToProjectDashboard" />
-    <div class="project-detail--top-action" v-if="!!projectData">
-      <h2 class="project-detail--top-action__title">
-        {{ projectData.name }}
-      </h2>
-      <div
-        class="project-detail--top-action__content el-tabs el-tabs--top el-tabs--border-card"
-      >
-        <span>
-          Ngày bắt đầu:
-          {{ new Date(projectData.startDate) | dateFormat('DD/MM/YYYY') }}
-        </span>
-        <div>
-          <span>
-            Ngày kết thúc:
-            {{ new Date(projectData.endDate) | dateFormat('DD/MM/YYYY') }}
-          </span>
-        </div>
-        <div>
-          <span>
-            Trọng số:
-            {{ projectData.weight + '/5' }}
-          </span>
-        </div>
-        <div>
-          <span>
-            Quản lý dự án:
-            {{ projectData.pm && projectData.pm.name }}
-          </span>
-        </div>
-        <div>
-          <span>
-            Trạng thái: {{ projectData.status == 1 ? 'Hoạt động' : '' }}
-          </span>
-        </div>
-        <div>
-          <span> Mô Tả: {{ projectData.description }} </span>
-        </div>
-        <div v-if="projectData.parentId">
-          <span> Dự án quản lý: {{ projectData.parentId }} </span>
-        </div>
-      </div>
+    <div v-if="!!projectData">
+      <el-collapse class="project-detail--top-action" v-model="activeNames">
+        <el-collapse-item name="1">
+          <template slot="title">
+            <span class="project-detail--top-action__title">
+              {{ projectData.name }}
+            </span>
+            <el-rate :value="projectData.weight" disabled />
+          </template>
+          <el-table
+            v-loading="isloading"
+            :data="convertToTableData(this.projectData)"
+            fit
+            style="width: 100%"
+            :show-header="false"
+          >
+            <el-table-column prop="label" align="left" width="200">
+              <template slot-scope="{ row }">
+                <span>{{ row.label }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="data" align="left">
+              <template slot-scope="{ row }">
+                <span>{{ row.data }}</span>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-collapse-item>
+      </el-collapse>
     </div>
+    <!--Tab du lieu thanh vien du an-->
     <el-tabs
+      class="main-action"
       v-model="tabActive"
       type="border-card"
       @tab-click="handleChangeTab"
     >
-      <el-tab-pane label="Quản lý" name="manage">
+      <el-tab-pane label="Thành viên" name="manage">
         <el-table
           v-loading="isloading"
           :data="projectStaffs"
@@ -108,7 +98,7 @@
                 </el-select>
               </template>
               <el-tag v-if="getPositionById(row.position) && !row.edit"
-                >{{ getPositionById(row.position) }}
+              >{{ getPositionById(row.position) }}
               </el-tag>
             </template>
           </el-table-column>
@@ -128,12 +118,13 @@
                 </el-select>
               </template>
               <span v-else style="color: green">{{
-                getReviewerById(row.reviewerId)
-              }}</span>
+                  getReviewerById(row.reviewerId)
+                }}</span>
             </template>
           </el-table-column>
           <el-table-column
-            label="Actions"
+            v-if="isProjectPm(user.projects)"
+            label="Thao tác"
             align="center"
             width="230"
             class-name="small-padding fixed-width"
@@ -179,27 +170,34 @@
           </el-table-column>
         </el-table>
       </el-tab-pane>
-      <el-tab-pane label="Thêm nhân sự" name="extend">
-        <el-select
-          v-model="selectUsers"
-          multiple
-          filterable
-          default-first-option
-          placeholder="Chọn nhân viên cho dự án"
-        >
-          <el-option
-            v-for="item in candidates"
-            :key="item.id"
-            :label="item.email + ' (' + item.name + ')'"
-            :value="item.id"
-          ></el-option>
-        </el-select>
-        <el-button
-          v-if="selectUsers.length"
-          type="primary"
-          @click="handleAddStaff"
+      <el-tab-pane
+        label="Thêm thành viên"
+        name="extend"
+        v-if="isProjectPm(user.projects)"
+      >
+        <div class="main-action__form">
+          <el-select
+            v-model="selectUsers"
+            multiple
+            filterable
+            default-first-option
+            placeholder="Chọn nhân viên cho dự án"
+          >
+            <el-option
+              v-for="item in candidates"
+              :key="item.id"
+              :label="item.name + ' (' + item.email + ')'"
+              :value="item.id"
+            ></el-option>
+          </el-select>
+          <el-button
+            class="main-action__form--input el-button el-button--purple el-button--default"
+            v-if="selectUsers.length"
+            type="primary"
+            @click="handleAddStaff"
           >Thêm mới thành viên
-        </el-button>
+          </el-button>
+        </div>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -207,25 +205,28 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import ProjectRepository from '@/repositories/ProjectRepository';
-import {
-  IProjectStaffState,
-  ProjectDTO,
-  ProjectStaff,
-} from '@/constants/app.interface';
+import { IProjectStaffState, ProjectDTO, ProjectStaff } from '@/constants/app.interface';
 import TeamRepository from '@/repositories/TeamRepository';
 import JobRepository from '@/repositories/JobRepository';
-import {
-  confirmWarningConfig,
-  notificationConfig,
-} from '@/constants/app.constant';
+import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
+import { mapGetters } from 'vuex';
+import { GetterState } from '@/constants/app.vuex';
+import { formatDateToDD } from '@/utils/dateParser';
 
 @Component<ControlProject>({
   name: 'ControlProject',
+  computed: {
+    ...mapGetters({
+      user: GetterState.USER,
+    }),
+  },
   async created() {
-    await this.getDataCommon();
-    await this.getProject(this.id);
-    await this.getProjectStaffs(this.id);
-    await this.getActiveCandidates(this.id);
+    await Promise.all([
+      this.getDataCommon(),
+      this.getProject(this.id),
+      this.getProjectStaffs(this.id),
+      this.getActiveCandidates(this.id),
+    ]);
   },
 })
 export default class ControlProject extends Vue {
@@ -240,6 +241,7 @@ export default class ControlProject extends Vue {
   private textPm: String = '';
   private isloading: boolean = false;
   private tabActive: String = 'manage';
+  private activeNames: string[] = ['1'];
   private projectData: ProjectDTO = {
     id: this.id,
     name: '',
@@ -402,8 +404,8 @@ export default class ControlProject extends Vue {
   private getReviewers(id: number) {
     const data: any = this.projectStaffs.filter((value) => value.id !== id);
     this.projectData.pm?.id &&
-      this.projectData.pm?.name &&
-      data.push({ id: this.projectData.pm.id, name: this.projectData.pm.name });
+    this.projectData.pm?.name &&
+    data.push({ id: this.projectData.pm.id, name: this.projectData.pm.name });
     return data;
   }
 
@@ -453,14 +455,40 @@ export default class ControlProject extends Vue {
     this.draftEditStaff.userId = row.id;
   }
 
-  private async UpdateProject() {}
-
   private goToProjectDashboard() {
     this.$router.push('/du-an');
   }
 
   private handleChangeTab(tab, event) {
     this.tabActive = tab.name;
+  }
+
+  private isProjectPm(userProjects: any) {
+    const dataInProject = userProjects.find(
+      (value) => value.id + '' === this.id,
+    );
+    console.log('dataInProject: ', userProjects);
+    if (dataInProject) {
+      return dataInProject.pm;
+    } else {
+      return false;
+    }
+  }
+
+  private convertToTableData(projectData: ProjectDTO) {
+    return [
+      {
+        label: 'Ngày bắt đầu',
+        data: !!projectData.startDate && formatDateToDD(projectData.startDate),
+      },
+      {
+        label: 'Ngày kết thúc',
+        data: !!projectData.endDate && formatDateToDD(projectData.endDate),
+      },
+      { label: 'Quản lý', data: projectData.pm && projectData.pm.name },
+      { label: 'Trang thái', data: projectData.status },
+      { label: 'Mô tả', data: projectData.description },
+    ];
   }
 }
 </script>
@@ -471,22 +499,30 @@ export default class ControlProject extends Vue {
   &--top-action {
     &__title {
       font-size: $text-xl;
-      padding: $unit-4 0;
-      @include box-shadow;
-      border-radius: $border-radius-base $border-radius-base 0px 0px;
+      margin: 0 $unit-4;
     }
 
     &__content {
       background-color: $white;
-      margin-bottom: $unit-4;
-      padding: $unit-4;
-      border-radius: 4px;
+      margin: 0 $unit-4;
+    }
+
+    &__body {
+      padding: 0;
     }
   }
 
   &__content {
     &--name {
       clear: both;
+    }
+  }
+}
+
+.main-action {
+  &__form {
+    &--input {
+      margin-top: $unit-2;
     }
   }
 }

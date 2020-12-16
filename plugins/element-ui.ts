@@ -46,6 +46,9 @@ import 'element-ui/lib/theme-chalk/progress.css';
 import 'element-ui/lib/theme-chalk/drawer.css';
 import 'element-ui/lib/theme-chalk/slider.css';
 import 'element-ui/lib/theme-chalk/input-number.css';
+import 'element-ui/lib/theme-chalk/collapse.css';
+import 'element-ui/lib/theme-chalk/collapse-item.css';
+import 'element-ui/lib/theme-chalk/rate.css';
 
 // configure default language
 locale.use(vietnameseLang);
@@ -259,8 +262,20 @@ Vue.component(
     ),
 );
 Vue.component(
-  elComponent.ElCard,
-  () => import(/* webpackChunkName: 'element-ui-card' */ 'element-ui/lib/card'),
+  elComponent.ElCollapse,
+  () =>
+    import(/* webpackChunkName: 'element-ui-card' */ 'element-ui/lib/collapse'),
+);
+Vue.component(
+  elComponent.ElCollapseItem,
+  () =>
+    import(
+      /* webpackChunkName: 'element-ui-card' */ 'element-ui/lib/collapse-item'
+    ),
+);
+Vue.component(
+  elComponent.ElRate,
+  () => import(/* webpackChunkName: 'element-ui-card' */ 'element-ui/lib/rate'),
 );
 
 // import prototype Vue

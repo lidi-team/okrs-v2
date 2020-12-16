@@ -10,8 +10,8 @@
           icon="el-icon-plus"
           @click="addNew"
         >
-          Thêm mới</el-button
-        >
+          Thêm mới
+        </el-button>
       </div>
     </div>
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
@@ -169,10 +169,6 @@ export default class ManageProject extends Vue {
 
   private get tabComponent() {
     return ProjectAll;
-  }
-
-  private dialogComponent() {
-    return ProjectDialog;
   }
 
   private addNew() {
