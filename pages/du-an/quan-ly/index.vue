@@ -1,49 +1,48 @@
 <template>
   <div class="project-detail">
     <el-page-header title="Projects Dashboard" @back="goToProjectDashboard" />
-    <div class="okrs-detail--top-action">
-      <span class="okrs-detail--top-action__title">Quản lý nhân sự</span>
-    </div>
-    <el-card class="project-detail__content">
-      <div slot="header" class="project-detail__content--name">
-        <span>{{ projectData.name }}</span>
-      </div>
-      <div>
+    <div class="project-detail--top-action" v-if="!!projectData">
+      <h2 class="project-detail--top-action__title">
+        {{ projectData.name }}
+      </h2>
+      <div
+        class="project-detail--top-action__content el-tabs el-tabs--top el-tabs--border-card"
+      >
         <span>
           Ngày bắt đầu:
           {{ new Date(projectData.startDate) | dateFormat('DD/MM/YYYY') }}
         </span>
+        <div>
+          <span>
+            Ngày kết thúc:
+            {{ new Date(projectData.endDate) | dateFormat('DD/MM/YYYY') }}
+          </span>
+        </div>
+        <div>
+          <span>
+            Trọng số:
+            {{ projectData.weight + '/5' }}
+          </span>
+        </div>
+        <div>
+          <span>
+            Quản lý dự án:
+            {{ projectData.pm && projectData.pm.name }}
+          </span>
+        </div>
+        <div>
+          <span>
+            Trạng thái: {{ projectData.status == 1 ? 'Hoạt động' : '' }}
+          </span>
+        </div>
+        <div>
+          <span> Mô Tả: {{ projectData.description }} </span>
+        </div>
+        <div v-if="projectData.parentId">
+          <span> Dự án quản lý: {{ projectData.parentId }} </span>
+        </div>
       </div>
-      <div>
-        <span>
-          Ngày kết thúc:
-          {{ new Date(projectData.endDate) | dateFormat('DD/MM/YYYY') }}
-        </span>
-      </div>
-      <div>
-        <span>
-          Trọng số:
-          {{ projectData.weight + '/5' }}
-        </span>
-      </div>
-      <div>
-        <span>
-          Quản lý dự án:
-          {{ projectData.pm && projectData.pm.name }}
-        </span>
-      </div>
-      <div>
-        <span>
-          Trạng thái: {{ projectData.status == 1 ? 'Hoạt động' : '' }}
-        </span>
-      </div>
-      <div>
-        <span> Mô Tả: {{ projectData.description }} </span>
-      </div>
-      <div v-if="projectData.parentId">
-        <span> Dự án quản lý: {{ projectData.parentId }} </span>
-      </div>
-    </el-card>
+    </div>
     <el-tabs
       v-model="tabActive"
       type="border-card"
@@ -467,10 +466,24 @@ export default class ControlProject extends Vue {
 </script>
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
+
 .project-detail {
-  background-color: $white;
-  margin: $unit-4 0;
-  padding: $unit-4;
+  &--top-action {
+    &__title {
+      font-size: $text-xl;
+      padding: $unit-4 0;
+      @include box-shadow;
+      border-radius: $border-radius-base $border-radius-base 0px 0px;
+    }
+
+    &__content {
+      background-color: $white;
+      margin-bottom: $unit-4;
+      padding: $unit-4;
+      border-radius: 4px;
+    }
+  }
+
   &__content {
     &--name {
       clear: both;
