@@ -1,36 +1,36 @@
 <template>
-  <div v-loading.fullscreen.lock="loading" class="historyDetailPage">
+  <div class="historyDetailPage">
     <el-page-header title="Quay lại" @back="goBack" />
-    <h1 class="historyDetailPage__title">Chi tiết Check-in</h1>
-    <div class="top-checkin">
-      <el-row>
-        <el-col class="top-checkin__left">
-          <h2 class="top-checkin__title">Check-in mục tiêu</h2>
+    <h1>Chi tiết Check-in</h1>
+    <el-row :gutter="30">
+      <el-col :sm="24" :lg="12">
+        <div class="box-wrap">
+          <h2 class="-title-2 -border-header">Check-in mục tiêu</h2>
           <div class="top-checkin__content content">
             <table class="properties">
               <tbody v-if="checkin">
                 <tr>
-                  <th scope="row">Mục tiêu</th>
+                  <th scope="row" class="-text-left">Mục tiêu: </th>
                   <td>{{ checkin.objective.title }}</td>
                 </tr>
                 <tr>
-                  <th scope="row">Trạng thái</th>
+                  <th scope="row" class="-text-left">Trạng thái:</th>
                   <td>
                     {{ checkin.status }}
                   </td>
                 </tr>
                 <tr>
-                  <th scope="row">Tiến độ thực hiện</th>
+                  <th scope="row" class="-text-left">Tiến độ thực hiện: </th>
                   <td>{{ checkin.progress }} %</td>
                 </tr>
                 <tr v-if="checkin.checkinAt">
-                  <th scope="row">Ngày check-in</th>
+                  <th scope="row">Ngày check-in: </th>
                   <td>
                     {{ new Date(checkin.checkinAt) | dateFormat('DD/MM/YYYY') }}
                   </td>
                 </tr>
                 <tr v-if="checkin.nextCheckinDate">
-                  <th scope="row">Ngày check-in kế tiếp</th>
+                  <th scope="row" class="-text-left">Ngày check-in kế tiếp</th>
                   <td>
                     {{
                       new Date(checkin.nextCheckinDate)
@@ -41,9 +41,16 @@
               </tbody>
             </table>
           </div>
-        </el-col>
-      </el-row>
-    </div>
+        </div>
+      </el-col>
+      <el-col :sm="24" :lg="12">
+        <div class="box-wrap">
+          <h2 class="-title-2 -border-header">Cập nhật tiến độ</h2>
+          <p>hello</p>
+        </div>
+      </el-col>
+    </el-row>
+    
     <checkin-chart-process
       class="top-checkin"
       v-if="checkin"
@@ -94,36 +101,14 @@ export default class DetailHistoryPage extends Vue {
 </script>
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
-.historyDetailPage {
-  &__title {
-    font-size: $text-2xl;
-    padding-bottom: $unit-10;
-  }
-}
 .top-checkin {
   margin-bottom: $unit-8;
   background-color: $white;
-  &__title {
-    font-size: $unit-5;
-    margin-bottom: 1.5rem;
-    font-style: normal;
-    font-weight: bold;
-    color: #212b36;
-    line-height: 28px;
-  }
   &__chart {
     width: 100%;
     min-height: 350px;
     font-size: $unit-3;
   }
-  &__left {
-    padding: $unit-8;
-  }
-
-  &__right {
-    padding: $unit-4 $unit-6;
-  }
-
   .content {
     th {
       font-size: 14px;

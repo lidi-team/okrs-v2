@@ -1,7 +1,7 @@
 <template>
   <div v-if="objectives" class="item-okrs box-wrap">
-    <div class="-display-flex -justify-content-between item-okrs__header">
-      <h2 class="item__header">{{ title }}</h2>
+    <div class="-display-flex -justify-content-between -border-header">
+      <h2 class="-title-2">{{ title }}</h2>
       <div class="-display-flex -align-items-center item-okrs__icon">
         <button-create-okr
           v-if="isManage"
@@ -208,11 +208,8 @@ export default class OKRsItem extends Vue {
   transform: perspective(1px) translateZ(0);
   transition-property: transform;
   transition-duration: 0.3s;
-  &__header {
-    border-bottom: 1px $neutral-primary-1 solid;
-  }
   &__icon {
-    padding: $unit-2 0;
+    padding: 0 0 $unit-2 0;
   }
   &:hover {
     transform: translateY(-3px);
@@ -231,13 +228,6 @@ export default class OKRsItem extends Vue {
     color: $neutral-primary-4;
     margin-top: $unit-8;
     @include drop-shadow;
-    &__header {
-      color: $purple-primary-8;
-      font-size: $text-xl;
-      text-shadow: 0px 4px 10px rgba(33, 43, 54, 0.15),
-    0px 4px 40px rgba(33, 43, 54, 0.15);
-      padding: $unit-2 0;
-    }
     &__table-header {
       > th {
         font-weight: $font-weight-medium;

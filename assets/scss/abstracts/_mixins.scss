@@ -252,12 +252,6 @@ $breakpoints: (
   box-shadow: inset 0px -1px 0px #dfe3e8;
 }
 
-@mixin box-middle {
-  box-shadow: 0px 4px 10px rgba(33, 43, 54, 0.15),
-    0px 4px 40px rgba(33, 43, 54, 0.15);
-  border-radius: 16px;
-}
-
 @mixin account-form {
   display: flex;
   flex-direction: column;
@@ -286,5 +280,5 @@ $breakpoints: (
   border-radius: 10px;
   padding: $unit-7;
   background: white;
-  margin: $unit-7 0;
+  margin: 0 0 $unit-7 0;
 }

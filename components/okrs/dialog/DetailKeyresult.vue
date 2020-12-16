@@ -17,7 +17,7 @@
           <div class="krs-detail__progress">
             <el-progress
               style="width: 80%"
-              :percentage="row.process"
+              :percentage="row.progress"
               :color="customColors"
               :text-inside="true"
               :stroke-width="20"
@@ -48,6 +48,7 @@
     </el-table>
   </el-dialog>
 </template>
+
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { customColors } from '../okrs.constant';

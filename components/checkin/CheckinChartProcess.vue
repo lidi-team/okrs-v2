@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-container">
+  <div class="chart-container box-wrap">
     <div :id="id" class="chart" :style="{ height: '100%', width: '100%' }" />
   </div>
 </template>
@@ -37,8 +37,8 @@ export default class CheckinChartProcess extends Vue {
       backgroundColor: 'white',
       title: {
         text: 'Tiến độ',
-        x: '25',
-        top: '30',
+        x: '0',
+        top: '0',
         textStyle: {
           color: '#212b36',
           fontSize: '20',
@@ -58,11 +58,11 @@ export default class CheckinChartProcess extends Vue {
         },
       },
       grid: {
-        left: '7%',
-        right: '7%',
+        left: '2.5%',
+        right: '3%',
         borderWidth: 0,
-        top: 95,
-        bottom: 95,
+        top: 70,
+        bottom: 50,
         textStyle: {
           color: '#230051',
         },

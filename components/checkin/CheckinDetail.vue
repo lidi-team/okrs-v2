@@ -1,7 +1,8 @@
 <template>
   <div class="checkinDetail">
     <slot name="chartOKRs" />
-    <div v-if="user">
+    <div v-if="user" class="box-wrap">
+      <h2 class="-title-2 -border-header">Cập nhật tiến độ</h2>
       <el-form ref="checkinRuleForm" label-position="left" :model="syncCheckin">
         <el-table
           empty-text="Không có dữ liệu"
@@ -14,7 +15,18 @@
               <p>{{ row.keyResult.content }}</p>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="Mục tiêu" min-width="100">
+          <el-table-column align="center" label="Bắt đầu" min-width="80">
+            <template slot-scope="{ row }">
+              <el-form-item>
+                <el-input
+                  disabled
+                  v-model.number="row.keyResult.startValue"
+                  :readonly="true"
+                ></el-input>
+              </el-form-item>
+            </template>
+          </el-table-column>
+          <el-table-column align="center" label="Mục tiêu" min-width="80">
             <template slot-scope="{ row }">
               <el-form-item>
                 <el-input
@@ -29,6 +41,8 @@
             <template v-slot="{ row }">
               <el-form-item>
                 <el-input
+                  :min="row.keyResult.startValue"
+                  @input="checkRender"
                   :disabled="isDisable"
                   type="number"
                   v-model.number="row.valueObtained"
@@ -79,6 +93,7 @@
             <template slot-scope="{ row }">
               <el-form-item>
                 <el-select
+                  @change="checkRender"
                   :disabled="isDisable"
                   v-model="row.confidentLevel"
                   placeholder="Chọn độ tự tin"
@@ -96,11 +111,11 @@
         </el-table>
         <div class="checkinDetail__bottom">
           <el-row>
-            <el-col :sm="24" :lg="12">
+            <el-col :sm="12" :lg="8">
               <el-form-item
-                label-width="30%"
+                label-width="200"
                 :prop="'nextCheckinDate'"
-                label="Ngày check-in tiếp theo"
+                label="Tiến độ thực tế"
               >
                 <el-date-picker
                   :disabled="isDisable"
@@ -111,18 +126,29 @@
                   placeholder="Chọn ngày checkin tiếp theo"
                 ></el-date-picker>
               </el-form-item>
-            </el-col>
-            <el-col :sm="24" :lg="12">
-              <el-form-item
-                label-width="30%"
+               <el-form-item
+                label-width="200"
                 :prop="'isCompleted'"
                 label="Hoàn thành OKRs"
               >
                 <el-checkbox
                   :disabled="isDisable"
                   v-model="isCompleted"
-                ></el-checkbox>
+                >Hoàn thành</el-checkbox>
               </el-form-item>
+            </el-col>
+            <el-col :sm="6" :lg="8">
+              <div class="-text-center">
+                <h3>Tiến độ thực tế</h3>
+                <el-progress type="dashboard" :percentage="progress" :color="customColors" :stroke-width="10"></el-progress>
+                <el-input-number class="-display-block -m-auto" v-model="progress" :min="0"></el-input-number>
+              </div>
+            </el-col>
+            <el-col :sm="6" :lg="8">
+              <div class="-text-center">
+                <h3>Tiến độ gợi ý</h3>
+                <el-progress type="dashboard" :percentage="progressSuggest" :color="customColors" :stroke-width="10"></el-progress>
+              </div>
             </el-col>
           </el-row>
         </div>
@@ -157,10 +183,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
+import { Component, Vue, Prop, PropSync, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { Form } from 'element-ui';
 import { GetterState } from '@/constants/app.vuex';
+import { customColors } from '../okrs/okrs.constant';
 import { formatDate } from '@/utils/format';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import {
@@ -185,7 +212,8 @@ import { Maps, Rule } from '@/constants/app.type';
       this.nextCheckinDate = nextCheckinDate;
       this.idCheckin = id;
     }
-    const { role = 'guest' } = this.syncCheckin
+    const { role = 'guest', progress = -1 } = this.syncCheckin
+    this.progress = progress
     this.role = role
     if(role === 'guest') {
       this.isDisable = true
@@ -194,6 +222,7 @@ import { Maps, Rule } from '@/constants/app.type';
     }else if(role === 'reviewer') {
       this.checkinStatus === 'Pending' ? this.isDisable = false : this.isDisable = true
     }
+    this.calculatorProgress()
   },
 })
 export default class DetailHistory extends Vue {
@@ -207,13 +236,25 @@ export default class DetailHistory extends Vue {
   private isCompleted: Boolean = false;
   private idCheckin: Number | null = null;
   private role: String = ''
+  private customColors = customColors;
+  private progressSuggest: Number = 0;
+  private progress: Number = 0
+  private flag: Boolean = false;
 
-  private customColors(confident) {
-    return confident === 1
-      ? '#DE3618'
-      : confident === 2
-      ? '#47C1BF'
-      : '#50B83C';
+  @Watch('flag')
+  private changeCheckin() {
+    this.calculatorProgress()
+  }
+
+  private calculatorProgress() {
+    const count = (acc, cur) => acc + ((cur.valueObtained - cur.keyResult.startValue) / (cur.keyResult.targetedValue - cur.keyResult.startValue)) * cur.confidentLevel * 100
+    const progressAll = this.syncCheckin.checkinDetail.reduce(count, 0)
+    const progressSuggest = progressAll / this.syncCheckin.checkinDetail.length
+    this.progressSuggest = Math.round(progressSuggest * 100) / 100
+  }
+
+  private checkRender() {
+    this.flag = !this.flag
   }
 
   private pickerOptions: any = {
@@ -232,7 +273,7 @@ export default class DetailHistory extends Vue {
       id: this.idCheckin,
       objectiveId: objective.id,
       nextCheckinDate: formatDateToDD(this.nextCheckinDate),
-      progress: objective.progress ? objective.progress : 0,
+      progress: this.progress,
       objectComplete: this.isCompleted,
       status,
       checkinDetails: checkinDetail.map((item) => {

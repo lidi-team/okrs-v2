@@ -2,45 +2,43 @@
   <div v-loading.fullscreen.lock="loading" class="createCheckinPage">
     <el-page-header title="Quay lại" @back="goBack" />
     <h1 class="createCheckinPage__title">Tạo checkin</h1>
-    <div class="top-checkin">
-      <div class="top-checkin__left">
-        <h2 class="top-checkin__title">Check-in mục tiêu</h2>
-        <div v-if="checkin" class="top-checkin__content content">
-          <table class="properties">
-            <tbody>
-              <tr>
-                <th scope="row">Mục tiêu</th>
-                <td>{{ checkin.objective.title }}</td>
-              </tr>
-              <tr>
-                <th scope="row">Tiến độ thực hiện</th>
-                <td>{{ checkin.objective.progress }} %</td>
-              </tr>
-              <tr>
-                <th scope="row">Tiến độ gợi ý</th>
-                <td>{{ checkin.objective.progressSuggest }} %</td>
-              </tr>
-              <tr v-if="checkin.checkin.checkinAt">
-                <th scope="row">Ngày check-in</th>
-                <td>
-                  {{
-                    new Date(checkin.checkin.checkinAt)
-                      | dateFormat('DD/MM/YYYY')
-                  }}
-                </td>
-              </tr>
-              <tr v-if="checkin.checkin.nextCheckinDate">
-                <th scope="row">Ngày check-in kế tiếp</th>
-                <td>
-                  {{
-                    new Date(checkin.checkin.nextCheckinDate)
-                      | dateFormat('DD/MM/YYYY')
-                  }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+    <div class="top-checkin box-wrap">
+      <h2 class="-title-2">Chi tiết check-in</h2>
+      <div v-if="checkin" class="top-checkin__content content">
+        <table class="properties">
+          <tbody>
+            <tr>
+              <th scope="row">Mục tiêu</th>
+              <td>{{ checkin.objective.title }}</td>
+            </tr>
+            <tr>
+              <th scope="row">Tiến độ thực hiện</th>
+              <td>{{ checkin.objective.progress }} %</td>
+            </tr>
+            <tr>
+              <th scope="row">Tiến độ gợi ý</th>
+              <td>{{ checkin.objective.progressSuggest }} %</td>
+            </tr>
+            <tr v-if="checkin.checkin.checkinAt">
+              <th scope="row">Ngày check-in</th>
+              <td>
+                {{
+                  new Date(checkin.checkin.checkinAt)
+                    | dateFormat('DD/MM/YYYY')
+                }}
+              </td>
+            </tr>
+            <tr v-if="checkin.checkin.nextCheckinDate">
+              <th scope="row">Ngày check-in kế tiếp</th>
+              <td>
+                {{
+                  new Date(checkin.checkin.nextCheckinDate)
+                    | dateFormat('DD/MM/YYYY')
+                }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <checkin-chart-process
@@ -108,31 +106,15 @@ export default class CheckinPage extends Vue {
 @import '@/assets/scss/main.scss';
 .createCheckinPage {
   padding-bottom: $unit-8;
-  &__title {
-    font-size: $text-2xl;
-    padding-bottom: $unit-10;
-  }
 }
 .top-checkin {
   margin-bottom: $unit-8;
   background-color: $white;
-  &__title {
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-    font-size: $unit-5;
-    font-style: normal;
-    color: #212b36;
-    line-height: 28px;
-  }
   &__chart {
     width: 100%;
     min-height: 350px;
     font-size: $unit-3;
   }
-  &__left {
-    padding: $unit-8;
-  }
-
   .content {
     th {
       font-size: 14px;
