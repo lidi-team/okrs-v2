@@ -7,7 +7,7 @@
       class="create-objective"
       label-position="top"
     >
-      <el-form-item prop="title" class="custom-label" label-width="120px">
+      <el-form-item prop="title" class="custom-label" label-width="120px" label="Mục tiêu">
         <el-input
           v-model="tempObjective.title"
           type="textarea"

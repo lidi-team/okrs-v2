@@ -3,7 +3,7 @@
     class="krs-detail"
     title="Danh sách kết quả then chốt"
     :visible.sync="syncDetailKrsDialog"
-    width="50%"
+    width="80%"
     @close="handleClose"
   >
     <el-table :data="listKrs" header-row-class-name="krs-detail__table-header">
@@ -17,7 +17,7 @@
           <div class="krs-detail__progress">
             <el-progress
               style="width: 80%"
-              :percentage="row.process"
+              :percentage="row.progress"
               :color="customColors"
               :text-inside="true"
               :stroke-width="20"
@@ -48,6 +48,7 @@
     </el-table>
   </el-dialog>
 </template>
+
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { customColors } from '../okrs.constant';

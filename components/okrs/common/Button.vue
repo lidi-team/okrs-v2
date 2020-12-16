@@ -47,7 +47,7 @@ export default {
       this.$store.commit(MutationState.SET_OBJECTIVE, {
         projectId: this.projectId,
         type: this.typeObjective,
-        cycleId: this.cycleId.id,
+        cycleId: this.cycleId,
       });
     },
   },

@@ -2,6 +2,7 @@
 // Base :: Global like html, body, img, a, ul
 // ======================================================
 @import '/assets/scss/abstracts/variables';
+@import '/assets/scss/abstracts/mixins';
 
 body {
   font-size: $text-base;
@@ -337,7 +338,20 @@ span {
 }
 
 // El-table
+.box-wrap {
+  @include box-middle;
+}
+
 .el-table .cell {
   word-break: break-word;
   word-wrap: break-word;
+}
+
+// EL Slider
+.el-slider__bar {
+  background-color: $purple-primary-5;
+}
+
+.el-slider__button {
+  border-color: $purple-primary-6;
 }

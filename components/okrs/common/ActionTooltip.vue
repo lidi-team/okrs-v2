@@ -9,7 +9,7 @@
       <div class="okrs-tooltip__popover">
         <p @click="viewDetailOkrs">Xem chi tiết</p>
         <div v-if="isManage">
-          <p @click="updateOKRs">Cập nhật</p>
+          <p @click="updateOKRs" v-if="canUpdate">Cập nhật</p>
           <p v-if="canDelete" style="color: #e53e3e" @click="handleDeleteOKrs">
             Xóa
           </p>
@@ -41,6 +41,7 @@ export default class OkrsActionTooltip extends Vue {
   @Prop({ type: Number, required: true }) private id!: Number;
   @Prop(Boolean) private isManage!: Boolean;
   @Prop(Boolean) private canDelete!: Boolean;
+  @Prop(Boolean) private canUpdate!: Boolean;
 
   private viewDetailOkrs() {
     this.$router.push(`/OKRs/chi-tiet/${this.id}`);

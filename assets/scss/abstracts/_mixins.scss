@@ -269,3 +269,16 @@ $breakpoints: (
   place-content: center;
   align-items: center;
 }
+
+@mixin box-middle {
+  box-shadow: 0px 2px 5px rgba(33, 43, 54, 0.15), 0px 2px 10px #212b3626;
+  &:hover {
+    box-shadow: 0px 4px 10px rgba(33, 43, 54, 0.15),
+      0px 4px 40px rgba(33, 43, 54, 0.15);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  border-radius: 10px;
+  padding: $unit-7;
+  background: white;
+  margin: 0 0 $unit-7 0;
+}

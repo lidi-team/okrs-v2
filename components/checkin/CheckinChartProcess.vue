@@ -1,5 +1,5 @@
 <template>
-  <div class="chart-container">
+  <div class="chart-container box-wrap">
     <div :id="id" class="chart" :style="{ height: '100%', width: '100%' }" />
   </div>
 </template>
@@ -37,8 +37,8 @@ export default class CheckinChartProcess extends Vue {
       backgroundColor: 'white',
       title: {
         text: 'Tiến độ',
-        x: '25',
-        top: '30',
+        x: '0',
+        top: '0',
         textStyle: {
           color: '#212b36',
           fontSize: '20',
@@ -58,11 +58,11 @@ export default class CheckinChartProcess extends Vue {
         },
       },
       grid: {
-        left: '7%',
-        right: '7%',
+        left: '2.5%',
+        right: '3%',
         borderWidth: 0,
-        top: 95,
-        bottom: 95,
+        top: 70,
+        bottom: 50,
         textStyle: {
           color: '#230051',
         },
@@ -89,6 +89,7 @@ export default class CheckinChartProcess extends Vue {
             interval: 0,
           },
           data: xData,
+          boundaryGap: false,
         },
       ],
       yAxis: [
@@ -116,36 +117,9 @@ export default class CheckinChartProcess extends Vue {
           },
         },
       ],
-      dataZoom: [
-        {
-          show: true,
-          height: 18,
-          xAxisIndex: [0],
-          bottom: 30,
-          start: 0,
-          end: 100,
-          handleIcon:
-            'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
-          handleSize: '100%',
-          handleStyle: {
-            color: '#230051',
-          },
-          textStyle: {
-            color: '#230051',
-          },
-          borderColor: 'white',
-        },
-        {
-          type: 'inside',
-          show: false,
-          height: 15,
-          start: 0,
-          end: 100,
-        },
-      ],
       series: [
         {
-          name: 'average',
+          name: 'Tiến độ',
           type: 'line',
           stack: 'total',
           symbolSize: 10,

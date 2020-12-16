@@ -18,15 +18,15 @@ export const statusCheckin = {
 
 export const confidentLevel = [
   {
-    value: 3,
+    value: 1.1,
     label: 'Ổn định',
   },
   {
-    value: 2,
+    value: 1.0,
     label: 'Bình thường',
   },
   {
-    value: 1,
+    value: 0.9,
     label: 'Không ổn định',
   },
 ];

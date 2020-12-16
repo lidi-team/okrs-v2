@@ -4,15 +4,15 @@
 }
 
 .el-button--purple {
-  background: $purple-primary-5;
-  border: 1px solid $purple-primary-5;
+  background: $purple-primary-4;
+  border: 1px solid $purple-primary-4;
   border-radius: $border-radius-base;
   color: $white;
 
   &:not([disabled]):hover,
   &:not([disabled]):focus {
-    background: $purple-primary-4;
-    border-color: $purple-primary-4;
+    background: $purple-primary-3;
+    border-color: $purple-primary-3;
     color: $white;
   }
 }
