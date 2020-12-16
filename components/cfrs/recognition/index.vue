@@ -96,13 +96,13 @@
       <el-button
         class="el-button--white el-button--modal"
         @click="handleCloseDialog"
-        >Hủy
+      >Hủy
       </el-button>
       <el-button
         class="el-button--purple el-button--modal"
         :loading="loading"
         @click="createRecognition"
-        >Tạo ghi nhận
+      >Tạo ghi nhận
       </el-button>
     </div>
   </el-dialog>
@@ -111,10 +111,7 @@
 import { Component, Prop, PropSync, Vue } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
-import {
-  confirmWarningConfig,
-  notificationConfig,
-} from '@/constants/app.constant';
+import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import UserRepository from '@/repositories/UserRepository';
@@ -249,17 +246,6 @@ export default class CreateRecongnitionDialog extends Vue {
             const data: any = await CfrsRepository.postRecognition(
               this.recognition,
             );
-            if (!!data && data.code === 200) {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Tạo ghi nhận thành công',
-              });
-            } else {
-              this.$notify.error({
-                ...notificationConfig,
-                message: data.message,
-              });
-            }
 
             this.isCreating = true;
             this.syncCreateOkrsDialog = false;
