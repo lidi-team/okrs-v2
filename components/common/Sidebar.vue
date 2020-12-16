@@ -49,7 +49,10 @@
       <!-- Start Role Permission action -->
 
       <nuxt-link
-        v-if="user.roles.includes('ROLE_ADMIN')"
+        v-if="
+          user.roles.includes('ROLE_DIRECTOR') ||
+          user.roles.includes('ROLE_ADMIN')
+        "
         to="/admin/cai-dat"
         :class="[
           'sidebar__link',
@@ -63,7 +66,11 @@
         </div>
       </nuxt-link>
       <nuxt-link
-        v-if="user.roles.includes('ROLE_ADMIN')"
+        v-if="
+          user.projects.length ||
+          user.roles.includes('ROLE_DIRECTOR') ||
+          user.roles.includes('ROLE_ADMIN')
+        "
         to="/du-an"
         :class="[
           'sidebar__link',
@@ -78,6 +85,7 @@
       </nuxt-link>
       <nuxt-link
         v-if="
+          user.roles.includes('ROLE_DIRECTOR') ||
           user.roles.includes('ROLE_ADMIN') ||
           user.roles.includes('ROLE_ADMIN_HR')
         "
@@ -96,7 +104,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-import { RootState } from '@/store/auth';
 import Dashboard from '@/assets/images/common/sidebar/dashboard.svg';
 import CFRs from '@/assets/images/common/sidebar/cfrs.svg';
 import Checkin from '@/assets/images/common/sidebar/checkin.svg';
@@ -105,6 +112,7 @@ import Setting from '@/assets/images/common/sidebar/setting.svg';
 import HumanResources from '@/assets/images/common/sidebar/nhan-su.svg';
 import ProjectManage from '@/assets/images/common/sidebar/project.svg';
 import { GetterState } from '@/constants/app.vuex';
+
 @Component<SideBar>({
   name: 'SideBar',
   components: {
@@ -115,9 +123,6 @@ import { GetterState } from '@/constants/app.vuex';
     Setting,
     HumanResources,
     ProjectManage,
-  },
-  created() {
-    console.log('user: ', this.user.roles.includes('ROLE_ADMIN'));
   },
   computed: {
     ...mapGetters({
@@ -164,6 +169,7 @@ export default class SideBar extends Vue {
 </script>
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
+
 .wrap-sidebar {
   height: 100%;
   -webkit-transition: all 0.5s;
@@ -176,6 +182,7 @@ export default class SideBar extends Vue {
   @include breakpoint-down(tablet) {
     width: 60px;
   }
+
   .btn-group {
     position: absolute;
     left: 100%;
@@ -183,6 +190,7 @@ export default class SideBar extends Vue {
     -webkit-transform: translateX(10px);
     transform: translateX(10px);
   }
+
   .sidebar {
     flex-direction: column;
     height: 100%;
@@ -190,9 +198,11 @@ export default class SideBar extends Vue {
     font-size: $unit-6;
     color: $purple-primary-2;
     box-shadow: $box-shadow-default;
+
     .nuxt-link-exact-active {
       @include sidebar-hover;
     }
+
     &__link {
       width: 65%;
       align-self: center;
@@ -204,18 +214,22 @@ export default class SideBar extends Vue {
         margin-top: $unit-8;
         padding: 0;
       }
+
       &:hover {
         @include sidebar-hover;
       }
+
       &__tab {
         display: flex;
         flex-direction: column;
         align-items: center;
         text-align: center;
+
         span,
         p {
           font-size: $unit-4;
         }
+
         &__icon {
           @include size($unit-10, $unit-10);
         }
@@ -223,12 +237,14 @@ export default class SideBar extends Vue {
     }
   }
 }
+
 .hide-nav {
   margin-left: -160px;
   @include breakpoint-down(tablet) {
     margin-left: -60px;
   }
 }
+
 .hidden-tablet {
   @include breakpoint-down(tablet) {
     display: none;

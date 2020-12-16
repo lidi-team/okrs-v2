@@ -245,9 +245,23 @@ export default ['@/components/account/Login.vue'].forEach((path) => {
       ),
   );
   Vue.component(
-    elComponent.ElCard,
+    elComponent.ElCollapse,
     () =>
-      import(/* webpackChunkName: 'element-ui-card' */ 'element-ui/lib/card'),
+      import(
+        /* webpackChunkName: 'element-ui-card' */ 'element-ui/lib/collapse'
+      ),
+  );
+  Vue.component(
+    elComponent.ElCollapseItem,
+    () =>
+      import(
+        /* webpackChunkName: 'element-ui-card' */ 'element-ui/lib/collapse-item'
+      ),
+  );
+  Vue.component(
+    elComponent.ElRate,
+    () =>
+      import(/* webpackChunkName: 'element-ui-card' */ 'element-ui/lib/rate'),
   );
 
   if (path.startsWith('@/components/account')) {

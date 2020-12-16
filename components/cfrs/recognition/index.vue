@@ -111,10 +111,7 @@
 import { Component, Prop, PropSync, Vue } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
-import {
-  confirmWarningConfig,
-  notificationConfig,
-} from '@/constants/app.constant';
+import { confirmWarningConfig } from '@/constants/app.constant';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import UserRepository from '@/repositories/UserRepository';
@@ -122,11 +119,18 @@ import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
 import { CfrsDTO } from '@/constants/app.interface';
+import { mapGetters } from 'vuex';
+import { GetterState } from '@/constants/app.vuex';
 
 @Component<CreateRecongnitionDialog>({
   name: 'CreateRecongnitionDialog',
   async created() {
     await this.getMetaDataRecognition();
+  },
+  computed: {
+    ...mapGetters({
+      user: GetterState.USER,
+    }),
   },
   components: {
     IconStarDashboard,
@@ -209,7 +213,6 @@ export default class CreateRecongnitionDialog extends Vue {
   }
 
   private async getMetaDataRecognition() {
-    console.log('go: ');
     try {
       const [evaluationCriteria, allUsers] = await Promise.all([
         EvaluationCriteriaRepository.getCombobox(
@@ -218,8 +221,10 @@ export default class CreateRecongnitionDialog extends Vue {
         UserRepository.getAllUsers(),
       ]);
       this.optionsMetadata.criteria = Object.freeze(evaluationCriteria.data);
-      console.log('allUsers: ', allUsers);
-      this.optionsMetadata.users = Object.freeze(allUsers.data);
+      const usersData = allUsers.data
+        ? allUsers.data.filter((value) => value.id !== this.user.id)
+        : [];
+      this.optionsMetadata.users = Object.freeze(usersData);
     } catch (error) {
       console.log(error);
     }
@@ -249,17 +254,6 @@ export default class CreateRecongnitionDialog extends Vue {
             const data: any = await CfrsRepository.postRecognition(
               this.recognition,
             );
-            if (!!data && data.code === 200) {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Tạo ghi nhận thành công',
-              });
-            } else {
-              this.$notify.error({
-                ...notificationConfig,
-                message: data.message,
-              });
-            }
 
             this.isCreating = true;
             this.syncCreateOkrsDialog = false;

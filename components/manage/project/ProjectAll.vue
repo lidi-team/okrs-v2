@@ -55,10 +55,10 @@
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
         <template slot-scope="{ row }">
-          <div v-if="user.roles.includes('ROLE_ADMIN')">
+          <div>
             <el-tooltip
               class="project-all__icon"
-              content="Quản lý"
+              content="Chi tiết"
               placement="left-end"
             >
               <i
@@ -67,8 +67,9 @@
               ></i>
             </el-tooltip>
             <el-tooltip
+              v-if="user.roles.includes('ROLE_ADMIN')"
               class="project-all__icon"
-              content="Sửa"
+              content="Cập nhật"
               placement="right-end"
             >
               <i
@@ -77,14 +78,6 @@
               ></i>
             </el-tooltip>
           </div>
-          <!--<div v-if="!row.roles.includes('ROLE_ADMIN_HR')" class="project-all__action">
-            <el-tooltip class="project-all__icon" content="Sửa" placement="left-end">
-              <i class="el-icon-edit icon&#45;&#45;info" @click="handleOpenDialogUpdate(row)"></i>
-            </el-tooltip>
-            <el-tooltip v-if="row.isActive" class="project-all__icon" content="Deactive tài khoản" placement="right-end">
-              <i class="el-icon-warning icon&#45;&#45;warning" @click="deactiveUser(row)"></i>
-            </el-tooltip>
-          </div>-->
         </template>
       </el-table-column>
     </el-table>

@@ -1,4 +1,4 @@
-import { format, parse, compareDesc } from 'date-fns';
+import { compareDesc, format, parse } from 'date-fns';
 
 export const parseToDate = (date: string): Date => {
   return parse(date, 'dd/MM/yyyy', new Date());
@@ -9,6 +9,7 @@ export const formatDateToDD = (
   dateFormat: string = 'dd/MM/yyyy',
 ): string => {
   const newDate = new Date(date);
+  console.log('newDate: ', newDate);
   return format(newDate, dateFormat);
 };
 
