@@ -221,7 +221,6 @@ export default class CreateRecongnitionDialog extends Vue {
         UserRepository.getAllUsers(),
       ]);
       this.optionsMetadata.criteria = Object.freeze(evaluationCriteria.data);
-      console.log(allUsers.data);
       const usersData = allUsers.data
         ? allUsers.data.filter((value) => value.id !== this.user.id)
         : [];
