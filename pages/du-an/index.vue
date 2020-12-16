@@ -92,7 +92,7 @@ export default class ManageProject extends Vue {
     : 1;
   private visibleDialog: boolean = false;
   private textPm: string = '';
-  private sortWith: string = 'status';
+  private sortWith: string = 'id';
 
   private paramsProject: ParamsProject = {
     page: this.indexPage,

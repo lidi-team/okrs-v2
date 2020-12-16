@@ -4,7 +4,6 @@
     :visible.sync="syncCreateOkrsDialog"
     width="800px"
     placement="center"
-    :before-close="handleCloseDialog"
     class="create-feedback-dialog"
   >
     <el-form
@@ -35,7 +34,7 @@
           <el-option
             v-for="criteria in listEvaluationCriterias"
             :key="criteria.id"
-            :label="criteria.content"
+            :label="criteria.name"
             :value="criteria.id"
           >
             <div class="item-criteria">
@@ -43,7 +42,7 @@
                 <span>{{ criteria.numberOfStar }}</span>
                 <icon-star-dashboard class="item-criteria__icon--star" />
               </div>
-              <span class="item-criteria__content">{{ criteria.content }}</span>
+              <span class="item-criteria__content">{{ criteria.name }}</span>
             </div>
           </el-option>
         </el-select>
@@ -90,6 +89,7 @@ import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepos
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
 import { CfrsDTO } from '@/constants/app.interface';
+import { log } from 'echarts/lib/util/log';
 @Component<CreateFeedbackDialog>({
   name: 'CreateFeedbackDialog',
   components: {
@@ -128,17 +128,17 @@ export default class CreateFeedbackDialog extends Vue {
 
   private createFeedback() {
     this.loading = true;
-
     (this.$refs.contentFeedback as Form).validate(
       async (isValid: boolean, invalidatedFields: object) => {
         if (isValid) {
+          console.log('this.dataFeedback: ', this.dataFeedback);
           const payload: CfrsDTO = {
             // Nếu là cấp trên -> Lấy Id của cấp dưới, ngược lại
+            ...this.contentFeedback,
             receiverId: this.dataFeedback.isSuperior
-              ? this.dataFeedback.user.id
+              ? this.dataFeedback.reviewer.id
               : this.dataFeedback.objective.user.id,
             checkinId: this.dataFeedback.id,
-            ...this.contentFeedback,
           };
           try {
             await CfrsRepository.postFeedback(
@@ -172,7 +172,7 @@ export default class CreateFeedbackDialog extends Vue {
       await EvaluationCriteriaRepository.getCombobox(
         this.dataFeedback.type,
       ).then((res) => {
-        this.listEvaluationCriterias = Object.freeze(res.data.data);
+        this.listEvaluationCriterias = Object.freeze(res.data);
       });
     } catch (error) {}
   }
