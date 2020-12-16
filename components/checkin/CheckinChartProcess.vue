@@ -36,11 +36,11 @@ export default class CheckinChartProcess extends Vue {
     this.chart.setOption({
       backgroundColor: 'white',
       title: {
-        text: 'Tiến độ',
+        text: 'Lịch sử tiến độ',
         x: '0',
         top: '0',
         textStyle: {
-          color: '#212b36',
+          color: '#831843',
           fontSize: '20',
           fontFamily: 'sans-serif',
         },
@@ -58,7 +58,7 @@ export default class CheckinChartProcess extends Vue {
         },
       },
       grid: {
-        left: '2.5%',
+        left: '3%',
         right: '3%',
         borderWidth: 0,
         top: 70,
