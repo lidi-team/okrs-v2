@@ -7,7 +7,7 @@
           :sm="24"
           :md="12"
           :lg="12"
-          class="okrs-page__top--searching"
+          class="cfrs-page__top--searching"
         >
           <cfrs-navbar :current-tab-component="currentTabEng" />
         </el-col>
@@ -16,7 +16,7 @@
           :sm="24"
           :md="8"
           :lg="8"
-          class="okrs-page__top--button"
+          class="cfrs-page__top--button"
         >
           <el-button
             class="el-button el-button--purple el-button-medium"
@@ -155,7 +155,7 @@ export default class CFRs extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .cfrs {
   padding-right: $unit-4;

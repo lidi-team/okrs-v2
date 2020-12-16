@@ -48,8 +48,8 @@
             </nuxt-link>
             <nuxt-link
               v-if="
-                user.roles.includes('ROLE_ADMIN_HR') ||
-                user.roles.includes('ROLE_ADMIN')
+                user.roles.includes('ROLE_ADMIN') ||
+                user.roles.includes('ROLE_ADMIN_HR')
               "
               to="/quan-ly/nhan-su"
             >
@@ -57,20 +57,6 @@
                 <div class="item__div">
                   <icon-hr class="item__div--icon item__div--icon--hr" />
                   <span>Quản lý nhân sự</span>
-                </div>
-              </el-dropdown-item>
-            </nuxt-link>
-            <nuxt-link
-              v-if="
-                user.roles.includes('ROLE_ADMIN_HR') ||
-                user.roles.includes('ROLE_ADMIN')
-              "
-              to="/bai-hoc-okrs"
-            >
-              <el-dropdown-item>
-                <div class="item__div">
-                  <icon-lesson class="item__div--icon" />
-                  <span>Quản lý bài học OKRs</span>
                 </div>
               </el-dropdown-item>
             </nuxt-link>
@@ -105,6 +91,7 @@ import IconProfile from '@/assets/images/common/navbar/profile.svg';
 import IconSetting from '@/assets/images/common/navbar/setting.svg';
 import IconHr from '@/assets/images/common/navbar/hr.svg';
 import { DispatchAction, GetterState } from '@/constants/app.vuex';
+import { filterUserRole } from '@/utils/filterUserRole';
 
 @Component<Navbar>({
   name: 'Navbar',
@@ -133,22 +120,7 @@ export default class Navbar extends Vue {
   }
 
   private displayRoleName(user: any) {
-    // if (user.isLeader && user.role.name !== 'ADMIN' && user.role.name !== 'HR') {
-    //   return 'LEADER';
-    // }
-    // return user.role.name;
-    switch (user.roles[0]) {
-      case 'ROLE_DIRECTOR':
-        return 'Giám đốc';
-      case 'ROLE_ADMIN':
-        return 'Kĩ thuật';
-      case 'ROLE_ADMIN_HR':
-        return 'Quản lý nhân sự';
-      case 'ROLE_PM':
-        return 'Quản lý dự án';
-      default:
-        return 'Nhân viên';
-    }
+    return filterUserRole(user.roles);
   }
 }
 </script>

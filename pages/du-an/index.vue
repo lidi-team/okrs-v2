@@ -91,12 +91,13 @@ export default class ManageProject extends Vue {
     ? Number(this.$route.query.page)
     : 1;
   private visibleDialog: boolean = false;
-  private textPm: String = '';
+  private textPm: string = '';
+  private sortWith: string = 'status';
 
   private paramsProject: ParamsProject = {
     page: this.indexPage,
     limit: pageLimit,
-    sortWith: 'id',
+    sortWith: this.sortWith,
     type: '',
     text: '',
   };
