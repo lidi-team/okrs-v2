@@ -14,33 +14,32 @@
         </el-button>
       </div>
     </div>
-    <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
-      <el-tab-pane
-        v-for="tab in tabs"
-        :key="tab"
-        :label="convertLabel(tab)"
-        :name="tab"
-      ></el-tab-pane>
-      <head-project
-        :text.sync="paramsProject.text"
-        @name="paramsProject.text = $event"
-        @search="handleSearch($event)"
-      />
-      <component
-        :is="tabComponent"
-        :table-data="tableData"
-        :get-list-project="getListProjects"
-        :managers="managers"
-        :original-projects="originalProjects"
-      />
-      <common-pagination
-        class="manage-project__pagination"
-        :total="meta.totalItems"
-        :page.sync="paramsProject.page"
-        :limit.sync="paramsProject.limit"
-        @pagination="handlePagination($event)"
-      />
-    </el-tabs>
+
+    <el-tab-pane
+      v-for="tab in tabs"
+      :key="tab"
+      :label="convertLabel(tab)"
+      :name="tab"
+    ></el-tab-pane>
+    <head-project
+      :text.sync="paramsProject.text"
+      @name="paramsProject.text = $event"
+      @search="handleSearch($event)"
+    />
+    <component
+      :is="tabComponent"
+      :table-data="tableData"
+      :get-list-project="getListProjects"
+      :managers="managers"
+      :original-projects="originalProjects"
+    />
+    <common-pagination
+      class="manage-project__pagination"
+      :total="meta.totalItems"
+      :page.sync="paramsProject.page"
+      :limit.sync="paramsProject.limit"
+      @pagination="handlePagination($event)"
+    />
     <project-dialog
       :visible-dialog.sync="visibleDialog"
       :reload-data="getListProjects"
@@ -163,8 +162,8 @@ export default class ManageProject extends Vue {
     this.$route.query.text === undefined
       ? this.$router.push(`?tab=${tab}&page=${pagination.page}`)
       : this.$router.push(
-          `?tab=${tab}&text=${this.$route.query.text}&page=${pagination.page}`,
-        );
+      `?tab=${tab}&text=${this.$route.query.text}&page=${pagination.page}`,
+      );
   }
 
   private get tabComponent() {
@@ -180,6 +179,7 @@ export default class ManageProject extends Vue {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
+
 .manage-project {
   height: 100%;
 
@@ -195,6 +195,7 @@ export default class ManageProject extends Vue {
   &__top {
     display: flex;
     justify-content: space-between;
+
     &__left {
       &--input {
         width: calc(100vw * 5 / 24);

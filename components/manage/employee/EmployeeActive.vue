@@ -39,27 +39,7 @@
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
         <template slot-scope="{ row }">
-          <div
-            v-if="
-              row.roles.includes('ROLE_ADMIN_HR') &&
-              user.roles.includes('ROLE_ADMIN')
-            "
-          >
-            <el-tooltip
-              class="employee-active__icon"
-              content="Sửa"
-              placement="left-end"
-            >
-              <i
-                class="el-icon-edit icon--info"
-                @click="handleOpenDialogUpdate(row)"
-              ></i>
-            </el-tooltip>
-          </div>
-          <div
-            v-if="!row.roles.includes('ROLE_ADMIN_HR')"
-            class="employee-active__action"
-          >
+          <div class="employee-active__action">
             <el-tooltip
               class="employee-active__icon"
               content="Sửa"
@@ -71,6 +51,7 @@
               ></i>
             </el-tooltip>
             <el-tooltip
+              v-if="isEditable(row.roles)"
               class="employee-active__icon"
               :content="
                 row.isActive ? 'Deactive tài khoản' : 'Active tài khoản'
@@ -156,8 +137,8 @@
               prop="gender"
             >
               <el-radio v-model="tempUpdateUser.gender" :label="1"
-                >Nam</el-radio
-              >
+                >Nam
+              </el-radio>
               <el-radio v-model="tempUpdateUser.gender" :label="0">Nữ</el-radio>
             </el-form-item>
             <el-form-item
@@ -197,18 +178,20 @@
 </template>
 <script lang="ts">
 import { Form } from 'element-ui';
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { employeeRules } from './employee.constant';
 import {
-  notificationConfig,
   confirmWarningConfig,
+  notificationConfig,
 } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { EmployeeDTO } from '@/constants/app.interface';
 import { GetterState } from '@/constants/app.vuex';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 import { formatDateToDD } from '@/utils/dateParser';
+import { filterUserRole } from '@/utils/filterUserRole';
+
 @Component<EmployeeActive>({
   name: 'EmployeeActive',
   computed: {
@@ -358,29 +341,24 @@ export default class EmployeeActive extends Vue {
     });
   }
 
+  private isEditable(roles: string[]) {
+    const isSpecialRole =
+      roles.includes('ROLE_DIRECTOR') ||
+      roles.includes('ROLE_ADMIN') ||
+      roles.includes('ROLE_ADMIN_HR') ||
+      roles.includes('ROLE_PM');
+    return !isSpecialRole;
+  }
+
   private displayRoleName(roles: any) {
-    // if (user.isLeader && user.role.name !== 'ADMIN' && user.role.name !== 'HR') {
-    //   return 'LEADER';
-    // }
-    // return user.role.name;
-    switch (roles[0]) {
-      case 'ROLE_DIRECTOR':
-        return 'Giám đốc';
-      case 'ROLE_ADMIN':
-        return 'Kĩ thuật';
-      case 'ROLE_ADMIN_HR':
-        return 'Quản lý nhân sự';
-      case 'ROLE_PM':
-        return 'Quản lý dự án';
-      default:
-        return 'Nhân viên';
-    }
+    return filterUserRole(roles);
   }
 }
 </script>
 
 <style lang="scss">
 @import '@/assets/scss/main.scss';
+
 .employee-active {
   &__icon {
     cursor: pointer;
