@@ -29,8 +29,13 @@ baseUrl.interceptors.request.use(
 
 baseUrl.interceptors.response.use(
   (response) => {
-    if (response.data.code === 201) {
+    if (response.data.code === 2000) {
       Notification.success({
+        ...notificationConfig,
+        message: response.data.message,
+      });
+    }else if (response.data.code === 4000) {
+      Notification.error({
         ...notificationConfig,
         message: response.data.message,
       });
