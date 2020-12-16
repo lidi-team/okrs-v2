@@ -98,8 +98,8 @@
                 <el-form-item
                   class="custom-label krs-form__detail--value--start"
                   prop="startValue"
-                  label="Giá trị bắt đầu"
-                  label-width="100px"
+                  label="Bắt đầu"
+                  label-width="70px"
                 >
                   <el-input
                     v-model.number="tempKeyResult.startValue"
@@ -211,7 +211,6 @@ import KeyResultRepository from '@/repositories/KeyResultRepository';
       this.$store.state.okrs.objective.parentId,
     );
     this.keyResultsParent = data;
-    console.log(this.tempKeyResult, 'hello');
     this.loading = false;
   },
 })
@@ -230,7 +229,6 @@ export default class KeyResult extends Vue {
     }),
   })
   private tempKeyResult!: any;
-
   private keyResultsParent: Array<any> = [];
 
   @Prop(Number) private indexKrForm!: number;
@@ -252,27 +250,7 @@ export default class KeyResult extends Vue {
       } else {
         try {
           await OkrsRepository.deleteKr(keyResult.id).then((res) => {
-            if (res.data.statusCode === 404) {
-              this.$notify.success({
-                ...notificationConfig,
-                message: res.data.message,
-              });
-              this.popoverVisisble = false;
-            }
-            if (res.data.statusCode === 480) {
-              this.$notify.success({
-                ...notificationConfig,
-                message: res.data.message,
-              });
-              this.popoverVisisble = false;
-            }
-            if (res.data.statusCode === 200) {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Xóa KR thành công',
-              });
-              this.popoverVisisble = false;
-            }
+            this.popoverVisisble = false;
             this.$emit('deleteKr', this.indexKrForm);
           });
         } catch (error) {}
@@ -399,7 +377,7 @@ export default class KeyResult extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .hovering {
   background-color: $purple-primary-1;

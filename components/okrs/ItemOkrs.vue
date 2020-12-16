@@ -15,7 +15,7 @@
           name-objective="cá nhân"
           :project-id="projectId"
           :loading="loading"
-          :isDisable="oobjectives || objectives.length === 0"
+          :isDisable="objectives.length === 0"
         />
       </div>
     </div>
@@ -134,7 +134,6 @@ import { DialogTooltipAction } from '@/constants/app.interface';
 
 import ActionTooltip from '@/components/okrs/common/ActionTooltip.vue';
 import ButtonCreateOkr from '@/components/okrs/common/Button.vue';
-import AlignOkrsDialog from '@/components/okrs/dialog/AlignOkrsDialog.vue';
 import { ObjectiveDTO } from '@/constants/DTO/okrs';
 import { DispatchAction } from '@/constants/app.vuex';
 
@@ -146,7 +145,6 @@ import OkrsRepository from '@/repositories/OkrsRepository';
     IconEllipse,
     ActionTooltip,
     ButtonCreateOkr,
-    AlignOkrsDialog,
   },
 })
 export default class OKRsItem extends Vue {
