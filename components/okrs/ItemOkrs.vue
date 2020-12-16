@@ -1,5 +1,5 @@
 <template>
-  <div v-if="objectives" class="item-okrs">
+  <div v-if="objectives" class="item-okrs box-wrap">
     <div class="-display-flex -justify-content-between">
       <h2 class="item__header">{{ title }}</h2>
       <div class="-display-flex -align-items-center">
@@ -72,7 +72,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="Mục tiêu" min-width="380">
+      <el-table-column label="Mục tiêu" min-width="380" class="cell-objective">
         <template v-slot="{ row }">
           <span>{{ row.title }}</span>
           <el-tag type="info">{{ row.childObjectives.length }} mục tiêu</el-tag>
@@ -229,7 +229,7 @@ export default class OKRsItem extends Vue {
       font-size: $text-xl;
       text-shadow: 0px 4px 10px rgba(33, 43, 54, 0.15),
     0px 4px 40px rgba(33, 43, 54, 0.15);
-      padding: $unit-5 0 $unit-2 0;
+      padding: 0 0 $unit-2 0;
     }
     &__table-header {
       > th {

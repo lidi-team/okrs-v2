@@ -50,10 +50,7 @@
         </el-tooltip>
       </el-popover>
     </div>
-    <div
-      :class="['content-collapse', isExpanded ? 'margin-form' : '']"
-      :style="isExpanded ? `max-height: ${scrollHeight}px` : 'max-height: 0'"
-    >
+    <div class="content-collapse" v-show="isExpanded">
       <el-form
         ref="keyResult"
         :model="tempKeyResult"
@@ -235,7 +232,7 @@ export default class KeyResult extends Vue {
 
   private hovering: Boolean = false;
   private popoverVisisble: Boolean = false;
-  private isExpanded: Boolean = false;
+  private isExpanded: Boolean = true;
   private scrollHeight: Number = 0;
   private tempContentKr: String = 'Ấn vào đây để chỉnh sửa';
   private loading: Boolean = false;
@@ -370,27 +367,18 @@ export default class KeyResult extends Vue {
 
   private expandForm() {
     this.isExpanded = !this.isExpanded;
-    const contents = document.getElementsByClassName('content-collapse');
-    // @ts-ignore
-    this.scrollHeight = contents.item(0).scrollHeight;
   }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
-.hovering {
-  background-color: $purple-primary-1;
-}
 .margin-form {
   margin-bottom: $unit-4;
 }
 .control-collapse {
   display: flex;
   place-content: center space-between;
-  &:hover {
-    box-shadow: $box-shadow-default;
-  }
   &__expand {
     display: flex;
     width: 100%;
@@ -412,6 +400,7 @@ export default class KeyResult extends Vue {
       color: $neutral-primary-4;
       font-weight: $font-weight-medium;
       padding-right: $unit-5;
+      line-height: 26px;
     }
   }
   &__delete {
@@ -435,16 +424,12 @@ export default class KeyResult extends Vue {
   }
 }
 .content-collapse {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-  background-color: #f1f1f1;
+  transition: max-height 0.3s ease-out;
   margin-top: $unit-3;
-  &:not(:last-child) {
-    margin-bottom: $unit-2;
-  }
+  border: 1px $neutral-primary-1 solid;
+  border-radius: 10px;
   border-radius: $border-radius-base;
-  background-color: $purple-primary-1;
+  margin-bottom: $unit-2;
   .krs-form {
     padding: $unit-4;
     &__detail {

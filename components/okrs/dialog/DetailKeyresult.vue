@@ -3,7 +3,7 @@
     class="krs-detail"
     title="Danh sách kết quả then chốt"
     :visible.sync="syncDetailKrsDialog"
-    width="50%"
+    width="80%"
     @close="handleClose"
   >
     <el-table :data="listKrs" header-row-class-name="krs-detail__table-header">

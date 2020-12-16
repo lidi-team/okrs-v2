@@ -140,6 +140,8 @@ export default class CreateObjectiveStep extends Vue {
         this.$store.commit(MutationState.SET_LIST_OBJECTIVE_ALIGN, data);
         this.syncActive++;
         this.loading = false;
+      } else {
+        this.$message.error('Có trường chưa hợp lệ, xin hãy kiểm tra!!!');
       }
     }
   }

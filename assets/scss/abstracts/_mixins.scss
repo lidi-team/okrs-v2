@@ -284,5 +284,7 @@ $breakpoints: (
     transition: box-shadow 0.3s ease-in-out;
   }
   border-radius: 10px;
-  padding: $unit-3 $unit-7;
+  padding: $unit-7;
+  background: white;
+  margin: $unit-7 0;
 }
