@@ -249,7 +249,14 @@ $breakpoints: (
 }
 
 @mixin box-shadow {
-  box-shadow: inset 0px -1px 0px #dfe3e8;
+  box-shadow: 0px 4px 10px rgba(33, 43, 54, 0.15),
+    0px 4px 40px rgba(33, 43, 54, 0.15);
+}
+
+@mixin box-middle {
+  box-shadow: 0px 4px 10px rgba(33, 43, 54, 0.15),
+    0px 4px 40px rgba(33, 43, 54, 0.15);
+  border-radius: 16px;
 }
 
 @mixin account-form {
