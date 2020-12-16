@@ -466,7 +466,11 @@ export default class ControlProject extends Vue {
 }
 </script>
 <style lang="scss" scoped>
+@import '@/assets/scss/main.scss';
 .project-detail {
+  background-color: $white;
+  margin: $unit-4 0;
+  padding: $unit-4;
   &__content {
     &--name {
       clear: both;

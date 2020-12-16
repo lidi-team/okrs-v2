@@ -77,7 +77,10 @@
         </div>
       </nuxt-link>
       <nuxt-link
-        v-if="user.roles.includes('ROLE_ADMIN_HR')"
+        v-if="
+          user.roles.includes('ROLE_ADMIN') ||
+          user.roles.includes('ROLE_ADMIN_HR')
+        "
         to="/quan-ly/nhan-su"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isHRsActive }]"
       >

@@ -1,5 +1,9 @@
 <template>
   <div class="create-employee">
+    <el-page-header title="Quay lại" @back="goBack" />
+    <div class="okrs-detail--top-action">
+      <span class="okrs-detail--top-action__title">Thêm nhân viên</span>
+    </div>
     <el-tabs v-model="tabActive" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="Tải lên file" name="excel">
         <upload-excel-component
@@ -180,6 +184,7 @@ import {
 import { EmployeeDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
+import { Form } from 'element-ui';
 
 @Component<CreateEmployee>({
   name: 'CreateEmployee',
@@ -245,32 +250,35 @@ export default class CreateEmployee extends Vue {
     ],
   };
 
-  private async createEmployee() {
+  private createEmployee() {
     console.log('Employee', this.employee);
-    try {
-      const response = await EmployeeRepository.create({
-        users: [this.employee],
-      });
-      console.log(response);
-      if (!!response && !!response.data) {
-        if (response.data.numberOfFailed === 0) {
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'thêm nhân viên thành công',
-          });
-        } else {
-          this.$notify.warning({
-            ...notificationConfig,
-            message:
-              `Thêm thành công: ${response.data.numberOfSuccess}` +
-              '\n' +
-              `Thất bại: ${response.data.numberOfFailed}`,
-          });
+    (this.$refs.temCreateCycle as Form).validate(
+      async (isValid: boolean, invalidatedFields) => {
+        if (isValid) {
+          try {
+            const response = await EmployeeRepository.create({
+              users: [this.employee],
+            });
+            console.log(response);
+            if (!!response && !!response.data) {
+              if (response.data.numberOfFailed === 0) {
+                this.$notify.success({
+                  ...notificationConfig,
+                  message: 'thêm nhân viên thành công',
+                });
+              } else {
+                this.$notify.warning({
+                  ...notificationConfig,
+                  message: `Thêm nhân viên thất bại`,
+                });
+              }
+            }
+          } catch (error) {
+            console.log(error);
+          }
         }
-      }
-    } catch (error) {
-      console.log(error);
-    }
+      },
+    );
   }
 
   @Watch('tableData')
@@ -352,12 +360,15 @@ export default class CreateEmployee extends Vue {
           };
           this.$notify.success({
             ...notificationConfig,
-            message: 'thêm nhân viên thành công',
+            message: 'thêm tất cả nhân viên thành công',
           });
         } else {
-          this.$notify.error({
+          this.$notify.warning({
             ...notificationConfig,
-            message: `thêm nhân viên thất bại`,
+            message:
+              `Thêm thành công: ${response.data.numberOfSuccess}` +
+              '\n' +
+              `Thất bại: ${response.data.numberOfFailed}`,
           });
         }
       }
@@ -371,6 +382,10 @@ export default class CreateEmployee extends Vue {
       return time.getTime() > Date.now();
     },
   };
+
+  private goBack() {
+    this.$router.go(-1);
+  }
 }
 </script>
 

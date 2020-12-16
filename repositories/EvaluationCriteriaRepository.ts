@@ -31,9 +31,8 @@ export default class EvaluationCriteriorRepository {
   public static getCombobox(
     type: EvaluationCriteriaEnum,
   ): Promise<AxiosResponse<any>> {
-    return baseUrlV1.get(
-      `${ResourcesEnpoint.MetaData}/${EvaluationCriteriaEnum.EvaluationCriteria}`,
-      { params: { type } },
-    );
+    return baseUrl.get(`${ResourcesEnpoint.MetaData}/evaluationCriteria`, {
+      params: { type },
+    });
   }
 }

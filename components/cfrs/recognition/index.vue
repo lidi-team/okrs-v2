@@ -4,7 +4,6 @@
     :visible.sync="syncCreateOkrsDialog"
     width="800px"
     placement="center"
-    :before-close="handleCloseDialog"
     class="create-recognition-dialog"
   >
     <el-form
@@ -35,7 +34,7 @@
             <div style="display: flex">
               <el-avatar :size="25" style="align-self: center">
                 <img
-                  :src="user.avatarURL ? user.avatarURL : user.gravatarURL"
+                  :src="user.avatarUrl ? user.avatarUrl : user.gravatarURL"
                   alt="avatar"
                 />
               </el-avatar>
@@ -71,7 +70,7 @@
           <el-option
             v-for="criteria in optionsMetadata.criteria"
             :key="criteria.id"
-            :label="criteria.content"
+            :label="criteria.name"
             :value="criteria.id"
           >
             <div class="item-criteria">
@@ -79,7 +78,7 @@
                 <span>{{ criteria.numberOfStar }}</span>
                 <icon-star-dashboard class="item-criteria__icon--star" />
               </div>
-              <span class="item-criteria__content">{{ criteria.content }}</span>
+              <span class="item-criteria__content">{{ criteria.name }}</span>
             </div>
           </el-option>
         </el-select>
@@ -161,7 +160,6 @@ export default class CreateRecongnitionDialog extends Vue {
     evaluationCriteriaId: null,
     objectiveId: null,
     checkinId: null,
-    senderId: this.$store.state.auth.user.id,
   };
 
   private autoSizeConfig = { minRows: 4, maxRows: 6 };
@@ -211,19 +209,20 @@ export default class CreateRecongnitionDialog extends Vue {
   }
 
   private async getMetaDataRecognition() {
+    console.log('go: ');
     try {
-      await Promise.all([
+      const [evaluationCriteria, allUsers] = await Promise.all([
         EvaluationCriteriaRepository.getCombobox(
           EvaluationCriteriaEnum.RECOGNITION,
         ),
         UserRepository.getAllUsers(),
-      ]).then(([evaluationCriteria, allUsers]) => {
-        this.optionsMetadata.criteria = Object.freeze(
-          evaluationCriteria.data.data,
-        );
-        this.optionsMetadata.users = Object.freeze(allUsers.data);
-      });
-    } catch (error) {}
+      ]);
+      this.optionsMetadata.criteria = Object.freeze(evaluationCriteria.data);
+      console.log('allUsers: ', allUsers);
+      this.optionsMetadata.users = Object.freeze(allUsers.data);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   private async handleSelectUser() {
@@ -247,12 +246,21 @@ export default class CreateRecongnitionDialog extends Vue {
       async (isValid: boolean, invalidatedFields: object) => {
         if (isValid) {
           try {
-            await CfrsRepository.postRecognition(this.recognition).then(() => {
+            const data: any = await CfrsRepository.postRecognition(
+              this.recognition,
+            );
+            if (!!data && data.code === 200) {
               this.$notify.success({
                 ...notificationConfig,
                 message: 'Tạo ghi nhận thành công',
               });
-            });
+            } else {
+              this.$notify.error({
+                ...notificationConfig,
+                message: data.message,
+              });
+            }
+
             this.isCreating = true;
             this.syncCreateOkrsDialog = false;
             setTimeout(() => {
