@@ -2,7 +2,7 @@
   <div v-if="objectives" class="item-okrs box-wrap">
     <div class="-display-flex -justify-content-between -border-header">
       <h2 class="-title-2">{{ title }}</h2>
-      <div class="-display-flex -align-items-center item-okrs__icon">
+      <div class="-display-flex -align-items-center -pb-2">
         <button-create-okr
           v-if="isManage"
           :type-objective="1"
@@ -35,7 +35,7 @@
           >
             <div class="expand__objective">
               <icon-ellipse v-if="objective" />
-              <span>{{ objective.title }}</span>
+              <span class="-pl-2">{{ objective.title }}</span>
             </div>
             <div class="expand__infor">
               <p
@@ -50,15 +50,15 @@
               </p>
               <div class="expand__infor--progress">
                 <el-progress
-                  :percentage="+objective.progress"
+                  :percentage="+objective.progress | round"
                   :color="customColors"
                   :text-inside="true"
                   :stroke-width="26"
                 />
               </div>
               <div class="expand__infor--action">
-                <span :class="isUpProgress(objective.changing)"
-                  >{{ objective.changing }}%</span
+                <span :class="objective.changing | isUpProgress"
+                  >{{ objective.changing | round }}%</span
                 >
                 <action-tooltip
                   :id="objective.id"
@@ -97,7 +97,7 @@
         <template v-slot="{ row }">
           <div class="item__progress">
             <el-progress
-              :percentage="+row.progress"
+              :percentage="+row.progress | round"
               :color="customColors"
               :text-inside="true"
               :stroke-width="26"
@@ -108,7 +108,7 @@
       <el-table-column label="Thay đổi" width="200">
         <template v-slot="{ row }">
           <div class="item__action">
-            <p :class="isUpProgress(row.changing)">{{ row.changing }}%</p>
+            <p :class="row.changing | isUpProgress">{{ row.changing | round }}%</p>
             <action-tooltip
               :id="row.id"
               :is-manage="isManage"
@@ -168,10 +168,6 @@ export default class OKRsItem extends Vue {
     this.$emit('openDrawer', keyResults);
   }
 
-  private isUpProgress(progress: Number): string {
-    return progress > 0 ? 'happy' : 'sad';
-  }
-
   private async updateOKRs(objective) {
     const { id, title, type, weight, keyResults } = objective;
     const { data } = await OkrsRepository.getDetailOkrsById(id);
@@ -208,9 +204,6 @@ export default class OKRsItem extends Vue {
   transform: perspective(1px) translateZ(0);
   transition-property: transform;
   transition-duration: 0.3s;
-  &__icon {
-    padding: 0 0 $unit-2 0;
-  }
   &:hover {
     transform: translateY(-3px);
   }
@@ -219,22 +212,17 @@ export default class OKRsItem extends Vue {
   }
   .happy {
     color: $green-primary-1;
+    min-width: 55px;
   }
   .sad {
     color: $red-primary-1;
+    min-width: 55px;
   }
   .item {
     background: $white;
     color: $neutral-primary-4;
     margin-top: $unit-8;
     @include drop-shadow;
-    &__table-header {
-      > th {
-        font-weight: $font-weight-medium;
-        color: $neutral-primary-4;
-        padding-left: $unit-5;
-      }
-    }
     &__krs {
       color: $purple-primary-8;
       &:hover {
@@ -258,12 +246,7 @@ export default class OKRsItem extends Vue {
       }
       .expand__objective {
         display: flex;
-        place-content: center flex-start;
         align-items: center;
-        padding-right: $unit-8;
-        span {
-          padding-left: $unit-5;
-        }
       }
       .expand__infor {
         display: flex;
@@ -277,10 +260,9 @@ export default class OKRsItem extends Vue {
         }
         &--action {
           width: 180px;
-          margin-right: -$unit-10;
           display: flex;
           align-items: center;
-          place-content: center space-between;
+          justify-content: space-between;
           &__tooltip {
             padding-right: 105px;
           }
@@ -334,9 +316,6 @@ export default class OKRsItem extends Vue {
     .el-icon-arrow-right {
       color: $purple-primary-4;
       font-weight: $font-weight-medium;
-    }
-    .el-table__expanded-cell {
-      padding: $unit-5 30px;
     }
   }
 }
