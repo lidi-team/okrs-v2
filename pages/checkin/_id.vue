@@ -41,7 +41,7 @@
         </table>
       </div>
     </div>
-    <checkin-chart-process
+    <checkin-detail-chart
       class="top-checkin"
       v-if="checkin"
       :checkin.sync="checkin.chart"
@@ -55,8 +55,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { formatDateToDD, initNewDate } from '@/utils/dateParser';
 import { notificationConfig } from '@/constants/app.constant';
-import CheckinDetail from '@/components/checkin/CheckinDetail.vue';
-import CheckinChartProcess from '@/components/checkin/CheckinChartProcess.vue';
+import CheckinDetail from '@/components/checkin/CheckinDetail/CheckinDetailIndex.vue';
+import CheckinDetailChart from '@/components/checkin/CheckinDetail/CheckinDetailChart.vue';
 
 @Component({
   name: 'CheckinPage',
@@ -67,7 +67,7 @@ import CheckinChartProcess from '@/components/checkin/CheckinChartProcess.vue';
   },
   components: {
     CheckinDetail,
-    CheckinChartProcess,
+    CheckinDetailChart,
   },
   async mounted() {
     await this.getCheckin();

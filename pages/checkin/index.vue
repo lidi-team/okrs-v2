@@ -1,6 +1,6 @@
 <template>
   <div class="checkins">
-    <div class="-display-flex">
+    <div class="-display-flex -mb-3">
       <el-select
         class="-mr-1"
         v-model="paramsCheckin.cycleId"
@@ -44,14 +44,13 @@
     </el-tabs>
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-
-import Inferior from '@/components/checkin/Inferior.vue';
-import RequestCheckin from '@/components/checkin/RequestCheckin.vue';
-import MyCheckin from '@/components/checkin/MyCheckin.vue';
-
+import Inferior from '@/components/checkin/CheckinInferior.vue';
+import RequestCheckin from '@/components/checkin/CheckinRequest.vue';
+import MyCheckin from '@/components/checkin/CheckinMyCheckin.vue';
 import { notificationConfig, pageLimit } from '@/constants/app.constant';
 import {
   TAB_CHECKIN,
@@ -59,13 +58,11 @@ import {
 } from '@/components/checkin/constants.enum';
 import { SelectOptionDTO } from '@/constants/app.interface';
 import { GetterState, MutationState } from '@/constants/app.vuex';
-
 import CycleRepository from '@/repositories/CycleRepository';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import CommonPagination from '@/components/common/Pagination.vue';
 import ProjectRepository from '../../repositories/ProjectRepository';
 @Component<CheckinPage>({
-  name: 'CheckinPage',
   components: {
     CommonPagination,
   },
@@ -132,18 +129,6 @@ export default class CheckinPage extends Vue {
     this.cycles = data || [];
   }
 
-  private async getProjects() {
-    const { data } = await ProjectRepository.getListCurrent();
-    this.projects =
-      [
-        {
-          id: 0,
-          name: 'Tất cả',
-        },
-        ...data,
-      ] || [];
-  }
-
   private handleClick(currentTab: string) {
     this.$router.push(
       `?tab=${
@@ -156,6 +141,18 @@ export default class CheckinPage extends Vue {
         this.paramsCheckin.page
       }&projectId=${this.paramsCheckin.projectId}`,
     );
+  }
+
+  private async getProjects() {
+    const { data } = await ProjectRepository.getListCurrent();
+    this.projects =
+      [
+        {
+          id: 0,
+          name: 'Tất cả',
+        },
+        ...data,
+      ];
   }
 }
 </script>

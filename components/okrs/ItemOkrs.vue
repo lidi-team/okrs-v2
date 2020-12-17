@@ -207,9 +207,6 @@ export default class OKRsItem extends Vue {
   &:hover {
     transform: translateY(-3px);
   }
-  .last-item {
-    margin-bottom: $unit-5;
-  }
   .happy {
     color: $green-primary-1;
     min-width: 55px;
