@@ -19,6 +19,10 @@
           class="cfrs-page__top--button"
         >
           <el-button
+            v-if="
+              user.roles.includes('ROLE_PM') ||
+              user.roles.includes('ROLE_DIRECTOR')
+            "
             class="el-button el-button--purple el-button-medium"
             icon="el-icon-plus"
             @click="visibleCreateDialog = true"
@@ -41,21 +45,20 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 
 import Feedback from '@/components/cfrs/feedback/index.vue';
 import History from '@/components/cfrs/history/index.vue';
 import Rank from '@/components/cfrs/rank/index.vue';
 
-import OkrsRepository from '@/repositories/OkrsRepository';
-
 import { TabCfr, TabCfrEng } from '@/constants/app.enum';
 import { ParamsCFR } from '@/constants/DTO/common';
 import { pageLimit } from '@/constants/app.constant';
-import { MutationState } from '@/constants/app.vuex';
+import { GetterState, MutationState } from '@/constants/app.vuex';
 // components
 import CfrsNavbar from '@/components/cfrs/Navbar.vue';
 import CfrsRecognition from '@/components/cfrs/recognition/index.vue';
+import { mapGetters } from 'vuex';
 
 @Component<CFRs>({
   name: 'CFRs',
@@ -67,6 +70,11 @@ import CfrsRecognition from '@/components/cfrs/recognition/index.vue';
     return {
       title: 'Ghi nhận và Phản hồi',
     };
+  },
+  computed: {
+    ...mapGetters({
+      user: GetterState.USER,
+    }),
   },
   created() {
     this.$store.commit(
@@ -157,14 +165,17 @@ export default class CFRs extends Vue {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
+
 .cfrs {
   padding-right: $unit-4;
 }
+
 .cfrs-page {
   &__top {
     @include breakpoint-down(phone) {
       flex-direction: column;
     }
+
     &--button {
       display: flex;
       justify-content: flex-end;
@@ -173,6 +184,7 @@ export default class CFRs extends Vue {
       }
     }
   }
+
   .el-table__empty-block {
     width: 100% !important;
   }
