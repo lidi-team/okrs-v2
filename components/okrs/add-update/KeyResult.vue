@@ -67,66 +67,64 @@
         </el-form-item>
         <div class="krs-form__detail">
           <div class="krs-form__detail--value">
-            <el-row>
-              <el-col :span="7">
-                <el-form-item
-                  label="Đơn vị"
-                  class="custom-label"
-                  label-width="65px"
+            <div class="-display-flex">
+              <el-form-item
+                label="Đơn vị"
+                class=""
+                label-width="65px"
+              >
+                <el-select
+                  v-model.number="tempKeyResult.measureUnitId"
+                  size="medium"
+                  filterable
+                  no-match-text="Không tìm thấy kết quả"
+                  placeholder="Chọn đơn vị"
                 >
-                  <el-select
-                    v-model.number="tempKeyResult.measureUnitId"
-                    size="medium"
-                    filterable
-                    no-match-text="Không tìm thấy kết quả"
-                    placeholder="Chọn đơn vị"
-                  >
-                    <el-option
-                      v-for="unit in units"
-                      :key="unit.id"
-                      :label="unit.name"
-                      :value="unit.id"
-                      tabindex="2"
-                    />
-                  </el-select>
-                </el-form-item>
-              </el-col>
-              <el-col :span="7">
-                <el-form-item
-                  class="custom-label krs-form__detail--value--start"
-                  prop="startValue"
-                  label="Bắt đầu"
-                  label-width="70px"
-                >
-                  <el-input
-                    v-model.number="tempKeyResult.startValue"
-                    size="medium"
-                    tabindex="3"
+                  <el-option
+                    v-for="unit in units"
+                    :key="unit.id"
+                    :label="unit.name"
+                    :value="unit.id"
+                    tabindex="2"
                   />
-                </el-form-item>
-              </el-col>
-              <el-col :span="10">
-                <el-form-item
-                  prop="targetValue"
-                  label="Mục tiêu"
-                  class="custom-label"
-                  label-width="80px"
-                >
-                  <el-input
-                    v-model.number="tempKeyResult.targetedValue"
-                    size="medium"
-                    tabindex="4"
-                  />
-                </el-form-item>
-              </el-col>
-            </el-row>
+                </el-select>
+              </el-form-item>
+              <el-form-item
+                class="-ml-5"
+                prop="startValue"
+                label="Bắt đầu"
+                label-width="70px"
+              >
+                <el-input-number
+                  class="el-input-number-okr"
+                  v-model="tempKeyResult.startValue"
+                  controls-position="right"
+                  size="medium"
+                  :min="0"
+                />
+              </el-form-item>
+              <el-form-item
+                prop="targetValue"
+                label="Mục tiêu"
+                class="-ml-5"
+                label-width="70px"
+              >
+                <el-input-number
+                  class="el-input-number-okr"
+                  v-model.number="tempKeyResult.targetedValue"
+                  controls-position="right"
+                  size="medium"
+                  :min="1"
+                />
+              </el-form-item>
+            </div>
           </div>
           <div>
             <el-form-item
               v-if="isCreate"
               prop="keyResultParentId"
               label="Liên kết kết quả then chốt "
-              class="custom-label"
+              class=""
               label-width="190px"
             >
               <el-select
