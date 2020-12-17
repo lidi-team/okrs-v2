@@ -2,8 +2,10 @@
   <div v-loading="loadingTab" class="history">
     <el-row :gutter="30" class>
       <el-col :md="8" :lg="8">
-        <div class="history__col">
-          <p class="history__col__header">CFRs {{ displayNameCfrs }} gửi đi</p>
+        <div class="item-okrs box-wrap">
+          <div class="-border-header">
+            <p class="-title-2">CFRs {{ displayNameCfrs }} gửi đi</p>
+          </div>
           <div class="history__col--items">
             <div
               v-for="(item, index) in sentItems"
@@ -61,10 +63,10 @@
         </div>
       </el-col>
       <el-col :md="8" :lg="8">
-        <div class="history__col">
-          <p class="history__col__header">
-            CFRs {{ displayNameCfrs }} nhận được
-          </p>
+        <div class="item-okrs box-wrap">
+          <div class="-border-header">
+            <p class="-title-2">CFRs {{ displayNameCfrs }} nhận được</p>
+          </div>
           <div class="history__col--items">
             <div
               v-for="item in receivedItems"
@@ -121,8 +123,10 @@
         </div>
       </el-col>
       <el-col :md="8" :lg="8">
-        <div class="history__col">
-          <p class="history__col__header">CFRs toàn công ty</p>
+        <div class="item-okrs box-wrap">
+          <div class="-border-header">
+            <p class="-title-2">CFRs toàn công ty</p>
+          </div>
           <div class="history__col--items">
             <div
               v-for="(item, index) in allItems"
@@ -428,7 +432,6 @@ export default class History extends Vue {
 
         .item__left {
           display: flex;
-          padding-left: $unit-4;
 
           &--icon {
             display: flex;
@@ -495,7 +498,6 @@ export default class History extends Vue {
           display: flex;
           place-content: center;
           align-self: center;
-          padding-right: $unit-4;
           font-weight: $font-weight-medium;
           font-size: $unit-5;
           margin-left: $unit-2;

@@ -11,7 +11,7 @@
       </el-table-column>-->
       <el-table-column label="Thao tác" align="center">
         <template v-slot="{ row }">
-          <el-tooltip class="job-admin__icon" content="Sửa" placement="top">
+          <el-tooltip class="job-admin__icon" content="Cập nhật" placement="top">
             <i
               class="el-icon-edit icon--info"
               @click="handleOpenDialogUpdate(row)"

@@ -2,9 +2,9 @@
   <div v-loading="loadingTab" class="rank">
     <el-row :gutter="30" class>
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
-        <div class="rank__col">
-          <div class="rank__col__header">
-            <p class="rank__col__header--title">BXH theo chu kỳ</p>
+        <div class="box-wrap">
+          <div class="-display-flex -justify-content-between -border-header">
+            <p class="-title-2" style="padding-bottom: 20px">BXH theo chu kỳ</p>
             <el-select
               v-model="cycleId"
               filterable
@@ -61,10 +61,13 @@
         </div>
       </el-col>
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
-        <div class="rank__col">
-          <p class="rank__col__header" style="padding-bottom: 20px">
-            BXH lũy kế
-          </p>
+        <div class="box-wrap">
+          <div class="-border-header">
+            <p class="-title-2" style="padding-bottom: 20px">
+              BXH lũy kế
+            </p>
+          </div>
+
           <p v-if="!accumulatedRanking.length" class="history__col__empty">
             Không có dữ liệu
           </p>
@@ -240,7 +243,7 @@ export default class Rank extends Vue {
 .rank-item {
   display: flex;
   flex-direction: row;
-  padding: $unit-2 $unit-4;
+  padding: $unit-2 0;
   @include box-shadow;
   justify-content: space-between;
 

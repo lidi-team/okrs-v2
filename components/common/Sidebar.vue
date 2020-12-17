@@ -89,7 +89,7 @@
           user.roles.includes('ROLE_ADMIN') ||
           user.roles.includes('ROLE_ADMIN_HR')
         "
-        to="/quan-ly/nhan-su"
+        to="/nhan-su"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isHRsActive }]"
       >
         <div class="sidebar__link__tab">
@@ -163,7 +163,7 @@ export default class SideBar extends Vue {
   }
 
   private get isHRsActive() {
-    return !!this.$route.path.startsWith('/quan-ly/nhan-su');
+    return !!this.$route.path.startsWith('/nhan-su');
   }
 }
 </script>

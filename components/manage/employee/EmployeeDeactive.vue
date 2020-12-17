@@ -41,7 +41,7 @@
         <template slot-scope="{ row }">
           <el-tooltip
             class="employee-active__icon"
-            content="Sửa"
+            content="Cập nhật"
             placement="right-end"
           >
             <i

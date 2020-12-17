@@ -250,35 +250,28 @@ export default class CreateEmployee extends Vue {
     ],
   };
 
-  private createEmployee() {
+  private async createEmployee() {
     console.log('Employee', this.employee);
-    (this.$refs.temCreateCycle as Form).validate(
-      async (isValid: boolean, invalidatedFields) => {
-        if (isValid) {
-          try {
-            const response = await EmployeeRepository.create({
-              users: [this.employee],
-            });
-            console.log(response);
-            if (!!response && !!response.data) {
-              if (response.data.numberOfFailed === 0) {
-                this.$notify.success({
-                  ...notificationConfig,
-                  message: 'thêm nhân viên thành công',
-                });
-              } else {
-                this.$notify.warning({
-                  ...notificationConfig,
-                  message: `Thêm nhân viên thất bại`,
-                });
-              }
-            }
-          } catch (error) {
-            console.log(error);
-          }
+    try {
+      const response = await EmployeeRepository.create({
+        users: [this.employee],
+      });
+      console.log(response);
+      if (!!response && !!response.data) {
+        if (response.data.numberOfFailed === 0) {
+        } else {
         }
-      },
-    );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    // (this.$refs.temCreateCycle as Form).validate(
+    //   async (isValid: boolean, invalidatedFields) => {
+    //     if (isValid) {
+    //
+    //     }
+    //   },
+    // );
   }
 
   @Watch('tableData')
@@ -358,18 +351,7 @@ export default class CreateEmployee extends Vue {
             gender: 1,
             dob: '',
           };
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'thêm tất cả nhân viên thành công',
-          });
         } else {
-          this.$notify.warning({
-            ...notificationConfig,
-            message:
-              `Thêm thành công: ${response.data.numberOfSuccess}` +
-              '\n' +
-              `Thất bại: ${response.data.numberOfFailed}`,
-          });
         }
       }
     } catch (error) {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box-wrap">
     <el-table
       v-loading="loadingTable"
       empty-text="Không có dữ liệu"
@@ -317,19 +317,11 @@ export default class ProjectAll extends Vue {
                   setTimeout(() => {
                     this.loading = false;
                   }, 300);
-                  this.$notify.success({
-                    ...notificationConfig,
-                    message: 'Cập nhật dự án thành công',
-                  });
                   this.getListProject();
                   this.dialogUpdateVisible = false;
                 })
                 .catch((error) => {
                   if (error.response.data.statusCode === 430) {
-                    this.$notify.error({
-                      ...notificationConfig,
-                      message: 'Team Leader đã tồn tại',
-                    });
                   }
                   setTimeout(() => {
                     this.loading = false;
