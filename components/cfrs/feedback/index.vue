@@ -116,7 +116,7 @@
                 </p>
                 <div class="-display-flex -justify-content-between">
                   <p class="cfr__left__content--description">
-                    đến {{ item.reviewer.fullName }}
+                    {{ item.reviewer.fullName }}
                   </p>
                   <p>
                     {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}
@@ -379,7 +379,7 @@ export default class Feedback extends Vue {
 .cfr {
   display: flex;
   flex-direction: row;
-  padding: $unit-4 0;
+  padding: $unit-2 0;
   @include box-shadow;
   justify-content: space-between;
 
@@ -392,19 +392,19 @@ export default class Feedback extends Vue {
     &__content {
       flex: 1;
       margin: 0 $unit-4;
-    }
 
-    &__title {
-      font-weight: bold;
-      font-size: $unit-4;
-      @include truncate-oneline;
-    }
+      &--title {
+        font-weight: bold;
+        font-size: $unit-4;
+        @include truncate-oneline;
+      }
 
-    &__description {
-      font-size: 0.875rem;
-      color: $neutral-primary-3;
-      line-height: 23px;
-      padding-right: 10px;
+      &--description {
+        font-size: 0.875rem;
+        color: $neutral-primary-3;
+        line-height: 23px;
+        padding-right: 10px;
+      }
     }
 
     .el-avatar {
