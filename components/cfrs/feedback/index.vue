@@ -1,14 +1,16 @@
 <template>
   <div v-loading="loadingTab" class="feedback">
-    <el-row :gutter="30" class>
+    <el-row :gutter="30">
       <el-col
         v-if="listWaitingFeedback.inferior"
         v-loading="loadingInferior"
         :md="12"
         :lg="12"
       >
-        <div class="feedback__col">
-          <p class="feedback__col__header">{{ displayHeader('inferior') }}</p>
+        <div class="box-wrap">
+          <div class="-border-header">
+            <p class="-title-2">{{ displayHeader('inferior') }}</p>
+          </div>
           <p
             v-if="!listWaitingFeedback.inferior.checkins.items.length"
             class="none-cfr"
@@ -41,10 +43,14 @@
                 <p class="cfr__left__content--title">
                   {{ item.objective.title }}
                 </p>
-                <p class="cfr__left__content--description">
-                  {{ item.objective.user.fullName }} -
-                  {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}
-                </p>
+                <div class="-display-flex -justify-content-between">
+                  <p class="cfr__left__content--description">
+                    {{ item.objective.user.fullName }}
+                  </p>
+                  <p>
+                    {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}
+                  </p>
+                </div>
               </div>
             </div>
             <div class="cfr__right">
@@ -57,8 +63,8 @@
                     false,
                   )
                 "
-                >Tạo phản hồi</el-button
-              >
+                >Tạo phản hồi
+              </el-button>
             </div>
           </div>
           <common-pagination
@@ -72,8 +78,10 @@
         </div>
       </el-col>
       <el-col v-if="listWaitingFeedback.superior" :md="12" :lg="12">
-        <div class="feedback__col">
-          <p class="feedback__col__header">{{ displayHeader('superior') }}</p>
+        <div class="box-wrap">
+          <div class="-border-header">
+            <p class="-title-2">{{ displayHeader('superior') }}</p>
+          </div>
           <p
             v-if="!listWaitingFeedback.superior.checkins.items.length"
             class="none-cfr"
@@ -106,10 +114,14 @@
                 <p class="cfr__left__content--title">
                   {{ item.objective.title }}
                 </p>
-                <p class="cfr__left__content--description">
-                  {{ item.objective.user.fullName }} -
-                  {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}
-                </p>
+                <div class="-display-flex -justify-content-between">
+                  <p class="cfr__left__content--description">
+                    đến {{ item.reviewer.fullName }}
+                  </p>
+                  <p>
+                    {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}
+                  </p>
+                </div>
               </div>
             </div>
             <div class="cfr__right">
@@ -122,8 +134,8 @@
                     true,
                   )
                 "
-                >Tạo phản hồi</el-button
-              >
+                >Tạo phản hồi
+              </el-button>
             </div>
           </div>
         </div>
@@ -145,7 +157,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 import { ParamsQuery } from '@/constants/DTO/common';
@@ -153,6 +165,7 @@ import { ParamsQuery } from '@/constants/DTO/common';
 import CommonPagination from '@/components/common/Pagination.vue';
 import CfrsCreateFeedback from '@/components/cfrs/feedback/CreateFeedback.vue';
 import CfrsDetailFeedback from '@/components/cfrs/feedback/DetailFeedback.vue';
+
 @Component<Feedback>({
   name: 'Feedback',
   components: {
@@ -326,24 +339,29 @@ export default class Feedback extends Vue {
 
 <style lang="scss">
 @import '@/assets/scss/main.scss';
+
 .feedback {
   color: $neutral-primary-4;
   @include drop-shadow;
   border-radius: $border-radius-base;
+
   &__col {
     background-color: $white;
     padding: $unit-4 0 0;
     border-radius: $border-radius-base;
+
     &__header {
       font-size: $text-2xl;
       padding: 0 0 $unit-4 $unit-4;
       @include box-shadow;
       border-radius: $border-radius-base $border-radius-base 0px 0px;
     }
+
     &__empty {
       text-align: center;
       padding: $unit-3;
     }
+
     &__pagination {
       padding: $unit-4 0;
       display: flex;
@@ -351,39 +369,49 @@ export default class Feedback extends Vue {
     }
   }
 }
+
 .none-cfr {
   text-align: center;
   padding: $unit-3 $unit-4 $unit-3 $unit-4;
   @include box-shadow;
 }
+
 .cfr {
   display: flex;
   flex-direction: row;
-  padding: $unit-3 $unit-4 $unit-3 $unit-4;
+  padding: $unit-4 0;
   @include box-shadow;
   justify-content: space-between;
+
   &__left {
     display: flex;
+    flex: 1;
     flex-direction: row;
     cursor: pointer;
+
     &__content {
+      flex: 1;
       margin: 0 $unit-4;
     }
+
     &__title {
       font-weight: bold;
       font-size: $unit-4;
       @include truncate-oneline;
     }
+
     &__description {
       font-size: 0.875rem;
       color: $neutral-primary-3;
       line-height: 23px;
       padding-right: 10px;
     }
+
     .el-avatar {
       align-self: center;
     }
   }
+
   &__right {
     align-self: center;
   }

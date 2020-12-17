@@ -30,29 +30,29 @@
         <el-table-column
           prop="keyResult.targetValue"
           label="Mục tiêu"
-          width="100"
+          min-width="100"
         ></el-table-column>
         <el-table-column
           prop="valueObtained"
           label="Đạt được"
-          width="100"
+          min-width="100"
         ></el-table-column>
         <el-table-column
           prop="progress"
           label="Tiến độ"
-          width="200"
+          min-width="120"
         ></el-table-column>
         <el-table-column
           prop="problems"
           label="Vấn đề"
-          width="200"
+          min-width="120"
         ></el-table-column>
         <el-table-column
           prop="plans"
           label="Kế hoạch"
-          width="200"
+          min-width="120"
         ></el-table-column>
-        <el-table-column label="Mức độ tự tin" width="140">
+        <el-table-column label="Mức độ tự tin" min-width="140">
           <template v-slot="{ row }">
             <el-tag :type="row.confidentLevel | filterConfidentTag">{{
               row.confidentLevel | filterConfident
