@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="checkinRuleForm" label-position="left" :model="syncCheckin" class="checkinDetail">
+  <el-form ref="checkinRuleForm" label-position="left" :model="syncCheckin" class="checkinDetail" :rules="rules">
     <el-row :gutter="32">
        <el-col :sm="24" :lg="8">
         <div class="box-wrap height-290">
@@ -192,7 +192,7 @@ import { Component, Vue, Prop, PropSync, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { Form } from 'element-ui';
 import { GetterState } from '@/constants/app.vuex';
-import { customColors } from '../okrs/okrs.constant';
+import { customColors } from '../../okrs/okrs.constant';
 import { formatDate } from '@/utils/format';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import {
@@ -200,7 +200,7 @@ import {
   confidentLevel,
   notificationConfig,
 } from '@/constants/app.constant';
-import { formatDateToDD } from '@/utils/dateParser';
+import { formatDateToDD, compareTwoDate } from '@/utils/dateParser';
 import { Maps, Rule } from '@/constants/app.type';
 
 @Component<DetailHistory>({
@@ -268,38 +268,103 @@ export default class DetailHistory extends Vue {
     },
   };
 
-  private async handleCheckin(status: String) {
-    this.loading = true
-    const {
-      objective,
-      checkinDetail,
-    } = this.syncCheckin;
-    const payload = {
-      id: this.idCheckin,
-      objectiveId: objective.id,
-      nextCheckinDate: formatDateToDD(this.nextCheckinDate),
-      progress: this.progress,
-      objectComplete: this.isCompleted,
-      status,
-      checkinDetails: checkinDetail.map((item) => {
-        return {
-          id: item.id,
-          targetValue: item.keyResult.targetedValue,
-          valueObtained: item.valueObtained,
-          confidentLevel: item.confidentLevel,
-          progress: item.progress,
-          problems: item.problems,
-          plans: item.plans,
-          keyResultId: item.keyResult.id,
-        };
-      }),
-    };
-    const data = await CheckinRepository.createCheckin(payload);
-    if(status !== 'Draft') {
-      this.isDisable = true
-    }
+  private handleCheckin(status: String) {
+    this.loading = true;
+    (this.$refs.checkinRuleForm as Form).validate(
+      async (isValid: boolean, invalidFields: object) => {
+        if (isValid) {
+          const {
+            objective,
+            checkinDetail,
+          } = this.syncCheckin;
+          const payload = {
+            id: this.idCheckin,
+            objectiveId: objective.id,
+            nextCheckinDate: formatDateToDD(this.nextCheckinDate),
+            progress: this.progress,
+            objectComplete: this.isCompleted,
+            status,
+            checkinDetails: checkinDetail.map((item) => {
+              return {
+                id: item.id,
+                targetValue: item.keyResult.targetedValue,
+                valueObtained: item.valueObtained,
+                confidentLevel: item.confidentLevel,
+                progress: item.progress,
+                problems: item.problems,
+                plans: item.plans,
+                keyResultId: item.keyResult.id,
+              };
+            }),
+          };
+          const data = await CheckinRepository.createCheckin(payload);
+          if(status !== 'Draft') {
+            this.isDisable = true
+          }
+        }
+      })
     this.loading = false
   }
+
+  private checkNumber = (rule, value, callback) => {
+    if (!Number.isInteger(value)) {
+      return callback(new Error('Phải là số nguyên dương'));
+    } else if (value < 0) {
+      callback(new Error('Không được nhỏ hơn 0'));
+    } else {
+      callback();
+    }
+  };
+
+  private validateDate = (rule, value, callback) => {
+    if (compareTwoDate(value, formatDateToDD(new Date())) === 1) {
+      return callback(new Error('Không được nhỏ hơn ngày hiện tại'));
+    } else {
+      callback();
+    }
+  };
+
+  private checkText = (rule, value, callback) => {
+    const valid: boolean = /^[^-\s]/.test(value);
+    if (!valid) {
+      return callback(new Error('Không được bỏ trống'));
+    } else {
+      callback();
+    }
+  };
+
+  private rules: Maps<Rule[]> = {
+    valueObtained: [
+      { validator: this.checkNumber, trigger: ['change', 'blur'] },
+    ],
+    progress: [
+      {
+        required: true,
+        message: 'Không được bỏ trống',
+        trigger: ['blur', 'change'],
+      },
+      { validator: this.checkText, trigger: ['change', 'blur'] },
+    ],
+    problems: [
+      {
+        required: true,
+        message: 'Không được bỏ trống',
+        trigger: ['blur', 'change'],
+      },
+      { validator: this.checkText, trigger: ['change', 'blur'] },
+    ],
+    plans: [
+      {
+        required: true,
+        message: 'Không được bỏ trống',
+        trigger: ['blur', 'change'],
+      },
+      { validator: this.checkText, trigger: ['change', 'blur'] },
+    ],
+    nextCheckinDate: [
+      { validator: this.validateDate, trigger: ['change', 'blur'] },
+    ],
+  };
 }
 </script>
 

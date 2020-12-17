@@ -94,7 +94,7 @@ const nuxtConfig: NuxtConfig = {
       src: '@/plugins/vue-filter-date',
     },
     { src: '@/plugins/vue-simplemde' },
-    { src: '@/plugins/md-it' },
+    { src: '@/plugins/filters' },
   ],
   /*
    ** Nuxt.js dev-modules

@@ -1,6 +1,7 @@
 <template>
   <div class="okrs-page">
     <el-select
+      class="-mb-4"
       v-model="currentCycleId"
       no-match-text="Không tìm thấy chu kỳ"
       filterable

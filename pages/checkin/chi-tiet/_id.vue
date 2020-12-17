@@ -44,7 +44,7 @@
         </div>
       </el-col>
       <el-col :sm="24" :lg="16">
-        <checkin-chart-process
+        <checkin-detail-chart
           class="top-checkin"
           v-if="checkin"
           :checkin.sync="checkin.chart"
@@ -58,11 +58,10 @@
 import { Component, Vue } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { notificationConfig } from '@/constants/app.constant';
-import CheckinDetail from '@/components/checkin/CheckinDetail.vue';
-import CheckinChartProcess from '@/components/checkin/CheckinChartProcess.vue';
+import CheckinDetail from '@/components/checkin/CheckinDetail/CheckinDetailIndex.vue';
+import CheckinDetailChart from '@/components/checkin/CheckinDetail/CheckinDetailChart.vue';
 
 @Component({
-  name: 'DetailHistoryPage',
   head() {
     return {
       title: 'Chi tiết lịch sử Check-in',
@@ -70,7 +69,7 @@ import CheckinChartProcess from '@/components/checkin/CheckinChartProcess.vue';
   },
   components: {
     CheckinDetail,
-    CheckinChartProcess,
+    CheckinDetailChart,
   },
   mounted() {
     this.getDetail();
