@@ -125,7 +125,7 @@ import { GetterState } from '@/constants/app.vuex';
 @Component<CreateRecongnitionDialog>({
   name: 'CreateRecongnitionDialog',
   async created() {
-    await this.getMetaDataRecognition();
+    await this.getMetaDataRecognition(this.user);
   },
   computed: {
     ...mapGetters({
@@ -212,7 +212,7 @@ export default class CreateRecongnitionDialog extends Vue {
     });
   }
 
-  private async getMetaDataRecognition() {
+  private async getMetaDataRecognition(user: any) {
     try {
       const [evaluationCriteria, allUsers] = await Promise.all([
         EvaluationCriteriaRepository.getCombobox(
@@ -222,7 +222,7 @@ export default class CreateRecongnitionDialog extends Vue {
       ]);
       this.optionsMetadata.criteria = Object.freeze(evaluationCriteria.data);
       const usersData = allUsers.data
-        ? allUsers.data.filter((value) => value.id !== this.user.id)
+        ? allUsers.data.filter((value) => value.id !== user.id)
         : [];
       this.optionsMetadata.users = Object.freeze(usersData);
     } catch (error) {
