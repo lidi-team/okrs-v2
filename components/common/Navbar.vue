@@ -51,7 +51,7 @@
                 user.roles.includes('ROLE_ADMIN') ||
                 user.roles.includes('ROLE_ADMIN_HR')
               "
-              to="/quan-ly/nhan-su"
+              to="/nhan-su"
             >
               <el-dropdown-item>
                 <div class="item__div">

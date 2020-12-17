@@ -191,10 +191,6 @@ export default class ProjectDialog extends Vue {
                   setTimeout(() => {
                     this.loading = false;
                   }, 300);
-                  this.$notify.success({
-                    ...notificationConfig,
-                    message: 'Cập nhật dự án thành công',
-                  });
                   this.reloadData();
                   this.syncProjectDialog = false;
                 })

@@ -1,7 +1,7 @@
 <template>
   <div class="project-detail">
     <el-page-header title="Projects Dashboard" @back="goToProjectDashboard" />
-    <div v-if="!!projectData">
+    <div v-if="!!projectData" class="box-wrap">
       <el-collapse class="project-detail--top-action" v-model="activeNames">
         <el-collapse-item name="1">
           <template slot="title">
@@ -10,6 +10,7 @@
             </span>
             <el-rate :value="projectData.weight" disabled />
           </template>
+
           <el-table
             v-loading="isloading"
             :data="convertToTableData(this.projectData)"
@@ -32,183 +33,176 @@
       </el-collapse>
     </div>
     <!--Tab du lieu thanh vien du an-->
-    <el-tabs
-      class="main-action"
-      v-model="tabActive"
-      type="border-card"
-      @tab-click="handleChangeTab"
-    >
-      <el-tab-pane label="Thành viên" name="manage">
-        <el-table
-          v-loading="isloading"
-          :data="projectStaffs"
-          border
-          fit
-          highlight-current-row
-          style="width: 100%"
-        >
-          <el-table-column
-            label="ID"
-            prop="id"
-            sortable="custom"
-            align="center"
-            width="80"
-          >
-            <template slot-scope="{ row }">
-              <span>{{ row.id }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="Tên thành viên"
-            min-width="150"
-            align="center"
-          >
-            <template slot-scope="{ row }">
-              <span>{{ row.name }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="Email" min-width="160" align="center">
-            <template slot-scope="{ row }">
-              <span>{{ row.email }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="Phòng ban" align="center">
-            <template slot-scope="{ row }">
-              <!--<span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>-->
-              <el-tag>{{ getDepartmentById(row.department) }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="Vị trí trong dự án"
-            align="center"
-            min-width="150"
-          >
-            <template slot-scope="{ row }">
-              <template v-if="row.edit">
-                <el-select
-                  v-model="draftEditStaff.positionId"
-                  placeholder="Chọn vị trí thành viên"
-                >
-                  <el-option
-                    v-for="item in positions"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
-              </template>
-              <el-tag v-if="getPositionById(row.position) && !row.edit"
-              >{{ getPositionById(row.position) }}
-              </el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column label="Người Review" align="center" min-width="130">
-            <template slot-scope="{ row }">
-              <template v-if="row.edit">
-                <el-select
-                  v-model="draftEditStaff.reviewerId"
-                  placeholder="Chọn người quản lý"
-                >
-                  <el-option
-                    v-for="item in getReviewers(row.id)"
-                    :key="item.id"
-                    :label="item.name"
-                    :value="item.id"
-                  ></el-option>
-                </el-select>
-              </template>
-              <span v-else style="color: green">{{
-                  getReviewerById(row.reviewerId)
-                }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column
-            v-if="isProjectPm(user.projects)"
-            label="Thao tác"
-            align="center"
-            width="230"
-            class-name="small-padding fixed-width"
-          >
-            <template slot-scope="{ row }">
-              <template v-if="row.edit">
-                <el-button
-                  type="success"
-                  size="small"
-                  icon="el-icon-circle-check-outline"
-                  @click="confirmEdit(row)"
-                >
-                  Đồng ý
-                </el-button>
-                <el-button
-                  class="cancel-btn"
-                  size="small"
-                  icon="el-icon-refresh"
-                  type="warning"
-                  @click="cancelEdit(row)"
-                >
-                  Hủy
-                </el-button>
-              </template>
-              <template v-else>
-                <el-button
-                  type="primary"
-                  size="small"
-                  icon="el-icon-edit"
-                  @click="handleEditRow(row)"
-                >
-                  Cập nhật
-                </el-button>
-                <el-button
-                  size="mini"
-                  type="danger"
-                  @click="handleDelete(row, id)"
-                >
-                  Xóa
-                </el-button>
-              </template>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-tab-pane>
-      <el-tab-pane
-        label="Thêm thành viên"
-        name="extend"
-        v-if="isProjectPm(user.projects)"
-      >
-        <div class="main-action__form">
-          <el-select
-            v-model="selectUsers"
-            multiple
-            filterable
-            default-first-option
-            placeholder="Chọn nhân viên cho dự án"
-          >
-            <el-option
-              v-for="item in candidates"
-              :key="item.id"
-              :label="item.name + ' (' + item.email + ')'"
-              :value="item.id"
-            ></el-option>
-          </el-select>
+    <div class="box-wrap">
+      <div class="-display-flex -justify-content-between">
+        <p class="-title-2">Thành viên dự án</p>
+        <div>
           <el-button
-            class="main-action__form--input el-button el-button--purple el-button--default"
-            v-if="selectUsers.length"
-            type="primary"
-            @click="handleAddStaff"
-          >Thêm mới thành viên
+            v-if="isProjectPm(user.projects)"
+            class="el-button--purple el-button--invite"
+            size="small"
+            @click="handleShowAddMember"
+          >
+            {{ isAddingMember ? 'Hủy' : 'Thêm mới thành viên' }}
           </el-button>
         </div>
-      </el-tab-pane>
-    </el-tabs>
+      </div>
+      <div class="main-action__form" v-if="isAddingMember">
+        <el-select
+          v-model="selectUsers"
+          multiple
+          filterable
+          default-first-option
+          placeholder="Chọn nhân viên cho dự án"
+        >
+          <el-option
+            v-for="item in candidates"
+            :key="item.id"
+            :label="item.name + ' (' + item.email + ')'"
+            :value="item.id"
+          ></el-option>
+        </el-select>
+        <el-button
+          class="main-action__form--input el-button el-button--purple el-button--default"
+          :disabled="!selectUsers.length"
+          type="primary"
+          @click="handleAddStaff"
+          >Thêm
+        </el-button>
+      </div>
+      <el-table
+        v-loading="isloading"
+        :data="projectStaffs"
+        fit
+        highlight-current-row
+        style="width: 100%"
+      >
+        <el-table-column label="ID" prop="id" align="center" min-width="30">
+          <template slot-scope="{ row }">
+            <span>{{ row.id }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Tên thành viên" min-width="150" align="center">
+          <template slot-scope="{ row }">
+            <span>{{ row.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Email" min-width="160" align="center">
+          <template slot-scope="{ row }">
+            <span>{{ row.email }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Phòng ban" min-width="150" align="center">
+          <template slot-scope="{ row }">
+            <!--<span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>-->
+            <el-tag>{{ getDepartmentById(row.department) }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Vị trí trong dự án"
+          align="center"
+          min-width="150"
+        >
+          <template slot-scope="{ row }">
+            <template v-if="row.edit">
+              <el-select
+                v-model="draftEditStaff.positionId"
+                placeholder="Chọn vị trí thành viên"
+              >
+                <el-option
+                  v-for="item in positions"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </template>
+            <el-tag v-if="getPositionById(row.position) && !row.edit"
+              >{{ getPositionById(row.position) }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="Người Review" align="center" min-width="130">
+          <template slot-scope="{ row }">
+            <template v-if="row.edit">
+              <el-select
+                v-model="draftEditStaff.reviewerId"
+                placeholder="Chọn người quản lý"
+              >
+                <el-option
+                  v-for="item in getReviewers(row.id)"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+            </template>
+            <span v-else style="color: green">{{
+              getReviewerById(row.reviewerId)
+            }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          v-if="isProjectPm(user.projects)"
+          label="Thao tác"
+          align="center"
+          min-width="230"
+          class-name="small-padding fixed-width"
+        >
+          <template slot-scope="{ row }">
+            <template v-if="row.edit">
+              <el-button
+                type="success"
+                size="small"
+                icon="el-icon-circle-check-outline"
+                @click="confirmEdit(row)"
+              >
+                Đồng ý
+              </el-button>
+              <el-button
+                class="cancel-btn"
+                size="small"
+                icon="el-icon-refresh"
+                type="warning"
+                @click="cancelEdit(row)"
+              >
+                Hủy
+              </el-button>
+            </template>
+            <template v-else>
+              <el-button
+                type="primary"
+                size="small"
+                icon="el-icon-edit"
+                @click="handleEditRow(row)"
+              >
+                Cập nhật
+              </el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(row, id)"
+              >
+                Xóa
+              </el-button>
+            </template>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
   </div>
 </template>
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import ProjectRepository from '@/repositories/ProjectRepository';
-import { IProjectStaffState, ProjectDTO, ProjectStaff } from '@/constants/app.interface';
+import {
+  IProjectStaffState,
+  ProjectDTO,
+  ProjectStaff,
+} from '@/constants/app.interface';
 import TeamRepository from '@/repositories/TeamRepository';
 import JobRepository from '@/repositories/JobRepository';
-import { confirmWarningConfig, notificationConfig } from '@/constants/app.constant';
+import { confirmWarningConfig } from '@/constants/app.constant';
 import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
 import { formatDateToDD } from '@/utils/dateParser';
@@ -240,6 +234,7 @@ export default class ControlProject extends Vue {
   private selectUsers: Array<number> = [];
   private textPm: String = '';
   private isloading: boolean = false;
+  private isAddingMember: boolean = false;
   private tabActive: String = 'manage';
   private activeNames: string[] = ['1'];
   private projectData: ProjectDTO = {
@@ -328,18 +323,10 @@ export default class ControlProject extends Vue {
           setTimeout(() => {
             this.isloading = false;
           }, 300);
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'Cập nhật dự án thành công',
-          });
           await this.getProjectStaffs(this.id);
         })
         .catch((err) => {
           console.log(err);
-          // this.$notify.error({
-          //   ...notificationConfig,
-          //   message: '',
-          // });
         });
     } catch (error) {
       console.log(error);
@@ -357,16 +344,7 @@ export default class ControlProject extends Vue {
       );
       this.selectUsers = [];
       await this.getProjectStaffs(this.id);
-      this.$notify.success({
-        ...notificationConfig,
-        message: 'Thêm mới nhân viên thành công',
-      });
-    } catch (e) {
-      this.$notify.warning({
-        ...notificationConfig,
-        message: 'Thêm mới nhân viên thất bại',
-      });
-    }
+    } catch (e) {}
   }
 
   private getPositionById(id: number) {
@@ -404,8 +382,8 @@ export default class ControlProject extends Vue {
   private getReviewers(id: number) {
     const data: any = this.projectStaffs.filter((value) => value.id !== id);
     this.projectData.pm?.id &&
-    this.projectData.pm?.name &&
-    data.push({ id: this.projectData.pm.id, name: this.projectData.pm.name });
+      this.projectData.pm?.name &&
+      data.push({ id: this.projectData.pm.id, name: this.projectData.pm.name });
     return data;
   }
 
@@ -413,10 +391,6 @@ export default class ControlProject extends Vue {
     row.department = row.originalDepartment;
     row.reviewerId = row.originalReviewerId;
     row.edit = false;
-    this.$notify.warning({
-      ...notificationConfig,
-      message: 'Hủy bỏ',
-    });
   }
 
   private async confirmEdit(row: ProjectStaff) {
@@ -431,23 +405,10 @@ export default class ControlProject extends Vue {
         row.edit = false;
         this.draftEditStaff.reviewerId = undefined;
         this.draftEditStaff.positionId = undefined;
-        this.$notify.success({
-          ...notificationConfig,
-          message: 'Cập nhật nhân viên thành công',
-        });
         await this.getProjectStaffs(this.id);
       } else {
-        this.$notify.warning({
-          ...notificationConfig,
-          message: 'Vui lòng chọn vị trí và quản lý cho nhân viên.',
-        });
       }
-    } catch (e) {
-      this.$notify.warning({
-        ...notificationConfig,
-        message: 'Cập nhật nhân viên thất bại',
-      });
-    }
+    } catch (e) {}
   }
 
   private handleEditRow(row: ProjectStaff) {
@@ -490,6 +451,10 @@ export default class ControlProject extends Vue {
       { label: 'Mô tả', data: projectData.description },
     ];
   }
+
+  private handleShowAddMember() {
+    this.isAddingMember = !this.isAddingMember;
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -521,8 +486,9 @@ export default class ControlProject extends Vue {
 
 .main-action {
   &__form {
+    display: flex;
     &--input {
-      margin-top: $unit-2;
+      margin-left: $unit-2;
     }
   }
 }

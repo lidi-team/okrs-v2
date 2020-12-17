@@ -6,6 +6,7 @@
       </div>
       <div class="manage-project__top__right">
         <el-button
+          v-if="user.roles.includes('ROLE_ADMIN')"
           class="el-button--purple el-button--invite"
           icon="el-icon-plus"
           @click="addNew"
@@ -60,6 +61,8 @@ import ProjectRepository from '@/repositories/ProjectRepository';
 import HeadProject from '@/components/manage/project/HeadProject.vue';
 import ProjectAll from '@/components/manage/project/ProjectAll.vue';
 import ProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
+import { mapGetters } from 'vuex';
+import { GetterState } from '@/constants/app.vuex';
 
 @Component<ManageProject>({
   name: 'ManageProject',
@@ -72,6 +75,11 @@ import ProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
   async created() {
     await this.getListProjects();
     await this.getDataCommon();
+  },
+  computed: {
+    ...mapGetters({
+      user: GetterState.USER,
+    }),
   },
   head() {
     return {
@@ -162,8 +170,8 @@ export default class ManageProject extends Vue {
     this.$route.query.text === undefined
       ? this.$router.push(`?tab=${tab}&page=${pagination.page}`)
       : this.$router.push(
-      `?tab=${tab}&text=${this.$route.query.text}&page=${pagination.page}`,
-      );
+          `?tab=${tab}&text=${this.$route.query.text}&page=${pagination.page}`,
+        );
   }
 
   private get tabComponent() {

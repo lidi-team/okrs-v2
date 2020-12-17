@@ -167,7 +167,7 @@ export default class ManageEmployee extends Vue {
   }
 
   private handleAddUsers() {
-    this.$router.push('/quan-ly/nhan-su/them');
+    this.$router.push('nhan-su/them');
   }
 }
 </script>

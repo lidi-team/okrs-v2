@@ -42,7 +42,7 @@
           <div class="employee-active__action">
             <el-tooltip
               class="employee-active__icon"
-              content="Sửa"
+              content="Cập nhật"
               placement="left-end"
             >
               <i

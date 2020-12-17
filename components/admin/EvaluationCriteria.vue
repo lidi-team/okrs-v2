@@ -32,7 +32,7 @@
         <template v-slot="{ row }">
           <el-tooltip
             class="criteria-admin__icon"
-            content="Sửa"
+            content="Cập nhật"
             placement="top"
           >
             <i
