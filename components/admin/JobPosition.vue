@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="loadingTable">
+  <div class="box-wrap" v-loading="loadingTable">
     <el-table :data="tableData" empty-text="Không có dữ liệu" class="job-admin">
       <el-table-column prop="name" label="Tên vị trí"></el-table-column>
       <el-table-column prop="description" label="Mô tả"></el-table-column>

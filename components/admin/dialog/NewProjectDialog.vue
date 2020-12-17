@@ -6,7 +6,7 @@
       :visible.sync="syncProjectDialog"
       width="45%"
       placement="bottom-start"
-      title="Thông tin dự án"
+      title="Tạo mới dự án"
       :before-close="handleCloseDialog"
     >
       <el-row :gutter="10">

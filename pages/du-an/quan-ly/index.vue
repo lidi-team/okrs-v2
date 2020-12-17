@@ -1,8 +1,8 @@
 <template>
   <div class="project-detail">
     <el-page-header title="Projects Dashboard" @back="goToProjectDashboard" />
-    <div v-if="!!projectData" class="box-wrap">
-      <el-collapse class="project-detail--top-action" v-model="activeNames">
+    <div v-if="!!projectData" class="box-wrap project-detail--top-action">
+      <el-collapse v-model="activeNames">
         <el-collapse-item name="1">
           <template slot="title">
             <span class="project-detail--top-action__title">
@@ -10,25 +10,44 @@
             </span>
             <el-rate :value="projectData.weight" disabled />
           </template>
-
-          <el-table
-            v-loading="isloading"
-            :data="convertToTableData(this.projectData)"
-            fit
-            style="width: 100%"
-            :show-header="false"
-          >
-            <el-table-column prop="label" align="left" width="200">
-              <template slot-scope="{ row }">
-                <span>{{ row.label }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="data" align="left">
-              <template slot-scope="{ row }">
-                <span>{{ row.data }}</span>
-              </template>
-            </el-table-column>
-          </el-table>
+          <table class="properties">
+            <tbody>
+              <tr>
+                <th scope="row" class="-text-left">Ngày bắt đầu:</th>
+                <td>
+                  {{
+                    new Date(projectData.startDate) | dateFormat('DD/MM/YYYY')
+                  }}
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" class="-text-left">Ngày kết thúc:</th>
+                <td>
+                  {{
+                    new Date(projectData.startDate) | dateFormat('DD/MM/YYYY')
+                  }}
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" class="-text-left">Quản lý:</th>
+                <td>
+                  {{ projectData.pm && projectData.pm.name }}
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" class="-text-left">Trạng thái:</th>
+                <td>
+                  {{ projectData.status ? 'Hoạt động' : 'Đã đóng' }}
+                </td>
+              </tr>
+              <tr>
+                <th scope="row" class="-text-left">Mô tả:</th>
+                <td>
+                  {{ projectData.description }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </el-collapse-item>
       </el-collapse>
     </div>
@@ -462,9 +481,11 @@ export default class ControlProject extends Vue {
 
 .project-detail {
   &--top-action {
+    padding: 0 $unit-7;
+    margin-top: $unit-7;
     &__title {
       font-size: $text-xl;
-      margin: 0 $unit-4;
+      margin-right: $unit-4;
     }
 
     &__content {

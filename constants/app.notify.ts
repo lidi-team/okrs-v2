@@ -27,11 +27,6 @@ export const notifyErrorLogin = (error: any) => {
         message: 'Tài khoản của bạn đang chờ phê duyệt',
       });
       break;
-    default:
-      Notification.error({
-        ...notificationConfig,
-        message: 'Có lỗi xảy ra',
-      });
   }
 };
 

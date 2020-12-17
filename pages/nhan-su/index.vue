@@ -15,7 +15,7 @@
         :label="tab"
         :name="tab"
       ></el-tab-pane>
-      <div class="manage-employee__content">
+      <div class="box-wrap">
         <head-employee
           :text.sync="paramsUser.text"
           @name="paramsUser.text = $event"

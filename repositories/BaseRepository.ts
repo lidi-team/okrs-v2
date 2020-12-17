@@ -34,7 +34,7 @@ baseUrl.interceptors.response.use(
         ...notificationConfig,
         message: response.data.message,
       });
-    }else if (response.data.code === 4000) {
+    } else if (response.data.code === 4000) {
       Notification.error({
         ...notificationConfig,
         message: response.data.message,
@@ -86,6 +86,11 @@ baseUrl.interceptors.response.use(
           message: 'Có lỗi xảy ra',
         });
         break;
+      default:
+        Notification.error({
+          ...notificationConfig,
+          message: error.response.data.message,
+        });
     }
     return Promise.reject(error);
   },
