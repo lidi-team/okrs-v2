@@ -1,145 +1,149 @@
 <template>
-  <div v-loading.fullscreen.lock="loadingProfile" class="wrap-profile">
-    <h2>Thông tin tài khoản của bạn</h2>
-    <el-form
-      ref="updateProfileForm"
-      :model="profileForm"
-      :status-icon="false"
-      :hide-required-asterisk="false"
-      label-width="150px"
-      label-position="top"
-      :rules="rules"
-    >
-      <el-row class="profile">
-        <el-col
-          :xs="24"
-          :sm="24"
-          :md="6"
-          :lg="6"
-          :xl="6"
-          class="profile-common"
-        >
-          <common-flame-upload
-            ref="uploader"
-            v-model="show"
-            field="file"
-            :width="300"
-            :height="300"
-            lang-type="vi"
-            :url="url"
-            :headers="headers"
-            method="PUT"
-            img-format="png"
-            @crop-success="cropSuccess"
-            @crop-upload-success="cropUploadSuccess"
-            @crop-upload-fail="cropUploadFail"
-          />
-          <el-avatar :size="120">
-            <img :src="avatarUrl" alt="avatar" />
-          </el-avatar>
-          <el-button
-            size="small"
-            type="primary"
-            class="el-button--margin el-button--white el-button--avatar"
-            @click="toggleShow"
-            >Cập nhật avatar</el-button
+  <div v-loading.fullscreen.lock="loadingProfile" class="box-wrap">
+    <div class="-border-header">
+      <h2 class="-title-2">Thông tin tài khoản của bạn</h2>
+    </div>
+    <div class="wrap-profile">
+      <el-form
+        ref="updateProfileForm"
+        :model="profileForm"
+        :status-icon="false"
+        :hide-required-asterisk="false"
+        label-width="150px"
+        label-position="top"
+        :rules="rules"
+      >
+        <el-row class="profile">
+          <el-col
+            :xs="24"
+            :sm="24"
+            :md="6"
+            :lg="6"
+            :xl="6"
+            class="profile-common"
           >
-          <p class="profile-common__name">{{ profileForm.fullName }}</p>
-          <!-- <p class="profile-common__role">{{ displayRoleName(user) }}</p> -->
-        </el-col>
-        <el-col
-          :xs="24"
-          :sm="24"
-          :md="18"
-          :lg="18"
-          :xl="18"
-          class="profile-right"
-        >
-          <div class="info">
-            <h3 class="info__title">Thông tin chung</h3>
-            <div class="info__row">
-              <el-row class="info__row--custom" :gutter="20">
-                <el-col :sm="24" :md="12">
-                  <el-form-item
-                    class="custom-label"
-                    prop="fullName"
-                    label="Họ và tên"
-                  >
-                    <el-input
-                      v-model="profileForm.fullName"
-                      placeholder="Nhập vào họ và tên"
-                    ></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :sm="24" :md="12">
-                  <el-form-item prop="gender" label="Giới tính">
-                    <el-radio v-model="profileForm.gender" :label="1"
-                      >Nam</el-radio
+            <common-flame-upload
+              ref="uploader"
+              v-model="show"
+              field="file"
+              :width="300"
+              :height="300"
+              lang-type="vi"
+              :url="url"
+              :headers="headers"
+              method="PUT"
+              img-format="png"
+              @crop-success="cropSuccess"
+              @crop-upload-success="cropUploadSuccess"
+              @crop-upload-fail="cropUploadFail"
+            />
+            <el-avatar :size="120">
+              <img :src="avatarUrl" alt="avatar" />
+            </el-avatar>
+            <el-button
+              size="small"
+              type="primary"
+              class="el-button--margin el-button--white el-button--avatar"
+              @click="toggleShow"
+              >Cập nhật avatar</el-button
+            >
+            <p class="profile-common__name">{{ profileForm.fullName }}</p>
+            <!-- <p class="profile-common__role">{{ displayRoleName(user) }}</p> -->
+          </el-col>
+          <el-col
+            :xs="24"
+            :sm="24"
+            :md="18"
+            :lg="18"
+            :xl="18"
+            class="profile-right"
+          >
+            <div class="info">
+              <h3 class="info__title">Thông tin chung</h3>
+              <div class="info__row">
+                <el-row class="info__row--custom" :gutter="20">
+                  <el-col :sm="24" :md="12">
+                    <el-form-item
+                      class="custom-label"
+                      prop="fullName"
+                      label="Họ và tên"
                     >
-                    <el-radio v-model="profileForm.gender" :label="0"
-                      >Nữ</el-radio
+                      <el-input
+                        v-model="profileForm.fullName"
+                        placeholder="Nhập vào họ và tên"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="24" :md="12">
+                    <el-form-item prop="gender" label="Giới tính">
+                      <el-radio v-model="profileForm.gender" :label="1"
+                        >Nam</el-radio
+                      >
+                      <el-radio v-model="profileForm.gender" :label="0"
+                        >Nữ</el-radio
+                      >
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <div class="info__row">
+                <el-row class="info__row--custom" :gutter="20">
+                  <el-col :sm="24" :md="12">
+                    <el-form-item
+                      prop="email"
+                      label="Email"
+                      class="info-attribute__label"
                     >
-                  </el-form-item>
-                </el-col>
-              </el-row>
+                      <el-input
+                        v-model="profileForm.email"
+                        :disabled="true"
+                        placeholder="Nhập email"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="24" :md="12">
+                    <el-form-item prop="dateOfBirth" label="Ngày sinh">
+                      <el-date-picker
+                        v-model="profileForm.dateOfBirth"
+                        format="dd/MM/yyyy"
+                        value-format="dd/MM/yyyy"
+                        :picker-options="pickerOptions"
+                        type="date"
+                        placeholder="Chọn ngày sinh"
+                      ></el-date-picker>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <h3 class="info__title">Vị trí công việc</h3>
+              <div class="info__row">
+                <el-row class="info__row--custom" :gutter="20">
+                  <el-col :sm="24" :md="12">
+                    <el-form-item prop="department" label="Phòng ban">
+                      <el-input
+                        v-model="profileForm.department"
+                        disabled
+                        placeholder="Hiển thị phòng ban"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                  <el-col :sm="24" :md="12">
+                    <el-form-item prop="position" label="Vị trí">
+                      <el-input
+                        v-model="profileForm.position"
+                        disabled
+                        placeholder="Hiển thị vị trí"
+                      ></el-input>
+                    </el-form-item>
+                  </el-col>
+                </el-row>
+              </div>
+              <!-- <el-button class="el-button el-button--purple el-button--update" :loading="loading" @click="updateProfile">Cập nhật</el-button> -->
             </div>
-            <div class="info__row">
-              <el-row class="info__row--custom" :gutter="20">
-                <el-col :sm="24" :md="12">
-                  <el-form-item
-                    prop="email"
-                    label="Email"
-                    class="info-attribute__label"
-                  >
-                    <el-input
-                      v-model="profileForm.email"
-                      :disabled="true"
-                      placeholder="Nhập email"
-                    ></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :sm="24" :md="12">
-                  <el-form-item prop="dateOfBirth" label="Ngày sinh">
-                    <el-date-picker
-                      v-model="profileForm.dateOfBirth"
-                      format="dd/MM/yyyy"
-                      value-format="dd/MM/yyyy"
-                      :picker-options="pickerOptions"
-                      type="date"
-                      placeholder="Chọn ngày sinh"
-                    ></el-date-picker>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-            <h3 class="info__title">Vị trí công việc</h3>
-            <div class="info__row">
-              <el-row class="info__row--custom" :gutter="20">
-                <el-col :sm="24" :md="12">
-                  <el-form-item prop="department" label="Phòng ban">
-                    <el-input
-                      v-model="profileForm.department"
-                      disabled
-                      placeholder="Hiển thị phòng ban"
-                    ></el-input>
-                  </el-form-item>
-                </el-col>
-                <el-col :sm="24" :md="12">
-                  <el-form-item prop="position" label="Vị trí">
-                    <el-input
-                      v-model="profileForm.position"
-                      disabled
-                      placeholder="Hiển thị vị trí"
-                    ></el-input>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-            <!-- <el-button class="el-button el-button--purple el-button--update" :loading="loading" @click="updateProfile">Cập nhật</el-button> -->
-          </div>
-        </el-col>
-      </el-row>
-    </el-form>
+          </el-col>
+        </el-row>
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -310,105 +314,15 @@ export default class ViewProfile extends Vue {
     }
     return user.role.name;
   }
-
-  // AWS.config.region = 'ap-southeast-1'
-  //       AWS.config.credentials = new AWS.CognitoIdentityCredentials({
-  //           IdentityPoolId: 'ap-southeast-1:1539452e-c7bf-4855-ad74-d7d6a6785918'
-  //       })
-  //       //Bucket Configurations
-  //       var myCredentials = new AWS.CognitoIdentityCredentials({
-  //           IdentityPoolId: 'ap-southeast-1:1539452e-c7bf-4855-ad74-d7d6a6785918'
-  //       })
-  //       var myConfig = new AWS.Config({
-  //           credentials: myCredentials,
-  //           region: 'ap-southeast-1'
-  //       })
-  //       var bucketName = 'bluemarble-hep1';
-  //       var bucketRegion = 'ap-southeast-1';
-  //       var IdentityPoolId = 'ap-southeast-1:1539452e-c7bf-4855-ad74-d7d6a6785918';
-
-  //       AWS.config.update({
-  //           region: bucketRegion,
-  //           credentials: new AWS.CognitoIdentityCredentials({
-  //               IdentityPoolId: IdentityPoolId
-  //           })
-  //       })
-
-  //       var s3 = new AWS.S3({
-  //           apiVersion: '2006-03-01',
-  //           params: {
-  //               Bucket: bucketName
-  //           }
-  //       })
-
-  //       //function here
-
-  //       function s3upload() {
-  //           var files = document.getElementById('fileUpload').files;
-  //           if (files) {
-  //               var file = files[0];
-  //               var fileName = file.name;
-  //               var filePath = 'my-first-bucket-path/' + fileName;
-  //               var fileUrl = 'https://' + bucketName + '.s3-' + bucketRegion + '.amazonaws.com/my-first-bucket/' +
-  //                   filePath;
-
-  //               s3.upload({
-  //                   Key: filePath,
-  //                   Body: file,
-  //                   ACL: 'public-read'
-  //               }, function (err, data) {
-  //                   if (err) {
-  //                       reject('error');
-  //                   }
-
-  //                   alert('Successfully Uploaded!');
-  //               }).on('httpUploadProgress', function (progress) {
-  //                   var uploaded = parseInt((progress.loaded * 100) / progress.total);
-  //                   $("progress").attr('value', uploaded);
-  //               });
-  //           }
-  //       }
-
-  //       function showimage() {
-  //           let imageTest = document.getElementById('imgTest')
-  //           s3.getObject({
-  //               Bucket: 'bluemarble-hep1',
-  //               Key: "my-first-bucket-path/clipdealer_A139079369_preview.jpg"
-  //           }, function (errtxt, file) {
-  //               if (errtxt) {
-  //                   console.Log("lireFic", "ERR " + errtxt);
-  //               } else {
-  //                   console.log('lecture OK')
-  //                   imageTest.src = "data:image/png;base64," + encode(file.Body);
-  //               }
-  //           });
-  //       }
-
-  //       function encode(data) {
-  //           var str = data.reduce(function (a, b) {
-  //               return a + String.fromCharCode(b)
-  //           }, '');
-  //           return btoa(str).replace(/.{76}(?=.)/g, '$&\n');
-  //       }
 }
 </script>
 
 <style lang="scss">
 @import '@/assets/scss/main.scss';
 .wrap-profile {
-  padding: $unit-8 $unit-10 $unit-10 $unit-10;
+  padding: $unit-8 0 0 0;
   @include breakpoint-down(phone) {
     padding: 0;
-  }
-  .profile {
-    background: $white;
-    box-shadow: $box-shadow-default;
-    margin-top: $unit-8;
-    padding: $unit-12 $unit-20;
-    border-radius: $border-radius-base;
-    @include breakpoint-down(phone) {
-      padding: $unit-10 $unit-10;
-    }
   }
   .profile-common {
     display: flex;
