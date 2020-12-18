@@ -24,6 +24,7 @@
           >
             <common-flame-upload
               ref="uploader"
+              field="upload"
               v-model="show"
               :width="300"
               :height="300"
@@ -147,11 +148,8 @@ import { mapGetters } from 'vuex';
 // import AWS from 'aws-sdk';
 import { Form } from 'element-ui';
 import { max255Char } from '@/constants/account.constant';
-import { ProfileDTO } from '@/constants/app.interface';
 import UserRepository from '@/repositories/UserRepository';
 import { Maps, Rule } from '@/constants/app.type';
-import { AuthMutation } from '@/store/auth';
-import { getTokenCookie } from '@/utils/cookies';
 import { MutationState, GetterState } from '@/constants/app.vuex';
 import { formatDateToDD } from '@/utils/dateParser';
 
@@ -174,10 +172,8 @@ import S3Service from '@/repositories/S3AwsRepository';
 export default class ViewProfile extends Vue {
   private loadingProfile: boolean = false;
   private loading: boolean = false;
-  private url: string = `${process.env.baseAPI}/api/v1/users/upload_avatar`;
   private show: boolean = false;
   private avatarUrl: string = '';
-  private headers = { Authorization: `Bearer ${getTokenCookie()}` };
 
   private rules: Maps<Rule[]> = {
     fullName: [
@@ -211,15 +207,24 @@ export default class ViewProfile extends Vue {
   // eslint-disable-next-line require-await
   private async cropSuccess(imgDataUrl: string, field: string) {
     const s3Service = new S3Service();
+    const imgData = imgDataUrl
+      .replace('data:*/*;base64,', '')
+      .replace('data:image/png;base64,', '')
+      .replace('data:image/jpeg;base64,', '');
+    const userEmail = this.$store.state.auth.user.email;
+    console.log('userEmail: ', userEmail);
     try {
-      const data = await s3Service.uploadImage({
+      this.loading = true;
+      const data: any = await s3Service.uploadImage({
         contentType: 'png',
-        file: imgDataUrl,
-        fileName: 'demo1',
+        file: imgData,
+        fileName: userEmail + '.png',
       });
       if (!!data && !!data.Key) {
-        const response = await UserRepository.updateAvatar(data.Key);
+        const endpointLink = s3Service.urlOutput(data.Key);
+        const response: any = await UserRepository.updateAvatar(endpointLink);
         if (!!response && !!response.message) {
+          this.$store.commit(MutationState.SET_AVATAR, endpointLink);
           this.avatarUrl = imgDataUrl;
           this.$notify({
             title: 'Trạng thái',
@@ -227,9 +232,11 @@ export default class ViewProfile extends Vue {
             type: 'success',
             duration: 2000,
           });
+          this.loading = false;
         }
       }
     } catch (e) {
+      this.loading = false;
       this.show = true;
       this.$notify({
         title: 'Trạng thái',

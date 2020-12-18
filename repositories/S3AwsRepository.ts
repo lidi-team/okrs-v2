@@ -10,6 +10,12 @@ import AWS, { S3 } from 'aws-sdk';
  *  Use it like this:
  *
  */
+export const S3Key = {
+  region: process.env.region,
+  bucketName: process.env.bucketName,
+  identityPoolId: process.env.bucketName,
+  defaultFolder: 'my-first-bucket-path/',
+};
 
 export interface IPayload {
   contentType: string; // you can set it based on the type of image you are uploading like image/png
@@ -33,7 +39,7 @@ new S3Service().uploadImage(payload, contentType).then((response) => {
  */
 
 class S3Service {
-  private s3: S3;
+  s3: S3;
   constructor() {
     AWS.config.update({
       region: 'ap-southeast-1',
@@ -54,10 +60,11 @@ class S3Service {
     return new Promise(function (resolve, reject) {
       const defaultFolder = 'my-first-bucket-path/';
       const encodedImage = payload.file;
+      const decodedImage = Buffer.from(encodedImage, 'base64');
 
       const filePath = defaultFolder + payload.fileName;
       const params = {
-        Body: encodedImage,
+        Body: decodedImage,
         Key: filePath,
         ACL:
           'public-read' /* This makes the image public, but only works if your S3 bucket allows public access */,
@@ -79,28 +86,15 @@ class S3Service {
     });
   }
 
-  async showImage(image: string) {
-    await this.s3.getObject(
-      {
-        Bucket: 'bluemarble-hep1',
-        Key: image,
-      },
-      function (errtxt, file) {
-        if (errtxt) {
-          console.log('lireFic', 'ERR ' + errtxt);
-          return '';
-        } else {
-          return file.Body;
-        }
-      },
+  urlOutput(fileName: string) {
+    return (
+      'https://' +
+      S3Key.bucketName +
+      '.s3-' +
+      S3Key.region +
+      '.amazonaws.com/' +
+      fileName
     );
-  }
-
-  encode(data) {
-    const str = data.reduce(function (a, b) {
-      return a + String.fromCharCode(b);
-    }, '');
-    return btoa(str).replace(/.{76}(?=.)/g, '$&\n');
   }
 }
 
