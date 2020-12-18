@@ -226,12 +226,6 @@ export default class ViewProfile extends Vue {
         if (!!response && !!response.message) {
           this.$store.commit(MutationState.SET_AVATAR, endpointLink);
           this.avatarUrl = imgDataUrl;
-          this.$notify({
-            title: 'Trạng thái',
-            message: response.message,
-            type: 'success',
-            duration: 2000,
-          });
           this.loading = false;
         }
       }
