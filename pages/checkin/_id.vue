@@ -49,9 +49,9 @@
     <checkin-detail v-if="checkin" :checkin.sync="checkin" />
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { formatDateToDD, initNewDate } from '@/utils/dateParser';
 import { notificationConfig } from '@/constants/app.constant';
@@ -59,7 +59,6 @@ import CheckinDetail from '@/components/checkin/CheckinDetail/CheckinDetailIndex
 import CheckinDetailChart from '@/components/checkin/CheckinDetail/CheckinDetailChart.vue';
 
 @Component({
-  name: 'CheckinPage',
   head() {
     return {
       title: 'Tạo Check-in',
