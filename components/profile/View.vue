@@ -25,17 +25,11 @@
             <common-flame-upload
               ref="uploader"
               v-model="show"
-              field="file"
               :width="300"
               :height="300"
               lang-type="vi"
-              :url="url"
-              :headers="headers"
-              method="PUT"
               img-format="png"
               @crop-success="cropSuccess"
-              @crop-upload-success="cropUploadSuccess"
-              @crop-upload-fail="cropUploadFail"
             />
             <el-avatar :size="120">
               <img :src="avatarUrl" alt="avatar" />
@@ -162,6 +156,7 @@ import { MutationState, GetterState } from '@/constants/app.vuex';
 import { formatDateToDD } from '@/utils/dateParser';
 
 import CommonFlameUpload from '@/components/common/FlameUpload.vue';
+import S3Service from '@/repositories/S3AwsRepository';
 @Component<ViewProfile>({
   name: 'ViewProfile',
   components: {
@@ -213,8 +208,37 @@ export default class ViewProfile extends Vue {
     },
   };
 
-  private cropSuccess(imgDataUrl: string, field: string) {
-    this.avatarUrl = imgDataUrl;
+  // eslint-disable-next-line require-await
+  private async cropSuccess(imgDataUrl: string, field: string) {
+    const s3Service = new S3Service();
+    try {
+      const data = await s3Service.uploadImage({
+        contentType: 'png',
+        file: imgDataUrl,
+        fileName: 'demo1',
+      });
+      if (!!data && !!data.Key) {
+        const response = await UserRepository.updateAvatar(data.Key);
+        if (!!response && !!response.message) {
+          this.avatarUrl = imgDataUrl;
+          this.$notify({
+            title: 'Trạng thái',
+            message: response.message,
+            type: 'success',
+            duration: 2000,
+          });
+        }
+      }
+    } catch (e) {
+      this.show = true;
+      this.$notify({
+        title: 'Trạng thái',
+        message: 'Có lỗi sảy ra',
+        type: 'error',
+        duration: 2000,
+      });
+      console.log('upload error: ', e);
+    }
   }
 
   private async cropUploadSuccess(jsonData: any, field: string) {
@@ -302,17 +326,6 @@ export default class ViewProfile extends Vue {
         }
       },
     );
-  }
-
-  private displayRoleName(user: any) {
-    if (
-      user.isLeader &&
-      user.role.name !== 'ADMIN' &&
-      user.role.name !== 'HR'
-    ) {
-      return 'LEADER';
-    }
-    return user.role.name;
   }
 }
 </script>

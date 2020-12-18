@@ -11,14 +11,11 @@ import AWS, { S3 } from 'aws-sdk';
  *
  */
 
-const payload = {
-  contentType: 'png', // you can set it based on the type of image you are uploading like image/png
-  fileName: '',
-  file: this.result
-    .replace('data:*/*;base64,', '')
-    .replace('data:image/png;base64,', '')
-    .replace('data:image/jpeg;base64,', ''),
-};
+export interface IPayload {
+  contentType: string; // you can set it based on the type of image you are uploading like image/png
+  fileName: string;
+  file: string;
+}
 
 /*
 new S3Service().uploadImage(payload, contentType).then((response) => {
@@ -36,7 +33,7 @@ new S3Service().uploadImage(payload, contentType).then((response) => {
  */
 
 class S3Service {
-  private readonly s3: S3;
+  private s3: S3;
   constructor() {
     AWS.config.update({
       region: 'ap-southeast-1',
@@ -52,22 +49,20 @@ class S3Service {
     });
   }
 
-  uploadImage(payload) {
+  uploadImage(payload: IPayload) {
     const s3 = this.s3;
     return new Promise(function (resolve, reject) {
+      const defaultFolder = 'my-first-bucket-path/';
       const encodedImage = payload.file;
-      const decodedImage = Buffer.from(encodedImage, 'base64');
 
-      const filePath = payload.fileName;
+      const filePath = defaultFolder + payload.fileName;
       const params = {
-        Body: decodedImage,
-        Bucket: 'bluemarble-hep1',
+        Body: encodedImage,
         Key: filePath,
         ACL:
           'public-read' /* This makes the image public, but only works if your S3 bucket allows public access */,
-        ContentType:
-          payload.contentType /* This is important to handle jpg vs png etc */,
       };
+      // @ts-ignore
       s3.upload(params, function (err, data) {
         if (err) {
           reject(err);
@@ -82,6 +77,30 @@ class S3Service {
         }
       });
     });
+  }
+
+  async showImage(image: string) {
+    await this.s3.getObject(
+      {
+        Bucket: 'bluemarble-hep1',
+        Key: image,
+      },
+      function (errtxt, file) {
+        if (errtxt) {
+          console.log('lireFic', 'ERR ' + errtxt);
+          return '';
+        } else {
+          return file.Body;
+        }
+      },
+    );
+  }
+
+  encode(data) {
+    const str = data.reduce(function (a, b) {
+      return a + String.fromCharCode(b);
+    }, '');
+    return btoa(str).replace(/.{76}(?=.)/g, '$&\n');
   }
 }
 
