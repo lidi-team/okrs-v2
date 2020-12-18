@@ -8,7 +8,7 @@
       align="center"
     >
       <nuxt-link
-        to="/"
+        :to="`/?cycleId=${this.$store.state.cycle.cycleCurrent}`"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isHome }]"
       >
         <div class="sidebar__link__tab">
@@ -25,7 +25,8 @@
       >
         <div class="sidebar__link__tab">
           <Checkin class="sidebar__link__tab__icon" />
-          <span class="hidden-tablet">Check-in</span>
+          <span class="hidden-tablet">Cập nhật</span>
+          <span class="hidden-tablet">Tiến độ</span>
         </div>
       </nuxt-link>
       <nuxt-link
@@ -43,11 +44,10 @@
       >
         <div class="sidebar__link__tab">
           <CFRs class="sidebar__link__tab__icon" />
-          <span class="hidden-tablet">CFRs</span>
+          <p class="hidden-tablet">Ghi nhận &</p>
+          <p class="hidden-tablet">Phản hồi</p>
         </div>
       </nuxt-link>
-      <!-- Start Role Permission action -->
-
       <nuxt-link
         v-if="
           user.roles.includes('ROLE_DIRECTOR') ||

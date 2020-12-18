@@ -114,12 +114,12 @@ export default class CreateObjectiveStep extends Vue {
   }
 
   private async nextStepThree() {
+    this.loading = true;
     const krs: any[] = [];
     let validForm: number = 0;
     if (this.keyResults.length === 0) {
       this.$message.error('Cần có ít nhất 1 kết quả then chốt');
     } else {
-      this.loading = true;
       (this.$refs.krsForm as any).forEach((form) => {
         (form.$refs.keyResult as Form).validate(
           (isValid: boolean, invalidatedFields: object) => {
@@ -139,11 +139,11 @@ export default class CreateObjectiveStep extends Vue {
         );
         this.$store.commit(MutationState.SET_LIST_OBJECTIVE_ALIGN, data);
         this.syncActive++;
-        this.loading = false;
       } else {
         this.$message.error('Có trường chưa hợp lệ, xin hãy kiểm tra!!!');
       }
     }
+    this.loading = false;
   }
 
   private deleteKrForm(indexForm: number) {

@@ -1,39 +1,20 @@
 <template>
-  <div v-if="user" class="dashboard">
-    <!-- <el-select
-      v-if="listCycles.length > 0"
-      v-model="cycleId"
+  <div class="dashboard">
+    <el-select
+      class="-mb-4"
+      v-model="currentCycleId"
       no-match-text="Không tìm thấy chu kỳ"
       filterable
       placeholder="Chọn chu kỳ"
-      @change="handleSelectCycle(cycleId)"
+      @change="handleSelectCycle(currentCycleId)"
     >
-      <el-option v-for="cycle in listCycles" :key="cycle.value" :label="cycle.label" :value="cycle.value" />
-    </el-select> -->
-    <dashboard-progress-bar
-      :loading="loading"
-      :data-okrs-progress="dataOkrsProgress"
-    />
-    <div v-if="user.roles.includes('ROLE_ADMIN')" v-loading="loadingAdmin">
-      <el-row v-if="dataCheckin.length > 0" class="col-container">
-        <el-col class="col" :md="24" :lg="8">
-          <dashboard-okrs-status :data-progress="dataProgress" />
-        </el-col>
-        <el-col class="col col--second" :md="24" :lg="8">
-          <dashboard-checkin-status :data-checkin="dataCheckin" />
-        </el-col>
-        <el-col class="col" :md="24" :lg="8">
-          <dashboard-cfr-status :data-cfr="dataCfr" />
-        </el-col>
-      </el-row>
-    </div>
-    <dashboard-star-rank
-      :no-data-feedback="noDataFeedback"
-      :no-data-re="noDataRe"
-      :loading="loading"
-      :data-star-in-come="dataStarInCome"
-      :data-star-out-come="dataStarOutCome"
-    />
+      <el-option
+        v-for="cycle in cycles"
+        :key="cycle.id"
+        :label="`Chu kỳ: ${cycle.name}`"
+        :value="String(cycle.id)"
+      />
+    </el-select>
   </div>
 </template>
 
@@ -43,21 +24,8 @@ import { mapGetters } from 'vuex';
 import CycleRepository from '@/repositories/CycleRepository';
 import DashboardRepository from '@/repositories/DashboardRepository';
 import { GetterState, MutationState } from '@/constants/app.vuex';
-import DashboardCfrStatus from '@/components/dashboard/CfrStatus.vue';
-import DashboardOkrsStatus from '@/components/dashboard/OkrsStatus.vue';
-import DashboardCheckinStatus from '@/components/dashboard/CheckinStatus.vue';
-import DashboardStarRank from '@/components/dashboard/StarRank.vue';
-import DashboardProgressBar from '@/components/dashboard/ProgressBar.vue';
 
 @Component<HomePage>({
-  name: 'HomePage',
-  components: {
-    DashboardCfrStatus,
-    DashboardOkrsStatus,
-    DashboardCheckinStatus,
-    DashboardStarRank,
-    DashboardProgressBar,
-  },
   head() {
     return {
       title: 'Dashboard',
@@ -71,122 +39,34 @@ import DashboardProgressBar from '@/components/dashboard/ProgressBar.vue';
     };
   },
   async created() {
-    await this.getAllCycles();
-    if (this.user.role.name === 'ADMIN') {
-      this.getDataAdmin();
+    if (!this.$route.query.cycleId) {
+      this.$router.push(`?cycleId=${this.$store.state.cycle.cycleCurrent}`);
     }
-    await this.getData();
+    this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.$route.query.cycleId);
+    this.currentCycleId = this.$store.state.cycle.cycleCurrent;
   },
-  computed: {
-    ...mapGetters({
-      user: GetterState.USER,
-    }),
+  async mounted() {
+    this.currentCycleId = this.$route.query.cycleId;
+    await this.getCycles();
   },
 })
 export default class HomePage extends Vue {
-  private cycleId: number = this.$route.query.cycleId
-    ? Number(this.$route.query.cycleId)
-    : this.$store.state.cycle.cycle.id;
   private loading: boolean = false;
-  private loadingAdmin: boolean = false;
-  private noDataFeedback: boolean = false;
-  private noDataRe: boolean = false;
-  private listCycles: any[] = [];
-
-  private dataStarInCome: Array<object> = [];
-  private dataStarOutCome: Array<object> = [];
-  private dataOkrsProgress: object = {};
-  private dataProgress: Array<object> = [];
-  private dataCheckin: Array<object> = [];
-  private dataCfr: Array<object> = [];
-
-  private params = {
-    cycleId: this.$route.query.cycleId
-      ? Number(this.$route.query.cycleId)
-      : this.$store.state.cycle.cycle.id,
-  };
-
-  private async getDataAdmin() {
-    this.loadingAdmin = true;
-    try {
-      await Promise.all([
-        DashboardRepository.getOKRsStatus(),
-        DashboardRepository.getCheckinStatus(),
-        DashboardRepository.getCfrStatus(),
-      ]).then(([progress, checkin, cfrs]) => {
-        this.dataProgress = progress.data.data;
-        this.dataCheckin = checkin.data.data;
-        this.dataCfr = cfrs.data.data;
-        setTimeout(() => {
-          this.loadingAdmin = false;
-        }, 1000);
-      });
-    } catch (error) {
-      this.loadingAdmin = false;
-    }
-  }
-
-  private async getAllCycles() {
-    await await CycleRepository.getListMetadata()
-      .then(({ data }) => {
-        this.listCycles = data.data.all.map((item) => {
-          return {
-            id: item.id,
-            label: item.name,
-            value: item.id,
-            startDate: item.startDate,
-            endDate: item.endDate,
-          };
-        });
-        this.$store.commit(MutationState.SET_ALL_CYCLES, this.listCycles);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+  private cycles: any[] = [];
+  private currentCycleId: string = '';
 
   @Watch('$route.query')
   private async getData() {
-    this.loading = true;
-    try {
-      await Promise.all([
-        DashboardRepository.getTopIncome(this.params.cycleId, 1),
-        DashboardRepository.getTopIncome(this.params.cycleId, 2),
-        DashboardRepository.getOKRsProgress(this.params),
-      ]).then(([income, outcome, progress]) => {
-        const tempCycle = this.listCycles.find(
-          (item) => item.id === Number(this.params.cycleId),
-        );
-        this.dataOkrsProgress = Object.assign(
-          {},
-          {
-            startDate: tempCycle.startDate,
-            endDate: tempCycle.endDate,
-          },
-        );
-        this.dataStarInCome = income.data.data;
-        this.dataStarOutCome = outcome.data.data;
-        if (this.dataStarInCome.length === 0) {
-          this.noDataRe = true;
-        }
-        if (this.dataStarOutCome.length === 0) {
-          this.noDataFeedback = true;
-        }
-        this.dataOkrsProgress = Object.assign(
-          this.dataOkrsProgress,
-          progress.data.data,
-        );
-        setTimeout(() => {
-          this.loading = false;
-        }, 1000);
-      });
-    } catch (error) {
-      this.loading = false;
-    }
+  }
+
+  private async getCycles() {
+    this.loading = true
+    const { data } = await CycleRepository.getListMetadata();
+    this.cycles = data || [];
+    this.loading = false
   }
 
   private handleSelectCycle(cycleId: number) {
-    this.params.cycleId = cycleId;
     this.$router.push(`?cycleId=${cycleId}`);
   }
 }
@@ -194,29 +74,5 @@ export default class HomePage extends Vue {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
-.dashboard {
-  color: $neutral-primary-4;
-  .col-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    @include breakpoint-down(phone) {
-      flex-direction: column;
-    }
-    .col {
-      flex: 1;
-      padding-bottom: $unit-10;
-      background-color: $white;
-      border-radius: $unit-1;
-      box-shadow: $box-shadow-default;
-      &--second {
-        margin-left: $unit-8;
-        margin-right: $unit-8;
-        @include breakpoint-down(phone) {
-          margin: $unit-6 0;
-        }
-      }
-    }
-  }
-}
+
 </style>
