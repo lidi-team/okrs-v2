@@ -128,24 +128,21 @@ export default class OKRsPage extends Vue {
   }
 
   private async getCycles() {
+    this.loading = true
     const { data } = await CycleRepository.getListMetadata();
     this.cycles = data || [];
+    this.loading = false
   }
 
   private async getDashBoardOkrs() {
-    try {
-      const { data } = await OkrsRepository.getListOkrsByCycleId(
-        this.$route.query.cycleId
-          ? Number(this.$route.query.cycleId)
-          : Number(this.$store.state.cycle.cycleCurrent),
-      );
-      this.projects = Object.freeze(data);
-      this.loading = false;
-    } catch (error) {
-      setTimeout(() => {
-        this.loading = false;
-      }, 500);
-    }
+    this.loading = true
+    const { data } = await OkrsRepository.getListOkrsByCycleId(
+      this.$route.query.cycleId
+        ? Number(this.$route.query.cycleId)
+        : Number(this.$store.state.cycle.cycleCurrent),
+    );
+    this.projects = Object.freeze(data);
+    this.loading = false;
   }
 
   private handleSelectCycle(cycleId) {

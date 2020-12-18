@@ -20,7 +20,8 @@
       </div>
     </div>
     <el-table
-      :loading="loading"
+      empty-text="Không có OKRs nào"
+      v-loading="loading"
       :data="objectives"
       header-row-class-name="item__table-header"
       style="width: 100%"
@@ -204,9 +205,6 @@ export default class OKRsItem extends Vue {
   transform: perspective(1px) translateZ(0);
   transition-property: transform;
   transition-duration: 0.3s;
-  &:hover {
-    transform: translateY(-3px);
-  }
   .happy {
     color: $green-primary-1;
     min-width: 55px;

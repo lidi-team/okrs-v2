@@ -5,7 +5,7 @@
       <span class="okrs-detail--top-action__title">Chi tiết mục tiêu</span>
     </div>
     <div class="okrs-detail__content">
-      <div class="okrs-detail__content--overview">
+      <div class="okrs-detail__content--overview box-wrap">
         <span>{{ objective.title.toUpperCase() }}</span>
         <el-progress
           type="line"
@@ -14,7 +14,7 @@
           :stroke-width="26"
         />
       </div>
-      <div class="okrs-detail__content--align">
+      <div class="okrs-detail__content--align box-wrap">
         <span class="created">Được tạo bởi:</span>
         <span class="username">{{ objective.user.name }}</span>
         <span v-if="objective.parentObjective" class="alignedWith"
@@ -47,7 +47,7 @@
         </div>
         <p v-else class="alignedOkrs">Không có</p>
       </div>
-      <div class="okrs-detail__content--detail">
+      <div class="okrs-detail__content--detail box-wrap">
         <div class="okrs-detail__content--detail__header">
           <span class="content">Kết quả then chốt</span>
           <span class="target">Mục tiêu</span>
@@ -116,10 +116,8 @@ export default class OkrsDetailPage extends Vue {
       display: flex;
       place-content: center flex-start;
       margin-top: $unit-7;
-      @include box-okrs-detail;
     }
     &--align {
-      @include box-okrs-detail;
       margin-top: $unit-5;
       display: grid;
       row-gap: $unit-5;
@@ -202,21 +200,6 @@ export default class OkrsDetailPage extends Vue {
           border-bottom: 1px solid $neutral-primary-0;
           padding-bottom: $unit-3;
         }
-      }
-    }
-  }
-
-  .el-progress {
-    width: 25vw;
-    margin-left: auto;
-    .el-progress-bar {
-      &__outer {
-        border-radius: $border-radius-medium;
-        background-color: $purple-primary-1;
-      }
-      &__inner {
-        border-radius: $border-radius-medium;
-        background-color: $purple-primary-4;
       }
     }
   }
