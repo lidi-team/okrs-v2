@@ -24,6 +24,7 @@ export enum GetterState {
 export enum MutationState {
   SET_USER = 'auth/setUser',
   SET_TOKEN = 'auth/setToken',
+  SET_AVATAR = 'auth/setUserAvatar',
   SET_TEMP_USER = 'user/setTempUser',
   SET_USERS = 'user/setUsers',
   SET_CURRENT_CYCLE = 'cycle/setCurrentCycle',

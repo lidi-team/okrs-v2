@@ -46,7 +46,9 @@
                 </div>
               </div>
               <div class="item__right">
-                <span>{{ item.evaluationCriteria.numberOfStar }}</span>
+                <span class="item__right__value">{{
+                  item.evaluationCriteria.numberOfStar
+                }}</span>
                 <icon-star-dashboard />
               </div>
             </div>
@@ -106,7 +108,7 @@
                 </div>
               </div>
               <div class="item__right">
-                <span>{{ item.evaluationCriteria.numberOfStar }}</span>
+                <span class="item__right__value">{{ item.evaluationCriteria.numberOfStar }}</span>
                 <icon-star-dashboard />
               </div>
             </div>
@@ -184,7 +186,7 @@
                 </div>
               </div>
               <div class="item__right">
-                <span>{{ item.evaluationCriteria.numberOfStar }}</span>
+                <span class="item__right__value">{{ item.evaluationCriteria.numberOfStar }}</span>
                 <icon-star-dashboard />
               </div>
             </div>
@@ -505,6 +507,10 @@ export default class History extends Vue {
           svg {
             display: flex;
             align-self: center;
+          }
+
+          &__value {
+            width: 1.5rem;
           }
         }
       }

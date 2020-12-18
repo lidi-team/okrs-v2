@@ -27,20 +27,22 @@
       @name="paramsProject.text = $event"
       @search="handleSearch($event)"
     />
-    <component
-      :is="tabComponent"
-      :table-data="tableData"
-      :get-list-project="getListProjects"
-      :managers="managers"
-      :original-projects="originalProjects"
-    />
-    <common-pagination
-      class="manage-project__pagination"
-      :total="meta.totalItems"
-      :page.sync="paramsProject.page"
-      :limit.sync="paramsProject.limit"
-      @pagination="handlePagination($event)"
-    />
+    <div class="box-wrap">
+      <component
+        :is="tabComponent"
+        :table-data="tableData"
+        :get-list-project="getListProjects"
+        :managers="managers"
+        :original-projects="originalProjects"
+      />
+      <common-pagination
+        class="manage-project__pagination"
+        :total="meta.totalItems"
+        :page.sync="paramsProject.page"
+        :limit.sync="paramsProject.limit"
+        @pagination="handlePagination($event)"
+      />
+    </div>
     <project-dialog
       :visible-dialog.sync="visibleDialog"
       :reload-data="getListProjects"

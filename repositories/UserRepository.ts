@@ -34,4 +34,11 @@ export default class UserRepository {
     };
     return baseUrlV1.put(`${enpoint.Users}/me`, tempProfile);
   }
+
+  public static updateAvatar(url: string) {
+    const payload = { avatarUrl: url };
+    return baseUrl.put(`${enpoint.Users}/upload-avatar`, null, {
+      params: payload,
+    });
+  }
 }

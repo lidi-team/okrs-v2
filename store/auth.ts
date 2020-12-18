@@ -3,10 +3,12 @@ import { notifyErrorLogin } from '@/constants/app.notify';
 import { LoginDTO } from '@/constants/DTO/auth';
 import AuthRepository from '@/repositories/AuthRepository';
 import { removeTokenCookie, setTokenCookie } from '@/utils/cookies';
+import RandomNumber from '@/utils/randomNumber';
 
 export enum AuthMutation {
   SET_TOKEN = 'setToken',
   SET_USER = 'setUser',
+  SET_AVATAR = 'setUserAvatar',
 }
 export interface AuthState {
   token: any;
@@ -35,6 +37,12 @@ export const getters: GetterTree<RootState, RootState> = {
 export const mutations: MutationTree<RootState> = {
   [AuthMutation.SET_TOKEN]: (state, token: string) => (state.token = token),
   [AuthMutation.SET_USER]: (state, user: any) => (state.user = user),
+  [AuthMutation.SET_AVATAR]: (state, url: string) =>
+    (state.user = {
+      ...state.user,
+      avatarUrl: url,
+      updateAvatarKey: Math.floor(Math.random() * 100001),
+    }),
 };
 
 export const actions: AuthActions<AuthState, RootState> = {

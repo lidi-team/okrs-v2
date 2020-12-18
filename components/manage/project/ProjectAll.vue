@@ -1,5 +1,5 @@
 <template>
-  <div class="box-wrap">
+  <div>
     <el-table
       v-loading="loadingTable"
       empty-text="Không có dữ liệu"
