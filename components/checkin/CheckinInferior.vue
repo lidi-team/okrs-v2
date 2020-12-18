@@ -34,7 +34,7 @@
       </el-table-column>
       <el-table-column label="Hành động" align="center">
         <template slot-scope="{ row }">
-          <el-button class="el-button--purple" @click="showOKRs(row.id)"
+          <el-button class="el-button--purple" @click="showOKRs(row.id, row.project.id)"
             >Xem OKRs</el-button
           >
         </template>
@@ -173,16 +173,13 @@ export default class Inferior extends Vue {
     );
   }
 
-  private async showOKRs(id: Number) {
+  private async showOKRs(id: Number, projectId: Number) {
     this.showDialogKRs = true;
     this.loadingDialogKRs = true;
     const userId = id;
     const cycleId = this.$route.query.cycleId
       ? this.$route.query.cycleId
       : this.$store.state.cycle.cycleCurrent;
-    const projectId = this.$route.query.projectId
-      ? this.$route.query.projectId
-      : 0;
     const { data } = await CheckinRepository.getListObjectiveInferior({
       userId,
       cycleId,
