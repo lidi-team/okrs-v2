@@ -8,7 +8,7 @@
       align="center"
     >
       <nuxt-link
-        to="/"
+        :to="`/?cycleId=${this.$store.state.cycle.cycleCurrent}`"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isHome }]"
       >
         <div class="sidebar__link__tab">
