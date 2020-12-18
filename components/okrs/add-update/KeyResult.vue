@@ -50,129 +50,131 @@
         </el-tooltip>
       </el-popover>
     </div>
-    <div class="content-collapse" v-show="isExpanded">
-      <el-form
-        ref="keyResult"
-        :model="tempKeyResult"
-        :rules="rules"
-        label-position="left"
-        class="krs-form"
-      >
-        <el-form-item prop="content">
-          <el-input
-            v-model="tempKeyResult.content"
-            placeholder="Nhập kết quả then chốt"
-            tabindex="1"
-          />
-        </el-form-item>
-        <div class="krs-form__detail">
-          <div class="krs-form__detail--value">
-            <div class="-display-flex">
+    <transition name="fade">
+      <div class="content-collapse" v-show="isExpanded">
+        <el-form
+          ref="keyResult"
+          :model="tempKeyResult"
+          :rules="rules"
+          label-position="left"
+          class="krs-form"
+        >
+          <el-form-item prop="content">
+            <el-input
+              v-model="tempKeyResult.content"
+              placeholder="Nhập kết quả then chốt"
+              tabindex="1"
+            />
+          </el-form-item>
+          <div class="krs-form__detail">
+            <div class="krs-form__detail--value">
+              <div class="-display-flex">
+                <el-form-item
+                  label="Đơn vị"
+                  class=""
+                  label-width="65px"
+                >
+                  <el-select
+                    v-model.number="tempKeyResult.measureUnitId"
+                    size="medium"
+                    filterable
+                    no-match-text="Không tìm thấy kết quả"
+                    placeholder="Chọn đơn vị"
+                  >
+                    <el-option
+                      v-for="unit in units"
+                      :key="unit.id"
+                      :label="unit.name"
+                      :value="unit.id"
+                      tabindex="2"
+                    />
+                  </el-select>
+                </el-form-item>
+                <el-form-item
+                  class="-ml-5"
+                  prop="startValue"
+                  label="Bắt đầu"
+                  label-width="70px"
+                >
+                  <el-input-number
+                    class="el-input-number-okr"
+                    v-model="tempKeyResult.startValue"
+                    controls-position="right"
+                    size="medium"
+                    :min="0"
+                  />
+                </el-form-item>
+                <el-form-item
+                  prop="targetValue"
+                  label="Mục tiêu"
+                  class="-ml-5"
+                  label-width="70px"
+                >
+                  <el-input-number
+                    class="el-input-number-okr"
+                    v-model.number="tempKeyResult.targetedValue"
+                    controls-position="right"
+                    size="medium"
+                    :min="1"
+                  />
+                </el-form-item>
+              </div>
+            </div>
+            <div>
               <el-form-item
-                label="Đơn vị"
+                v-if="isCreate"
+                prop="keyResultParentId"
+                label="Liên kết kết quả then chốt "
                 class=""
-                label-width="65px"
+                label-width="190px"
               >
                 <el-select
-                  v-model.number="tempKeyResult.measureUnitId"
-                  size="medium"
+                  v-model="tempKeyResult.keyResultParentId"
                   filterable
                   no-match-text="Không tìm thấy kết quả"
-                  placeholder="Chọn đơn vị"
+                  placeholder="Chọn kết quả then chốt "
+                  :loading="loading"
+                  width="100%"
                 >
                   <el-option
-                    v-for="unit in units"
-                    :key="unit.id"
-                    :label="unit.name"
-                    :value="unit.id"
-                    tabindex="2"
+                    v-for="keyResult in keyResultsParent"
+                    :key="keyResult.id"
+                    :label="keyResult.name"
+                    :value="keyResult.id"
                   />
                 </el-select>
               </el-form-item>
+            </div>
+            <div class="krs-form__detail--links">
               <el-form-item
-                class="-ml-5"
-                prop="startValue"
-                label="Bắt đầu"
-                label-width="70px"
+                prop="linkPlans"
+                label="Link kế hoạch"
+                label-width="120px"
               >
-                <el-input-number
-                  class="el-input-number-okr"
-                  v-model="tempKeyResult.startValue"
-                  controls-position="right"
-                  size="medium"
-                  :min="0"
+                <el-input
+                  v-model.number="tempKeyResult.linkPlans"
+                  size="small"
+                  type="url"
+                  placeholder="Điền link kế hoạch "
                 />
               </el-form-item>
               <el-form-item
-                prop="targetValue"
-                label="Mục tiêu"
-                class="-ml-5"
-                label-width="70px"
+                prop="linkResults"
+                label="Link kết quả"
+                label-width="120px"
               >
-                <el-input-number
-                  class="el-input-number-okr"
-                  v-model.number="tempKeyResult.targetedValue"
-                  controls-position="right"
-                  size="medium"
-                  :min="1"
+                <el-input
+                  v-model.number="tempKeyResult.linkResults"
+                  size="small"
+                  type="url"
+                  placeholder="Điền link kết quả"
                 />
               </el-form-item>
             </div>
           </div>
-          <div>
-            <el-form-item
-              v-if="isCreate"
-              prop="keyResultParentId"
-              label="Liên kết kết quả then chốt "
-              class=""
-              label-width="190px"
-            >
-              <el-select
-                v-model="tempKeyResult.keyResultParentId"
-                filterable
-                no-match-text="Không tìm thấy kết quả"
-                placeholder="Chọn kết quả then chốt "
-                :loading="loading"
-                width="100%"
-              >
-                <el-option
-                  v-for="keyResult in keyResultsParent"
-                  :key="keyResult.id"
-                  :label="keyResult.name"
-                  :value="keyResult.id"
-                />
-              </el-select>
-            </el-form-item>
-          </div>
-          <div class="krs-form__detail--links">
-            <el-form-item
-              prop="linkPlans"
-              label="Link kế hoạch"
-              label-width="120px"
-            >
-              <el-input
-                v-model.number="tempKeyResult.linkPlans"
-                size="small"
-                type="url"
-                placeholder="Điền link kế hoạch "
-              />
-            </el-form-item>
-            <el-form-item
-              prop="linkResults"
-              label="Link kết quả"
-              label-width="120px"
-            >
-              <el-input
-                v-model.number="tempKeyResult.linkResults"
-                size="small"
-                type="url"
-                placeholder="Điền link kết quả"
-              />
-            </el-form-item>
-          </div>
-        </div>
-      </el-form>
-    </div>
+        </el-form>
+      </div>
+    </transition>
   </div>
 </template>
 

@@ -1,9 +1,12 @@
 @import 'abstracts/variables';
 @import 'abstracts/mixins';
+@import 'base/markdown';
+@import 'utils/main';
+@import 'base/animation';
+
+@import 'components/input';
+@import 'components/icon';
 @import 'components/button';
 @import 'components/table';
 @import 'components/form';
-@import 'base/markdown';
-@import 'components/input';
-@import 'components/icon';
-@import 'utils/main';
+@import 'components/progress';
