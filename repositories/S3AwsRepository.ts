@@ -11,9 +11,9 @@ import AWS, { S3 } from 'aws-sdk';
  *
  */
 export const S3Key = {
-  region: process.env.region,
-  bucketName: process.env.bucketName,
-  identityPoolId: process.env.bucketName,
+  region: 'ap-southeast-1',
+  bucketName: 'bluemarble-hep1',
+  identityPoolId: process.env.identityPoolId,
   defaultFolder: 'my-first-bucket-path/',
 };
 
@@ -42,16 +42,17 @@ class S3Service {
   s3: S3;
   constructor() {
     AWS.config.update({
-      region: 'ap-southeast-1',
+      region: S3Key.region,
       credentials: new AWS.CognitoIdentityCredentials({
-        IdentityPoolId: 'ap-southeast-1:1539452e-c7bf-4855-ad74-d7d6a6785918',
+        // @ts-ignore
+        IdentityPoolId: S3Key.identityPoolId,
       }),
     });
 
     //* / get reference to S3 client
     this.s3 = new AWS.S3({
       apiVersion: '2006-03-01',
-      params: { Bucket: 'bluemarble-hep1' },
+      params: { Bucket: S3Key.bucketName },
     });
   }
 

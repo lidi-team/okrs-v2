@@ -36,12 +36,13 @@
               <img :src="avatarUrl" alt="avatar" />
             </el-avatar>
             <el-button
+              :loading="loading"
               size="small"
               type="primary"
               class="el-button--margin el-button--white el-button--avatar"
               @click="toggleShow"
-              >Cập nhật avatar</el-button
-            >
+              >Cập nhật avatar
+            </el-button>
             <p class="profile-common__name">{{ profileForm.fullName }}</p>
             <!-- <p class="profile-common__role">{{ displayRoleName(user) }}</p> -->
           </el-col>
@@ -72,11 +73,11 @@
                   <el-col :sm="24" :md="12">
                     <el-form-item prop="gender" label="Giới tính">
                       <el-radio v-model="profileForm.gender" :label="1"
-                        >Nam</el-radio
-                      >
+                        >Nam
+                      </el-radio>
                       <el-radio v-model="profileForm.gender" :label="0"
-                        >Nữ</el-radio
-                      >
+                        >Nữ
+                      </el-radio>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -143,18 +144,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Provide } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 // import AWS from 'aws-sdk';
-import { Form } from 'element-ui';
 import { max255Char } from '@/constants/account.constant';
 import UserRepository from '@/repositories/UserRepository';
 import { Maps, Rule } from '@/constants/app.type';
-import { MutationState, GetterState } from '@/constants/app.vuex';
+import { GetterState, MutationState } from '@/constants/app.vuex';
 import { formatDateToDD } from '@/utils/dateParser';
 
 import CommonFlameUpload from '@/components/common/FlameUpload.vue';
 import S3Service from '@/repositories/S3AwsRepository';
+import RandomNumber from '@/utils/randomNumber';
+
 @Component<ViewProfile>({
   name: 'ViewProfile',
   components: {
@@ -224,7 +226,13 @@ export default class ViewProfile extends Vue {
         const endpointLink = s3Service.urlOutput(data.Key);
         const response: any = await UserRepository.updateAvatar(endpointLink);
         if (!!response && !!response.message) {
-          this.$store.commit(MutationState.SET_AVATAR, endpointLink);
+          this.$store.commit(
+            MutationState.SET_AVATAR,
+            endpointLink + '?rnd=' + RandomNumber(),
+          );
+          // this.$store.commit(MutationState.SET_AVATAR, '');
+          // setTimeout(() => {
+          // }, 500);
           this.avatarUrl = imgDataUrl;
           this.loading = false;
         }
@@ -240,27 +248,6 @@ export default class ViewProfile extends Vue {
       });
       console.log('upload error: ', e);
     }
-  }
-
-  private async cropUploadSuccess(jsonData: any, field: string) {
-    const { data } = await UserRepository.me();
-    this.$store.commit(MutationState.SET_USER, data.data);
-    this.show = false;
-    this.$notify({
-      title: 'Trạng thái',
-      message: 'Cập nhật avatar thành công',
-      type: 'success',
-      duration: 2000,
-    });
-  }
-
-  private cropUploadFail(status: boolean, field: string) {
-    this.$notify({
-      title: 'Trạng thái',
-      message: 'Có lỗi xảy ra',
-      type: 'error',
-      duration: 2000,
-    });
   }
 
   private profileForm: any = {
@@ -292,94 +279,70 @@ export default class ViewProfile extends Vue {
       this.loadingProfile = false;
     }
   }
-
-  private updateProfile() {
-    this.loading = true;
-    (this.$refs.updateProfileForm as Form).validate(
-      async (isValid: boolean, invalidFields: object) => {
-        if (isValid) {
-          try {
-            await UserRepository.update(this.profileForm);
-            setTimeout(() => {
-              this.loading = false;
-            }, 300);
-            this.$notify.success({
-              title: 'Trạng thái',
-              message: 'Cập nhật thông tin cá nhân thành công',
-              duration: 2000,
-            });
-            const { data } = await UserRepository.me();
-            this.$store.commit(MutationState.SET_USER, data.data);
-            this.loadingProfile = true;
-            setTimeout(() => {
-              this.loadingProfile = false;
-            }, 300);
-          } catch (error) {
-            setTimeout(() => {
-              this.loading = false;
-            }, 300);
-          }
-        }
-        if (invalidFields) {
-          setTimeout(() => {
-            this.loading = false;
-          }, 300);
-        }
-      },
-    );
-  }
 }
 </script>
 
 <style lang="scss">
 @import '@/assets/scss/main.scss';
+
 .wrap-profile {
   padding: $unit-8 0 0 0;
   @include breakpoint-down(phone) {
     padding: 0;
   }
+
   .profile-common {
     display: flex;
     align-items: center;
     flex-direction: column;
     text-align: center;
+
     &__name {
       font-weight: bold;
       color: $purple-primary-4;
       font-size: $unit-5;
       padding: $unit-1;
     }
+
     &__role {
       font-weight: lighter;
       text-transform: uppercase;
       font-size: $unit-4;
     }
   }
+
   .info {
     &__title {
       padding-bottom: $unit-4;
     }
+
     &__row {
       display: flex;
+
       .el-form-item {
         width: 100%;
+
         &:first-child {
           margin-right: $unit-8;
         }
       }
     }
+
     &__row--custom {
       width: 100%;
     }
   }
+
   .info-attribute {
     &__label {
       color: red;
     }
   }
+
   .el-button--update {
     margin-top: $unit-10;
   }
+
   .el-button--avatar {
     margin-top: $unit-4;
     margin-bottom: $unit-4;
@@ -396,6 +359,7 @@ export default class ViewProfile extends Vue {
     }
   }
 }
+
 .vue-image-crop-upload {
   .vicp-wrap {
     @include breakpoint-down(phone) {
