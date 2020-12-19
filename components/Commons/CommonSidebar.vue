@@ -243,6 +243,7 @@ export default class SideBar extends Vue {
           margin-top: 10px;
           width: 85px;
           text-transform: uppercase;
+          font-weight: bold;
         }
 
         &__icon {

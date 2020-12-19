@@ -27,7 +27,7 @@
       @name="paramsProject.text = $event"
       @search="handleSearch($event)"
     />
-    <div class="box-wrap">
+    <div>
       <component
         :is="tabComponent"
         :table-data="tableData"
@@ -138,9 +138,6 @@ export default class ManageProject extends Vue {
   private handleClick(currentTab: string) {
     this.paramsProject.text = '';
     this.paramsProject.page = 1;
-    // this.paramsUser.status = currentTab === UserStatus.Active ? 1 : currentTab === UserStatus.Pending ? 0 : -1;
-    // this.$router.push(`?tab=${currentTab === UserStatus.Active ? 'active' : currentTab === UserStatus.Pending ? 'pending' : 'deactive'}`);
-    // this.paramsUser.status = currentTab === UserStatus.Active ? 1 : currentTab === UserStatus.Pending ? 0 : -1;
     this.$router.push(`?tab=${ProjectStatus.All}`);
   }
 
@@ -148,8 +145,6 @@ export default class ManageProject extends Vue {
     switch (tab) {
       case ProjectStatus.All:
         return 'Tất cả';
-      // case ProjectStatus.Active:
-      //   return 'Đang hoạt động';
       default:
         return 'Đã đóng';
     }
