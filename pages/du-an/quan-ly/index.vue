@@ -1,6 +1,6 @@
 <template>
   <div class="project-detail">
-    <el-page-header title="Projects Dashboard" @back="goToProjectDashboard" />
+    <el-page-header title="Quay lại" @back="goToProjectDashboard" />
     <div v-if="!!projectData" class="box-wrap project-detail--top-action">
       <el-collapse v-model="activeNames">
         <el-collapse-item name="1">
@@ -57,7 +57,7 @@
         <p class="-title-2">Thành viên dự án</p>
         <div>
           <el-button
-            v-if="isProjectPm(user.projects)"
+            v-if="isProjectPm(user.projects, projectData.status)"
             class="el-button--purple el-button--invite"
             size="small"
             @click="handleShowAddMember"
@@ -162,7 +162,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          v-if="isProjectPm(user.projects)"
+          v-if="isProjectPm(user.projects, projectData.status)"
           label="Thao tác"
           align="center"
           min-width="230"
@@ -443,12 +443,11 @@ export default class ControlProject extends Vue {
     this.tabActive = tab.name;
   }
 
-  private isProjectPm(userProjects: any) {
+  private isProjectPm(userProjects: any, projectStatus: number | string) {
     const dataInProject = userProjects.find(
       (value) => value.id + '' === this.id,
     );
-    console.log('dataInProject: ', userProjects);
-    if (dataInProject) {
+    if (dataInProject && projectStatus) {
       return dataInProject.pm;
     } else {
       return false;

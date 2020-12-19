@@ -44,13 +44,7 @@
       <el-table-column label="Trọng số">
         <template v-slot="{ row }">
           <!-- Vue Fileter Date Plugin -->
-          <el-progress
-            :text-inside="true"
-            :stroke-width="24"
-            :percentage="getPercentage(row.weight)"
-            :format="format"
-            :color="weightColor"
-          ></el-progress>
+          <el-rate :value="row.weight" disabled />
         </template>
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
