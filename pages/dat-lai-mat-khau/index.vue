@@ -19,9 +19,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
-import AccountResetPassword from '@/components/account/ResetPassword.vue';
-
+import AccountResetPassword from '@/components/Accounts/AccountResetPassword.vue';
 import AuthRepository from '@/repositories/AuthRepository';
 import { notifyErrorResetPassword } from '@/constants/app.notify';
 @Component<ResetPasswordPage>({

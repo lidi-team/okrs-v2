@@ -77,7 +77,7 @@
       <el-table-column label="Mục tiêu" min-width="380" class="cell-objective">
         <template v-slot="{ row }">
           <span>{{ row.title }}</span>
-          <el-tag type="info">{{ row.childObjectives.length }} mục tiêu</el-tag>
+          <el-tag type="danger">{{ row.childObjectives.length }} mục tiêu cá nhân</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="Kết quả then chốt" width="140">

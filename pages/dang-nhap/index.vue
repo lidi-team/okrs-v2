@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import AccountLogin from '@/components/account/Login.vue';
+import AccountLogin from '@/components/Accounts/AccountLogin.vue';
 @Component<LoginPage>({
   components: {
     AccountLogin,

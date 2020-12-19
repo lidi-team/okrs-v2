@@ -25,7 +25,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import AccountChangePassword from '@/components/account/ChangePassword.vue';
+import AccountChangePassword from '@/components/Accounts/AccountChangePassword.vue';
 @Component<ChangePasswordPage>({
   name: 'ChangePasswordPage',
   components: {

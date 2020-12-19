@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import AccountForgotPassword from '@/components/account/ForgotPassword.vue';
+import AccountForgotPassword from '@/components/Accounts/AccountForgotPassword.vue';
 @Component<ForgotPasswordPage>({
   name: 'ForgotPasswordPage',
   layout: 'empty',

@@ -15,7 +15,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import AccountRegister from '@/components/account/Register.vue';
+import AccountRegister from '@/components/Accounts/AccountRegister.vue';
 
 import AuthRepository from '@/repositories/AuthRepository';
 import { notifyErrorRegister } from '@/constants/app.notify';

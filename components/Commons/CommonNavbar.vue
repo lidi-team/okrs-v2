@@ -2,7 +2,7 @@
   <div class="header">
     <div class="-display-flex -justify-content-center -align-items-center">
       <img class="logo-company" src="@/assets/images/common/sidebar/logo-demo.gif" alt="logo">
-      <p class="header__company">Lidi company</p>
+      <p class="header__company"><span style="color: #32C8FF; font-weight: bold;">Lidi</span> corporation</p>
     </div>
     <div v-if="user" class="header__info side-right">
       <div class="side-right__list">
@@ -142,10 +142,9 @@ export default class Navbar extends Vue {
 
   &__company {
     text-transform: uppercase;
-    font-weight: bold;
     letter-spacing: 0.5px;
     margin-top: 5px;
-    color: #831843;
+    color: gray;
   }
 
   @include breakpoint-down(phone) {

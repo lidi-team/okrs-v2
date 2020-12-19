@@ -1,5 +1,5 @@
 <template>
-  <div class="box-wrap">
+  <div>
     <div class="my-okrs">
       <el-table
         v-loading="loading"
