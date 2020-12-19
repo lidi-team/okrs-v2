@@ -119,7 +119,7 @@ export default class ChangePasswordDialog extends Vue {
     value: any,
     callback: (message?: string) => any,
   ): (message?: string) => any {
-    const valid: boolean = /^(?=.*\d)[0-9a-zA-Z]{8,}$/.test(value);
+    const valid: boolean = /^(?=.*\d)[0-9a-zA-Z!@#\$%\^\&*\)\(+=._-]{8,}$/.test(value);
     if (!valid) {
       return callback('Mật khẩu chứ ít nhất 8 ký tự và 1 chữ số');
     } else if (value === this.changePasswordForm.password) {
