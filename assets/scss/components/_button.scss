@@ -68,3 +68,16 @@
     padding: 0.875rem 0.75rem;
   }
 }
+
+.el-button {
+  &--search {
+    padding-left: $unit-8;
+    padding-right: $unit-8;
+    font-size: $text-sm;
+  }
+  &--invite {
+    margin-bottom: $unit-4;
+    padding-top: $unit-3;
+    font-size: $text-sm;
+  }
+}

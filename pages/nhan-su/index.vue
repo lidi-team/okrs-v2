@@ -1,12 +1,20 @@
 <template>
   <div class="manage-employee">
     <div class="manage-employee__title">
-      <h1 class="manage-employee__title--text">Quản lý nhân sự</h1>
-      <el-button
-        class="el-button--purple el-button--modal"
-        @click="handleAddUsers"
-        >Thêm nhân viên</el-button
-      >
+      <h1 class="-title-1">Quản lý nhân sự</h1>
+      <div class="-display-flex">
+        <head-employee
+          :text.sync="paramsUser.text"
+          @name="paramsUser.text = $event"
+          @search="handleSearch($event)"
+        />
+        <el-button
+          class="el-button--purple el-button--modal el-button--invite -ml-2"
+          icon="el-icon-plus"
+          @click="handleAddUsers"
+          >Thêm nhân viên</el-button
+        >
+      </div>
     </div>
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
       <el-tab-pane
@@ -16,11 +24,6 @@
         :name="tab"
       ></el-tab-pane>
       <div>
-        <head-employee
-          :text.sync="paramsUser.text"
-          @name="paramsUser.text = $event"
-          @search="handleSearch($event)"
-        />
         <component
           :is="currentTabComponent"
           :get-list-users="getListUsers"
@@ -48,7 +51,6 @@ import { ParamsUser } from '@/constants/DTO/common';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 import TeamRepository from '@/repositories/TeamRepository';
 import { pageLimit } from '@/constants/app.constant';
-// components
 import CommonPagination from '@/components/Commons/CommonPagination.vue';
 import HeadEmployee from '@/components/manage/employee/HeadEmployee.vue';
 @Component<ManageEmployee>({
@@ -106,19 +108,12 @@ export default class ManageEmployee extends Vue {
     try {
       const [
         teams,
-        // jobs, roles, link
       ] = await Promise.all([
         TeamRepository.getMetaData(),
-        // JobRepository.getMetaData(),
-        // RoleRepository.get(),
-        // AuthRepository.generateLinkInivte(),
       ]);
       console.log(teams);
 
       this.teams = teams.data;
-      // this.jobs = jobs.data.data;
-      // this.roles = roles.data.data;
-      // this.linkInvite = link.data.data.url;
       this.jobs = [];
       this.roles = [];
       this.linkInvite = 'link.data.data.url';
@@ -145,9 +140,6 @@ export default class ManageEmployee extends Vue {
   private handleClick(currentTab: string) {
     this.paramsUser.text = '';
     this.paramsUser.page = 1;
-    // this.paramsUser.status = currentTab === UserStatus.Active ? 1 : currentTab === UserStatus.Pending ? 0 : -1;
-    // this.$router.push(`?tab=${currentTab === UserStatus.Active ? 'active' : currentTab === UserStatus.Pending ? 'pending' : 'deactive'}`);
-    // this.paramsUser.status = currentTab === UserStatus.Active ? 1 : currentTab === UserStatus.Pending ? 0 : -1;
     this.$router.push(
       `?tab=${
         currentTab === UserStatus.All ? UserStatus.All : UserStatus.Staff
@@ -156,13 +148,6 @@ export default class ManageEmployee extends Vue {
   }
 
   private get currentTabComponent() {
-    // if (this.$route.query.tab === 'deactive') {
-    // return EmployeeDeactive;
-    // } else if (this.$route.query.tab === 'pending') {
-    //   return EmployeePending;
-    // } else {
-
-    // }
     return EmployeeActive;
   }
 
@@ -180,10 +165,6 @@ export default class ManageEmployee extends Vue {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    &--text {
-      color: $purple-primary-8;
-      font-size: $text-2xl;
-    }
   }
   &__content {
     background-color: $white;
