@@ -223,12 +223,6 @@ $breakpoints: (
   border-top: 1px solid $gray-primary-1;
 }
 
-@mixin box-okrs-detail {
-  padding: $unit-5;
-  border-radius: $border-radius-base;
-  background-color: $white;
-}
-
 @mixin drop-shadow {
   filter: drop-shadow(0px 0px 0px rgba(63, 63, 68, 0.05)),
     drop-shadow(0px 1px 3px rgba(63, 63, 68, 0.15));

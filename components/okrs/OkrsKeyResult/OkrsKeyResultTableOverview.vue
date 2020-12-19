@@ -1,6 +1,6 @@
 <template>
   <el-table :data="keyResults">
-    <el-table-column label="KRs" min-width="300">
+    <el-table-column label="Key result" min-width="300">
       <template v-slot="{ row }">
         <span>{{ row.content }}</span>
       </template>
