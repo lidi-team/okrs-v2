@@ -15,6 +15,14 @@
         :value="String(cycle.id)"
       />
     </el-select>
+    <el-row :gutter="20">
+      <el-col :span="12">
+        <div class="box-wrap">
+          <h2 class="-title-2 -border-header">Tình trạng cập nhật tiến độ</h2>
+        </div>
+      </el-col>
+      <el-col :span="12">hello</el-col>
+    </el-row>
   </div>
 </template>
 

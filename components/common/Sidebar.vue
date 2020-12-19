@@ -17,7 +17,7 @@
         </div>
       </nuxt-link>
       <nuxt-link
-        to="/checkin"
+        :to="`/checkin?tab=1&cycleId=${this.$store.state.cycle.cycleCurrent}&page=1&projectId=0`"
         :class="[
           'sidebar__link',
           { 'nuxt-link-exact-active': isCheckinActive },
