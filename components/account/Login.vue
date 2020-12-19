@@ -1,5 +1,5 @@
 <template>
-  <el-row class="login-form">
+  <el-row class="login-form box-wrap">
     <div class="login-form__title">
       <span>Đăng nhập tài khoản</span>
     </div>

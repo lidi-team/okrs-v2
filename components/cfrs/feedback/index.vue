@@ -161,7 +161,6 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 import { ParamsQuery } from '@/constants/DTO/common';
-// components
 import CommonPagination from '@/components/common/Pagination.vue';
 import CfrsCreateFeedback from '@/components/cfrs/feedback/CreateFeedback.vue';
 import CfrsDetailFeedback from '@/components/cfrs/feedback/DetailFeedback.vue';

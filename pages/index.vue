@@ -36,7 +36,7 @@ import { GetterState, MutationState } from '@/constants/app.vuex';
 @Component<HomePage>({
   head() {
     return {
-      title: 'Dashboard',
+      title: 'Trang chủ',
       meta: [
         {
           hid: 'description',
@@ -50,11 +50,10 @@ import { GetterState, MutationState } from '@/constants/app.vuex';
     if (!this.$route.query.cycleId) {
       this.$router.push(`?cycleId=${this.$store.state.cycle.cycleCurrent}`);
     }
-    this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.$route.query.cycleId);
-    this.currentCycleId = this.$store.state.cycle.cycleCurrent;
   },
   async mounted() {
-    this.currentCycleId = this.$route.query.cycleId;
+    this.currentCycleId = this.$route.query.cycleId || this.$store.state.cycle.cycleCurrent;
+    this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.currentCycleId);
     await this.getCycles();
   },
 })
