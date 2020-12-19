@@ -181,6 +181,7 @@ export default class ManageEmployee extends Vue {
     flex-direction: row;
     justify-content: space-between;
     &--text {
+      color: $purple-primary-8;
       font-size: $text-2xl;
     }
   }
