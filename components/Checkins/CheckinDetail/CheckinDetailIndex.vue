@@ -7,7 +7,7 @@
           <el-form-item
             class="-mt-3"
             label-width="40%"
-            :prop="'nextCheckinDate'"
+            prop="nextCheckinDate"
             label="Ngày check-in tiếp theo"
           >
             <el-date-picker
@@ -100,7 +100,7 @@
           </el-table-column>
           <el-table-column align="center" label="Tiến độ" min-width="150">
             <template slot-scope="{ row }">
-              <el-form-item>
+              <el-form-item prop="progress">
                 <el-input
                   :disabled="isDisable"
                   v-model="row.progress"
@@ -113,7 +113,7 @@
           </el-table-column>
           <el-table-column align="center" label="Vấn đề" min-width="150">
             <template slot-scope="{ row }">
-              <el-form-item>
+              <el-form-item prop="problems">
                 <el-input
                   :disabled="isDisable"
                   v-model="row.problems"
@@ -126,7 +126,7 @@
           </el-table-column>
           <el-table-column align="center" label="Kế hoạch" min-width="150">
             <template slot-scope="{ row }">
-              <el-form-item>
+              <el-form-item prop="plans">
                 <el-input
                   :disabled="isDisable"
                   v-model="row.plans"
@@ -256,6 +256,7 @@ export default class DetailHistory extends Vue {
     const progressAll = this.syncCheckin.checkinDetail.reduce(count, 0)
     const progressSuggest = progressAll / this.syncCheckin.checkinDetail.length
     this.progressSuggest = Math.round(progressSuggest * 100) / 100
+    this.progressSuggest = this.progressSuggest !== Infinity ? this.progressSuggest : 0
   }
 
   private checkRender() {
@@ -306,17 +307,8 @@ export default class DetailHistory extends Vue {
     this.loading = false
   }
 
-  private checkNumber = (rule, value, callback) => {
-    if (!Number.isInteger(value)) {
-      return callback(new Error('Phải là số nguyên dương'));
-    } else if (value < 0) {
-      callback(new Error('Không được nhỏ hơn 0'));
-    } else {
-      callback();
-    }
-  };
-
   private validateDate = (rule, value, callback) => {
+    console.log('hello', value, 'hhh')
     if (compareTwoDate(value, formatDateToDD(new Date())) === 1) {
       return callback(new Error('Không được nhỏ hơn ngày hiện tại'));
     } else {
@@ -324,47 +316,37 @@ export default class DetailHistory extends Vue {
     }
   };
 
-  private checkText = (rule, value, callback) => {
-    const valid: boolean = /^[^-\s]/.test(value);
-    if (!valid) {
-      return callback(new Error('Không được bỏ trống'));
-    } else {
-      callback();
-    }
-  };
-
-  private rules: Maps<Rule[]> = {
-    valueObtained: [
-      { validator: this.checkNumber, trigger: ['change', 'blur'] },
-    ],
-    progress: [
-      {
-        required: true,
-        message: 'Không được bỏ trống',
-        trigger: ['blur', 'change'],
-      },
-      { validator: this.checkText, trigger: ['change', 'blur'] },
-    ],
-    problems: [
-      {
-        required: true,
-        message: 'Không được bỏ trống',
-        trigger: ['blur', 'change'],
-      },
-      { validator: this.checkText, trigger: ['change', 'blur'] },
-    ],
-    plans: [
-      {
-        required: true,
-        message: 'Không được bỏ trống',
-        trigger: ['blur', 'change'],
-      },
-      { validator: this.checkText, trigger: ['change', 'blur'] },
-    ],
-    nextCheckinDate: [
-      { validator: this.validateDate, trigger: ['change', 'blur'] },
-    ],
-  };
+  // private rules: Maps<Rule[]> = {
+  //   progress: [
+  //     {
+  //       required: true,
+  //       message: 'Không được bỏ trống',
+  //       trigger: ['blur', 'change'],
+  //     },
+  //   ],
+  //   problems: [
+  //     {
+  //       required: true,
+  //       message: 'Không được bỏ trống',
+  //       trigger: ['blur', 'change'],
+  //     },
+  //   ],
+  //   plans: [
+  //     {
+  //       required: true,
+  //       message: 'Không được bỏ trống',
+  //       trigger: ['blur', 'change'],
+  //     },
+  //   ],
+  //   nextCheckinDate: [
+  //     {
+  //       required: true,
+  //       message: 'Không được bỏ trống',
+  //       trigger: ['blur', 'change'],
+  //     },
+  //     // { validator: this.validateDate, trigger: ['change', 'blur'] },
+  //   ],
+  // };
 }
 </script>
 

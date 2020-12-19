@@ -1,7 +1,7 @@
 <template>
-  <div v-loading.fullscreen.lock="loading" class="createCheckinPage">
+  <div v-loading.fullscreen.lock="loading" class="-mb-5">
     <el-page-header title="Quay lại" @back="goBack" />
-    <h1 class="createCheckinPage__title">Tạo checkin</h1>
+    <h1 class="-title-1">Tạo checkin</h1>
     <div class="top-checkin box-wrap">
       <h2 class="-title-2">Chi tiết check-in</h2>
       <div v-if="checkin" class="top-checkin__content content">
@@ -103,9 +103,6 @@ export default class CheckinPage extends Vue {
 </script>
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
-.createCheckinPage {
-  padding-bottom: $unit-8;
-}
 .top-checkin {
   margin-bottom: $unit-8;
   background-color: $white;

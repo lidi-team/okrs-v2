@@ -104,7 +104,7 @@ import { TeamDTO } from '@/constants/app.interface';
 import TeamRepository from '@/repositories/TeamRepository';
 import { AdminTabsEn } from '@/constants/app.enum';
 
-import CommonPagination from '@/components/common/Pagination.vue';
+import CommonPagination from '@/components/Commons/CommonPagination.vue';
 
 @Component<ManageDepartment>({
   name: 'ManageDepartment',

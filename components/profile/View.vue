@@ -135,7 +135,7 @@ import { Maps, Rule } from '@/constants/app.type';
 import { GetterState, MutationState } from '@/constants/app.vuex';
 import { formatDateToDD } from '@/utils/dateParser';
 
-import CommonFlameUpload from '@/components/common/FlameUpload.vue';
+import CommonFlameUpload from '@/components/Commons/CommonUploadAvatart.vue';
 import S3Service from '@/repositories/S3AwsRepository';
 import RandomNumber from '@/utils/randomNumber';
 import { getUserRole } from '@/utils/filters';

@@ -211,7 +211,7 @@ import { customColors } from '../okrs/okrs.constant';
 import { statusCheckin } from '@/constants/app.constant';
 import { ROUTER_CHECKIN } from '@/components/Checkins/constants.enum';
 import CheckinRepository from '@/repositories/CheckinRepository';
-import Pagination from '@/components/common/Pagination.vue';
+import Pagination from '@/components/Commons/CommonPagination.vue';
 
 @Component<MyOkrsCheckin>({
   name: 'MyOkrsCheckin',

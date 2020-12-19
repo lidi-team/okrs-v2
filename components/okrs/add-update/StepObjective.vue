@@ -156,7 +156,7 @@ export default class CreateObjective extends Vue {
         type: 'string',
         required: true,
         message: 'Vui lòng nhập mục tiêu',
-        trigger: 'blur',
+        trigger: ['blur', 'change'],
       },
       max255Char,
     ],
@@ -165,7 +165,7 @@ export default class CreateObjective extends Vue {
         type: 'number',
         required: true,
         message: 'Vui lòng chọn OKRs cấp trên',
-        trigger: 'blur',
+        trigger: ['blur', 'change'],
       },
     ],
   };

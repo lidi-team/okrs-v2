@@ -58,7 +58,7 @@ import { ProjectStatus } from '@/constants/app.enum';
 import { ParamsProject } from '@/constants/DTO/common';
 import { pageLimit } from '@/constants/app.constant';
 
-import CommonPagination from '@/components/common/Pagination.vue';
+import CommonPagination from '@/components/Commons/CommonPagination.vue';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import HeadProject from '@/components/manage/project/HeadProject.vue';
 import ProjectAll from '@/components/manage/project/ProjectAll.vue';
