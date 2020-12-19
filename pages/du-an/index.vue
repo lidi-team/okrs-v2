@@ -22,12 +22,12 @@
       :label="convertLabel(tab)"
       :name="tab"
     ></el-tab-pane>
-    <head-project
-      :text.sync="paramsProject.text"
-      @name="paramsProject.text = $event"
-      @search="handleSearch($event)"
-    />
-    <div class="box-wrap">
+    <div class="box-wrap -mt-4">
+      <head-project
+        :text.sync="paramsProject.text"
+        @name="paramsProject.text = $event"
+        @search="handleSearch($event)"
+      />
       <component
         :is="tabComponent"
         :table-data="tableData"
@@ -222,6 +222,7 @@ export default class ManageProject extends Vue {
       justify-content: space-between;
 
       &--text {
+        color: $purple-primary-8;
         font-size: $text-2xl;
       }
     }
