@@ -55,8 +55,8 @@ import { Component, Vue } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { formatDateToDD, initNewDate } from '@/utils/dateParser';
 import { notificationConfig } from '@/constants/app.constant';
-import CheckinDetail from '@/components/checkin/CheckinDetail/CheckinDetailIndex.vue';
-import CheckinDetailChart from '@/components/checkin/CheckinDetail/CheckinDetailChart.vue';
+import CheckinDetail from '@/components/Checkins/CheckinDetail/CheckinDetailIndex.vue';
+import CheckinDetailChart from '@/components/Checkins/CheckinDetail/CheckinDetailChart.vue';
 
 @Component({
   head() {

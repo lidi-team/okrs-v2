@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box-wrap">
     <el-table
       v-loading="loading"
       empty-text="Không có dữ liệu"
@@ -109,7 +109,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { customColors } from '../okrs/okrs.constant';
-import { ROUTER_CHECKIN } from '@/components/checkin/constants.enum';
+import { ROUTER_CHECKIN } from '@/components/Checkins/constants.enum';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import Pagination from '@/components/common/Pagination.vue';
 

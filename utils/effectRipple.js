@@ -1,17 +1,9 @@
-/**
- * 点击波纹效果
- *
- * @param  {[event]} e        [description]
- * @param  {[Object]} arg_opts [description]
- * @return {[bollean]}          [description]
- */
-// eslint-disable-next-line camelcase
 export default function (e, arg_opts) {
   const opts = Object.assign(
     {
-      ele: e.target, // 波纹作用元素
+      ele: e.target,
       type: 'hit',
-      bgc: 'rgba(0, 0, 0, 0.15)', // 波纹颜色
+      bgc: 'rgba(0, 0, 0, 0.15)',
     },
     arg_opts,
   );
