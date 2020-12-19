@@ -61,7 +61,7 @@ import CheckinDetailChart from '@/components/Checkins/CheckinDetail/CheckinDetai
 @Component({
   head() {
     return {
-      title: 'Tạo Check-in',
+      title: 'Tạo cập nhật tiến độ',
     };
   },
   components: {

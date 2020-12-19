@@ -14,3 +14,7 @@ Vue.filter("verifyProgress", function(value: any): number {
     return 0;
   } else return Number(value)
 })
+
+Vue.filter("filterImage", function(value: string): string {
+  return value ? value : 'https://i.pinimg.com/originals/db/da/a0/dbdaa0afe2db00c70d5550494e8a5594.gif'
+})

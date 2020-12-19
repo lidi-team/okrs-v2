@@ -9,7 +9,7 @@
       >
         <div class="box-wrap">
           <div class="-border-header">
-            <p class="-title-2">{{ displayHeader('inferior') }}</p>
+            <h2 class="-title-2">{{ displayHeader('inferior') }}</h2>
           </div>
           <p
             v-if="!listWaitingFeedback.inferior.checkins.items.length"
@@ -29,13 +29,9 @@
                 viewDetailCheckin(item, listWaitingFeedback.inferior.type)
               "
             >
-              <el-avatar :size="30">
+              <el-avatar :size="40">
                 <img
-                  :src="
-                    item.objective.user.avatarUrl
-                      ? item.objective.user.avatarUrl
-                      : item.objective.user.gravatarUrl
-                  "
+                  :src="item.objective.user.avatarUrl | filterImage"
                   alt="avatar"
                 />
               </el-avatar>
@@ -80,7 +76,7 @@
       <el-col v-if="listWaitingFeedback.superior" :md="12" :lg="12">
         <div class="box-wrap">
           <div class="-border-header">
-            <p class="-title-2">{{ displayHeader('superior') }}</p>
+            <h2 class="-title-2">{{ displayHeader('superior') }}</h2>
           </div>
           <p
             v-if="!listWaitingFeedback.superior.checkins.items.length"
@@ -100,13 +96,9 @@
                 viewDetailCheckin(item, listWaitingFeedback.superior.type)
               "
             >
-              <el-avatar :size="30">
+              <el-avatar :size="40">
                 <img
-                  :src="
-                    item.objective.user.avatarUrl
-                      ? item.objective.user.avatarUrl
-                      : item.objective.user.gravatarUrl
-                  "
+                  :src="item.objective.user.avatarUrl | filterImage"
                   alt="avatar"
                 />
               </el-avatar>

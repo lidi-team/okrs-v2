@@ -4,7 +4,7 @@
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <div class="box-wrap">
           <div class="-display-flex -justify-content-between -border-header">
-            <p class="-title-2" style="padding-bottom: 20px">BXH theo chu kỳ</p>
+            <h2 class="-title-2" style="padding-bottom: 20px">BXH theo chu kỳ</h2>
             <el-select
               v-model="cycleId"
               filterable
@@ -63,9 +63,9 @@
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <div class="box-wrap">
           <div class="-border-header">
-            <p class="-title-2" style="padding-bottom: 20px">
+            <h2 class="-title-2" style="padding-bottom: 20px">
               BXH lũy kế
-            </p>
+            </h2>
           </div>
 
           <p v-if="!accumulatedRanking.length" class="history__col__empty">
@@ -83,7 +83,7 @@
               </div>
               <el-avatar :size="40">
                 <img
-                  :src="item.avatarUrl ? item.avatarUrl : item.gravatarURL"
+                  :src="item.avatarUrl | filterImage"
                   alt="avatar"
                 />
               </el-avatar>

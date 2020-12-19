@@ -33,9 +33,9 @@
             :value="user.id"
           >
             <div style="display: flex">
-              <el-avatar :size="25" style="align-self: center">
+              <el-avatar :size="40" style="align-self: center">
                 <img
-                  :src="user.avatarUrl ? user.avatarUrl : user.gravatarURL"
+                  :src="user.avatarUrl | filterImage"
                   alt="avatar"
                 />
               </el-avatar>

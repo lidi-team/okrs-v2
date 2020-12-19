@@ -33,7 +33,7 @@
               @crop-success="cropSuccess"
             />
             <el-avatar :size="120">
-              <img :src="avatarUrl" alt="avatar" />
+              <img :src="avatarUrl | filterImage" alt="avatar" />
             </el-avatar>
             <el-button
               :loading="loading"
