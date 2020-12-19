@@ -21,6 +21,10 @@ export default {
     height: {
       type: String,
       default: '300px'
+    },
+    checkinChart: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -32,6 +36,7 @@ export default {
     this.$nextTick(() => {
       this.initChart()
     })
+    console.log(this.checkinChart)
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -60,11 +65,7 @@ export default {
             roseType: 'radius',
             radius: [15, 95],
             center: ['50%', '38%'],
-            data: [
-              { value: 320, name: 'Đang chờ duyệt' },
-              { value: 240, name: 'Đang lưu tạm' },
-              { value: 149, name: 'Đã được review' },
-            ],
+            data: this.checkinChart,
             animationEasing: 'cubicInOut',
             animationDuration: 2600
           }

@@ -1,15 +1,6 @@
 <template>
   <div class="header">
-    <nuxt-link to="/">
-      <div class="header__logo">
-        <img
-          class="header__img"
-          src="@/assets/images/common/logoflame.png"
-          alt="logo"
-        />
-        <span class="header__brandname">OKRs V2</span>
-      </div>
-    </nuxt-link>
+    <img class="logo-company" src="@/assets/images/common/sidebar/logo-demo.gif" alt="logo">
     <div v-if="user" class="header__info side-right">
       <div class="side-right__list">
         <el-dropdown class="side-right__item item" trigger="click">
@@ -141,28 +132,18 @@ export default class Navbar extends Vue {
   justify-content: space-between;
   align-items: center;
   height: 45px;
-  padding: $unit-6 $unit-10 $unit-6 $unit-5;
-  background-color: $purple-primary-5;
+  padding: $unit-6 2rem;
+  border-bottom: 1px solid #E6E7EB;
+  border-top: 1px solid #E6E7EB;
+  background: white;
 
   @include breakpoint-down(phone) {
     padding: 0 $unit-4;
   }
+}
 
-  &__logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  &__img {
-    width: 24px;
-    height: 24px;
-  }
-  &__brandname {
-    font-weight: $font-weight-medium;
-    margin-left: $unit-2;
-    color: $white;
-    font-size: $text-sm;
-  }
+.logo-company {
+  height: 45px;
 }
 
 .side-right {
@@ -175,7 +156,7 @@ export default class Navbar extends Vue {
   &__item {
     .el-icon-message-solid {
       cursor: pointer;
-      color: $white;
+      color: $purple-primary-8;
     }
   }
 }
@@ -224,7 +205,7 @@ export default class Navbar extends Vue {
   &__info {
     span {
       display: block;
-      color: $white;
+      color: $purple-primary-8;
       margin-left: $unit-1;
     }
   }
@@ -240,7 +221,7 @@ export default class Navbar extends Vue {
 .info {
   &__name {
     font-size: $text-xs;
-    font-weight: $font-weight-base;
+    font-weight: bold
   }
   &__role {
     font-size: $text-xs;

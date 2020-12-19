@@ -1,22 +1,19 @@
 <template>
-  <div style="overflow: hidden; height: 100vh">
-    <common-navbar />
-    <div id="app">
-      <common-sidebar />
-      <div class="authenticated-screen__app">
-        <div class="authenticated-screen__nuxt">
-          <nuxt />
-        </div>
+  <div class="layout">
+    <common-sidebar />
+    <div class="layout__container">
+      <common-navbar />
+      <div class="layout__content">
+        <nuxt />
       </div>
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
-// components
-import CommonNavbar from '@/components/common/Navbar.vue';
-import CommonSidebar from '@/components/common/Sidebar.vue';
+import CommonNavbar from '@/components/Commons/CommonNavbarAuth.vue';
+import CommonSidebar from '@/components/Commons/CommonSidebar.vue';
 @Component<Layout>({
   name: 'Layout',
   middleware: 'isAuthenticated',
@@ -28,24 +25,19 @@ import CommonSidebar from '@/components/common/Sidebar.vue';
 export default class Layout extends Vue {}
 </script>
 
-<style lang="scss">
-@import '@/assets/scss/main.scss';
+<style lang="scss" scoped>
 $bg-gray-common: #f5f5f5;
-#app {
-  height: 100vh;
+.layout {
   overflow: hidden;
+  height: 100vh;
   display: flex;
-}
-.authenticated-screen {
-  &__app {
-    flex: 1;
-    overflow: auto;
+  &__container {
     width: 100%;
-    background: $bg-gray-common;
+    overflow: scroll;
   }
-  &__nuxt {
-    padding: $unit-10;
-    margin: 0 auto $unit-16 auto;
+  &__content {
+    padding: 2rem;
+    background: #f5f5f5;
   }
 }
 </style>

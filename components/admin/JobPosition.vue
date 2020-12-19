@@ -100,7 +100,7 @@ import { JobPositionDTO } from '@/constants/app.interface';
 import JobRepository from '@/repositories/JobRepository';
 import { AdminTabsEn } from '@/constants/app.enum';
 
-import CommonPagination from '@/components/common/Pagination.vue';
+import CommonPagination from '@/components/Commons/CommonPagination.vue';
 
 @Component<ManageJobPosition>({
   name: 'ManageJobPosition',

@@ -49,7 +49,7 @@ import EmployeeRepository from '@/repositories/EmployeeRepository';
 import TeamRepository from '@/repositories/TeamRepository';
 import { pageLimit } from '@/constants/app.constant';
 // components
-import CommonPagination from '@/components/common/Pagination.vue';
+import CommonPagination from '@/components/Commons/CommonPagination.vue';
 import HeadEmployee from '@/components/manage/employee/HeadEmployee.vue';
 @Component<ManageEmployee>({
   name: 'ManageEmployee',

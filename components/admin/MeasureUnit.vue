@@ -109,7 +109,7 @@ import { MeasureUnitDTO } from '@/constants/app.interface';
 import { AdminTabsEn } from '@/constants/app.enum';
 import MeasureUnitRepository from '@/repositories/MeasureRepository';
 
-import CommonPagination from '@/components/common/Pagination.vue';
+import CommonPagination from '@/components/Commons/CommonPagination.vue';
 
 @Component<ManageMeasureUnit>({
   name: 'ManageMeasureUnit',

@@ -56,7 +56,7 @@ import { SelectOptionDTO } from '@/constants/app.interface';
 import { GetterState, MutationState } from '@/constants/app.vuex';
 import CycleRepository from '@/repositories/CycleRepository';
 import CheckinRepository from '@/repositories/CheckinRepository';
-import CommonPagination from '@/components/common/Pagination.vue';
+import CommonPagination from '@/components/Commons/CommonPagination.vue';
 import ProjectRepository from '../../repositories/ProjectRepository';
 import {
   TAB_CHECKIN,

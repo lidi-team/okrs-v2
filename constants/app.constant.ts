@@ -1,11 +1,10 @@
 import { ElMessageBoxOptions } from 'element-ui/types/message-box';
-import { LinkMeta } from './app.interface';
 
 export const pageLimit = 10;
 
 export const notificationConfig = {
-  title: 'Trạng thái',
-  duration: 2000,
+  title: 'Thông báo',
+  duration: 2500,
 };
 
 export const statusCheckin = {

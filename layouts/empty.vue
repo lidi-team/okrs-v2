@@ -7,7 +7,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 // components
-import CommonNavbar from '@/components/common/Navbar.vue';
+import CommonNavbar from '@/components/Commons/CommonNavbarUnauth.vue';
 @Component<EmptyLayout>({
   name: 'EmptyLayout',
   components: {

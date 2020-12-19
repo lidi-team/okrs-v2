@@ -133,7 +133,7 @@ import {
   formatDateToYYYY,
 } from '@/utils/dateParser';
 
-import CommonPagination from '@/components/common/Pagination.vue';
+import CommonPagination from '@/components/Commons/CommonPagination.vue';
 
 @Component<ManageCycleOkrs>({
   name: 'ManageCycleOkrs',
