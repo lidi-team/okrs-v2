@@ -39,7 +39,7 @@
                   alt="avatar"
                 />
               </el-avatar>
-              <div class="cfr__left__content">
+              <div class="cfr__left__content -ml-3">
                 <p class="cfr__left__content--title">
                   {{ item.objective.title }}
                 </p>
@@ -47,13 +47,13 @@
                   <p class="cfr__left__content--description">
                     {{ item.objective.user.fullName }}
                   </p>
-                  <p>
+                  <p class="cfr__left__content--date">
                     {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}
                   </p>
                 </div>
               </div>
             </div>
-            <div class="cfr__right">
+            <div class="cfr__right -ml-3">
               <el-button
                 class="el-button el-button--purple el-button-medium"
                 @click="
@@ -110,7 +110,7 @@
                   alt="avatar"
                 />
               </el-avatar>
-              <div class="cfr__left__content">
+              <div class="cfr__left__content -ml-3">
                 <p class="cfr__left__content--title">
                   {{ item.objective.title }}
                 </p>
@@ -118,13 +118,13 @@
                   <p class="cfr__left__content--description">
                     {{ item.reviewer.fullName }}
                   </p>
-                  <p>
+                  <p class="cfr__left__content--date">
                     {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}
                   </p>
                 </div>
               </div>
             </div>
-            <div class="cfr__right">
+            <div class="cfr__right -ml-3">
               <el-button
                 class="el-button el-button--purple el-button-medium"
                 @click="
@@ -390,15 +390,23 @@ export default class Feedback extends Vue {
 
     &__content {
       flex: 1;
-      margin: 0 $unit-4;
 
       &--title {
         font-weight: bold;
         font-size: $unit-4;
-        @include truncate-oneline;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        display: -webkit-box;
       }
 
       &--description {
+        font-size: 0.875rem;
+        color: $neutral-primary-3;
+        line-height: 23px;
+        padding-right: 10px;
+      }
+      &--date {
         font-size: 0.875rem;
         color: $neutral-primary-3;
         line-height: 23px;
@@ -409,10 +417,6 @@ export default class Feedback extends Vue {
     .el-avatar {
       align-self: center;
     }
-  }
-
-  &__right {
-    align-self: center;
   }
 }
 </style>
