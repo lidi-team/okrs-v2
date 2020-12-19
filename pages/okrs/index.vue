@@ -8,6 +8,7 @@
         no-match-text="Không tìm thấy chu kỳ"
         filterable
         placeholder="Chọn chu kỳ"
+        loading-text="Đang tải chu kỳ"
         @change="handleSelectCycle(currentCycleId)"
       >
         <el-option
@@ -57,6 +58,7 @@
     </transition>
   </div>
 </template>
+
 <script lang="ts">
 import { mapGetters } from 'vuex';
 import { Component, Vue, Watch } from 'vue-property-decorator';
@@ -65,12 +67,10 @@ import {
   DispatchAction,
   GetterState,
 } from '@/constants/app.vuex';
-
 import ButtonCreateOkr from '@/components/okrs/common/Button.vue';
 import ItemOkrs from '@/components/okrs/ItemOkrs.vue';
 import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
 import AddOkrs from '@/components/okrs/add-update/index.vue';
-
 import OkrsRepository from '@/repositories/OkrsRepository';
 import CycleRepository from '@/repositories/CycleRepository';
 
@@ -112,7 +112,7 @@ export default class OKRsPage extends Vue {
   private listKrs: any[] = [];
   private cycles: any[] = [];
   private visibleDetailKrs: boolean = false;
-  private currentCycleId: string = '';
+  private currentCycleId: any = '';
 
   private openDrawer(keyResults: any) {
     this.listKrs = keyResults;
@@ -127,6 +127,15 @@ export default class OKRsPage extends Vue {
   @Watch('flag')
   private async changeReload(value) {
     await this.getDashBoardOkrs();
+  }
+
+  @Watch('loading')
+  private async changeLoding(value) {
+    if(value === true) {
+      this.currentCycleId = 'Đang tải...'
+    } else {
+      this.currentCycleId = this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
+    }
   }
 
   private async getCycles() {
