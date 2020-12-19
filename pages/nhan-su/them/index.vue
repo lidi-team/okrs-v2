@@ -23,7 +23,7 @@
         icon="el-icon-plus"
         :disabled="!hasData"
         @click="handleAddEmployee"
-        >Thêm
+      >Thêm
       </el-button>
       <el-table
         :data="tableData"
@@ -37,7 +37,7 @@
           label="Email"
           prop="email"
           align="center"
-          min-width="80"
+          min-width="100"
         >
           <template slot-scope="{ row }">
             <span>{{ row.email }}</span>
@@ -130,7 +130,6 @@ export default class CreateEmployee extends Vue {
   private tableData: Array<Object> = [];
   private tableHeader: Array<Object> = [];
   private departments: Array<any> = [];
-  private tabActive: string = 'excel';
   private hasData: boolean = false;
   private loading: boolean = false;
   private loadingForm: Boolean = false;
@@ -209,7 +208,6 @@ export default class CreateEmployee extends Vue {
   @Watch('tableData')
   private checkData() {
     this.hasData = this.tableData.length > 0;
-    console.log('this.hasData: ', this.hasData);
   }
 
   private beforeUpload(file) {
@@ -249,7 +247,8 @@ export default class CreateEmployee extends Vue {
     try {
       const departments = await TeamRepository.getMetaData();
       this.departments = departments.data;
-    } catch (error) {}
+    } catch (error) {
+    }
   }
 
   private getIdDepartment(name: string) {
@@ -262,10 +261,6 @@ export default class CreateEmployee extends Vue {
       return indexDepartment.id;
     }
     return result;
-  }
-
-  private handleClick(tab, event) {
-    this.tabActive = tab.name;
   }
 
   private async handleAddEmployee() {
@@ -284,11 +279,17 @@ export default class CreateEmployee extends Vue {
             dob: '',
           };
         } else {
+          this.createFalseReason(this.tableData, response.data.list);
         }
       }
     } catch (error) {
       console.log(error);
     }
+  }
+
+  private createFalseReason(tableData: Array<any>, responseData: Array<any>) {
+    console.log(tableData);
+    console.log(responseData);
   }
 
   private pickerOptions: any = {
