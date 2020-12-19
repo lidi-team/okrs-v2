@@ -23,7 +23,7 @@
         icon="el-icon-plus"
         :disabled="!hasData"
         @click="handleAddEmployee"
-      >Thêm
+        >Thêm
       </el-button>
       <el-table
         :data="tableData"
@@ -91,6 +91,16 @@
         >
           <template slot-scope="{ row }">
             <span>{{ row.department }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Trạng thái thêm"
+          prop="department"
+          align="center"
+          min-width="80"
+        >
+          <template slot-scope="{ row }">
+            <span>{{ row.reason }}</span>
           </template>
         </el-table-column>
         <!-- <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
@@ -247,8 +257,7 @@ export default class CreateEmployee extends Vue {
     try {
       const departments = await TeamRepository.getMetaData();
       this.departments = departments.data;
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   private getIdDepartment(name: string) {
@@ -279,7 +288,7 @@ export default class CreateEmployee extends Vue {
             dob: '',
           };
         } else {
-          this.createFalseReason(this.tableData, response.data.list);
+          this.tableData = this.createFalseReason(this.tableData, response.data.list);
         }
       }
     } catch (error) {
@@ -288,8 +297,15 @@ export default class CreateEmployee extends Vue {
   }
 
   private createFalseReason(tableData: Array<any>, responseData: Array<any>) {
-    console.log(tableData);
-    console.log(responseData);
+    return responseData.map((value) => {
+      const tableRowData = tableData.find(
+        (value1) => value1.email === value.email,
+      );
+      return {
+        ...tableRowData,
+        reason: value.reason,
+      };
+    });
   }
 
   private pickerOptions: any = {
