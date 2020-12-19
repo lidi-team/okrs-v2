@@ -4,12 +4,12 @@
       <el-input
         v-model="syncedText"
         class="header-project__input"
-        placeholder="Từ khoá tìm kiếm"
+        placeholder="Nhập tên dự án muốn tìm kiếm"
         prefix-icon="el-icon-search"
         @keyup.enter.native="handleSearch(syncedText)"
       />
       <el-button
-        class="el-button--white el-button--small el-button--search"
+        class="el-button--white el-button--small el-button--search -ml-2"
         @click="handleSearch(syncedText)"
         >Tìm kiếm</el-button
       >
@@ -18,7 +18,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Prop, Watch, PropSync } from 'vue-property-decorator';
-
 import { notificationConfig } from '@/constants/app.constant';
 
 @Component<Headproject>({
@@ -65,21 +64,6 @@ export default class Headproject extends Vue {
   }
   &__input {
     width: $unit-64;
-  }
-  .el-button {
-    &--search {
-      margin-left: $unit-3;
-      padding-left: $unit-8;
-      padding-right: $unit-8;
-    }
-    &--invite {
-      padding-top: $unit-3;
-      padding-bottom: $unit-3;
-      font-size: $text-sm;
-      @include breakpoint-down(phone) {
-        margin-top: $unit-2;
-      }
-    }
   }
   .dialog-invite {
     &__content {

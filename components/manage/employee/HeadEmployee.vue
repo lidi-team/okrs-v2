@@ -68,7 +68,7 @@ export default class HeadEmployee extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .header-employee {
   display: flex;
@@ -85,21 +85,6 @@ export default class HeadEmployee extends Vue {
   }
   &__input {
     width: $unit-64;
-  }
-  .el-button {
-    &--search {
-      margin-left: $unit-3;
-      padding-left: $unit-8;
-      padding-right: $unit-8;
-    }
-    &--invite {
-      padding-top: $unit-3;
-      padding-bottom: $unit-3;
-      font-size: $text-sm;
-      @include breakpoint-down(phone) {
-        margin-top: $unit-2;
-      }
-    }
   }
   .dialog-invite {
     &__content {

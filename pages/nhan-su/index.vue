@@ -1,7 +1,7 @@
 <template>
   <div class="manage-employee">
     <div class="manage-employee__title">
-      <h1 class="manage-employee__title--text">Quản lý nhân sự</h1>
+      <h1 class="-title-1">Quản lý nhân sự</h1>
       <el-button
         class="el-button--purple el-button--modal"
         @click="handleAddUsers"
@@ -180,9 +180,6 @@ export default class ManageEmployee extends Vue {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    &--text {
-      font-size: $text-2xl;
-    }
   }
   &__content {
     background-color: $white;
