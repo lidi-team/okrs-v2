@@ -1,6 +1,6 @@
 <template>
   <div class="project-detail">
-    <el-page-header title="Projects Dashboard" @back="goToProjectDashboard" />
+    <el-page-header title="Quay lại" @back="goToProjectDashboard" />
     <div v-if="!!projectData" class="box-wrap project-detail--top-action">
       <el-collapse v-model="activeNames">
         <el-collapse-item name="1">
@@ -57,7 +57,7 @@
         <p class="-title-2">Thành viên dự án</p>
         <div>
           <el-button
-            v-if="isProjectPm(user.projects)"
+            v-if="isProjectPm(user.projects, projectData.status)"
             class="el-button--purple el-button--invite"
             size="small"
             @click="handleShowAddMember"
@@ -106,7 +106,7 @@
             <span>{{ row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Email" min-width="160" align="center">
+        <el-table-column label="Email" min-width="200" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.email }}</span>
           </template>
@@ -162,10 +162,10 @@
           </template>
         </el-table-column>
         <el-table-column
-          v-if="isProjectPm(user.projects)"
+          v-if="isProjectPm(user.projects, projectData.status)"
           label="Thao tác"
           align="center"
-          min-width="230"
+          min-width="200"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{ row }">
@@ -225,6 +225,7 @@ import { confirmWarningConfig } from '@/constants/app.constant';
 import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
 import { formatDateToDD } from '@/utils/dateParser';
+import value from '*.png';
 
 @Component<ControlProject>({
   name: 'ControlProject',
@@ -267,6 +268,7 @@ export default class ControlProject extends Vue {
     pm: undefined,
     weight: 1,
   };
+
   private draftEditStaff: IProjectStaffState = {
     userId: 0,
     positionId: undefined,
@@ -326,7 +328,11 @@ export default class ControlProject extends Vue {
       this.managers = managers.data;
       this.originalProjects = originalProjects.data;
       this.departments = departments.data;
-      this.positions = positions.data;
+      console.log('positions.data: ', positions.data);
+      const memberPositions = positions.data
+        ? positions.data.filter((value) => value.id !== 1)
+        : [];
+      this.positions = memberPositions;
     } catch (e) {
       console.log(e);
     }
@@ -433,6 +439,8 @@ export default class ControlProject extends Vue {
   private handleEditRow(row: ProjectStaff) {
     row.edit = !row.edit;
     this.draftEditStaff.userId = row.id;
+    this.draftEditStaff.reviewerId = row.reviewerId;
+    this.draftEditStaff.positionId = row.position ? row.position : undefined;
   }
 
   private goToProjectDashboard() {
@@ -443,12 +451,11 @@ export default class ControlProject extends Vue {
     this.tabActive = tab.name;
   }
 
-  private isProjectPm(userProjects: any) {
+  private isProjectPm(userProjects: any, projectStatus: number | string) {
     const dataInProject = userProjects.find(
       (value) => value.id + '' === this.id,
     );
-    console.log('dataInProject: ', userProjects);
-    if (dataInProject) {
+    if (dataInProject && projectStatus) {
       return dataInProject.pm;
     } else {
       return false;
@@ -484,6 +491,7 @@ export default class ControlProject extends Vue {
     padding: 0 $unit-7;
     margin-top: $unit-7;
     &__title {
+      font-weight: bold;
       font-size: $text-xl;
       margin-right: $unit-4;
     }

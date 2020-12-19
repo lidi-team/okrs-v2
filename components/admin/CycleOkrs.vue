@@ -24,11 +24,18 @@
       </el-table-column>
       <el-table-column label="Thao tác" align="center">
         <template v-slot="{ row }">
-          <el-tooltip class="cycle-okrs__icon" content="Cập nhật" placement="top">
+          <el-tooltip
+            class="cycle-okrs__icon"
+            content="Cập nhật"
+            placement="top"
+          >
             <i
               class="el-icon-edit icon--info"
               @click="handleOpenDialogUpdate(row)"
             ></i>
+          </el-tooltip>
+          <el-tooltip class="cycle-okrs__icon" content="Xóa" placement="top">
+            <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -66,7 +73,7 @@
               <el-input
                 v-model="temporaryUpdateCycle.name"
                 placeholder="Nhập tên chu kỳ"
-                @keyup.enter.native="handleUpdate(temporaryUpdateCycle)"
+                @keyup.enter.native="handleUpdate()"
               />
             </el-form-item>
             <el-form-item
@@ -263,12 +270,7 @@ export default class ManageCycleOkrs extends Vue {
       ...confirmWarningConfig,
     }).then(async () => {
       try {
-        await CycleRepository.delete(row.id).then((res) => {
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'Xóa chu kỳ thành công',
-          });
-        });
+        await CycleRepository.delete(row.id).then((res) => {});
         this.reloadData();
       } catch (error) {}
     });

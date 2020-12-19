@@ -138,7 +138,7 @@ import { formatDateToDD } from '@/utils/dateParser';
 import CommonFlameUpload from '@/components/common/FlameUpload.vue';
 import S3Service from '@/repositories/S3AwsRepository';
 import RandomNumber from '@/utils/randomNumber';
-import { getUserRole } from '@/utils/filterUserRole';
+import { getUserRole } from '@/utils/filters';
 
 @Component<ViewProfile>({
   name: 'ViewProfile',
