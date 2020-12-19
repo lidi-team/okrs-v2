@@ -225,6 +225,7 @@ import { confirmWarningConfig } from '@/constants/app.constant';
 import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
 import { formatDateToDD } from '@/utils/dateParser';
+import value from '*.png';
 
 @Component<ControlProject>({
   name: 'ControlProject',
@@ -327,7 +328,11 @@ export default class ControlProject extends Vue {
       this.managers = managers.data;
       this.originalProjects = originalProjects.data;
       this.departments = departments.data;
-      this.positions = positions.data;
+      console.log('positions.data: ', positions.data);
+      const memberPositions = positions.data
+        ? positions.data.filter((value) => value.id !== 1)
+        : [];
+      this.positions = memberPositions;
     } catch (e) {
       console.log(e);
     }
