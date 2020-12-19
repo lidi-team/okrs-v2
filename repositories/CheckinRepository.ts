@@ -2,6 +2,7 @@ import { baseUrl } from './BaseRepository';
 
 export enum enpoint {
   checkin = 'checkin',
+  dashboard = 'checkin/dashboard',
   requestCheckin = 'checkin/checkin_request',
   inferiorCheckin = 'checkin/inferior',
   listObjectiveInferior = 'checkin/inferior-objective',
@@ -17,6 +18,10 @@ export default class CheckinRepository {
 
   public static getRequestCheckin(params: any) {
     return baseUrl.get(enpoint.requestCheckin, { params });
+  }
+
+  public static getDashboard(params: any) {
+    return baseUrl.get(enpoint.dashboard, { params });
   }
 
   public static getHistory(id: Number) {

@@ -6,17 +6,6 @@ export interface LinkMeta {
   href: string;
 }
 
-export interface LessonDTO {
-  id?: number;
-  index: number;
-  title: string;
-  content: string;
-}
-
-// export interface IEmployeeDepartment {
-//   id?: number;
-//   name?: string;
-// }
 export interface EmployeeDTO {
   id?: number;
   fullName: string;

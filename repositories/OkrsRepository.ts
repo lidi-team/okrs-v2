@@ -9,7 +9,7 @@ export const enpoint = {
 };
 export default class OkrsRepository {
   public static getListOkrsByCycleId(
-    cycleId: Number,
+    cycleId: string,
   ): Promise<AxiosResponse<any>> {
     return baseUrl.get(`${enpoint.listOkrByCycleId}?cycleId=${cycleId}`);
   }

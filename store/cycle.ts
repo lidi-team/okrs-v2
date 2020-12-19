@@ -8,7 +8,7 @@ export enum CycleMutation {
 
 export interface AuthState {
   cycles: any[];
-  cycleCurrent: Number;
+  cycleCurrent: Number | String;
   cycleTemp: any;
 }
 

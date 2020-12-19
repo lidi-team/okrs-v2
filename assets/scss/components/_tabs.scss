@@ -1,3 +1,4 @@
 .el-tabs__content {
-  @include box-middle;
+  background: none;
+  padding: 15px;
 }

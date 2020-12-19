@@ -48,20 +48,21 @@
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-import Inferior from '@/components/checkin/CheckinInferior.vue';
-import RequestCheckin from '@/components/checkin/CheckinRequest.vue';
-import MyCheckin from '@/components/checkin/CheckinMyCheckin.vue';
+import Inferior from '@/components/Checkins/CheckinInferior.vue';
+import RequestCheckin from '@/components/Checkins/CheckinRequest.vue';
+import MyCheckin from '@/components/Checkins/CheckinMyCheckin.vue';
 import { notificationConfig, pageLimit } from '@/constants/app.constant';
-import {
-  TAB_CHECKIN,
-  ROUTER_CHECKIN,
-} from '@/components/checkin/constants.enum';
 import { SelectOptionDTO } from '@/constants/app.interface';
 import { GetterState, MutationState } from '@/constants/app.vuex';
 import CycleRepository from '@/repositories/CycleRepository';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import CommonPagination from '@/components/common/Pagination.vue';
 import ProjectRepository from '../../repositories/ProjectRepository';
+import {
+  TAB_CHECKIN,
+  ROUTER_CHECKIN,
+} from '@/components/Checkins/constants.enum';
+
 @Component<CheckinPage>({
   components: {
     CommonPagination,

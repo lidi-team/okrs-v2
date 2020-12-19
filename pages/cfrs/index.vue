@@ -46,16 +46,13 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
 import Feedback from '@/components/cfrs/feedback/index.vue';
 import History from '@/components/cfrs/history/index.vue';
 import Rank from '@/components/cfrs/rank/index.vue';
-
 import { TabCfr, TabCfrEng } from '@/constants/app.enum';
 import { ParamsCFR } from '@/constants/DTO/common';
 import { pageLimit } from '@/constants/app.constant';
 import { GetterState, MutationState } from '@/constants/app.vuex';
-// components
 import CfrsNavbar from '@/components/cfrs/Navbar.vue';
 import CfrsRecognition from '@/components/cfrs/recognition/index.vue';
 import { mapGetters } from 'vuex';
@@ -107,14 +104,6 @@ export default class CFRs extends Vue {
       : this.$route.query.tab === 'history'
       ? TabCfr.History
       : TabCfr.Rank;
-
-  // private displayButton(): Boolean {
-  //   return (
-  //     this.$store.state.auth.user.roles.includes('ROLE_ADMIN') ||
-  //     this.$store.state.auth.user.roles.includes('ROLE_ADMIN_HR') ||
-  //     this.$store.state.auth.user.roles.includes('ROLE_PM')
-  //   );
-  // }
 
   private get currentTabEng(): String {
     return this.$route.query.tab === 'feedback' ||

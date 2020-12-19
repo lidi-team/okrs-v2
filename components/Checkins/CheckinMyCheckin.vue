@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box-wrap">
     <div class="my-okrs">
       <el-table
         v-loading="loading"
@@ -209,7 +209,7 @@ import { mapGetters } from 'vuex';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { customColors } from '../okrs/okrs.constant';
 import { statusCheckin } from '@/constants/app.constant';
-import { ROUTER_CHECKIN } from '@/components/checkin/constants.enum';
+import { ROUTER_CHECKIN } from '@/components/Checkins/constants.enum';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import Pagination from '@/components/common/Pagination.vue';
 

@@ -8,16 +8,16 @@
       align="center"
     >
       <nuxt-link
-        :to="`/?cycleId=${this.$store.state.cycle.cycleCurrent}`"
+        to="/"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isHome }]"
       >
         <div class="sidebar__link__tab">
           <Dashboard class="sidebar__link__tab__icon" />
-          <span class="hidden-tablet">Dashboard</span>
+          <span class="hidden-tablet">Trang chủ</span>
         </div>
       </nuxt-link>
       <nuxt-link
-        :to="`/checkin?tab=1&cycleId=${this.$store.state.cycle.cycleCurrent}&page=1&projectId=0`"
+        to="/checkin"
         :class="[
           'sidebar__link',
           { 'nuxt-link-exact-active': isCheckinActive },
@@ -30,7 +30,7 @@
         </div>
       </nuxt-link>
       <nuxt-link
-        :to="`/okrs?cycleId=${this.$store.state.cycle.cycleCurrent}`"
+        to="/okrs"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isOkrsActive }]"
       >
         <div class="sidebar__link__tab">
@@ -127,6 +127,7 @@ import { GetterState } from '@/constants/app.vuex';
   computed: {
     ...mapGetters({
       user: GetterState.USER,
+      cycleCurrent: GetterState.CYCLE_CURRENT,
     }),
   },
 })

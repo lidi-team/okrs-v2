@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="box-wrap">
     <el-table
       v-loading="loading"
       :data="checkins"
