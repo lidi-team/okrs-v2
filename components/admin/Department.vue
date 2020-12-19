@@ -28,7 +28,7 @@
       </el-table-column>
     </el-table>
     <common-pagination
-      class="pagination-bottom"
+      class="-display-flex -justify-content-center -mt-4"
       :total="total"
       :page.sync="syncPage"
       :limit.sync="syncLimit"
@@ -222,8 +222,5 @@ export default class ManageDepartment extends Vue {
     cursor: pointer;
     margin: 0 $unit-1;
   }
-}
-.pagination-bottom {
-  margin-top: 2rem;
 }
 </style>
