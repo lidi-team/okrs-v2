@@ -15,8 +15,8 @@
     >
       Thả tệp excel ở đây hoặc
       <el-button
+        class="el-button el-button--purple -ml-3"
         :loading="loading"
-        style="margin-left: 16px"
         size="mini"
         type="primary"
         @click="handleUpload"
