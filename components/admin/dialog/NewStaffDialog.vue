@@ -174,10 +174,10 @@ export default class StaffDialog extends Vue {
             const response = await EmployeeRepository.create({
               users: [this.employee],
             });
-            console.log(response);
             if (response) {
               this.clearForm();
               this.loadingForm = false;
+              this.syncStaffDialog = false;
             }
           } catch (error) {
             this.loadingForm = false;

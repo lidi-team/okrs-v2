@@ -197,7 +197,6 @@ export default class ViewProfile extends Vue {
       .replace('data:image/png;base64,', '')
       .replace('data:image/jpeg;base64,', '');
     const userEmail = this.$store.state.auth.user.email;
-    console.log('userEmail: ', userEmail);
     try {
       this.loading = true;
       const data: any = await s3Service.uploadImage({
@@ -213,9 +212,6 @@ export default class ViewProfile extends Vue {
             MutationState.SET_AVATAR,
             endpointLink + '?rnd=' + RandomNumber(),
           );
-          // this.$store.commit(MutationState.SET_AVATAR, '');
-          // setTimeout(() => {
-          // }, 500);
           this.avatarUrl = imgDataUrl;
           this.loading = false;
         }
@@ -225,7 +221,7 @@ export default class ViewProfile extends Vue {
       this.show = true;
       this.$notify({
         title: 'Trạng thái',
-        message: 'Có lỗi sảy ra',
+        message: 'Có lỗi xảy ra',
         type: 'error',
         duration: 2000,
       });
