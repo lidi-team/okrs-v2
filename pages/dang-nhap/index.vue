@@ -1,20 +1,18 @@
 <template>
-  <el-row class="login-page">
-    <el-col :xs="24" :sm="24" :md="8" :lg="8" class="login-page__image">
+  <div class="-display-flex -justify-content-center -align-items-center -h-100vh">
+    <div class="-align-items-center">
       <img src="@/assets/images/account/tiny-login.png" alt="login image" />
-    </el-col>
-    <el-col :xs="24" :sm="24" :md="7" :lg="7">
+    </div>
+    <div class="-align-items-center">
       <account-login />
-    </el-col>
-  </el-row>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
 import AccountLogin from '@/components/account/Login.vue';
 @Component<LoginPage>({
-  name: 'LoginPage',
   components: {
     AccountLogin,
   },
@@ -28,13 +26,3 @@ import AccountLogin from '@/components/account/Login.vue';
 })
 export default class LoginPage extends Vue {}
 </script>
-<style lang="scss" scoped>
-@import '@/assets/scss/main.scss';
-.login-page {
-  @include account-layout;
-  @include breakpoint-down('phone') {
-    padding-top: 0;
-    flex-direction: column;
-  }
-}
-</style>

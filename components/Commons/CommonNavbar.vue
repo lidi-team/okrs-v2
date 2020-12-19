@@ -1,6 +1,9 @@
 <template>
   <div class="header">
-    <img class="logo-company" src="@/assets/images/common/sidebar/logo-demo.gif" alt="logo">
+    <div class="-display-flex -justify-content-center -align-items-center">
+      <img class="logo-company" src="@/assets/images/common/sidebar/logo-demo.gif" alt="logo">
+      <p class="header__company">Lidi company</p>
+    </div>
     <div v-if="user" class="header__info side-right">
       <div class="side-right__list">
         <el-dropdown class="side-right__item item" trigger="click">
@@ -136,6 +139,14 @@ export default class Navbar extends Vue {
   border-bottom: 1px solid #E6E7EB;
   border-top: 1px solid #E6E7EB;
   background: white;
+
+  &__company {
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    margin-top: 5px;
+    color: #831843;
+  }
 
   @include breakpoint-down(phone) {
     padding: 0 $unit-4;

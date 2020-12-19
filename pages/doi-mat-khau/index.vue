@@ -42,7 +42,6 @@ export default class ChangePasswordPage extends Vue {}
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .change-password-page {
-  @include account-layout;
   @include breakpoint-down(phone) {
     flex-direction: column;
     padding: 0;

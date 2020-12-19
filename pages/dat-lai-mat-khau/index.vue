@@ -58,7 +58,6 @@ export default class ResetPasswordPage extends Vue {}
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .reset-password-page {
-  @include account-layout;
   @include breakpoint-down(phone) {
     flex-direction: column;
     padding-top: 0;
