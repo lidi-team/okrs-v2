@@ -27,9 +27,9 @@
       >
         <template v-slot="{ item }">
           <div class="navbar-history__search">
-            <el-avatar :size="30">
+            <el-avatar :size="40">
               <img
-                :src="item.avatarURL ? item.avatarURL : item.gravatarURL"
+                :src="item.avatarURL | filterImage"
                 alt="avatar"
               />
             </el-avatar>

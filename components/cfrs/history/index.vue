@@ -4,7 +4,7 @@
       <el-col :md="8" :lg="8">
         <div class="item-okrs box-wrap">
           <div class="-border-header">
-            <p class="-title-2">CFRs {{ displayNameCfrs }} gửi đi</p>
+            <h2 class="-title-2">CFRs {{ displayNameCfrs }} gửi đi</h2>
           </div>
           <div class="history__col--items">
             <div
@@ -20,13 +20,9 @@
                     <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
                   </div>
                   <div class="icon__avatar">
-                    <el-avatar :size="30">
+                    <el-avatar :size="40">
                       <img
-                        :src="
-                          item.receiver.avatarUrl
-                            ? item.receiver.avatarUrl
-                            : item.receiver.gravatarUrl
-                        "
+                        :src="item.receiver.avatarUrl | filterImage"
                         alt="avatar"
                       />
                     </el-avatar>
@@ -67,7 +63,7 @@
       <el-col :md="8" :lg="8">
         <div class="item-okrs box-wrap">
           <div class="-border-header">
-            <p class="-title-2">CFRs {{ displayNameCfrs }} nhận được</p>
+            <h2 class="-title-2">CFRs {{ displayNameCfrs }} nhận được</h2>
           </div>
           <div class="history__col--items">
             <div
@@ -82,13 +78,9 @@
                     <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
                   </div>
                   <div class="icon__avatar">
-                    <el-avatar :size="30">
+                    <el-avatar :size="40">
                       <img
-                        :src="
-                          item.sender.avatarUrl
-                            ? item.sender.avatarUrl
-                            : item.sender.gravatarUrl
-                        "
+                        :src="item.sender.avatarUrl | filterImage"
                         alt="avatar"
                       />
                     </el-avatar>
@@ -127,7 +119,7 @@
       <el-col :md="8" :lg="8">
         <div class="item-okrs box-wrap">
           <div class="-border-header">
-            <p class="-title-2">CFRs toàn công ty</p>
+            <h2 class="-title-2">CFRs toàn công ty</h2>
           </div>
           <div class="history__col--items">
             <div
@@ -142,13 +134,9 @@
                     <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
                   </div>
                   <div class="icon__avatar">
-                    <el-avatar :size="30">
+                    <el-avatar :size="40">
                       <img
-                        :src="
-                          item.receiver.avatarUrl
-                            ? item.receiver.avatarUrl
-                            : item.receiver.gravatarUrl
-                        "
+                        :src="item.receiver.avatarUrl | filterImage"
                         alt="avatar"
                       />
                     </el-avatar>
