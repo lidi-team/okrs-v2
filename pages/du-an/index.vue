@@ -1,17 +1,20 @@
 <template>
   <div class="manage-project">
-    <div class="manage-project__top">
-      <div class="manage-project__top__title">
-        <h1 class="manage-project__top__title--text">Quản lý dự án</h1>
-      </div>
-      <div class="manage-project__top__right">
+    <div class="-display-flex -justify-content-between">
+      <h1 class="-title-1">Quản lý dự án</h1>
+      <div class="-display-flex">
+        <head-project
+          :text.sync="paramsProject.text"
+          @name="paramsProject.text = $event"
+          @search="handleSearch($event)"
+        />
         <el-button
           v-if="user.roles.includes('ROLE_ADMIN')"
-          class="el-button--purple el-button--invite"
+          class="el-button--purple el-button--invite -ml-2"
           icon="el-icon-plus"
           @click="addNew"
         >
-          Thêm mới
+          Thêm dự án
         </el-button>
       </div>
     </div>
@@ -22,12 +25,7 @@
       :label="convertLabel(tab)"
       :name="tab"
     ></el-tab-pane>
-    <div class="box-wrap -mt-4">
-      <head-project
-        :text.sync="paramsProject.text"
-        @name="paramsProject.text = $event"
-        @search="handleSearch($event)"
-      />
+    <div>
       <component
         :is="tabComponent"
         :table-data="tableData"
@@ -57,7 +55,6 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { ProjectStatus } from '@/constants/app.enum';
 import { ParamsProject } from '@/constants/DTO/common';
 import { pageLimit } from '@/constants/app.constant';
-
 import CommonPagination from '@/components/Commons/CommonPagination.vue';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import HeadProject from '@/components/manage/project/HeadProject.vue';
@@ -68,7 +65,6 @@ import { GetterState } from '@/constants/app.vuex';
 
 @Component<ManageProject>({
   name: 'ManageProject',
-  // middleware: 'employeesPage',
   components: {
     ProjectDialog,
     CommonPagination,
@@ -138,9 +134,6 @@ export default class ManageProject extends Vue {
   private handleClick(currentTab: string) {
     this.paramsProject.text = '';
     this.paramsProject.page = 1;
-    // this.paramsUser.status = currentTab === UserStatus.Active ? 1 : currentTab === UserStatus.Pending ? 0 : -1;
-    // this.$router.push(`?tab=${currentTab === UserStatus.Active ? 'active' : currentTab === UserStatus.Pending ? 'pending' : 'deactive'}`);
-    // this.paramsUser.status = currentTab === UserStatus.Active ? 1 : currentTab === UserStatus.Pending ? 0 : -1;
     this.$router.push(`?tab=${ProjectStatus.All}`);
   }
 
@@ -200,32 +193,6 @@ export default class ManageProject extends Vue {
 
   &__pagination {
     margin-top: $unit-8;
-  }
-
-  &__top {
-    display: flex;
-    justify-content: space-between;
-
-    &__left {
-      &--input {
-        width: calc(100vw * 5 / 24);
-      }
-    }
-
-    &__right {
-      height: 100%;
-    }
-
-    &__title {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
-
-      &--text {
-        color: $purple-primary-8;
-        font-size: $text-2xl;
-      }
-    }
   }
 }
 </style>

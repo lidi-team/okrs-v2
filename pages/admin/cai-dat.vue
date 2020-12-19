@@ -2,19 +2,23 @@
   <div>
     <admin-slot class="admin">
       <template #top>
-        <div justify="space-between" class="admin__top">
-          <div class="admin__top__left">
+        <div class="admin__top">
+          <h1 class="-title-1">Cài đặt công ty</h1>
+          <div>
             <el-input
               v-model="textSearch"
-              class="admin__top__left--input"
+              class="admin__top__input"
               :placeholder="topChange.textPlaceholder"
               prefix-icon="el-icon-search"
-              @keyup.enter.native="handleSearch(textSearch)"
+              @keyup.enter.native="handleSearch"
             />
-          </div>
-          <div class="admin__top__right">
             <el-button
-              class="el-button--purple el-button--invite"
+              class="el-button--white el-button--search -ml-2"
+              @click="handleSearch"
+              >Tìm kiếm</el-button
+            >
+            <el-button
+              class="el-button--purple el-button--invite -ml-2"
               icon="el-icon-plus"
               @click="addNew"
             >
@@ -146,13 +150,13 @@ export default class SettingCompanyPage extends Vue {
     }
   }
 
-  private handleSearch(textSearch: string) {
+  private handleSearch() {
     this.adminParams.page = 1;
-    this.adminParams.text = textSearch;
+    this.adminParams.text = this.textSearch;
     if (!this.$route.query.tab) {
-      this.$router.push(`?tab=quan-ly-chu-ky&text=${textSearch}`);
+      this.$router.push(`?tab=quan-ly-chu-ky&text=${this.textSearch}`);
     } else {
-      this.$router.push(`?tab=${this.$route.query.tab}&text=${textSearch}`);
+      this.$router.push(`?tab=${this.$route.query.tab}&text=${this.textSearch}`);
     }
   }
 
@@ -280,27 +284,16 @@ export default class SettingCompanyPage extends Vue {
   }
 }
 </script>
-<style lang="ts" scoped></style>
+
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .admin {
   &__top {
     display: flex;
     justify-content: space-between;
-    &__left {
-      &--input {
-        width: calc(100vw * 5 / 24);
-      }
+    &__input {
+      width: $unit-64;
     }
-    &__right {
-      height: 100%;
-    }
-  }
-  &__tab {
-    margin: $unit-8 0;
-  }
-  .el-button {
-    height: 100%;
   }
 }
 </style>

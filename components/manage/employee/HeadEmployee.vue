@@ -4,36 +4,16 @@
       <el-input
         v-model="syncedText"
         class="header-employee__input"
-        placeholder="Từ khoá tìm kiếm"
+        placeholder="Nhập tên nhân viên muốn tìm kiếm"
         prefix-icon="el-icon-search"
         @keyup.enter.native="handleSearch(syncedText)"
       />
       <el-button
-        class="el-button--white el-button--small el-button--search"
+        class="el-button--white el-button--small el-button--search -ml-2"
         @click="handleSearch(syncedText)"
         >Tìm kiếm</el-button
       >
     </div>
-    <!-- <div class="header-employee__right">
-      <el-button class="el-button--purple el-button--small el-button--invite" icon="el-icon-plus" @click="showInviteDialog">Mời thành viên</el-button>
-    </div> -->
-    <!-- dialog invite -->
-    <!-- <el-dialog class="dialog-invite" title="Thêm thành viên" :visible.sync="showInvite">
-      <el-row :gutter="10" class="dialog-invite__content content">
-        <el-col :xs="24" :md="4">
-          <span class="content__name">Đường dẫn</span>
-        </el-col>
-        <el-col :xs="24" :md="16">
-          <el-input :value="linkInvite" :readonly="true" autocomplete="off" />
-        </el-col>
-        <el-col :xs="24" :md="4">
-          <el-button class="el-button--white el-button--small el-button--copy" icon="el-icon-copy-document" @click="doCopy">Sao chép</el-button>
-        </el-col>
-      </el-row>
-      <span slot="footer" class="dialog-footer">
-        <el-button class="el-button--purple el-button--modal" @click="showInvite = false">Xong</el-button>
-      </span>
-    </el-dialog> -->
   </div>
 </template>
 <script lang="ts">
@@ -68,7 +48,7 @@ export default class HeadEmployee extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .header-employee {
   display: flex;
@@ -85,21 +65,6 @@ export default class HeadEmployee extends Vue {
   }
   &__input {
     width: $unit-64;
-  }
-  .el-button {
-    &--search {
-      margin-left: $unit-3;
-      padding-left: $unit-8;
-      padding-right: $unit-8;
-    }
-    &--invite {
-      padding-top: $unit-3;
-      padding-bottom: $unit-3;
-      font-size: $text-sm;
-      @include breakpoint-down(phone) {
-        margin-top: $unit-2;
-      }
-    }
   }
   .dialog-invite {
     &__content {

@@ -60,8 +60,7 @@
       >
         <div class="sidebar__link__tab">
           <Setting class="sidebar__link__tab__icon" />
-          <p class="hidden-tablet">Cài đặt</p>
-          <p class="hidden-tablet">công ty</p>
+          <p class="hidden-tablet">Cài đặt công ty</p>
         </div>
       </nuxt-link>
       <nuxt-link
