@@ -19,3 +19,17 @@ export function filterUserRole(userRoles: String[]) {
     return rolesName.staff;
   }
 }
+
+export function getUserRole(userRole: string) {
+  if (userRole === 'ROLE_DIRECTOR') {
+    return rolesName.director;
+  } else if (userRole === 'ROLE_ADMIN') {
+    return rolesName.admin;
+  } else if (userRole === 'ROLE_ADMIN_HR') {
+    return rolesName.hr;
+  } else if (userRole === 'ROLE_PM') {
+    return rolesName.pm;
+  } else {
+    return rolesName.staff;
+  }
+}

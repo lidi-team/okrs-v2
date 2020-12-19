@@ -135,7 +135,7 @@ export default class OKRsPage extends Vue {
   }
 
   private async getDashBoardOkrs() {
-    this.loading = true
+    this.loading = true;
     const { data } = await OkrsRepository.getListOkrsByCycleId(
       this.$route.query.cycleId
         ? Number(this.$route.query.cycleId)

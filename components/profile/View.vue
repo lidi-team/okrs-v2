@@ -64,20 +64,21 @@
                       prop="fullName"
                       label="Họ và tên"
                     >
-                      <el-input
-                        v-model="profileForm.fullName"
-                        placeholder="Nhập vào họ và tên"
-                      ></el-input>
+                      <span>{{ profileForm.fullName }}</span>
                     </el-form-item>
                   </el-col>
                   <el-col :sm="24" :md="12">
                     <el-form-item prop="gender" label="Giới tính">
-                      <el-radio v-model="profileForm.gender" :label="1"
-                        >Nam
-                      </el-radio>
-                      <el-radio v-model="profileForm.gender" :label="0"
-                        >Nữ
-                      </el-radio>
+                      <span>
+                        <i
+                          :class="
+                            profileForm.gender
+                              ? 'el-icon-male'
+                              : 'el-icon-female'
+                          "
+                        />
+                        {{ profileForm.gender ? 'Nam' : 'Nữ' }}
+                      </span>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -85,28 +86,13 @@
               <div class="info__row">
                 <el-row class="info__row--custom" :gutter="20">
                   <el-col :sm="24" :md="12">
-                    <el-form-item
-                      prop="email"
-                      label="Email"
-                      class="info-attribute__label"
-                    >
-                      <el-input
-                        v-model="profileForm.email"
-                        :disabled="true"
-                        placeholder="Nhập email"
-                      ></el-input>
+                    <el-form-item label="Email">
+                      <span>{{ profileForm.email }}</span>
                     </el-form-item>
                   </el-col>
                   <el-col :sm="24" :md="12">
-                    <el-form-item prop="dateOfBirth" label="Ngày sinh">
-                      <el-date-picker
-                        v-model="profileForm.dateOfBirth"
-                        format="dd/MM/yyyy"
-                        value-format="dd/MM/yyyy"
-                        :picker-options="pickerOptions"
-                        type="date"
-                        placeholder="Chọn ngày sinh"
-                      ></el-date-picker>
+                    <el-form-item label="Ngày sinh">
+                      {{ profileForm.dateOfBirth }}
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -116,20 +102,16 @@
                 <el-row class="info__row--custom" :gutter="20">
                   <el-col :sm="24" :md="12">
                     <el-form-item prop="department" label="Phòng ban">
-                      <el-input
-                        v-model="profileForm.department"
-                        disabled
-                        placeholder="Hiển thị phòng ban"
-                      ></el-input>
+                      <el-tag>{{ profileForm.department.name }}</el-tag>
                     </el-form-item>
                   </el-col>
                   <el-col :sm="24" :md="12">
-                    <el-form-item prop="position" label="Vị trí">
-                      <el-input
-                        v-model="profileForm.position"
-                        disabled
-                        placeholder="Hiển thị vị trí"
-                      ></el-input>
+                    <el-form-item prop="position" label="Vai trò">
+                      <div v-bind:key="role" v-for="role in profileForm.roles">
+                        <el-tag>
+                          {{ getRole(role) }}
+                        </el-tag>
+                      </div>
                     </el-form-item>
                   </el-col>
                 </el-row>
@@ -156,6 +138,7 @@ import { formatDateToDD } from '@/utils/dateParser';
 import CommonFlameUpload from '@/components/common/FlameUpload.vue';
 import S3Service from '@/repositories/S3AwsRepository';
 import RandomNumber from '@/utils/randomNumber';
+import { getUserRole } from '@/utils/filterUserRole';
 
 @Component<ViewProfile>({
   name: 'ViewProfile',
@@ -251,7 +234,7 @@ export default class ViewProfile extends Vue {
   }
 
   private profileForm: any = {
-    role: '',
+    roles: [],
     fullName: '',
     email: '',
     gender: true,
@@ -271,13 +254,17 @@ export default class ViewProfile extends Vue {
         email: temp.data.email,
         gender: temp.data.gender,
         dateOfBirth: temp.data.dob ? formatDateToDD(temp.data.dob) : '',
-        department: '',
-        position: temp.data.roles[0],
+        department: temp.data.department,
+        roles: temp.data.roles,
       };
       this.loadingProfile = false;
     } catch (error) {
       this.loadingProfile = false;
     }
+  }
+
+  private getRole(userRole: string) {
+    return getUserRole(userRole);
   }
 }
 </script>
