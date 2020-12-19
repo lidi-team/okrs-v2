@@ -146,9 +146,7 @@ export default class SideBar extends Vue {
   }
 
   private get isOkrsActive() {
-    return !!this.$route.path.startsWith(
-      `/okrs?cycleId=${this.$store.state.cycle.cycleCurrent}`,
-    );
+    return !!this.$route.path.startsWith('/okrs');
   }
 
   private get isSettingCompanyActive() {
