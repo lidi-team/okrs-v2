@@ -1,12 +1,13 @@
 <template>
   <div class="wrap-sidebar">
-    <el-row
+    <div
       v-if="user"
       class="sidebar"
       type="flex"
-      justify="start"
-      align="center"
     >
+      <div>
+        
+      </div>
       <nuxt-link
         to="/"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isHome }]"
@@ -25,8 +26,7 @@
       >
         <div class="sidebar__link__tab">
           <Checkin class="sidebar__link__tab__icon" />
-          <span class="hidden-tablet">Cập nhật</span>
-          <span class="hidden-tablet">Tiến độ</span>
+          <span class="hidden-tablet">Cập nhật tiến độ</span>
         </div>
       </nuxt-link>
       <nuxt-link
@@ -44,8 +44,7 @@
       >
         <div class="sidebar__link__tab">
           <CFRs class="sidebar__link__tab__icon" />
-          <p class="hidden-tablet">Ghi nhận &</p>
-          <p class="hidden-tablet">Phản hồi</p>
+          <p class="hidden-tablet">Ghi nhận & Phản hồi</p>
         </div>
       </nuxt-link>
       <nuxt-link
@@ -79,8 +78,7 @@
       >
         <div class="sidebar__link__tab">
           <project-manage class="sidebar__link__tab__icon" />
-          <p class="hidden-tablet">Quản lý</p>
-          <p class="hidden-tablet">dự án</p>
+          <p class="hidden-tablet">Quản lý dự án</p>
         </div>
       </nuxt-link>
       <nuxt-link
@@ -97,10 +95,10 @@
           <span>Quản lý nhân sự</span>
         </div>
       </nuxt-link>
-      <!-- End Role Permission action -->
-    </el-row>
+    </div>
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
@@ -109,12 +107,11 @@ import CFRs from '@/assets/images/common/sidebar/cfrs.svg';
 import Checkin from '@/assets/images/common/sidebar/checkin.svg';
 import OKRs from '@/assets/images/common/sidebar/okrs.svg';
 import Setting from '@/assets/images/common/sidebar/setting.svg';
-import HumanResources from '@/assets/images/common/sidebar/nhan-su.svg';
+import HumanResources from '@/assets/images/common/sidebar/account.svg';
 import ProjectManage from '@/assets/images/common/sidebar/project.svg';
 import { GetterState } from '@/constants/app.vuex';
 
 @Component<SideBar>({
-  name: 'SideBar',
   components: {
     Dashboard,
     CFRs,
@@ -177,18 +174,14 @@ export default class SideBar extends Vue {
   transition: all 0.5s;
   position: relative;
   z-index: 99;
-  width: 160px;
-  background-color: $white;
+  width: 130px;
+  background-color: #6b062e;
   border-right: 1px $purple-primary-7 solid;
-  @include breakpoint-down(tablet) {
-    width: 60px;
-  }
 
   .btn-group {
     position: absolute;
     left: 100%;
     top: 0;
-    -webkit-transform: translateX(10px);
     transform: translateX(10px);
   }
 
@@ -201,7 +194,16 @@ export default class SideBar extends Vue {
     box-shadow: $box-shadow-default;
 
     .nuxt-link-exact-active {
-      @include sidebar-hover;
+      transform: scale(1.005);
+      box-shadow: $box-shadow-default;
+      border-radius: 10px;
+      color: white;
+      g {
+        fill-opacity: 1;
+      }
+      path {
+        fill-opacity: 1;
+      }
     }
 
     &__link {
@@ -217,7 +219,16 @@ export default class SideBar extends Vue {
       }
 
       &:hover {
-        @include sidebar-hover;
+        transform: scale(1.005);
+        box-shadow: $box-shadow-default;
+        border-radius: 10px;
+        color: white;
+        g {
+          fill-opacity: 1;
+        }
+        path {
+          fill-opacity: 1;
+        }
       }
 
       &__tab {
@@ -228,11 +239,14 @@ export default class SideBar extends Vue {
 
         span,
         p {
-          font-size: $unit-4;
+          font-size: 13px;
+          margin-top: 10px;
+          width: 85px;
+          text-transform: uppercase;
         }
 
         &__icon {
-          @include size($unit-10, $unit-10);
+          @include size(50px, 50px);
         }
       }
     }

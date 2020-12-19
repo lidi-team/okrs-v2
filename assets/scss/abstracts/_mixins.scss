@@ -216,20 +216,6 @@ $breakpoints: (
   text-overflow: ellipsis;
 }
 
-@mixin sidebar-hover {
-  transform: scale(1.005);
-  box-shadow: $box-shadow-default;
-  border-radius: 10px;
-  background-color: $purple-primary-0;
-  color: $purple-primary-4;
-  g {
-    fill-opacity: 1;
-  }
-  path {
-    fill-opacity: 1;
-  }
-}
-
 @mixin okrs-button-action {
   display: flex;
   place-content: center flex-end;

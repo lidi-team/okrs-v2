@@ -111,7 +111,7 @@ import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import { customColors } from '../okrs/okrs.constant';
 import { ROUTER_CHECKIN } from '@/components/Checkins/constants.enum';
 import CheckinRepository from '@/repositories/CheckinRepository';
-import Pagination from '@/components/common/Pagination.vue';
+import Pagination from '@/components/Commons/CommonPagination.vue';
 
 @Component<Inferior>({
   name: 'Inferior',

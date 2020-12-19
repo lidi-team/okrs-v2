@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="dashboard" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 48 48" style="enable-background:new 0 0 48 48;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:url(#Prostokąt_zaokrąglony_834_kopia_1_);}
+	.st1{opacity:0.2;fill:none;stroke:#ec4899;enable-background:new    ;}
+	.st2{opacity:0.6;fill:none;stroke:#ec4899;enable-background:new    ;}
+	.st3{opacity:0.8;fill:none;stroke:#ec4899;enable-background:new    ;}
+	.st4{fill:#ec4899;}
+	.st5{fill:none;stroke:#FFFFFF;}
+	.st6{opacity:0.4;enable-background:new    ;}
+</style>
+<linearGradient id="Prostokąt_zaokrąglony_834_kopia_1_" gradientUnits="userSpaceOnUse" x1="21.2834" y1="35.7488" x2="7.7166" y2="12.2502">
+	<stop  offset="0" style="stop-color:#224B92"/>
+	<stop  offset="1" style="stop-color:#26549F"/>
+</linearGradient>
+<path id="Prostokąt_zaokrąglony_834_kopia" class="st0" d="M1,16.1L28,0.7c0.6-0.3,1-0.1,1,0.4v29.2c-0.1,0.7-0.4,1.2-1,1.6
+	L1,47.3c-0.6,0.3-1,0.1-1-0.4V17.7C0.1,17.1,0.4,16.5,1,16.1z"/>
+<path id="Prostokąt_zaokrąglony_834_kopia_4" class="st1" d="M19.5,10.5l12.1-7.5c0.5-0.3,1-0.1,1,0.4v16.3
+	c-0.1,0.7-0.4,1.2-1,1.6l-12.1,7.5c-0.5,0.3-1,0.1-1-0.4V12.1C18.6,11.5,18.9,10.9,19.5,10.5z"/>
+<path id="Prostokąt_zaokrąglony_834_kopia_3" class="st2" d="M24.5,12.5l12.1-7.5c0.5-0.3,1-0.1,1,0.4v16.3
+	c-0.1,0.7-0.4,1.2-1,1.6l-12.1,7.5c-0.5,0.3-1,0.1-1-0.4V14.2C23.6,13.5,23.9,12.9,24.5,12.5z"/>
+<path id="Prostokąt_zaokrąglony_834_kopia_2" class="st3" d="M30.5,14.6l12.1-7.5c0.5-0.3,1-0.1,1,0.4v16.3
+	c-0.1,0.7-0.4,1.2-1,1.6l-12.1,7.5c-0.5,0.3-1,0.1-1-0.4V16.2C29.6,15.5,29.9,14.9,30.5,14.6z"/>
+<path id="Prostokąt_zaokrąglony_834" class="st4" d="M34,18.3l12.8-8c0.6-0.3,1-0.6,1,0v17.2c0,0.9-0.4,1.7-1,2.3l-12.8,8
+	c-0.6,0.3-1,0.1-1-0.5V20C33,19.3,33.4,18.7,34,18.3z"/>
+<path id="Kształt_867" class="st5" d="M34,32.5l3-7l4,1l2-5l3-1l1-3"/>
+<path id="Kształt_857_kopia" class="st6" d="M14,17.6l-9,5.2v-1.2l9-5.2V17.6z M14,21.6l-9,5.2v-1.2l9-5.2V21.6z M14,25.6l-9,5.2
+	v-1.2l9-5.2V25.6z"/>
+</svg>

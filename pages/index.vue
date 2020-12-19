@@ -19,7 +19,7 @@
       <el-col :span="12">
         <div class="box-wrap">
           <h2 class="-title-2 -border-header">Tình trạng cập nhật tiến độ</h2>
-          <dashboard-checkin-chart />
+          <dashboard-checkin-chart :checkin-chart="checkinChart"/>
         </div>
       </el-col>
       <el-col :span="12">hello</el-col>
@@ -53,6 +53,7 @@ import CheckinRepository from '@/repositories/CheckinRepository'
     this.currentCycleId = this.$route.query.cycleId || this.$store.state.cycle.cycleCurrent;
     this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.currentCycleId);
     await this.getCycles();
+    await this.getCheckinChart()
   },
 })
 export default class HomePage extends Vue {
@@ -75,7 +76,8 @@ export default class HomePage extends Vue {
   private async getCheckinChart() {
     this.loading = true
     const { data } = await CheckinRepository.getDashboard({ cycleId: this.currentCycleId })
-    console.log(data, 'kkkkk')
+    this.checkinChart = data
+    this.loading = false
   }
 
   private handleSelectCycle(cycleId: number) {

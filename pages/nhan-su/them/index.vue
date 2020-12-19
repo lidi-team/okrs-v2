@@ -37,7 +37,7 @@
           label="Email"
           prop="email"
           align="center"
-          min-width="80"
+          min-width="100"
         >
           <template slot-scope="{ row }">
             <span>{{ row.email }}</span>
@@ -93,6 +93,16 @@
             <span>{{ row.department }}</span>
           </template>
         </el-table-column>
+        <el-table-column
+          label="Trạng thái thêm"
+          prop="department"
+          align="center"
+          min-width="80"
+        >
+          <template slot-scope="{ row }">
+            <span>{{ row.reason }}</span>
+          </template>
+        </el-table-column>
         <!-- <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{ row, $index }">
           <el-button type="primary" size="mini" @click="handleUpdate(row)"> Sửa </el-button>
@@ -130,7 +140,6 @@ export default class CreateEmployee extends Vue {
   private tableData: Array<Object> = [];
   private tableHeader: Array<Object> = [];
   private departments: Array<any> = [];
-  private tabActive: string = 'excel';
   private hasData: boolean = false;
   private loading: boolean = false;
   private loadingForm: Boolean = false;
@@ -209,7 +218,6 @@ export default class CreateEmployee extends Vue {
   @Watch('tableData')
   private checkData() {
     this.hasData = this.tableData.length > 0;
-    console.log('this.hasData: ', this.hasData);
   }
 
   private beforeUpload(file) {
@@ -264,10 +272,6 @@ export default class CreateEmployee extends Vue {
     return result;
   }
 
-  private handleClick(tab, event) {
-    this.tabActive = tab.name;
-  }
-
   private async handleAddEmployee() {
     const users: any = this.handleTableData(this.tableData);
     try {
@@ -284,11 +288,24 @@ export default class CreateEmployee extends Vue {
             dob: '',
           };
         } else {
+          this.tableData = this.createFalseReason(this.tableData, response.data.list);
         }
       }
     } catch (error) {
       console.log(error);
     }
+  }
+
+  private createFalseReason(tableData: Array<any>, responseData: Array<any>) {
+    return responseData.map((value) => {
+      const tableRowData = tableData.find(
+        (value1) => value1.email === value.email,
+      );
+      return {
+        ...tableRowData,
+        reason: value.reason,
+      };
+    });
   }
 
   private pickerOptions: any = {

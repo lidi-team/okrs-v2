@@ -50,7 +50,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
-import Pagination from '@/components/common/Pagination.vue';
+import Pagination from '@/components/Commons/CommonPagination.vue';
 
 @Component<RequestCheckin>({
   name: 'RequestCheckin',

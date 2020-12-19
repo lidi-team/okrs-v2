@@ -13,6 +13,7 @@
       label-width="180px"
       :rules="rules"
       label-position="left"
+      class="create-recognition-dialog__form"
     >
       <el-form-item
         prop="receiverId"
@@ -318,6 +319,10 @@ export default class CreateRecongnitionDialog extends Vue {
 .create-recognition-dialog {
   padding: $unit-4;
 
+  &__form {
+    margin-top: $unit-4;
+  }
+
   &__attribute {
     font-weight: bold;
     padding: $unit-3 0;
@@ -328,7 +333,6 @@ export default class CreateRecongnitionDialog extends Vue {
   }
 
   &__action {
-    margin-top: $unit-4;
     display: flex;
     flex-direction: row;
     justify-content: flex-end;

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-page-header title="Quay lại" @back="goBack" />
-    <h1>Chi tiết Check-in</h1>
+    <h1 class="-title-1">Chi tiết cập nhật tiến độ</h1>
     <el-row :gutter="32">
       <el-col :sm="24" :lg="8">
         <div class="box-wrap height-detail">
@@ -64,7 +64,7 @@ import CheckinDetailChart from '@/components/Checkins/CheckinDetail/CheckinDetai
 @Component({
   head() {
     return {
-      title: 'Chi tiết lịch sử Check-in',
+      title: 'Chi tiết lịch sử cập nhật tiến độ',
     };
   },
   components: {

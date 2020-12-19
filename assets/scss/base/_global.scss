@@ -36,22 +36,6 @@ span {
   word-wrap: break-word;
 }
 
-::-webkit-scrollbar {
-  width: 4px;
-  height: 3px;
-}
-
-::-webkit-scrollbar-track {
-  border-radius: $border-radius-small;
-  border: solid 3px transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  border-radius: 10px;
-  border: solid 3px transparent;
-  background-color: $purple-primary-5;
-}
-
 @-webkit-keyframes fadein {
   0% {
     opacity: 0;

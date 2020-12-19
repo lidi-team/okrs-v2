@@ -152,7 +152,7 @@ import { EvaluationCriteriaEnum, AdminTabsEn } from '@/constants/app.enum';
 import EvaluationCriteriorRepository from '@/repositories/EvaluationCriteriaRepository';
 import StarIcon from '@/assets/images/admin/star.svg';
 
-import CommonPagination from '@/components/common/Pagination.vue';
+import CommonPagination from '@/components/Commons/CommonPagination.vue';
 
 @Component<ManageEvaluationCriteria>({
   name: 'ManageEvaluationCriteria',
