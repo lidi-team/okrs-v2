@@ -1,6 +1,6 @@
 <template>
   <div class="manage-project">
-    <div class="manage-project__top">
+    <div class="-display-flex -justify-content-between">
       <h1 class="-title-1">Quản lý dự án</h1>
       <div class="-display-flex">
         <head-project
@@ -14,7 +14,7 @@
           icon="el-icon-plus"
           @click="addNew"
         >
-          Thêm mới
+          Thêm dự án
         </el-button>
       </div>
     </div>
@@ -141,6 +141,8 @@ export default class ManageProject extends Vue {
     switch (tab) {
       case ProjectStatus.All:
         return 'Tất cả';
+      // case ProjectStatus.Active:
+      //   return 'Đang hoạt động';
       default:
         return 'Đã đóng';
     }
@@ -191,17 +193,6 @@ export default class ManageProject extends Vue {
 
   &__pagination {
     margin-top: $unit-8;
-  }
-
-  &__top {
-    display: flex;
-    justify-content: space-between;
-
-    &__left {
-      &--input {
-        width: calc(100vw * 5 / 24);
-      }
-    }
   }
 }
 </style>

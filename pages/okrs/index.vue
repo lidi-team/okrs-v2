@@ -1,20 +1,23 @@
 <template>
   <div class="okrs-page">
-    <el-select
-      class="-mb-4"
-      v-model="currentCycleId"
-      no-match-text="Không tìm thấy chu kỳ"
-      filterable
-      placeholder="Chọn chu kỳ"
-      @change="handleSelectCycle(currentCycleId)"
-    >
-      <el-option
-        v-for="cycle in cycles"
-        :key="cycle.id"
-        :label="`Chu kỳ: ${cycle.name}`"
-        :value="String(cycle.id)"
-      />
-    </el-select>
+    <div class="-display-flex -justify-content-between">
+      <h1 class="-title-1">OKRs</h1>
+      <el-select
+        class="-mb-4 el-input--title"
+        v-model="currentCycleId"
+        no-match-text="Không tìm thấy chu kỳ"
+        filterable
+        placeholder="Chọn chu kỳ"
+        @change="handleSelectCycle(currentCycleId)"
+      >
+        <el-option
+          v-for="cycle in cycles"
+          :key="cycle.id"
+          :label="`Chu kỳ: ${cycle.name}`"
+          :value="String(cycle.id)"
+        />
+      </el-select>
+    </div>
     <button-create-okr
       v-if="roles.includes('ROLE_DIRECTOR')"
       :type-objective="2"

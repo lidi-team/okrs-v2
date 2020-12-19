@@ -1,36 +1,39 @@
 <template>
   <div class="checkins">
-    <div class="-display-flex -mb-3">
-      <el-select
-        class="-mr-1"
-        v-model="paramsCheckin.cycleId"
-        no-match-text="Không tìm thấy chu kỳ"
-        filterable
-        placeholder="Chọn chu kỳ"
-        @change="handleSelectCycle(paramsCheckin.cycleId)"
-      >
-        <el-option
-          v-for="cycle in cycles"
-          :key="cycle.id"
-          :label="`Chu kỳ: ${cycle.name}`"
-          :value="String(cycle.id)"
-        />
-      </el-select>
-      <el-select
-        class="-ml-1"
-        v-model="paramsCheckin.projectId"
-        no-match-text="Không tìm thấy dự án"
-        filterable
-        placeholder="Chọn dự án"
-        @change="handleSelectProject(paramsCheckin.projectId)"
-      >
-        <el-option
-          v-for="project in projects"
-          :key="project.id"
-          :label="`Dự án: ${project.name}`"
-          :value="String(project.id)"
-        />
-      </el-select>
+    <div class="-display-flex -mb-3 -justify-content-between">
+      <h1 class="-title-1">Cập nhật tiến độ</h1>
+      <div class="-display-flex">
+        <el-select
+          class="-mr-1 el-input--title"
+          v-model="paramsCheckin.cycleId"
+          no-match-text="Không tìm thấy chu kỳ"
+          filterable
+          placeholder="Chọn chu kỳ"
+          @change="handleSelectCycle(paramsCheckin.cycleId)"
+        >
+          <el-option
+            v-for="cycle in cycles"
+            :key="cycle.id"
+            :label="`Chu kỳ: ${cycle.name}`"
+            :value="String(cycle.id)"
+          />
+        </el-select>
+        <el-select
+          class="-ml-1 el-input--title"
+          v-model="paramsCheckin.projectId"
+          no-match-text="Không tìm thấy dự án"
+          filterable
+          placeholder="Chọn dự án"
+          @change="handleSelectProject(paramsCheckin.projectId)"
+        >
+          <el-option
+            v-for="project in projects"
+            :key="project.id"
+            :label="`Dự án: ${project.name}`"
+            :value="String(project.id)"
+          />
+        </el-select>
+      </div>
     </div>
 
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">

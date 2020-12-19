@@ -1,120 +1,124 @@
 <template>
   <div>
     <el-page-header title="Quay lại" @back="goBack" />
-    <div class="box-wrap">
-      <div class="-display-flex -justify-content-between -border-header">
-        <span class="-title-2">Thêm nhân viên</span>
+    <div class="-mt-4">
+      <div class="box-wrap">
+        <div class="-display-flex -justify-content-between -border-header">
+          <span class="-title-2">Thêm nhân viên</span>
+          <div>
+            <el-button
+              class="el-button--purple el-button--invite"
+              size="small"
+              @click="handleShowDialog"
+            >
+              Thêm một nhân viên
+            </el-button>
+          </div>
+        </div>
+        <upload-excel-component
+          :on-success="handleSuccess"
+          :before-upload="beforeUpload"
+        />
         <div>
           <el-button
-            class="el-button--purple el-button--invite"
-            size="small"
-            @click="handleShowDialog"
-          >
-            Thêm một nhân viên
+            class="el-button--purple el-button--modal create-employee__button"
+            icon="el-icon-plus"
+            :disabled="!hasData"
+            @click="handleAddEmployee"
+            >Thêm
           </el-button>
         </div>
-      </div>
-      <upload-excel-component
-        :on-success="handleSuccess"
-        :before-upload="beforeUpload"
-      />
-      <el-button
-        class="el-button--purple el-button--modal create-employee__button"
-        icon="el-icon-plus"
-        :disabled="!hasData"
-        @click="handleAddEmployee"
-        >Thêm
-      </el-button>
-      <el-table
-        :data="tableData"
-        border
-        highlight-current-row
-        style="width: 100%; margin-top: 20px"
-        fit
-      >
-        <!-- <el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" /> -->
-        <el-table-column
-          label="Email"
-          prop="email"
-          align="center"
-          min-width="100"
+        <el-table
+          :data="tableData"
+          border
+          highlight-current-row
+          style="width: 100%; margin-top: 20px"
+          fit
         >
-          <template slot-scope="{ row }">
-            <span>{{ row.email }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="Họ và tên"
-          prop="fullName"
-          align="center"
-          min-width="80"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.fullName }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="Ngày sinh"
-          prop="dob"
-          align="center"
-          min-width="80"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.dob }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="Số điện thoại"
-          prop="phoneNumber"
-          align="center"
-          min-width="80"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.phoneNumber }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="Giới tính"
-          prop="gender"
-          align="center"
-          min-width="80"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.gender }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="Phòng ban"
-          prop="department"
-          align="center"
-          min-width="80"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.department }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          label="Trạng thái thêm"
-          prop="department"
-          align="center"
-          min-width="80"
-        >
-          <template slot-scope="{ row }">
-            <span>{{ row.reason }}</span>
-          </template>
-        </el-table-column>
-        <!-- <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+          <!-- <el-table-column v-for="item of tableHeader" :key="item" :prop="item" :label="item" /> -->
+          <el-table-column
+            label="Email"
+            prop="email"
+            align="center"
+            min-width="100"
+          >
+            <template slot-scope="{ row }">
+              <span>{{ row.email }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Họ và tên"
+            prop="fullName"
+            align="center"
+            min-width="80"
+          >
+            <template slot-scope="{ row }">
+              <span>{{ row.fullName }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Ngày sinh"
+            prop="dob"
+            align="center"
+            min-width="80"
+          >
+            <template slot-scope="{ row }">
+              <span>{{ row.dob }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Số điện thoại"
+            prop="phoneNumber"
+            align="center"
+            min-width="80"
+          >
+            <template slot-scope="{ row }">
+              <span>{{ row.phoneNumber }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Giới tính"
+            prop="gender"
+            align="center"
+            min-width="80"
+          >
+            <template slot-scope="{ row }">
+              <span>{{ row.gender }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Phòng ban"
+            prop="department"
+            align="center"
+            min-width="80"
+          >
+            <template slot-scope="{ row }">
+              <span>{{ row.department }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="Trạng thái thêm"
+            prop="department"
+            align="center"
+            min-width="80"
+          >
+            <template slot-scope="{ row }">
+              <span>{{ row.reason }}</span>
+            </template>
+          </el-table-column>
+          <!-- <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{ row, $index }">
           <el-button type="primary" size="mini" @click="handleUpdate(row)"> Sửa </el-button>
           <el-button v-if="row.status != 'deleted'" size="mini" type="danger" @click="handleDelete(row, $index)"> Xóa </el-button>
         </template>
       </el-table-column> -->
-      </el-table>
+        </el-table>
+      </div>
+      <staff-dialog
+        :visible-dialog.sync="visibleDialog"
+        :departments="departments"
+      />
     </div>
-    <staff-dialog
-      :visible-dialog.sync="visibleDialog"
-      :departments="departments"
-    />
   </div>
 </template>
 
@@ -128,6 +132,7 @@ import { EmployeeDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
 import StaffDialog from '@/components/admin/dialog/NewStaffDialog.vue';
+import value from '*.png';
 
 @Component<CreateEmployee>({
   name: 'CreateEmployee',
@@ -235,7 +240,10 @@ export default class CreateEmployee extends Vue {
   private handleSuccess({ results, header }) {
     this.handleTableData(results);
 
-    this.tableData = results;
+    const tableData = results.map((value) => {
+      return { ...value, reason: 'Đang chờ' };
+    });
+    this.tableData = tableData;
     this.tableHeader = header;
   }
 
@@ -275,10 +283,10 @@ export default class CreateEmployee extends Vue {
   private async handleAddEmployee() {
     const users: any = this.handleTableData(this.tableData);
     try {
-      const response = await EmployeeRepository.create({ users });
+      const response: any = await EmployeeRepository.create({ users });
       console.log(response);
       if (!!response && !!response.data) {
-        if (response.data.numberOfFailed === 0) {
+        if (response.data.code === 2000) {
           this.employee = {
             fullName: '',
             email: '',
@@ -287,8 +295,12 @@ export default class CreateEmployee extends Vue {
             gender: 1,
             dob: '',
           };
+          this.tableData = [];
         } else {
-          this.tableData = this.createFalseReason(this.tableData, response.data.list);
+          this.tableData = this.createFalseReason(
+            this.tableData,
+            response.data.list,
+          );
         }
       }
     } catch (error) {

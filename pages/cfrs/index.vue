@@ -1,36 +1,23 @@
 <template>
   <div class="cfrs">
     <div class="cfrs-page">
-      <el-row class="cfrs-page__top" type="flex" justify="space-between">
-        <el-col
-          :xs="24"
-          :sm="24"
-          :md="12"
-          :lg="12"
-          class="cfrs-page__top--searching"
-        >
+      <div class="-display-flex -justify-content-between">
+        <h1 class="-title-1">Ghi nhận & phản hồi</h1>
+        <div class="-display-flex">
           <cfrs-navbar :current-tab-component="currentTabEng" />
-        </el-col>
-        <el-col
-          :xs="24"
-          :sm="24"
-          :md="8"
-          :lg="8"
-          class="cfrs-page__top--button"
-        >
           <el-button
             v-if="
               user.roles.includes('ROLE_PM') ||
               user.roles.includes('ROLE_DIRECTOR')
             "
-            class="el-button el-button--purple el-button-medium"
+            class="el-button--purple el-button--invite -ml-2"
             icon="el-icon-plus"
             @click="visibleCreateDialog = true"
           >
             Tạo ghi nhận
           </el-button>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </div>
 
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">
@@ -160,20 +147,6 @@ export default class CFRs extends Vue {
 }
 
 .cfrs-page {
-  &__top {
-    @include breakpoint-down(phone) {
-      flex-direction: column;
-    }
-
-    &--button {
-      display: flex;
-      justify-content: flex-end;
-      @include breakpoint-down(phone) {
-        justify-content: center;
-      }
-    }
-  }
-
   .el-table__empty-block {
     width: 100% !important;
   }
