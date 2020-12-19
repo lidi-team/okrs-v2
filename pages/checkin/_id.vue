@@ -17,7 +17,7 @@
             </tr>
             <tr>
               <th scope="row">Tiến độ gợi ý</th>
-              <td>{{ checkin.objective.progressSuggest }} %</td>
+              <td>{{ checkin.objective.progressSuggest | verifyProgress }} %</td>
             </tr>
             <tr v-if="checkin.checkin.checkinAt">
               <th scope="row">Ngày check-in</th>
