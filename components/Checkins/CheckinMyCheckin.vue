@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="my-okrs">
+    <div class="my-okrs box-wrap">
       <el-table
         v-loading="loading"
         empty-text="Không có dữ liệu"
@@ -14,7 +14,7 @@
         </el-table-column>
         <el-table-column label="Kết quả then chốt" min-width="150">
           <template slot-scope="{ row }">
-            <span class="my-okrs__txtBlue" @click="showKRs(row.keyResults)"
+            <span class="el-link" @click="showKRs(row.keyResults)"
               >{{ row.keyResults ? row.keyResults.length : 0 }} kết quả</span
             >
           </template>
@@ -47,10 +47,10 @@
               v-if="$route.query.tab === 'check-in-cong-ty'"
               :to="`/checkin/lich-su-cong-ty/${row.id}`"
             >
-              <span class="my-okrs__txtBlue">Xem lịch sử</span>
+              <span class="el-link">Xem lịch sử</span>
             </nuxt-link>
             <nuxt-link v-else :to="`/checkin/lich-su/${row.id}`">
-              <span class="my-okrs__txtBlue">Xem lịch sử</span>
+              <span class="el-link">Xem lịch sử</span>
             </nuxt-link>
           </template>
         </el-table-column>
@@ -301,15 +301,6 @@ export default class MyOkrsCheckin extends Vue {
   .el-button {
     &--checkin {
       width: 100%;
-    }
-  }
-  &__txtBlue,
-  &__txtBlue:focus {
-    color: #337ab7;
-    cursor: pointer;
-
-    &:hover {
-      color: rgb(32, 160, 255);
     }
   }
   .el-progress {

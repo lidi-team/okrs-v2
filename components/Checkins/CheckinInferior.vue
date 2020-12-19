@@ -1,4 +1,5 @@
 <template>
+  <div>
   <div class="box-wrap">
     <el-table
       v-loading="loading"
@@ -47,8 +48,8 @@
       :limit.sync="pagination.limit"
       @pagination="handlePagination($event)"
     />
-
-    <el-dialog
+  </div>
+  <el-dialog
       :visible.sync="showDialogKRs"
       width="90%"
       placement="bottom-start"
@@ -88,7 +89,7 @@
             <el-table-column align="center" label="Lịch sử">
               <template slot-scope="{ row }">
                 <nuxt-link :to="`/checkin/lich-su-nhan-vien/${row.id}`">
-                  <span class="myOKRs__txtBlue">Xem lịch sử</span>
+                  <span class="el-link">Xem lịch sử</span>
                 </nuxt-link>
               </template>
             </el-table-column>
@@ -212,15 +213,6 @@ export default class Inferior extends Vue {
   .el-button {
     &--checkin {
       width: 100%;
-    }
-  }
-  &__txtBlue,
-  &__txtBlue:focus {
-    color: #337ab7;
-    cursor: pointer;
-
-    &:hover {
-      color: rgb(32, 160, 255);
     }
   }
   .el-progress {
