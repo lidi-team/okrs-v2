@@ -4,7 +4,7 @@
       <el-col :md="8" :lg="8">
         <div class="item-okrs box-wrap">
           <div class="-border-header">
-            <p class="-title-2">CFRs {{ displayNameCfrs }} gửi đi</p>
+            <p class="-title-2">Ghi nhận {{ displayNameCfrs }} gửi đi</p>
           </div>
           <div class="history__col--items">
             <div
@@ -59,7 +59,9 @@
               @infinite="infiniteSentHandler"
             >
               <span slot="no-more"></span>
-              <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
+              <p slot="no-results" class="history__col__empty">
+                Chưa có Ghi nhận
+              </p>
             </infinite-loading>
           </div>
         </div>
@@ -67,7 +69,7 @@
       <el-col :md="8" :lg="8">
         <div class="item-okrs box-wrap">
           <div class="-border-header">
-            <p class="-title-2">CFRs {{ displayNameCfrs }} nhận được</p>
+            <p class="-title-2">Ghi nhận {{ displayNameCfrs }} nhận được</p>
           </div>
           <div class="history__col--items">
             <div
@@ -108,7 +110,9 @@
                 </div>
               </div>
               <div class="item__right">
-                <span class="item__right__value">{{ item.evaluationCriteria.numberOfStar }}</span>
+                <span class="item__right__value">{{
+                  item.evaluationCriteria.numberOfStar
+                }}</span>
                 <icon-star-dashboard />
               </div>
             </div>
@@ -119,7 +123,9 @@
               @infinite="infiniteReceivedHandler"
             >
               <span slot="no-more"></span>
-              <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
+              <p slot="no-results" class="history__col__empty">
+                Chưa có Ghi nhận
+              </p>
             </infinite-loading>
           </div>
         </div>
@@ -127,7 +133,7 @@
       <el-col :md="8" :lg="8">
         <div class="item-okrs box-wrap">
           <div class="-border-header">
-            <p class="-title-2">CFRs toàn công ty</p>
+            <p class="-title-2">Ghi nhận toàn công ty</p>
           </div>
           <div class="history__col--items">
             <div
@@ -186,7 +192,9 @@
                 </div>
               </div>
               <div class="item__right">
-                <span class="item__right__value">{{ item.evaluationCriteria.numberOfStar }}</span>
+                <span class="item__right__value">{{
+                  item.evaluationCriteria.numberOfStar
+                }}</span>
                 <icon-star-dashboard />
               </div>
             </div>
@@ -197,7 +205,9 @@
               @infinite="infiniteAllHandler"
             >
               <span slot="no-more"></span>
-              <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
+              <p slot="no-results" class="history__col__empty">
+                Chưa có Ghi nhận
+              </p>
             </infinite-loading>
           </div>
         </div>
