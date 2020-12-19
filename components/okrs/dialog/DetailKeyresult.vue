@@ -17,7 +17,7 @@
           <div class="krs-detail__progress">
             <el-progress
               style="width: 80%"
-              :percentage="row.progress"
+              :percentage="row.progress | round"
               :color="customColors"
               :text-inside="true"
               :stroke-width="20"
