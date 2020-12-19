@@ -190,7 +190,7 @@ import { EmployeeDTO } from '@/constants/app.interface';
 import { GetterState } from '@/constants/app.vuex';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 import { formatDateToDD } from '@/utils/dateParser';
-import { filterUserRole } from '@/utils/filterUserRole';
+import { filterUserRole } from '@/utils/filters';
 
 @Component<EmployeeActive>({
   name: 'EmployeeActive',

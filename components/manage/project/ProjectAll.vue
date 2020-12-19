@@ -121,6 +121,7 @@
               label-width="150px"
             >
               <el-date-picker
+                :disabled="isEditableStartDate(tempUpdateProject.startDate)"
                 v-model="tempUpdateProject.startDate"
                 format="dd/MM/yyyy"
                 value-format="dd/MM/yyyy"
@@ -137,6 +138,7 @@
             >
               <el-date-picker
                 v-model="tempUpdateProject.endDate"
+                :picker-options="endDateOption(tempUpdateProject.endDate)"
                 format="dd/MM/yyyy"
                 value-format="dd/MM/yyyy"
                 type="date"
@@ -411,6 +413,12 @@ export default class ProjectAll extends Vue {
     return callback();
   }
 
+  private isEditableStartDate(startDate: string) {
+    const today = new Date();
+    console.log('today: ', today.toDateString());
+    return compareTwoDate(startDate, today.toDateString()) !== 1;
+  }
+
   private sanitizeInput(
     rule: any,
     value: any,
@@ -421,6 +429,18 @@ export default class ProjectAll extends Vue {
       return callback('Vui lòng nhập tên dự án');
     }
     return callback();
+  }
+
+  private endDateOption(endDate: string) {
+    const splitDate = endDate.split('/');
+    const swapDDtoMM = splitDate[1] + '/' + splitDate[0] + '/' + splitDate[2];
+    const endTime = !!endDate && new Date(swapDDtoMM).getTime();
+    console.log('endDateOption', endTime);
+    return {
+      disabledDate(time) {
+        return time.getTime() < endTime;
+      },
+    };
   }
 }
 </script>

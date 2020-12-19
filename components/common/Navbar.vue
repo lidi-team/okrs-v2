@@ -96,7 +96,7 @@ import IconProfile from '@/assets/images/common/navbar/profile.svg';
 import IconSetting from '@/assets/images/common/navbar/setting.svg';
 import IconHr from '@/assets/images/common/navbar/hr.svg';
 import { DispatchAction, GetterState } from '@/constants/app.vuex';
-import { filterUserRole } from '@/utils/filterUserRole';
+import { filterUserRole } from '@/utils/filters';
 
 @Component<Navbar>({
   name: 'Navbar',
