@@ -106,7 +106,7 @@
             <span>{{ row.name }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Email" min-width="160" align="center">
+        <el-table-column label="Email" min-width="200" align="center">
           <template slot-scope="{ row }">
             <span>{{ row.email }}</span>
           </template>
@@ -165,7 +165,7 @@
           v-if="isProjectPm(user.projects, projectData.status)"
           label="Thao tác"
           align="center"
-          min-width="230"
+          min-width="200"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{ row }">
@@ -267,6 +267,7 @@ export default class ControlProject extends Vue {
     pm: undefined,
     weight: 1,
   };
+
   private draftEditStaff: IProjectStaffState = {
     userId: 0,
     positionId: undefined,
@@ -433,6 +434,8 @@ export default class ControlProject extends Vue {
   private handleEditRow(row: ProjectStaff) {
     row.edit = !row.edit;
     this.draftEditStaff.userId = row.id;
+    this.draftEditStaff.reviewerId = row.reviewerId;
+    this.draftEditStaff.positionId = row.position ? row.position : undefined;
   }
 
   private goToProjectDashboard() {
@@ -483,6 +486,7 @@ export default class ControlProject extends Vue {
     padding: 0 $unit-7;
     margin-top: $unit-7;
     &__title {
+      font-weight: bold;
       font-size: $text-xl;
       margin-right: $unit-4;
     }
