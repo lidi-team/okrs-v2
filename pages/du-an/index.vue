@@ -193,6 +193,8 @@ export default class ManageProject extends Vue {
 
   &__pagination {
     margin-top: $unit-8;
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

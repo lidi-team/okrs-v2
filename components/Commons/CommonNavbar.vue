@@ -10,7 +10,7 @@
           <div class="item__wrapper">
             <img
               :key="user.updateAvatarKey"
-              :src="user.avatarUrl"
+              :src="user.avatarUrl | filterImage"
               alt="avatar"
               class="item__avatar"
             />
