@@ -96,7 +96,7 @@ import CycleRepository from '@/repositories/CycleRepository';
     }
   },
   async mounted() {
-    this.currentCycleId = this.$route.query.cycleId || this.$store.state.cycle.cycleCurrent;
+    this.currentCycleId = this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
     this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.currentCycleId);
     await this.getDashBoardOkrs();
     await this.getCycles();

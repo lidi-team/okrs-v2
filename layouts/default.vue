@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import CommonNavbar from '@/components/Commons/CommonNavbarAuth.vue';
+import CommonNavbar from '@/components/Commons/CommonNavbar.vue';
 import CommonSidebar from '@/components/Commons/CommonSidebar.vue';
 @Component<Layout>({
   name: 'Layout',

@@ -25,7 +25,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 
-import AccountChangePassword from '@/components/account/ChangePassword.vue';
+import AccountChangePassword from '@/components/Accounts/AccountChangePassword.vue';
 @Component<ChangePasswordPage>({
   name: 'ChangePasswordPage',
   components: {
@@ -42,7 +42,6 @@ export default class ChangePasswordPage extends Vue {}
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .change-password-page {
-  @include account-layout;
   @include breakpoint-down(phone) {
     flex-direction: column;
     padding: 0;

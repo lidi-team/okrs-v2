@@ -47,8 +47,8 @@ const nuxtConfig: NuxtConfig = {
    * @docs https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s | Lidi OKRs',
-    title: 'OKKs V2',
+    titleTemplate: '%s | Hệ thống quản lý OKRs',
+    title: 'Trang chủ',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },

@@ -1,18 +1,13 @@
 <template>
-  <div>
-    <common-navbar />
+  <div class="-w-100vw -h-100vh -overflow-hidden -align-items-center">
     <nuxt />
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-// components
-import CommonNavbar from '@/components/Commons/CommonNavbarUnauth.vue';
 @Component<EmptyLayout>({
   name: 'EmptyLayout',
-  components: {
-    CommonNavbar,
-  },
 })
 export default class EmptyLayout extends Vue {}
 </script>

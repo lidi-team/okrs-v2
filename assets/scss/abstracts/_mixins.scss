@@ -249,13 +249,6 @@ $breakpoints: (
   border-radius: $border-radius-base;
 }
 
-@mixin account-layout {
-  min-height: calc(100vh - 45px);
-  display: flex;
-  place-content: center;
-  align-items: center;
-}
-
 @mixin box-middle {
   box-shadow: 0px 2px 5px rgba(33, 43, 54, 0.1), 0px 2px 10px #212b3626;
   border-radius: 10px;

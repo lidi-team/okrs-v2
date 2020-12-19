@@ -19,9 +19,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
-import AccountResetPassword from '@/components/account/ResetPassword.vue';
-
+import AccountResetPassword from '@/components/Accounts/AccountResetPassword.vue';
 import AuthRepository from '@/repositories/AuthRepository';
 import { notifyErrorResetPassword } from '@/constants/app.notify';
 @Component<ResetPasswordPage>({
@@ -58,7 +56,6 @@ export default class ResetPasswordPage extends Vue {}
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .reset-password-page {
-  @include account-layout;
   @include breakpoint-down(phone) {
     flex-direction: column;
     padding-top: 0;

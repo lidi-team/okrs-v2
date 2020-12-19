@@ -1,32 +1,17 @@
 <template>
-  <el-row
-    class="forgot-password-page"
-    type="flex"
-    justify="center"
-    align="center"
-  >
-    <el-col
-      :xs="24"
-      :sm="24"
-      :md="8"
-      :lg="8"
-      class="forgot-password-page__image"
-    >
-      <img
-        src="@/assets/images/account/tiny-forgot-password.png"
-        alt="login image"
-      />
-    </el-col>
-    <el-col :xs="24" :sm="24" :md="8" :lg="8">
-      <account-forgot-password />
-    </el-col>
-  </el-row>
+<div class="-display-flex -justify-content-center -align-items-center -h-100vh">
+    <div class="-align-items-center">
+      <img src="@/assets/images/account/tiny-forgot-password.png" alt="login image" />
+    </div>
+    <div class="-align-items-center">
+      <account-forgot-password class="box-wrap"/>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-
-import AccountForgotPassword from '@/components/account/ForgotPassword.vue';
+import AccountForgotPassword from '@/components/Accounts/AccountForgotPassword.vue';
 @Component<ForgotPasswordPage>({
   name: 'ForgotPasswordPage',
   layout: 'empty',
@@ -42,21 +27,3 @@ import AccountForgotPassword from '@/components/account/ForgotPassword.vue';
 })
 export default class ForgotPasswordPage extends Vue {}
 </script>
-<style lang="scss" scoped>
-@import '@/assets/scss/main.scss';
-.forgot-password-page {
-  @include account-layout;
-  @include breakpoint-down(phone) {
-    padding-top: 0;
-    flex-direction: column;
-  }
-  &__image {
-    align-self: center;
-  }
-  .el-col {
-    &:nth-child(2) {
-      padding-top: $unit-12;
-    }
-  }
-}
-</style>

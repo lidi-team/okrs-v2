@@ -29,55 +29,58 @@
     >
       <el-table-column type="expand" width="20">
         <template v-slot="{ row }">
-          <div
-            v-for="objective in row.childObjectives"
-            :key="objective.id"
-            class="item__expand"
-          >
-            <div class="expand__objective">
-              <icon-ellipse v-if="objective" />
-              <span class="-pl-2">{{ objective.title }}</span>
-            </div>
-            <div class="expand__infor">
-              <p
-                v-if="objective.keyResults.length"
-                class="expand__infor--link"
-                @click="emitDrawer(objective.keyResults)"
-              >
-                {{ objective.keyResults.length }} kết quả
-              </p>
-              <p v-else style="width: 120px; color: #212b36">
-                {{ objective.keyResults.length }} kết quả
-              </p>
-              <div class="expand__infor--progress">
-                <el-progress
-                  :percentage="+objective.progress | round"
-                  :color="customColors"
-                  :text-inside="true"
-                  :stroke-width="26"
-                />
+          <template  v-if="row.childObjectives.length !== 0">
+            <div
+              v-for="objective in row.childObjectives"
+              :key="objective.id"
+              class="item__expand"
+            >
+              <div class="expand__objective">
+                <icon-ellipse v-if="objective" />
+                <span class="-pl-2">{{ objective.title }}</span>
               </div>
-              <div class="expand__infor--action">
-                <span :class="objective.changing | isUpProgress"
-                  >{{ objective.changing | round }}%</span
+              <div class="expand__infor">
+                <p
+                  v-if="objective.keyResults.length"
+                  class="expand__infor--link"
+                  @click="emitDrawer(objective.keyResults)"
                 >
-                <action-tooltip
-                  :id="objective.id"
-                  class="expand__infor--action__tooltip"
-                  :isManage="true"
-                  :canDelete="objective.delete"
-                  :canUpdate="row.update"
-                  @updateOKRs="updateOKRs(objective)"
-                />
+                  {{ objective.keyResults.length }} kết quả
+                </p>
+                <p v-else style="width: 120px; color: #212b36">
+                  {{ objective.keyResults.length }} kết quả
+                </p>
+                <div class="expand__infor--progress">
+                  <el-progress
+                    :percentage="+objective.progress | round"
+                    :color="customColors"
+                    :text-inside="true"
+                    :stroke-width="26"
+                  />
+                </div>
+                <div class="expand__infor--action">
+                  <span :class="objective.changing | isUpProgress"
+                    >{{ objective.changing | round }}%</span
+                  >
+                  <action-tooltip
+                    :id="objective.id"
+                    class="expand__infor--action__tooltip"
+                    :isManage="true"
+                    :canDelete="objective.delete"
+                    :canUpdate="row.update"
+                    @updateOKRs="updateOKRs(objective)"
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </template>
+          <p v-else class="message-empty">Không có mục tiêu cá nhân nào được liên kết</p>
         </template>
       </el-table-column>
       <el-table-column label="Mục tiêu" min-width="380" class="cell-objective">
         <template v-slot="{ row }">
           <span>{{ row.title }}</span>
-          <el-tag type="info">{{ row.childObjectives.length }} mục tiêu</el-tag>
+          <el-tag type="danger">{{ row.childObjectives.length }} mục tiêu cá nhân</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="Kết quả then chốt" width="140">
@@ -312,6 +315,11 @@ export default class OKRsItem extends Vue {
       color: $purple-primary-4;
       font-weight: $font-weight-medium;
     }
+  }
+  .message-empty {
+    font-size: 12px;
+    margin-left: 10px;
+    color: gray;
   }
 }
 </style>
