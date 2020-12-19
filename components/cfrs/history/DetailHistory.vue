@@ -18,7 +18,7 @@
       <el-col :span="17" class="detail-history__value">
         <a
           target="_blank"
-          :href="`${$config.baseURL}/OKRs/chi-tiet/${itemData.objective.id}`"
+          :href="`${$config.baseURL}/okrs/chi-tiet/${itemData.objective.id}`"
         >
           {{ itemData.objective.title }}
         </a>
@@ -33,7 +33,7 @@
       <el-col :span="17" class="detail-history__value">
         <a
           target="_blank"
-          :href="`${$config.baseURL}/OKRs/chi-tiet/${itemData.checkin.objective.id}`"
+          :href="`${$config.baseURL}/okrs/chi-tiet/${itemData.checkin.objective.id}`"
         >
           {{ itemData.checkin.objective.title }}
         </a>

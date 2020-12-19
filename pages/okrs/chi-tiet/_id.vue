@@ -22,7 +22,7 @@
         >
         <nuxt-link
           :to="objective.parentObjective
-              ? `/OKRs/chi-tiet/${objective.parentObjective.id}`
+              ? `/okrs/chi-tiet/${objective.parentObjective.id}`
               : '#'
           "
           class="parentOkrs"
@@ -41,7 +41,7 @@
             :key="item.id"
             class="alignedOkrs"
           >
-            <nuxt-link :to="`/OKRs/chi-tiet/${item.id}`">{{ item.name }}</nuxt-link
+            <nuxt-link :to="`/okrs/chi-tiet/${item.id}`">{{ item.name }}</nuxt-link
             >
           </p>
         </div>
