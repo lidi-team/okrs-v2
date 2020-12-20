@@ -2,10 +2,10 @@
   <div>
     <el-page-header title="Quay lại" @back="goBack" />
     <h1 class="-title-1">Lịch sử cập nhật tiến độ</h1>
+    <div class="box-wrap">
       <el-table
         v-loading="loading"
         empty-text="Không có dữ liệu"
-        class="box-wrap"
         :data="historyList"
         style="width: 100%"
       >
@@ -55,6 +55,7 @@
           </template>
         </el-table-column>
       </el-table>
+    </div>
   </div>
 </template>
 
