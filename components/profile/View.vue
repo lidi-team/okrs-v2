@@ -1,127 +1,127 @@
 <template>
-  <div v-loading.fullscreen.lock="loadingProfile" class="box-wrap">
-    <div class="-border-header">
-      <h2 class="-title-2">Thông tin tài khoản của bạn</h2>
-    </div>
-    <div class="wrap-profile">
-      <el-form
-        ref="updateProfileForm"
-        :model="profileForm"
-        :status-icon="false"
-        :hide-required-asterisk="false"
-        label-width="150px"
-        label-position="top"
-        :rules="rules"
-      >
-        <el-row class="profile">
-          <el-col
-            :xs="24"
-            :sm="24"
-            :md="6"
-            :lg="6"
-            :xl="6"
-            class="profile-common"
-          >
-            <common-flame-upload
-              ref="uploader"
-              field="upload"
-              v-model="show"
-              :width="300"
-              :height="300"
-              lang-type="vi"
-              img-format="png"
-              @crop-success="cropSuccess"
-            />
-            <el-avatar :size="120">
-              <img :src="avatarUrl | filterImage" alt="avatar" />
-            </el-avatar>
-            <el-button
-              :loading="loading"
-              size="small"
-              type="primary"
-              class="el-button--margin el-button--white el-button--avatar"
-              @click="toggleShow"
-              >Cập nhật avatar
-            </el-button>
-            <p class="profile-common__name">{{ profileForm.fullName }}</p>
-            <!-- <p class="profile-common__role">{{ displayRoleName(user) }}</p> -->
-          </el-col>
-          <el-col
-            :xs="24"
-            :sm="24"
-            :md="18"
-            :lg="18"
-            :xl="18"
-            class="profile-right"
-          >
-            <div class="info">
-              <h3 class="info__title">Thông tin chung</h3>
-              <div class="info__row">
-                <el-row class="info__row--custom" :gutter="20">
-                  <el-col :sm="24" :md="12">
-                    <el-form-item
-                      class="custom-label"
-                      prop="fullName"
-                      label="Họ và tên"
-                    >
-                      <span>{{ profileForm.fullName }}</span>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :sm="24" :md="12">
-                    <el-form-item prop="gender" label="Giới tính">
-                      <span>
-                        <i
-                          :class="
-                            profileForm.gender
-                              ? 'el-icon-male'
-                              : 'el-icon-female'
-                          "
-                        />
-                        {{ profileForm.gender ? 'Nam' : 'Nữ' }}
-                      </span>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
+  <div v-loading.fullscreen.lock="loadingProfile">
+    <div class="box-wrap">
+      <div class="-border-header">
+        <h2 class="-title-2">Thông tin tài khoản của bạn</h2>
+      </div>
+      <div class="wrap-profile">
+        <el-form
+          ref="updateProfileForm"
+          :model="profileForm"
+          :status-icon="false"
+          :hide-required-asterisk="false"
+          label-width="150px"
+          label-position="top"
+          :rules="rules"
+        >
+          <el-row class="profile">
+            <el-col
+              :xs="24"
+              :sm="24"
+              :md="6"
+              :lg="6"
+              :xl="6"
+              class="profile-common"
+            >
+              <common-flame-upload
+                ref="uploader"
+                field="upload"
+                v-model="show"
+                :width="300"
+                :height="300"
+                lang-type="vi"
+                img-format="png"
+                @crop-success="cropSuccess"
+              />
+              <el-avatar :size="120">
+                <img :src="avatarUrl | filterImage" alt="avatar" />
+              </el-avatar>
+              <el-button
+                :loading="loading"
+                size="small"
+                type="primary"
+                class="el-button--margin el-button--white el-button--avatar"
+                @click="toggleShow"
+                >Cập nhật ảnh đại diện
+              </el-button>
+              <p class="profile-common__name">{{ profileForm.fullName }}</p>
+            </el-col>
+            <el-col
+              :xs="24"
+              :sm="24"
+              :md="18"
+              :lg="18"
+              :xl="18"
+              class="profile-right"
+            >
+              <div class="info">
+                <h3 class="info__title">Thông tin chung</h3>
+                <div class="info__row">
+                  <el-row class="info__row--custom" :gutter="20">
+                    <el-col :sm="24" :md="12">
+                      <el-form-item
+                        class="custom-label"
+                        prop="fullName"
+                        label="Họ và tên"
+                      >
+                        <span>{{ profileForm.fullName }}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :sm="24" :md="12">
+                      <el-form-item prop="gender" label="Giới tính">
+                        <span>
+                          <i
+                            :class="
+                              profileForm.gender
+                                ? 'el-icon-male'
+                                : 'el-icon-female'
+                            "
+                          />
+                          {{ profileForm.gender ? 'Nam' : 'Nữ' }}
+                        </span>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </div>
+                <div class="info__row">
+                  <el-row class="info__row--custom" :gutter="20">
+                    <el-col :sm="24" :md="12">
+                      <el-form-item label="Email">
+                        <span>{{ profileForm.email }}</span>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :sm="24" :md="12">
+                      <el-form-item label="Ngày sinh">
+                        {{ profileForm.dateOfBirth }}
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </div>
+                <h3 class="info__title">Vị trí công việc</h3>
+                <div class="info__row">
+                  <el-row class="info__row--custom" :gutter="20">
+                    <el-col :sm="24" :md="12">
+                      <el-form-item prop="department" label="Phòng ban">
+                        <el-tag>{{ profileForm.department.name }}</el-tag>
+                      </el-form-item>
+                    </el-col>
+                    <el-col :sm="24" :md="12">
+                      <el-form-item prop="position" label="Vai trò">
+                        <div v-bind:key="role" v-for="role in profileForm.roles">
+                          <el-tag>
+                            {{ getRole(role) }}
+                          </el-tag>
+                        </div>
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
+                </div>
               </div>
-              <div class="info__row">
-                <el-row class="info__row--custom" :gutter="20">
-                  <el-col :sm="24" :md="12">
-                    <el-form-item label="Email">
-                      <span>{{ profileForm.email }}</span>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :sm="24" :md="12">
-                    <el-form-item label="Ngày sinh">
-                      {{ profileForm.dateOfBirth }}
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-              </div>
-              <h3 class="info__title">Vị trí công việc</h3>
-              <div class="info__row">
-                <el-row class="info__row--custom" :gutter="20">
-                  <el-col :sm="24" :md="12">
-                    <el-form-item prop="department" label="Phòng ban">
-                      <el-tag>{{ profileForm.department.name }}</el-tag>
-                    </el-form-item>
-                  </el-col>
-                  <el-col :sm="24" :md="12">
-                    <el-form-item prop="position" label="Vai trò">
-                      <div v-bind:key="role" v-for="role in profileForm.roles">
-                        <el-tag>
-                          {{ getRole(role) }}
-                        </el-tag>
-                      </div>
-                    </el-form-item>
-                  </el-col>
-                </el-row>
-              </div>
-              <!-- <el-button class="el-button el-button--purple el-button--update" :loading="loading" @click="updateProfile">Cập nhật</el-button> -->
-            </div>
-          </el-col>
-        </el-row>
-      </el-form>
-    </div>
+            </el-col>
+          </el-row>
+        </el-form>
+      </div>
+      </div>
   </div>
 </template>
 

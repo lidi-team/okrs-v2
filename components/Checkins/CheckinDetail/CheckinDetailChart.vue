@@ -3,6 +3,7 @@
     <div :id="id" class="chart" :style="{ height: '100%', width: '100%' }" />
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { init } from 'echarts';
