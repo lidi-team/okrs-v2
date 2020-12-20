@@ -28,13 +28,34 @@
       <el-col :span="12">
         <div class="box-wrap">
           <h2 class="-title-2 -border-header">Top sao trong kỳ</h2>
-          <dashboard-checkin-chart :checkin-chart="checkinChart" />
+          <div v-loading="loadingCurrentRanking">
+            <p v-if="!currentRanking.length" class="history__col__empty">
+              Không có dữ liệu
+            </p>
+            <rank-item
+              v-for="(item, index) in currentRanking"
+              :key="item.id"
+              :index="index"
+              :rankData="item"
+            ></rank-item>
+          </div>
         </div>
       </el-col>
       <el-col :span="12">
         <div class="box-wrap">
           <h2 class="-title-2 -border-header">Top sao công ty</h2>
-          <dashboard-checkin-chart :checkin-chart="checkinChart" />
+          <div v-loading="loadingCurrentRanking">
+            <p v-if="!accumulatedRanking.length" class="history__col__empty">
+              Không có dữ liệu
+            </p>
+            <rank-item
+              v-for="(item, index) in accumulatedRanking"
+              :key="item.id"
+              v-else
+              :index="index"
+              :rankData="item"
+            ></rank-item>
+          </div>
         </div>
       </el-col>
     </el-row>
@@ -49,6 +70,7 @@ import { GetterState, MutationState } from '@/constants/app.vuex';
 import DashboardCheckinChart from '@/components/Dashboard/DashboardCheckinChart.vue';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import CfrsRepository from '@/repositories/CfrsRepository';
+import RankItem from '@/components/cfrs/rank/RankItem.vue';
 
 @Component<HomePage>({
   head() {
@@ -58,6 +80,7 @@ import CfrsRepository from '@/repositories/CfrsRepository';
   },
   components: {
     DashboardCheckinChart,
+    RankItem,
   },
   async created() {
     if (!this.$route.query.cycleId) {
@@ -102,6 +125,7 @@ export default class HomePage extends Vue {
   }
 
   private async getListDataRanking() {
+    this.loadingCurrentRanking = true;
     try {
       const [accumulatedRanking, currentRanking] = await Promise.all([
         CfrsRepository.getRankingCfrs(0),
@@ -109,12 +133,28 @@ export default class HomePage extends Vue {
       ]);
       if (!!accumulatedRanking && !!accumulatedRanking.data) {
         this.accumulatedRanking = this.getTop6Rank(accumulatedRanking.data);
+        this.loadingCurrentRanking = false;
       }
       if (!!currentRanking && !!currentRanking.data) {
         this.currentRanking = this.getTop6Rank(currentRanking.data);
+        this.loadingCurrentRanking = false;
       }
-    } catch (error) {}
-    setTimeout(() => {}, 300);
+    } catch (error) {
+      this.loadingCurrentRanking = false;
+    }
+  }
+
+  @Watch('cycleId')
+  private async getRankingOnCycle(cycleId: number) {
+    this.loadingCurrentRanking = true;
+    try {
+      await CfrsRepository.getRankingCfrs(cycleId).then((res) => {
+        this.loadingCurrentRanking = false;
+        this.currentRanking = this.getTop6Rank(res.data);
+      });
+    } catch (error) {
+      this.loadingCurrentRanking = false;
+    }
   }
 
   private getTop6Rank(data: Object[]) {
