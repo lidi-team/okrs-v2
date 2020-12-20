@@ -19,7 +19,7 @@
       <el-col :span="12">
         <div class="box-wrap">
           <h2 class="-title-2 -border-header">Tình trạng cập nhật tiến độ</h2>
-          <dashboard-checkin-chart :checkin-chart="checkinChart"/>
+          <dashboard-checkin-chart :checkin-chart="checkinChart" />
         </div>
       </el-col>
       <el-col :span="12">hello</el-col>
@@ -33,7 +33,7 @@ import { mapGetters } from 'vuex';
 import CycleRepository from '@/repositories/CycleRepository';
 import { GetterState, MutationState } from '@/constants/app.vuex';
 import DashboardCheckinChart from '@/components/Dashboard/DashboardCheckinChart.vue';
-import CheckinRepository from '@/repositories/CheckinRepository'
+import CheckinRepository from '@/repositories/CheckinRepository';
 
 @Component<HomePage>({
   head() {
@@ -42,7 +42,7 @@ import CheckinRepository from '@/repositories/CheckinRepository'
     };
   },
   components: {
-    DashboardCheckinChart
+    DashboardCheckinChart,
   },
   async created() {
     if (!this.$route.query.cycleId) {
@@ -50,34 +50,36 @@ import CheckinRepository from '@/repositories/CheckinRepository'
     }
   },
   async mounted() {
-    this.currentCycleId = this.$route.query.cycleId || this.$store.state.cycle.cycleCurrent;
+    this.currentCycleId =
+      this.$route.query.cycleId || this.$store.state.cycle.cycleCurrent;
     this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.currentCycleId);
     await this.getCycles();
-    await this.getCheckinChart()
+    await this.getCheckinChart();
   },
 })
 export default class HomePage extends Vue {
   private loading: boolean = false;
   private cycles: any[] = [];
   private currentCycleId: string = '';
-  private checkinChart: any[] = []
+  private checkinChart: any[] = [];
 
   @Watch('$route.query')
-  private async getData() {
-  }
+  private async getData() {}
 
   private async getCycles() {
-    this.loading = true
+    this.loading = true;
     const { data } = await CycleRepository.getListMetadata();
     this.cycles = data || [];
-    this.loading = false
+    this.loading = false;
   }
 
   private async getCheckinChart() {
-    this.loading = true
-    const { data } = await CheckinRepository.getDashboard({ cycleId: this.currentCycleId })
-    this.checkinChart = data
-    this.loading = false
+    this.loading = true;
+    const { data } = await CheckinRepository.getDashboard({
+      cycleId: this.currentCycleId,
+    });
+    this.checkinChart = data;
+    this.loading = false;
   }
 
   private handleSelectCycle(cycleId: number) {
@@ -88,5 +90,4 @@ export default class HomePage extends Vue {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
-
 </style>

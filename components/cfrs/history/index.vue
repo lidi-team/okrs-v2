@@ -4,7 +4,7 @@
       <el-col :md="8" :lg="8">
         <div class="item-okrs box-wrap">
           <div class="-border-header">
-            <p class="-title-2">Ghi nhận {{ displayNameCfrs }} gửi đi</p>
+            <h2 class="-title-2">Ghi nhận {{ displayNameCfrs }} gửi đi</h2>
           </div>
           <div class="history__col--items">
             <div
@@ -69,7 +69,7 @@
       <el-col :md="8" :lg="8">
         <div class="item-okrs box-wrap">
           <div class="-border-header">
-            <p class="-title-2">Ghi nhận {{ displayNameCfrs }} nhận được</p>
+            <h2 class="-title-2">Ghi nhận {{ displayNameCfrs }} nhận được</h2>
           </div>
           <div class="history__col--items">
             <div
@@ -133,7 +133,7 @@
       <el-col :md="8" :lg="8">
         <div class="item-okrs box-wrap">
           <div class="-border-header">
-            <p class="-title-2">Ghi nhận toàn công ty</p>
+            <h2 class="-title-2">Ghi nhận toàn công ty</h2>
           </div>
           <div class="history__col--items">
             <div

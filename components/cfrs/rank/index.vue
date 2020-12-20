@@ -4,7 +4,7 @@
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <div class="box-wrap">
           <div class="-display-flex -justify-content-between -border-header">
-            <p class="-title-2" style="padding-bottom: 20px">BXH theo chu kỳ</p>
+            <h2 class="-title-2" style="padding-bottom: 20px">BXH theo chu kỳ</h2>
             <el-select
               v-model="cycleId"
               filterable
@@ -28,79 +28,31 @@
             Không có dữ liệu
           </p>
           <div v-else v-loading="loadingCurrentRanking">
-            <div
+            <rank-item
               v-for="(item, index) in currentRanking"
               :key="item.id"
-              class="rank-item"
-            >
-              <div class="rank-item__left">
-                <div :class="['rank-item__left__index', topRanking(index)]">
-                  <span>{{ index + 1 }}</span>
-                </div>
-                <el-avatar :size="40">
-                  <img
-                    :src="item.avatarUrl ? item.avatarUrl : item.gravatarURL"
-                    alt="avatar"
-                  />
-                </el-avatar>
-                <div class="rank-item__left__info">
-                  <p class="rank-item__left__info--fullname">
-                    {{ item.user_fullName }}
-                  </p>
-                  <p class="rank-item__left__info--department">
-                    phòng ban: {{ item.department }}
-                  </p>
-                </div>
-              </div>
-              <div class="rank-item__right">
-                {{ item.sum }}
-                <icon-star-dashboard />
-              </div>
-            </div>
+              :index="index"
+              :rankData="item"
+            ></rank-item>
           </div>
         </div>
       </el-col>
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <div class="box-wrap">
           <div class="-border-header">
-            <p class="-title-2" style="padding-bottom: 20px">
-              BXH lũy kế
-            </p>
+            <h2 class="-title-2" style="padding-bottom: 20px">BXH lũy kế</h2>
           </div>
 
           <p v-if="!accumulatedRanking.length" class="history__col__empty">
             Không có dữ liệu
           </p>
-          <div
+          <rank-item
             v-for="(item, index) in accumulatedRanking"
-            v-else
             :key="item.id"
-            class="rank-item"
-          >
-            <div class="rank-item__left">
-              <div :class="['rank-item__left__index', topRanking(index)]">
-                <span>{{ index + 1 }}</span>
-              </div>
-              <el-avatar :size="40">
-                <img
-                  :src="item.avatarUrl ? item.avatarUrl : item.gravatarURL"
-                  alt="avatar"
-                />
-              </el-avatar>
-              <div class="rank-item__left__info">
-                <p class="rank-item__left__info--fullname">
-                  {{ item.user_fullName }}
-                </p>
-                <p class="rank-item__left__info--department">
-                  phòng ban: {{ item.department }}
-                </p>
-              </div>
-            </div>
-            <div class="rank-item__right">
-              {{ item.sum }}
-              <icon-star-dashboard />
-            </div>
-          </div>
+            v-else
+            :index="index"
+            :rankData="item"
+          ></rank-item>
         </div>
       </el-col>
     </el-row>
@@ -113,11 +65,13 @@ import CfrsRepository from '@/repositories/CfrsRepository';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import CycleRepository from '@/repositories/CycleRepository';
 import { MutationState } from '@/constants/app.vuex';
+import RankItem from '@/components/cfrs/rank/RankItem.vue';
 
 @Component<Rank>({
   name: 'Rank',
   components: {
     IconStarDashboard,
+    RankItem,
   },
   async created() {
     await this.getListDataRanking();
@@ -147,6 +101,7 @@ export default class Rank extends Vue {
         CfrsRepository.getRankingCfrs(0),
         CfrsRepository.getRankingCfrs(this.$store.state.cycle.cycleCurrent),
       ]);
+      console.log('accumulatedRanking.data: ', accumulatedRanking.data);
       this.accumulatedRanking = accumulatedRanking.data;
       this.currentRanking = currentRanking.data;
     } catch (error) {}
