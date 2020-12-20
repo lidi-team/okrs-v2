@@ -4,7 +4,9 @@
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <div class="box-wrap">
           <div class="-display-flex -justify-content-between -border-header">
-            <h2 class="-title-2" style="padding-bottom: 20px">BXH theo chu kỳ</h2>
+            <h2 class="-title-2" style="padding-bottom: 20px">
+              BXH theo chu kỳ
+            </h2>
             <el-select
               v-model="cycleId"
               filterable
@@ -38,10 +40,7 @@
                   <span>{{ index + 1 }}</span>
                 </div>
                 <el-avatar :size="40">
-                  <img
-                    :src="item.avatarUrl ? item.avatarUrl : item.gravatarURL"
-                    alt="avatar"
-                  />
+                  <img :src="item.avatarUrl | filterImage" alt="avatar" />
                 </el-avatar>
                 <div class="rank-item__left__info">
                   <p class="rank-item__left__info--fullname">
@@ -63,9 +62,7 @@
       <el-col :xs="24" :sm="24" :md="12" :lg="12">
         <div class="box-wrap">
           <div class="-border-header">
-            <h2 class="-title-2" style="padding-bottom: 20px">
-              BXH lũy kế
-            </h2>
+            <h2 class="-title-2" style="padding-bottom: 20px">BXH lũy kế</h2>
           </div>
 
           <p v-if="!accumulatedRanking.length" class="history__col__empty">
@@ -82,10 +79,7 @@
                 <span>{{ index + 1 }}</span>
               </div>
               <el-avatar :size="40">
-                <img
-                  :src="item.avatarUrl | filterImage"
-                  alt="avatar"
-                />
+                <img :src="item.avatarUrl | filterImage" alt="avatar" />
               </el-avatar>
               <div class="rank-item__left__info">
                 <p class="rank-item__left__info--fullname">
