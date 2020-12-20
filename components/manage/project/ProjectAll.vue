@@ -1,82 +1,82 @@
 <template>
   <div>
-    <el-table
-      v-loading="loadingTable"
-      empty-text="Không có dữ liệu"
-      class="project-all"
-      :data="tableData"
-      style="width: 100%"
-    >
-      <el-table-column
-        prop="name"
-        label="Tên dự án"
-        min-width="150"
-      ></el-table-column>
-      <el-table-column label="Ngày bắt đầu">
-        <template v-slot="{ row }">
-          <!-- Vue Fileter Date Plugin -->
-          <span>{{ new Date(row.startDate) | dateFormat('DD/MM/YYYY') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Ngày kết thúc">
-        <template v-slot="{ row }">
-          <!-- Vue Fileter Date Plugin -->
-          <span>{{ new Date(row.endDate) | dateFormat('DD/MM/YYYY') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Quản lý">
-        <template v-slot="{ row }">
-          <span>{{ getManager(row.pmId) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Trạng thái">
-        <template slot-scope="{ row }">
-          <span
-            :class="
-              row.status
-                ? 'project-all--status__active'
-                : 'project-all--status__deactive'
-            "
-            >{{ row.status ? 'hoạt động' : 'Đã đóng' }}</span
-          >
-        </template>
-      </el-table-column>
-      <el-table-column label="Trọng số">
-        <template v-slot="{ row }">
-          <!-- Vue Fileter Date Plugin -->
-          <el-rate :value="row.weight" disabled />
-        </template>
-      </el-table-column>
-      <el-table-column label="Thao tác" align="center">
-        <template slot-scope="{ row }">
-          <div>
-            <el-tooltip
-              class="project-all__icon"
-              content="Chi tiết"
-              placement="left-end"
+    <div class="box-wrap">
+      <el-table
+        v-loading="loadingTable"
+        empty-text="Không có dữ liệu"
+        class="project-all"
+        :data="tableData"
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="name"
+          label="Tên dự án"
+          min-width="150"
+        ></el-table-column>
+        <el-table-column label="Ngày bắt đầu">
+          <template v-slot="{ row }">
+            <!-- Vue Fileter Date Plugin -->
+            <span>{{ new Date(row.startDate) | dateFormat('DD/MM/YYYY') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Ngày kết thúc">
+          <template v-slot="{ row }">
+            <!-- Vue Fileter Date Plugin -->
+            <span>{{ new Date(row.endDate) | dateFormat('DD/MM/YYYY') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Quản lý">
+          <template v-slot="{ row }">
+            <span>{{ getManager(row.pmId) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Trạng thái">
+          <template slot-scope="{ row }">
+            <span
+              :class="
+                row.status
+                  ? 'project-all--status__active'
+                  : 'project-all--status__deactive'
+              "
+              >{{ row.status ? 'hoạt động' : 'Đã đóng' }}</span
             >
-              <i
-                class="el-icon-s-order icon&#45;&#45;info"
-                @click="handleControlProject(row)"
-              ></i>
-            </el-tooltip>
-            <el-tooltip
-              v-if="user.roles.includes('ROLE_ADMIN')"
-              class="project-all__icon"
-              content="Cập nhật"
-              placement="right-end"
-            >
-              <i
-                class="el-icon-edit icon&#45;&#45;info"
-                @click="handleOpenDialogUpdate(row)"
-              ></i>
-            </el-tooltip>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <!-- update project dialog -->
+          </template>
+        </el-table-column>
+        <el-table-column label="Trọng số">
+          <template v-slot="{ row }">
+            <!-- Vue Fileter Date Plugin -->
+            <el-rate :value="row.weight" disabled />
+          </template>
+        </el-table-column>
+        <el-table-column label="Thao tác" align="center">
+          <template slot-scope="{ row }">
+            <div>
+              <el-tooltip
+                class="project-all__icon"
+                content="Chi tiết"
+                placement="left-end"
+              >
+                <i
+                  class="el-icon-s-order icon&#45;&#45;info"
+                  @click="handleControlProject(row)"
+                ></i>
+              </el-tooltip>
+              <el-tooltip
+                v-if="user.roles.includes('ROLE_ADMIN')"
+                class="project-all__icon"
+                content="Cập nhật"
+                placement="right-end"
+              >
+                <i
+                  class="el-icon-edit icon&#45;&#45;info"
+                  @click="handleOpenDialogUpdate(row)"
+                ></i>
+              </el-tooltip>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <el-dialog
       class="update-employee"
       :visible.sync="dialogUpdateVisible"
@@ -228,7 +228,6 @@
         >
       </span>
     </el-dialog>
-    <!-- end update project dialog -->
   </div>
 </template>
 <script lang="ts">

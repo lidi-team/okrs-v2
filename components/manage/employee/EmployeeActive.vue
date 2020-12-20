@@ -1,76 +1,78 @@
 <template>
   <div>
-    <el-table
-      v-loading="loadingTable"
-      empty-text="Không có dữ liệu"
-      class="employee-active"
-      :data="tableData"
-      style="width: 100%"
-    >
-      <el-table-column
-        prop="fullName"
-        label="Tên đầy đủ"
-        min-width="150"
-      ></el-table-column>
-      <el-table-column
-        prop="email"
-        label="Email"
-        min-width="180"
-      ></el-table-column>
-      <el-table-column label="Phòng ban" min-width="150">
-        <template slot-scope="{ row }">
-          <span>{{ row.department.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column prop="role" label="Vai trò" min-width="150">
-        <template slot-scope="{ row }">
-          <span>{{ displayRoleName(row.roles) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Giới tính">
-        <template slot-scope="{ row }">
-          <span>{{ row.gender == 0 ? 'Nữ' : 'Nam' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Trạng thái">
-        <template slot-scope="{ row }">
-          <span>{{ row.isActive ? 'hoạt động' : 'tạm khóa' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Thao tác" align="center">
-        <template slot-scope="{ row }">
-          <div class="employee-active__action">
-            <el-tooltip
-              class="employee-active__icon"
-              content="Cập nhật"
-              placement="left-end"
-            >
-              <i
-                class="el-icon-edit icon--info"
-                @click="handleOpenDialogUpdate(row)"
-              ></i>
-            </el-tooltip>
-            <el-tooltip
-              v-if="isEditable(row.roles)"
-              class="employee-active__icon"
-              :content="
-                row.isActive ? 'Deactive tài khoản' : 'Active tài khoản'
-              "
-              placement="right-end"
-            >
-              <i
-                :class="
-                  row.isActive
-                    ? 'el-icon-lock icon--delete'
-                    : 'el-icon-unlock icon--warning'
+    <div class="box-wrap">
+      <el-table
+        v-loading="loadingTable"
+        empty-text="Không có dữ liệu"
+        class="employee-active"
+        :data="tableData"
+        style="width: 100%"
+      >
+        <el-table-column
+          prop="fullName"
+          label="Tên đầy đủ"
+          min-width="150"
+        ></el-table-column>
+        <el-table-column
+          prop="email"
+          label="Email"
+          min-width="180"
+        ></el-table-column>
+        <el-table-column label="Phòng ban" min-width="150">
+          <template slot-scope="{ row }">
+            <span>{{ row.department.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="role" label="Vai trò" min-width="150">
+          <template slot-scope="{ row }">
+            <span>{{ displayRoleName(row.roles) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Giới tính">
+          <template slot-scope="{ row }">
+            <span>{{ row.gender == 0 ? 'Nữ' : 'Nam' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Trạng thái">
+          <template slot-scope="{ row }">
+            <span>{{ row.isActive ? 'hoạt động' : 'tạm khóa' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Thao tác" align="center">
+          <template slot-scope="{ row }">
+            <div class="employee-active__action">
+              <el-tooltip
+                class="employee-active__icon"
+                content="Cập nhật"
+                placement="left-end"
+              >
+                <i
+                  class="el-icon-edit icon--info"
+                  @click="handleOpenDialogUpdate(row)"
+                ></i>
+              </el-tooltip>
+              <el-tooltip
+                v-if="isEditable(row.roles)"
+                class="employee-active__icon"
+                :content="
+                  row.isActive ? 'Deactive tài khoản' : 'Active tài khoản'
                 "
-                @click="changeUserStatus(row)"
-              ></i>
-            </el-tooltip>
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
+                placement="right-end"
+              >
+                <i
+                  :class="
+                    row.isActive
+                      ? 'el-icon-lock icon--delete'
+                      : 'el-icon-unlock icon--warning'
+                  "
+                  @click="changeUserStatus(row)"
+                ></i>
+              </el-tooltip>
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
 
     <!-- update user dialog -->
     <el-dialog
@@ -173,7 +175,6 @@
         >
       </span>
     </el-dialog>
-    <!-- end update user dialog -->
   </div>
 </template>
 <script lang="ts">
