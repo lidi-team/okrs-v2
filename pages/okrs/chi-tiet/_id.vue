@@ -2,7 +2,7 @@
   <div class="okrs-detail">
     <el-page-header title="Quay lại" @back="goBack" />
     <div class="okrs-detail--top-action">
-      <span class="okrs-detail--top-action__title">Chi tiết mục tiêu</span>
+      <h1 class="-title-1">Chi tiết mục tiêu</h1>
     </div>
     <div class="okrs-detail__content">
       <div class="okrs-detail__content--overview box-wrap">
@@ -22,7 +22,7 @@
         >
         <nuxt-link
           :to="objective.parentObjective
-              ? `/OKRs/chi-tiet/${objective.parentObjective.id}`
+              ? `/okrs/chi-tiet/${objective.parentObjective.id}`
               : '#'
           "
           class="parentOkrs"
@@ -41,7 +41,7 @@
             :key="item.id"
             class="alignedOkrs"
           >
-            <nuxt-link :to="`/OKRs/chi-tiet/${item.id}`">{{ item.name }}</nuxt-link
+            <nuxt-link :to="`/okrs/chi-tiet/${item.id}`">{{ item.name }}</nuxt-link
             >
           </p>
         </div>
@@ -103,13 +103,9 @@ export default class OkrsDetailPage extends Vue {
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .okrs-detail {
-  padding: $unit-12 $unit-10 0 $unit-8;
   &--top-action {
     display: flex;
     place-content: center space-between;
-    &__title {
-      font-size: $unit-7;
-    }
   }
   &__content {
     &--overview {
@@ -161,7 +157,6 @@ export default class OkrsDetailPage extends Vue {
       }
     }
     &--detail {
-      @include box-okrs-detail;
       margin-top: $unit-5;
       &__header {
         display: grid;

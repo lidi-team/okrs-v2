@@ -47,21 +47,6 @@
           <p :class="row.changing | getStatusOfProgress">{{ row.changing }}%</p>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="Thay đổi" width="100" align="center">
-        <template v-slot="{ row }">
-          <div class="item__action">
-            <p :class="row.changing | getStatusOfProgress">{{ row.changing }}%</p>
-            <okrs-action-tooltip
-              :reload-data="reloadData"
-              :editable="showKeyResult(1)"
-              :okrs-id.sync="row.id"
-              :temp-okrs="row"
-              :is-root-okrs="row.changing"
-              @updateTempOkrs="showKeyResult($event)"
-            />
-          </div>
-        </template>
-      </el-table-column> -->
       <el-table-column label="Loại" width="200" prop="type" align="center">
       </el-table-column>
       <el-table-column label="Hành động" align="right" width="150">
@@ -99,7 +84,7 @@ import DrawerObjective from '@/components/drill-down/DrawerObjective.vue';
 import DrillDownRepository from '@/repositories/DrillDownRepository';
 import { filterKeyresults } from '@/utils/filters';
 import { customColors, getStatusOfProgress } from '@/utils/common';
-import KeyResult from '@/components/okrs/items/kr.vue';
+import KeyResult from '@/components/okrs/OkrsKeyResult/OkrsKeyResultTableOverview.vue';
 
 @Component<DrillDownPage>({
   name: 'DrillDownPage',

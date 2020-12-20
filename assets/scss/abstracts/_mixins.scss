@@ -223,12 +223,6 @@ $breakpoints: (
   border-top: 1px solid $gray-primary-1;
 }
 
-@mixin box-okrs-detail {
-  padding: $unit-5;
-  border-radius: $border-radius-base;
-  background-color: $white;
-}
-
 @mixin drop-shadow {
   filter: drop-shadow(0px 0px 0px rgba(63, 63, 68, 0.05)),
     drop-shadow(0px 1px 3px rgba(63, 63, 68, 0.15));
@@ -250,30 +244,15 @@ $breakpoints: (
 }
 
 @mixin box-middle {
-  box-shadow: 0px 2px 5px rgba(33, 43, 54, 0.1), 0px 2px 10px #212b3626;
-  border-radius: 10px;
+  border: 1px #dcdfe6 solid;
+  border-radius: 7px;
   padding: $unit-7;
   background: white;
   margin: 0 0 $unit-7 0;
-  transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-  &::after {
-    content: '';
-    border-radius: 10px;
-    position: absolute;
-    z-index: -1;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    opacity: 0;
-    -webkit-transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-  }
   &:hover {
-    transform: scale(1.005, 1.005);
-    &::after {
-      opacity: 1;
-    }
+    transform: scale(1.005);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px #c0c4cc solid;
+    box-shadow: 0px 2px 5px rgba(33, 43, 54, 0.1), 0px 2px 10px #212b3626;
   }
 }

@@ -44,7 +44,7 @@
         <div class="box-wrap height-290">
           <h2 class="-title-2 -border-header">Tiến độ gợi ý</h2>
           <div class="-text-center">
-            <el-progress class="-mt-3" type="dashboard" :percentage="progressSuggest" :color="customColors" :stroke-width="10"></el-progress>
+            <el-progress class="-mt-3" type="dashboard" :percentage="progressSuggest | verifyProgress" :color="customColors" :stroke-width="10"></el-progress>
           </div>
         </div>
       </el-col>
@@ -256,7 +256,6 @@ export default class DetailHistory extends Vue {
     const progressAll = this.syncCheckin.checkinDetail.reduce(count, 0)
     const progressSuggest = progressAll / this.syncCheckin.checkinDetail.length
     this.progressSuggest = Math.round(progressSuggest * 100) / 100
-    this.progressSuggest = this.progressSuggest !== Infinity ? this.progressSuggest : 0
   }
 
   private checkRender() {

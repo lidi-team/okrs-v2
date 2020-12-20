@@ -172,6 +172,8 @@ export default class ManageEmployee extends Vue {
   }
   &__pagination {
     margin-top: $unit-8;
+    display: flex;
+    justify-content: center;
   }
 }
 </style>

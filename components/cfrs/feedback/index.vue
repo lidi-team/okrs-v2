@@ -29,19 +29,13 @@
                 viewDetailCheckin(item, listWaitingFeedback.inferior.type)
               "
             >
-              <el-avatar>
+              <el-avatar :size="40">
                 <img
-                  v-if="item.objective.user.avatarUrl"
-                  :src="item.objective.user.avatarUrl"
+                  :src="item.objective.user.avatarUrl | filterImage"
                   alt="avatar"
-                />
-                <missing-avatar
-                  class="el-avatar--circle el-avatar--large"
-                  alt="avatar"
-                  v-else
                 />
               </el-avatar>
-              <div class="cfr__left__content">
+              <div class="cfr__left__content -ml-3">
                 <p class="cfr__left__content--title">
                   {{ item.objective.title }}
                 </p>
@@ -49,13 +43,13 @@
                   <p class="cfr__left__content--description">
                     {{ item.objective.user.fullName }}
                   </p>
-                  <p>
+                  <p class="cfr__left__content--date">
                     {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}
                   </p>
                 </div>
               </div>
             </div>
-            <div class="cfr__right">
+            <div class="cfr__right -ml-3">
               <el-button
                 class="el-button el-button--purple el-button-medium"
                 @click="
@@ -102,19 +96,13 @@
                 viewDetailCheckin(item, listWaitingFeedback.superior.type)
               "
             >
-              <el-avatar>
+              <el-avatar :size="40">
                 <img
-                  v-if="item.objective.user.avatarUrl"
-                  :src="item.objective.user.avatarUrl"
+                  :src="item.objective.user.avatarUrl | filterImage"
                   alt="avatar"
-                />
-                <missing-avatar
-                  class="el-avatar--circle el-avatar--large"
-                  alt="avatar"
-                  v-else
                 />
               </el-avatar>
-              <div class="cfr__left__content">
+              <div class="cfr__left__content -ml-3">
                 <p class="cfr__left__content--title">
                   {{ item.objective.title }}
                 </p>
@@ -122,13 +110,13 @@
                   <p class="cfr__left__content--description">
                     {{ item.reviewer.fullName }}
                   </p>
-                  <p>
+                  <p class="cfr__left__content--date">
                     {{ new Date(item.checkinAt) | dateFormat('DD/MM/YYYY') }}
                   </p>
                 </div>
               </div>
             </div>
-            <div class="cfr__right">
+            <div class="cfr__right -ml-3">
               <el-button
                 class="el-button el-button--purple el-button-medium"
                 @click="
@@ -168,7 +156,6 @@ import { ParamsQuery } from '@/constants/DTO/common';
 import CommonPagination from '@/components/Commons/CommonPagination.vue';
 import CfrsCreateFeedback from '@/components/cfrs/feedback/CreateFeedback.vue';
 import CfrsDetailFeedback from '@/components/cfrs/feedback/DetailFeedback.vue';
-import MissingAvatar from '@/assets/images/common/MissingAvatar.svg';
 
 @Component<Feedback>({
   name: 'Feedback',
@@ -176,7 +163,6 @@ import MissingAvatar from '@/assets/images/common/MissingAvatar.svg';
     CommonPagination,
     CfrsCreateFeedback,
     CfrsDetailFeedback,
-    MissingAvatar,
   },
   async created() {
     await this.getlistWaitingFeedbacks();
@@ -342,7 +328,7 @@ export default class Feedback extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @import '@/assets/scss/main.scss';
 
 .feedback {
@@ -396,15 +382,23 @@ export default class Feedback extends Vue {
 
     &__content {
       flex: 1;
-      margin: 0 $unit-4;
 
       &--title {
         font-weight: bold;
         font-size: $unit-4;
-        @include truncate-oneline;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        display: -webkit-box;
       }
 
       &--description {
+        font-size: 0.875rem;
+        color: $neutral-primary-3;
+        line-height: 23px;
+        padding-right: 10px;
+      }
+      &--date {
         font-size: 0.875rem;
         color: $neutral-primary-3;
         line-height: 23px;
@@ -415,10 +409,6 @@ export default class Feedback extends Vue {
     .el-avatar {
       align-self: center;
     }
-  }
-
-  &__right {
-    align-self: center;
   }
 }
 </style>

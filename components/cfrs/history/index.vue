@@ -4,7 +4,7 @@
       <el-col :md="8" :lg="8">
         <div class="item-okrs box-wrap">
           <div class="-border-header">
-            <h2 class="-title-2">Ghi nhận {{ displayNameCfrs }} gửi đi</h2>
+            <h2 class="-title-2">CFRs {{ displayNameCfrs }} gửi đi</h2>
           </div>
           <div class="history__col--items">
             <div
@@ -20,16 +20,10 @@
                     <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
                   </div>
                   <div class="icon__avatar">
-                    <el-avatar :size="30">
+                    <el-avatar :size="40">
                       <img
-                        v-if="item.receiver.avatarUrl"
-                        :src="item.receiver.avatarUrl"
+                        :src="item.receiver.avatarUrl | filterImage"
                         alt="avatar"
-                      />
-                      <missing-avatar
-                        class="el-avatar--circle avatar-default--m"
-                        alt="avatar"
-                        v-else
                       />
                     </el-avatar>
                   </div>
@@ -61,9 +55,7 @@
               @infinite="infiniteSentHandler"
             >
               <span slot="no-more"></span>
-              <p slot="no-results" class="history__col__empty">
-                Chưa có Ghi nhận
-              </p>
+              <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
             </infinite-loading>
           </div>
         </div>
@@ -71,7 +63,7 @@
       <el-col :md="8" :lg="8">
         <div class="item-okrs box-wrap">
           <div class="-border-header">
-            <h2 class="-title-2">Ghi nhận {{ displayNameCfrs }} nhận được</h2>
+            <h2 class="-title-2">CFRs {{ displayNameCfrs }} nhận được</h2>
           </div>
           <div class="history__col--items">
             <div
@@ -86,16 +78,10 @@
                     <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
                   </div>
                   <div class="icon__avatar">
-                    <el-avatar :size="30">
+                    <el-avatar :size="40">
                       <img
-                        v-if="item.sender.avatarUrl"
-                        :src="item.sender.avatarUrl"
+                        :src="item.sender.avatarUrl | filterImage"
                         alt="avatar"
-                      />
-                      <missing-avatar
-                        class="el-avatar--circle avatar-default--m"
-                        alt="avatar"
-                        v-else
                       />
                     </el-avatar>
                   </div>
@@ -114,9 +100,7 @@
                 </div>
               </div>
               <div class="item__right">
-                <span class="item__right__value">{{
-                  item.evaluationCriteria.numberOfStar
-                }}</span>
+                <span class="item__right__value">{{ item.evaluationCriteria.numberOfStar }}</span>
                 <icon-star-dashboard />
               </div>
             </div>
@@ -127,9 +111,7 @@
               @infinite="infiniteReceivedHandler"
             >
               <span slot="no-more"></span>
-              <p slot="no-results" class="history__col__empty">
-                Chưa có Ghi nhận
-              </p>
+              <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
             </infinite-loading>
           </div>
         </div>
@@ -137,7 +119,7 @@
       <el-col :md="8" :lg="8">
         <div class="item-okrs box-wrap">
           <div class="-border-header">
-            <h2 class="-title-2">Ghi nhận toàn công ty</h2>
+            <h2 class="-title-2">CFRs toàn công ty</h2>
           </div>
           <div class="history__col--items">
             <div
@@ -152,16 +134,10 @@
                     <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
                   </div>
                   <div class="icon__avatar">
-                    <el-avatar :size="30">
+                    <el-avatar :size="40">
                       <img
-                        v-if="item.receiver.avatarUrl"
-                        :src="item.receiver.avatarUrl"
+                        :src="item.receiver.avatarUrl | filterImage"
                         alt="avatar"
-                      />
-                      <missing-avatar
-                        class="el-avatar--circle avatar-default--m"
-                        alt="avatar"
-                        v-else
                       />
                     </el-avatar>
                   </div>
@@ -198,9 +174,7 @@
                 </div>
               </div>
               <div class="item__right">
-                <span class="item__right__value">{{
-                  item.evaluationCriteria.numberOfStar
-                }}</span>
+                <span class="item__right__value">{{ item.evaluationCriteria.numberOfStar }}</span>
                 <icon-star-dashboard />
               </div>
             </div>
@@ -211,9 +185,7 @@
               @infinite="infiniteAllHandler"
             >
               <span slot="no-more"></span>
-              <p slot="no-results" class="history__col__empty">
-                Chưa có Ghi nhận
-              </p>
+              <p slot="no-results" class="history__col__empty">Chưa có CFRs</p>
             </infinite-loading>
           </div>
         </div>
@@ -239,7 +211,6 @@ import CfrsRepository from '@/repositories/CfrsRepository';
 import { MutationState } from '@/constants/app.vuex';
 // components
 import CfrsDetailHistory from '@/components/cfrs/history/DetailHistory.vue';
-import MissingAvatar from '@/assets/images/common/MissingAvatar.svg';
 
 @Component<History>({
   name: 'History',
@@ -247,7 +218,6 @@ import MissingAvatar from '@/assets/images/common/MissingAvatar.svg';
     IconStarDashboard,
     InfiniteLoading,
     CfrsDetailHistory,
-    MissingAvatar,
   },
   beforeCreate() {
     this.$store.commit(

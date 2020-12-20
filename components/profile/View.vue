@@ -33,12 +33,7 @@
               @crop-success="cropSuccess"
             />
             <el-avatar :size="120">
-              <img v-if="avatarUrl" :src="avatarUrl" alt="avatar" />
-              <missing-avatar
-                class="el-avatar--circle avatar-default--xl"
-                alt="avatar"
-                v-else
-              />
+              <img :src="avatarUrl | filterImage" alt="avatar" />
             </el-avatar>
             <el-button
               :loading="loading"
@@ -112,7 +107,7 @@
                   </el-col>
                   <el-col :sm="24" :md="12">
                     <el-form-item prop="position" label="Vai trò">
-                      <div :key="role" v-for="role in profileForm.roles">
+                      <div v-bind:key="role" v-for="role in profileForm.roles">
                         <el-tag>
                           {{ getRole(role) }}
                         </el-tag>
@@ -139,9 +134,8 @@ import UserRepository from '@/repositories/UserRepository';
 import { Maps, Rule } from '@/constants/app.type';
 import { GetterState, MutationState } from '@/constants/app.vuex';
 import { formatDateToDD } from '@/utils/dateParser';
-import MissingAvatar from '@/assets/images/common/MissingAvatar.svg';
 
-import CommonFlameUpload from '@/components/Commons/CommonUploadAvatar.vue';
+import CommonFlameUpload from '@/components/Commons/CommonUploadAvatart.vue';
 import S3Service from '@/repositories/S3AwsRepository';
 import RandomNumber from '@/utils/randomNumber';
 import { getUserRole } from '@/utils/filters';
@@ -150,7 +144,6 @@ import { getUserRole } from '@/utils/filters';
   name: 'ViewProfile',
   components: {
     CommonFlameUpload,
-    MissingAvatar,
   },
   created() {
     this.getProfile();

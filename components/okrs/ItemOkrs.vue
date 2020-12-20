@@ -87,7 +87,7 @@
         <template v-slot="{ row }">
           <p
             v-if="row.keyResults.length"
-            class="item__krs"
+            class="el-link"
             @click="emitDrawer(row.keyResults)"
           >
             {{ row.keyResults.length }} kết quả
@@ -221,13 +221,6 @@ export default class OKRsItem extends Vue {
     color: $neutral-primary-4;
     margin-top: $unit-8;
     @include drop-shadow;
-    &__krs {
-      color: $purple-primary-8;
-      &:hover {
-        color: $purple-primary-7;
-      }
-      cursor: pointer;
-    }
     &__progress {
       width: 250px;
     }

@@ -44,7 +44,7 @@ export default class OkrsActionTooltip extends Vue {
   @Prop(Boolean) private canUpdate!: Boolean;
 
   private viewDetailOkrs() {
-    this.$router.push(`/OKRs/chi-tiet/${this.id}`);
+    this.$router.push(`/okrs/chi-tiet/${this.id}`);
   }
 
   private updateOKRs() {
