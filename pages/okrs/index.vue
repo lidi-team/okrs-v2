@@ -25,7 +25,10 @@
       name-objective="Công ty"
       class="btn-create-objective-company"
     />
-    <div>
+    <p v-if="projects.length === 0">
+      Bạn đang không tham gia dự án nào
+    </p>
+    <div v-else>
       <item-okrs
         v-for="item in projects"
         :key="item.id"
