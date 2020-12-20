@@ -24,6 +24,20 @@
       </el-col>
       <el-col :span="12">hello</el-col>
     </el-row>
+    <el-row :gutter="20">
+      <el-col :span="12">
+        <div class="box-wrap">
+          <h2 class="-title-2 -border-header">Top sao trong kỳ</h2>
+          <dashboard-checkin-chart :checkin-chart="checkinChart" />
+        </div>
+      </el-col>
+      <el-col :span="12">
+        <div class="box-wrap">
+          <h2 class="-title-2 -border-header">Top sao công ty</h2>
+          <dashboard-checkin-chart :checkin-chart="checkinChart" />
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -34,6 +48,7 @@ import CycleRepository from '@/repositories/CycleRepository';
 import { GetterState, MutationState } from '@/constants/app.vuex';
 import DashboardCheckinChart from '@/components/Dashboard/DashboardCheckinChart.vue';
 import CheckinRepository from '@/repositories/CheckinRepository';
+import CfrsRepository from '@/repositories/CfrsRepository';
 
 @Component<HomePage>({
   head() {
@@ -62,6 +77,9 @@ export default class HomePage extends Vue {
   private cycles: any[] = [];
   private currentCycleId: string = '';
   private checkinChart: any[] = [];
+  private accumulatedRanking: any = [];
+  private currentRanking: any = [];
+  private loadingCurrentRanking: boolean = false;
 
   @Watch('$route.query')
   private async getData() {}
@@ -80,6 +98,19 @@ export default class HomePage extends Vue {
     });
     this.checkinChart = data;
     this.loading = false;
+  }
+
+  private async getListDataRanking() {
+    try {
+      const [accumulatedRanking, currentRanking] = await Promise.all([
+        CfrsRepository.getRankingCfrs(0),
+        CfrsRepository.getRankingCfrs(this.$store.state.cycle.cycleCurrent),
+      ]);
+      console.log('accumulatedRanking.data: ', accumulatedRanking.data);
+      this.accumulatedRanking = accumulatedRanking.data;
+      this.currentRanking = currentRanking.data;
+    } catch (error) {}
+    setTimeout(() => {}, 300);
   }
 
   private handleSelectCycle(cycleId: number) {

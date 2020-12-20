@@ -1,19 +1,27 @@
 <template>
   <div class="header">
     <div class="-display-flex -justify-content-center -align-items-center">
-      <img class="logo-company" src="@/assets/images/common/sidebar/logo-demo.gif" alt="logo">
-      <p class="header__company"><span style="color: #32C8FF; font-weight: bold;">Lidi</span> corporation</p>
+      <img
+        class="logo-company"
+        src="@/assets/images/common/sidebar/logo-demo.gif"
+        alt="logo"
+      />
+      <p class="header__company">
+        <span style="color: #32c8ff; font-weight: bold">Lidi</span> corporation
+      </p>
     </div>
     <div v-if="user" class="header__info side-right">
       <div class="side-right__list">
         <el-dropdown class="side-right__item item" trigger="click">
           <div class="item__wrapper">
             <img
+              v-if="user.avatarUrl"
               :key="user.updateAvatarKey"
               :src="user.avatarUrl"
               alt="avatar"
               class="item__avatar"
             />
+            <missing-avatar alt="avatar" class="item__avatar" v-else />
             <div class="item__info info">
               <span class="info__name">
                 {{ user.fullName }}
@@ -88,6 +96,7 @@ import IconLesson from '@/assets/images/common/navbar/lesson-okrs.svg';
 import IconLogout from '@/assets/images/common/navbar/logout.svg';
 import IconProfile from '@/assets/images/common/navbar/profile.svg';
 import IconSetting from '@/assets/images/common/navbar/setting.svg';
+import MissingAvatar from '@/assets/images/common/MissingAvatar.svg';
 import IconHr from '@/assets/images/common/navbar/hr.svg';
 import { DispatchAction, GetterState } from '@/constants/app.vuex';
 import { filterUserRole } from '@/utils/filters';
@@ -101,6 +110,7 @@ import { filterUserRole } from '@/utils/filters';
     IconProfile,
     IconSetting,
     IconHr,
+    MissingAvatar,
   },
   computed: {
     ...mapGetters({
@@ -136,8 +146,8 @@ export default class Navbar extends Vue {
   align-items: center;
   height: 45px;
   padding: $unit-6 2rem;
-  border-bottom: 1px solid #E6E7EB;
-  border-top: 1px solid #E6E7EB;
+  border-bottom: 1px solid #e6e7eb;
+  border-top: 1px solid #e6e7eb;
   background: white;
 
   &__company {
@@ -231,7 +241,7 @@ export default class Navbar extends Vue {
 .info {
   &__name {
     font-size: $text-xs;
-    font-weight: bold
+    font-weight: bold;
   }
   &__role {
     font-size: $text-xs;
