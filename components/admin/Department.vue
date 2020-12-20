@@ -1,39 +1,35 @@
 <template>
   <div class="box-wrap" v-loading="loadingTable">
-    <el-table
-      :data="tableData"
-      empty-text="Không có dữ liệu"
-      class="team-admin"
-    >
-      <el-table-column prop="name" label="Tên phòng ban"></el-table-column>
-      <el-table-column prop="description" label="Mô tả"></el-table-column>
-      <!--<el-table-column label="Ngày cập nhật">
-        <template v-slot="{ row }">
-          &lt;!&ndash; Vue Fileter Date Plugin &ndash;&gt;
-          <span>{{ new Date(row.updatedAt) | dateFormat('DD/MM/YYYY') }}</span>
-        </template>
-      </el-table-column>-->
-      <el-table-column label="Thao tác" align="center">
-        <template v-slot="{ row }">
-          <el-tooltip class="team-admin__icon" content="Cập nhật" placement="top">
-            <i
-              class="el-icon-edit icon--info"
-              @click="handleOpenDialogUpdate(row)"
-            ></i>
-          </el-tooltip>
-          <el-tooltip class="team-admin__icon" content="Xóa" placement="top">
-            <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-    </el-table>
-    <common-pagination
-      class="-display-flex -justify-content-center -mt-4"
-      :total="total"
-      :page.sync="syncPage"
-      :limit.sync="syncLimit"
-      @pagination="handlePagination($event)"
-    />
+    <div>
+      <el-table
+        :data="tableData"
+        empty-text="Không có dữ liệu"
+        class="team-admin"
+      >
+        <el-table-column prop="name" label="Tên phòng ban"></el-table-column>
+        <el-table-column prop="description" label="Mô tả"></el-table-column>
+        <el-table-column label="Thao tác" align="center">
+          <template v-slot="{ row }">
+            <el-tooltip class="team-admin__icon" content="Cập nhật" placement="top">
+              <i
+                class="el-icon-edit icon--info"
+                @click="handleOpenDialogUpdate(row)"
+              ></i>
+            </el-tooltip>
+            <el-tooltip class="team-admin__icon" content="Xóa" placement="top">
+              <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+      <common-pagination
+        class="-display-flex -justify-content-center -mt-4"
+        :total="total"
+        :page.sync="syncPage"
+        :limit.sync="syncLimit"
+        @pagination="handlePagination($event)"
+      />
+    </div>
     <el-dialog
       title="Cập nhật phòng ban"
       :visible.sync="dialogUpdateVisible"

@@ -106,7 +106,9 @@ export default class HomePage extends Vue {
   private loadingCurrentRanking: boolean = false;
 
   @Watch('$route.query')
-  private async getData() {}
+  private async getData(query: any) {
+    this.getRankingOnCycle(query.cycleId);
+  }
 
   private async getCycles() {
     this.loading = true;
@@ -144,7 +146,7 @@ export default class HomePage extends Vue {
     }
   }
 
-  @Watch('cycleId')
+
   private async getRankingOnCycle(cycleId: number) {
     this.loadingCurrentRanking = true;
     try {
