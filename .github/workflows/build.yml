@@ -16,9 +16,6 @@ jobs:
 
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Setup Node version
         uses: actions/setup-node@v1
         with:
@@ -38,6 +35,7 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install packages
         run: yarn install
+
 
       - name: Run Unit Test
         run: yarn test:cov
