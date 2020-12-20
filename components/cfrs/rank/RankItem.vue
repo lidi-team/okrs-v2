@@ -5,9 +5,11 @@
         <span>{{ index + 1 }}</span>
       </div>
       <el-avatar :size="40">
-        <img
-          :src="rankData.avatarUrl ? rankData.avatarUrl : rankData.gravatarURL"
+        <img v-if="rankData.avatarUrl" :src="rankData.avatarUrl" alt="avatar" />
+        <missing-avatar
+          class="el-avatar--circle el-avatar--large"
           alt="avatar"
+          v-else
         />
       </el-avatar>
       <div class="rank-item__left__info">
@@ -29,11 +31,13 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
+import MissingAvatar from '@/assets/images/common/MissingAvatar.svg';
 
 @Component<RankItem>({
   name: 'RankItem',
   components: {
     IconStarDashboard,
+    MissingAvatar,
   },
 })
 export default class RankItem extends Vue {

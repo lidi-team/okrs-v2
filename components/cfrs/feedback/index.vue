@@ -29,14 +29,16 @@
                 viewDetailCheckin(item, listWaitingFeedback.inferior.type)
               "
             >
-              <el-avatar :size="30">
+              <el-avatar>
                 <img
-                  :src="
-                    item.objective.user.avatarUrl
-                      ? item.objective.user.avatarUrl
-                      : item.objective.user.gravatarUrl
-                  "
+                  v-if="item.objective.user.avatarUrl"
+                  :src="item.objective.user.avatarUrl"
                   alt="avatar"
+                />
+                <missing-avatar
+                  class="el-avatar--circle el-avatar--large"
+                  alt="avatar"
+                  v-else
                 />
               </el-avatar>
               <div class="cfr__left__content">
@@ -100,14 +102,16 @@
                 viewDetailCheckin(item, listWaitingFeedback.superior.type)
               "
             >
-              <el-avatar :size="30">
+              <el-avatar>
                 <img
-                  :src="
-                    item.objective.user.avatarUrl
-                      ? item.objective.user.avatarUrl
-                      : item.objective.user.gravatarUrl
-                  "
+                  v-if="item.objective.user.avatarUrl"
+                  :src="item.objective.user.avatarUrl"
                   alt="avatar"
+                />
+                <missing-avatar
+                  class="el-avatar--circle el-avatar--large"
+                  alt="avatar"
+                  v-else
                 />
               </el-avatar>
               <div class="cfr__left__content">
@@ -164,6 +168,7 @@ import { ParamsQuery } from '@/constants/DTO/common';
 import CommonPagination from '@/components/Commons/CommonPagination.vue';
 import CfrsCreateFeedback from '@/components/cfrs/feedback/CreateFeedback.vue';
 import CfrsDetailFeedback from '@/components/cfrs/feedback/DetailFeedback.vue';
+import MissingAvatar from '@/assets/images/common/MissingAvatar.svg';
 
 @Component<Feedback>({
   name: 'Feedback',
@@ -171,6 +176,7 @@ import CfrsDetailFeedback from '@/components/cfrs/feedback/DetailFeedback.vue';
     CommonPagination,
     CfrsCreateFeedback,
     CfrsDetailFeedback,
+    MissingAvatar,
   },
   async created() {
     await this.getlistWaitingFeedbacks();
@@ -336,7 +342,7 @@ export default class Feedback extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 
 .feedback {

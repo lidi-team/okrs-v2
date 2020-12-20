@@ -34,9 +34,11 @@
           >
             <div style="display: flex">
               <el-avatar :size="25" style="align-self: center">
-                <img
-                  :src="user.avatarUrl ? user.avatarUrl : user.gravatarURL"
+                <img v-if="user.avatarUrl" :src="user.avatarUrl" alt="avatar" />
+                <missing-avatar
                   alt="avatar"
+                  class="el-avatar--circle avatar-default--s"
+                  v-else
                 />
               </el-avatar>
               <span style="margin-left: 0.5rem">{{ user.fullName }}</span>
@@ -112,6 +114,7 @@
 import { Component, Prop, PropSync, Vue } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
+import MissingAvatar from '@/assets/images/common/MissingAvatar.svg';
 import { confirmWarningConfig } from '@/constants/app.constant';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import CfrsRepository from '@/repositories/CfrsRepository';
@@ -135,6 +138,7 @@ import { GetterState } from '@/constants/app.vuex';
   },
   components: {
     IconStarDashboard,
+    MissingAvatar,
   },
   mounted() {
     this.loadingForm = true;

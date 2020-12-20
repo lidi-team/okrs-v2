@@ -22,12 +22,14 @@
                   <div class="icon__avatar">
                     <el-avatar :size="30">
                       <img
-                        :src="
-                          item.receiver.avatarUrl
-                            ? item.receiver.avatarUrl
-                            : item.receiver.gravatarUrl
-                        "
+                        v-if="item.receiver.avatarUrl"
+                        :src="item.receiver.avatarUrl"
                         alt="avatar"
+                      />
+                      <missing-avatar
+                        class="el-avatar--circle avatar-default--m--m"
+                        alt="avatar"
+                        v-else
                       />
                     </el-avatar>
                   </div>
@@ -86,12 +88,14 @@
                   <div class="icon__avatar">
                     <el-avatar :size="30">
                       <img
-                        :src="
-                          item.sender.avatarUrl
-                            ? item.sender.avatarUrl
-                            : item.sender.gravatarUrl
-                        "
+                        v-if="item.sender.avatarUrl"
+                        :src="item.sender.avatarUrl"
                         alt="avatar"
+                      />
+                      <missing-avatar
+                        class="el-avatar--circle avatar-default--m"
+                        alt="avatar"
+                        v-else
                       />
                     </el-avatar>
                   </div>
@@ -150,12 +154,14 @@
                   <div class="icon__avatar">
                     <el-avatar :size="30">
                       <img
-                        :src="
-                          item.receiver.avatarUrl
-                            ? item.receiver.avatarUrl
-                            : item.receiver.gravatarUrl
-                        "
+                        v-if="item.receiver.avatarUrl"
+                        :src="item.receiver.avatarUrl"
                         alt="avatar"
+                      />
+                      <missing-avatar
+                        class="el-avatar--circle avatar-default--m"
+                        alt="avatar"
+                        v-else
                       />
                     </el-avatar>
                   </div>
@@ -233,6 +239,7 @@ import CfrsRepository from '@/repositories/CfrsRepository';
 import { MutationState } from '@/constants/app.vuex';
 // components
 import CfrsDetailHistory from '@/components/cfrs/history/DetailHistory.vue';
+import MissingAvatar from '@/assets/images/common/MissingAvatar.svg';
 
 @Component<History>({
   name: 'History',
@@ -240,6 +247,7 @@ import CfrsDetailHistory from '@/components/cfrs/history/DetailHistory.vue';
     IconStarDashboard,
     InfiniteLoading,
     CfrsDetailHistory,
+    MissingAvatar,
   },
   beforeCreate() {
     this.$store.commit(
