@@ -1,6 +1,6 @@
 <template>
   <el-row v-if="currentTabComponent === 'history'" class="navbar-history">
-    <el-col :xs="8" :sm="8" :md="8" :lg="8">
+    <el-col :xs="24" :sm="24" :md="24" :lg="24">
       <el-select
         v-if="listCycles.length > 0"
         v-model.number="cycleId"
@@ -16,7 +16,7 @@
         />
       </el-select>
     </el-col>
-    <el-col :xs="12" :sm="12" :md="12" :lg="12">
+    <!--<el-col :xs="12" :sm="12" :md="12" :lg="12">
       <el-autocomplete
         v-model="textSearch"
         prefix-icon="el-icon-search"
@@ -33,18 +33,18 @@
                 alt="avatar"
               />
             </el-avatar>
-            <div class="navbar-history__search--info">
-              <b class="navbar-history__search--info--fullName">{{
+            <div class="navbar-history__search&#45;&#45;info">
+              <b class="navbar-history__search&#45;&#45;info&#45;&#45;fullName">{{
                 item.fullName
               }}</b>
-              <p class="navbar-history__search--info--department">
+              <p class="navbar-history__search&#45;&#45;info&#45;&#45;department">
                 {{ getInforUser(item) }}
               </p>
             </div>
           </div>
         </template>
       </el-autocomplete>
-    </el-col>
+    </el-col>-->
   </el-row>
 </template>
 <script lang="ts">
