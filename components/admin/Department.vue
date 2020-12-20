@@ -1,7 +1,8 @@
 <template>
-  <div class="box-wrap" v-loading="loadingTable">
-    <div>
+  <div>
+    <div class="box-wrap">
       <el-table
+        v-loading="loadingTable"
         :data="tableData"
         empty-text="Không có dữ liệu"
         class="team-admin"

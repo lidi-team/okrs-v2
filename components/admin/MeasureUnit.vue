@@ -1,7 +1,8 @@
 <template>
-  <div class="box-wrap" v-loading="loadingTable">
-    <div>
+  <div>
+    <div class="box-wrap">
       <el-table
+        v-loading="loadingTable"
         :data="tableData"
         empty-text="Không có dữ liệu"
         class="unit-admin"
@@ -100,7 +101,6 @@
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
-
 import { max255Char } from '@/constants/account.constant';
 import {
   notificationConfig,
@@ -110,7 +110,6 @@ import { Maps, Rule } from '@/constants/app.type';
 import { MeasureUnitDTO } from '@/constants/app.interface';
 import { AdminTabsEn } from '@/constants/app.enum';
 import MeasureUnitRepository from '@/repositories/MeasureRepository';
-
 import CommonPagination from '@/components/Commons/CommonPagination.vue';
 
 @Component<ManageMeasureUnit>({
