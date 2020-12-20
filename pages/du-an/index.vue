@@ -25,22 +25,13 @@
       :label="convertLabel(tab)"
       :name="tab"
     ></el-tab-pane>
-    <div>
-      <component
-        :is="tabComponent"
-        :table-data="tableData"
-        :get-list-project="getListProjects"
-        :managers="managers"
-        :original-projects="originalProjects"
-      />
-      <common-pagination
-        class="manage-project__pagination"
-        :total="meta.totalItems"
-        :page.sync="paramsProject.page"
-        :limit.sync="paramsProject.limit"
-        @pagination="handlePagination($event)"
-      />
-    </div>
+    <component
+      :is="tabComponent"
+      :table-data="tableData"
+      :get-list-project="getListProjects"
+      :managers="managers"
+      :original-projects="originalProjects"
+    />
     <project-dialog
       :visible-dialog.sync="visibleDialog"
       :reload-data="getListProjects"

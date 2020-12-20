@@ -57,7 +57,7 @@
                 placement="left-end"
               >
                 <i
-                  class="el-icon-s-order icon&#45;&#45;info"
+                  class="el-icon-s-order icon--purple"
                   @click="handleControlProject(row)"
                 ></i>
               </el-tooltip>
@@ -68,7 +68,7 @@
                 placement="right-end"
               >
                 <i
-                  class="el-icon-edit icon&#45;&#45;info"
+                  class="el-icon-edit icon--info"
                   @click="handleOpenDialogUpdate(row)"
                 ></i>
               </el-tooltip>

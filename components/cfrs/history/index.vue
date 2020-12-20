@@ -20,7 +20,7 @@
                     <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
                   </div>
                   <div class="icon__avatar">
-                    <el-avatar :size="40">
+                    <el-avatar :size="32">
                       <img
                         :src="item.receiver.avatarUrl | filterImage"
                         alt="avatar"
@@ -78,7 +78,7 @@
                     <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
                   </div>
                   <div class="icon__avatar">
-                    <el-avatar :size="40">
+                    <el-avatar :size="32">
                       <img
                         :src="item.sender.avatarUrl | filterImage"
                         alt="avatar"
@@ -134,7 +134,7 @@
                     <span>{{ item.type === 'recognition' ? 'R' : 'F' }}</span>
                   </div>
                   <div class="icon__avatar">
-                    <el-avatar :size="40">
+                    <el-avatar :size="32">
                       <img
                         :src="item.receiver.avatarUrl | filterImage"
                         alt="avatar"

@@ -57,9 +57,6 @@ import UserRepository from '@/repositories/UserRepository';
   created() {
     this.getAllCycles();
   },
-  mounted() {
-    this.getAllUsers();
-  },
   destroyed() {
     this.$store.commit(MutationState.SET_USERS, []);
     this.$store.commit(MutationState.SET_TEMP_USER, null);
