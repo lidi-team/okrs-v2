@@ -149,8 +149,8 @@ export default class HomePage extends Vue {
     this.loadingCurrentRanking = true;
     try {
       await CfrsRepository.getRankingCfrs(cycleId).then((res) => {
-        this.loadingCurrentRanking = false;
         this.currentRanking = this.getTop6Rank(res.data);
+        this.loadingCurrentRanking = false;
       });
     } catch (error) {
       this.loadingCurrentRanking = false;
