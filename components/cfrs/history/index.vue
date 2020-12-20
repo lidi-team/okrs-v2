@@ -27,7 +27,7 @@
                         alt="avatar"
                       />
                       <missing-avatar
-                        class="el-avatar--circle avatar-default--m--m"
+                        class="el-avatar--circle avatar-default--m"
                         alt="avatar"
                         v-else
                       />

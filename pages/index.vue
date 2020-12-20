@@ -70,6 +70,7 @@ import CfrsRepository from '@/repositories/CfrsRepository';
     this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.currentCycleId);
     await this.getCycles();
     await this.getCheckinChart();
+    await this.getListDataRanking();
   },
 })
 export default class HomePage extends Vue {
@@ -106,11 +107,18 @@ export default class HomePage extends Vue {
         CfrsRepository.getRankingCfrs(0),
         CfrsRepository.getRankingCfrs(this.$store.state.cycle.cycleCurrent),
       ]);
-      console.log('accumulatedRanking.data: ', accumulatedRanking.data);
-      this.accumulatedRanking = accumulatedRanking.data;
-      this.currentRanking = currentRanking.data;
+      if (!!accumulatedRanking && !!accumulatedRanking.data) {
+        this.accumulatedRanking = this.getTop6Rank(accumulatedRanking.data);
+      }
+      if (!!currentRanking && !!currentRanking.data) {
+        this.currentRanking = this.getTop6Rank(currentRanking.data);
+      }
     } catch (error) {}
     setTimeout(() => {}, 300);
+  }
+
+  private getTop6Rank(data: Object[]) {
+    return data.slice(0, 5);
   }
 
   private handleSelectCycle(cycleId: number) {
