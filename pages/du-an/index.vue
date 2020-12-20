@@ -141,8 +141,6 @@ export default class ManageProject extends Vue {
     switch (tab) {
       case ProjectStatus.All:
         return 'Tất cả';
-      // case ProjectStatus.Active:
-      //   return 'Đang hoạt động';
       default:
         return 'Đã đóng';
     }
