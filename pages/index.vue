@@ -1,25 +1,28 @@
 <template>
   <div class="dashboard">
-    <el-select
-      class="-mb-4"
-      v-model="currentCycleId"
-      no-match-text="Không tìm thấy chu kỳ"
-      filterable
-      placeholder="Chọn chu kỳ"
-      @change="handleSelectCycle(currentCycleId)"
-    >
-      <el-option
-        v-for="cycle in cycles"
-        :key="cycle.id"
-        :label="`Chu kỳ: ${cycle.name}`"
-        :value="String(cycle.id)"
-      />
-    </el-select>
+    <div class="-display-flex -justify-content-between">
+      <h1 class="-title-1">Trang chủ</h1>
+      <el-select
+        class="-mb-3 el-input--title"
+        v-model="currentCycleId"
+        no-match-text="Không tìm thấy chu kỳ"
+        filterable
+        placeholder="Chọn chu kỳ"
+        @change="handleSelectCycle(currentCycleId)"
+      >
+        <el-option
+          v-for="cycle in cycles"
+          :key="cycle.id"
+          :label="`Chu kỳ: ${cycle.name}`"
+          :value="String(cycle.id)"
+        />
+      </el-select>
+    </div>
     <el-row :gutter="20">
       <el-col :span="12">
         <div class="box-wrap">
           <h2 class="-title-2 -border-header">Tình trạng cập nhật tiến độ</h2>
-          <dashboard-checkin-chart :checkin-chart="checkinChart" />
+          <dashboard-checkin-chart v-loading="loading" :loading="loading" :checkin-chart="checkinChart" />
         </div>
       </el-col>
       <el-col :span="12">hello</el-col>
@@ -88,8 +91,7 @@ import RankItem from '@/components/cfrs/rank/RankItem.vue';
     }
   },
   async mounted() {
-    this.currentCycleId =
-      this.$route.query.cycleId || this.$store.state.cycle.cycleCurrent;
+    this.currentCycleId = this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
     this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.currentCycleId);
     await this.getCycles();
     await this.getCheckinChart();
@@ -111,10 +113,8 @@ export default class HomePage extends Vue {
   }
 
   private async getCycles() {
-    this.loading = true;
     const { data } = await CycleRepository.getListMetadata();
     this.cycles = data || [];
-    this.loading = false;
   }
 
   private async getCheckinChart() {

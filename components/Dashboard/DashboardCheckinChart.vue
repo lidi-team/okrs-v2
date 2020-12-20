@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import { init } from 'echarts'
+import { init, registerTheme } from 'echarts'
 require('echarts/theme/macarons')
 import resize from '@/mixins/resize'
 export default {
@@ -25,6 +25,10 @@ export default {
     checkinChart: {
       type: Array,
       default: () => []
+    },
+    loading: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -33,10 +37,19 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      this.initChart()
-    })
-    console.log(this.checkinChart)
+    registerTheme('macarons', {
+      color: [
+        "#32C8FF",
+        "#FF106E",
+        "#FFC832",
+      ]})
+  },
+  watch: {
+    loading: function(value) {
+      if(value === false) {
+        this.initChart()
+      }
+    }
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -56,6 +69,9 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
+          textStyle: {
+            color: 'db2777',
+          },
           data: ['Đang chờ duyệt', 'Đang lưu tạm', 'Đã được review']
         },
         series: [

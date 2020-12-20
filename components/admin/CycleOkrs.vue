@@ -1,7 +1,8 @@
 <template>
-  <div v-loading="loadingTable">
+  <div>
     <div class="box-wrap">
       <el-table
+        v-loading="loadingTable"
         :data="tableData"
         empty-text="Không có dữ liệu"
         class="cycle-okrs"

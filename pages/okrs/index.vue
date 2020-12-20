@@ -3,7 +3,7 @@
     <div class="-display-flex -justify-content-between">
       <h1 class="-title-1">OKRs</h1>
       <el-select
-        class="-mb-4 el-input--title"
+        class="-mb-3 el-input--title"
         v-model="currentCycleId"
         no-match-text="Không tìm thấy chu kỳ"
         filterable

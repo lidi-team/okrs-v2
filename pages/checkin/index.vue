@@ -1,6 +1,6 @@
 <template>
   <div class="checkins">
-    <div class="-display-flex -mb-3 -justify-content-between">
+    <div class="-display-flex -justify-content-between">
       <h1 class="-title-1">Cập nhật tiến độ</h1>
       <div class="-display-flex">
         <el-select
