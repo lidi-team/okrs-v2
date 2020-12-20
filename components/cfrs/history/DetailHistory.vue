@@ -16,12 +16,9 @@
     <el-row v-if="itemData.objective" :gutter="20">
       <el-col :span="7" class="detail-history__attribute">Mục tiêu</el-col>
       <el-col :span="17" class="detail-history__value">
-        <a
-          target="_blank"
-          :href="`${$config.baseURL}/okrs/chi-tiet/${itemData.objective.id}`"
-        >
+        <nuxt-link :to="`/okrs/chi-tiet/${itemData.objective.id}`">
           {{ itemData.objective.title }}
-        </a>
+        </nuxt-link>
       </el-col>
     </el-row>
     <!-- Nếu là feedback -->
