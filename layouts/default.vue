@@ -37,7 +37,6 @@ $bg-gray-common: #f5f5f5;
   }
   &__content {
     padding: 2rem;
-    background: #f5f5f5;
   }
 }
 </style>

@@ -1,52 +1,54 @@
 <template>
   <div v-loading="loadingTable">
-    <el-table
-      :data="tableData"
-      empty-text="Không có dữ liệu"
-      class="cycle-okrs"
-    >
-      <el-table-column prop="name" label="Tên chu kỳ">
-        <template v-slot="{ row }">
-          <!-- Vue Fileter Date Plugin -->
-          <span>{{ row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Ngày bắt đầu">
-        <template v-slot="{ row }">
-          <!-- Vue Fileter Date Plugin -->
-          <span>{{ new Date(row.startDate) | dateFormat('DD/MM/YYYY') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Ngày kết thúc">
-        <template v-slot="{ row }">
-          <span>{{ new Date(row.endDate) | dateFormat('DD/MM/YYYY') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Thao tác" align="center">
-        <template v-slot="{ row }">
-          <el-tooltip
-            class="cycle-okrs__icon"
-            content="Cập nhật"
-            placement="top"
-          >
-            <i
-              class="el-icon-edit icon--info"
-              @click="handleOpenDialogUpdate(row)"
-            ></i>
-          </el-tooltip>
-          <el-tooltip class="cycle-okrs__icon" content="Xóa" placement="top">
-            <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-    </el-table>
-    <common-pagination
-      class="-display-flex -justify-content-center -mt-4"
-      :total="total"
-      :page.sync="syncPage"
-      :limit.sync="syncLimit"
-      @pagination="handlePagination($event)"
-    />
+    <div class="box-wrap">
+      <el-table
+        :data="tableData"
+        empty-text="Không có dữ liệu"
+        class="cycle-okrs"
+      >
+        <el-table-column prop="name" label="Tên chu kỳ">
+          <template v-slot="{ row }">
+            <!-- Vue Fileter Date Plugin -->
+            <span>{{ row.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Ngày bắt đầu">
+          <template v-slot="{ row }">
+            <!-- Vue Fileter Date Plugin -->
+            <span>{{ new Date(row.startDate) | dateFormat('DD/MM/YYYY') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Ngày kết thúc">
+          <template v-slot="{ row }">
+            <span>{{ new Date(row.endDate) | dateFormat('DD/MM/YYYY') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Thao tác" align="center">
+          <template v-slot="{ row }">
+            <el-tooltip
+              class="cycle-okrs__icon"
+              content="Cập nhật"
+              placement="top"
+            >
+              <i
+                class="el-icon-edit icon--info"
+                @click="handleOpenDialogUpdate(row)"
+              ></i>
+            </el-tooltip>
+            <el-tooltip class="cycle-okrs__icon" content="Xóa" placement="top">
+              <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+      <common-pagination
+        class="-display-flex -justify-content-center -mt-4"
+        :total="total"
+        :page.sync="syncPage"
+        :limit.sync="syncLimit"
+        @pagination="handlePagination($event)"
+      />
+    </div>
     <el-dialog
       title="Cập nhật chu kỳ"
       :visible.sync="dialogUpdateVisible"

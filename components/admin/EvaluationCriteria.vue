@@ -1,62 +1,59 @@
 <template>
-  <div class="box-wrap" v-loading="loadingTable">
-    <el-table
-      :data="tableData"
-      empty-text="Không có dữ liệu"
-      class="criteria-admin"
-    >
-      <el-table-column
-        prop="content"
-        label="Tiêu chí đánh giá"
-        min-width="350px"
-      ></el-table-column>
-      <el-table-column label="Số sao" min-width="70px">
-        <template v-slot="{ row }">
-          <span>
-            {{ row.numberOfStar }}
-            <star-icon />
-          </span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Kiểu" min-width="200px">
-        <template v-slot="{ row }">
-          <span>{{ row.type | typeFormatter(row.type) }}</span>
-        </template>
-      </el-table-column>
-      <!--<el-table-column label="Ngày cập nhật" min-width="120px">
-        <template v-slot="{ row }">
-          <span>{{ new Date(row.updatedAt) | dateFormat('DD/MM/YYYY') }}</span>
-        </template>
-      </el-table-column>-->
-      <el-table-column label="Thao tác" align="center">
-        <template v-slot="{ row }">
-          <el-tooltip
-            class="criteria-admin__icon"
-            content="Cập nhật"
-            placement="top"
-          >
-            <i
-              class="el-icon-edit icon--info"
-              @click="handleOpenDialogUpdate(row)"
-            ></i>
-          </el-tooltip>
-          <el-tooltip
-            class="criteria-admin__icon"
-            content="Xóa"
-            placement="top"
-          >
-            <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
-          </el-tooltip>
-        </template>
-      </el-table-column>
-    </el-table>
-    <common-pagination
-      class="-display-flex -justify-content-center -mt-4"
-      :total="total"
-      :page.sync="syncPage"
-      :limit.sync="syncLimit"
-      @pagination="handlePagination($event)"
-    />
+  <div v-loading="loadingTable">
+    <div class="box-wrap">
+      <el-table
+        :data="tableData"
+        empty-text="Không có dữ liệu"
+        class="criteria-admin"
+      >
+        <el-table-column
+          prop="content"
+          label="Tiêu chí đánh giá"
+          min-width="350px"
+        ></el-table-column>
+        <el-table-column label="Số sao" min-width="70px">
+          <template v-slot="{ row }">
+            <span>
+              {{ row.numberOfStar }}
+              <star-icon />
+            </span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Kiểu" min-width="200px">
+          <template v-slot="{ row }">
+            <span>{{ row.type | typeFormatter(row.type) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Thao tác" align="center">
+          <template v-slot="{ row }">
+            <el-tooltip
+              class="criteria-admin__icon"
+              content="Cập nhật"
+              placement="top"
+            >
+              <i
+                class="el-icon-edit icon--info"
+                @click="handleOpenDialogUpdate(row)"
+              ></i>
+            </el-tooltip>
+            <el-tooltip
+              class="criteria-admin__icon"
+              content="Xóa"
+              placement="top"
+            >
+              <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
+            </el-tooltip>
+          </template>
+        </el-table-column>
+      </el-table>
+      <common-pagination
+        class="-display-flex -justify-content-center -mt-4"
+        :total="total"
+        :page.sync="syncPage"
+        :limit.sync="syncLimit"
+        @pagination="handlePagination($event)"
+      />
+    </div>
     <el-dialog
       title="Cập nhật tiêu chí"
       :visible.sync="dialogUpdateVisible"
