@@ -88,7 +88,7 @@ export default class CheckinPage extends Vue {
     if (data.checkinDetail.length === 0) {
       data.checkinDetail = data.keyResults.map((item) => {
         return {
-          confidentLevel: 2,
+          confidentLevel: 1,
           keyResult: item,
           plans: '',
           problems: '',

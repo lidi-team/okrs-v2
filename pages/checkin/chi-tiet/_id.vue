@@ -6,40 +6,45 @@
       <el-col :sm="24" :lg="8">
         <div class="box-wrap height-detail">
           <h2 class="-title-2 -border-header">Thông tin chi tiết</h2>
-          <div class="top-checkin__content content">
-            <table class="properties">
-              <tbody v-if="checkin">
-                <tr>
-                  <th scope="row" class="-text-left">Mục tiêu: </th>
-                  <td>{{ checkin.objective.title }}</td>
-                </tr>
-                <tr>
-                  <th scope="row" class="-text-left">Trạng thái:</th>
-                  <td>
-                    {{ checkin.status }}
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row" class="-text-left">Tiến độ thực hiện: </th>
-                  <td>{{ checkin.progress }} %</td>
-                </tr>
-                <tr v-if="checkin.checkinAt">
-                  <th scope="row">Ngày check-in: </th>
-                  <td>
-                    {{ new Date(checkin.checkinAt) | dateFormat('DD/MM/YYYY') }}
-                  </td>
-                </tr>
-                <tr v-if="checkin.nextCheckinDate">
-                  <th scope="row" class="-text-left">Ngày check-in kế tiếp</th>
-                  <td>
-                    {{
-                      new Date(checkin.nextCheckinDate)
-                        | dateFormat('DD/MM/YYYY')
-                    }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="top-checkin__content">
+            <div v-if="checkin">
+              <div class="-mt-3 -mb-2 -display-flex">
+                <span class="-w-19 -font-bold"> Mục tiêu: </span>
+                <span>
+                  {{ checkin.objective.title }}
+                </span>
+              </div>
+              <div class="-mb-2 -display-flex">
+                <span class="-w-19 -font-bold"> Trạng thái: </span>
+                <span>
+                  {{ checkin.checkin.status }}
+                </span>
+              </div>
+              <div class="-mb-2 -display-flex">
+                <span class="-w-19 -font-bold"> Tiến độ: </span>
+                <span>
+                  {{ checkin.progress }}
+                </span>
+              </div>
+              <div class="-mb-2 -display-flex">
+                <span class="-w-19 -font-bold">Ngày check-in gần nhất: </span>
+                <span>
+                  {{
+                    new Date(checkin.checkin.checkinAt)
+                      | dateFormat('DD/MM/YYYY')
+                  }}
+                </span>
+              </div>
+              <div class="-mb-2 -display-flex">
+                <span class="-w-19 -font-bold">Ngày check-in tiếp theo: </span>
+                <span>
+                  {{
+                    new Date(checkin.checkin.nextCheckinDate)
+                      | dateFormat('DD/MM/YYYY')
+                  }}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </el-col>
@@ -105,25 +110,6 @@ export default class DetailHistoryPage extends Vue {
     width: 100%;
     min-height: 350px;
     font-size: $unit-3;
-  }
-  .content {
-    th {
-      font-size: 14px;
-      border-width: 0;
-      vertical-align: top;
-      text-align: left;
-      color: #454f5b;
-    }
-
-    td {
-      color: #454f5b;
-      font-size: 14px;
-      border-width: 0;
-      vertical-align: top;
-      text-align: left;
-      padding-left: $unit-2;
-      padding-right: $unit-2;
-    }
   }
 }
 </style>

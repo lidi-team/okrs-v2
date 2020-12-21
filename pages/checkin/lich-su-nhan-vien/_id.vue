@@ -49,9 +49,7 @@
         <el-table-column label="Hành động" align="center" width="180">
           <template slot-scope="{ row }">
             <nuxt-link :to="`/checkin/lich-su-nhan-vien/chi-tiet/${row.id}`">
-              <el-button class="el-button--white el-button--checkin"
-                >Xem chi tiết</el-button
-              >
+              <el-button class="el-button--white w-100">Xem chi tiết</el-button>
             </nuxt-link>
           </template>
         </el-table-column>

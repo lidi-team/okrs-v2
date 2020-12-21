@@ -59,7 +59,7 @@ export default class CheckinChartProcess extends Vue {
         },
       },
       grid: {
-        left: '3%',
+        left: '4%',
         right: '3%',
         borderWidth: 0,
         top: 70,

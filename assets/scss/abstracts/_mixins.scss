@@ -250,7 +250,6 @@ $breakpoints: (
   background: white;
   margin: 0 0 $unit-7 0;
   &:hover {
-    transform: scale(1.005);
     transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
     border: 1px #c0c4cc solid;
     box-shadow: 0px 2px 5px rgba(33, 43, 54, 0.1), 0px 2px 10px #212b3626;
