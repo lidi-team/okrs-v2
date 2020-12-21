@@ -1,7 +1,13 @@
 <template>
-  <el-form ref="checkinRuleForm" label-position="left" :model="syncCheckin" class="checkinDetail" :rules="rules">
+  <el-form
+    ref="checkinRuleForm"
+    label-position="left"
+    :model="syncCheckin"
+    class="checkinDetail"
+    :rules="rules"
+  >
     <el-row :gutter="32">
-       <el-col :sm="24" :lg="8">
+      <el-col :sm="24" :lg="8">
         <div class="box-wrap height-290">
           <h2 class="-title-2 -border-header">Cài đặt</h2>
           <el-form-item
@@ -19,15 +25,14 @@
               placeholder="Chọn ngày checkin tiếp theo"
             ></el-date-picker>
           </el-form-item>
-           <el-form-item
+          <el-form-item
             label-width="40%"
             :prop="'isCompleted'"
             label="Hoàn thành OKRs"
           >
-            <el-checkbox
-              :disabled="isDisable"
-              v-model="isCompleted"
-            >Hoàn thành</el-checkbox>
+            <el-checkbox :disabled="isDisable" v-model="isCompleted"
+              >Hoàn thành</el-checkbox
+            >
           </el-form-item>
         </div>
       </el-col>
@@ -35,8 +40,19 @@
         <div class="box-wrap height-290">
           <h2 class="-title-2 -border-header">Tiến độ thực tế</h2>
           <div class="-text-center">
-            <el-progress class="-mt-3"  type="dashboard" :percentage="progress" :color="customColors" :stroke-width="10"></el-progress>
-            <el-input-number :disabled="isDisable" class="-display-block -m-auto" v-model="progress" :min="0"></el-input-number>
+            <el-progress
+              class="-mt-3"
+              type="dashboard"
+              :percentage="progress"
+              :color="customColors"
+              :stroke-width="10"
+            ></el-progress>
+            <el-input-number
+              :disabled="isDisable"
+              class="-display-block -m-auto"
+              v-model="progress"
+              :min="0"
+            ></el-input-number>
           </div>
         </div>
       </el-col>
@@ -44,7 +60,13 @@
         <div class="box-wrap height-290">
           <h2 class="-title-2 -border-header">Tiến độ gợi ý</h2>
           <div class="-text-center">
-            <el-progress class="-mt-3" type="dashboard" :percentage="progressSuggest | verifyProgress" :color="customColors" :stroke-width="10"></el-progress>
+            <el-progress
+              class="-mt-3"
+              type="dashboard"
+              :percentage="progressSuggest | verifyProgress"
+              :color="customColors"
+              :stroke-width="10"
+            ></el-progress>
           </div>
         </div>
       </el-col>
@@ -211,23 +233,33 @@ import { Maps, Rule } from '@/constants/app.type';
     }),
   },
   mounted() {
-    if(this.syncCheckin.checkin) {
-      const { status = 'Draft', nextCheckinDate = new Date(), id = null } =  this.syncCheckin.checkin
+    if (this.syncCheckin.checkin) {
+      const {
+        status = 'Draft',
+        nextCheckinDate = new Date(),
+        id = null,
+      } = this.syncCheckin.checkin;
       this.checkinStatus = status;
       this.nextCheckinDate = nextCheckinDate;
       this.idCheckin = id;
     }
-    const { role = 'guest', progress = -1 } = this.syncCheckin
-    this.progress = progress
-    this.role = role
-    if(role === 'guest') {
-      this.isDisable = true
-    } else if(role === 'user') {
-      this.checkinStatus === 'Draft' || this.checkinStatus === 'Overdue' || this.checkinStatus === 'Reviewed' ? this.isDisable = false : this.isDisable = true
-    }else if(role === 'reviewer') {
-      this.checkinStatus === 'Pending' ? this.isDisable = false : this.isDisable = true
+    const { role = 'guest', progress = -1 } = this.syncCheckin;
+    this.progress = progress;
+    this.role = role;
+    if (role === 'guest') {
+      this.isDisable = true;
+    } else if (role === 'user') {
+      this.checkinStatus === 'Draft' ||
+      this.checkinStatus === 'Overdue' ||
+      this.checkinStatus === 'Reviewed'
+        ? (this.isDisable = false)
+        : (this.isDisable = true);
+    } else if (role === 'reviewer') {
+      this.checkinStatus === 'Pending'
+        ? (this.isDisable = false)
+        : (this.isDisable = true);
     }
-    this.calculatorProgress()
+    this.calculatorProgress();
   },
 })
 export default class DetailHistory extends Vue {
@@ -240,26 +272,31 @@ export default class DetailHistory extends Vue {
   private nextCheckinDate: any = new Date();
   private isCompleted: Boolean = false;
   private idCheckin: Number | null = null;
-  private role: String = ''
+  private role: String = '';
   private customColors = customColors;
   private progressSuggest: Number = 0;
-  private progress: Number = 0
+  private progress: Number = 0;
   private flag: Boolean = false;
 
   @Watch('flag')
   private changeCheckin() {
-    this.calculatorProgress()
+    this.calculatorProgress();
   }
 
   private calculatorProgress() {
-    const count = (acc, cur) => acc + ((cur.valueObtained - cur.keyResult.startValue) / (cur.keyResult.targetedValue - cur.keyResult.startValue)) * cur.confidentLevel * 100
-    const progressAll = this.syncCheckin.checkinDetail.reduce(count, 0)
-    const progressSuggest = progressAll / this.syncCheckin.checkinDetail.length
-    this.progressSuggest = Math.round(progressSuggest * 100) / 100
+    const count = (acc, cur) =>
+      acc +
+      ((cur.valueObtained - cur.keyResult.startValue) /
+        (cur.keyResult.targetedValue - cur.keyResult.startValue)) *
+        cur.confidentLevel *
+        100;
+    const progressAll = this.syncCheckin.checkinDetail.reduce(count, 0);
+    const progressSuggest = progressAll / this.syncCheckin.checkinDetail.length;
+    this.progressSuggest = Math.round(progressSuggest * 100) / 100;
   }
 
   private checkRender() {
-    this.flag = !this.flag
+    this.flag = !this.flag;
   }
 
   private pickerOptions: any = {
@@ -273,10 +310,7 @@ export default class DetailHistory extends Vue {
     (this.$refs.checkinRuleForm as Form).validate(
       async (isValid: boolean, invalidFields: object) => {
         if (isValid) {
-          const {
-            objective,
-            checkinDetail,
-          } = this.syncCheckin;
+          const { objective, checkinDetail } = this.syncCheckin;
           const payload = {
             id: this.idCheckin,
             objectiveId: objective.id,
@@ -298,16 +332,19 @@ export default class DetailHistory extends Vue {
             }),
           };
           const data = await CheckinRepository.createCheckin(payload);
-          if(status !== 'Draft') {
-            this.isDisable = true
+          if (status !== 'Draft') {
+            this.isDisable = true;
+          } else {
+            this.$router.go(-1);
           }
         }
-      })
-    this.loading = false
+      },
+    );
+    this.loading = false;
   }
 
   private validateDate = (rule, value, callback) => {
-    console.log('hello', value, 'hhh')
+    console.log('hello', value, 'hhh');
     if (compareTwoDate(value, formatDateToDD(new Date())) === 1) {
       return callback(new Error('Không được nhỏ hơn ngày hiện tại'));
     } else {

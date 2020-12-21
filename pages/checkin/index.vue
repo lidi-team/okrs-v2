@@ -68,7 +68,7 @@ import { ICheckinParams } from '@/constants/DTO/common';
   },
   head() {
     return {
-      title: 'Check-in',
+      title: 'Cập nhật tiến độ',
     };
   },
   created() {
