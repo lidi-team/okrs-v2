@@ -210,8 +210,6 @@ import { filterUserRole } from '@/utils/filters';
 export default class EmployeeActive extends Vue {
   @Prop(Array) readonly tableData!: Array<object>;
   @Prop(Array) readonly teams!: Array<object>;
-  // @Prop(Array) readonly jobs!: Array<object>;
-  // @Prop(Array) readonly roles!: Array<object>;
   @Prop(Function) readonly getListUsers;
 
   private loadingTable: boolean = false;

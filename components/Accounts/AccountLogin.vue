@@ -63,10 +63,10 @@ import { max255Char } from '@/constants/account.constant';
 import { LoginDTO } from '@/constants/DTO/auth';
 import { Maps, Rule } from '@/constants/app.type';
 import { DispatchAction } from '@/constants/app.vuex';
-@Component<LoginSComponent>({
+@Component<LoginComponent>({
   name: 'LoginSComponent',
 })
-export default class LoginSComponent extends Vue {
+export default class LoginComponent extends Vue {
   private loading: boolean = false;
   private rememberPassword: boolean = false;
   public loginForm: LoginDTO = {
