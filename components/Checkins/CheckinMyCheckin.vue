@@ -81,7 +81,9 @@
               >Đã hoàn thành</el-button
             >
             <nuxt-link v-else :to="`/checkin/company/${row.id}`">
-              <el-button class="el-button--purple w-100">Tạo Checkin</el-button>
+              <el-button class="el-button--purple w-100"
+                >Tạo Check-in</el-button
+              >
             </nuxt-link>
           </template>
         </el-table-column>
@@ -95,13 +97,13 @@
             </nuxt-link>
             <nuxt-link
               v-else-if="row.status === status.DRAFT"
-              :to="`/checkin/chi-tiet/${row.id}`"
+              :to="`/checkin/chi-tiet/${row.checkinId}`"
             >
               <el-button type="warning" class="w-100">Sửa bản nháp</el-button>
             </nuxt-link>
             <nuxt-link
               v-else-if="row.status === status.PENDING"
-              :to="`/checkin/chi-tiet/${row.id}`"
+              :to="`/checkin/chi-tiet/${row.checkinId}`"
             >
               <el-button type="primary" class="w-100">Đang chờ duyệt</el-button>
             </nuxt-link>

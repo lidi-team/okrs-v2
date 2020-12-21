@@ -8,12 +8,36 @@
   }
 }
 
-.el-button--purple {
-  background: $purple-primary-4;
-  border: 1px solid $purple-primary-4;
-  border-radius: $border-radius-base;
-  color: $white;
-  position: relative;
+.el-button {
+  &--purple {
+    background-color: $purple-primary-4;
+    border-color: $purple-primary-4;
+    color: white;
+  }
+  &--primary {
+    background-color: $primary;
+    border-color: $primary;
+    &:hover {
+      background-color: $primary;
+      border-color: $primary;
+    }
+  }
+  &--warning {
+    background-color: $warning;
+    border-color: $warning;
+    &:hover {
+      background-color: $warning;
+      border-color: $warning;
+    }
+  }
+  &--danger {
+    background-color: $danger;
+    border-color: $danger;
+    &:hover {
+      background-color: $danger;
+      border-color: $danger;
+    }
+  }
   &::after {
     content: '';
     position: absolute;
@@ -30,11 +54,6 @@
       background-color: rgba(255, 255, 255, 0);
       transition: all 0.3s ease-in-out;
     }
-  }
-}
-.el-button {
-  &--primary {
-    background-color: $primary;
   }
 }
 
