@@ -125,12 +125,12 @@
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button
-          class="el-button&#45;&#45;white el-button&#45;&#45;modal"
+          class="el-button--white el-button--modal"
           @click="handleCloseDialog"
           >Hủy</el-button
         >
         <el-button
-          class="el-button&#45;&#45;purple el-button&#45;&#45;modal"
+          class="el-button--purple el-button--modal"
           :loading="loading"
           @click="handleCreate(tempUpdateProject)"
           >Tạo mới</el-button
