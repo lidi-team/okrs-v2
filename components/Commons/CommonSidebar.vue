@@ -1,13 +1,7 @@
 <template>
   <div class="wrap-sidebar">
-    <div
-      v-if="user"
-      class="sidebar"
-      type="flex"
-    >
-      <div>
-        
-      </div>
+    <div v-if="user" class="sidebar" type="flex">
+      <div></div>
       <nuxt-link
         to="/"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isHome }]"
@@ -48,10 +42,7 @@
         </div>
       </nuxt-link>
       <nuxt-link
-        v-if="
-          user.roles.includes('ROLE_DIRECTOR') ||
-          user.roles.includes('ROLE_ADMIN')
-        "
+        v-if="user.roles.includes('ROLE_ADMIN')"
         to="/admin/cai-dat"
         :class="[
           'sidebar__link',
@@ -77,7 +68,13 @@
       >
         <div class="sidebar__link__tab">
           <project-manage class="sidebar__link__tab__icon" />
-          <p class="hidden-tablet">Quản lý dự án</p>
+          <p class="hidden-tablet">
+            {{
+              user.roles.includes('ROLE_ADMIN')
+                ? 'Quản lý dự án'
+                : 'Dự án của tôi'
+            }}
+          </p>
         </div>
       </nuxt-link>
       <nuxt-link

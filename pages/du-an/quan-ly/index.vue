@@ -53,20 +53,34 @@
     </div>
     <!--Tab du lieu thanh vien du an-->
     <div class="box-wrap">
+      <p class="-title-2">Thành viên dự án</p>
       <div class="-display-flex -justify-content-between">
-        <p class="-title-2">Thành viên dự án</p>
+        <div class="-mb-2">
+          <el-input
+            v-model="searchText"
+            class="header-project__input"
+            placeholder="Nhập tên thành viên tìm kiếm"
+            prefix-icon="el-icon-search"
+            @keyup.enter.native="handleSearch(searchText)"
+          />
+          <el-button
+            class="el-button--white el-button--search -ml-2"
+            @click="handleSearch(searchText)"
+          >
+            Tìm kiếm
+          </el-button>
+        </div>
         <div>
           <el-button
             v-if="isProjectPm(user.projects, projectData.status)"
-            class="el-button--purple el-button--invite"
-            size="small"
+            class="el-button--purple"
             @click="handleShowAddMember"
           >
             {{ isAddingMember ? 'Hủy' : 'Thêm mới thành viên' }}
           </el-button>
         </div>
       </div>
-      <div class="main-action__form" v-if="isAddingMember">
+      <div class="main-action__form -mb-2" v-if="isAddingMember">
         <el-select
           v-model="selectUsers"
           multiple
@@ -91,12 +105,12 @@
       </div>
       <el-table
         v-loading="isloading"
-        :data="projectStaffs"
+        :data="handleSearch(searchText)"
         fit
         highlight-current-row
         style="width: 100%"
       >
-        <el-table-column label="ID" prop="id" align="center" min-width="30">
+        <el-table-column label="ID" prop="id" align="center" min-width="50">
           <template slot-scope="{ row }">
             <span>{{ row.id }}</span>
           </template>
@@ -136,9 +150,9 @@
                 ></el-option>
               </el-select>
             </template>
-            <el-tag v-if="getPositionById(row.position) && !row.edit"
+            <span v-if="getPositionById(row.position) && !row.edit"
               >{{ getPositionById(row.position) }}
-            </el-tag>
+            </span>
           </template>
         </el-table-column>
         <el-table-column label="Người Review" align="center" min-width="130">
@@ -165,45 +179,37 @@
           v-if="isProjectPm(user.projects, projectData.status)"
           label="Thao tác"
           align="center"
-          min-width="200"
+          min-width="100"
           class-name="small-padding fixed-width"
         >
           <template slot-scope="{ row }">
             <template v-if="row.edit">
-              <el-button
-                type="success"
-                size="small"
-                icon="el-icon-circle-check-outline"
-                @click="confirmEdit(row)"
-              >
-                Đồng ý
-              </el-button>
-              <el-button
-                class="cancel-btn"
-                size="small"
-                icon="el-icon-refresh"
-                type="warning"
-                @click="cancelEdit(row)"
-              >
-                Hủy
-              </el-button>
+              <el-tooltip content="Đồng ý" placement="left-end">
+                <i
+                  class="el-icon-circle-check icon--info icon-default--s -mr-2"
+                  @click="confirmEdit(row)"
+                ></i>
+              </el-tooltip>
+              <el-tooltip content="Hủy" placement="right-end">
+                <i
+                  class="el-icon-circle-close icon-default--s icon--delete"
+                  @click="cancelEdit(row)"
+                ></i>
+              </el-tooltip>
             </template>
             <template v-else>
-              <el-button
-                type="primary"
-                size="small"
-                icon="el-icon-edit"
-                @click="handleEditRow(row)"
-              >
-                Cập nhật
-              </el-button>
-              <el-button
-                size="mini"
-                type="danger"
-                @click="handleDelete(row, id)"
-              >
-                Xóa
-              </el-button>
+              <el-tooltip content="Cập nhật" placement="left-end">
+                <i
+                  class="el-icon-edit icon--info -mr-2"
+                  @click="handleEditRow(row)"
+                ></i>
+              </el-tooltip>
+              <el-tooltip content="xóa" placement="right-end">
+                <i
+                  class="el-icon-delete icon--delete"
+                  @click="handleDelete(row, id)"
+                ></i>
+              </el-tooltip>
             </template>
           </template>
         </el-table-column>
@@ -226,6 +232,7 @@ import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
 import { formatDateToDD } from '@/utils/dateParser';
 import value from '*.png';
+import { removeVietnameseTones } from '@/utils/format';
 
 @Component<ControlProject>({
   name: 'ControlProject',
@@ -253,6 +260,7 @@ export default class ControlProject extends Vue {
   private projectStaffs: Array<ProjectStaff> = [];
   private selectUsers: Array<number> = [];
   private textPm: String = '';
+  private searchText: String = '';
   private isloading: boolean = false;
   private isAddingMember: boolean = false;
   private tabActive: String = 'manage';
@@ -480,6 +488,16 @@ export default class ControlProject extends Vue {
 
   private handleShowAddMember() {
     this.isAddingMember = !this.isAddingMember;
+  }
+
+  private handleSearch(userName: string) {
+    return this.projectStaffs
+      .filter((value1) =>
+        removeVietnameseTones(value1.name)
+          .toLowerCase()
+          .includes(removeVietnameseTones(userName).toLowerCase()),
+      )
+      .sort((a, b) => a.id - b.id);
   }
 }
 </script>
