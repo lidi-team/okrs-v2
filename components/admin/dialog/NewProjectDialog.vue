@@ -125,12 +125,12 @@
       </el-row>
       <span slot="footer" class="dialog-footer">
         <el-button
-          class="el-button&#45;&#45;white el-button&#45;&#45;modal"
+          class="el-button--white el-button--modal"
           @click="handleCloseDialog"
           >Hủy</el-button
         >
         <el-button
-          class="el-button&#45;&#45;purple el-button&#45;&#45;modal"
+          class="el-button--purple el-button--modal"
           :loading="loading"
           @click="handleCreate(tempUpdateProject)"
           >Tạo mới</el-button
@@ -182,7 +182,7 @@ export default class ProjectDialog extends Vue {
     (this.$refs.updateEmployeeForm as Form).validate(
       (isValid: boolean, invalidFields: object) => {
         if (isValid) {
-          this.$confirm(`Bạn có chắc chắn muốn cập nhật dự án này?`, {
+          this.$confirm(`Bạn có chắc chắn muốn tạo mới dự án này?`, {
             ...confirmWarningConfig,
           })
             .then(async () => {
@@ -221,9 +221,13 @@ export default class ProjectDialog extends Vue {
   }
 
   private handleCloseDialog() {
-    const updateUserForm = this.$refs.updateEmployeeForm as Form;
-    updateUserForm.clearValidate();
-    this.syncProjectDialog = false;
+    this.$confirm(`Bạn có chắc chắn hủy tạo mới dự án này?`, {
+      ...confirmWarningConfig,
+    }).then(() => {
+      const updateUserForm = this.$refs.updateEmployeeForm as Form;
+      updateUserForm.clearValidate();
+      this.syncProjectDialog = false;
+    });
   }
 
   private rules: Maps<Rule[]> = {
