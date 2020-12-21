@@ -53,20 +53,34 @@
     </div>
     <!--Tab du lieu thanh vien du an-->
     <div class="box-wrap">
+      <p class="-title-2">Thành viên dự án</p>
       <div class="-display-flex -justify-content-between">
-        <p class="-title-2">Thành viên dự án</p>
+        <div class="-mb-2">
+          <el-input
+            v-model="searchText"
+            class="header-project__input"
+            placeholder="Nhập tên thành viên tìm kiếm"
+            prefix-icon="el-icon-search"
+            @keyup.enter.native="handleSearch(searchText)"
+          />
+          <el-button
+            class="el-button--white el-button--search -ml-2"
+            @click="handleSearch(searchText)"
+          >
+            Tìm kiếm
+          </el-button>
+        </div>
         <div>
           <el-button
             v-if="isProjectPm(user.projects, projectData.status)"
-            class="el-button--purple el-button--invite"
-            size="small"
+            class="el-button--purple"
             @click="handleShowAddMember"
           >
             {{ isAddingMember ? 'Hủy' : 'Thêm mới thành viên' }}
           </el-button>
         </div>
       </div>
-      <div class="main-action__form" v-if="isAddingMember">
+      <div class="main-action__form -mb-2" v-if="isAddingMember">
         <el-select
           v-model="selectUsers"
           multiple
@@ -91,7 +105,7 @@
       </div>
       <el-table
         v-loading="isloading"
-        :data="projectStaffs"
+        :data="handleSearch(searchText)"
         fit
         highlight-current-row
         style="width: 100%"
@@ -218,6 +232,7 @@ import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
 import { formatDateToDD } from '@/utils/dateParser';
 import value from '*.png';
+import { removeVietnameseTones } from '@/utils/format';
 
 @Component<ControlProject>({
   name: 'ControlProject',
@@ -245,6 +260,7 @@ export default class ControlProject extends Vue {
   private projectStaffs: Array<ProjectStaff> = [];
   private selectUsers: Array<number> = [];
   private textPm: String = '';
+  private searchText: String = '';
   private isloading: boolean = false;
   private isAddingMember: boolean = false;
   private tabActive: String = 'manage';
@@ -472,6 +488,14 @@ export default class ControlProject extends Vue {
 
   private handleShowAddMember() {
     this.isAddingMember = !this.isAddingMember;
+  }
+
+  private handleSearch(userName: string) {
+    return this.projectStaffs.filter((value1) =>
+      removeVietnameseTones(value1.name)
+        .toLowerCase()
+        .includes(removeVietnameseTones(userName).toLowerCase()),
+    );
   }
 }
 </script>
