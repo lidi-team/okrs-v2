@@ -408,7 +408,6 @@ export default class ProjectAll extends Vue {
 
   private isEditableStartDate(startDate: string) {
     const today = new Date();
-    console.log('today: ', today.toDateString());
     return compareTwoDate(startDate, today.toDateString()) !== 1;
   }
 
@@ -428,7 +427,6 @@ export default class ProjectAll extends Vue {
     const splitDate = endDate.split('/');
     const swapDDtoMM = splitDate[1] + '/' + splitDate[0] + '/' + splitDate[2];
     const endTime = !!endDate && new Date(swapDDtoMM).getTime();
-    console.log('endDateOption', endTime);
     return {
       disabledDate(time) {
         return time.getTime() < endTime;
