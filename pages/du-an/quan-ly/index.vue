@@ -491,11 +491,13 @@ export default class ControlProject extends Vue {
   }
 
   private handleSearch(userName: string) {
-    return this.projectStaffs.filter((value1) =>
-      removeVietnameseTones(value1.name)
-        .toLowerCase()
-        .includes(removeVietnameseTones(userName).toLowerCase()),
-    );
+    return this.projectStaffs
+      .filter((value1) =>
+        removeVietnameseTones(value1.name)
+          .toLowerCase()
+          .includes(removeVietnameseTones(userName).toLowerCase()),
+      )
+      .sort((a, b) => a.id - b.id);
   }
 }
 </script>
