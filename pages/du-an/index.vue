@@ -1,7 +1,11 @@
 <template>
   <div class="manage-project">
     <div class="-display-flex -justify-content-between">
-      <h1 class="-title-1">Quản lý dự án</h1>
+      <h1 class="-title-1">
+        {{
+          user.roles.includes('ROLE_ADMIN') ? 'Quản lý dự án' : 'Dự án của tôi'
+        }}
+      </h1>
       <div class="-display-flex">
         <head-project
           :text.sync="paramsProject.text"
