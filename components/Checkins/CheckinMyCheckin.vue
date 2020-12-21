@@ -103,7 +103,7 @@
               v-else-if="row.status === status.PENDING"
               :to="`/checkin/chi-tiet/${row.id}`"
             >
-              <el-button type="warning" class="w-100">Đang chờ duyệt</el-button>
+              <el-button type="primary" class="w-100">Đang chờ duyệt</el-button>
             </nuxt-link>
             <el-button
               v-else-if="row.status === status.COMPLETED"

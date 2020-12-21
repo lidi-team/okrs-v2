@@ -1,17 +1,16 @@
-// ======================================================
-// Abstracts :: Variables
-// ======================================================
-
-// Color
 $black: #000;
 $black-light: #1b1b1b;
 $black-lighter: #3b3b3b;
 $white: #fff;
+$primary: #47c1bf;
+$primary-2: #34adab;
+
 $neutral-primary-0: #f4f6f8;
 $neutral-primary-1: #c0c4cc;
 $neutral-primary-2: #637381;
 $neutral-primary-3: #454f5b;
 $neutral-primary-4: #212b36;
+
 $purple-primary-0: #fce7f3;
 $purple-primary-1: #fbcfe8;
 $purple-primary-2: #f9a8d4;
@@ -33,10 +32,8 @@ $gray-primary-1: #dfe3e8;
 $yello-primary-1: #fde475;
 $orange-primary-1: #f9a357;
 
-// Fonts
-// >> Font-family
 $font-family-base: 'Arial', sans-serif;
-// >> Font Size
+
 $text-xs: 0.75rem;
 $text-sm: 0.875rem;
 $text-base: 1rem; // 16px

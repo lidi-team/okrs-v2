@@ -32,6 +32,11 @@
     }
   }
 }
+.el-button {
+  &--primary {
+    background-color: $primary;
+  }
+}
 
 .el-button--white {
   background: $white;
