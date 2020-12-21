@@ -18,13 +18,6 @@
         </el-button>
       </div>
     </div>
-
-    <el-tab-pane
-      v-for="tab in tabs"
-      :key="tab"
-      :label="convertLabel(tab)"
-      :name="tab"
-    ></el-tab-pane>
     <component
       :is="tabComponent"
       :table-data="tableData"
@@ -54,8 +47,8 @@ import ProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
 import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
 
-@Component<ManageProject>({
-  name: 'ManageProject',
+@Component<ManageProjectPage>({
+  name: 'ManageProjectPage',
   components: {
     ProjectDialog,
     CommonPagination,
@@ -76,12 +69,10 @@ import { GetterState } from '@/constants/app.vuex';
     };
   },
 })
-export default class ManageProject extends Vue {
+export default class ManageProjectPage extends Vue {
   private tableData: Array<object> = [];
   private managers: Array<any> = [];
   private originalProjects: Array<object> = [];
-  private tabs: string[] = [...Object.values(ProjectStatus)];
-  private currentTab: ProjectStatus = ProjectStatus.All;
   private meta: object = {};
   private indexPage: number = this.$route.query.page
     ? Number(this.$route.query.page)
@@ -119,21 +110,6 @@ export default class ManageProject extends Vue {
       this.originalProjects = originalProjects.data;
     } catch (e) {
       console.log(e);
-    }
-  }
-
-  private handleClick(currentTab: string) {
-    this.paramsProject.text = '';
-    this.paramsProject.page = 1;
-    this.$router.push(`?tab=${ProjectStatus.All}`);
-  }
-
-  private convertLabel(tab: ProjectStatus) {
-    switch (tab) {
-      case ProjectStatus.All:
-        return 'Tất cả';
-      default:
-        return 'Đã đóng';
     }
   }
 

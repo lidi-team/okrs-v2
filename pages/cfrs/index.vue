@@ -44,8 +44,8 @@ import CfrsNavbar from '@/components/cfrs/Navbar.vue';
 import CfrsRecognition from '@/components/cfrs/recognition/index.vue';
 import { mapGetters } from 'vuex';
 
-@Component<CFRs>({
-  name: 'CFRs',
+@Component<CFRsPage>({
+  name: 'CFRsPage',
   components: {
     CfrsNavbar,
     CfrsRecognition,
@@ -67,7 +67,7 @@ import { mapGetters } from 'vuex';
     );
   },
 })
-export default class CFRs extends Vue {
+export default class CFRsPage extends Vue {
   private meta: object = {};
   private visibleCreateDialog: Boolean = false;
   private tabs: string[] = [...Object.values(TabCfr)];

@@ -26,3 +26,11 @@ export interface ParamsProject extends ParamsQuery {
   type?: string;
   sortWith: string;
 }
+
+export interface ICheckinParams extends ParamsQuery {
+  tab?: any;
+  cycleId: any;
+  projectId: any;
+  page: any;
+  limit: any;
+}

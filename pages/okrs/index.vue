@@ -111,29 +111,29 @@ import CycleRepository from '@/repositories/CycleRepository';
 export default class OKRsPage extends Vue {
   private loading: boolean = false;
   private isCompanyOkrs: boolean = false;
-  private visibleCreateOkrsDialog = false;
+  private visibleCreateOkrsDialog: boolean = false;
   private listKrs: any[] = [];
   private cycles: any[] = [];
   private visibleDetailKrs: boolean = false;
   private currentCycleId: any = '';
+  private projects: any[] = [];
 
   private openDrawer(keyResults: any) {
     this.listKrs = keyResults;
     this.visibleDetailKrs = true;
   }
-  private projects: any[] = [];
 
   @Watch('$route.query')
-  private async changeDialog(value) {
+  private async changeDialog() {
     await this.getDashBoardOkrs();
   }
   @Watch('flag')
-  private async changeReload(value) {
+  private async changeReload() {
     await this.getDashBoardOkrs();
   }
 
   @Watch('loading')
-  private async changeLoding(value) {
+  private async changeLoading(value: any) {
     if(value === true) {
       this.currentCycleId = 'Đang tải...'
     } else {

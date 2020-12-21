@@ -53,8 +53,8 @@ import TeamRepository from '@/repositories/TeamRepository';
 import { pageLimit } from '@/constants/app.constant';
 import CommonPagination from '@/components/Commons/CommonPagination.vue';
 import HeadEmployee from '@/components/manage/employee/HeadEmployee.vue';
-@Component<ManageEmployee>({
-  name: 'ManageEmployee',
+@Component<ManageEmployeePage>({
+  name: 'ManageEmployeePage',
   middleware: 'employeesPage',
   components: {
     CommonPagination,
@@ -70,7 +70,7 @@ import HeadEmployee from '@/components/manage/employee/HeadEmployee.vue';
     };
   },
 })
-export default class ManageEmployee extends Vue {
+export default class ManageEmployeePage extends Vue {
   private tableData: Array<object> = [];
   private teams: Array<object> = [];
   private jobs: Array<object> = [];
@@ -106,11 +106,7 @@ export default class ManageEmployee extends Vue {
 
   private async getDataCommons() {
     try {
-      const [
-        teams,
-      ] = await Promise.all([
-        TeamRepository.getMetaData(),
-      ]);
+      const [teams] = await Promise.all([TeamRepository.getMetaData()]);
       console.log(teams);
 
       this.teams = teams.data;

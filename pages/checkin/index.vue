@@ -50,21 +50,17 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
 import Inferior from '@/components/Checkins/CheckinInferior.vue';
 import RequestCheckin from '@/components/Checkins/CheckinRequest.vue';
 import MyCheckin from '@/components/Checkins/CheckinMyCheckin.vue';
-import { notificationConfig, pageLimit } from '@/constants/app.constant';
-import { SelectOptionDTO } from '@/constants/app.interface';
-import { GetterState, MutationState } from '@/constants/app.vuex';
 import CycleRepository from '@/repositories/CycleRepository';
-import CheckinRepository from '@/repositories/CheckinRepository';
 import CommonPagination from '@/components/Commons/CommonPagination.vue';
 import ProjectRepository from '../../repositories/ProjectRepository';
 import {
   TAB_CHECKIN,
   ROUTER_CHECKIN,
 } from '@/components/Checkins/constants.enum';
+import { ICheckinParams } from '@/constants/DTO/common';
 
 @Component<CheckinPage>({
   components: {
@@ -91,7 +87,7 @@ export default class CheckinPage extends Vue {
       : this.$route.query.tab === ROUTER_CHECKIN.CheckinResquest
       ? TAB_CHECKIN.CheckinResquest
       : TAB_CHECKIN.MyOkrs;
-  private paramsCheckin = {
+  private paramsCheckin: ICheckinParams = {
     tab: this.$route.query.tab ? this.$route.query.tab : ROUTER_CHECKIN.MyOkrs,
     page: this.$route.query.page ? this.$route.query.page : 1,
     cycleId: this.$route.query.cycleId
@@ -149,14 +145,13 @@ export default class CheckinPage extends Vue {
 
   private async getProjects() {
     const { data } = await ProjectRepository.getListCurrent();
-    this.projects =
-      [
-        {
-          id: 0,
-          name: 'Tất cả',
-        },
-        ...data,
-      ];
+    this.projects = [
+      {
+        id: 0,
+        name: 'Tất cả',
+      },
+      ...data,
+    ];
   }
 }
 </script>

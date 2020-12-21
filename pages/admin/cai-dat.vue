@@ -10,11 +10,11 @@
               class="admin__top__input"
               :placeholder="topChange.textPlaceholder"
               prefix-icon="el-icon-search"
-              @keyup.enter.native="handleSearch"
+              @keyup.enter.native="handleSearch(textSearch)"
             />
             <el-button
               class="el-button--white el-button--search -ml-2"
-              @click="handleSearch"
+              @click="handleSearch(textSearch)"
               >Tìm kiếm</el-button
             >
             <el-button
@@ -98,7 +98,6 @@ import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
 })
 export default class SettingCompanyPage extends Vue {
   private tableData: any[] = [];
-  private metaPagination: object = {};
   private totalItems: number = 1;
   private tabs: string[] = [...Object.values(AdminTabsVn)];
   private textSearch: string = '';
@@ -150,13 +149,15 @@ export default class SettingCompanyPage extends Vue {
     }
   }
 
-  private handleSearch() {
+  private handleSearch(textSearch: string) {
     this.adminParams.page = 1;
-    this.adminParams.text = this.textSearch;
+    this.adminParams.text = textSearch;
     if (!this.$route.query.tab) {
       this.$router.push(`?tab=quan-ly-chu-ky&text=${this.textSearch}`);
     } else {
-      this.$router.push(`?tab=${this.$route.query.tab}&text=${this.textSearch}`);
+      this.$router.push(
+        `?tab=${this.$route.query.tab}&text=${this.textSearch}`,
+      );
     }
   }
 

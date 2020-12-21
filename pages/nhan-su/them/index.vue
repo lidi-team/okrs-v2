@@ -284,9 +284,9 @@ export default class CreateEmployee extends Vue {
     const users: any = this.handleTableData(this.tableData);
     try {
       const response: any = await EmployeeRepository.create({ users });
-      console.log(response);
-      if (!!response && !!response.data) {
-        if (response.data.code === 2000) {
+      if (!!response && !!response.code) {
+        console.log('response: ', response);
+        if (response.code === 2000) {
           this.employee = {
             fullName: '',
             email: '',
