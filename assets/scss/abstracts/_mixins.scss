@@ -167,9 +167,7 @@ $breakpoints: (
   /* autoprefixer: off */
   -webkit-box-orient: vertical;
 }
-
-// Truncate multiline with CSS2
-// Example:
+//Example:
 //
 // .class {
 //   @include truncate-multiline-old({ $line-number: 2 });
