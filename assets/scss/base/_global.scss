@@ -336,16 +336,17 @@ span {
   border-color: $purple-primary-6;
 }
 
-.avatar-default {
+.icon-default {
   &--m {
     width: 30px;
     height: 30px;
     line-height: 30px;
   }
   &--s {
-    width: 25px;
-    height: 25px;
-    line-height: 25px;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
   }
   &--xl {
     width: 120px;
