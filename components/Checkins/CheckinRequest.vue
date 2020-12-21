@@ -30,7 +30,7 @@
       <el-table-column label="Hành động" align="center" width="180">
         <template slot-scope="{ row }">
           <nuxt-link :to="`/checkin/chi-tiet/${row.id}`">
-            <el-button class="el-button--purple el-button--checkin"
+            <el-button class="el-button--purple w-100"
               >Duyệt Check-in</el-button
             >
           </nuxt-link>
@@ -103,14 +103,3 @@ export default class RequestCheckin extends Vue {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-@import '@/assets/scss/main.scss';
-.requestCheckin {
-  .el-button {
-    &--checkin {
-      width: 100%;
-    }
-  }
-}
-</style>

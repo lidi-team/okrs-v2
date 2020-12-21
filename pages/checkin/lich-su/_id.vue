@@ -21,7 +21,11 @@
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Ngày check-in kế tiếp" width="200" align="center">
+        <el-table-column
+          label="Ngày check-in kế tiếp"
+          width="200"
+          align="center"
+        >
           <template v-slot="{ row }">
             <span>{{
               new Date(row.nextCheckinDate) | dateFormat('DD/MM/YYYY')
@@ -48,9 +52,7 @@
         <el-table-column label="Hành động" align="center" width="180">
           <template slot-scope="{ row }">
             <nuxt-link :to="`/checkin/chi-tiet/${row.id}`">
-              <el-button class="el-button--white el-button--checkin"
-                >Xem chi tiết</el-button
-              >
+              <el-button class="el-button--white w-100">Xem chi tiết</el-button>
             </nuxt-link>
           </template>
         </el-table-column>
@@ -86,10 +88,11 @@ export default class HistoryCheckin extends Vue {
 
   private async getList() {
     this.loading = true;
-    const { data }  = await CheckinRepository.getHistory(Number(this.$route.params.id))
+    const { data } = await CheckinRepository.getHistory(
+      Number(this.$route.params.id),
+    );
     this.historyList = data;
     this.loading = false;
   }
 }
 </script>
-

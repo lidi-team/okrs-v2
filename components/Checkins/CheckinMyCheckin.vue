@@ -65,29 +65,23 @@
               v-if="row.status === status.OVERDUE"
               :to="`/checkin/company/${row.id}`"
             >
-              <el-button type="danger" class="el-button--checkin"
-                >Quá hạn</el-button
-              >
+              <el-button type="danger" class="w-100">Quá hạn</el-button>
             </nuxt-link>
             <nuxt-link
               v-else-if="row.status === status.DRAFT"
               :to="`/checkin/company/${row.id}`"
             >
-              <el-button type="warning" class="el-button--checkin"
-                >Sửa bản nháp</el-button
-              >
+              <el-button type="warning" class="w-100">Sửa bản nháp</el-button>
             </nuxt-link>
             <el-button
               v-else-if="row.status === status.COMPLETED"
               type="success"
               disabled
-              class="el-button--checkin"
+              class="w-100"
               >Đã hoàn thành</el-button
             >
             <nuxt-link v-else :to="`/checkin/company/${row.id}`">
-              <el-button class="el-button--purple el-button--checkin"
-                >Tạo Checkin</el-button
-              >
+              <el-button class="el-button--purple w-100">Tạo Checkin</el-button>
             </nuxt-link>
           </template>
         </el-table-column>
@@ -97,36 +91,29 @@
               v-if="row.status === status.OVERDUE"
               :to="`/checkin/${row.id}`"
             >
-              <el-button type="danger" class="el-button--checkin"
-                >Quá hạn</el-button
-              >
+              <el-button type="danger" class="w-100">Quá hạn</el-button>
             </nuxt-link>
             <nuxt-link
               v-else-if="row.status === status.DRAFT"
-              :to="`/checkin/${row.id}`"
+              :to="`/checkin/chi-tiet/${row.id}`"
             >
-              <el-button type="warning" class="el-button--checkin"
-                >Sửa bản nháp</el-button
-              >
+              <el-button type="warning" class="w-100">Sửa bản nháp</el-button>
             </nuxt-link>
-            <el-button
+            <nuxt-link
               v-else-if="row.status === status.PENDING"
-              type="info"
-              disabled
-              class="el-button--checkin"
-              >Đang chờ duyệt</el-button
+              :to="`/checkin/chi-tiet/${row.id}`"
             >
+              <el-button type="warning" class="w-100">Đang chờ duyệt</el-button>
+            </nuxt-link>
             <el-button
               v-else-if="row.status === status.COMPLETED"
               type="success"
               disabled
-              class="el-button--checkin"
+              class="w-100"
               >Đã hoàn thành</el-button
             >
             <nuxt-link v-else :to="`/checkin/${row.id}`">
-              <el-button class="el-button--purple el-button--checkin"
-                >Tạo Checkin</el-button
-              >
+              <el-button class="el-button--purple w-100">Tạo Checkin</el-button>
             </nuxt-link>
           </template>
         </el-table-column>
@@ -297,11 +284,6 @@ export default class MyOkrsCheckin extends Vue {
     padding: $unit-5 0 $unit-2 $unit-5;
     @include box-shadow;
     border-radius: $border-radius-base $border-radius-base 0px 0px;
-  }
-  .el-button {
-    &--checkin {
-      width: 100%;
-    }
   }
   .el-progress {
     .el-progress-bar {

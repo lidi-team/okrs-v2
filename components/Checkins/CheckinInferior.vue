@@ -1,55 +1,57 @@
 <template>
   <div>
-  <div class="box-wrap">
-    <el-table
-      v-loading="loading"
-      empty-text="Không có dữ liệu"
-      class="inferiorOKRs"
-      :data="employees"
-      style="width: 100%"
-    >
-      <el-table-column
-        type="index"
-        align="center"
-        label="STT"
-      ></el-table-column>
-      <el-table-column label="Họ và tên">
-        <template slot-scope="{ row }">
-          <div class="inferiorOKRs__info">
-            <img
-              :src="
-                row.avatarURL ||
-                'https://bulma.io/images/placeholders/128x128.png'
-              "
-              class="inferiorOKRs__avatar"
-              alt="avatar"
-            />
-            <span>{{ row.fullName || '' }}</span>
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="Dự án" align="center">
-        <template slot-scope="{ row }">
-          <span>{{ row.project.name || '' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Hành động" align="center">
-        <template slot-scope="{ row }">
-          <el-button class="el-button--purple" @click="showOKRs(row.id, row.project.id)"
-            >Xem OKRs</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
-    <pagination
-      class="feedback__col__pagination"
-      :total="pagination.totalItems"
-      :page.sync="pagination.currentPage"
-      :limit.sync="pagination.limit"
-      @pagination="handlePagination($event)"
-    />
-  </div>
-  <el-dialog
+    <div class="box-wrap">
+      <el-table
+        v-loading="loading"
+        empty-text="Không có dữ liệu"
+        class="inferiorOKRs"
+        :data="employees"
+        style="width: 100%"
+      >
+        <el-table-column
+          type="index"
+          align="center"
+          label="STT"
+        ></el-table-column>
+        <el-table-column label="Họ và tên">
+          <template slot-scope="{ row }">
+            <div class="inferiorOKRs__info">
+              <img
+                :src="
+                  row.avatarURL ||
+                  'https://bulma.io/images/placeholders/128x128.png'
+                "
+                class="inferiorOKRs__avatar"
+                alt="avatar"
+              />
+              <span>{{ row.fullName || '' }}</span>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Dự án" align="center">
+          <template slot-scope="{ row }">
+            <span>{{ row.project.name || '' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Hành động" align="center">
+          <template slot-scope="{ row }">
+            <el-button
+              class="el-button--purple"
+              @click="showOKRs(row.id, row.project.id)"
+              >Xem OKRs</el-button
+            >
+          </template>
+        </el-table-column>
+      </el-table>
+      <pagination
+        class="feedback__col__pagination"
+        :total="pagination.totalItems"
+        :page.sync="pagination.currentPage"
+        :limit.sync="pagination.limit"
+        @pagination="handlePagination($event)"
+      />
+    </div>
+    <el-dialog
       :visible.sync="showDialogKRs"
       width="90%"
       placement="bottom-start"
@@ -209,11 +211,6 @@ export default class Inferior extends Vue {
     width: $unit-8;
     height: $unit-8;
     border-radius: $border-radius-large;
-  }
-  .el-button {
-    &--checkin {
-      width: 100%;
-    }
   }
   .el-progress {
     .el-progress-bar {

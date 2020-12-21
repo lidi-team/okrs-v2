@@ -8,11 +8,11 @@ export const notificationConfig = {
 };
 
 export const statusCheckin = {
-  DRAFT: 'Draft', // Luu nhap => Staff co the tiep tuc sua lai checkin
-  PENDING: 'Pending', // Ca nhan checkin xong, gui request checkin cho leader => Staff ko duoc tao checkin moi, phai cho checkin xong cai cu
-  OVERDUE: 'Overdue', // Qua han check in, hien thi text qua han => Van cho checkin
-  DONE: 'Done', // Leader checkin xong => Staff co the tao checkin moi
-  COMPLETED: 'Completed', // OKRs da hoan thanh => Khong checkin duoc
+  DRAFT: 'Draft',
+  PENDING: 'Pending',
+  OVERDUE: 'Overdue',
+  DONE: 'Done',
+  COMPLETED: 'Completed',
 };
 
 export const confidentLevel = [
