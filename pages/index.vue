@@ -19,13 +19,13 @@
       </el-select>
     </div>
     <el-row :gutter="20">
-      <el-col :span="12">
+      <el-col :span="24">
         <div class="box-wrap">
           <h2 class="-title-2 -border-header">Tình trạng cập nhật tiến độ</h2>
           <dashboard-checkin-chart v-loading="loading" :loading="loading" :checkin-chart="checkinChart" />
         </div>
       </el-col>
-      <el-col :span="12">hello</el-col>
+      <!-- <el-col :span="12">hello</el-col> -->
     </el-row>
     <el-row :gutter="20">
       <el-col :span="12">

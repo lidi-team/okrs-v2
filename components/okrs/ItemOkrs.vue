@@ -42,7 +42,7 @@
               <div class="expand__infor">
                 <p
                   v-if="objective.keyResults.length"
-                  class="expand__infor--link"
+                  class="expand__infor--link el-link"
                   @click="emitDrawer(objective.keyResults)"
                 >
                   {{ objective.keyResults.length }} kết quả
@@ -243,8 +243,6 @@ export default class OKRsItem extends Vue {
         display: flex;
         &--link {
           width: 140px;
-          color: $blue-primary-2;
-          cursor: pointer;
         }
         &--progress {
           width: 250px;

@@ -5,7 +5,7 @@
     </div>
     <el-form
       ref="changePasswordForm"
-      class="change-password__form"
+      class="change-password__form box-wrap"
       :model="changePasswordForm"
       :rules="rules"
       :status-icon="true"
