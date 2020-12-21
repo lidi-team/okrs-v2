@@ -125,7 +125,7 @@ import { MutationState } from '@/constants/app.vuex';
   },
 })
 export default class Rank extends Vue {
-  private cycleId: number = this.$store.state.cycle.cycleCurrent
+  private cycleId: number | string = this.$store.state.cycle.cycleCurrent
     ? this.$store.state.cycle.cycleCurrent - 0
     : '';
   private loadingTab: boolean = false;

@@ -68,7 +68,7 @@ export default class NavbarCrfs extends Vue {
   private textSearch: string = '';
   private allUsers: any[] = [];
   private listCycles: any[] = [];
-  private cycleId: number = this.$store.state.cycle.cycleCurrent
+  private cycleId: number | string = this.$store.state.cycle.cycleCurrent
     ? this.$store.state.cycle.cycleCurrent - 0
     : '';
 
