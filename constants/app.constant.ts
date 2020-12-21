@@ -18,7 +18,7 @@ export const statusCheckin = {
 export const confidentLevel = [
   {
     value: 1.1,
-    label: 'Ổn định',
+    label: 'Tự tin',
   },
   {
     value: 1.0,
@@ -26,7 +26,7 @@ export const confidentLevel = [
   },
   {
     value: 0.9,
-    label: 'Không ổn định',
+    label: 'Không tự tin lắm',
   },
 ];
 
