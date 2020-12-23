@@ -63,7 +63,7 @@
                   :class="
                     row.isActive
                       ? 'el-icon-lock icon--delete'
-                      : 'el-icon-unlock icon--warning'
+                      : 'el-icon-unlock icon--green'
                   "
                   @click="changeUserStatus(row)"
                 ></i>
