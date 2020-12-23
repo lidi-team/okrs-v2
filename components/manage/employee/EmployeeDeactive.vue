@@ -238,19 +238,11 @@ export default class EmployeeDeactive extends Vue {
                   setTimeout(() => {
                     this.loading = false;
                   }, 300);
-                  this.$notify.success({
-                    ...notificationConfig,
-                    message: 'Cập nhật thành viên thành công',
-                  });
                   this.getListUsers();
                   this.dialogUpdateVisible = false;
                 })
                 .catch((error) => {
                   if (error.response.data.statusCode === 430) {
-                    this.$notify.error({
-                      ...notificationConfig,
-                      message: 'Team Leader đã tồn tại',
-                    });
                   }
                   setTimeout(() => {
                     this.loading = false;

@@ -152,10 +152,6 @@ export default class ChangePasswordDialog extends Vue {
               newPassword: form.newPassword,
             });
             this.loading = false;
-            this.$notify.success({
-              ...notificationConfig,
-              message: 'Đổi mật khẩu thành công',
-            });
             this.$store.dispatch(DispatchAction.CLEAR_AUTH);
             this.$router.push('/');
           } catch (error) {
@@ -163,10 +159,7 @@ export default class ChangePasswordDialog extends Vue {
               this.loading = false;
             }, 300);
             if (error.response.data.statusCode === 409) {
-              this.$notify.error({
-                ...notificationConfig,
-                message: 'Mât khẩu không chính xác',
-              });
+
             }
           }
         }

@@ -162,10 +162,6 @@ export default class CriteriaDialog extends Vue {
           try {
             await CriteriaRepository.post(this.tempCreateCriteria).then(
               (res) => {
-                this.$notify.success({
-                  ...notificationConfig,
-                  message: 'Tạo tiêu chí mới thành công',
-                });
               },
             );
             this.loading = false;

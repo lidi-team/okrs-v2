@@ -221,10 +221,6 @@ export default class RegisterComponent extends Vue {
             delete this.registerForm.matchPassword;
             await AuthRepository.register(this.registerForm).then(
               (res: any) => {
-                this.$notify.success({
-                  ...notificationConfig,
-                  message: 'Gửi yêu cầu đăng ký thành công',
-                });
               },
             );
             this.loading = false;

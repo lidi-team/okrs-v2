@@ -152,10 +152,6 @@ export default class CycleOkrsDialog extends Vue {
               endDate: formatDateToYYYY(this.temCreateCycle.endDate),
             };
             await CycleRepository.post(tempCycle).then((res) => {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Tạo chu kỳ mới thành công',
-              });
             });
             this.loading = false;
             this.clearForm();

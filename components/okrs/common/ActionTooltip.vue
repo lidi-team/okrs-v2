@@ -57,10 +57,6 @@ export default class OkrsActionTooltip extends Vue {
     }).then(async () => {
       await ObjectiveRepository.deleteObjective(this.id).then((res: any) => {
         this.$store.commit(MutationState.OKRS_SET_FLAG);
-        this.$notify.success({
-          ...notificationConfig,
-          message: 'Xóa OKRs thành công',
-        });
       });
       this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
     });

@@ -232,10 +232,6 @@ export default class EmployeePending extends Vue {
     }).then(async () => {
       try {
         await EmployeeRepository.approveAll(this.id).then((res: any) => {
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'Duyệt tất cả thành công',
-          });
         });
         this.getListUsers();
       } catch (error) {}
@@ -274,19 +270,11 @@ export default class EmployeePending extends Vue {
                   setTimeout(() => {
                     this.loading = false;
                   }, 300);
-                  this.$notify.success({
-                    ...notificationConfig,
-                    message: 'Cập nhật thành viên thành công',
-                  });
                   this.getListUsers();
                   this.dialogUpdateVisible = false;
                 })
                 .catch((error) => {
                   if (error.response.data.statusCode === 430) {
-                    this.$notify.error({
-                      ...notificationConfig,
-                      message: 'Team Leader đã tồn tại',
-                    });
                   }
                   setTimeout(() => {
                     this.loading = false;
@@ -321,10 +309,6 @@ export default class EmployeePending extends Vue {
     }).then(async () => {
       try {
         await EmployeeRepository.delete(row.id).then((res: any) => {
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'Từ chối thành viên thành công',
-          });
         });
         this.getListUsers();
       } catch (error) {}

@@ -247,19 +247,12 @@ export default class ManageCycleOkrs extends Vue {
                 endDate: formatDateToYYYY(this.temporaryUpdateCycle.endDate),
               };
               await CycleRepository.update(tempCycle).then((res) => {
-                this.$notify.success({
-                  ...notificationConfig,
-                  message: 'Cập nhật chu kỳ thành công',
-                });
               });
               this.reloadData();
               this.dialogUpdateVisible = false;
             } catch (error) {
               if (error.response.data.statusCode === 486) {
-                this.$notify.error({
-                  ...notificationConfig,
-                  message: 'Ngày bắt đầu hoặc ngày kết thúc không hợp lệ',
-                });
+
               }
             }
           });

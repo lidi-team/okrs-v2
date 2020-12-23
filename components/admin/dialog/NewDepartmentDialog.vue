@@ -105,10 +105,6 @@ export default class TeamDialog extends Vue {
         if (isValid) {
           try {
             await TeamRepository.post(this.tempCreateDepartment).then((res) => {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Tạo phòng ban mới thành công',
-              });
             });
             this.loading = false;
             this.clearForm();
