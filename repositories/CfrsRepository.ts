@@ -52,4 +52,8 @@ export default class CfrsRepository {
       params: { type },
     });
   }
+
+  public static getAllInferior() {
+    return baseUrl.get(`${ResourcesEnpoint.CFRs}/inferior-staff`);
+  }
 }

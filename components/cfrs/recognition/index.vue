@@ -5,6 +5,7 @@
     width="800px"
     placement="center"
     class="create-recognition-dialog"
+    :before-close="handleCloseDialog"
   >
     <el-form
       ref="recognition"
@@ -29,17 +30,14 @@
           <el-option
             v-for="user in optionsMetadata.users"
             :key="user.id"
-            :label="user.fullName"
+            :label="user.name"
             :value="user.id"
           >
-            <div style="display: flex">
-              <el-avatar :size="40" style="align-self: center">
-                <img
-                  :src="user.avatarUrl | filterImage"
-                  alt="avatar"
-                />
+            <div class="-display-flex">
+              <el-avatar :size="32" style="align-self: center">
+                <img :src="user.avatarUrl | filterImage" alt="avatar" />
               </el-avatar>
-              <span style="margin-left: 0.5rem">{{ user.fullName }}</span>
+              <span style="margin-left: 0.5rem">{{ user.name }}</span>
             </div>
           </el-option>
         </el-select>
@@ -204,13 +202,14 @@ export default class CreateRecongnitionDialog extends Vue {
     ],
   };
 
-  private handleCloseDialog() {
-    this.$confirm(
-      'Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?',
-      { ...confirmWarningConfig },
-    ).then(() => {
+  private async handleCloseDialog() {
+    try {
+      await this.$confirm(
+        'Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?',
+        { ...confirmWarningConfig },
+      );
       this.syncCreateOkrsDialog = false;
-    });
+    } catch (e) {}
   }
 
   private async getMetaDataRecognition(user: any) {
@@ -219,7 +218,7 @@ export default class CreateRecongnitionDialog extends Vue {
         EvaluationCriteriaRepository.getCombobox(
           EvaluationCriteriaEnum.RECOGNITION,
         ),
-        UserRepository.getAllUsers(),
+        CfrsRepository.getAllInferior(),
       ]);
       this.optionsMetadata.criteria = Object.freeze(evaluationCriteria.data);
       const usersData = allUsers.data
