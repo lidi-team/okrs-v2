@@ -176,7 +176,7 @@
             </el-table-column>
             <el-table-column align="center" label="Tiến độ" min-width="100">
               <template slot-scope="{ row }">
-                <span>{{ row.progress }} %</span>
+                <span>{{ row.progress | round }} %</span>
               </template>
             </el-table-column>
           </el-table>
