@@ -5,6 +5,7 @@
     width="800px"
     placement="center"
     class="create-feedback-dialog"
+    :before-close="handleCloseDialog"
   >
     <el-form
       ref="contentFeedback"
