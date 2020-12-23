@@ -6,45 +6,55 @@
       <el-col :sm="24" :lg="8">
         <div class="box-wrap height-detail">
           <h2 class="-title-2 -border-header">Thông tin chi tiết</h2>
-          <div class="top-checkin__content">
-            <div v-if="checkin">
-              <div class="-mt-3 -mb-2 -display-flex">
-                <span class="-w-19 -font-bold"> Mục tiêu: </span>
-                <span>
-                  {{ checkin.objective.title }}
-                </span>
-              </div>
-              <div class="-mb-2 -display-flex">
-                <span class="-w-19 -font-bold"> Trạng thái: </span>
-                <span>
-                  {{ checkin.checkin.status }}
-                </span>
-              </div>
-              <div class="-mb-2 -display-flex">
-                <span class="-w-19 -font-bold"> Tiến độ: </span>
-                <span>
-                  {{ checkin.progress }}
-                </span>
-              </div>
-              <div class="-mb-2 -display-flex">
-                <span class="-w-19 -font-bold">Ngày check-in gần nhất: </span>
-                <span>
-                  {{
-                    new Date(checkin.checkin.checkinAt)
-                      | dateFormat('DD/MM/YYYY')
-                  }}
-                </span>
-              </div>
-              <div class="-mb-2 -display-flex">
-                <span class="-w-19 -font-bold">Ngày check-in tiếp theo: </span>
-                <span>
-                  {{
-                    new Date(checkin.checkin.nextCheckinDate)
-                      | dateFormat('DD/MM/YYYY')
-                  }}
-                </span>
-              </div>
-            </div>
+          <div v-if="checkin">
+            <el-row>
+              <el-col :span="8">
+                <p class="-mb-2 -mt-2 label">Mục tiêu:</p>
+              </el-col>
+              <el-col :span="16">
+                <p class="-font-bold -text-italic -mb-2 -mt-2 value">{{checkin.objective.title}}</p>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8">
+                <p class="-mb-2 label">Trạng thái:</p>
+              </el-col>
+              <el-col :span="16">
+                <p class="-mb-2 value">{{checkin.checkin.status}}</p>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8">
+                <p class="-mb-2 label">Tiến độ:</p>
+              </el-col>
+              <el-col :span="16">
+                <p class="-mb-2 value">{{checkin.progress}}%</p>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8">
+                <p class="-mb-2 label">Ngày check-in gần nhất:</p>
+              </el-col>
+              <el-col :span="16">
+                <p class="-mb-2 value">{{new Date(checkin.checkin.checkinAt) | dateFormat('DD/MM/YYYY')}}</p>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8">
+                <p class="-mb-2 label">Ngày check-in tiếp theo:</p>
+              </el-col>
+              <el-col :span="16">
+                <p class="-mb-2 value">{{new Date(checkin.checkin.nextCheckinDate) | dateFormat('DD/MM/YYYY')}}</p>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="8">
+                <p class="-mb-2 label">Người review:</p>
+              </el-col>
+              <el-col :span="16">
+                <p class="-mb-2 value">{{checkin.checkin.reviewer}}</p>
+              </el-col>
+            </el-row>
           </div>
         </div>
       </el-col>
@@ -99,17 +109,16 @@ export default class DetailHistoryPage extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-@import '@/assets/scss/main.scss';
 .height-detail {
   height: 500px;
 }
-.top-checkin {
-  margin-bottom: $unit-8;
-  background-color: $white;
-  &__chart {
-    width: 100%;
-    min-height: 350px;
-    font-size: $unit-3;
-  }
+.label {
+  font-size: 14px;
+  color: #606266;
+  line-height: 23px;
+}
+.value {
+  font-size: 14px;
+  line-height: 23px;
 }
 </style>
