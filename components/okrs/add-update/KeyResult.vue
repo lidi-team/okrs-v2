@@ -36,7 +36,7 @@
             <el-button
               class="el-button--white el-button--small"
               @click="popoverVisisble = false"
-              >Không</el-button
+              >Hủy</el-button
             >
             <el-button
               class="el-button--purple el-button--small"

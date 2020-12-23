@@ -304,6 +304,12 @@ export default class DetailHistory extends Vue {
 
   private handleCheckin(status: String) {
     this.loading = true;
+    if (!this.syncCheckin.nextCheckinDate) {
+      Notification.error(
+        'Không được bỏ trống trường ngày check-in tiếp theo',
+      );
+      return this.loading = false
+    }
     (this.$refs.checkinRuleForm as Form).validate(
       async (isValid: boolean, invalidFields: object) => {
         if (isValid) {
