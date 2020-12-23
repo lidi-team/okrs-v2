@@ -50,6 +50,7 @@ import 'element-ui/lib/theme-chalk/collapse.css';
 import 'element-ui/lib/theme-chalk/collapse-item.css';
 import 'element-ui/lib/theme-chalk/rate.css';
 import 'element-ui/lib/theme-chalk/backtop.css';
+import 'element-ui/lib/theme-chalk/badge.css';
 
 // configure default language
 locale.use(vietnameseLang);
@@ -287,6 +288,13 @@ Vue.component(
       /* webpackChunkName: 'element-ui-back-top' */ 'element-ui/lib/backtop'
     ),
 );
+Vue.component(
+  elComponent.ElBadge,
+  () => 
+    import(
+      /* webpackChunkName: 'element-ui-back-top' */ 'element-ui/lib/badge'
+    )
+)
 
 // import prototype Vue
 Vue.use(Loading.directive);

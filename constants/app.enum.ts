@@ -40,6 +40,7 @@ export enum elComponent {
   ElCollapseItem = 'ElCollapseItem',
   ElRate = 'ElRate',
   ElBacktop = 'ElBacktop',
+  ElBadge = 'ElBadge',
 }
 
 export enum UserStatus {
