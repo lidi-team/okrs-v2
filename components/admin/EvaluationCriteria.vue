@@ -266,10 +266,6 @@ export default class ManageEvaluationCriteria extends Vue {
               await EvaluationCriteriorRepository.update(
                 this.tempUpdateCriteria,
               ).then((res) => {
-                this.$notify.success({
-                  ...notificationConfig,
-                  message: 'Cập nhật tiêu chí thành công',
-                });
               });
               this.reloadData();
               this.dialogUpdateVisible = false;
@@ -286,10 +282,6 @@ export default class ManageEvaluationCriteria extends Vue {
     }).then(async () => {
       try {
         await EvaluationCriteriorRepository.delete(row.id).then((res) => {
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'Xóa tiêu chí thành công',
-          });
         });
         this.reloadData();
       } catch (error) {}

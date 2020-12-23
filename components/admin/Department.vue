@@ -171,10 +171,6 @@ export default class ManageDepartment extends Vue {
           }).then(async () => {
             try {
               await TeamRepository.update(this.tempUpdateTeam).then((res) => {
-                this.$notify.success({
-                  ...notificationConfig,
-                  message: 'Cập nhật phòng ban thành công',
-                });
               });
               this.reloadData();
               this.dialogUpdateVisible = false;
@@ -191,10 +187,6 @@ export default class ManageDepartment extends Vue {
     }).then(async () => {
       try {
         await TeamRepository.delete(row.id).then((res) => {
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'Xóa phòng ban thành công',
-          });
         });
         this.reloadData();
       } catch (error) {}

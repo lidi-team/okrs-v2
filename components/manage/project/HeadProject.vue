@@ -39,10 +39,6 @@ export default class Headproject extends Vue {
 
   private doCopy() {
     this.$copyText(this.linkInvite);
-    this.$notify.success({
-      ...notificationConfig,
-      message: 'Copy link thành công',
-    });
   }
 }
 </script>

@@ -257,22 +257,13 @@ export default class EmployeeActive extends Vue {
               await EmployeeRepository.update(tempUpdateUser)
                 .then((res) => {
                   setTimeout(() => {
-                    console.log('aa');
                     this.loadingTable = false;
                   }, 300);
-                  this.$notify.success({
-                    ...notificationConfig,
-                    message: 'Cập nhật thành viên thành công',
-                  });
                   this.getListUsers();
                   this.dialogUpdateVisible = false;
                 })
                 .catch((error) => {
                   if (error.response.data.statusCode === 430) {
-                    this.$notify.error({
-                      ...notificationConfig,
-                      message: 'Team Leader đã tồn tại',
-                    });
                   }
                   setTimeout(() => {
                     this.loadingTable = false;
@@ -329,10 +320,6 @@ export default class EmployeeActive extends Vue {
       try {
         await EmployeeRepository.update(this.tempUpdateUser).then(
           (res: any) => {
-            this.$notify.success({
-              ...notificationConfig,
-              message: 'Cập nhật thành viên thành công',
-            });
           },
         );
         this.getListUsers();

@@ -188,10 +188,6 @@ export default class ManageMeasureUnit extends Vue {
             try {
               await MeasureUnitRepository.update(this.tempUpdateUnit).then(
                 (res) => {
-                  this.$notify.success({
-                    ...notificationConfig,
-                    message: 'Cập nhật đơn vị thành công',
-                  });
                 },
               );
               this.reloadData();
@@ -209,10 +205,6 @@ export default class ManageMeasureUnit extends Vue {
     }).then(async () => {
       try {
         await MeasureUnitRepository.delete(row.id).then((res) => {
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'Xóa đơn vị thành công',
-          });
         });
         this.reloadData();
       } catch (error) {}

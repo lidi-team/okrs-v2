@@ -80,10 +80,6 @@ export default class ForgotPassword extends Vue {
               this.forgotPasswordForm,
             );
             this.loading = false;
-            this.$notify.success({
-              ...notificationConfig,
-              message: 'Đã gửi yêu cầu. Vui lòng kiểm tra email của bạn',
-            });
             this.$router.push('/dang-nhap');
           } catch (error) {
             setTimeout(() => {

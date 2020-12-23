@@ -172,10 +172,6 @@ export default class ManageJobPosition extends Vue {
           }).then(async () => {
             try {
               await JobRepository.update(this.tempUpdateJob).then((res) => {
-                this.$notify.success({
-                  ...notificationConfig,
-                  message: 'Cập nhật vị trí thành công',
-                });
               });
               this.loading = false;
               this.reloadData();
@@ -198,10 +194,6 @@ export default class ManageJobPosition extends Vue {
     }).then(async () => {
       try {
         await JobRepository.delete(row.id).then((res) => {
-          this.$notify.success({
-            ...notificationConfig,
-            message: 'Xóa vị trí thành công',
-          });
         });
         this.reloadData();
       } catch (error) {}

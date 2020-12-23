@@ -146,10 +146,6 @@ export default class CreateFeedbackDialog extends Vue {
               payload,
               this.dataFeedback.type,
             ).then(() => {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Tạo phản hồi thành công',
-              });
               this.loading = false;
               this.syncCreateOkrsDialog = false;
             });

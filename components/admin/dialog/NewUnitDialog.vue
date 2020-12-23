@@ -105,10 +105,6 @@ export default class MeasureUnitDialog extends Vue {
           try {
             await MeasureUnitRepository.post(this.tempCreateUnit).then(
               (res) => {
-                this.$notify.success({
-                  ...notificationConfig,
-                  message: 'Tạo đơn vị mới thành công',
-                });
               },
             );
             this.clearForm();

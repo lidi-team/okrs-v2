@@ -101,10 +101,6 @@ export default class JobDialog extends Vue {
         if (isValid) {
           try {
             await JobRepository.post(this.tempCreateJob).then((res) => {
-              this.$notify.success({
-                ...notificationConfig,
-                message: 'Tạo vị trí mới thành công',
-              });
             });
             this.clearForm();
             this.loading = false;
