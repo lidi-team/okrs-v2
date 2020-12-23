@@ -40,9 +40,13 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
+import NoPermission from '@/assets/images/error/no-permistion.svg';
 
 @Component({
   name: 'Error404Page',
+  components: {
+    NoPermission,
+  },
   head() {
     return {
       title: '404',
