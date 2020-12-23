@@ -1,14 +1,14 @@
 ::-webkit-scrollbar {
-  width: 0;
-}
-
-::-webkit-scrollbar-track {
-  border-radius: $border-radius-small;
-  border: solid 0 transparent;
+  width: 0px;
+  height: 7px;
+  border-radius: 7px;
 }
 
 ::-webkit-scrollbar-thumb {
-  border-radius: 0;
-  border: solid 0 transparent;
-  width: 0;
+  background: $purple-primary-4;
+  border-radius: 7px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: $purple-primary-5;
 }

@@ -18,7 +18,7 @@
           >
             <el-date-picker
               :disabled="isDisable"
-              v-model="nextCheckinDate"
+              v-model="syncCheckin.nextCheckinDate"
               :clearable="false"
               type="date"
               :picker-options="pickerOptions"
@@ -222,6 +222,7 @@ import {
   confidentLevel,
   notificationConfig,
 } from '@/constants/app.constant';
+import { Notification } from 'element-ui';
 import { formatDateToDD, compareTwoDate } from '@/utils/dateParser';
 import { Maps, Rule } from '@/constants/app.type';
 
@@ -234,17 +235,13 @@ import { Maps, Rule } from '@/constants/app.type';
   },
   mounted() {
     if (this.syncCheckin.checkin) {
-      const {
-        status = 'Draft',
-        nextCheckinDate = new Date(),
-        id = null,
-      } = this.syncCheckin.checkin;
+      const { status = 'Draft', id = null } = this.syncCheckin.checkin;
       this.checkinStatus = status;
-      this.nextCheckinDate = nextCheckinDate;
       this.idCheckin = id;
     }
-    const { role = 'guest', progress = -1 } = this.syncCheckin;
+    const { role = 'guest', progress = -1, limitDate } = this.syncCheckin;
     this.progress = progress;
+    this.limitDate = new Date(limitDate);
     this.role = role;
     if (role === 'guest') {
       this.isDisable = true;
@@ -269,7 +266,6 @@ export default class DetailHistory extends Vue {
   private loading: boolean = false;
   private checkinStatus: string = 'Draft';
   private isDisable: Boolean = false;
-  private nextCheckinDate: any = new Date();
   private isCompleted: Boolean = false;
   private idCheckin: Number | null = null;
   private role: String = '';
@@ -277,6 +273,7 @@ export default class DetailHistory extends Vue {
   private progressSuggest: Number = 0;
   private progress: Number = 0;
   private flag: Boolean = false;
+  private limitDate: Date = new Date();
 
   @Watch('flag')
   private changeCheckin() {
@@ -300,7 +297,7 @@ export default class DetailHistory extends Vue {
   }
 
   private pickerOptions: any = {
-    disabledDate(time) {
+    disabledDate: (time) => {
       return time.getTime() <= Date.now();
     },
   };
@@ -310,11 +307,20 @@ export default class DetailHistory extends Vue {
     (this.$refs.checkinRuleForm as Form).validate(
       async (isValid: boolean, invalidFields: object) => {
         if (isValid) {
-          const { objective, checkinDetail } = this.syncCheckin;
+          const {
+            objective,
+            checkinDetail,
+            nextCheckinDate,
+          } = this.syncCheckin;
+          if (nextCheckinDate > this.limitDate) {
+            return Notification.error(
+              'Ngày check-in vượt quá ngày đóng chu kỳ',
+            );
+          }
           const payload = {
             id: this.idCheckin,
             objectiveId: objective.id,
-            nextCheckinDate: formatDateToDD(this.nextCheckinDate),
+            nextCheckinDate: formatDateToDD(nextCheckinDate),
             progress: this.progress,
             objectComplete: this.isCompleted,
             status,
@@ -352,37 +358,16 @@ export default class DetailHistory extends Vue {
     }
   };
 
-  // private rules: Maps<Rule[]> = {
-  //   progress: [
-  //     {
-  //       required: true,
-  //       message: 'Không được bỏ trống',
-  //       trigger: ['blur', 'change'],
-  //     },
-  //   ],
-  //   problems: [
-  //     {
-  //       required: true,
-  //       message: 'Không được bỏ trống',
-  //       trigger: ['blur', 'change'],
-  //     },
-  //   ],
-  //   plans: [
-  //     {
-  //       required: true,
-  //       message: 'Không được bỏ trống',
-  //       trigger: ['blur', 'change'],
-  //     },
-  //   ],
-  //   nextCheckinDate: [
-  //     {
-  //       required: true,
-  //       message: 'Không được bỏ trống',
-  //       trigger: ['blur', 'change'],
-  //     },
-  //     // { validator: this.validateDate, trigger: ['change', 'blur'] },
-  //   ],
-  // };
+  private rules: Maps<Rule[]> = {
+    nextCheckinDate: [
+      {
+        required: true,
+        message: 'Không được bỏ trống',
+        trigger: ['blur', 'change'],
+      },
+      { validator: this.validateDate, trigger: ['change', 'blur'] },
+    ],
+  };
 }
 </script>
 
