@@ -37,7 +37,9 @@
             >
               <div class="expand__objective">
                 <icon-ellipse v-if="objective" />
-                <span class="-pl-2">{{ objective.title }}</span>
+                <el-badge :value="`${objective.weight}/5`">
+                  <span class="-pl-2">{{ objective.title }}</span>
+                </el-badge>
               </div>
               <div class="expand__infor">
                 <p
@@ -79,7 +81,7 @@
       </el-table-column>
       <el-table-column label="Mục tiêu" min-width="380" class="cell-objective">
         <template v-slot="{ row }">
-          <span>{{ row.title }}</span>
+          <span>{{ row.title }} ({{ row.weight }}/5)</span>
           <el-tag type="danger">{{ row.childObjectives.length }} mục tiêu cá nhân</el-tag>
         </template>
       </el-table-column>
