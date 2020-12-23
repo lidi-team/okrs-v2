@@ -16,7 +16,9 @@
         <el-table-column label="Ngày bắt đầu">
           <template v-slot="{ row }">
             <!-- Vue Fileter Date Plugin -->
-            <span>{{ new Date(row.startDate) | dateFormat('DD/MM/YYYY') }}</span>
+            <span>{{
+              new Date(row.startDate) | dateFormat('DD/MM/YYYY')
+            }}</span>
           </template>
         </el-table-column>
         <el-table-column label="Ngày kết thúc">
@@ -70,6 +72,21 @@
                 <i
                   class="el-icon-edit icon--info"
                   @click="handleOpenDialogUpdate(row)"
+                ></i>
+              </el-tooltip>
+              <el-tooltip
+                v-if="user.roles.includes('ROLE_ADMIN')"
+                class="project-all__icon"
+                :content="row.status ? 'Đóng' : 'Mở'"
+                placement="right-end"
+              >
+                <i
+                  :class="
+                    row.status
+                      ? 'el-icon-lock icon--delete'
+                      : 'el-icon-unlock icon--green'
+                  "
+                  @click="handleCloseProject(row)"
                 ></i>
               </el-tooltip>
             </div>
@@ -173,19 +190,6 @@
               </el-select>
             </el-form-item>
             <el-form-item
-              label="trạng thái:"
-              class="custom-label"
-              prop="status"
-              label-width="150px"
-            >
-              <el-radio v-model="tempUpdateProject.status" :label="1"
-                >Hoạt động</el-radio
-              >
-              <el-radio v-model="tempUpdateProject.status" :label="0"
-                >Kết thúc</el-radio
-              >
-            </el-form-item>
-            <el-form-item
               label="Trực thuộc dự án:"
               prop="parentId"
               label-width="150px"
@@ -244,6 +248,7 @@ import ProjectRepository from '@/repositories/ProjectRepository';
 import { Form } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
+import { number } from 'echarts/lib/export';
 
 @Component<ProjectAll>({
   name: 'ProjectAll',
@@ -432,6 +437,24 @@ export default class ProjectAll extends Vue {
         return time.getTime() < endTime;
       },
     };
+  }
+
+  private async handleCloseProject(row: ProjectDTO) {
+    try {
+      await this.$confirm(
+        `Bạn có chắc chắn muốn ${row.status ? 'đóng' : 'mở'} dự án này?`,
+        {
+          ...confirmWarningConfig,
+        },
+      );
+      this.loading = true;
+      const id = row.id ? row.id : 0;
+      const data = await ProjectRepository.changeState(id);
+      await this.getListProject();
+      this.loading = false;
+    } catch (e) {
+      this.loading = false;
+    }
   }
 }
 </script>

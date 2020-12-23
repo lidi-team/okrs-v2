@@ -58,4 +58,8 @@ export default class ProjectRepository {
   public static getListCurrent() {
     return baseUrl.get(enpoint.getListCurrent);
   }
+
+  public static changeState(id: number) {
+    return baseUrl.delete(`${enpoint.getList}/` + id);
+  }
 }
