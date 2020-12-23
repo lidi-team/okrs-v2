@@ -4,41 +4,39 @@
     <h1 class="-title-1">Tạo checkin</h1>
     <div class="top-checkin box-wrap">
       <h2 class="-title-2">Chi tiết check-in</h2>
-      <div v-if="checkin" class="top-checkin__content content">
-        <table class="properties">
-          <tbody>
-            <tr>
-              <th scope="row">Mục tiêu</th>
-              <td>{{ checkin.objective.title }}</td>
-            </tr>
-            <tr>
-              <th scope="row">Tiến độ thực hiện</th>
-              <td>{{ checkin.objective.progress }} %</td>
-            </tr>
-            <tr>
-              <th scope="row">Tiến độ gợi ý</th>
-              <td>{{ checkin.objective.progressSuggest | verifyProgress }} %</td>
-            </tr>
-            <tr v-if="checkin.checkin.checkinAt">
-              <th scope="row">Ngày check-in</th>
-              <td>
-                {{
-                  new Date(checkin.checkin.checkinAt)
-                    | dateFormat('DD/MM/YYYY')
-                }}
-              </td>
-            </tr>
-            <tr v-if="checkin.checkin.nextCheckinDate">
-              <th scope="row">Ngày check-in kế tiếp</th>
-              <td>
-                {{
-                  new Date(checkin.checkin.nextCheckinDate)
-                    | dateFormat('DD/MM/YYYY')
-                }}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div v-if="checkin" class="content">
+        <el-row>
+          <el-col :span="6">
+            <p class="-mb-2 -mt-2 label">Mục tiêu:</p>
+          </el-col>
+          <el-col :span="18">
+            <p class="-font-bold -text-italic -mb-2 -mt-2 value">{{ checkin.objective.title }}</p>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6">
+            <p class="-mb-2 label">Trạng thái:</p>
+          </el-col>
+          <el-col :span="18">
+            <p class="-mb-2 value">Chưa check-in</p>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6">
+            <p class="-mb-2 label">Tiến độ thực hiện:</p>
+          </el-col>
+          <el-col :span="18">
+            <p class="-mb-2 value">{{checkin.objective.progress}}%</p>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="6">
+            <p class="-mb-2 label">Tiến độ gợi ý:</p>
+          </el-col>
+          <el-col :span="18">
+            <p class="-mb-2 value">{{ checkin.objective.progressSuggest | round }}%</p>
+          </el-col>
+        </el-row> 
       </div>
     </div>
     <checkin-detail-chart
@@ -70,6 +68,9 @@ import CheckinDetailChart from '@/components/Checkins/CheckinDetail/CheckinDetai
   },
   async mounted() {
     await this.getCheckin();
+    if(Object.entries(this.checkin.checkin).length !== 0) {
+      this.$router.push(`/checkin/chi-tiet/${this.checkin.checkin.id}`)
+    }
   },
 })
 export default class CheckinPage extends Vue {
@@ -111,24 +112,14 @@ export default class CheckinPage extends Vue {
     min-height: 350px;
     font-size: $unit-3;
   }
-  .content {
-    th {
-      font-size: 14px;
-      border-width: 0;
-      vertical-align: top;
-      text-align: left;
-      color: #454f5b;
-    }
-
-    td {
-      color: #454f5b;
-      font-size: 14px;
-      border-width: 0;
-      vertical-align: top;
-      text-align: left;
-      padding-left: $unit-2;
-      padding-right: $unit-2;
-    }
-  }
+}
+.label {
+  font-size: 14px;
+  color: #606266;
+  line-height: 23px;
+}
+.value {
+  font-size: 14px;
+  line-height: 23px;
 }
 </style>

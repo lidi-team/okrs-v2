@@ -127,7 +127,7 @@ export default class CheckinChartProcess extends Vue {
           symbol: 'circle',
           itemStyle: {
             normal: {
-              color: '#230051',
+              color: '#831843',
               barBorderRadius: 0,
               label: {
                 show: true,
