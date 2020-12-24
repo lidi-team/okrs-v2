@@ -25,9 +25,7 @@
       name-objective="Công ty"
       class="btn-create-objective-company"
     />
-    <p v-if="projects.length === 0">
-      Bạn đang không tham gia dự án nào
-    </p>
+    <p v-if="projects.length === 0">Bạn đang không tham gia dự án nào</p>
     <div v-else>
       <item-okrs
         v-for="item in projects"
@@ -38,6 +36,7 @@
         :objectives="item.objectives"
         :is-manage="item.pm"
         :reload-data="getDashBoardOkrs"
+        :remove="item.remove"
         @openDrawer="openDrawer($event)"
       />
     </div>
@@ -98,11 +97,14 @@ import CycleRepository from '@/repositories/CycleRepository';
   },
   created() {
     if (!this.$route.query.cycleId) {
-      return this.$router.push(`?cycleId=${this.$store.state.cycle.cycleCurrent}`);
+      return this.$router.push(
+        `?cycleId=${this.$store.state.cycle.cycleCurrent}`,
+      );
     }
   },
   async mounted() {
-    this.currentCycleId = this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
+    this.currentCycleId =
+      this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
     this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.currentCycleId);
     await this.getDashBoardOkrs();
     await this.getCycles();
@@ -134,18 +136,20 @@ export default class OKRsPage extends Vue {
 
   @Watch('loading')
   private async changeLoading(value: any) {
-    if(value === true) {
-      this.currentCycleId = 'Đang tải...'
+    if (value === true) {
+      this.currentCycleId = 'Đang tải...';
     } else {
-      this.currentCycleId = this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
+      this.currentCycleId =
+        this.$route.query.cycleId ||
+        String(this.$store.state.cycle.cycleCurrent);
     }
   }
 
   private async getCycles() {
-    this.loading = true
+    this.loading = true;
     const { data } = await CycleRepository.getListMetadata();
     this.cycles = data || [];
-    this.loading = false
+    this.loading = false;
   }
 
   private async getDashBoardOkrs() {
