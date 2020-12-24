@@ -51,19 +51,18 @@
             <el-rate :value="row.weight" disabled />
           </template>
         </el-table-column>
+        <el-table-column label="Chi tiết" align="center">
+          <template slot-scope="{ row }">
+            <el-button
+              class="el-button--white w-100"
+              @click="handleControlProject(row)"
+              >Xem chi tiết</el-button
+            >
+          </template>
+        </el-table-column>
         <el-table-column label="Thao tác" align="center">
           <template slot-scope="{ row }">
             <div>
-              <el-tooltip
-                class="project-all__icon"
-                content="Chi tiết"
-                placement="left-end"
-              >
-                <i
-                  class="el-icon-s-order icon--purple"
-                  @click="handleControlProject(row)"
-                ></i>
-              </el-tooltip>
               <el-tooltip
                 v-if="user.roles.includes('ROLE_ADMIN')"
                 class="project-all__icon"
@@ -241,15 +240,11 @@ import { ProjectDTO } from '@/constants/app.interface';
 import { compareTwoDate, formatDateToDD } from '@/utils/dateParser';
 import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
-import {
-  confirmWarningConfig,
-  notificationConfig,
-} from '@/constants/app.constant';
+import { confirmWarningConfig } from '@/constants/app.constant';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import { Form } from 'element-ui';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
-import { number } from 'echarts/lib/export';
 
 @Component<ProjectAll>({
   name: 'ProjectAll',
