@@ -9,6 +9,25 @@
 }
 
 .el-button {
+  &--modal {
+    padding-top: $unit-3;
+    padding-bottom: $unit-3;
+    font-size: $text-sm;
+    &:hover {
+      &::after {
+        width: 0 !important;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+  &--small {
+    &:hover {
+      &::after {
+        width: 0 !important;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
   &--purple {
     background-color: $purple-primary-4;
     border-color: $purple-primary-4;

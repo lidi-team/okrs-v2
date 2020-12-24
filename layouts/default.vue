@@ -4,7 +4,7 @@
     <div class="layout__container">
       <common-navbar />
       <div class="layout__content">
-        <nuxt />
+        <nuxt class="-overflow-hidden" />
       </div>
     </div>
   </div>
