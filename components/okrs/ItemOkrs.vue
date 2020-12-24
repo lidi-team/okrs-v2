@@ -11,6 +11,7 @@
           :loading="loading"
         />
         <button-create-okr
+          v-if="!remove"
           :type-objective="2"
           name-objective="cá nhân"
           :project-id="projectId"
@@ -169,6 +170,7 @@ export default class OKRsItem extends Vue {
   @Prop(Boolean) private isManage!: Boolean;
   @Prop(Number) private projectId!: Number;
   @Prop(Boolean) private loading!: Boolean;
+  @Prop(Boolean) private remove!: Boolean;
 
   private tempOkrs: any = {};
   private changeValue: number = 0;
