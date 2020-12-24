@@ -11,10 +11,10 @@
         <div class="box-wrap height-290">
           <h2 class="-title-2 -border-header">Cài đặt</h2>
           <el-form-item
-            class="-mt-3"
+            class="-mt-3 label"
             label-width="40%"
             prop="nextCheckinDate"
-            label="Ngày check-in tiếp theo"
+            label="Ngày check-in kế tiếp:"
           >
             <el-date-picker
               :disabled="isDisable"
@@ -26,6 +26,7 @@
             ></el-date-picker>
           </el-form-item>
           <el-form-item
+            class="label"
             label-width="40%"
             :prop="'isCompleted'"
             label="Hoàn thành OKRs"
@@ -305,10 +306,8 @@ export default class DetailHistory extends Vue {
   private handleCheckin(status: String) {
     this.loading = true;
     if (!this.syncCheckin.nextCheckinDate) {
-      Notification.error(
-        'Không được bỏ trống trường ngày check-in tiếp theo',
-      );
-      return this.loading = false
+      Notification.error('Không được bỏ trống trường ngày check-in tiếp theo');
+      return (this.loading = false);
     }
     (this.$refs.checkinRuleForm as Form).validate(
       async (isValid: boolean, invalidFields: object) => {
@@ -391,5 +390,10 @@ export default class DetailHistory extends Vue {
 }
 .height-290 {
   height: 290px;
+}
+.label {
+  font-size: 14px;
+  color: #606266;
+  line-height: 23px;
 }
 </style>
