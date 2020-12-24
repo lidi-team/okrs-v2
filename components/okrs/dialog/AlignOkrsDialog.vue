@@ -29,16 +29,7 @@
         <div class="item-aligned">
           <p class="item-aligned__title">Liên kết chéo</p>
           <div class="item-aligned__items">
-            <div class="item-aligned__items--form">
-              <!-- <align-okrs-form
-                v-for="(item, index) in itemsAlignOkrs"
-                :key="index"
-                ref="alignForms"
-                :index-align-form="index"
-                :align-okrs.sync="item"
-                @deleteAlignOkrs="deleteAlignOkrs($event)"
-              /> -->
-            </div>
+            <div class="item-aligned__items--form"></div>
             <el-button
               class="el-button el-button--white el-button--small align-okrs__form--button"
               @click="addNewAlignOkrs"
@@ -94,12 +85,6 @@ import AlignOkrsForm from '@/components/okrs/add-update/AlignObjective.vue';
     } else {
       this.itemsAlignOkrs = [{ objectiveId: null }];
     }
-  },
-  beforeMount() {
-    this.formLoading = true;
-    setTimeout(() => {
-      this.formLoading = false;
-    }, 500);
   },
 })
 export default class AlignOkrsDialog extends Vue {

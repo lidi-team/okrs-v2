@@ -97,20 +97,6 @@ span {
   border-radius: 0px 0px $border-radius-base $border-radius-base;
 }
 
-// button
-
-.el-button {
-  &--modal {
-    padding-top: $unit-3;
-    padding-bottom: $unit-3;
-    font-size: $text-sm;
-  }
-}
-
-.el-dialog__headerbtn .el-dialog__close:hover {
-  color: $purple-primary-5;
-}
-
 // End Dialog
 
 // Message Box
