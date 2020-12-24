@@ -34,14 +34,15 @@
         </el-table-column>
         <el-table-column label="Trạng thái">
           <template slot-scope="{ row }">
-            <span
+            <el-tag
               :class="
                 row.status
                   ? 'project-all--status__active'
                   : 'project-all--status__deactive'
               "
-              >{{ row.status ? 'hoạt động' : 'Đã đóng' }}</span
             >
+              {{ row.status ? 'hoạt động' : 'Đã đóng' }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="Trọng số">
