@@ -15,7 +15,6 @@
         ></el-table-column>
         <el-table-column label="Ngày bắt đầu">
           <template v-slot="{ row }">
-            <!-- Vue Fileter Date Plugin -->
             <span>{{
               new Date(row.startDate) | dateFormat('DD/MM/YYYY')
             }}</span>
@@ -23,7 +22,6 @@
         </el-table-column>
         <el-table-column label="Ngày kết thúc">
           <template v-slot="{ row }">
-            <!-- Vue Fileter Date Plugin -->
             <span>{{ new Date(row.endDate) | dateFormat('DD/MM/YYYY') }}</span>
           </template>
         </el-table-column>
@@ -34,20 +32,13 @@
         </el-table-column>
         <el-table-column label="Trạng thái" align="center" width="150">
           <template slot-scope="{ row }">
-            <el-tag
-              :class="
-                row.status
-                  ? 'project-all--status__active'
-                  : 'project-all--status__deactive'
-              "
-            >
-              {{ row.status ? 'hoạt động' : 'Đã đóng' }}
+            <el-tag :class="row.isActive | tagActive">
+              {{ row.isActive | textActiveProject }}
             </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="Trọng số" align="center" width="180">
           <template v-slot="{ row }">
-            <!-- Vue Fileter Date Plugin -->
             <el-rate :value="row.weight" disabled />
           </template>
         </el-table-column>
@@ -457,24 +448,3 @@ export default class ProjectAll extends Vue {
   }
 }
 </script>
-
-<style lang="scss">
-@import '@/assets/scss/main.scss';
-
-.project-all {
-  &__icon {
-    cursor: pointer;
-    margin: 0 $unit-1;
-  }
-
-  &--status {
-    &__active {
-      color: #27ae60;
-    }
-
-    &__deactive {
-      color: #dd1100;
-    }
-  }
-}
-</style>

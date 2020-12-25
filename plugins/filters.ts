@@ -18,3 +18,15 @@ Vue.filter("verifyProgress", function(value: any): number {
 Vue.filter("filterImage", function(value: string): string {
   return value ? value : 'https://i.pinimg.com/originals/db/da/a0/dbdaa0afe2db00c70d5550494e8a5594.gif'
 })
+
+Vue.filter("textActiveEmployee", function(value: boolean): string {
+  return value ? 'Hoạt động' : 'Tạm khóa'
+})
+
+Vue.filter("textActiveProject", function(value: boolean): string {
+  return value ? 'Hoạt động' : 'Đã đóng'
+})
+
+Vue.filter("tagActive", function(value: boolean): string {
+  return value ? 'success' : 'danger'
+})

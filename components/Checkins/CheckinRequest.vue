@@ -1,42 +1,44 @@
 <template>
-  <div class="box-wrap">
-    <el-table
-      v-loading="loading"
-      :data="checkins"
-      empty-text="Không có dữ liệu"
-      class="requestCheckin"
-      style="width: 100%"
-    >
-      <el-table-column label="Họ và tên" min-width="150">
-        <template slot-scope="{ row }">
-          <span>{{ row.objective.user.fullName || '' }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Mục tiêu" min-width="150">
-        <template slot-scope="{ row }">
-          <span>{{ row.objective.title }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Project" min-width="150">
-        <template slot-scope="{ row }">
-          <span>{{ row.project.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Ngày" min-width="150">
-        <template slot-scope="{ row }">
-          <span>{{ new Date(row.createdAt) | dateFormat('DD/MM/YYYY') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Hành động" align="center" width="180">
-        <template slot-scope="{ row }">
-          <nuxt-link :to="`/checkin/chi-tiet/${row.id}`">
-            <el-button class="el-button--purple w-100"
-              >Duyệt Check-in</el-button
-            >
-          </nuxt-link>
-        </template>
-      </el-table-column>
-    </el-table>
+  <div>
+    <div class="box-wrap">
+      <el-table
+        v-loading="loading"
+        :data="checkins"
+        empty-text="Không có dữ liệu"
+        class="requestCheckin"
+        style="width: 100%"
+      >
+        <el-table-column label="Họ và tên" min-width="150">
+          <template slot-scope="{ row }">
+            <span>{{ row.objective.user.fullName || '' }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Mục tiêu" min-width="150">
+          <template slot-scope="{ row }">
+            <span>{{ row.objective.title }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Project" min-width="150">
+          <template slot-scope="{ row }">
+            <span>{{ row.project.name }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center" label="Ngày" min-width="150">
+          <template slot-scope="{ row }">
+            <span>{{ new Date(row.createdAt) | dateFormat('DD/MM/YYYY') }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Hành động" align="center" width="180">
+          <template slot-scope="{ row }">
+            <nuxt-link :to="`/checkin/chi-tiet/${row.id}`">
+              <el-button class="el-button--purple w-100"
+                >Duyệt Check-in</el-button
+              >
+            </nuxt-link>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <pagination
       class="feedback__col__pagination"
       :total="pagination.totalItems"

@@ -4,7 +4,7 @@
       <h2 class="-title-2">{{ title }}</h2>
       <div class="-display-flex -align-items-center -pb-2">
         <button-create-okr
-          v-if="isManage"
+          v-if="isManage && !remove"
           :type-objective="1"
           name-objective="dự án"
           :project-id="projectId"
