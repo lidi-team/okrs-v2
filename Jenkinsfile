@@ -24,6 +24,7 @@ pipeline {
                 sh 'sleep 200'
                 sh 'docker build -t frontend .'
                 sh 'docker container run -d -p 80:80 --name my-frontend frontend'
+                sh 'docker rmi $(docker images -f "dangling=true" -q)'
             }
         }
         // stage('Deliver') { 
