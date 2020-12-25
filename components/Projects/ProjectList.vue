@@ -32,14 +32,22 @@
         </el-table-column>
         <el-table-column label="Trạng thái" align="center" width="150">
           <template slot-scope="{ row }">
-            <el-tag :class="row.isActive | tagActive">
-              {{ row.isActive | textActiveProject }}
+            <el-tag :type="row.active | tagActive">
+              {{ row.active | textActiveProject }}
             </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="Trọng số" align="center" width="180">
           <template v-slot="{ row }">
-            <el-rate :value="row.weight" disabled />
+            <el-rate
+              class="-mb-3"
+              v-model="row.weight"
+              disabled
+              :icon-classes="['el-icon-success', 'el-icon-success', 'el-icon-success']"
+              disabled-void-icon-class="el-icon-success"
+              disabled-void-color='#FBCFE8'
+              :colors="['#EC4899', '#DB2777', '#BE185D']"
+            />
           </template>
         </el-table-column>
         <el-table-column label="Chi tiết" align="center" width="180">

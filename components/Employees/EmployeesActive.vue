@@ -35,7 +35,9 @@
         </el-table-column>
         <el-table-column label="Trạng thái">
           <template slot-scope="{ row }">
-            <span>{{ row.isActive ? 'hoạt động' : 'tạm khóa' }}</span>
+            <el-tag  :type="row.isActive | tagActive">
+              {{ row.isActive | textActiveEmployee }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="Thao tác" align="center">
@@ -73,8 +75,6 @@
         </el-table-column>
       </el-table>
     </div>
-
-    <!-- update user dialog -->
     <el-dialog
       class="update-employee"
       :visible.sync="dialogUpdateVisible"
