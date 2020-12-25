@@ -13,7 +13,7 @@
           label="Tên dự án"
           min-width="150"
         ></el-table-column>
-        <el-table-column label="Ngày bắt đầu">
+        <el-table-column label="Ngày bắt đầu" min-width="100">
           <template v-slot="{ row }">
             <!-- Vue Fileter Date Plugin -->
             <span>{{
@@ -21,7 +21,7 @@
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Ngày kết thúc">
+        <el-table-column label="Ngày kết thúc" min-width="100">
           <template v-slot="{ row }">
             <!-- Vue Fileter Date Plugin -->
             <span>{{ new Date(row.endDate) | dateFormat('DD/MM/YYYY') }}</span>

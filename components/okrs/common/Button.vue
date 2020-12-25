@@ -33,8 +33,8 @@ export default {
     },
     isDisable: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     ...mapGetters({

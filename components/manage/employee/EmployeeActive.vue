@@ -35,7 +35,7 @@
         </el-table-column>
         <el-table-column label="Trạng thái">
           <template slot-scope="{ row }">
-            <span>{{ row.isActive ? 'hoạt động' : 'tạm khóa' }}</span>
+            <el-tag>{{ row.isActive ? 'hoạt động' : 'tạm khóa' }}</el-tag>
           </template>
         </el-table-column>
         <el-table-column label="Thao tác" align="center">
@@ -318,10 +318,9 @@ export default class EmployeeActive extends Vue {
       },
     ).then(async () => {
       try {
-        await EmployeeRepository.update(this.tempUpdateUser).then(
-          (res: any) => {
-          },
-        );
+        await EmployeeRepository.update(
+          this.tempUpdateUser,
+        ).then((res: any) => {});
         this.getListUsers();
       } catch (error) {}
     });
