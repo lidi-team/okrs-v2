@@ -81,12 +81,12 @@
           :data="syncCheckin.checkinDetail"
           style="width: 100%"
         >
-          <el-table-column label="Kết quả chính" min-width="250">
+          <el-table-column label="Kết quả chính" min-width="200">
             <template slot-scope="{ row }">
               <p>{{ row.keyResult.content }}</p>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="Bắt đầu" min-width="80">
+          <el-table-column align="center" label="Bắt đầu" width="80">
             <template slot-scope="{ row }">
               <el-form-item>
                 <el-input
@@ -97,7 +97,7 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="Mục tiêu" min-width="80">
+          <el-table-column align="center" label="Mục tiêu" width="80">
             <template slot-scope="{ row }">
               <el-form-item>
                 <el-input
@@ -108,16 +108,17 @@
               </el-form-item>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="Số đạt được" min-width="150">
+          <el-table-column align="center" label="Số đạt được" width="150">
             <template v-slot="{ row }">
               <el-form-item>
-                <el-input
+                <el-input-number
+                  :disabled="isDisable"
+                  v-model="row.valueObtained"
                   :min="row.keyResult.startValue"
                   @input="checkRender"
-                  :disabled="isDisable"
-                  type="number"
-                  v-model.number="row.valueObtained"
-                ></el-input>
+                  controls-position="right"
+                  class="-w-18"
+                ></el-input-number>
               </el-form-item>
             </template>
           </el-table-column>
