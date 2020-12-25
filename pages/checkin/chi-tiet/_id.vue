@@ -9,10 +9,12 @@
           <div v-if="checkin">
             <el-row>
               <el-col :span="8">
-                <p class="-mb-2 -mt-2 label">Mục tiêu:</p>
+                <p class="-mt-2 -mb-2 label">Mục tiêu:</p>
               </el-col>
               <el-col :span="16">
-                <p class="-font-bold -text-italic -mb-2 -mt-2 value">{{checkin.objective.title}}</p>
+                <p class="-mt-2 -mb-2 -font-bold -text-italic value">
+                  {{ checkin.objective.title }}
+                </p>
               </el-col>
             </el-row>
             <el-row>
@@ -20,7 +22,7 @@
                 <p class="-mb-2 label">Trạng thái:</p>
               </el-col>
               <el-col :span="16">
-                <p class="-mb-2 value">{{checkin.checkin.status}}</p>
+                <p class="-mb-2 value">{{ checkin.checkin.status }}</p>
               </el-col>
             </el-row>
             <el-row>
@@ -28,7 +30,7 @@
                 <p class="-mb-2 label">Tiến độ:</p>
               </el-col>
               <el-col :span="16">
-                <p class="-mb-2 value">{{checkin.progress}}%</p>
+                <p class="-mb-2 value">{{ checkin.progress }}%</p>
               </el-col>
             </el-row>
             <el-row>
@@ -36,15 +38,25 @@
                 <p class="-mb-2 label">Ngày check-in gần nhất:</p>
               </el-col>
               <el-col :span="16">
-                <p class="-mb-2 value">{{new Date(checkin.checkin.checkinAt) | dateFormat('DD/MM/YYYY')}}</p>
+                <p class="-mb-2 value">
+                  {{
+                    new Date(checkin.checkin.checkinAt)
+                      | dateFormat('DD/MM/YYYY')
+                  }}
+                </p>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="8">
-                <p class="-mb-2 label">Ngày check-in tiếp theo:</p>
+                <p class="-mb-2 label">Ngày check-in kế tiếp:</p>
               </el-col>
               <el-col :span="16">
-                <p class="-mb-2 value">{{new Date(checkin.checkin.nextCheckinDate) | dateFormat('DD/MM/YYYY')}}</p>
+                <p class="-mb-2 value">
+                  {{
+                    new Date(checkin.checkin.nextCheckinDate)
+                      | dateFormat('DD/MM/YYYY')
+                  }}
+                </p>
               </el-col>
             </el-row>
             <el-row>
@@ -52,7 +64,7 @@
                 <p class="-mb-2 label">Người review:</p>
               </el-col>
               <el-col :span="16">
-                <p class="-mb-2 value">{{checkin.checkin.reviewer}}</p>
+                <p class="-mb-2 value">{{ checkin.checkin.reviewer }}</p>
               </el-col>
             </el-row>
           </div>
