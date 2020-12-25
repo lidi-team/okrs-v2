@@ -248,8 +248,7 @@ import { Maps, Rule } from '@/constants/app.type';
       this.isDisable = true;
     } else if (role === 'user') {
       this.checkinStatus === 'Draft' ||
-      this.checkinStatus === 'Overdue' ||
-      this.checkinStatus === 'Reviewed'
+      this.checkinStatus === 'Overdue'
         ? (this.isDisable = false)
         : (this.isDisable = true);
     } else if (role === 'reviewer') {

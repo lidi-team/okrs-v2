@@ -43,51 +43,12 @@
         </el-table-column>
         <el-table-column align="center" label="Lịch sử" min-width="150">
           <template slot-scope="{ row }">
-            <nuxt-link
-              v-if="$route.query.tab === 'check-in-cong-ty'"
-              :to="`/checkin/lich-su-cong-ty/${row.id}`"
-            >
-              <span class="el-link">Xem lịch sử</span>
-            </nuxt-link>
-            <nuxt-link v-else :to="`/checkin/lich-su/${row.id}`">
+            <nuxt-link :to="`/checkin/lich-su/${row.id}`">
               <span class="el-link">Xem lịch sử</span>
             </nuxt-link>
           </template>
         </el-table-column>
-        <el-table-column
-          v-if="$route.query.tab === 'check-in-cong-ty'"
-          label="Hành động"
-          align="center"
-          width="180"
-        >
-          <template slot-scope="{ row }">
-            <nuxt-link
-              v-if="row.status === status.OVERDUE"
-              :to="`/checkin/company/${row.id}`"
-            >
-              <el-button type="danger" class="w-100">Quá hạn</el-button>
-            </nuxt-link>
-            <nuxt-link
-              v-else-if="row.status === status.DRAFT"
-              :to="`/checkin/company/${row.id}`"
-            >
-              <el-button type="warning" class="w-100">Sửa bản nháp</el-button>
-            </nuxt-link>
-            <el-button
-              v-else-if="row.status === status.COMPLETED"
-              type="success"
-              disabled
-              class="w-100"
-              >Đã hoàn thành</el-button
-            >
-            <nuxt-link v-else :to="`/checkin/company/${row.id}`">
-              <el-button class="el-button--purple w-100"
-                >Tạo Check-in</el-button
-              >
-            </nuxt-link>
-          </template>
-        </el-table-column>
-        <el-table-column v-else label="Hành động" align="center" width="180">
+        <el-table-column label="Hành động" align="center" width="180">
           <template slot-scope="{ row }">
             <nuxt-link
               v-if="row.status === status.OVERDUE"

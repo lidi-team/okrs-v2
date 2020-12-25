@@ -68,9 +68,6 @@ import CheckinDetailChart from '@/components/Checkins/CheckinDetail/CheckinDetai
   },
   async mounted() {
     await this.getCheckin();
-    if(Object.entries(this.checkin.checkin).length !== 0) {
-      this.$router.push(`/checkin/chi-tiet/${this.checkin.checkin.id}`)
-    }
   },
 })
 export default class CheckinPage extends Vue {
