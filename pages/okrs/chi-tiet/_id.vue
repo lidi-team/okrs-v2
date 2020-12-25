@@ -64,6 +64,11 @@
             <span>{{ row.valueObtained }}</span>
           </template>
         </el-table-column>
+        <el-table-column label="Đơn vị">
+          <template v-slot="{ row }">
+            <span>{{ row.measureUnitName }}</span>
+          </template>
+        </el-table-column>
         <el-table-column label="Tiến độ" width="150">
           <template v-slot="{ row }">
             <div>
