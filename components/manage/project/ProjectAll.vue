@@ -32,7 +32,7 @@
             <span>{{ getManager(row.pmId) }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Trạng thái">
+        <el-table-column label="Trạng thái" align="center" width="150">
           <template slot-scope="{ row }">
             <el-tag
               :class="
@@ -45,13 +45,13 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Trọng số">
+        <el-table-column label="Trọng số" align="center" width="180">
           <template v-slot="{ row }">
             <!-- Vue Fileter Date Plugin -->
             <el-rate :value="row.weight" disabled />
           </template>
         </el-table-column>
-        <el-table-column label="Chi tiết" align="center">
+        <el-table-column label="Chi tiết" align="center" width="180">
           <template slot-scope="{ row }">
             <el-button
               class="el-button--white w-100"
@@ -60,11 +60,15 @@
             >
           </template>
         </el-table-column>
-        <el-table-column label="Thao tác" align="center">
+        <el-table-column
+          label="Thao tác"
+          align="center"
+          v-if="user.roles.includes('ROLE_ADMIN')"
+          width="120"
+        >
           <template slot-scope="{ row }">
             <div>
               <el-tooltip
-                v-if="user.roles.includes('ROLE_ADMIN')"
                 class="project-all__icon"
                 content="Cập nhật"
                 placement="right-end"
@@ -75,7 +79,6 @@
                 ></i>
               </el-tooltip>
               <el-tooltip
-                v-if="user.roles.includes('ROLE_ADMIN')"
                 class="project-all__icon"
                 :content="row.status ? 'Đóng' : 'Mở'"
                 placement="right-end"
