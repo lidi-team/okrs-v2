@@ -105,7 +105,7 @@ export default class CreateObjective extends Vue {
   public tempObjective: any = {
     title: '',
     parentId: 1,
-    weight: 1,
+    weight: 3,
   };
 
   @PropSync('active', Number) private syncActive!: number;
