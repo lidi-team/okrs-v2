@@ -22,13 +22,22 @@
         </el-button>
       </div>
     </div>
-    <component
-      :is="tabComponent"
-      :table-data="tableData"
-      :get-list-project="getListProjects"
-      :managers="managers"
-      :original-projects="originalProjects"
-    />
+    <div>
+      <component
+        :is="tabComponent"
+        :table-data="tableData"
+        :get-list-project="getListProjects"
+        :managers="managers"
+        :original-projects="originalProjects"
+      />
+      <common-pagination
+        class="-display-flex -justify-content-center"
+        :total="meta.totalItems"
+        :page.sync="paramsProject.page"
+        :limit.sync="paramsProject.limit"
+        @pagination="handlePagination($event)"
+      />
+    </div>
     <project-dialog
       :visible-dialog.sync="visibleDialog"
       :reload-data="getListProjects"

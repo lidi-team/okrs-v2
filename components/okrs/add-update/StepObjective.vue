@@ -38,7 +38,7 @@
       </el-form-item>
       <el-form-item
         prop="weight"
-        label="Trọng số"
+        label="Độ quan trọng"
         class="custom-label"
         label-width="120px"
       >

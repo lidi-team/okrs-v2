@@ -45,7 +45,7 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Trọng số" align="center" width="180">
+        <el-table-column label="Độ quan trọng" align="center" width="180">
           <template v-slot="{ row }">
             <!-- Vue Fileter Date Plugin -->
             <el-rate :value="row.weight" disabled />
@@ -160,7 +160,7 @@
               ></el-date-picker>
             </el-form-item>
             <el-form-item
-              label="Trọng số:"
+              label="Độ quan trọng:"
               class="custom-label"
               prop="weight"
               label-width="150px"
