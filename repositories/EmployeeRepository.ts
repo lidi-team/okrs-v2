@@ -5,16 +5,14 @@ import { baseUrlV1, baseUrl } from './BaseRepository';
 
 export default class EmployeeRepository {
   public static get(params: ParamsUser, currentTab: UserStatus) {
-    const paramsResize: ParamsUser = Object.assign({}, params);
-    paramsResize.page = paramsResize.page ? --paramsResize.page : 0;
     switch (currentTab) {
       case UserStatus.Staff:
         return baseUrl.get(`${ResourcesEnpoint.Users}/list-staff-paging`, {
-          params: paramsResize,
+          params,
         });
       default:
         return baseUrl.get(`${ResourcesEnpoint.Users}/all-paging`, {
-          params: paramsResize,
+          params,
         });
     }
   }
