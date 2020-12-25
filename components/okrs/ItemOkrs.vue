@@ -11,6 +11,7 @@
           :loading="loading"
         />
         <button-create-okr
+          v-if="!remove"
           :type-objective="2"
           name-objective="cá nhân"
           :project-id="projectId"
@@ -29,7 +30,7 @@
     >
       <el-table-column type="expand" width="20">
         <template v-slot="{ row }">
-          <template  v-if="row.childObjectives.length !== 0">
+          <template v-if="row.childObjectives.length !== 0">
             <div
               v-for="objective in row.childObjectives"
               :key="objective.id"
@@ -76,13 +77,17 @@
               </div>
             </div>
           </template>
-          <p v-else class="message-empty">Không có mục tiêu cá nhân nào được liên kết</p>
+          <p v-else class="message-empty">
+            Không có mục tiêu cá nhân nào được liên kết
+          </p>
         </template>
       </el-table-column>
       <el-table-column label="Mục tiêu" min-width="380" class="cell-objective">
         <template v-slot="{ row }">
           <span>{{ row.title }} ({{ row.weight }}/5)</span>
-          <el-tag type="danger">{{ row.childObjectives.length }} mục tiêu cá nhân</el-tag>
+          <el-tag type="danger"
+            >{{ row.childObjectives.length }} mục tiêu cá nhân</el-tag
+          >
         </template>
       </el-table-column>
       <el-table-column label="Kết quả then chốt" width="140">
@@ -114,7 +119,9 @@
       <el-table-column label="Thay đổi" width="200">
         <template v-slot="{ row }">
           <div class="item__action">
-            <p :class="row.changing | isUpProgress">{{ row.changing | round }}%</p>
+            <p :class="row.changing | isUpProgress">
+              {{ row.changing | round }}%
+            </p>
             <action-tooltip
               :id="row.id"
               :is-manage="isManage"
@@ -163,6 +170,7 @@ export default class OKRsItem extends Vue {
   @Prop(Boolean) private isManage!: Boolean;
   @Prop(Number) private projectId!: Number;
   @Prop(Boolean) private loading!: Boolean;
+  @Prop(Boolean) private remove!: Boolean;
 
   private tempOkrs: any = {};
   private changeValue: number = 0;
