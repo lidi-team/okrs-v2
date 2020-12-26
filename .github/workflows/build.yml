@@ -43,11 +43,8 @@ jobs:
       - name: Run Unit Test
         run: yarn test:cov
 
-      - name: Codecov
-        uses: codecov/codecov-action@v1.1.1
-        with:
-          name: thaycacac
-          token: d88673d6-a6b0-42be-b066-9c9027e2b448
-          flags: unittests 
-          file: ./coverage/coverage-final.json
-          fail_ci_if_error: true
+      - name: Upload coverage
+        if: success()
+        run: |
+          bash <(curl -s https://codecov.io/bash) -t d88673d6-a6b0-42be-b066-9c9027e2b448
+        shell: bash
