@@ -4,8 +4,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-// components
-import ProfileView from '@/components/profile/View.vue';
+import ProfileView from '@/components/Accounts/AccountProfile.vue';
 @Component<ProfilePage>({
   name: 'ProfilePage',
   components: {

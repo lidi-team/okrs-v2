@@ -25,7 +25,8 @@
       name-objective="Công ty"
       class="btn-create-objective-company"
     />
-    <p v-if="projects.length === 0">Bạn đang không tham gia dự án nào</p>
+    <drill-down-list/>
+    <p v-if="!projects">Bạn đang không tham gia dự án nào</p>
     <div v-else>
       <item-okrs
         v-for="item in projects"
@@ -69,12 +70,13 @@ import {
   DispatchAction,
   GetterState,
 } from '@/constants/app.vuex';
+import OkrsRepository from '@/repositories/OkrsRepository';
+import CycleRepository from '@/repositories/CycleRepository';
+import AddOkrs from '@/components/okrs/add-update/index.vue';
+import DrillDownList from '@/components/DrillDown/DrillDownList.vue';
 import ButtonCreateOkr from '@/components/okrs/common/Button.vue';
 import ItemOkrs from '@/components/okrs/ItemOkrs.vue';
 import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
-import AddOkrs from '@/components/okrs/add-update/index.vue';
-import OkrsRepository from '@/repositories/OkrsRepository';
-import CycleRepository from '@/repositories/CycleRepository';
 
 @Component<OKRsPage>({
   name: 'OKRsPage',
@@ -83,6 +85,7 @@ import CycleRepository from '@/repositories/CycleRepository';
     DetailKeyresult,
     AddOkrs,
     ButtonCreateOkr,
+    DrillDownList
   },
   head() {
     return {
