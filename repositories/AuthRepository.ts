@@ -3,9 +3,8 @@ import {
   RegisterDTO,
   MailResetPassDTO,
   LoginDTO,
-  ResetPasswordActionDTO,
 } from '@/constants/DTO/auth';
-import { baseUrlV1, baseUrl } from './BaseRepository';
+import { baseUrl } from './BaseRepository';
 
 export const enpoint = {
   register: 'auth/register',
@@ -24,29 +23,9 @@ export default class AuthRepository {
     return baseUrl.post(enpoint.login, credentials);
   }
 
-  public static logout(): Promise<AxiosResponse<void>> {
-    return baseUrlV1.post(enpoint.logout);
-  }
-
   public static sendMailToResetPassword(
     payload: MailResetPassDTO,
   ): Promise<AxiosResponse<void>> {
     return baseUrl.post<void>(enpoint.resetPassword, payload);
-  }
-
-  public static resetPasswordWithToken(data: ResetPasswordActionDTO) {
-    return baseUrlV1.put(enpoint.resetPassword, data);
-  }
-
-  public static verifyLinkInvite(token: string) {
-    return baseUrlV1.get(`auth/verification/${token}`);
-  }
-
-  public static verifyResetPassword(token: string) {
-    return baseUrlV1.get(`${enpoint.resetPassword}/${token}`);
-  }
-
-  public static generateLinkInivte() {
-    return baseUrlV1.get(enpoint.generateLink);
   }
 }
