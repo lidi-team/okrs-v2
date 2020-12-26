@@ -12,8 +12,9 @@
           class="el-button--purple el-button--modal el-button--invite -ml-2"
           icon="el-icon-plus"
           @click="handleAddUsers"
-          >Thêm nhân viên</el-button
         >
+          Thêm nhân viên
+        </el-button>
       </div>
     </div>
     <el-tabs v-model="currentTab" @tab-click="handleClick(currentTab)">

@@ -13,14 +13,14 @@
           label="Tên dự án"
           min-width="150"
         ></el-table-column>
-        <el-table-column label="Ngày bắt đầu">
+        <el-table-column label="Ngày bắt đầu" min-width="100">
           <template v-slot="{ row }">
             <span>{{
               new Date(row.startDate) | dateFormat('DD/MM/YYYY')
             }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Ngày kết thúc">
+        <el-table-column label="Ngày kết thúc" min-width="100">
           <template v-slot="{ row }">
             <span>{{ new Date(row.endDate) | dateFormat('DD/MM/YYYY') }}</span>
           </template>
@@ -37,7 +37,7 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Trọng số" align="center" width="180">
+        <el-table-column label="Độ quan trọng" align="center" width="180">
           <template v-slot="{ row }">
             <el-rate
               class="-mb-3"
@@ -79,12 +79,12 @@
               </el-tooltip>
               <el-tooltip
                 class="project-all__icon"
-                :content="row.status ? 'Đóng' : 'Mở'"
+                :content="row.active ? 'Đóng' : 'Mở'"
                 placement="right-end"
               >
                 <i
                   :class="
-                    row.status
+                    row.active
                       ? 'el-icon-lock icon--delete'
                       : 'el-icon-unlock icon--green'
                   "
@@ -159,7 +159,7 @@
               ></el-date-picker>
             </el-form-item>
             <el-form-item
-              label="Trọng số:"
+              label="Độ quan trọng:"
               class="custom-label"
               prop="weight"
               label-width="150px"

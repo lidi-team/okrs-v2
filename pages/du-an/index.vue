@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="manage-project">
     <div class="-display-flex -justify-content-between">
       <h1 class="-title-1">
         {{
@@ -7,7 +7,7 @@
         }}
       </h1>
       <div class="-display-flex">
-        <project-header
+        <head-project
           :text.sync="paramsProject.text"
           @name="paramsProject.text = $event"
           @search="handleSearch($event)"
@@ -22,11 +22,22 @@
         </el-button>
       </div>
     </div>
-    <project-list :table-data="tableData"
-      :get-list-project="getListProjects"
-      :managers="managers"
-      :original-projects="originalProjects"
-    />
+    <div>
+      <component
+        :is="tabComponent"
+        :table-data="tableData"
+        :get-list-project="getListProjects"
+        :managers="managers"
+        :original-projects="originalProjects"
+      />
+      <common-pagination
+        class="-display-flex -justify-content-center"
+        :total="meta.totalItems"
+        :page.sync="paramsProject.page"
+        :limit.sync="paramsProject.limit"
+        @pagination="handlePagination($event)"
+      />
+    </div>
     <project-dialog
       :visible-dialog.sync="visibleDialog"
       :reload-data="getListProjects"
@@ -43,8 +54,8 @@ import { ParamsProject } from '@/constants/DTO/common';
 import { pageLimit } from '@/constants/app.constant';
 import CommonPagination from '@/components/Commons/CommonPagination.vue';
 import ProjectRepository from '@/repositories/ProjectRepository';
-import ProjectHeader from '@/components/Projects/ProjectHeader.vue';
-import ProjectList from '@/components/Projects/ProjectList.vue';
+import HeadProject from '@/components/Projects/ProjectHeader.vue';
+import ProjectAll from '@/components/Projects/ProjectList.vue';
 import ProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
 import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
@@ -54,8 +65,7 @@ import { GetterState } from '@/constants/app.vuex';
   components: {
     ProjectDialog,
     CommonPagination,
-    ProjectHeader,
-    ProjectList
+    HeadProject,
   },
   async created() {
     await this.getListProjects();
@@ -137,6 +147,10 @@ export default class ManageProjectPage extends Vue {
         );
   }
 
+  private get tabComponent() {
+    return ProjectAll;
+  }
+
   private addNew() {
     console.log('pressed');
     this.visibleDialog = true;
@@ -144,3 +158,21 @@ export default class ManageProjectPage extends Vue {
 }
 </script>
 
+<style lang="scss" scoped>
+@import '@/assets/scss/main.scss';
+
+.manage-project {
+  height: 100%;
+
+  &__content {
+    background-color: $white;
+    padding: $unit-8;
+  }
+
+  &__pagination {
+    margin-top: $unit-8;
+    display: flex;
+    justify-content: center;
+  }
+}
+</style>

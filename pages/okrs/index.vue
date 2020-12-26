@@ -19,12 +19,13 @@
         />
       </el-select>
     </div>
-    <button-create-okr
-      v-if="roles.includes('ROLE_DIRECTOR')"
-      :type-objective="2"
-      name-objective="Công ty"
-      class="btn-create-objective-company"
-    />
+    <el-button
+      class="el-button--purple el-button--modal el-button--invite -ml-2"
+      icon="el-icon-plus"
+      @click="handleAddRootOKRs"
+    >
+      Thêm nhân viên
+    </el-button>
     <drill-down-list/>
     <p v-if="!projects">Bạn đang không tham gia dự án nào</p>
     <div v-else>
@@ -43,6 +44,9 @@
     </div>
     <transition name="el-fade-in">
       <add-okrs />
+    </transition>
+    <transition name="el-fade-in">
+      <root-okrs-dialog :is-visible.sync="isVisibleDialog" />
     </transition>
     <transition name="el-fade-in">
       <create-okrs-dialog
@@ -77,6 +81,7 @@ import DrillDownList from '@/components/DrillDown/DrillDownList.vue';
 import ButtonCreateOkr from '@/components/okrs/common/Button.vue';
 import ItemOkrs from '@/components/okrs/ItemOkrs.vue';
 import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
+import RootOkrsDialog from '@/components/okrs/add-update/RootOKRs.vue';
 
 @Component<OKRsPage>({
   name: 'OKRsPage',
@@ -85,7 +90,8 @@ import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
     DetailKeyresult,
     AddOkrs,
     ButtonCreateOkr,
-    DrillDownList
+    DrillDownList,
+    RootOkrsDialog,
   },
   head() {
     return {
@@ -122,6 +128,7 @@ export default class OKRsPage extends Vue {
   private visibleDetailKrs: boolean = false;
   private currentCycleId: any = '';
   private projects: any[] = [];
+  private isVisibleDialog: boolean = false;
 
   private openDrawer(keyResults: any) {
     this.listKrs = keyResults;
@@ -169,6 +176,10 @@ export default class OKRsPage extends Vue {
   private handleSelectCycle(cycleId) {
     this.$store.commit(MutationState.SET_CURRENT_CYCLE, cycleId);
     this.$router.push(`?cycleId=${cycleId}`);
+  }
+
+  private handleAddRootOKRs() {
+    this.isVisibleDialog = true;
   }
 }
 </script>

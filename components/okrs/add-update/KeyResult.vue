@@ -69,11 +69,7 @@
           <div class="krs-form__detail">
             <div class="krs-form__detail--value">
               <div class="-display-flex">
-                <el-form-item
-                  label="Đơn vị"
-                  class=""
-                  label-width="65px"
-                >
+                <el-form-item label="Đơn vị" class="" label-width="65px">
                   <el-select
                     v-model.number="tempKeyResult.measureUnitId"
                     size="medium"
@@ -120,7 +116,7 @@
                 </el-form-item>
               </div>
             </div>
-            <div>
+            <div v-if="!isRootOkr">
               <el-form-item
                 v-if="isCreate"
                 prop="keyResultParentId"
@@ -203,11 +199,13 @@ import KeyResultRepository from '@/repositories/KeyResultRepository';
   },
   async mounted() {
     this.loading = true;
+    if (!this.isRootOkr) {
+      const { data } = await KeyResultRepository.getKeyResult(
+        this.$store.state.okrs.objective.parentId,
+      );
+      this.keyResultsParent = data;
+    }
     this.units = await this.$store.dispatch(DispatchAction.GET_MEASURE);
-    const { data } = await KeyResultRepository.getKeyResult(
-      this.$store.state.okrs.objective.parentId,
-    );
-    this.keyResultsParent = data;
     this.loading = false;
   },
 })
@@ -229,6 +227,7 @@ export default class KeyResult extends Vue {
   private keyResultsParent: Array<any> = [];
 
   @Prop(Number) private indexKrForm!: number;
+  @Prop(Boolean) private isRootOkr!: boolean;
 
   private hovering: Boolean = false;
   private popoverVisisble: Boolean = false;
