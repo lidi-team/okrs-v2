@@ -59,7 +59,6 @@ export const actions: AuthActions<AuthState, RootState> = {
 
   async logout() {
     try {
-      await AuthRepository.logout();
       removeTokenCookie();
     } catch (error) {}
   },

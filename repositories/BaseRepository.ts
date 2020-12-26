@@ -4,10 +4,6 @@ import { Notification } from 'element-ui';
 import { getTokenCookie } from '@/utils/cookies';
 import { notificationConfig } from '@/constants/app.constant';
 
-export const baseUrlV1 = axios.create({
-  baseURL: `${process.env.baseAPIV1}/api/v1`,
-});
-
 export const baseUrl = axios.create({
   baseURL: `${process.env.baseAPI}/api`,
 });
@@ -40,8 +36,7 @@ baseUrl.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    console.log(error.response.data, 'kkkkk')
-    switch (error.response.data.statusCode) {
+    switch (error.response.status) {
       case 401:
         window.location.href = '/dang-nhap';
         break;
