@@ -9,14 +9,18 @@
       <table>
         <tbody>
           <tr>
-            <th scope="row" class="-text-left label">Trọng số:</th>
+            <th scope="row" class="-text-left label" width="250">Độ quan trọng:</th>
             <td class="value">
               <el-rate
                 :value="projectData.weight"
                 disabled
-                :icon-classes="['el-icon-success', 'el-icon-success', 'el-icon-success']"
+                :icon-classes="[
+                  'el-icon-success',
+                  'el-icon-success',
+                  'el-icon-success',
+                ]"
                 disabled-void-icon-class="el-icon-success"
-                disabled-void-color='#FBCFE8'
+                disabled-void-color="#FBCFE8"
                 :colors="['#EC4899', '#DB2777', '#BE185D']"
               />
             </td>
@@ -24,17 +28,13 @@
           <tr>
             <th scope="row" class="-text-left label">Ngày bắt đầu:</th>
             <td class="value">
-              {{
-                new Date(projectData.startDate) | dateFormat('DD/MM/YYYY')
-              }}
+              {{ new Date(projectData.startDate) | dateFormat('DD/MM/YYYY') }}
             </td>
           </tr>
           <tr>
             <th scope="row" class="-text-left label">Ngày kết thúc:</th>
             <td class="value">
-              {{
-                new Date(projectData.startDate) | dateFormat('DD/MM/YYYY')
-              }}
+              {{ new Date(projectData.startDate) | dateFormat('DD/MM/YYYY') }}
             </td>
           </tr>
           <tr>
@@ -47,6 +47,12 @@
             <th scope="row" class="-text-left label">Trạng thái:</th>
             <td class="value">
               {{ projectData.active ? 'Hoạt động' : 'Đã đóng' }}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="-text-left label">Tổng số thành viên:</th>
+            <td class="value">
+              {{ projectStaffs.length }}
             </td>
           </tr>
           <tr>
