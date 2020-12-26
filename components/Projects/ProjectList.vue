@@ -79,12 +79,12 @@
               </el-tooltip>
               <el-tooltip
                 class="project-all__icon"
-                :content="row.status ? 'Đóng' : 'Mở'"
+                :content="row.active ? 'Đóng' : 'Mở'"
                 placement="right-end"
               >
                 <i
                   :class="
-                    row.status
+                    row.active
                       ? 'el-icon-lock icon--delete'
                       : 'el-icon-unlock icon--green'
                   "
