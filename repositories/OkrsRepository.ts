@@ -6,6 +6,7 @@ export const enpoint = {
   listOkrByCycleId: 'objective/project-list',
   createOrUpdateOkrs: 'objective/add',
   getDetailOkrsById: 'objective/detail',
+  getObjectiveCompany: 'objective/company'
 };
 export default class OkrsRepository {
   public static getListOkrsByCycleId(
@@ -20,6 +21,10 @@ export default class OkrsRepository {
 
   public static getDetailOkrsById(okrsId: Number): Promise<AxiosResponse<any>> {
     return baseUrl.get(`${enpoint.getDetailOkrsById}/${okrsId}`);
+  }
+
+  public static getObjectiveCompany(params: any): Promise<AxiosResponse<any>> {
+    return baseUrl.get(enpoint.getObjectiveCompany, { params });
   }
 
   /**
