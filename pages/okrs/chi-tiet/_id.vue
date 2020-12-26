@@ -25,8 +25,8 @@
             disabled-void-color='#FBCFE8'
             :colors="['#EC4899', '#DB2777', '#BE185D']"
           />
-          <p class="-mb-3">{{objective.project.name}}</p>
-          <p class="-mb-3">
+          <p class="-mb-3" v-if="!!objective.project">{{objective.project.name}}</p>
+          <p class="-mb-3" v-if="!!objective.project">
             <nuxt-link class="el-link" :to="`/okrs/chi-tiet/${objective.project.id}`">
               {{ objective.parentObjective.name }}
             </nuxt-link>

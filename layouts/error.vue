@@ -1,5 +1,5 @@
 <template>
-  <div v-if="error.statusCode === 404" class="wscn-http404-container">
+  <div class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">
         <img
@@ -25,7 +25,7 @@
       </div>
       <div class="text-404">
         <div class="text-404__oops">OOPS!</div>
-        <div class="text-404__headline">{{ message }}</div>
+        <div class="text-404__headline">{{ `${error.statusCode} - ${message}` }}</div>
         <div class="text-404__info">
           Vui lòng kiểm tra lại đường link bạn nhập có đúng hay không, hoặc nhấn
           vào nút phía dưới để trở về trang chủ.
@@ -40,13 +40,9 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import NoPermission from '@/assets/images/error/no-permistion.svg';
 
 @Component({
   name: 'Error404Page',
-  components: {
-    NoPermission,
-  },
   head() {
     return {
       title: '404',
@@ -61,12 +57,6 @@ export default class Error404Page extends Vue {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
-/* .wscn-http404-container {
-  transform: translate(-50%, -50%);
-  position: absolute;
-  top: 40%;
-  left: 50%;
-} */
 
 .wscn-http404 {
   position: relative;

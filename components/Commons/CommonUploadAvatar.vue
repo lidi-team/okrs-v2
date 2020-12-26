@@ -399,6 +399,9 @@ export default {
       }
     });
   },
+  beforeDestroy() {
+    document.removeEventListener('keyup')
+  },
   methods: {
     ripple(e) {
       effectRipple(e);
@@ -540,7 +543,7 @@ export default {
     imgMove(e) {
       e.preventDefault();
       if (this.isSupportTouch && !e.targetTouches) {
-        return false;
+        return;
       }
       const et = e.targetTouches ? e.targetTouches[0] : e;
       const {
