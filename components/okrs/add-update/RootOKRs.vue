@@ -158,7 +158,7 @@ export default class RootOKRs extends Vue {
   }
 
   private async preCheckKs(OKRsData: any) {
-    this.loading = true;
+    this.isLoading = true;
     const krs: any[] = [];
     let validForm: number = 0;
     if (OKRsData.keyResults.length === 0) {
@@ -173,7 +173,7 @@ export default class RootOKRs extends Vue {
           },
         );
         krs.push(Object.freeze(form.tempKeyResult));
-        this.loading = false;
+        this.isLoading = false;
       });
       if (validForm === krs.length) {
         await this.pushOkr(OKRsData);
@@ -181,18 +181,18 @@ export default class RootOKRs extends Vue {
         this.$message.error('Có trường chưa hợp lệ, xin hãy kiểm tra!!!');
       }
     }
-    this.loading = false;
+    this.isLoading = false;
   }
 
   private async pushOkr(OKRsData: any) {
-    this.loading = true;
+    this.isLoading = true;
     try {
       await OkrsRepository.createOrUpdateOkrs(OKRsData);
       this.clearTempData();
       this.isShowDialogOKRs = false;
-      this.loading = false;
+      this.isLoading = false;
     } catch (e) {
-      this.loading = false;
+      this.isLoading = false;
     }
   }
 
