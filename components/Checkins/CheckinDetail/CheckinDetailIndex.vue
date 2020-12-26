@@ -4,7 +4,6 @@
     label-position="left"
     :model="syncCheckin"
     class="checkinDetail"
-    :rules="rules"
   >
     <el-row :gutter="32">
       <el-col :sm="24" :lg="8">
@@ -231,7 +230,8 @@ import { Maps, Rule } from '@/constants/app.type';
   },
   mounted() {
     if (this.syncCheckin.checkin) {
-      const { status = 'Draft', id = null } = this.syncCheckin.checkin;
+      const { status = 'Draft', id = null, nextCheckinDate } = this.syncCheckin.checkin;
+      nextCheckinDate ? this.syncCheckin.nextCheckinDate = new Date(nextCheckinDate) : this.syncCheckin.nextCheckinDate = new Date()
       this.checkinStatus = status;
       this.idCheckin = id;
     }
@@ -353,17 +353,6 @@ export default class DetailHistory extends Vue {
     } else {
       callback();
     }
-  };
-
-  private rules: Maps<Rule[]> = {
-    nextCheckinDate: [
-      {
-        required: true,
-        message: 'Không được bỏ trống',
-        trigger: ['blur', 'change'],
-      },
-      { validator: this.validateDate, trigger: ['change', 'blur'] },
-    ],
   };
 }
 </script>
