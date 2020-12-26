@@ -3,7 +3,6 @@ import {
   RegisterDTO,
   MailResetPassDTO,
   LoginDTO,
-  ResetPasswordActionDTO,
 } from '@/constants/DTO/auth';
 import { baseUrl } from './BaseRepository';
 

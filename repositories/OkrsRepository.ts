@@ -1,6 +1,5 @@
 import { AxiosResponse } from 'axios';
 import { baseUrl } from './BaseRepository';
-import { ResourcesEnpoint } from '@/constants/app.enum';
 
 export const enpoint = {
   listOkrByCycleId: 'objective/project-list',
