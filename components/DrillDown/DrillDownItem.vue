@@ -56,7 +56,7 @@
               type="primary"
               icon="el-icon-arrow-right"
               class="el-button el-button--purple el-button--small"
-              @click="drillDown(row)"
+              @click="drillDown(row)" 
             ></el-button>
           </template>
         </el-table-column>
