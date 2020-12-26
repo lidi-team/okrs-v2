@@ -61,7 +61,7 @@ import EmployeesHeader from '@/components/Employees/EmployeesHeader.vue';
   components: {
     CommonPagination,
     EmployeesActive,
-    EmployeesHeader
+    EmployeesHeader,
   },
   async created() {
     await this.getListUsers();
@@ -151,4 +151,3 @@ export default class ManageEmployeePage extends Vue {
   }
 }
 </script>
-

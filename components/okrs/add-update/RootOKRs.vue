@@ -27,34 +27,35 @@
           :autosize="sizeConfig"
         ></el-input>
       </el-form-item>
-      <div class="add-krs-step">
-        <key-result
-          v-for="(item, index) in tempOKRs.keyResults"
-          :key="index"
-          :index-kr-form="index"
-          :key-result.sync="item"
-          @deleteKr="deleteKrForm($event)"
-          :is-root-okr="true"
-        />
-        <el-button
-          class="el-button el-button--white el-button--small add-krs-step__button"
-          @click="addNewKRs"
+    </el-form>
+    <div class="add-krs-step">
+      <key-result
+        v-for="(item, index) in tempOKRs.keyResults"
+        :key="index"
+        :index-kr-form="index"
+        :key-result.sync="item"
+        @deleteKr="deleteKrForm($event)"
+        :is-root-okr="true"
+        ref="krsForm"
+      />
+      <el-button
+        class="el-button el-button--white el-button--small add-krs-step__button"
+        @click="addNewKRs"
+      >
+        <span>Thêm key result</span>
+      </el-button>
+      <div class="add-krs-step__attention">
+        <p class="add-krs-step__attention--title">Lưu ý:</p>
+        <div
+          v-for="(attention, i) in attentionsText"
+          :key="attention[i]"
+          class="add-krs-step__attention--content"
         >
-          <span>Thêm key result</span>
-        </el-button>
-        <div class="add-krs-step__attention">
-          <p class="add-krs-step__attention--title">Lưu ý:</p>
-          <div
-            v-for="(attention, i) in attentionsText"
-            :key="attention[i]"
-            class="add-krs-step__attention--content"
-          >
-            <icon-attention />
-            <span>{{ attention }}</span>
-          </div>
+          <icon-attention />
+          <span>{{ attention }}</span>
         </div>
       </div>
-    </el-form>
+    </div>
     <div slot="footer">
       <el-button
         class="el-button--white el-button--modal"
@@ -65,7 +66,7 @@
       <el-button
         class="el-button--purple el-button--modal"
         :loading="isLoading"
-        @click="handleCloseDialog"
+        @click="preCheckObjective"
       >
         {{ tempOKRs.title ? 'Cập nhật' : 'Tạo mới' }}
       </el-button>
@@ -76,11 +77,14 @@
 <script lang="ts">
 import { Component, PropSync, Vue } from 'vue-property-decorator';
 import { confirmWarningConfig } from '@/constants/app.constant';
-import { DispatchAction } from '@/constants/app.vuex';
+import { DispatchAction, MutationState } from '@/constants/app.vuex';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
 import IconAttention from '@/assets/images/okrs/attention.svg';
 import KeyResult from '@/components/okrs/add-update/KeyResult.vue';
+import OkrsRepository from '@/repositories/OkrsRepository';
+import { Form } from 'element-ui';
+import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 @Component<RootOKRs>({
   name: 'RootOKRs',
   components: {
@@ -142,7 +146,99 @@ export default class RootOKRs extends Vue {
   private deleteKrForm(indexForm: number) {
     this.tempOKRs.keyResults.splice(indexForm, 1);
   }
+
+  private preCheckObjective() {
+    (this.$refs.tempObjective as Form).validate(
+      async (isValid: boolean, invalidatedFields: object) => {
+        if (isValid) {
+          await this.preCheckKs(this.tempOKRs);
+        }
+      },
+    );
+  }
+
+  private async preCheckKs(OKRsData: any) {
+    this.isLoading = true;
+    const krs: any[] = [];
+    let validForm: number = 0;
+    if (OKRsData.keyResults.length === 0) {
+      this.$message.error('Cần có ít nhất 1 kết quả then chốt');
+    } else {
+      (this.$refs.krsForm as any).forEach((form) => {
+        (form.$refs.keyResult as Form).validate(
+          (isValid: boolean, invalidatedFields: object) => {
+            if (isValid) {
+              validForm++;
+            }
+          },
+        );
+        krs.push(Object.freeze(form.tempKeyResult));
+        this.isLoading = false;
+      });
+      if (validForm === krs.length) {
+        await this.pushOkr(OKRsData);
+      } else {
+        this.$message.error('Có trường chưa hợp lệ, xin hãy kiểm tra!!!');
+      }
+    }
+    this.isLoading = false;
+  }
+
+  private async pushOkr(OKRsData: any) {
+    this.isLoading = true;
+    try {
+      await OkrsRepository.createOrUpdateOkrs(OKRsData);
+      this.clearTempData();
+      this.isShowDialogOKRs = false;
+      this.isLoading = false;
+    } catch (e) {
+      this.isLoading = false;
+    }
+  }
+
+  private clearTempData() {
+    this.tempOKRs = {
+      title: '',
+      projectId: null,
+      keyResults: [],
+    };
+  }
 }
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+@import '@/assets/scss/main.scss';
+.add-krs-step {
+  padding: 0 $unit-5;
+  &__objective {
+    padding-bottom: $unit-3;
+    color: $neutral-primary-4;
+    font-weight: $font-weight-medium;
+  }
+  &__button {
+    margin-bottom: $unit-5;
+    width: calc(100% - 28px);
+  }
+  &__attention {
+    font-size: $unit-3;
+    color: $neutral-primary-4;
+    padding-bottom: $unit-4;
+    &--title {
+      font-weight: $font-weight-medium;
+    }
+    &--content {
+      display: flex;
+      place-content: center flex-start;
+      span {
+        padding-left: $unit-3;
+        &:first-child {
+          padding-bottom: $unit-2;
+        }
+      }
+    }
+  }
+  &__action {
+    @include okrs-button-action;
+  }
+}
+</style>

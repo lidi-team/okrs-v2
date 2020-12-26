@@ -25,7 +25,7 @@ export interface ProjectDTO {
   name: string;
   startDate: string;
   endDate: string;
-  status: number | string;
+  active: number | string;
   description: string;
   parentId?: number;
   pm?: ProjectPM;

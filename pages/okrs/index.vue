@@ -20,11 +20,12 @@
       </el-select>
     </div>
     <el-button
+      v-if="roles.includes('ROLE_DIRECTOR')"
       class="el-button--purple el-button--modal el-button--invite -ml-2"
       icon="el-icon-plus"
       @click="handleAddRootOKRs"
     >
-      Thêm nhân viên
+      Tạo OKR công ty
     </el-button>
     <drill-down-list/>
     <p v-if="!projects">Bạn đang không tham gia dự án nào</p>

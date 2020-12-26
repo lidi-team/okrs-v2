@@ -81,7 +81,7 @@
         v-if="
           user.roles.includes('ROLE_DIRECTOR') ||
           user.roles.includes('ROLE_ADMIN') ||
-          user.roles.includes('ROLE_ADMIN_HR')
+          user.roles.includes('ROLE_HR')
         "
         to="/nhan-su"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isHRsActive }]"
