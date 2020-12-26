@@ -421,7 +421,6 @@ export default class ProjectAll extends Vue {
     value: any,
     callback: (message?: string) => any,
   ): (message?: string) => any {
-    const isEmpty = (value: string) => !value.trim().length;
     if (value.length === 0) {
       return callback('Vui lòng nhập tên dự án');
     }
