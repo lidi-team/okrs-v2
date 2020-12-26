@@ -1,58 +1,52 @@
 <template>
   <div>
-    <admin-slot class="admin">
-      <template #top>
-        <div class="admin__top">
-          <h1 class="-title-1">Cài đặt công ty</h1>
-          <div>
-            <el-input
-              v-model="textSearch"
-              class="admin__top__input"
-              :placeholder="topChange.textPlaceholder"
-              prefix-icon="el-icon-search"
-              @keyup.enter.native="handleSearch(textSearch)"
-            />
-            <el-button
-              class="el-button--white el-button--search -ml-2"
-              @click="handleSearch(textSearch)"
-              >Tìm kiếm</el-button
-            >
-            <el-button
-              class="el-button--purple el-button--invite -ml-2"
-              icon="el-icon-plus"
-              @click="addNew"
-            >
-              Thêm mới {{ topChange.buttonName }}
-            </el-button>
-          </div>
-        </div>
-      </template>
-      <template #tab>
-        <el-tabs
-          v-model="currentTab"
-          class="admin__tab"
-          @tab-click="switchTabs(currentTab)"
+    <div class="admin__top">
+      <h1 class="-title-1">Cài đặt công ty</h1>
+      <div>
+        <el-input
+          v-model="textSearch"
+          class="admin__top__input"
+          :placeholder="topChange.textPlaceholder"
+          prefix-icon="el-icon-search"
+          @keyup.enter.native="handleSearch(textSearch)"
+        />
+        <el-button
+          class="el-button--white el-button--search -ml-2"
+          @click="handleSearch(textSearch)"
+          >Tìm kiếm</el-button
         >
-          <el-tab-pane
-            v-for="tab in tabs"
-            :key="tab"
-            :label="tab"
-            :name="tab"
-            :lazy="true"
-          />
-          <div class="admin__tab__table">
-            <component
-              :is="currentTabComponent"
-              :table-data="tableData"
-              :reload-data="getListData"
-              :total="totalItems"
-              :page.sync="adminParams.page"
-              :limit.sync="adminParams.limit"
-            />
-          </div>
-        </el-tabs>
-      </template>
-    </admin-slot>
+        <el-button
+          class="el-button--purple el-button--invite -ml-2"
+          icon="el-icon-plus"
+          @click="addNew"
+        >
+          Thêm mới {{ topChange.buttonName }}
+        </el-button>
+      </div>
+    </div>
+    <el-tabs
+      v-model="currentTab"
+      class="admin__tab"
+      @tab-click="switchTabs(currentTab)"
+    >
+      <el-tab-pane
+        v-for="tab in tabs"
+        :key="tab"
+        :label="tab"
+        :name="tab"
+        :lazy="true"
+      />
+      <div class="admin__tab__table">
+        <component
+          :is="currentTabComponent"
+          :table-data="tableData"
+          :reload-data="getListData"
+          :total="totalItems"
+          :page.sync="adminParams.page"
+          :limit.sync="adminParams.limit"
+        />
+      </div>
+    </el-tabs>
     <component
       :is="currentDialogComponent"
       :visible-dialog.sync="visibleDialog"
@@ -77,15 +71,12 @@ import CycleRepository from '@/repositories/CycleRepository';
 import JobRepository from '@/repositories/JobRepository';
 import MeasureUnitRepository from '@/repositories/MeasureRepository';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
-import AdminSlot from '@/components/AdminSlot.vue';
 import { AdminParams } from '@/constants/DTO/common';
 import { pageLimit } from '@/constants/app.constant';
 import { AdminTabsVn, AdminTabsEn } from '@/constants/app.enum';
+
 @Component<SettingCompanyPage>({
   name: 'SettingCompanyPage',
-  components: {
-    AdminSlot,
-  },
   head() {
     return {
       title: 'Cài đặt công ty',
