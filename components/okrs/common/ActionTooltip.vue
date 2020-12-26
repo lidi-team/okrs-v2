@@ -20,13 +20,9 @@
   </el-tooltip>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 import IconSetting from '@/assets/images/okrs/setting.svg';
-import {
-  confirmWarningConfig,
-  notificationConfig,
-} from '@/constants/app.constant';
-import { DialogTooltipAction } from '@/constants/app.interface';
+import { confirmWarningConfig } from '@/constants/app.constant';
 import { MutationState, DispatchAction } from '@/constants/app.vuex';
 
 import ObjectiveRepository from '@/repositories/ObjectiveRepository';

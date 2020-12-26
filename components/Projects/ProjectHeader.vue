@@ -17,8 +17,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Watch, PropSync } from 'vue-property-decorator';
-import { notificationConfig } from '@/constants/app.constant';
+import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 
 @Component<Headproject>({
   name: 'Headproject',
@@ -27,7 +26,6 @@ export default class Headproject extends Vue {
   [x: string]: any;
   @PropSync('text', { type: String }) syncedText!: string;
   @Prop(String) linkInvite!: string;
-  private searchText: string = '';
   private showInvite: boolean = false;
   private handleSearch(value: string) {
     this.$emit('search', value);

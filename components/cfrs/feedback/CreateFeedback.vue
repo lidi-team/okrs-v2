@@ -78,13 +78,12 @@
   </el-dialog>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync, Prop, Watch } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import {
   confirmWarningConfig,
-  notificationConfig,
 } from '@/constants/app.constant';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import { Maps, Rule } from '@/constants/app.type';

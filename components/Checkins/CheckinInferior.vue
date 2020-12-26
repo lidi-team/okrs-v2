@@ -148,9 +148,6 @@ export default class Inferior extends Vue {
 
   private async getListCheckin() {
     this.loading = true;
-    const tab = this.$route.query.tab
-      ? this.$route.query.tab
-      : ROUTER_CHECKIN.MyOkrs;
     const page = this.$route.query.page ? this.$route.query.page : 1;
     const cycleId = this.$route.query.cycleId
       ? this.$route.query.cycleId

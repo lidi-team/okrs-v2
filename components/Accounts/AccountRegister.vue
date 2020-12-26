@@ -112,8 +112,6 @@
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { regexPassword, max255Char } from '@/constants/account.constant';
-import { notificationConfig } from '@/constants/app.constant';
-import { RegisterOption } from '@/constants/app.interface';
 import { RegisterDTO } from '@/constants/DTO/auth';
 import { notifyErrorRegister } from '@/constants/app.notify';
 import { Maps, Rule } from '@/constants/app.type';

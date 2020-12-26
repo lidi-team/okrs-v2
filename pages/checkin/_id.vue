@@ -36,7 +36,7 @@
           <el-col :span="18">
             <p class="-mb-2 value">{{ checkin.objective.progressSuggest | round }}%</p>
           </el-col>
-        </el-row> 
+        </el-row>
       </div>
     </div>
     <checkin-detail-chart
@@ -51,8 +51,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
-import { formatDateToDD, initNewDate } from '@/utils/dateParser';
-import { notificationConfig } from '@/constants/app.constant';
 import CheckinDetail from '@/components/Checkins/CheckinDetail/CheckinDetailIndex.vue';
 import CheckinDetailChart from '@/components/Checkins/CheckinDetail/CheckinDetailChart.vue';
 

@@ -84,7 +84,6 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
-import { notificationConfig } from '@/constants/app.constant';
 import CheckinDetail from '@/components/Checkins/CheckinDetail/CheckinDetailIndex.vue';
 import CheckinDetailChart from '@/components/Checkins/CheckinDetail/CheckinDetailChart.vue';
 

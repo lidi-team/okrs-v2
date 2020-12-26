@@ -19,8 +19,6 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch, PropSync } from 'vue-property-decorator';
 
-import { notificationConfig } from '@/constants/app.constant';
-
 @Component<HeadEmployee>({
   name: 'HeadEmployee',
 })

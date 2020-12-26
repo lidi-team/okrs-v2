@@ -72,7 +72,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { confirmWarningConfig } from '@/constants/app.constant';
 import CheckinRepository from '@/repositories/CheckinRepository';
 @Component<DetailFeedback>({
   name: 'DetailFeedback',

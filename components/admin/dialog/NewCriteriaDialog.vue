@@ -76,7 +76,6 @@
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
-import { notificationConfig } from '@/constants/app.constant';
 import {
   EvaluationCriteriorDTO,
   SelectOptionDTO,

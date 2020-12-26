@@ -106,12 +106,6 @@
               <span>{{ row.reason }}</span>
             </template>
           </el-table-column>
-          <!-- <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
-        <template slot-scope="{ row, $index }">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)"> Sửa </el-button>
-          <el-button v-if="row.status != 'deleted'" size="mini" type="danger" @click="handleDelete(row, $index)"> Xóa </el-button>
-        </template>
-      </el-table-column> -->
         </el-table>
       </div>
       <staff-dialog
@@ -132,7 +126,6 @@ import { EmployeeDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
 import StaffDialog from '@/components/admin/dialog/NewStaffDialog.vue';
-import value from '*.png';
 
 @Component<CreateEmployee>({
   name: 'CreateEmployee',
@@ -146,8 +139,6 @@ export default class CreateEmployee extends Vue {
   private tableHeader: Array<Object> = [];
   private departments: Array<any> = [];
   private hasData: boolean = false;
-  private loading: boolean = false;
-  private loadingForm: Boolean = false;
   private visibleDialog: Boolean = false;
 
   private employee: EmployeeDTO = {
@@ -205,19 +196,11 @@ export default class CreateEmployee extends Vue {
       console.log(response);
       if (!!response && !!response.data) {
         if (response.data.numberOfFailed === 0) {
-        } else {
         }
       }
     } catch (error) {
       console.log(error);
     }
-    // (this.$refs.temCreateCycle as Form).validate(
-    //   async (isValid: boolean, invalidatedFields) => {
-    //     if (isValid) {
-    //
-    //     }
-    //   },
-    // );
   }
 
   @Watch('tableData')

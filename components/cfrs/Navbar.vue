@@ -48,7 +48,7 @@
   </el-row>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, PropSync, Watch } from 'vue-property-decorator';
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator';
 import CycleRepository from '@/repositories/CycleRepository';
 import { MutationState } from '@/constants/app.vuex';
 import UserRepository from '@/repositories/UserRepository';
