@@ -49,5 +49,5 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: unit-tests
           name: devil-hunter
-          file: ./coverage/coverage-final.json
+          file: ./coverage/codecov.json
           fail_ci_if_error: true
