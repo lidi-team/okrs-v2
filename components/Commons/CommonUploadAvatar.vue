@@ -400,7 +400,11 @@ export default {
     });
   },
   beforeDestroy() {
-    document.removeEventListener('keyup')
+    document.removeEventListener('keyup', (e) => {
+      if (this.value && (e.key === 'Escape' || e.keyCode === 27)) {
+        this.off();
+      }
+    })
   },
   methods: {
     ripple(e) {

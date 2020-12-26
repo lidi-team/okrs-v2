@@ -8,7 +8,7 @@ export default function debounce(func: any, wait: any, immediate: any): any {
     } else {
       timeout = null;
       if (!immediate) {
-        result = func.apply(context, args);
+        func.apply(context, args);
         if (!timeout) context = args = null;
       }
     }

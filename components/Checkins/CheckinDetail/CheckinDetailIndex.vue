@@ -217,9 +217,7 @@ import { Form, Notification } from 'element-ui';
 import { GetterState } from '@/constants/app.vuex';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import { confidentLevel } from '@/constants/app.constant';
-
 import { formatDateToDD, compareTwoDate } from '@/utils/dateParser';
-import { Maps, Rule } from '@/constants/app.type';
 
 @Component<DetailHistory>({
   name: 'DetailHistory',
