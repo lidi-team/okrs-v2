@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
+import { Component, Vue, PropSync } from 'vue-property-decorator';
 import { init } from 'echarts';
 import resize from '@/mixins/resize';
 import { formatDate } from '@/utils/format';

@@ -334,7 +334,7 @@ export default class DetailHistory extends Vue {
               };
             }),
           };
-          const data = await CheckinRepository.createCheckin(payload);
+          await CheckinRepository.createCheckin(payload);
           if (status !== 'Draft') {
             this.isDisable = true;
           } else {
