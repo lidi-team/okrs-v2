@@ -18,10 +18,7 @@
             <template slot-scope="{ row }">
               <div class="inferiorOKRs__info">
                 <img
-                  :src="
-                    row.avatarURL ||
-                    'https://bulma.io/images/placeholders/128x128.png'
-                  "
+                  :src="row.avatarURL | filterImage"
                   class="inferiorOKRs__avatar"
                   alt="avatar"
                 />

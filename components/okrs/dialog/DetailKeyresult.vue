@@ -7,7 +7,7 @@
     @close="handleClose"
   >
     <el-table :data="listKrs" header-row-class-name="krs-detail__table-header">
-      <el-table-column label="KRs" min-width="300">
+      <el-table-column label="Kết quả then chốt" min-width="300">
         <template v-slot="{ row }">
           <span class="krs-detail__content">{{ row.content }}</span>
         </template>

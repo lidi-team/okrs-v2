@@ -76,7 +76,7 @@
               >Đã hoàn thành</el-button
             >
             <nuxt-link v-else :to="`/checkin/${row.id}`">
-              <el-button class="el-button--purple w-100">Tạo Checkin</el-button>
+              <el-button class="el-button--purple w-100">Tạo Check-in</el-button>
             </nuxt-link>
           </template>
         </el-table-column>

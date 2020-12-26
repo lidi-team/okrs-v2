@@ -21,7 +21,7 @@
           <template v-slot="{ row }">
             <p
               v-if="row.keyResults.length"
-              class="item__krs"
+              class="el-link"
               @click="showKeyResult(row.keyResults)"
             >
               {{ row.keyResults | filterKeyresults }}
@@ -50,10 +50,9 @@
         </el-table-column>
         <el-table-column label="Loại" width="150" prop="type" align="center">
         </el-table-column>
-        <el-table-column label="Hành động" align="right" :width="80">
+        <el-table-column label="Hành động" align="right" :width="80" v-if="count !== 1">
           <template v-slot="{ row }">
             <el-button
-              type="primary"
               icon="el-icon-arrow-right"
               class="el-button el-button--purple el-button--small"
               @click="drillDown(row)" 
@@ -67,7 +66,7 @@
       :append-to-body="true"
       :size="`${width - 10}%`"
     >
-      <DrawerObjective :id-selected="idSelectedChild" :width="width - 10" />
+      <DrawerObjective :id-selected="idSelectedChild" :width="width - 10" :count="count+1" />
     </el-drawer>
     <transition name="el-zoom-in-center">
       <el-dialog
@@ -85,7 +84,6 @@
 
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
 import DrawerObjective from '@/components/DrillDown/DrillDownItem.vue';
 import DrillDownRepository from '@/repositories/DrillDownRepository';
 import { filterKeyresults } from '@/utils/filters';
@@ -100,31 +98,33 @@ import KeyResult from '@/components/okrs/OkrsKeyResult/OkrsKeyResultTableOvervie
   filters: {
     filterKeyresults,
   },
-  computed: {
-    ...mapGetters({
-      cycleCurrent: 'cycle/cycleCurrent',
-    }),
-  },
   async mounted() {
-    const { data } = await DrillDownRepository.get(
-      this.cycleCurrent,
-      this.idSelected,
-    );
-    console.log('data drill down', data);
-    this.title = data.title;
-    this.dataObjectives = data.childObjectives;
+    this.currentCycleId = this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
+    this.getDrillDown(this.currentCycleId, this.idSelected)
   },
 })
 export default class DrillDownObject extends Vue {
   @Prop(Number) public idSelected!: 0;
   @Prop(Number) public width!: 0;
+  @Prop(Number) public count!: 0;
   private selected: Boolean = false;
   private idSelectedChild: Number = 0;
-
   private isShowKeyResult: Boolean = false;
   private keyResults: Array<any> = [];
   private title: String = '';
   private dataObjectives: any = [];
+  private currentCycleId: string = '0';
+
+  @Watch('idSelected')
+  private async change(id: any) {
+    this.getDrillDown(this.currentCycleId, id)
+  }
+
+  private async getDrillDown(currentCycleId, parentId) {
+    const { data } = await DrillDownRepository.get(currentCycleId, parentId);
+    this.title = data.title;
+    this.dataObjectives = data.childObjectives;
+  }
 
   private showKeyResult(keyResults: any) {
     this.isShowKeyResult = true;

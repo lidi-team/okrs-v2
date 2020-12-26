@@ -16,7 +16,7 @@ Vue.filter("verifyProgress", function(value: any): number {
 })
 
 Vue.filter("filterImage", function(value: string): string {
-  return value ? value : 'https://i.pinimg.com/originals/db/da/a0/dbdaa0afe2db00c70d5550494e8a5594.gif'
+  return value ? value : 'https://thumbs.gfycat.com/ClearGiddyAmoeba-small.gif'
 })
 
 Vue.filter("textActiveEmployee", function(value: boolean): string {

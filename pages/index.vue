@@ -17,7 +17,7 @@
           :value="String(cycle.id)"
         />
       </el-select>
-    </div>
+    </div>  
     <el-row :gutter="20">
       <el-col :span="24">
         <div class="box-wrap">
@@ -66,6 +66,7 @@
         </div>
       </el-col>
     </el-row>
+    <drill-down-list/>
   </div>
 </template>
 
@@ -77,6 +78,7 @@ import DashboardCheckinChart from '@/components/Dashboard/DashboardCheckinChart.
 import CheckinRepository from '@/repositories/CheckinRepository';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import RankItem from '@/components/cfrs/rank/RankItem.vue';
+import DrillDownList from '@/components/DrillDown/DrillDownList.vue';
 
 @Component<HomePage>({
   head() {
@@ -87,6 +89,7 @@ import RankItem from '@/components/cfrs/rank/RankItem.vue';
   components: {
     DashboardCheckinChart,
     RankItem,
+    DrillDownList,
   },
   created() {
     if (!this.$route.query.cycleId) {

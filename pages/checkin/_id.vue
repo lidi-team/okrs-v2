@@ -1,7 +1,7 @@
 <template>
   <div v-loading.fullscreen.lock="loading" class="-mb-5">
     <el-page-header title="Quay lại" @back="goBack" />
-    <h1 class="-title-1">Tạo checkin</h1>
+    <h1 class="-title-1">Tạo check-in</h1>
     <div class="top-checkin box-wrap">
       <h2 class="-title-2">Chi tiết check-in</h2>
       <div v-if="checkin" class="content">
