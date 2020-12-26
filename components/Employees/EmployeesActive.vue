@@ -35,7 +35,7 @@
         </el-table-column>
         <el-table-column label="Trạng thái">
           <template slot-scope="{ row }">
-            <el-tag  :type="row.isActive | tagActive">
+            <el-tag :type="row.isActive | tagActive">
               {{ row.isActive | textActiveEmployee }}
             </el-tag>
           </template>
@@ -182,10 +182,7 @@ import { Form } from 'element-ui';
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { employeeRules } from './employee.constant';
-import {
-  confirmWarningConfig,
-  notificationConfig,
-} from '@/constants/app.constant';
+import { confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { EmployeeDTO } from '@/constants/app.interface';
 import { GetterState } from '@/constants/app.vuex';
@@ -255,16 +252,14 @@ export default class EmployeeActive extends Vue {
           })
             .then(async () => {
               await EmployeeRepository.update(tempUpdateUser)
-                .then((res) => {
+                .then(() => {
                   setTimeout(() => {
                     this.loadingTable = false;
                   }, 300);
                   this.getListUsers();
                   this.dialogUpdateVisible = false;
                 })
-                .catch((error) => {
-                  if (error.response.data.statusCode === 430) {
-                  }
+                .catch(() => {
                   setTimeout(() => {
                     this.loadingTable = false;
                   }, 300);
@@ -318,10 +313,7 @@ export default class EmployeeActive extends Vue {
       },
     ).then(async () => {
       try {
-        await EmployeeRepository.update(this.tempUpdateUser).then(
-          (res: any) => {
-          },
-        );
+        await EmployeeRepository.update(this.tempUpdateUser);
         this.getListUsers();
       } catch (error) {}
     });

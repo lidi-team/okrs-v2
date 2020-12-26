@@ -175,13 +175,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Emit, PropSync } from 'vue-property-decorator';
-import { Form } from 'element-ui';
-import { mapActions, mapGetters } from 'vuex';
+import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
+import { mapGetters } from 'vuex';
 import { max255Char } from '@/constants/account.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import IconDelete from '@/assets/images/common/delete.svg';
-import { notificationConfig } from '@/constants/app.constant';
 import { DispatchAction, GetterState } from '@/constants/app.vuex';
 
 import OkrsRepository from '@/repositories/OkrsRepository';

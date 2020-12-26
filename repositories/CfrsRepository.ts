@@ -6,7 +6,7 @@ import {
 } from '@/constants/app.enum';
 import { CfrsDTO } from '@/constants/app.interface';
 import { HistoryCfrsParams, ParamsQuery } from '@/constants/DTO/common';
-import { baseUrl, baseUrlV1 } from './BaseRepository';
+import { baseUrl } from './BaseRepository';
 
 export default class CfrsRepository {
   public static getListWaitingFeedback(

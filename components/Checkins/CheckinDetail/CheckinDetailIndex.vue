@@ -212,18 +212,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, PropSync, Watch } from 'vue-property-decorator';
+import { Component, Vue, PropSync, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-import { Form } from 'element-ui';
+import { Form, Notification } from 'element-ui';
 import { GetterState } from '@/constants/app.vuex';
-import { formatDate } from '@/utils/format';
 import CheckinRepository from '@/repositories/CheckinRepository';
-import {
-  statusCheckin,
-  confidentLevel,
-  notificationConfig,
-} from '@/constants/app.constant';
-import { Notification } from 'element-ui';
+import { confidentLevel } from '@/constants/app.constant';
+
 import { formatDateToDD, compareTwoDate } from '@/utils/dateParser';
 import { Maps, Rule } from '@/constants/app.type';
 
@@ -236,11 +231,10 @@ import { Maps, Rule } from '@/constants/app.type';
   },
   mounted() {
     if (this.syncCheckin.checkin) {
-      const { status = 'Draft', id = null, nextCheckinDate } = this.syncCheckin.checkin;
+      const { status = 'Draft', id = null } = this.syncCheckin.checkin;
       this.checkinStatus = status;
       this.idCheckin = id;
     }
-    console.log(this.syncCheckin.checkin)
     const { role = 'guest', progress = -1, limitDate } = this.syncCheckin;
     this.progress = progress;
     this.limitDate = new Date(limitDate);
@@ -248,8 +242,7 @@ import { Maps, Rule } from '@/constants/app.type';
     if (role === 'guest') {
       this.isDisable = true;
     } else if (role === 'user') {
-      this.checkinStatus === 'Draft' ||
-      this.checkinStatus === 'Overdue'
+      this.checkinStatus === 'Draft' || this.checkinStatus === 'Overdue'
         ? (this.isDisable = false)
         : (this.isDisable = true);
     } else if (role === 'reviewer') {

@@ -244,7 +244,6 @@ import { confirmWarningConfig } from '@/constants/app.constant';
 import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
 import { formatDateToDD } from '@/utils/dateParser';
-import value from '*.png';
 import { removeVietnameseTones } from '@/utils/format';
 
 @Component<ControlProject>({

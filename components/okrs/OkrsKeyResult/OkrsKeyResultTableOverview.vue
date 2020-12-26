@@ -35,7 +35,7 @@
   </el-table>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
+import { Component, Vue, Prop } from 'vue-property-decorator';
 @Component<DetailKrsDialog>({ name: 'DetailKrsDialog' })
 export default class DetailKrsDialog extends Vue {
   @Prop({ type: Array, required: true }) public keyResults!: any[];

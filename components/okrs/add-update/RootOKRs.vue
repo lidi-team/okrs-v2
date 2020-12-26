@@ -77,14 +77,12 @@
 <script lang="ts">
 import { Component, PropSync, Vue } from 'vue-property-decorator';
 import { confirmWarningConfig } from '@/constants/app.constant';
-import { DispatchAction, MutationState } from '@/constants/app.vuex';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
 import IconAttention from '@/assets/images/okrs/attention.svg';
 import KeyResult from '@/components/okrs/add-update/KeyResult.vue';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { Form } from 'element-ui';
-import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 @Component<RootOKRs>({
   name: 'RootOKRs',
   components: {
@@ -95,7 +93,6 @@ import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 export default class RootOKRs extends Vue {
   @PropSync('isVisible', Boolean) private isShowDialogOKRs!: boolean;
   private isLoading: boolean = false;
-  private active: Number = 0;
   private sizeConfig = { minRows: 2, maxRows: 2 };
   private attentionsText: string[] = [
     'Nên có ít nhất phải có 2 kết quả then chốt',

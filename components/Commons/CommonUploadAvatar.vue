@@ -290,7 +290,7 @@ export default {
       },
       sourceImgContainer: {
         width: 240,
-        height: 184, 
+        height: 184,
       },
       scale: {
         zoomAddOn: false,
@@ -368,7 +368,7 @@ export default {
       };
     },
     previewStyle() {
-      const { width, height, ratio, previewContainer } = this;
+      const { ratio, previewContainer } = this;
       const pc = previewContainer;
       let w = pc.width;
       let h = pc.height;

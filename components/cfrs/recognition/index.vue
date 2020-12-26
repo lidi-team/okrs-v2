@@ -113,7 +113,6 @@ import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import { confirmWarningConfig } from '@/constants/app.constant';
 import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepository';
 import CfrsRepository from '@/repositories/CfrsRepository';
-import UserRepository from '@/repositories/UserRepository';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';

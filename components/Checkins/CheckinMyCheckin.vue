@@ -155,10 +155,8 @@
 </template>
 
 <script lang="ts">
-import { mapGetters } from 'vuex';
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import { statusCheckin } from '@/constants/app.constant';
-import { ROUTER_CHECKIN } from '@/components/Checkins/constants.enum';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import Pagination from '@/components/Commons/CommonPagination.vue';
 
@@ -190,9 +188,6 @@ export default class MyOkrsCheckin extends Vue {
 
   private async getListCheckin() {
     this.loading = true;
-    const tab = this.$route.query.tab
-      ? this.$route.query.tab
-      : ROUTER_CHECKIN.MyOkrs;
     const page = this.$route.query.page ? this.$route.query.page : 1;
     const cycleId = this.$route.query.cycleId
       ? this.$route.query.cycleId
