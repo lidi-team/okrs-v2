@@ -62,7 +62,7 @@
               ></el-date-picker>
             </el-form-item>
             <el-form-item
-              label="Trọng số:"
+              label="Độ quan trọng:"
               class="custom-label"
               prop="weight"
               label-width="150px"
