@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { AdminParams } from '@/constants/DTO/common';
 import { ResourcesEnpoint } from '@/constants/app.enum';
 import { TeamDTO } from '@/constants/app.interface';
-import { baseUrlV1, baseUrl } from './BaseRepository';
+import { baseUrl } from './BaseRepository';
 
 export default class DepartmentRepository {
   public static get(params: AdminParams): Promise<AxiosResponse<any>> {

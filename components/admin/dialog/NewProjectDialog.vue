@@ -275,39 +275,11 @@ export default class ProjectDialog extends Vue {
     value: any,
     callback: (message?: string) => any,
   ): (message?: string) => any {
-    const isEmpty = (value: string) => !value.trim().length;
     if (value.length === 0) {
       return callback('Vui lòng nhập tên dự án');
     }
     return callback();
   }
-
-  // private deactiveUser(row) {
-  //   this.tempUpdateProject = {
-  //     id: row.id,
-  //     name: row.name,
-  //     startDate: row.startDate,
-  //     endDate: row.endDate,
-  //     status: row.status,
-  //     description: row.description,
-  //     pm: row.pmi,
-  //   };
-  //   this.$confirm('Bạn có chắc chắn muốn deactive user này?', {
-  //     confirmButtonText: 'Đồng ý',
-  //     cancelButtonText: 'Hủy bỏ',
-  //     type: 'warning',
-  //   }).then(async () => {
-  //     try {
-  //       await EmployeeRepository.update(this.tempUpdateProject).then((res: any) => {
-  //         this.$notify.success({
-  //           ...notificationConfig,
-  //           message: 'Cập nhật thành viên thành công',
-  //         });
-  //       });
-  //       this.getListUsers();
-  //     } catch (error) {}
-  //   });
-  // }
 }
 </script>
 
