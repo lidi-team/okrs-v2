@@ -1,65 +1,67 @@
 <template>
   <div class="item">
-    <p class="item__header">{{ title }}</p>
-    <el-table
-      :data="dataObjectives"
-      style="width: 100%"
-      header-row-class-name="item__table-header"
-    >
-      <el-table-column label="Mục tiêu">
-        <template v-slot="{ row }">
-          <span>{{ row.title }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="author"
-        label="Kết quả then chốt"
-        width="250"
-        align="center"
+    <div class="box-wrap">
+      <h2 class="-title-2">{{ title }}</h2>
+      <el-table
+        :data="dataObjectives"
+        style="width: 100%"
+        header-row-class-name="item__table-header"
       >
-        <template v-slot="{ row }">
-          <p
-            v-if="row.keyResults.length"
-            class="item__krs"
-            @click="showKeyResult(row.keyResults)"
-          >
-            {{ row.keyResults | filterKeyresults }}
-          </p>
-          <p v-else style="color: #212b36">
-            {{ row.keyResults | filterKeyresults }}
-          </p>
-        </template>
-      </el-table-column>
-      <el-table-column prop="author" label="Tiến độ" width="260" align="center">
-        <template v-slot="{ row }">
-          <div class="item__progress">
-            <el-progress
-              :percentage="+row.progress"
-              :color="customColors"
-              :text-inside="true"
-              :stroke-width="26"
-            />
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="Thay đổi" width="100" align="center">
-        <template v-slot="{ row }">
-          <p :class="row.changing | getStatusOfProgress">{{ row.changing }}%</p>
-        </template>
-      </el-table-column>
-      <el-table-column label="Loại" width="200" prop="type" align="center">
-      </el-table-column>
-      <el-table-column label="Hành động" align="right" width="150">
-        <template v-slot="{ row }">
-          <el-button
-            type="primary"
-            icon="el-icon-arrow-right"
-            class="el-button el-button--purple el-button--small"
-            @click="drillDown(row)"
-          ></el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+        <el-table-column label="Mục tiêu">
+          <template v-slot="{ row }">
+            <span>{{ row.title }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="author"
+          label="Kết quả then chốt"
+          width="100"
+          align="center"
+        >
+          <template v-slot="{ row }">
+            <p
+              v-if="row.keyResults.length"
+              class="item__krs"
+              @click="showKeyResult(row.keyResults)"
+            >
+              {{ row.keyResults | filterKeyresults }}
+            </p>
+            <p v-else style="color: #212b36">
+              {{ row.keyResults | filterKeyresults }}
+            </p>
+          </template>
+        </el-table-column>
+        <el-table-column prop="author" label="Tiến độ" width="180" align="center">
+          <template v-slot="{ row }">
+            <div class="item__progress">
+              <el-progress
+                :percentage="+row.progress | round"
+                :color="customColors"
+                :text-inside="true"
+                :stroke-width="26"
+              />
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column label="Thay đổi" width="100" align="center">
+          <template v-slot="{ row }">
+            <p :class="row.changing | getStatusOfProgress">{{ row.changing | round }}%</p>
+          </template>
+        </el-table-column>
+        <el-table-column label="Loại" width="150" prop="type" align="center">
+        </el-table-column>
+        <el-table-column label="Hành động" align="right" :width="80">
+          <template v-slot="{ row }">
+            <el-button
+              type="primary"
+              icon="el-icon-arrow-right"
+              class="el-button el-button--purple el-button--small"
+              @click="drillDown(row)"
+            ></el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
     <el-drawer
       :visible.sync="selected"
       :append-to-body="true"
@@ -84,7 +86,7 @@
 <script lang="ts">
 import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-import DrawerObjective from '@/components/drill-down/DrawerObjective.vue';
+import DrawerObjective from '@/components/DrillDown/DrillDownItem.vue';
 import DrillDownRepository from '@/repositories/DrillDownRepository';
 import { filterKeyresults } from '@/utils/filters';
 import { customColors, getStatusOfProgress } from '@/utils/common';
@@ -152,17 +154,7 @@ export default class DrillDownObject extends Vue {
 }
 
 .item {
-  background: $white;
-  color: $neutral-primary-4;
-  margin-top: $unit-8;
-  border-radius: $border-radius-base;
-  @include drop-shadow;
-  &__header {
-    font-size: $text-xl;
-    padding: $unit-2;
-    @include box-shadow;
-    border-radius: $border-radius-base $border-radius-base 0px 0px;
-  }
+  padding: 0 2rem;
   &__table-header {
     > th {
       font-weight: $font-weight-medium;
@@ -170,12 +162,8 @@ export default class DrillDownObject extends Vue {
       padding-left: $unit-5;
     }
   }
-  &__krs {
-    color: $blue-primary-2;
-    cursor: pointer;
-  }
   &__progress {
-    width: 250px;
+    width: 170PX;
   }
   &__action {
     place-content: center space-between;

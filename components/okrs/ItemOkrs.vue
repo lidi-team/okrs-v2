@@ -147,12 +147,10 @@ import { Component, Vue, Prop } from 'vue-property-decorator';
 import { customColors } from './okrs.constant';
 import IconEllipse from '@/assets/images/okrs/ellipse.svg';
 import { DialogTooltipAction } from '@/constants/app.interface';
-
 import ActionTooltip from '@/components/okrs/common/ActionTooltip.vue';
 import ButtonCreateOkr from '@/components/okrs/common/Button.vue';
 import { ObjectiveDTO } from '@/constants/DTO/okrs';
 import { DispatchAction } from '@/constants/app.vuex';
-
 import OkrsRepository from '@/repositories/OkrsRepository';
 
 @Component<OKRsItem>({
