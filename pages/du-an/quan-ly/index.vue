@@ -46,7 +46,7 @@
           <tr>
             <th scope="row" class="-text-left label">Trạng thái:</th>
             <td class="value">
-              {{ projectData.status ? 'Hoạt động' : 'Đã đóng' }}
+              {{ projectData.active ? 'Hoạt động' : 'Đã đóng' }}
             </td>
           </tr>
           <tr>
@@ -62,6 +62,15 @@
       <div class="-display-flex -justify-content-between">
         <h2 class="-title-2">Thành viên dự án</h2>
         <div class="-display-flex -justify-content-between">
+          <div class="-mr-2">
+            <el-button
+              v-if="isProjectPm(user.projects, projectData.active)"
+              class="el-button--purple el-button--modal el-button--invite"
+              @click="handleShowAddMember"
+            >
+              {{ isAddingMember ? 'Hủy' : 'Thêm mới thành viên' }}
+            </el-button>
+          </div>
           <div class="-mb-2">
             <el-input
               v-model="searchText"
@@ -77,18 +86,9 @@
               Tìm kiếm
             </el-button>
           </div>
-          <div>
-            <el-button
-              v-if="isProjectPm(user.projects, projectData.status)"
-              class="el-button--purple"
-              @click="handleShowAddMember"
-            >
-              {{ isAddingMember ? 'Hủy' : 'Thêm mới thành viên' }}
-            </el-button>
-          </div>
         </div>
       </div>
-      <div class="main-action__form -mb-2" v-if="isAddingMember">
+      <div class="-mb-2 -display-flex" v-if="isAddingMember">
         <el-select
           v-model="selectUsers"
           multiple
@@ -104,9 +104,8 @@
           ></el-option>
         </el-select>
         <el-button
-          class="main-action__form--input el-button el-button--purple el-button--default"
+          class="el-button el-button--purple el-button--default -ml-2"
           :disabled="!selectUsers.length"
-          type="primary"
           @click="handleAddStaff"
           >Thêm
         </el-button>
@@ -183,7 +182,7 @@
           </template>
         </el-table-column>
         <el-table-column
-          v-if="isProjectPm(user.projects, projectData.status)"
+          v-if="isProjectPm(user.projects, projectData.active)"
           label="Thao tác"
           align="center"
           min-width="100"
@@ -278,7 +277,7 @@ export default class ControlProject extends Vue {
     name: '',
     startDate: '',
     endDate: '',
-    status: '',
+    active: '',
     description: '',
     parentId: undefined,
     pm: undefined,
@@ -489,12 +488,13 @@ export default class ControlProject extends Vue {
         data: !!projectData.endDate && formatDateToDD(projectData.endDate),
       },
       { label: 'Quản lý', data: projectData.pm && projectData.pm.name },
-      { label: 'Trang thái', data: projectData.status },
+      { label: 'Trang thái', data: projectData.active },
       { label: 'Mô tả', data: projectData.description },
     ];
   }
 
   private handleShowAddMember() {
+    this.selectUsers = [];
     this.isAddingMember = !this.isAddingMember;
   }
 

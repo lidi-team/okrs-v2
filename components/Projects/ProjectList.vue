@@ -277,7 +277,7 @@ export default class ProjectAll extends Vue {
     name: '',
     startDate: '',
     endDate: '',
-    status: '',
+    active: '',
     description: '',
     pmId: undefined,
     weight: 1,
@@ -290,7 +290,7 @@ export default class ProjectAll extends Vue {
       name: row.name,
       startDate: row.startDate ? formatDateToDD(row.startDate) : '',
       endDate: row.endDate ? formatDateToDD(row.endDate) : '',
-      status: row.status,
+      active: row.active,
       description: row.description,
       pmId: row.pmId,
       weight: row.weight,
@@ -440,7 +440,7 @@ export default class ProjectAll extends Vue {
   private async handleCloseProject(row: ProjectDTO) {
     try {
       await this.$confirm(
-        `Bạn có chắc chắn muốn ${row.status ? 'đóng' : 'mở'} dự án này?`,
+        `Bạn có chắc chắn muốn ${row.active ? 'đóng' : 'mở'} dự án này?`,
         {
           ...confirmWarningConfig,
         },

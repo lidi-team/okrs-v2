@@ -56,7 +56,7 @@
             <nuxt-link
               v-if="
                 user.roles.includes('ROLE_ADMIN') ||
-                user.roles.includes('ROLE_ADMIN_HR')
+                user.roles.includes('ROLE_HR')
               "
               to="/nhan-su"
             >

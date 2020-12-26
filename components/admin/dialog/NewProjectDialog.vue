@@ -168,7 +168,7 @@ export default class ProjectDialog extends Vue {
     name: '',
     startDate: '',
     endDate: '',
-    status: 1,
+    active: 1,
     description: '',
     pmId: undefined,
     weight: 1,

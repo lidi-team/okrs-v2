@@ -331,7 +331,7 @@ export default class EmployeeActive extends Vue {
     const isSpecialRole =
       roles.includes('ROLE_DIRECTOR') ||
       roles.includes('ROLE_ADMIN') ||
-      roles.includes('ROLE_ADMIN_HR') ||
+      roles.includes('ROLE_HR') ||
       roles.includes('ROLE_PM');
     return !isSpecialRole;
   }
