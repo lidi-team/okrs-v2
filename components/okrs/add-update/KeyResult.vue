@@ -181,8 +181,6 @@ import { max255Char } from '@/constants/account.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import IconDelete from '@/assets/images/common/delete.svg';
 import { DispatchAction, GetterState } from '@/constants/app.vuex';
-
-import OkrsRepository from '@/repositories/OkrsRepository';
 import KeyResultRepository from '@/repositories/KeyResultRepository';
 
 @Component<KeyResult>({
@@ -241,13 +239,6 @@ export default class KeyResult extends Vue {
       if (this.indexKrForm === 0) {
         this.popoverVisisble = false;
         this.$message.error('Cần có ít nhất 1 kết quả then chốt đã được tạo');
-      } else {
-        try {
-          await OkrsRepository.deleteKr(keyResult.id).then((res) => {
-            this.popoverVisisble = false;
-            this.$emit('deleteKr', this.indexKrForm);
-          });
-        } catch (error) {}
       }
     } else {
       this.popoverVisisble = false;
