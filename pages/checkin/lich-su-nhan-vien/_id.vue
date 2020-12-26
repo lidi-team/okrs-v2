@@ -1,18 +1,18 @@
 <template>
-  <div class="listHistory">
-    <el-page-header title="OKRs cấp dưới" @back="goBack" />
-    <h1 class="listHistory__title">Lịch sử Check-in</h1>
-    <div class="listHistory__content">
+  <div>
+    <el-page-header title="Quay lại" @back="goBack" />
+    <h1 class="-title-1">Lịch sử Check-in</h1>
+    <div class="box-wrap">
       <el-table
         v-loading="loading"
         empty-text="Không có dữ liệu"
         class="myOKRs"
-        :data="historyList"
+        :data="historyCheckins"
         style="width: 100%"
       >
         <el-table-column label="Mục tiêu" min-width="250">
           <template slot-scope="{ row }">
-            <span>{{ row.objective.title }}</span>
+            <span>{{ row.objective.name }}</span>
           </template>
         </el-table-column>
         <el-table-column label="Ngày check-in" min-width="150">
@@ -48,7 +48,7 @@
         </el-table-column>
         <el-table-column label="Hành động" align="center" width="180">
           <template slot-scope="{ row }">
-            <nuxt-link :to="`/checkin/lich-su-nhan-vien/chi-tiet/${row.id}`">
+            <nuxt-link :to="`/checkin/chi-tiet/${row.id}`">
               <el-button class="el-button--white w-100">Xem chi tiết</el-button>
             </nuxt-link>
           </template>
@@ -57,12 +57,12 @@
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { statusCheckin, notificationConfig } from '@/constants/app.constant';
 import CheckinRepository from '@/repositories/CheckinRepository';
 @Component<HistoryCheckinEmployee>({
-  name: 'HistoryCheckinEmployee',
   head() {
     return {
       title: 'Lịch sử Check-in của nhân viên',
@@ -74,46 +74,16 @@ import CheckinRepository from '@/repositories/CheckinRepository';
 })
 export default class HistoryCheckinEmployee extends Vue {
   private loading: boolean = false;
-  private historyList: Array<object> = [];
+  private historyCheckins: Array<object> = [];
   private status = statusCheckin;
   private goBack() {
     this.$router.go(-1);
   }
   private async getList() {
     this.loading = true;
-    await CheckinRepository.getHistory(Number(this.$route.params.id))
-      .then((res) => {
-        this.historyList = res.data.data;
-        this.loading = false;
-      })
-      .catch((error) => {
-        if (error.response.data.statusCode === 470) {
-          this.$notify.error({
-            ...notificationConfig,
-            message: 'Bạn không có quyền truy cập checkin này',
-          });
-        } else if (error.response.data.statusCode === 404) {
-          this.$notify.error({
-            ...notificationConfig,
-            message: 'Không thể tìm thấy dữ liệu',
-          });
-        }
-        this.$router.push('/checkin');
-        this.loading = false;
-      });
+    const { data } = await CheckinRepository.getHistory(Number(this.$route.params.id))
+    this.historyCheckins = data
+    this.loading = false;
   }
 }
 </script>
-<style lang="scss" scoped>
-@import '@/assets/scss/main.scss';
-.listHistory {
-  &__title {
-    font-size: $text-2xl;
-    padding-bottom: $unit-10;
-  }
-  &__content {
-    background-color: $white;
-    padding: $unit-8;
-  }
-}
-</style>

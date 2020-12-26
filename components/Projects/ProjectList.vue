@@ -15,7 +15,6 @@
         ></el-table-column>
         <el-table-column label="Ngày bắt đầu" min-width="100">
           <template v-slot="{ row }">
-            <!-- Vue Fileter Date Plugin -->
             <span>{{
               new Date(row.startDate) | dateFormat('DD/MM/YYYY')
             }}</span>
@@ -23,7 +22,6 @@
         </el-table-column>
         <el-table-column label="Ngày kết thúc" min-width="100">
           <template v-slot="{ row }">
-            <!-- Vue Fileter Date Plugin -->
             <span>{{ new Date(row.endDate) | dateFormat('DD/MM/YYYY') }}</span>
           </template>
         </el-table-column>
@@ -34,21 +32,22 @@
         </el-table-column>
         <el-table-column label="Trạng thái" align="center" width="150">
           <template slot-scope="{ row }">
-            <el-tag
-              :class="
-                row.status
-                  ? 'project-all--status__active'
-                  : 'project-all--status__deactive'
-              "
-            >
-              {{ row.status ? 'hoạt động' : 'Đã đóng' }}
+            <el-tag :type="row.active | tagActive">
+              {{ row.active | textActiveProject }}
             </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="Độ quan trọng" align="center" width="180">
           <template v-slot="{ row }">
-            <!-- Vue Fileter Date Plugin -->
-            <el-rate :value="row.weight" disabled />
+            <el-rate
+              class="-mb-3"
+              v-model="row.weight"
+              disabled
+              :icon-classes="['el-icon-success', 'el-icon-success', 'el-icon-success']"
+              disabled-void-icon-class="el-icon-success"
+              disabled-void-color='#FBCFE8'
+              :colors="['#EC4899', '#DB2777', '#BE185D']"
+            />
           </template>
         </el-table-column>
         <el-table-column label="Chi tiết" align="center" width="180">
@@ -457,24 +456,3 @@ export default class ProjectAll extends Vue {
   }
 }
 </script>
-
-<style lang="scss">
-@import '@/assets/scss/main.scss';
-
-.project-all {
-  &__icon {
-    cursor: pointer;
-    margin: 0 $unit-1;
-  }
-
-  &--status {
-    &__active {
-      color: #27ae60;
-    }
-
-    &__deactive {
-      color: #dd1100;
-    }
-  }
-}
-</style>

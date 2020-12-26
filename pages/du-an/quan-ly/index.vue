@@ -1,83 +1,91 @@
 <template>
-  <div class="project-detail">
-    <el-page-header title="Quay lại" @back="goToProjectDashboard" />
-    <div v-if="!!projectData" class="box-wrap project-detail--top-action">
-      <el-collapse v-model="activeNames">
-        <el-collapse-item name="1">
-          <template slot="title">
-            <span class="project-detail--top-action__title">
-              {{ projectData.name }}
-            </span>
-            <el-rate :value="projectData.weight" disabled />
-          </template>
-          <table class="properties">
-            <tbody>
-              <tr>
-                <th scope="row" class="-text-left">Ngày bắt đầu:</th>
-                <td>
-                  {{
-                    new Date(projectData.startDate) | dateFormat('DD/MM/YYYY')
-                  }}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" class="-text-left">Ngày kết thúc:</th>
-                <td>
-                  {{
-                    new Date(projectData.startDate) | dateFormat('DD/MM/YYYY')
-                  }}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" class="-text-left">Quản lý:</th>
-                <td>
-                  {{ projectData.pm && projectData.pm.name }}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" class="-text-left">Trạng thái:</th>
-                <td>
-                  {{ projectData.status ? 'Hoạt động' : 'Đã đóng' }}
-                </td>
-              </tr>
-              <tr>
-                <th scope="row" class="-text-left">Mô tả:</th>
-                <td>
-                  {{ projectData.description }}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </el-collapse-item>
-      </el-collapse>
+  <div>
+    <el-page-header title="Quay lại" @back="goBack" />
+    <h1 class="-title-1">Chi tiết dự án</h1>
+    <div v-if="!!projectData" class="box-wrap">
+      <h2 class="-title-2">
+        {{ projectData.name }}
+      </h2>
+      <table>
+        <tbody>
+          <tr>
+            <th scope="row" class="-text-left label">Trọng số:</th>
+            <td class="value">
+              <el-rate
+                :value="projectData.weight"
+                disabled
+                :icon-classes="['el-icon-success', 'el-icon-success', 'el-icon-success']"
+                disabled-void-icon-class="el-icon-success"
+                disabled-void-color='#FBCFE8'
+                :colors="['#EC4899', '#DB2777', '#BE185D']"
+              />
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="-text-left label">Ngày bắt đầu:</th>
+            <td class="value">
+              {{
+                new Date(projectData.startDate) | dateFormat('DD/MM/YYYY')
+              }}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="-text-left label">Ngày kết thúc:</th>
+            <td class="value">
+              {{
+                new Date(projectData.startDate) | dateFormat('DD/MM/YYYY')
+              }}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="-text-left label">Quản lý:</th>
+            <td class="value">
+              {{ projectData.pm && projectData.pm.name }}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="-text-left label">Trạng thái:</th>
+            <td class="value">
+              {{ projectData.status ? 'Hoạt động' : 'Đã đóng' }}
+            </td>
+          </tr>
+          <tr>
+            <th scope="row" class="-text-left label">Mô tả:</th>
+            <td class="value">
+              {{ projectData.description }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <!--Tab du lieu thanh vien du an-->
     <div class="box-wrap">
-      <p class="-title-2">Thành viên dự án</p>
       <div class="-display-flex -justify-content-between">
-        <div class="-mb-2">
-          <el-input
-            v-model="searchText"
-            class="header-project__input"
-            placeholder="Nhập tên thành viên tìm kiếm"
-            prefix-icon="el-icon-search"
-            @keyup.enter.native="handleSearch(searchText)"
-          />
-          <el-button
-            class="el-button--white el-button--search -ml-2"
-            @click="handleSearch(searchText)"
-          >
-            Tìm kiếm
-          </el-button>
-        </div>
-        <div>
-          <el-button
-            v-if="isProjectPm(user.projects, projectData.status)"
-            class="el-button--purple"
-            @click="handleShowAddMember"
-          >
-            {{ isAddingMember ? 'Hủy' : 'Thêm mới thành viên' }}
-          </el-button>
+        <h2 class="-title-2">Thành viên dự án</h2>
+        <div class="-display-flex -justify-content-between">
+          <div class="-mb-2">
+            <el-input
+              v-model="searchText"
+              class="header-project__input"
+              placeholder="Nhập tên thành viên tìm kiếm"
+              prefix-icon="el-icon-search"
+              @keyup.enter.native="handleSearch(searchText)"
+            />
+            <el-button
+              class="el-button--white el-button--search -ml-2"
+              @click="handleSearch(searchText)"
+            >
+              Tìm kiếm
+            </el-button>
+          </div>
+          <div>
+            <el-button
+              v-if="isProjectPm(user.projects, projectData.status)"
+              class="el-button--purple"
+              @click="handleShowAddMember"
+            >
+              {{ isAddingMember ? 'Hủy' : 'Thêm mới thành viên' }}
+            </el-button>
+          </div>
         </div>
       </div>
       <div class="main-action__form -mb-2" v-if="isAddingMember">
@@ -127,7 +135,6 @@
         </el-table-column>
         <el-table-column label="Phòng ban" min-width="150" align="center">
           <template slot-scope="{ row }">
-            <!--<span class="link-type" @click="handleUpdate(row)">{{ row.title }}</span>-->
             <el-tag>{{ getDepartmentById(row.department) }}</el-tag>
           </template>
         </el-table-column>
@@ -217,6 +224,7 @@
     </div>
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import ProjectRepository from '@/repositories/ProjectRepository';
@@ -451,7 +459,7 @@ export default class ControlProject extends Vue {
     this.draftEditStaff.positionId = row.position ? row.position : undefined;
   }
 
-  private goToProjectDashboard() {
+  private goBack() {
     this.$router.push('/du-an');
   }
 
@@ -501,42 +509,15 @@ export default class ControlProject extends Vue {
   }
 }
 </script>
+
 <style lang="scss" scoped>
-@import '@/assets/scss/main.scss';
-
-.project-detail {
-  &--top-action {
-    padding: 0 $unit-7;
-    margin-top: $unit-7;
-    &__title {
-      font-weight: bold;
-      font-size: $text-xl;
-      margin-right: $unit-4;
-    }
-
-    &__content {
-      background-color: $white;
-      margin: 0 $unit-4;
-    }
-
-    &__body {
-      padding: 0;
-    }
-  }
-
-  &__content {
-    &--name {
-      clear: both;
-    }
-  }
+.label {
+  font-size: 14px;
+  color: #606266;
+  line-height: 23px;
 }
-
-.main-action {
-  &__form {
-    display: flex;
-    &--input {
-      margin-left: $unit-2;
-    }
-  }
+.value {
+  font-size: 14px;
+  line-height: 23px;
 }
 </style>

@@ -35,7 +35,9 @@
         </el-table-column>
         <el-table-column label="Trạng thái">
           <template slot-scope="{ row }">
-            <el-tag>{{ row.isActive ? 'hoạt động' : 'tạm khóa' }}</el-tag>
+            <el-tag  :type="row.isActive | tagActive">
+              {{ row.isActive | textActiveEmployee }}
+            </el-tag>
           </template>
         </el-table-column>
         <el-table-column label="Thao tác" align="center">
@@ -73,8 +75,6 @@
         </el-table-column>
       </el-table>
     </div>
-
-    <!-- update user dialog -->
     <el-dialog
       class="update-employee"
       :visible.sync="dialogUpdateVisible"
@@ -318,9 +318,10 @@ export default class EmployeeActive extends Vue {
       },
     ).then(async () => {
       try {
-        await EmployeeRepository.update(
-          this.tempUpdateUser,
-        ).then((res: any) => {});
+        await EmployeeRepository.update(this.tempUpdateUser).then(
+          (res: any) => {
+          },
+        );
         this.getListUsers();
       } catch (error) {}
     });

@@ -1,9 +1,9 @@
 <template>
-  <div class="manage-employee">
-    <div class="manage-employee__title">
+  <div>
+    <div class="-display-flex -justify-content-between">
       <h1 class="-title-1">Quản lý nhân sự</h1>
       <div class="-display-flex">
-        <head-employee
+        <employees-header
           :text.sync="paramsUser.text"
           @name="paramsUser.text = $event"
           @search="handleSearch($event)"
@@ -25,41 +25,43 @@
         :name="tab"
       ></el-tab-pane>
       <div>
-        <component
-          :is="currentTabComponent"
+        <employees-active
           :get-list-users="getListUsers"
           :teams="teams"
           :roles="roles"
           :jobs="jobs"
           :table-data="tableData"
         />
-        <common-pagination
-          class="manage-employee__pagination"
-          :total="meta.totalItems"
-          :page.sync="paramsUser.page"
-          :limit.sync="paramsUser.limit"
-          @pagination="handlePagination($event)"
-        />
+        <div class="-display-flex -justify-content-center">
+          <common-pagination
+            :total="meta.totalItems"
+            :page.sync="paramsUser.page"
+            :limit.sync="paramsUser.limit"
+            @pagination="handlePagination($event)"
+          />
+        </div>
       </div>
     </el-tabs>
   </div>
 </template>
+
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import EmployeeActive from '@/components/manage/employee/EmployeeActive.vue';
 import { UserStatus } from '@/constants/app.enum';
 import { ParamsUser } from '@/constants/DTO/common';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 import TeamRepository from '@/repositories/TeamRepository';
 import { pageLimit } from '@/constants/app.constant';
 import CommonPagination from '@/components/Commons/CommonPagination.vue';
-import HeadEmployee from '@/components/manage/employee/HeadEmployee.vue';
+import EmployeesActive from '@/components/Employees/EmployeesActive.vue';
+import EmployeesHeader from '@/components/Employees/EmployeesHeader.vue';
+
 @Component<ManageEmployeePage>({
-  name: 'ManageEmployeePage',
   middleware: 'employeesPage',
   components: {
     CommonPagination,
-    HeadEmployee,
+    EmployeesActive,
+    EmployeesHeader
   },
   async created() {
     await this.getListUsers();
@@ -144,33 +146,9 @@ export default class ManageEmployeePage extends Vue {
     );
   }
 
-  private get currentTabComponent() {
-    return EmployeeActive;
-  }
-
   private handleAddUsers() {
     this.$router.push('nhan-su/them');
   }
 }
 </script>
 
-<style lang="scss" scoped>
-@import '@/assets/scss/main.scss';
-.manage-employee {
-  height: 100%;
-  &__title {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  &__content {
-    background-color: $white;
-    padding: $unit-8;
-  }
-  &__pagination {
-    margin-top: $unit-8;
-    display: flex;
-    justify-content: center;
-  }
-}
-</style>
