@@ -60,7 +60,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { statusCheckin, notificationConfig } from '@/constants/app.constant';
+import { statusCheckin } from '@/constants/app.constant';
 import CheckinRepository from '@/repositories/CheckinRepository';
 @Component<HistoryCheckinEmployee>({
   head() {

@@ -641,7 +641,7 @@ export default {
     },
     zoomImg(newRange) {
       const that = this;
-      const { sourceImgMasking, sourceImgMouseDown, scale } = this;
+      const { sourceImgMasking, scale } = this;
       const {
         maxWidth,
         maxHeight,

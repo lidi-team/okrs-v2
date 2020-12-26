@@ -65,7 +65,7 @@ export default {
         this.$message.error(
           'Only supports upload .xlsx, .xls, .csv suffix files',
         );
-        return false;
+        return;
       }
       this.upload(rawFile);
       e.stopPropagation();
