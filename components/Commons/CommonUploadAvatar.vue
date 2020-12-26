@@ -399,6 +399,9 @@ export default {
       }
     });
   },
+  beforeDestroy() {
+    document.removeEventListener('keyup')
+  },
   methods: {
     ripple(e) {
       effectRipple(e);
