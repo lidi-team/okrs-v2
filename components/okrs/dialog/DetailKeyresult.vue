@@ -17,8 +17,8 @@
           <div class="krs-detail__progress">
             <el-progress
               style="width: 80%"
-              :percentage="row.progress | round"
-              :color="customColors"
+              :percentage="+row.progress | round"
+              :color="+row.progress | customColors"
               :text-inside="true"
               :stroke-width="20"
             />
@@ -51,7 +51,6 @@
 
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { customColors } from '../okrs.constant';
 @Component<DetailKrsDialog>({ name: 'DetailKrsDialog' })
 export default class DetailKrsDialog extends Vue {
   @PropSync('visibleDetailKrs', { type: Boolean, required: true })
@@ -61,8 +60,6 @@ export default class DetailKrsDialog extends Vue {
   private handleClose() {
     this.syncDetailKrsDialog = false;
   }
-
-  private customColors = customColors;
 }
 </script>
 <style lang="scss">

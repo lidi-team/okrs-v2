@@ -33,8 +33,8 @@
           </p>
           <el-progress
             style="width: 100%"
-            :percentage="objective.progress | round"
-            :color="customColors"
+            :percentage="+objective.progress | round"
+            :color="+objective.progress | customColors"
             :text-inside="true"
             :stroke-width="20"
           />
@@ -74,8 +74,8 @@
             <div>
               <el-progress
                 style="width: 80%"
-                :percentage="row.progress | round"
-                :color="customColors"
+                :percentage="+row.progress | round"
+                :color="+row.progress | customColors"
                 :text-inside="true"
                 :stroke-width="20"
               />
@@ -137,7 +137,6 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { customColors } from '@/utils/common';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import DetailOkrs from '@/components/okrs/detail/DetailOkrs.vue';
 
@@ -161,8 +160,6 @@ import DetailOkrs from '@/components/okrs/detail/DetailOkrs.vue';
   },
 })
 export default class OkrsDetailPage extends Vue {
-  private customColors = customColors;
-
   private goBack() {
     this.$router.go(-1)
   }

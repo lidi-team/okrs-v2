@@ -22,8 +22,8 @@
         <el-table-column label="Tiến độ" min-width="180">
           <template v-slot="{ row }">
             <el-progress
-              :percentage="row.progress ? row.progress : 0"
-              :color="customColors"
+              :percentage="+row.progress | round"
+              :color="+row.progress | customColors"
               :text-inside="true"
               :stroke-width="26"
             />
@@ -157,7 +157,6 @@
 <script lang="ts">
 import { mapGetters } from 'vuex';
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { customColors } from '../okrs/okrs.constant';
 import { statusCheckin } from '@/constants/app.constant';
 import { ROUTER_CHECKIN } from '@/components/Checkins/constants.enum';
 import CheckinRepository from '@/repositories/CheckinRepository';
@@ -179,7 +178,6 @@ export default class MyOkrsCheckin extends Vue {
   }
 
   private loading: Boolean = false;
-  private customColors = customColors;
   private status = statusCheckin;
   private keyResults: any = {};
   private showDialogKRs: boolean = false;

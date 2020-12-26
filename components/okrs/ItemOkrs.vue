@@ -56,7 +56,7 @@
                 <div class="expand__infor--progress">
                   <el-progress
                     :percentage="+objective.progress | round"
-                    :color="customColors"
+                    :color="+objective.progress | customColors"
                     :text-inside="true"
                     :stroke-width="26"
                   />
@@ -109,7 +109,7 @@
           <div class="item__progress">
             <el-progress
               :percentage="+row.progress | round"
-              :color="customColors"
+              :color="+row.progress | customColors"
               :text-inside="true"
               :stroke-width="26"
             />
@@ -144,7 +144,6 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
-import { customColors } from './okrs.constant';
 import IconEllipse from '@/assets/images/okrs/ellipse.svg';
 import { DialogTooltipAction } from '@/constants/app.interface';
 import ActionTooltip from '@/components/okrs/common/ActionTooltip.vue';
@@ -174,7 +173,6 @@ export default class OKRsItem extends Vue {
   private changeValue: number = 0;
   private visibleUpdateDialog: Boolean = false;
   private visibleAlignDialog: Boolean = false;
-  private customColors = customColors;
 
   private emitDrawer(keyResults: any) {
     this.$emit('openDrawer', keyResults);

@@ -10,8 +10,8 @@
         <div>
           <el-progress
             style="width: 80%"
-            :percentage="getProgressKrs(row)"
-            :color="customColors"
+            :percentage="getProgressKrs(row) | round"
+            :color="getProgressKrs(row) | customColors"
             :text-inside="true"
             :stroke-width="20"
           />
@@ -36,11 +36,9 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { customColors } from '../okrs.constant';
 @Component<DetailKrsDialog>({ name: 'DetailKrsDialog' })
 export default class DetailKrsDialog extends Vue {
   @Prop({ type: Array, required: true }) public keyResults!: any[];
-  private customColors = customColors;
   private getProgressKrs(krs: any) {
     return Math.floor(krs.valueObtained / krs.targetValue) * 100;
   }

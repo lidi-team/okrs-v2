@@ -34,8 +34,8 @@
         <template v-slot="{ row }">
           <div class="item__progress">
             <el-progress
-              :percentage="+row.progress"
-              :color="customColors"
+              :percentage="+row.progress | round"
+              :color="+row.progress | customColors"
               :text-inside="true"
               :stroke-width="26"
             />
@@ -44,7 +44,7 @@
       </el-table-column>
       <el-table-column label="Thay đổi" width="100" align="center">
         <template v-slot="{ row }">
-          <p :class="row.changing | getStatusOfProgress">{{ row.changing }}%</p>
+          <p :class="row.changing | statusProgress">{{ row.changing }}%</p>
         </template>
       </el-table-column>
       <el-table-column label="Loại" width="200" prop="type" align="center">
@@ -83,7 +83,6 @@ import { mapGetters } from 'vuex';
 import DrawerObjective from '@/components/drill-down/DrawerObjective.vue';
 import DrillDownRepository from '@/repositories/DrillDownRepository';
 import { filterKeyresults } from '@/utils/filters';
-import { customColors, getStatusOfProgress } from '@/utils/common';
 import KeyResult from '@/components/okrs/OkrsKeyResult/OkrsKeyResultTableOverview.vue';
 
 @Component<DrillDownPage>({
@@ -94,7 +93,6 @@ import KeyResult from '@/components/okrs/OkrsKeyResult/OkrsKeyResultTableOvervie
   },
   filters: {
     filterKeyresults,
-    getStatusOfProgress,
   },
   computed: {
     ...mapGetters({
@@ -118,7 +116,6 @@ export default class DrillDownPage extends Vue {
   private keyResults: Array<any> = [];
   private title: String = '';
   private dataObjectives: any = [];
-  private customColors = customColors;
 
   private showKeyResult(keyResults: any) {
     this.isShowKeyResult = true;

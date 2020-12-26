@@ -76,8 +76,8 @@
             <el-table-column label="Tiến độ" min-width="150">
               <template v-slot="{ row }">
                 <el-progress
-                  :percentage="row.progress ? row.progress : 0"
-                  :color="customColors"
+                  :percentage="+row.progress | round"
+                  :color="+row.progress | customColors"
                   :text-inside="true"
                   :stroke-width="26"
                 />
@@ -113,7 +113,6 @@
 
 <script lang="ts">
 import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
-import { customColors } from '../okrs/okrs.constant';
 import { ROUTER_CHECKIN } from '@/components/Checkins/constants.enum';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import Pagination from '@/components/Commons/CommonPagination.vue';
@@ -135,7 +134,6 @@ export default class Inferior extends Vue {
 
   @Prop(Number) readonly currentCycleId!: number;
   private showDialogKRs: boolean = false;
-  private customColors = customColors;
   private loadingDialogKRs: boolean = false;
 
   private tempOKRs: Array<object> = [];

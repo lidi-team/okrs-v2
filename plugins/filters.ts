@@ -30,3 +30,17 @@ Vue.filter("textActiveProject", function(value: boolean): string {
 Vue.filter("tagActive", function(value: boolean): string {
   return value ? 'success' : 'danger'
 })
+
+Vue.filter("customColors", function(percentage: number): string  {
+  if (percentage < 30) {
+    return '#ec4899';
+  } else if (percentage < 70) {
+    return '#be185d';
+  } else {
+    return '#9d174d';
+  }
+})
+
+Vue.filter("statusProgress", function(progress: number): string  {
+  return progress > 0 ? 'happy' : 'sad';
+})

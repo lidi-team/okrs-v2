@@ -17,14 +17,14 @@
           <el-table-column prop="author" label="Tiến độ" width="180" align="center">
             <template v-slot="{ row }">
               <div class="item__progress">
-                <el-progress :percentage="+row.progress | round" :color="customColors" :text-inside="true" :stroke-width="26" />
+                <el-progress :percentage="+row.progress | round" :color="+row.progress | customColors" :text-inside="true" :stroke-width="26" />
               </div>
             </template>
           </el-table-column>
           <el-table-column label="Thay đổi" width="100" align="center">
             <template v-slot="{ row }">
               <div class="item__action">
-                <p :class="row.changing | getStatusOfProgress">{{ row.changing | round }}%</p>
+                <p :class="row.changing | statusProgress">{{ row.changing | round }}%</p>
               </div>
             </template>
           </el-table-column>
@@ -57,7 +57,6 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import DrillDownItem from '@/components/DrillDown/DrillDownItem.vue';
 import DrillDownRepository from '@/repositories/DrillDownRepository';
 import { filterKeyresults } from '@/utils/filters';
-import { customColors, getStatusOfProgress } from '@/utils/common';
 import KeyResult from '@/components/okrs/add-update/KeyResult.vue';
 
 @Component<DrillDownPage>({
@@ -68,7 +67,6 @@ import KeyResult from '@/components/okrs/add-update/KeyResult.vue';
   },
   filters: {
     filterKeyresults,
-    getStatusOfProgress,
   },
   async mounted() {
     const { data } = await DrillDownRepository.get(5, 0);
@@ -84,7 +82,6 @@ export default class DrillDownPage extends Vue {
   private keyResults: Array<any> = [];
   private title: String = '';
   private dataObjectives: any = [];
-  private customColors = customColors;
   private showKeyResult(keyResults: any) {
     this.isShowKeyResult = true;
     this.keyResults = keyResults;

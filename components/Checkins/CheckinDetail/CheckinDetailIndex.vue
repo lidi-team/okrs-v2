@@ -44,8 +44,8 @@
             <el-progress
               class="-mt-3"
               type="dashboard"
-              :percentage="progress"
-              :color="customColors"
+              :percentage="+progress | round"
+              :color="+progress | customColors"
               :stroke-width="10"
             ></el-progress>
             <el-input-number
@@ -65,7 +65,7 @@
               class="-mt-3"
               type="dashboard"
               :percentage="progressSuggest | verifyProgress"
-              :color="customColors"
+              :color="progressSuggest | customColors"
               :stroke-width="10"
             ></el-progress>
           </div>
@@ -216,7 +216,6 @@ import { Component, Vue, Prop, PropSync, Watch } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import { Form } from 'element-ui';
 import { GetterState } from '@/constants/app.vuex';
-import { customColors } from '../../okrs/okrs.constant';
 import { formatDate } from '@/utils/format';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import {
@@ -237,10 +236,11 @@ import { Maps, Rule } from '@/constants/app.type';
   },
   mounted() {
     if (this.syncCheckin.checkin) {
-      const { status = 'Draft', id = null } = this.syncCheckin.checkin;
+      const { status = 'Draft', id = null, nextCheckinDate } = this.syncCheckin.checkin;
       this.checkinStatus = status;
       this.idCheckin = id;
     }
+    console.log(this.syncCheckin.checkin)
     const { role = 'guest', progress = -1, limitDate } = this.syncCheckin;
     this.progress = progress;
     this.limitDate = new Date(limitDate);
@@ -270,7 +270,6 @@ export default class DetailHistory extends Vue {
   private isCompleted: Boolean = false;
   private idCheckin: Number | null = null;
   private role: String = '';
-  private customColors = customColors;
   private progressSuggest: Number = 0;
   private progress: Number = 0;
   private flag: Boolean = false;
@@ -306,7 +305,7 @@ export default class DetailHistory extends Vue {
   private handleCheckin(status: String) {
     this.loading = true;
     if (!this.syncCheckin.nextCheckinDate) {
-      Notification.error('Không được bỏ trống trường ngày check-in tiếp theo');
+      Notification.error('Không được bỏ trống trường ngày check-in kế tiếp');
       return (this.loading = false);
     }
     (this.$refs.checkinRuleForm as Form).validate(
@@ -319,7 +318,7 @@ export default class DetailHistory extends Vue {
           } = this.syncCheckin;
           if (nextCheckinDate > this.limitDate) {
             return Notification.error(
-              'Ngày check-in vượt quá ngày đóng chu kỳ',
+              'Ngày check-in kế tiếp vượt quá ngày đóng chu kỳ',
             );
           }
           const payload = {
@@ -377,7 +376,7 @@ export default class DetailHistory extends Vue {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/main.scss';
+@import '@/assets/scss/abstracts/_variables.scss';
 .checkinDetail {
   &__form {
     background-color: $white;
