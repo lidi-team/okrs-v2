@@ -72,7 +72,7 @@
     <transition name="el-zoom-in-center">
       <el-dialog
         class="krs-detail"
-      _krs  title="Danh sách kết quả then chốt"
+        title="Danh sách kết quả then chốt"
         :visible.sync="isShowKeyResult"
         width="50%"
         @close="isShowKeyResult = false"
