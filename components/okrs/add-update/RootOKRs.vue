@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="`${tempOKRs.title ? 'Cập nhật' : 'Tạo mới'} OKRs Công ty`"
+    :title="`${!!okr ? 'Cập nhật' : 'Tạo mới'} OKRs Công ty`"
     :visible.sync="isShowDialogOKRs"
     width="800px"
     placement="center"
@@ -9,7 +9,7 @@
   >
     <el-form
       ref="tempObjective"
-      :model="tempOKRs"
+      :model="tempOkrs"
       :rules="rules"
       class="create-objective"
       label-position="top"
@@ -21,16 +21,30 @@
         label="Mục tiêu"
       >
         <el-input
-          v-model="tempOKRs.title"
+          v-model="tempOkrs.title"
           type="textarea"
           placeholder="Nhập mục tiêu"
           :autosize="sizeConfig"
         ></el-input>
       </el-form-item>
+      <el-form-item
+        prop="weight"
+        label="Độ quan trọng"
+        class="custom-label"
+        label-width="120px"
+      >
+        <el-slider
+          v-model="tempOkrs.weight"
+          :step="1"
+          show-stops
+          :min="1"
+          :max="5"
+        ></el-slider>
+      </el-form-item>
     </el-form>
     <div class="add-krs-step">
       <key-result
-        v-for="(item, index) in tempOKRs.keyResults"
+        v-for="(item, index) in tempOkrs.keyResults"
         :key="index"
         :index-kr-form="index"
         :key-result.sync="item"
@@ -68,14 +82,14 @@
         :loading="isLoading"
         @click="preCheckObjective"
       >
-        {{ tempOKRs.title ? 'Cập nhật' : 'Tạo mới' }}
+        {{ !!okr ? 'Cập nhật' : 'Tạo mới' }}
       </el-button>
     </div>
   </el-dialog>
 </template>
 
 <script lang="ts">
-import { Component, PropSync, Vue } from 'vue-property-decorator';
+import { Component, Prop, PropSync, Vue } from 'vue-property-decorator';
 import { confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
@@ -89,9 +103,15 @@ import { Form } from 'element-ui';
     IconAttention,
     KeyResult,
   },
+  created() {
+    if (this.okr) {
+      this.tempOkrs = { ...this.okr };
+    }
+  },
 })
 export default class RootOKRs extends Vue {
   @PropSync('isVisible', Boolean) private isShowDialogOKRs!: boolean;
+  @Prop() private okr!: any;
   private isLoading: boolean = false;
   private sizeConfig = { minRows: 2, maxRows: 2 };
   private attentionsText: string[] = [
@@ -99,8 +119,9 @@ export default class RootOKRs extends Vue {
     'Không nên quá 5 kết quả then chốt cho 1 mục tiêu',
   ];
 
-  private tempOKRs: any = {
+  private tempOkrs: any = {
     title: '',
+    weight: 3,
     projectId: null,
     keyResults: [],
   };
@@ -129,7 +150,7 @@ export default class RootOKRs extends Vue {
   };
 
   private addNewKRs() {
-    this.tempOKRs.keyResults.push({
+    this.tempOkrs.keyResults.push({
       startValue: 0,
       targetedValue: 100,
       content: '',
@@ -141,14 +162,14 @@ export default class RootOKRs extends Vue {
   }
 
   private deleteKrForm(indexForm: number) {
-    this.tempOKRs.keyResults.splice(indexForm, 1);
+    this.tempOkrs.keyResults.splice(indexForm, 1);
   }
 
   private preCheckObjective() {
     (this.$refs.tempObjective as Form).validate(
       async (isValid: boolean, invalidatedFields: object) => {
         if (isValid) {
-          await this.preCheckKs(this.tempOKRs);
+          await this.preCheckKs(this.tempOkrs);
         }
       },
     );
@@ -194,7 +215,7 @@ export default class RootOKRs extends Vue {
   }
 
   private clearTempData() {
-    this.tempOKRs = {
+    this.tempOkrs = {
       title: '',
       projectId: null,
       keyResults: [],

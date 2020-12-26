@@ -1,138 +1,150 @@
 <template>
-  <div v-if="objectives" class="item-okrs box-wrap">
-    <div class="-display-flex -justify-content-between -border-header">
-      <h2 class="-title-2">{{ title }}</h2>
-      <div class="-display-flex -align-items-center -pb-2">
-        <button-create-okr
-          v-if="isManage && !remove"
-          :type-objective="1"
-          name-objective="dự án"
-          :project-id="projectId"
-          :loading="loading"
-        />
-        <button-create-okr
-          v-if="!remove"
-          :type-objective="2"
-          name-objective="cá nhân"
-          :project-id="projectId"
-          :loading="loading"
-          :isDisable="objectives.length === 0"
-        />
+  <div>
+    <div v-if="objectives" class="item-okrs box-wrap">
+      <div class="-display-flex -justify-content-between -border-header">
+        <h2 class="-title-2">{{ title }}</h2>
+        <div class="-display-flex -align-items-center -pb-2">
+          <button-create-okr
+            v-if="isManage && !remove"
+            :type-objective="1"
+            name-objective="dự án"
+            :project-id="projectId"
+            :loading="loading"
+          />
+          <button-create-okr
+            v-if="!remove"
+            :type-objective="2"
+            name-objective="cá nhân"
+            :project-id="projectId"
+            :loading="loading"
+            :isDisable="objectives.length === 0"
+          />
+        </div>
       </div>
-    </div>
-    <el-table
-      empty-text="Không có OKRs nào"
-      v-loading="loading"
-      :data="objectives"
-      header-row-class-name="item__table-header"
-      style="width: 100%"
-      class="item-okrs__table"
-    >
-      <el-table-column type="expand" width="20">
-        <template v-slot="{ row }">
-          <template v-if="row.childObjectives.length !== 0">
-            <div
-              v-for="objective in row.childObjectives"
-              :key="objective.id"
-              class="item__expand"
-            >
-              <div class="expand__objective">
-                <icon-ellipse v-if="objective" />
-                <el-badge :value="`${objective.weight}/5`">
-                  <span class="-pl-2">{{ objective.title }}</span>
-                </el-badge>
-              </div>
-              <div class="expand__infor">
-                <p
-                  v-if="objective.keyResults.length"
-                  class="expand__infor--link el-link"
-                  @click="emitDrawer(objective.keyResults)"
-                >
-                  {{ objective.keyResults.length }} kết quả
-                </p>
-                <p v-else style="width: 120px; color: #212b36">
-                  {{ objective.keyResults.length }} kết quả
-                </p>
-                <div class="expand__infor--progress">
-                  <el-progress
-                    :percentage="+objective.progress | round"
-                    :color="+objective.progress | customColors"
-                    :text-inside="true"
-                    :stroke-width="26"
-                  />
+      <el-table
+        empty-text="Không có OKRs nào"
+        v-loading="loading"
+        :data="objectives"
+        header-row-class-name="item__table-header"
+        style="width: 100%"
+        class="item-okrs__table"
+      >
+        <el-table-column type="expand" width="20">
+          <template v-slot="{ row }">
+            <template v-if="row.childObjectives.length !== 0">
+              <div
+                v-for="objective in row.childObjectives"
+                :key="objective.id"
+                class="item__expand"
+              >
+                <div class="expand__objective">
+                  <icon-ellipse v-if="objective" />
+                  <el-badge :value="`${objective.weight}/5`">
+                    <span class="-pl-2">{{ objective.title }}</span>
+                  </el-badge>
                 </div>
-                <div class="expand__infor--action">
-                  <span :class="objective.changing | isUpProgress"
-                    >{{ objective.changing | round }}%</span
+                <div class="expand__infor">
+                  <p
+                    v-if="objective.keyResults.length"
+                    class="expand__infor--link el-link"
+                    @click="emitDrawer(objective.keyResults)"
                   >
-                  <action-tooltip
-                    :id="objective.id"
-                    class="expand__infor--action__tooltip"
-                    :isManage="true"
-                    :canDelete="objective.delete"
-                    :canUpdate="row.update"
-                    @updateOKRs="updateOKRs(objective)"
-                  />
+                    {{ objective.keyResults.length }} kết quả
+                  </p>
+                  <p v-else style="width: 120px; color: #212b36">
+                    {{ objective.keyResults.length }} kết quả
+                  </p>
+                  <div class="expand__infor--progress">
+                    <el-progress
+                      :percentage="+objective.progress | round"
+                      :color="+objective.progress | customColors"
+                      :text-inside="true"
+                      :stroke-width="26"
+                    />
+                  </div>
+                  <div class="expand__infor--action">
+                    <span :class="objective.changing | isUpProgress"
+                      >{{ objective.changing | round }}%</span
+                    >
+                    <action-tooltip
+                      :id="objective.id"
+                      class="expand__infor--action__tooltip"
+                      :isManage="true"
+                      :canDelete="objective.delete"
+                      :canUpdate="row.update"
+                      @updateOKRs="updateOKRs(objective)"
+                    />
+                  </div>
                 </div>
               </div>
+            </template>
+            <p v-else class="message-empty">
+              Không có mục tiêu cá nhân nào được liên kết
+            </p>
+          </template>
+        </el-table-column>
+        <el-table-column
+          label="Mục tiêu"
+          min-width="380"
+          class="cell-objective"
+        >
+          <template v-slot="{ row }">
+            <span>{{ row.title }} ({{ row.weight }}/5)</span>
+            <el-tag type="danger"
+              >{{ row.childObjectives.length }} mục tiêu cá nhân</el-tag
+            >
+          </template>
+        </el-table-column>
+        <el-table-column label="Kết quả then chốt" width="140">
+          <template v-slot="{ row }">
+            <p
+              v-if="row.keyResults.length"
+              class="el-link"
+              @click="emitDrawer(row.keyResults)"
+            >
+              {{ row.keyResults.length }} kết quả
+            </p>
+            <p v-else style="color: #212b36">
+              {{ row.keyResults.length }} kết quả
+            </p>
+          </template>
+        </el-table-column>
+        <el-table-column label="Tiến độ" width="250">
+          <template v-slot="{ row }">
+            <div class="item__progress">
+              <el-progress
+                :percentage="+row.progress | round"
+                :color="+row.progress | customColors"
+                :text-inside="true"
+                :stroke-width="26"
+              />
             </div>
           </template>
-          <p v-else class="message-empty">
-            Không có mục tiêu cá nhân nào được liên kết
-          </p>
-        </template>
-      </el-table-column>
-      <el-table-column label="Mục tiêu" min-width="380" class="cell-objective">
-        <template v-slot="{ row }">
-          <span>{{ row.title }} ({{ row.weight }}/5)</span>
-          <el-tag type="danger"
-            >{{ row.childObjectives.length }} mục tiêu cá nhân</el-tag
-          >
-        </template>
-      </el-table-column>
-      <el-table-column label="Kết quả then chốt" width="140">
-        <template v-slot="{ row }">
-          <p
-            v-if="row.keyResults.length"
-            class="el-link"
-            @click="emitDrawer(row.keyResults)"
-          >
-            {{ row.keyResults.length }} kết quả
-          </p>
-          <p v-else style="color: #212b36">
-            {{ row.keyResults.length }} kết quả
-          </p>
-        </template>
-      </el-table-column>
-      <el-table-column label="Tiến độ" width="250">
-        <template v-slot="{ row }">
-          <div class="item__progress">
-            <el-progress
-              :percentage="+row.progress | round"
-              :color="+row.progress | customColors"
-              :text-inside="true"
-              :stroke-width="26"
-            />
-          </div>
-        </template>
-      </el-table-column>
-      <el-table-column label="Thay đổi" width="200">
-        <template v-slot="{ row }">
-          <div class="item__action">
-            <p :class="row.changing | isUpProgress">
-              {{ row.changing | round }}%
-            </p>
-            <action-tooltip
-              :id="row.id"
-              :is-manage="isManage"
-              :canDelete="row.delete"
-              :canUpdate="row.update"
-              @updateOKRs="updateOKRs(row)"
-            />
-          </div>
-        </template>
-      </el-table-column>
-    </el-table>
+        </el-table-column>
+        <el-table-column label="Thay đổi" width="200">
+          <template v-slot="{ row }">
+            <div class="item__action">
+              <p :class="row.changing | isUpProgress">
+                {{ row.changing | round }}%
+              </p>
+              <action-tooltip
+                :id="row.id"
+                :is-manage="isManage"
+                :is-director="isDirector"
+                :canDelete="row.delete"
+                :canUpdate="row.update"
+                @updateOKRs="updateOKRs(row)"
+              />
+            </div>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+    <root-okrs-dialog
+      v-if="isDirector"
+      :is-visible.sync="visibleUpdateCompanyOkrDialog"
+      :okr="tempOkrs"
+    />
     <align-okrs-dialog
       v-if="visibleAlignDialog"
       :temporary-okrs="tempOkrs"
@@ -150,6 +162,7 @@ import ButtonCreateOkr from '@/components/okrs/common/Button.vue';
 import { ObjectiveDTO } from '@/constants/DTO/okrs';
 import { DispatchAction } from '@/constants/app.vuex';
 import OkrsRepository from '@/repositories/OkrsRepository';
+import RootOkrsDialog from '@/components/okrs/add-update/RootOKRs.vue';
 
 @Component<OKRsItem>({
   name: 'OKRsItem',
@@ -157,6 +170,7 @@ import OkrsRepository from '@/repositories/OkrsRepository';
     IconEllipse,
     ActionTooltip,
     ButtonCreateOkr,
+    RootOkrsDialog,
   },
 })
 export default class OKRsItem extends Vue {
@@ -167,32 +181,48 @@ export default class OKRsItem extends Vue {
   @Prop(Number) private projectId!: Number;
   @Prop(Boolean) private loading!: Boolean;
   @Prop(Boolean) private remove!: Boolean;
+  @Prop(Boolean) private isDirector!: Boolean;
 
   private tempOkrs: any = {};
   private changeValue: number = 0;
   private visibleUpdateDialog: Boolean = false;
   private visibleAlignDialog: Boolean = false;
+  private visibleUpdateCompanyOkrDialog: Boolean = false;
 
   private emitDrawer(keyResults: any) {
     this.$emit('openDrawer', keyResults);
   }
 
   private async updateOKRs(objective) {
-    const { id, title, type, weight, keyResults } = objective;
-    const { data } = await OkrsRepository.getDetailOkrsById(id);
-    if (data) {
-      const okrs: ObjectiveDTO = {
+    console.log('visibleAlignDialog: ', this.visibleAlignDialog);
+    if (this.isDirector) {
+      const { id, title, type, weight, keyResults } = objective;
+      const okrs: any = {
         id,
         title,
-        projectId: data.project.id,
-        parentId: data.parentObjective.id,
+        projectId: 0,
         type,
         weight,
-        cycleId: this.$store.state.cycle.cycleCurrent,
-        alignmentObjectives: data.alignmentObjectives,
         keyResults,
       };
-      this.$store.dispatch(DispatchAction.UPDATE_DIALOG_OKRS, okrs);
+      this.visibleUpdateCompanyOkrDialog = true;
+    } else {
+      const { id, title, type, weight, keyResults } = objective;
+      const { data } = await OkrsRepository.getDetailOkrsById(id);
+      if (data) {
+        const okrs: ObjectiveDTO = {
+          id,
+          title,
+          projectId: data.project.id,
+          parentId: data.parentObjective.id,
+          type,
+          weight,
+          cycleId: this.$store.state.cycle.cycleCurrent,
+          alignmentObjectives: data.alignmentObjectives,
+          keyResults,
+        };
+        this.$store.dispatch(DispatchAction.UPDATE_DIALOG_OKRS, okrs);
+      }
     }
   }
 
