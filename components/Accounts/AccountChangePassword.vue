@@ -157,9 +157,6 @@ export default class ChangePasswordDialog extends Vue {
             setTimeout(() => {
               this.loading = false;
             }, 300);
-            if (error.response.data.statusCode === 409) {
-
-            }
           }
         }
         if (invalidatedFields) {

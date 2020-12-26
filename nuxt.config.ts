@@ -1,9 +1,5 @@
 import { NuxtConfig } from '@nuxt/types';
-import {
-  Configuration as WebpackConfiguration,
-  ExternalsFunctionCallback,
-  ExternalsFunctionElement,
-} from 'webpack';
+import { Configuration as WebpackConfiguration } from 'webpack';
 
 const nuxtConfig: NuxtConfig = {
   /**

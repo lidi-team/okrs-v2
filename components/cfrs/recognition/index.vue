@@ -250,10 +250,7 @@ export default class CreateRecongnitionDialog extends Vue {
       async (isValid: boolean, invalidatedFields: object) => {
         if (isValid) {
           try {
-            const data: any = await CfrsRepository.postRecognition(
-              this.recognition,
-            );
-
+            await CfrsRepository.postRecognition(this.recognition);
             this.isCreating = true;
             this.syncCreateOkrsDialog = false;
             setTimeout(() => {

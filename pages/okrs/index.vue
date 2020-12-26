@@ -69,11 +69,7 @@
 <script lang="ts">
 import { mapGetters } from 'vuex';
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import {
-  MutationState,
-  DispatchAction,
-  GetterState,
-} from '@/constants/app.vuex';
+import { MutationState, GetterState } from '@/constants/app.vuex';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import CycleRepository from '@/repositories/CycleRepository';
 import AddOkrs from '@/components/okrs/add-update/index.vue';
