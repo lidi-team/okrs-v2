@@ -56,8 +56,8 @@ export default {
       if (this.loading) return;
       const files = e.dataTransfer.files;
       if (files.length !== 1) {
-        this.$message.error('Only support uploading one file!');
-        return;
+        return this.$message.error('Only support uploading one file!');
+        
       }
       const rawFile = files[0]; // only use files[0]
 

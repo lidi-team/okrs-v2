@@ -254,7 +254,7 @@ export default {
       : imgFormat;
     const lang = language[langType] ? language[langType] : language.en;
     const mime = mimes[tempImgFormat];
-    that.imgFormat = tempImgFormat;
+    this.imgFormat = tempImgFormat;
 
     if (langExt) {
       Object.assign(lang, langExt);
@@ -418,7 +418,7 @@ export default {
     },
     preventDefault(e) {
       e.preventDefault();
-      return false;
+      return;
     },
     handleClick(e) {
       if (this.loading !== 1) {
@@ -526,7 +526,7 @@ export default {
     imgStartMove(e) {
       e.preventDefault();
       if (this.isSupportTouch && !e.targetTouches) {
-        return false;
+        return;
       }
       const et = e.targetTouches ? e.targetTouches[0] : e;
       const { sourceImgMouseDown, scale } = this;
