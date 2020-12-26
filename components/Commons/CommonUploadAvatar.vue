@@ -254,7 +254,7 @@ export default {
       : imgFormat;
     const lang = language[langType] ? language[langType] : language.en;
     const mime = mimes[tempImgFormat];
-    this.imgFormat = tempImgFormat;
+    that.imgFormat = tempImgFormat;
 
     if (langExt) {
       Object.assign(lang, langExt);
