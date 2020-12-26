@@ -1,4 +1,3 @@
-import path from 'path';
 import Vue from 'vue';
 import { elComponent } from '@/constants/app.enum';
 

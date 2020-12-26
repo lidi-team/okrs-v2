@@ -50,7 +50,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import Pagination from '@/components/Commons/CommonPagination.vue';
 

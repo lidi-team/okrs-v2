@@ -651,7 +651,6 @@ export default {
         height,
         x,
         y,
-        range,
       } = scale;
       const sim = sourceImgMasking;
       const sWidth = sim.width;

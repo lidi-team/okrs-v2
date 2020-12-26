@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
 import DrawerObjective from '@/components/drill-down/DrawerObjective.vue';
 import DrillDownRepository from '@/repositories/DrillDownRepository';

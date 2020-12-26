@@ -89,7 +89,6 @@ import EvaluationCriteriaRepository from '@/repositories/EvaluationCriteriaRepos
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
 import { CfrsDTO } from '@/constants/app.interface';
-import { log } from 'echarts/lib/util/log';
 @Component<CreateFeedbackDialog>({
   name: 'CreateFeedbackDialog',
   components: {

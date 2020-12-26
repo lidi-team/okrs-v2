@@ -449,7 +449,7 @@ export default class ProjectAll extends Vue {
       );
       this.loading = true;
       const id = row.id ? row.id : 0;
-      const data = await ProjectRepository.changeState(id);
+      await ProjectRepository.changeState(id);
       await this.getListProject();
       this.loading = false;
     } catch (e) {

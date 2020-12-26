@@ -58,7 +58,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { Form as LoginForm, Message } from 'element-ui';
+import { Form as LoginForm } from 'element-ui';
 import { max255Char } from '@/constants/account.constant';
 import { LoginDTO } from '@/constants/DTO/auth';
 import { Maps, Rule } from '@/constants/app.type';

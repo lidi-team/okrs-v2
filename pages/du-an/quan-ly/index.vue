@@ -9,7 +9,9 @@
       <table>
         <tbody>
           <tr>
-            <th scope="row" class="-text-left label" width="250">Độ quan trọng:</th>
+            <th scope="row" class="-text-left label" width="250">
+              Độ quan trọng:
+            </th>
             <td class="value">
               <el-rate
                 :value="projectData.weight"
@@ -383,10 +385,7 @@ export default class ControlProject extends Vue {
       await this.$confirm(`Bạn có chắc chắn muốn thêm những nhân viên này?`, {
         ...confirmWarningConfig,
       });
-      const data = await ProjectRepository.postStaffsById(
-        this.id,
-        this.selectUsers,
-      );
+      await ProjectRepository.postStaffsById(this.id, this.selectUsers);
       this.selectUsers = [];
       await this.getProjectStaffs(this.id);
     } catch (e) {}
@@ -444,14 +443,11 @@ export default class ControlProject extends Vue {
         !!this.draftEditStaff.positionId &&
         !!this.draftEditStaff.reviewerId
       ) {
-        const { data } = await ProjectRepository.putStaffsById(this.id, [
-          this.draftEditStaff,
-        ]);
+        await ProjectRepository.putStaffsById(this.id, [this.draftEditStaff]);
         row.edit = false;
         this.draftEditStaff.reviewerId = undefined;
         this.draftEditStaff.positionId = undefined;
         await this.getProjectStaffs(this.id);
-      } else {
       }
     } catch (e) {}
   }
