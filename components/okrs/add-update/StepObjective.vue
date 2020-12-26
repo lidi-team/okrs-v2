@@ -7,7 +7,12 @@
       class="create-objective"
       label-position="top"
     >
-      <el-form-item prop="title" class="custom-label" label-width="120px" label="Mục tiêu">
+      <el-form-item
+        prop="title"
+        class="custom-label"
+        label-width="120px"
+        label="Mục tiêu"
+      >
         <el-input
           v-model="tempObjective.title"
           type="textarea"
@@ -67,23 +72,16 @@
 <script lang="ts">
 import { Form } from 'element-ui';
 import { mapGetters } from 'vuex';
-import { Component, Vue, PropSync, Watch, Prop } from 'vue-property-decorator';
-
+import { Component, Vue, PropSync, Watch } from 'vue-property-decorator';
 import { max255Char } from '@/constants/account.constant';
 import { confirmWarningConfig } from '@/constants/app.constant';
-import { ObjectiveDTO } from '@/constants/DTO/okrs';
-import { ParamsQuery } from '@/constants/DTO/common';
 import { Maps, Rule } from '@/constants/app.type';
 import {
   DispatchAction,
   MutationState,
   GetterState,
 } from '@/constants/app.vuex';
-
-import CycleRepository from '@/repositories/CycleRepository';
-import OkrsRepository from '@/repositories/OkrsRepository';
 import ObjectiveRepository from '@/repositories/ObjectiveRepository';
-import ProjectRepository from '@/repositories/ProjectRepository';
 
 @Component<CreateObjective>({
   name: 'CreateObjective',

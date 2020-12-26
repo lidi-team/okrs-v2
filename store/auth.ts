@@ -3,7 +3,6 @@ import { notifyErrorLogin } from '@/constants/app.notify';
 import { LoginDTO } from '@/constants/DTO/auth';
 import AuthRepository from '@/repositories/AuthRepository';
 import { removeTokenCookie, setTokenCookie } from '@/utils/cookies';
-import RandomNumber from '@/utils/randomNumber';
 
 export enum AuthMutation {
   SET_TOKEN = 'setToken',

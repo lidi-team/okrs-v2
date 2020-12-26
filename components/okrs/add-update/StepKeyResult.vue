@@ -43,18 +43,13 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
+import { Component, Vue, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import KeyResult from './KeyResult.vue';
 import IconAttention from '@/assets/images/okrs/attention.svg';
-import { MutationState, DispatchAction } from '@/constants/app.vuex';
-import {
-  confirmWarningConfig,
-  notificationConfig,
-} from '@/constants/app.constant';
-import OkrsRepository from '@/repositories/OkrsRepository';
+import { MutationState } from '@/constants/app.vuex';
+import { confirmWarningConfig } from '@/constants/app.constant';
 import ObjectiveRepository from '@/repositories/ObjectiveRepository';
-import { KeyResultDTO } from '@/constants/DTO/okrs';
 
 @Component<CreateObjectiveStep>({
   name: 'CreateObjectiveStep',
@@ -73,7 +68,6 @@ export default class CreateObjectiveStep extends Vue {
   @PropSync('visibleDialog', Boolean) private syncVisibleDialog!: boolean;
 
   private loading: boolean = false;
-  private objectiveTitle: string = '';
   public keyResults: any[] = [];
   private attentionsText: string[] = [
     'Nên có ít nhất phải có 2 kết quả then chốt',

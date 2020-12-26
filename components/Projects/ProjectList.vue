@@ -43,9 +43,13 @@
               class="-mb-3"
               v-model="row.weight"
               disabled
-              :icon-classes="['el-icon-success', 'el-icon-success', 'el-icon-success']"
+              :icon-classes="[
+                'el-icon-success',
+                'el-icon-success',
+                'el-icon-success',
+              ]"
               disabled-void-icon-class="el-icon-success"
-              disabled-void-color='#FBCFE8'
+              disabled-void-color="#FBCFE8"
               :colors="['#EC4899', '#DB2777', '#BE185D']"
             />
           </template>
@@ -318,9 +322,7 @@ export default class ProjectAll extends Vue {
                   this.getListProject();
                   this.dialogUpdateVisible = false;
                 })
-                .catch((error) => {
-                  if (error.response.data.statusCode === 430) {
-                  }
+                .catch(() => {
                   setTimeout(() => {
                     this.loading = false;
                   }, 300);

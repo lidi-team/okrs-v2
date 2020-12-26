@@ -145,7 +145,6 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import IconEllipse from '@/assets/images/okrs/ellipse.svg';
-import { DialogTooltipAction } from '@/constants/app.interface';
 import ActionTooltip from '@/components/okrs/common/ActionTooltip.vue';
 import ButtonCreateOkr from '@/components/okrs/common/Button.vue';
 import { ObjectiveDTO } from '@/constants/DTO/okrs';

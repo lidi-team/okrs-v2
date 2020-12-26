@@ -34,10 +34,8 @@
 </template>
 
 <script lang="ts">
-import { Form } from 'element-ui';
 import { mapGetters } from 'vuex';
-import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import CycleRepository from '@/repositories/CycleRepository';
+import { Component, Vue, PropSync } from 'vue-property-decorator';
 import OkrsRepository from '@/repositories/OkrsRepository';
 
 import {
@@ -45,10 +43,6 @@ import {
   MutationState,
   GetterState,
 } from '@/constants/app.vuex';
-import {
-  confirmWarningConfig,
-  notificationConfig,
-} from '@/constants/app.constant';
 import AlignObjective from '@/components/okrs/add-update/AlignObjective.vue';
 
 @Component<CreateAlignObjective>({
@@ -87,7 +81,6 @@ export default class CreateAlignObjective extends Vue {
 
   private async createOkrs(isCreate: Boolean) {
     this.loading = true;
-    const data = this.$store.state.okrs.objective;
     let alignObjectives: Number[] = [];
     if (this.itemsAlignOkrs.length !== 0) {
       alignObjectives = this.itemsAlignOkrs.map((item) => item.id);

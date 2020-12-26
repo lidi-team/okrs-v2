@@ -75,7 +75,6 @@
 </template>
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
-import { confirmWarningConfig } from '@/constants/app.constant';
 @Component<DetailHistory>({
   name: 'DetailHistory',
 })

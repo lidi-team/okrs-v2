@@ -16,7 +16,9 @@
         <el-table-column label="Ngày bắt đầu">
           <template v-slot="{ row }">
             <!-- Vue Fileter Date Plugin -->
-            <span>{{ new Date(row.startDate) | dateFormat('DD/MM/YYYY') }}</span>
+            <span>{{
+              new Date(row.startDate) | dateFormat('DD/MM/YYYY')
+            }}</span>
           </template>
         </el-table-column>
         <el-table-column label="Ngày kết thúc">
@@ -37,7 +39,10 @@
               ></i>
             </el-tooltip>
             <el-tooltip class="cycle-okrs__icon" content="Xóa" placement="top">
-              <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
+              <i
+                class="el-icon-delete icon--delete"
+                @click="deleteRow(row)"
+              ></i>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -129,10 +134,7 @@
 import { Component, Prop, PropSync, Vue } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { max255Char } from '@/constants/account.constant';
-import {
-  confirmWarningConfig,
-  notificationConfig,
-} from '@/constants/app.constant';
+import { confirmWarningConfig } from '@/constants/app.constant';
 import { AdminTabsEn } from '@/constants/app.enum';
 import { Maps, Rule } from '@/constants/app.type';
 import { CycleDTO } from '@/constants/app.interface';
@@ -246,14 +248,11 @@ export default class ManageCycleOkrs extends Vue {
                 ),
                 endDate: formatDateToYYYY(this.temporaryUpdateCycle.endDate),
               };
-              await CycleRepository.update(tempCycle).then((res) => {
-              });
+              await CycleRepository.update(tempCycle).then((res) => {});
               this.reloadData();
               this.dialogUpdateVisible = false;
-            } catch (error) {
-              if (error.response.data.statusCode === 486) {
-
-              }
+            } catch (e) {
+              this.dialogUpdateVisible = false;
             }
           });
         }

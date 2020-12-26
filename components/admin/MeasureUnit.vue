@@ -103,7 +103,6 @@ import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 import { max255Char } from '@/constants/account.constant';
 import {
-  notificationConfig,
   confirmWarningConfig,
 } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';

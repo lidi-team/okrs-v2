@@ -22,7 +22,11 @@
       <el-col :span="24">
         <div class="box-wrap">
           <h2 class="-title-2 -border-header">Tình trạng cập nhật tiến độ</h2>
-          <dashboard-checkin-chart v-loading="loading" :loading="loading" :checkin-chart="checkinChart" />
+          <dashboard-checkin-chart
+            v-loading="loading"
+            :loading="loading"
+            :checkin-chart="checkinChart"
+          />
         </div>
       </el-col>
       <!-- <el-col :span="12">hello</el-col> -->
@@ -68,9 +72,8 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import { mapGetters } from 'vuex';
 import CycleRepository from '@/repositories/CycleRepository';
-import { GetterState, MutationState } from '@/constants/app.vuex';
+import { MutationState } from '@/constants/app.vuex';
 import DashboardCheckinChart from '@/components/Dashboard/DashboardCheckinChart.vue';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import CfrsRepository from '@/repositories/CfrsRepository';
@@ -88,13 +91,14 @@ import DrillDownList from '@/components/DrillDown/DrillDownList.vue';
     RankItem,
     DrillDownList,
   },
-  async created() {
+  created() {
     if (!this.$route.query.cycleId) {
       this.$router.push(`?cycleId=${this.$store.state.cycle.cycleCurrent}`);
     }
   },
   async mounted() {
-    this.currentCycleId = this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
+    this.currentCycleId =
+      this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
     this.$store.commit(MutationState.SET_CURRENT_CYCLE, this.currentCycleId);
     await this.getCycles();
     await this.getCheckinChart();
@@ -148,7 +152,6 @@ export default class HomePage extends Vue {
       this.loadingCurrentRanking = false;
     }
   }
-
 
   private async getRankingOnCycle(cycleId: number) {
     this.loadingCurrentRanking = true;
