@@ -46,8 +46,8 @@ jobs:
       - name: Codecov
         uses: codecov/codecov-action@v1.1.1
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: unit-tests
-          name: devil-hunter
+          name: thaycacac
+          token: d88673d6-a6b0-42be-b066-9c9027e2b448
+          flags: unittests 
           file: ./coverage/coverage-final.json
           fail_ci_if_error: true
