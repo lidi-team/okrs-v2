@@ -43,8 +43,11 @@ jobs:
       - name: Run Unit Test
         run: yarn test:cov
 
-      - name: Upload coverage
-        if: success()
-        run: |
-          bash <(curl -s https://codecov.io/bash) -t d88673d6-a6b0-42be-b066-9c9027e2b448
-        shell: bash
+      - name: Upload Codecov report
+        uses: codecov/codecov-action@v1.0.7
+        with:
+          token: d88673d6-a6b0-42be-b066-9c9027e2b448
+          flags: unit-tests
+          name: devil-hunter
+          file: ./coverage/coverage-final.json
+          fail_ci_if_error: true
