@@ -27,6 +27,14 @@
     >
       Tạo OKR công ty
     </el-button>
+    <item-okrs
+      :loading="loading"
+      title="OKRs công ty"
+      :remove="true"
+      :objectives="okrsCompany"
+      :reload-data="getDashBoardOkrs"
+      @openDrawer="openDrawer($event)"
+    />
     <p v-if="!projects">Bạn đang không tham gia dự án nào</p>
     <div v-else>
       <item-okrs
@@ -123,6 +131,7 @@ export default class OKRsPage extends Vue {
   private currentCycleId: any = '';
   private projects: any[] = [];
   private isVisibleDialog: boolean = false;
+  private okrsCompany: any[] = [];
 
   private openDrawer(keyResults: any) {
     this.listKrs = keyResults;
@@ -164,6 +173,12 @@ export default class OKRsPage extends Vue {
         : this.$store.state.cycle.cycleCurrent,
     );
     this.projects = Object.freeze(data);
+    const res = await OkrsRepository.getObjectiveCompany({
+      cycleId: this.$route.query.cycleId
+        ? this.$route.query.cycleId
+        : this.$store.state.cycle.cycleCurrent,
+    })
+    this.okrsCompany = res.data
     this.loading = false;
   }
 

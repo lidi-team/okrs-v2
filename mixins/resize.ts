@@ -34,7 +34,7 @@ export default {
     initListener() {
       this.$_resizeHandler = debounce(
         () => {
-          this.resize();
+          return this.resize();
         },
         100,
         null,
