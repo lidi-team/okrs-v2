@@ -190,14 +190,9 @@ export default class CreateEmployee extends Vue {
   private async createEmployee() {
     console.log('Employee', this.employee);
     try {
-      const response = await EmployeeRepository.create({
+      await EmployeeRepository.create({
         users: [this.employee],
       });
-      console.log(response);
-      if (!!response && !!response.data) {
-        if (response.data.numberOfFailed === 0) {
-        }
-      }
     } catch (error) {
       console.log(error);
     }
