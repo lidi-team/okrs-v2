@@ -56,16 +56,14 @@ export default {
       if (this.loading) return;
       const files = e.dataTransfer.files;
       if (files.length !== 1) {
-        this.$message.error('Only support uploading one file!');
+        this.$message.error('Chỉ hỗ trợ tải lên 1 một tập tin!');
         return;
       }
       const rawFile = files[0]; // only use files[0]
 
       if (!this.isExcel(rawFile)) {
-        this.$message.error(
-          'Only supports upload .xlsx, .xls, .csv suffix files',
-        );
-        return false;
+        this.$message.error('Chỉ hỗ trợ định dạng .xlsx, .xls, .csv');
+        return;
       }
       this.upload(rawFile);
       e.stopPropagation();
