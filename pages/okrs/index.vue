@@ -27,7 +27,6 @@
     >
       Tạo OKR công ty
     </el-button>
-    <drill-down-list/>
     <p v-if="!projects">Bạn đang không tham gia dự án nào</p>
     <div v-else>
       <item-okrs
@@ -43,13 +42,13 @@
         @openDrawer="openDrawer($event)"
       />
     </div>
-    <transition name="el-fade-in">
+    <transition name="el-zoom-in-center">
       <add-okrs />
     </transition>
-    <transition name="el-fade-in">
+    <transition name="el-zoom-in-center">
       <root-okrs-dialog :is-visible.sync="isVisibleDialog" />
     </transition>
-    <transition name="el-fade-in">
+    <transition name="el-zoom-in-center">
       <create-okrs-dialog
         v-if="visibleCreateOkrsDialog"
         :is-company-okrs="isCompanyOkrs"
@@ -78,7 +77,6 @@ import {
 import OkrsRepository from '@/repositories/OkrsRepository';
 import CycleRepository from '@/repositories/CycleRepository';
 import AddOkrs from '@/components/okrs/add-update/index.vue';
-import DrillDownList from '@/components/DrillDown/DrillDownList.vue';
 import ButtonCreateOkr from '@/components/okrs/common/Button.vue';
 import ItemOkrs from '@/components/okrs/ItemOkrs.vue';
 import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
@@ -91,7 +89,6 @@ import RootOkrsDialog from '@/components/okrs/add-update/RootOKRs.vue';
     DetailKeyresult,
     AddOkrs,
     ButtonCreateOkr,
-    DrillDownList,
     RootOkrsDialog,
   },
   head() {

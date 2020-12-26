@@ -29,25 +29,26 @@
             </template>
           </el-table-column>
           <el-table-column label="Loại" width="200" prop="type" align="center"></el-table-column>
-          <el-table-column label="Hành động" align="right" width="80">
+          <el-table-column label="Hành động" align="right" :width="80">
             <template v-slot="{ row }">
               <el-button
-                type="primary"
                 icon="el-icon-arrow-right"
-                class="el-button el-button--purple el-button--small"
-                @click="drillDown(row)"
+                class="el-button--purple el-button--small "
+                @click="drillDown(row.id)"
               />
             </template>
           </el-table-column>
         </el-table>
     </div>
     <el-drawer :visible.sync="selected" size="80%" :append-to-body="true">
-      <drill-down-item :id-selected="idSelected" width="80" />
+      <drill-down-item :id-selected="idSelected" :width="80" :count="0"/>
     </el-drawer>
     <transition name="el-zoom-in-center">
-      <el-dialog class="krs-detail" title="Danh sách kết quả then chốt" :visible.sync="isShowKeyResult" width="50%" @close="isShowKeyResult = false">
-        <KeyResult :key-results="keyResults" />
-      </el-dialog>
+      <detail-keyresult
+        v-if="isShowKeyResult"
+        :list-krs="keyResults"
+        :visible-detail-krs.sync="isShowKeyResult"
+      />
     </transition>
   </div>
 </template>
@@ -58,21 +59,21 @@ import DrillDownItem from '@/components/DrillDown/DrillDownItem.vue';
 import DrillDownRepository from '@/repositories/DrillDownRepository';
 import { filterKeyresults } from '@/utils/filters';
 import KeyResult from '@/components/okrs/add-update/KeyResult.vue';
+import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
 
 @Component<DrillDownPage>({
   name: 'DrillDownPage',
   components: {
     DrillDownItem,
     KeyResult,
+    DetailKeyresult
   },
   filters: {
     filterKeyresults,
   },
   async mounted() {
-    const { data } = await DrillDownRepository.get(5, 0);
-    console.log('data drill down', data);
-    this.title = data.title;
-    this.dataObjectives = data.childObjectives;
+    const currentCycleId = this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
+    this.getDrillDown(currentCycleId);
   },
 })
 export default class DrillDownPage extends Vue {
@@ -82,14 +83,26 @@ export default class DrillDownPage extends Vue {
   private keyResults: Array<any> = [];
   private title: String = '';
   private dataObjectives: any = [];
+
+  @Watch('$route.query')
+  private async getData(query: any) {
+    this.getDrillDown(query.cycleId);
+  }
+
+  private async getDrillDown(currentCycleId) {
+    const { data } = await DrillDownRepository.get(currentCycleId, 0);
+    this.title = data.title;
+    this.dataObjectives = data.childObjectives;
+  }
+
   private showKeyResult(keyResults: any) {
     this.isShowKeyResult = true;
     this.keyResults = keyResults;
-    console.log(keyResults);
   }
-  private drillDown(data) {
+
+  private drillDown(id) {
     this.selected = true;
-    this.idSelected = data.id;
+    this.idSelected = id;
   }
 }
 </script>

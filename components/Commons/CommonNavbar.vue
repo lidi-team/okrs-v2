@@ -15,13 +15,11 @@
         <el-dropdown class="side-right__item item" trigger="click">
           <div class="item__wrapper">
             <img
-              v-if="user.avatarUrl"
               :key="user.updateAvatarKey"
               :src="user.avatarUrl | filterImage"
               alt="avatar"
               class="item__avatar"
             />
-            <missing-avatar alt="avatar" class="item__avatar" v-else />
             <div class="item__info info">
               <span class="info__name">
                 {{ user.fullName }}
@@ -96,7 +94,6 @@ import IconLesson from '@/assets/images/common/navbar/lesson-okrs.svg';
 import IconLogout from '@/assets/images/common/navbar/logout.svg';
 import IconProfile from '@/assets/images/common/navbar/profile.svg';
 import IconSetting from '@/assets/images/common/navbar/setting.svg';
-import MissingAvatar from '@/assets/images/common/MissingAvatar.svg';
 import IconHr from '@/assets/images/common/navbar/hr.svg';
 import { DispatchAction, GetterState } from '@/constants/app.vuex';
 import { filterUserRole } from '@/utils/filters';
@@ -110,7 +107,6 @@ import { filterUserRole } from '@/utils/filters';
     IconProfile,
     IconSetting,
     IconHr,
-    MissingAvatar,
   },
   computed: {
     ...mapGetters({
