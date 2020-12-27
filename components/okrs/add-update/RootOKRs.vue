@@ -103,15 +103,10 @@ import { Form } from 'element-ui';
     IconAttention,
     KeyResult,
   },
-  created() {
-    if (this.okr) {
-      this.tempOkrs = { ...this.okr };
-    }
-  },
 })
 export default class RootOKRs extends Vue {
   @PropSync('isVisible', Boolean) private isShowDialogOKRs!: boolean;
-  @Prop() private okr!: any;
+  @Prop({ type: Object }) private okr!: any;
   private isLoading: boolean = false;
   private sizeConfig = { minRows: 2, maxRows: 2 };
   private attentionsText: string[] = [
@@ -119,12 +114,14 @@ export default class RootOKRs extends Vue {
     'Không nên quá 5 kết quả then chốt cho 1 mục tiêu',
   ];
 
-  private tempOkrs: any = {
-    title: '',
-    weight: 3,
-    projectId: null,
-    keyResults: [],
-  };
+  private tempOkrs: any = this.okr
+    ? { ...this.okr }
+    : {
+        title: '',
+        weight: 3,
+        projectId: null,
+        keyResults: [],
+      };
 
   private handleCloseDialog() {
     this.$confirm(
@@ -205,6 +202,7 @@ export default class RootOKRs extends Vue {
   private async pushOkr(OKRsData: any) {
     this.isLoading = true;
     try {
+      console.log(JSON.stringify(OKRsData));
       await OkrsRepository.createOrUpdateOkrs(OKRsData);
       this.clearTempData();
       this.isShowDialogOKRs = false;

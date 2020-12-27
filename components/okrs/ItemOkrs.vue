@@ -205,6 +205,7 @@ export default class OKRsItem extends Vue {
         weight,
         keyResults,
       };
+      this.tempOkrs = okrs;
       this.visibleUpdateCompanyOkrDialog = true;
     } else {
       const { id, title, type, weight, keyResults } = objective;
