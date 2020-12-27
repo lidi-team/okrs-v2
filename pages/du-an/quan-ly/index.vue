@@ -388,6 +388,7 @@ export default class ControlProject extends Vue {
       await ProjectRepository.postStaffsById(this.id, this.selectUsers);
       this.selectUsers = [];
       await this.getProjectStaffs(this.id);
+      await this.getActiveCandidates(this.id);
     } catch (e) {}
   }
 
