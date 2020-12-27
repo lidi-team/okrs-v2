@@ -37,9 +37,9 @@ baseUrl.interceptors.response.use(
   },
   (error) => {
     switch (error.response.status) {
-      case 401:
-        window.location.href = '/dang-nhap';
-        break;
+      // case 401:
+       // window.location.href = '/dang-nhap';
+       // break;
       case 403:
         window.location.href = '/403';
         break;
