@@ -90,7 +90,7 @@
         >
           <template v-slot="{ row }">
             <span>{{ row.title }} ({{ row.weight }}/5)</span>
-            <el-tag type="danger" v-if="!isDirector"
+            <el-tag type="danger" v-if="!isCompanyOkr"
               >{{ row.childObjectives.length }} mục tiêu cá nhân</el-tag
             >
           </template>
@@ -182,6 +182,7 @@ export default class OKRsItem extends Vue {
   @Prop(Boolean) private loading!: Boolean;
   @Prop(Boolean) private remove!: Boolean;
   @Prop(Boolean) private isDirector!: Boolean;
+  @Prop(Boolean) private isCompanyOkr!: Boolean;
 
   private tempOkrs: any = {};
   private changeValue: number = 0;
