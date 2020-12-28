@@ -12,6 +12,10 @@
         </div>
       </nuxt-link>
       <nuxt-link
+        v-if="
+          user.roles.includes('ROLE_DIRECTOR') ||
+          user.roles.includes('ROLE_USER')
+        "
         to="/checkin"
         :class="[
           'sidebar__link',
@@ -24,6 +28,10 @@
         </div>
       </nuxt-link>
       <nuxt-link
+        v-if="
+          user.roles.includes('ROLE_DIRECTOR') ||
+          user.roles.includes('ROLE_USER')
+        "
         to="/okrs"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isOkrsActive }]"
       >
@@ -33,6 +41,10 @@
         </div>
       </nuxt-link>
       <nuxt-link
+        v-if="
+          user.roles.includes('ROLE_DIRECTOR') ||
+          user.roles.includes('ROLE_USER')
+        "
         to="/CFRs"
         :class="['sidebar__link', { 'nuxt-link-exact-active': isCfrsActive }]"
       >
@@ -70,7 +82,8 @@
           <project-manage class="sidebar__link__tab__icon" />
           <p class="hidden-tablet">
             {{
-              user.roles.includes('ROLE_ADMIN')
+              user.roles.includes('ROLE_ADMIN') ||
+              user.roles.includes('ROLE_DIRECTOR')
                 ? 'Quản lý dự án'
                 : 'Dự án của tôi'
             }}
@@ -252,11 +265,10 @@ export default class SideBar extends Vue {
   &:hover {
     transition-duration: 1s;
     .sidebar__link__tab__icon {
-      transform: translateY(-5px)
+      transform: translateY(-5px);
     }
   }
 }
-
 
 .hide-nav {
   margin-left: -160px;

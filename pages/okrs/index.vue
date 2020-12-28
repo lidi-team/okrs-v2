@@ -56,7 +56,10 @@
       <add-okrs />
     </transition>
     <transition name="el-zoom-in-center">
-      <root-okrs-dialog :is-visible.sync="isVisibleDialog" />
+      <root-okrs-dialog
+        :is-visible.sync="isVisibleDialog"
+        :reload-data="getDashBoardOkrs"
+      />
     </transition>
     <transition name="el-zoom-in-center">
       <create-okrs-dialog

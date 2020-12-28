@@ -107,6 +107,7 @@ import { Form } from 'element-ui';
 export default class RootOKRs extends Vue {
   @PropSync('isVisible', Boolean) private isShowDialogOKRs!: boolean;
   @Prop({ type: Object }) private okr!: any;
+  @Prop(Function) private reloadData!: Function;
   private isLoading: boolean = false;
   private sizeConfig = { minRows: 2, maxRows: 2 };
   private attentionsText: string[] = [
@@ -205,6 +206,7 @@ export default class RootOKRs extends Vue {
       console.log(JSON.stringify(OKRsData));
       await OkrsRepository.createOrUpdateOkrs(OKRsData);
       this.clearTempData();
+      this.reloadData();
       this.isShowDialogOKRs = false;
       this.isLoading = false;
     } catch (e) {
