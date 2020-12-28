@@ -65,7 +65,7 @@ import {
   confirmWarningConfig,
 } from '@/constants/app.constant';
 import IconAddKrs from '@/assets/images/okrs/add-krs.svg';
-import AlignOkrsForm from '@/components/okrs/add-update/AlignObjective.vue';
+import AlignOkrsForm from '@/components/OKR/OkrsManagement/OkrsManagementStepAlignObjective/OkrsManagementStepAlignObjectiveItem.vue';
 @Component<AlignOkrsDialog>({
   name: 'AlignOkrsDialog',
   components: {

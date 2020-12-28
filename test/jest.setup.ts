@@ -1,10 +1,5 @@
 import Vue from 'vue';
 import { elComponent } from '@/constants/app.enum';
-
-/**
- * @docs https://github.com/nuxt/components/issues/58
- * Import all the conditions to run test with jest
- */
 export default ['@/components/Account/AccountLogin.vue'].forEach((path) => {
   const componentName = path.match(/(\w*)\.vue$/) as string[];
   let prefix;

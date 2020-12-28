@@ -26,9 +26,9 @@ import {
   GetterState,
 } from '@/constants/app.vuex';
 import { confirmWarningConfig } from '@/constants/app.constant';
-import StepObjective from '@/components/okrs/add-update/StepObjective.vue';
-import StepKeyResult from '@/components/okrs/add-update/StepKeyResult.vue';
-import StepAlignObjective from '@/components/okrs/add-update/StepAlignObjective.vue';
+import StepObjective from '@/components/OKR/OkrsManagement/OkrsManagementStepObjective/index.vue';
+import StepKeyResult from '@/components/OKR/OkrsManagement/OkrsManagementStepKeyResult/index.vue';
+import StepAlignObjective from '@/components/OKR/OkrsManagement/OkrsManagementStepAlignObjective/index.vue';
 
 @Component<AddOkrs>({
   name: 'AddOkrs',

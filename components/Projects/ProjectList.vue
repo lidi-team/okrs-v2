@@ -359,7 +359,7 @@ export default class ProjectAll extends Vue {
     return pm;
   }
 
-  private getPercentage(weight: number) {
+  private getPercentage(weight: number): number {
     return weight / 0.05;
   }
 

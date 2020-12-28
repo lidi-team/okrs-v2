@@ -45,7 +45,7 @@
 <script lang="ts">
 import { Component, Vue, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
-import KeyResult from './KeyResult.vue';
+import KeyResult from './OkrsManagementStepKeyResultItem.vue';
 import IconAttention from '@/assets/images/okrs/attention.svg';
 import { MutationState } from '@/constants/app.vuex';
 import { confirmWarningConfig } from '@/constants/app.constant';

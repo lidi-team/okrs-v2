@@ -248,6 +248,16 @@ export default class SideBar extends Vue {
   }
 }
 
+.sidebar__link__tab {
+  &:hover {
+    transition-duration: 1s;
+    .sidebar__link__tab__icon {
+      transform: translateY(-5px)
+    }
+  }
+}
+
+
 .hide-nav {
   margin-left: -160px;
   @include breakpoint-down(tablet) {

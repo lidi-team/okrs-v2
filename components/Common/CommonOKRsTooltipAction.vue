@@ -28,7 +28,6 @@ import { MutationState, DispatchAction } from '@/constants/app.vuex';
 import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 
 @Component<OkrsActionTooltip>({
-  name: 'OkrsActionTooltip',
   components: {
     IconSetting,
   },
@@ -61,7 +60,7 @@ export default class OkrsActionTooltip extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/assets/scss/main.scss';
 .okrs-tooltip {
   margin-left: $unit-10;

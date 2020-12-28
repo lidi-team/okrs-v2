@@ -81,11 +81,10 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { MutationState, GetterState } from '@/constants/app.vuex';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import CycleRepository from '@/repositories/CycleRepository';
-import AddOkrs from '@/components/OKR/OKRsManagement/index.vue';
-import ButtonCreateOkr from '@/components/Common/CommonOKRsButtonCreate.vue';
-import ItemOkrs from '@/components/OKR/OKRsItems/index.vue';
-import DetailKeyresult from '@/components/OKR/OKRsDialog/OKRsDialogKeyresult.vue';
-import RootOkrsDialog from '@/components/OKR/OKRsManagement/index.vue';
+import AddOkrs from '@/components/OKR/OkrsKeyResult/index.vue';
+import ItemOkrs from '@/components/OKR/OkrsItems/index.vue';
+import DetailKeyresult from '@/components/OKR/OkrsDialog/OkrsDialogCompany.vue';
+import RootOkrsDialog from '@/components/OKR/OkrsDialog/OkrsDialogCompany.vue';
 
 @Component<OKRsPage>({
   name: 'OKRsPage',
@@ -93,7 +92,6 @@ import RootOkrsDialog from '@/components/OKR/OKRsManagement/index.vue';
     ItemOkrs,
     DetailKeyresult,
     AddOkrs,
-    ButtonCreateOkr,
     RootOkrsDialog,
   },
   head() {

@@ -4,14 +4,14 @@
       <div class="-display-flex -justify-content-between -border-header">
         <h2 class="-title-2">{{ title }}</h2>
         <div class="-display-flex -align-items-center -pb-2">
-          <button-create-okr
+          <common-okrs-button-create
             v-if="isManage && !remove"
             :type-objective="1"
             name-objective="dự án"
             :project-id="projectId"
             :loading="loading"
           />
-          <button-create-okr
+          <common-okrs-button-create
             v-if="!remove"
             :type-objective="2"
             name-objective="cá nhân"
@@ -157,19 +157,19 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import IconEllipse from '@/assets/images/okrs/ellipse.svg';
-import ActionTooltip from '@/components/Common/CommonOKRsTooltipAction.vue';
-import ButtonCreateOkr from '@/components/Common/CommonOKRsButtonCreate.vue';
 import { ObjectiveDTO } from '@/constants/DTO/okrs';
 import { DispatchAction } from '@/constants/app.vuex';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import RootOkrsDialog from '@/components/OKR/OKRsManagement/index.vue';
+import RootOkrsDialog from '@/components/OKR/OkrsDialog/OkrsDialogCompany.vue';
+import ActionTooltip from '@/components/Common/CommonOKRsTooltipAction.vue';
+import CommonOkrsButtonCreate from '@/components/Common/CommonOkrsButtonCreate.vue';
 
 @Component<OKRsItem>({
   name: 'OKRsItem',
   components: {
     IconEllipse,
     ActionTooltip,
-    ButtonCreateOkr,
+    CommonOkrsButtonCreate,
     RootOkrsDialog,
   },
 })
