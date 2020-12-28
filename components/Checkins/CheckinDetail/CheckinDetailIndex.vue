@@ -309,11 +309,7 @@ export default class DetailHistory extends Vue {
     (this.$refs.checkinRuleForm as Form).validate(
       async (isValid: boolean, invalidFields: object) => {
         if (isValid) {
-          const {
-            objective,
-            checkinDetail,
-            nextCheckinDate,
-          } = this.syncCheckin;
+          const { objective, checkinDetail } = this.syncCheckin;
           if (!!this.nextCheckinDate && this.nextCheckinDate > this.limitDate) {
             return Notification.error(
               'Ngày check-in kế tiếp vượt quá ngày đóng chu kỳ',
