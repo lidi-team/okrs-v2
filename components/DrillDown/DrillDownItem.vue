@@ -31,7 +31,12 @@
             </p>
           </template>
         </el-table-column>
-        <el-table-column prop="author" label="Tiến độ" width="180" align="center">
+        <el-table-column
+          prop="author"
+          label="Tiến độ"
+          width="180"
+          align="center"
+        >
           <template v-slot="{ row }">
             <div class="item__progress">
               <el-progress
@@ -45,17 +50,24 @@
         </el-table-column>
         <el-table-column label="Thay đổi" width="100" align="center">
           <template v-slot="{ row }">
-            <p :class="row.changing | statusProgress">{{ row.changing | round }}%</p>
+            <p :class="row.changing | statusProgress">
+              {{ row.changing | round }}%
+            </p>
           </template>
         </el-table-column>
         <el-table-column label="Loại" width="150" prop="type" align="center">
         </el-table-column>
-        <el-table-column label="Hành động" align="right" :width="80" v-if="count !== 1">
+        <el-table-column
+          label="Hành động"
+          align="right"
+          :width="80"
+          v-if="count !== 1"
+        >
           <template v-slot="{ row }">
             <el-button
               icon="el-icon-arrow-right"
               class="el-button el-button--purple el-button--small"
-              @click="drillDown(row)" 
+              @click="drillDown(row)"
             ></el-button>
           </template>
         </el-table-column>
@@ -66,7 +78,11 @@
       :append-to-body="true"
       :size="`${width - 10}%`"
     >
-      <DrawerObjective :id-selected="idSelectedChild" :width="width - 10" :count="count+1" />
+      <DrawerObjective
+        :id-selected="idSelectedChild"
+        :width="width - 10"
+        :count="count + 1"
+      />
     </el-drawer>
     <transition name="el-zoom-in-center">
       <el-dialog
@@ -99,8 +115,9 @@ import KeyResult from '@/components/okrs/OkrsKeyResult/OkrsKeyResultTableOvervie
     filterKeyresults,
   },
   async mounted() {
-    this.currentCycleId = this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
-    this.getDrillDown(this.currentCycleId, this.idSelected)
+    this.currentCycleId =
+      this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
+    this.getDrillDown(this.currentCycleId, this.idSelected);
   },
 })
 export default class DrillDownObject extends Vue {
@@ -117,7 +134,7 @@ export default class DrillDownObject extends Vue {
 
   @Watch('idSelected')
   private async change(id: any) {
-    this.getDrillDown(this.currentCycleId, id)
+    this.getDrillDown(this.currentCycleId, id);
   }
 
   private async getDrillDown(currentCycleId, parentId) {
@@ -160,7 +177,7 @@ export default class DrillDownObject extends Vue {
     }
   }
   &__progress {
-    width: 170PX;
+    width: 170px;
   }
   &__action {
     place-content: center space-between;
