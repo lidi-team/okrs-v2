@@ -37,8 +37,11 @@ baseUrl.interceptors.response.use(
   },
   (error) => {
     switch (error.response.status) {
-      case 401:
-        window.location.href = '/dang-nhap';
+       case 401:
+        Notification.error({
+          ...notificationConfig,
+          message: error.response.data.message,
+        });
         break;
       case 403:
         window.location.href = '/403';

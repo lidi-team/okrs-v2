@@ -17,7 +17,7 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Vue, Prop, Watch, PropSync } from 'vue-property-decorator';
+import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 
 @Component<HeadEmployee>({
   name: 'HeadEmployee',

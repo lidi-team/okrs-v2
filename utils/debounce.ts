@@ -1,5 +1,5 @@
 export default function debounce(func: any, wait: any, immediate: any): any {
-  let timeout, args, context, timestamp = 0, result;
+  let timeout, args, context, timestamp = 0;
 
   const later = function () {
     const last = +new Date() - timestamp;
@@ -8,7 +8,7 @@ export default function debounce(func: any, wait: any, immediate: any): any {
     } else {
       timeout = null;
       if (!immediate) {
-        result = func.apply(context, args);
+        func.apply(context, args);
         if (!timeout) context = args = null;
       }
     }
