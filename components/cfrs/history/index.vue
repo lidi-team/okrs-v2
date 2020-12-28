@@ -100,7 +100,9 @@
                 </div>
               </div>
               <div class="item__right">
-                <span class="item__right__value">{{ item.evaluationCriteria.numberOfStar }}</span>
+                <span class="item__right__value">{{
+                  item.evaluationCriteria.numberOfStar
+                }}</span>
                 <icon-star-dashboard />
               </div>
             </div>
@@ -151,7 +153,7 @@
                     v-if="$store.state.user.tempUser.id === item.sender.id"
                   >
                     Bạn đến
-                    {{ takeTwoLastNameUser(item.receiver.fullName) }} -
+                    {{ item.receiver.fullName }} -
                     {{ new Date(item.createAt) | dateFormat('DD/MM/YYYY') }}
                   </p>
                   <p
@@ -160,12 +162,12 @@
                       $store.state.user.tempUser.id === item.receiver.id
                     "
                   >
-                    {{ takeTwoLastNameUser(item.sender.fullName) }} đến bạn -
+                    {{ item.sender.fullName }} đến bạn -
                     {{ new Date(item.createAt) | dateFormat('DD/MM/YYYY') }}
                   </p>
                   <p class="content__description" v-else>
-                    {{ takeTwoLastNameUser(item.sender.fullName) }} đến
-                    {{ takeTwoLastNameUser(item.receiver.fullName) }} -
+                    {{ item.sender.fullName }} đến
+                    {{ item.receiver.fullName }} -
                     {{ new Date(item.createAt) | dateFormat('DD/MM/YYYY') }}
                   </p>
                   <p class="content__direction">
@@ -174,7 +176,9 @@
                 </div>
               </div>
               <div class="item__right">
-                <span class="item__right__value">{{ item.evaluationCriteria.numberOfStar }}</span>
+                <span class="item__right__value">{{
+                  item.evaluationCriteria.numberOfStar
+                }}</span>
                 <icon-star-dashboard />
               </div>
             </div>
