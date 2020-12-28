@@ -50,16 +50,16 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Inferior from '@/components/Checkins/CheckinInferior.vue';
-import RequestCheckin from '@/components/Checkins/CheckinRequest.vue';
-import MyCheckin from '@/components/Checkins/CheckinMyCheckin.vue';
+import Inferior from '@/components/Checkin/CheckinInferior.vue';
+import RequestCheckin from '@/components/Checkin/CheckinRequest.vue';
+import MyCheckin from '@/components/Checkin/CheckinMyCheckin.vue';
 import CycleRepository from '@/repositories/CycleRepository';
-import CommonPagination from '@/components/Commons/CommonPagination.vue';
+import CommonPagination from '@/components/Common/CommonPagination.vue';
 import ProjectRepository from '../../repositories/ProjectRepository';
 import {
   TAB_CHECKIN,
   ROUTER_CHECKIN,
-} from '@/components/Checkins/constants.enum';
+} from '@/components/Checkin/constants.enum';
 import { ICheckinParams } from '@/constants/DTO/common';
 
 @Component<CheckinPage>({

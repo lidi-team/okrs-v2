@@ -33,15 +33,15 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Feedback from '@/components/cfrs/feedback/index.vue';
-import History from '@/components/cfrs/history/index.vue';
-import Rank from '@/components/cfrs/rank/index.vue';
+import Feedback from '@/components/CFRs/CFRsFeedback/index.vue';
+import History from '@/components/CFRs/CFRsHistory/index.vue';
+import Rank from '@/components/CFRs/CFRsRank/index.vue';
 import { TabCfr, TabCfrEng } from '@/constants/app.enum';
 import { ParamsCFR } from '@/constants/DTO/common';
 import { pageLimit } from '@/constants/app.constant';
 import { GetterState, MutationState } from '@/constants/app.vuex';
-import CfrsNavbar from '@/components/cfrs/Navbar.vue';
-import CfrsRecognition from '@/components/cfrs/recognition/index.vue';
+import CfrsNavbar from '@/components/CFRs/index.vue';
+import CfrsRecognition from '@/components/CFRs/CFRsRecognition/index.vue';
 import { mapGetters } from 'vuex';
 
 @Component<CFRsPage>({

@@ -17,7 +17,7 @@
           :value="String(cycle.id)"
         />
       </el-select>
-    </div>  
+    </div>
     <el-row :gutter="20">
       <el-col :span="24">
         <div class="box-wrap">
@@ -66,7 +66,7 @@
         </div>
       </el-col>
     </el-row>
-    <drill-down-list/>
+    <drill-down-list />
   </div>
 </template>
 
@@ -77,7 +77,7 @@ import { MutationState } from '@/constants/app.vuex';
 import DashboardCheckinChart from '@/components/Dashboard/DashboardCheckinChart.vue';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import CfrsRepository from '@/repositories/CfrsRepository';
-import RankItem from '@/components/cfrs/rank/RankItem.vue';
+import RankItem from '@/components/CFRs/CFRsRank/CFRsRankItem.vue';
 import DrillDownList from '@/components/DrillDown/DrillDownList.vue';
 
 @Component<HomePage>({

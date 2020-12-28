@@ -126,14 +126,14 @@
 
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import UploadExcelComponent from '@/components/UploadExcel/index.vue';
+import UploadExcelComponent from '@/components/Common/CommonUploadExcel.vue';
 import { compareTwoDate, formatDateFromExcel } from '@/utils/dateParser';
 import TeamRepository from '@/repositories/TeamRepository';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 import { EmployeeDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
-import StaffDialog from '@/components/admin/dialog/NewStaffDialog.vue';
+import StaffDialog from '@/components/Admin/AdminDialog/AdminDialogStaff.vue';
 
 @Component<CreateEmployee>({
   name: 'CreateEmployee',

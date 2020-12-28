@@ -12,8 +12,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import CommonNavbar from '@/components/Commons/CommonNavbar.vue';
-import CommonSidebar from '@/components/Commons/CommonSidebar.vue';
+import CommonNavbar from '@/components/Common/CommonNavbar.vue';
+import CommonSidebar from '@/components/Common/CommonSidebar.vue';
 @Component<Layout>({
   name: 'Layout',
   middleware: 'isAuthenticated',

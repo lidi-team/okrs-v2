@@ -1,6 +1,6 @@
 import  Vue  from  "vue";
 
-Vue.filter("round",  function(value: number)  {
+Vue.filter("round",  function(value: number): number  {
   return Math.round(value * 100) / 100;
 });
 
