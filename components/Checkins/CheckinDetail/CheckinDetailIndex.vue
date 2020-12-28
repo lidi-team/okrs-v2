@@ -17,7 +17,7 @@
           >
             <el-date-picker
               :disabled="isDisable"
-              v-model="syncCheckin.nextCheckinDate"
+              v-model="nextCheckinDate"
               :clearable="false"
               type="date"
               :picker-options="pickerOptions"
@@ -234,8 +234,8 @@ import { formatDateToDD, compareTwoDate } from '@/utils/dateParser';
         nextCheckinDate,
       } = this.syncCheckin.checkin;
       nextCheckinDate
-        ? (this.syncCheckin.nextCheckinDate = new Date(nextCheckinDate))
-        : (this.syncCheckin.nextCheckinDate = new Date());
+        ? (this.nextCheckinDate = new Date(nextCheckinDate))
+        : null;
       this.checkinStatus = status;
       this.idCheckin = id;
     }
@@ -271,6 +271,7 @@ export default class DetailHistory extends Vue {
   private progress: Number = 0;
   private flag: Boolean = false;
   private limitDate: Date = new Date();
+  private nextCheckinDate: Date | null = null;
 
   @Watch('flag')
   private changeCheckin() {
@@ -301,7 +302,7 @@ export default class DetailHistory extends Vue {
 
   private handleCheckin(status: String) {
     this.loading = true;
-    if (!this.syncCheckin.nextCheckinDate) {
+    if (!this.nextCheckinDate) {
       Notification.error('Không được bỏ trống trường ngày check-in kế tiếp');
       return (this.loading = false);
     }
@@ -313,7 +314,7 @@ export default class DetailHistory extends Vue {
             checkinDetail,
             nextCheckinDate,
           } = this.syncCheckin;
-          if (nextCheckinDate > this.limitDate) {
+          if (!!this.nextCheckinDate && this.nextCheckinDate > this.limitDate) {
             return Notification.error(
               'Ngày check-in kế tiếp vượt quá ngày đóng chu kỳ',
             );
@@ -321,7 +322,7 @@ export default class DetailHistory extends Vue {
           const payload = {
             id: this.idCheckin,
             objectiveId: objective.id,
-            nextCheckinDate: formatDateToDD(nextCheckinDate),
+            nextCheckinDate: formatDateToDD(this.nextCheckinDate),
             progress: this.progress,
             objectComplete: this.isCompleted,
             status,
