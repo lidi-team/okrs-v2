@@ -90,7 +90,7 @@
         >
           <template v-slot="{ row }">
             <span>{{ row.title }} ({{ row.weight }}/5)</span>
-            <el-tag type="danger"
+            <el-tag type="danger" v-if="!isDirector"
               >{{ row.childObjectives.length }} mục tiêu cá nhân</el-tag
             >
           </template>
