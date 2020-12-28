@@ -18,7 +18,6 @@
         class="el-button el-button--purple -ml-3"
         :loading="loading"
         size="mini"
-        type="primary"
         @click="handleUpload"
       >
         Duyệt
