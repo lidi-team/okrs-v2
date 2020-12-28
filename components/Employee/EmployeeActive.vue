@@ -40,7 +40,11 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Thao tác" align="center">
+        <el-table-column
+          label="Thao tác"
+          align="center"
+          v-if="!user.roles.includes('ROLE_DIRECTOR')"
+        >
           <template slot-scope="{ row }">
             <div class="employee-active__action">
               <el-tooltip
