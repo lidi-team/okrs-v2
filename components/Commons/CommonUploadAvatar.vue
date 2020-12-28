@@ -400,7 +400,7 @@ export default {
     });
   },
   beforeDestroy() {
-    document.removeEventListener('keyup')
+    document.removeEventListener('keyup');
   },
   methods: {
     ripple(e) {

@@ -228,8 +228,14 @@ import { formatDateToDD, compareTwoDate } from '@/utils/dateParser';
   },
   mounted() {
     if (this.syncCheckin.checkin) {
-      const { status = 'Draft', id = null, nextCheckinDate } = this.syncCheckin.checkin;
-      nextCheckinDate ? this.syncCheckin.nextCheckinDate = new Date(nextCheckinDate) : this.syncCheckin.nextCheckinDate = new Date()
+      const {
+        status = 'Draft',
+        id = null,
+        nextCheckinDate,
+      } = this.syncCheckin.checkin;
+      nextCheckinDate
+        ? (this.syncCheckin.nextCheckinDate = new Date(nextCheckinDate))
+        : (this.syncCheckin.nextCheckinDate = new Date());
       this.checkinStatus = status;
       this.idCheckin = id;
     }

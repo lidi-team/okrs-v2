@@ -217,10 +217,9 @@ export default class RegisterComponent extends Vue {
         if (isValid) {
           try {
             delete this.registerForm.matchPassword;
-            await AuthRepository.register(this.registerForm).then(
-              (res: any) => {
-              },
-            );
+            await AuthRepository.register(
+              this.registerForm,
+            ).then((res: any) => {});
             this.loading = false;
             this.$router.push('/dang-nhap');
           } catch (error) {

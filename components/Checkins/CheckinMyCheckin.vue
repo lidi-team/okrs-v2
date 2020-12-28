@@ -76,7 +76,9 @@
               >Đã hoàn thành</el-button
             >
             <nuxt-link v-else :to="`/checkin/${row.id}`">
-              <el-button class="el-button--purple w-100">Tạo Check-in</el-button>
+              <el-button class="el-button--purple w-100"
+                >Tạo Check-in</el-button
+              >
             </nuxt-link>
           </template>
         </el-table-column>
@@ -159,6 +161,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { statusCheckin } from '@/constants/app.constant';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import Pagination from '@/components/Commons/CommonPagination.vue';
+import { ROUTER_CHECKIN } from './constants.enum';
 
 @Component<MyOkrsCheckin>({
   name: 'MyOkrsCheckin',
@@ -208,8 +211,15 @@ export default class MyOkrsCheckin extends Vue {
   }
 
   private handlePagination(pagination: any) {
+    const cycleId = this.$route.query.cycleId
+      ? this.$route.query.cycleId
+      : this.$store.state.cycle.cycleCurrent;
     this.$router.push(
-      `?tab=${this.$route.query.tab}&cycleId=${this.$route.query.cycleId}&page=${pagination.page}&projectId=${this.$route.query.projectId}`,
+      `?tab=${
+        this.$route.query.tab || ROUTER_CHECKIN.MyOkrs
+      }&cycleId=${cycleId}&page=${pagination.page}&projectId=${
+        this.$route.query.projectId || 0
+      }`,
     );
   }
 

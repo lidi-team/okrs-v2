@@ -1,69 +1,66 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}" />
+  <div :class="className" :style="{ height: height, width: width }" />
 </template>
 
 <script>
-import { init, registerTheme } from 'echarts'
-require('echarts/theme/macarons')
-import resize from '@/mixins/resize'
+import { init, registerTheme } from 'echarts';
+require('echarts/theme/macarons');
+import resize from '@/mixins/resize';
 export default {
   mixins: [resize],
   props: {
     className: {
       type: String,
-      default: 'chart'
+      default: 'chart',
     },
     width: {
       type: String,
-      default: '100%'
+      default: '100%',
     },
     height: {
       type: String,
-      default: '300px'
+      default: '300px',
     },
     checkinChart: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     loading: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
-      chart: null
-    }
+      chart: null,
+    };
   },
   mounted() {
     registerTheme('macarons', {
-      color: [
-        "#32C8FF",
-        "#FF106E",
-        "#FFC832",
-      ]})
+      color: ['#32C8FF', '#FF106E', '#FFC832'],
+    });
   },
   watch: {
-    loading: function(value) {
-      if(value === false) {
-        this.initChart()
+    loading: function (value) {
+      if (value === false) {
+        this.initChart();
       }
-    }
+    },
   },
   beforeDestroy() {
     if (!this.chart) {
-      return
+      return;
     }
-    this.chart.dispose()
-    this.chart = null
+    this.chart.dispose();
+    this.chart = null;
   },
   methods: {
     initChart() {
-      this.chart = init(this.$el, 'macarons')
+      this.chart = init(this.$el, 'macarons');
       this.chart.setOption({
         tooltip: {
           trigger: 'item',
-          formatter: '{a} <br/>{b} : {c} ({d}%)'
+          formatter: '{a} <br/>{b} : {c} ({d}%)',
         },
         legend: {
           left: 'center',
@@ -71,7 +68,7 @@ export default {
           textStyle: {
             color: 'db2777',
           },
-          data: ['Đang chờ duyệt', 'Đang lưu tạm', 'Đã được review']
+          data: ['Đang chờ duyệt', 'Đang lưu tạm', 'Đã được review'],
         },
         series: [
           {
@@ -82,11 +79,11 @@ export default {
             center: ['50%', '38%'],
             data: this.checkinChart,
             animationEasing: 'cubicInOut',
-            animationDuration: 2600
-          }
-        ]
-      })
-    }
-  }
-}
+            animationDuration: 2600,
+          },
+        ],
+      });
+    },
+  },
+};
 </script>
