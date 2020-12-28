@@ -8,7 +8,7 @@
     <el-popover placement="top" trigger="click">
       <div class="okrs-tooltip__popover">
         <p @click="viewDetailOkrs">Xem chi tiết</p>
-        <div v-if="isManage">
+        <div v-if="isManage || isDirector">
           <p @click="updateOKRs" v-if="canUpdate">Cập nhật</p>
           <p v-if="canDelete" style="color: #e53e3e" @click="handleDeleteOKrs">
             Xóa
@@ -36,6 +36,7 @@ import ObjectiveRepository from '@/repositories/ObjectiveRepository';
 export default class OkrsActionTooltip extends Vue {
   @Prop({ type: Number, required: true }) private id!: Number;
   @Prop(Boolean) private isManage!: Boolean;
+  @Prop(Boolean) private isDirector!: Boolean;
   @Prop(Boolean) private canDelete!: Boolean;
   @Prop(Boolean) private canUpdate!: Boolean;
 

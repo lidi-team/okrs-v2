@@ -34,6 +34,7 @@
       :objectives="okrsCompany"
       :reload-data="getDashBoardOkrs"
       @openDrawer="openDrawer($event)"
+      :is-director="roles.includes('ROLE_DIRECTOR')"
     />
     <p v-if="!projects">Bạn đang không tham gia dự án nào</p>
     <div v-else>

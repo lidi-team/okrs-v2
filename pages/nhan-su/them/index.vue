@@ -19,13 +19,21 @@
           :on-success="handleSuccess"
           :before-upload="beforeUpload"
         />
-        <div>
+        <div class="-mt-2 -mb-2">
+          <el-button
+            class="el-button--purple el-button--modal"
+            icon="el-icon-download"
+            @click="downloadTemplate"
+          >
+            Tải xuống template excel
+          </el-button>
           <el-button
             class="el-button--purple el-button--modal create-employee__button"
             icon="el-icon-plus"
             :disabled="!hasData"
             @click="handleAddEmployee"
-            >Thêm
+          >
+            Thêm
           </el-button>
         </div>
         <el-table
@@ -311,6 +319,12 @@ export default class CreateEmployee extends Vue {
   private handleShowDialog() {
     this.visibleDialog = true;
   }
+
+  private downloadTemplate() {
+    const templateLink =
+      'https://bluemarble-hep1.s3-ap-southeast-1.amazonaws.com/insert_staff_template.xlsx';
+    window.open(templateLink);
+  }
 }
 </script>
 
@@ -319,7 +333,6 @@ export default class CreateEmployee extends Vue {
 
 .create-employee {
   &__button {
-    margin: 20px 0;
     float: right;
   }
 }

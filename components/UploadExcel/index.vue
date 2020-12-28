@@ -18,7 +18,6 @@
         class="el-button el-button--purple -ml-3"
         :loading="loading"
         size="mini"
-        type="primary"
         @click="handleUpload"
       >
         Duyệt
@@ -56,7 +55,7 @@ export default {
       if (this.loading) return;
       const files = e.dataTransfer.files;
       if (files.length !== 1) {
-        this.$message.error('Chỉ hỗ trợ tải lên 1 một tập tin!');
+        this.$message.error('Chỉ hỗ trợ xử lý tệp duy nhất!');
         return;
       }
       const rawFile = files[0]; // only use files[0]
