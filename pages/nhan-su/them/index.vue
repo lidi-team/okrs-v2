@@ -224,27 +224,59 @@ export default class CreateEmployee extends Vue {
   }
 
   private handleSuccess({ results, header }) {
-    this.handleTableData(results);
+    const sourceList = this.handleTableDataToTable(results);
 
-    const tableData = results.map((value) => {
+    console.log('results: ', sourceList);
+
+    const tableData = sourceList.map((value) => {
       return { ...value, reason: 'Đang chờ' };
     });
     this.tableData = tableData;
     this.tableHeader = header;
   }
 
-  private handleTableData(data: Array<any>) {
+  private handleTableDataToTable(data: Array<any>) {
     const result = data.map((value, index) => {
+      const data: any = this.toLowerCaseObjectKey(value);
+      console.log('data: ', data);
       return {
-        email: value.email,
-        fullName: value.fullName,
-        dob: formatDateFromExcel(value.dob),
-        phoneNumber: value.phoneNumber,
-        gender: !!value.gender && value.gender.toLowerCase() === 'nam' ? 1 : 0,
-        departmentId: this.getIdDepartment(value.department),
+        email: data.email,
+        fullName: data.fullname,
+        dob: formatDateFromExcel(data.dob),
+        phoneNumber: data.phonenumber,
+        gender: data.gender,
+        department: data.department,
       };
     });
     return result;
+  }
+
+  private handleTableDataToPush(data: Array<any>) {
+    const result = data.map((value, index) => {
+      const data: any = this.toLowerCaseObjectKey(value);
+      console.log('data: ', data);
+      return {
+        email: data.email,
+        fullName: data.fullname,
+        dob: formatDateFromExcel(data.dob),
+        phoneNumber: data.phonenumber,
+        gender: !!data.gender && data.gender.toLowerCase() === 'nam' ? 1 : 0,
+        departmentId: this.getIdDepartment(data.department),
+      };
+    });
+    return result;
+  }
+
+  private toLowerCaseObjectKey(Obj: any) {
+    let key;
+    const keys = Object.keys(Obj);
+    let n = keys.length;
+    const newObj = {};
+    while (n--) {
+      key = keys[n];
+      newObj[key.toLowerCase()] = Obj[key];
+    }
+    return newObj;
   }
 
   private async getDataCommons() {
@@ -267,7 +299,7 @@ export default class CreateEmployee extends Vue {
   }
 
   private async handleAddEmployee() {
-    const users: any = this.handleTableData(this.tableData);
+    const users: any = this.handleTableDataToPush(this.tableData);
     try {
       const response: any = await EmployeeRepository.create({ users });
       if (!!response && !!response.code) {
