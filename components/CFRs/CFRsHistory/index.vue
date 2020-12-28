@@ -213,7 +213,7 @@ import { itemCfrsDefault } from './history.const';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import { MutationState } from '@/constants/app.vuex';
-import CfrsDetailHistory from '@/components/CFR/CFRsHistory/CFRsHistoryDetail.vue';
+import CfrsDetailHistory from '@/components/CFRs/CFRsHistory/CFRsHistoryDetail.vue';
 
 @Component<History>({
   name: 'History',

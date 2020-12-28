@@ -53,8 +53,8 @@ import EmployeeRepository from '@/repositories/EmployeeRepository';
 import TeamRepository from '@/repositories/TeamRepository';
 import { pageLimit } from '@/constants/app.constant';
 import CommonPagination from '@/components/Common/CommonPagination.vue';
-import EmployeesActive from '@/components/Employees/EmployeesActive.vue';
-import EmployeesHeader from '@/components/Employees/EmployeesHeader.vue';
+import EmployeesActive from '@/components/Employee/EmployeeActive.vue';
+import EmployeesHeader from '@/components/Employee/EmployeeHeader.vue';
 
 @Component<ManageEmployeePage>({
   middleware: 'employeesPage',

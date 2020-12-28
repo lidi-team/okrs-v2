@@ -92,8 +92,8 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import DrillDownItem from '@/components/DrillDown/DrillDownItem.vue';
 import DrillDownRepository from '@/repositories/DrillDownRepository';
 import { filterKeyresults } from '@/utils/filters';
-import KeyResult from '@/components/OKR/OkrsManagement/OkrsManagementStepKeyResult/OkrsManagementStepKeyResultItem.vue';
-import DetailKeyresult from '@/components/OKR/OkrsDialog/OKRsDialogKeyresult.vue';
+import KeyResult from '@/components/OKRs/OkrsManagement/OkrsManagementStepKeyResult/OkrsManagementStepKeyResultItem.vue';
+import DetailKeyresult from '@/components/OKRs/OkrsDialog/OKRsDialogKeyresult.vue';
 
 @Component<DrillDownPage>({
   name: 'DrillDownPage',

@@ -103,7 +103,7 @@ import { Component, Vue, Watch, Prop } from 'vue-property-decorator';
 import DrawerObjective from '@/components/DrillDown/DrillDownItem.vue';
 import DrillDownRepository from '@/repositories/DrillDownRepository';
 import { filterKeyresults } from '@/utils/filters';
-import KeyResult from '@/components/OKR/OkrsKeyResult/OkrsKeyResultOverview.vue';
+import KeyResult from '@/components/OKRs/OkrsKeyResult/OkrsKeyResultOverview.vue';
 
 @Component<DrillDownObject>({
   name: 'DrawerObjective',

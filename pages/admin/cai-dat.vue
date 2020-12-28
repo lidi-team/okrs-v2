@@ -56,16 +56,16 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import ManageCycle from '@/components/Admins/AdminCycle.vue';
-import ManageMeasureUnit from '@/components/Admins/AdminMeasureUnit.vue';
-import ManageDepartment from '@/components/Admins/AdminDepartment.vue';
-import ManageEvaluationCriteria from '@/components/Admins/AdminEvaluationCriteria.vue';
-import ManageJobPosition from '@/components/Admins/AdminJobPosition.vue';
-import NewCycleDialog from '@/components/Admins/AdminDialog/AdminDialogCycle.vue';
-import NewUnitDialog from '@/components/Admins/AdminDialog/AdminDialogMeasureUnit.vue';
-import NewDepartmentDialog from '@/components/Admins/AdminDialog/AdminDialogDepartment.vue';
-import NewCriteriaDialog from '@/components/Admins/AdminDialog/AdminDialogCriteria.vue';
-import NewJobDialog from '@/components/Admins/AdminDialog/AdminDialogJob.vue';
+import ManageCycle from '@/components/Admin/AdminCycle.vue';
+import ManageMeasureUnit from '@/components/Admin/AdminMeasureUnit.vue';
+import ManageDepartment from '@/components/Admin/AdminDepartment.vue';
+import ManageEvaluationCriteria from '@/components/Admin/AdminEvaluationCriteria.vue';
+import ManageJobPosition from '@/components/Admin/AdminJobPosition.vue';
+import NewCycleDialog from '@/components/Admin/AdminDialog/AdminDialogCycle.vue';
+import NewUnitDialog from '@/components/Admin/AdminDialog/AdminDialogMeasureUnit.vue';
+import NewDepartmentDialog from '@/components/Admin/AdminDialog/AdminDialogDepartment.vue';
+import NewCriteriaDialog from '@/components/Admin/AdminDialog/AdminDialogCriteria.vue';
+import NewJobDialog from '@/components/Admin/AdminDialog/AdminDialogJob.vue';
 import TeamRepository from '@/repositories/TeamRepository';
 import CycleRepository from '@/repositories/CycleRepository';
 import JobRepository from '@/repositories/JobRepository';

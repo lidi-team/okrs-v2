@@ -43,7 +43,7 @@ import {
   MutationState,
   GetterState,
 } from '@/constants/app.vuex';
-import AlignObjective from '@/components/OKR/OkrsManagement/OkrsManagementStepAlignObjective/OkrsManagementStepAlignObjectiveItem.vue';
+import AlignObjective from '@/components/OKRs/OkrsManagement/OkrsManagementStepAlignObjective/OkrsManagementStepAlignObjectiveItem.vue';
 
 @Component<CreateAlignObjective>({
   name: 'CreateAlignObjective',

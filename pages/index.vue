@@ -77,7 +77,7 @@ import { MutationState } from '@/constants/app.vuex';
 import DashboardCheckinChart from '@/components/Dashboard/DashboardCheckinChart.vue';
 import CheckinRepository from '@/repositories/CheckinRepository';
 import CfrsRepository from '@/repositories/CfrsRepository';
-import RankItem from '@/components/CFR/CFRsRank/CFRsRankItem.vue';
+import RankItem from '@/components/CFRs/CFRsRank/CFRsRankItem.vue';
 import DrillDownList from '@/components/DrillDown/DrillDownList.vue';
 
 @Component<HomePage>({

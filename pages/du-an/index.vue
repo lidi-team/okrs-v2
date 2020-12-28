@@ -56,7 +56,7 @@ import CommonPagination from '@/components/Common/CommonPagination.vue';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import HeadProject from '@/components/Projects/ProjectHeader.vue';
 import ProjectAll from '@/components/Projects/ProjectList.vue';
-import ProjectDialog from '@/components/Admins/AdminDialog/AdminDialogProject.vue';
+import ProjectDialog from '@/components/Admin/AdminDialog/AdminDialogProject.vue';
 import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
 

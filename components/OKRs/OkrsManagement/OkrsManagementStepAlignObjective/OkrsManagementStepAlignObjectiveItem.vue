@@ -34,7 +34,7 @@
 <script lang="ts">
 import { Component, Vue, PropSync, Prop } from 'vue-property-decorator';
 import IconDelete from '@/assets/images/common/delete.svg';
-import { ObjectiveAlignDTO } from '@/components/OKR/constants';
+import { ObjectiveAlignDTO } from '@/components/OKRs/constants';
 
 @Component<AlignObjective>({
   name: 'AlignObjective',
