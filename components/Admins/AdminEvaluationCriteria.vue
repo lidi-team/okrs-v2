@@ -42,7 +42,10 @@
               content="Xóa"
               placement="top"
             >
-              <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
+              <i
+                class="el-icon-delete icon--delete"
+                @click="deleteRow(row)"
+              ></i>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -137,9 +140,7 @@ import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
 import { max255Char } from '@/constants/account.constant';
-import {
-  confirmWarningConfig,
-} from '@/constants/app.constant';
+import { confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import {
   EvaluationCriteriorDTO,
@@ -149,7 +150,7 @@ import { EvaluationCriteriaEnum, AdminTabsEn } from '@/constants/app.enum';
 import EvaluationCriteriorRepository from '@/repositories/EvaluationCriteriaRepository';
 import StarIcon from '@/assets/images/admin/star.svg';
 
-import CommonPagination from '@/components/Commons/CommonPagination.vue';
+import CommonPagination from '@/components/Common/CommonPagination.vue';
 
 @Component<ManageEvaluationCriteria>({
   name: 'ManageEvaluationCriteria',
@@ -264,8 +265,7 @@ export default class ManageEvaluationCriteria extends Vue {
             try {
               await EvaluationCriteriorRepository.update(
                 this.tempUpdateCriteria,
-              ).then((res) => {
-              });
+              ).then((res) => {});
               this.reloadData();
               this.dialogUpdateVisible = false;
             } catch (error) {}
@@ -280,8 +280,7 @@ export default class ManageEvaluationCriteria extends Vue {
       ...confirmWarningConfig,
     }).then(async () => {
       try {
-        await EvaluationCriteriorRepository.delete(row.id).then((res) => {
-        });
+        await EvaluationCriteriorRepository.delete(row.id).then((res) => {});
         this.reloadData();
       } catch (error) {}
     });

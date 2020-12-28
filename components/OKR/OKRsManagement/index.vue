@@ -94,7 +94,7 @@ import { confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
 import IconAttention from '@/assets/images/okrs/attention.svg';
-import KeyResult from '@/components/okrs/add-update/KeyResult.vue';
+import KeyResult from '@/components/OKR/OKRsManagement/OKRsManagementKeyResultAdd.vue';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import { Form } from 'element-ui';
 @Component<RootOKRs>({

@@ -52,7 +52,7 @@ import { ParamsUser } from '@/constants/DTO/common';
 import EmployeeRepository from '@/repositories/EmployeeRepository';
 import TeamRepository from '@/repositories/TeamRepository';
 import { pageLimit } from '@/constants/app.constant';
-import CommonPagination from '@/components/Commons/CommonPagination.vue';
+import CommonPagination from '@/components/Common/CommonPagination.vue';
 import EmployeesActive from '@/components/Employees/EmployeesActive.vue';
 import EmployeesHeader from '@/components/Employees/EmployeesHeader.vue';
 

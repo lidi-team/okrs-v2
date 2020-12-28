@@ -5,20 +5,28 @@
         v-loading="loadingTable"
         :data="tableData"
         empty-text="Không có dữ liệu"
-        class="team-admin"
+        class="unit-admin"
       >
-        <el-table-column prop="name" label="Tên phòng ban"></el-table-column>
-        <el-table-column prop="description" label="Mô tả"></el-table-column>
+        <el-table-column prop="index" label="Thứ tự sắp xếp" />
+        <el-table-column prop="type" label="Tên đơn vị" />
+        <el-table-column prop="present" label="Tên viết tắt" />
         <el-table-column label="Thao tác" align="center">
           <template v-slot="{ row }">
-            <el-tooltip class="team-admin__icon" content="Cập nhật" placement="top">
+            <el-tooltip
+              class="unit-admin__icon"
+              content="Cập nhật"
+              placement="top"
+            >
               <i
                 class="el-icon-edit icon--info"
                 @click="handleOpenDialogUpdate(row)"
               ></i>
             </el-tooltip>
-            <el-tooltip class="team-admin__icon" content="Xóa" placement="top">
-              <i class="el-icon-delete icon--delete" @click="deleteRow(row)"></i>
+            <el-tooltip class="unit-admin__icon" content="Xóa" placement="top">
+              <i
+                class="el-icon-delete icon--delete"
+                @click="deleteRow(row)"
+              ></i>
             </el-tooltip>
           </template>
         </el-table-column>
@@ -32,41 +40,51 @@
       />
     </div>
     <el-dialog
-      title="Cập nhật phòng ban"
+      title="Cập nhật đơn vị đo lường"
       :visible.sync="dialogUpdateVisible"
       width="30%"
       placement="center"
       :before-close="handleCloseDialog"
-      class="team-admin-dialog"
+      class="unit-admin-dialog"
     >
       <el-row>
         <el-col :span="24">
           <el-form
-            ref="tempUpdateTeam"
-            :model="tempUpdateTeam"
+            ref="tempUpdateUnit"
+            :model="tempUpdateUnit"
             :hide-required-asterisk="false"
             :status-icon="true"
             :rules="rules"
           >
             <el-form-item
-              label="Tên phòng ban"
-              prop="name"
+              label="Tên đơn vị"
+              prop="type"
               class="custom-label"
               label-width="120px"
             >
               <el-input
-                v-model="tempUpdateTeam.name"
-                placeholder="Nhập tên phòng ban"
-                @keyup.enter.native="handleUpdate(tempUpdateTeam)"
+                v-model="tempUpdateUnit.type"
+                placeholder="Nhập tên đơn vị"
+                @keyup.enter.native="handleUpdate(tempUpdateUnit)"
               />
             </el-form-item>
-            <el-form-item label="Mô tả" prop="description" label-width="120px">
+            <el-form-item label="Tên viết tắt" label-width="120px">
               <el-input
-                v-model="tempUpdateTeam.description"
-                type="textarea"
-                :autosize="autoSizeConfig"
-                placeholder="Nhập mô tả"
-                @keyup.enter.native="handleUpdate(tempUpdateTeam)"
+                v-model="tempUpdateUnit.present"
+                placeholder="Nhập tên viết tắt"
+                @keyup.enter.native="handleUpdate(tempUpdateUnit)"
+              />
+            </el-form-item>
+            <el-form-item
+              label="Thứ tự hiển thị"
+              prop="index"
+              class="custom-label"
+              label-width="120px"
+            >
+              <el-input
+                v-model.number="tempUpdateUnit.index"
+                placeholder="Nhập thứ tự hiển thị"
+                @keyup.enter.native="handleUpdate(tempUpdateUnit)"
               />
             </el-form-item>
           </el-form>
@@ -90,20 +108,16 @@
 <script lang="ts">
 import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
-
 import { max255Char } from '@/constants/account.constant';
-import {
-  confirmWarningConfig,
-} from '@/constants/app.constant';
+import { confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
-import { TeamDTO } from '@/constants/app.interface';
-import TeamRepository from '@/repositories/TeamRepository';
+import { MeasureUnitDTO } from '@/constants/app.interface';
 import { AdminTabsEn } from '@/constants/app.enum';
+import MeasureUnitRepository from '@/repositories/MeasureRepository';
+import CommonPagination from '@/components/Common/CommonPagination.vue';
 
-import CommonPagination from '@/components/Commons/CommonPagination.vue';
-
-@Component<ManageDepartment>({
-  name: 'ManageDepartment',
+@Component<ManageMeasureUnit>({
+  name: 'ManageMeasureUnit',
   components: {
     CommonPagination,
   },
@@ -114,7 +128,7 @@ import CommonPagination from '@/components/Commons/CommonPagination.vue';
     }, 500);
   },
 })
-export default class ManageDepartment extends Vue {
+export default class ManageMeasureUnit extends Vue {
   @Prop(Array) public tableData!: Object[];
   @Prop(Function) public reloadData!: Function;
   @Prop({ type: Number, required: true }) public total!: number;
@@ -123,18 +137,24 @@ export default class ManageDepartment extends Vue {
   public syncLimit!: number;
 
   public loadingTable: boolean = false;
-  private autoSizeConfig = { minRows: 2, maxRows: 4 };
-  private dateFormat: string = 'dd/MM/yyyy';
   private dialogUpdateVisible: boolean = false;
-  private tempUpdateTeam: TeamDTO = {
-    name: '',
-    description: '',
-    updatedAt: null,
+  private tempUpdateUnit: MeasureUnitDTO = {
+    type: '',
+    present: '',
+    index: 1,
   };
 
   private rules: Maps<Rule[]> = {
-    name: [{ validator: this.sanitizeInput, trigger: 'change' }, max255Char],
-    description: [max255Char],
+    type: [{ validator: this.sanitizeInput, trigger: 'blur' }, max255Char],
+    index: [
+      {
+        type: 'number',
+        min: 1,
+        required: true,
+        message: 'Thứ tự phải là 1 số nguyên không âm',
+        trigger: 'blur',
+      },
+    ],
   };
 
   private sanitizeInput(
@@ -144,33 +164,35 @@ export default class ManageDepartment extends Vue {
   ): (message?: string) => any {
     const isEmpty = (value: string) => !value.trim().length;
     if (value.length === 0) {
-      return callback('Vui lòng nhập tên phòng ban');
+      return callback('Vui lòng nhập tên đơn vị');
     }
     if (isEmpty(value)) {
-      return callback('Tên phòng ban không được chỉ chứa dấu cách');
+      return callback('Tên đơn vị không được chỉ chứa dấu cách');
     }
     return callback();
   }
 
-  private handleOpenDialogUpdate(row: TeamDTO): void {
-    this.tempUpdateTeam = {
+  private handleOpenDialogUpdate(row: MeasureUnitDTO): void {
+    this.tempUpdateUnit = {
       id: row.id,
-      name: row.name,
-      description: row.description,
+      type: row.type,
+      present: row.present,
+      index: row.index,
     };
     this.dialogUpdateVisible = true;
   }
 
   private handleUpdate(): void {
-    (this.$refs.tempUpdateTeam as Form).validate(
+    (this.$refs.tempUpdateUnit as Form).validate(
       (isValid: boolean, invalidatedFields: object) => {
         if (isValid) {
-          this.$confirm(`Bạn có chắc chắn muốn cập nhật phòng ban này không?`, {
+          this.$confirm(`Bạn có chắc chắn muốn cập nhật đơn vị này không?`, {
             ...confirmWarningConfig,
           }).then(async () => {
             try {
-              await TeamRepository.update(this.tempUpdateTeam).then((res) => {
-              });
+              await MeasureUnitRepository.update(
+                this.tempUpdateUnit,
+              ).then((res) => {});
               this.reloadData();
               this.dialogUpdateVisible = false;
             } catch (error) {}
@@ -180,31 +202,32 @@ export default class ManageDepartment extends Vue {
     );
   }
 
-  private deleteRow(row: TeamDTO): void {
-    this.$confirm(`Bạn có chắc chắn muốn xóa phòng ban ${row.name}?`, {
+  private deleteRow(row: MeasureUnitDTO): void {
+    this.$confirm(`Bạn có chắc chắn muốn xóa đơn vị ${row.type}?`, {
       ...confirmWarningConfig,
     }).then(async () => {
       try {
-        await TeamRepository.delete(row.id).then((res) => {
-        });
+        await MeasureUnitRepository.delete(row.id).then((res) => {});
         this.reloadData();
       } catch (error) {}
     });
   }
 
   private handlePagination(pagination: any) {
-    this.$router.push(`?tab=${AdminTabsEn.Department}&page=${pagination.page}`);
+    this.$router.push(
+      `?tab=${AdminTabsEn.MeasureUnit}&page=${pagination.page}`,
+    );
   }
 
   private handleCloseDialog(): void {
-    (this.$refs.tempUpdateTeam as Form).clearValidate();
+    (this.$refs.tempUpdateUnit as Form).clearValidate();
     this.dialogUpdateVisible = false;
   }
 }
 </script>
 <style lang="scss">
 @import '@/assets/scss/main.scss';
-.team-admin {
+.unit-admin {
   width: 100%;
   &__icon {
     cursor: pointer;

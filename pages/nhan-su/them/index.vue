@@ -133,7 +133,7 @@ import EmployeeRepository from '@/repositories/EmployeeRepository';
 import { EmployeeDTO } from '@/constants/app.interface';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
-import StaffDialog from '@/components/admin/dialog/NewStaffDialog.vue';
+import StaffDialog from '@/components/Admins/AdminDialog/AdminDialogStaff.vue';
 
 @Component<CreateEmployee>({
   name: 'CreateEmployee',

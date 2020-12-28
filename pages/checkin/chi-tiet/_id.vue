@@ -84,8 +84,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
-import CheckinDetail from '@/components/Checkins/CheckinDetail/CheckinDetailIndex.vue';
-import CheckinDetailChart from '@/components/Checkins/CheckinDetail/CheckinDetailChart.vue';
+import CheckinDetail from '@/components/Checkin/CheckinDetail/CheckinDetailIndex.vue';
+import CheckinDetailChart from '@/components/Checkin/CheckinDetail/CheckinDetailChart.vue';
 
 @Component({
   head() {

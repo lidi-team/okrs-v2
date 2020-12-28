@@ -100,7 +100,9 @@
                 </div>
               </div>
               <div class="item__right">
-                <span class="item__right__value">{{ item.evaluationCriteria.numberOfStar }}</span>
+                <span class="item__right__value">{{
+                  item.evaluationCriteria.numberOfStar
+                }}</span>
                 <icon-star-dashboard />
               </div>
             </div>
@@ -174,7 +176,9 @@
                 </div>
               </div>
               <div class="item__right">
-                <span class="item__right__value">{{ item.evaluationCriteria.numberOfStar }}</span>
+                <span class="item__right__value">{{
+                  item.evaluationCriteria.numberOfStar
+                }}</span>
                 <icon-star-dashboard />
               </div>
             </div>
@@ -209,8 +213,7 @@ import { itemCfrsDefault } from './history.const';
 import IconStarDashboard from '@/assets/images/dashboard/star-dashboard.svg';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import { MutationState } from '@/constants/app.vuex';
-// components
-import CfrsDetailHistory from '@/components/cfrs/history/DetailHistory.vue';
+import CfrsDetailHistory from '@/components/CFR/CFRsHistory/CFRsHistoryDetail.vue';
 
 @Component<History>({
   name: 'History',

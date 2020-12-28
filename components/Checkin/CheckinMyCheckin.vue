@@ -160,7 +160,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { statusCheckin } from '@/constants/app.constant';
 import CheckinRepository from '@/repositories/CheckinRepository';
-import Pagination from '@/components/Commons/CommonPagination.vue';
+import Pagination from '@/components/Common/CommonPagination.vue';
 import { ROUTER_CHECKIN } from './constants.enum';
 
 @Component<MyOkrsCheckin>({

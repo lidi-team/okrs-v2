@@ -5,7 +5,7 @@
       <h1 class="-title-1">Chi tiết mục tiêu</h1>
     </div>
     <div class="box-wrap">
-      <h2 class="-title-2 -text-uppercase">{{objective.title}}</h2>
+      <h2 class="-title-2 -text-uppercase">{{ objective.title }}</h2>
       <el-row>
         <el-col :span="4">
           <p class="-mb-3 -mt-3 label">Được tạo bởi:</p>
@@ -15,19 +15,30 @@
           <p class="-mb-3 label">Tiến độ:</p>
         </el-col>
         <el-col :span="20">
-          <p class="-font-bold -text-italic -mb-3 -mt-3">{{objective.user.name}}</p>
+          <p class="-font-bold -text-italic -mb-3 -mt-3">
+            {{ objective.user.name }}
+          </p>
           <el-rate
             class="-mb-3"
             v-model="objective.weight"
             disabled
-            :icon-classes="['el-icon-success', 'el-icon-success', 'el-icon-success']"
+            :icon-classes="[
+              'el-icon-success',
+              'el-icon-success',
+              'el-icon-success',
+            ]"
             disabled-void-icon-class="el-icon-success"
-            disabled-void-color='#FBCFE8'
+            disabled-void-color="#FBCFE8"
             :colors="['#EC4899', '#DB2777', '#BE185D']"
           />
-          <p class="-mb-3" v-if="!!objective.project">{{objective.project.name}}</p>
           <p class="-mb-3" v-if="!!objective.project">
-            <nuxt-link class="el-link" :to="`/okrs/chi-tiet/${objective.project.id}`">
+            {{ objective.project.name }}
+          </p>
+          <p class="-mb-3" v-if="!!objective.project">
+            <nuxt-link
+              class="el-link"
+              :to="`/okrs/chi-tiet/${objective.project.id}`"
+            >
               {{ objective.parentObjective.name }}
             </nuxt-link>
           </p>
@@ -138,7 +149,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import DetailOkrs from '@/components/okrs/detail/DetailOkrs.vue';
+import DetailOkrs from '@/components/OKR/OKRsDetail/OKRsDetailKeyResults.vue';
 
 @Component<OkrsDetailPage>({
   head() {
@@ -161,7 +172,7 @@ import DetailOkrs from '@/components/okrs/detail/DetailOkrs.vue';
 })
 export default class OkrsDetailPage extends Vue {
   private goBack() {
-    this.$router.go(-1)
+    this.$router.go(-1);
   }
 }
 </script>

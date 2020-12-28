@@ -10,7 +10,9 @@
             <p class="-mb-2 -mt-2 label">Mục tiêu:</p>
           </el-col>
           <el-col :span="18">
-            <p class="-font-bold -text-italic -mb-2 -mt-2 value">{{ checkin.objective.title }}</p>
+            <p class="-font-bold -text-italic -mb-2 -mt-2 value">
+              {{ checkin.objective.title }}
+            </p>
           </el-col>
         </el-row>
         <el-row>
@@ -26,7 +28,7 @@
             <p class="-mb-2 label">Tiến độ thực hiện:</p>
           </el-col>
           <el-col :span="18">
-            <p class="-mb-2 value">{{checkin.objective.progress}}%</p>
+            <p class="-mb-2 value">{{ checkin.objective.progress }}%</p>
           </el-col>
         </el-row>
         <el-row>
@@ -34,7 +36,9 @@
             <p class="-mb-2 label">Tiến độ gợi ý:</p>
           </el-col>
           <el-col :span="18">
-            <p class="-mb-2 value">{{ checkin.objective.progressSuggest | round }}%</p>
+            <p class="-mb-2 value">
+              {{ checkin.objective.progressSuggest | round }}%
+            </p>
           </el-col>
         </el-row>
       </div>
@@ -51,8 +55,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import CheckinRepository from '@/repositories/CheckinRepository';
-import CheckinDetail from '@/components/Checkins/CheckinDetail/CheckinDetailIndex.vue';
-import CheckinDetailChart from '@/components/Checkins/CheckinDetail/CheckinDetailChart.vue';
+import CheckinDetail from '@/components/Checkin/CheckinDetail/CheckinDetailIndex.vue';
+import CheckinDetailChart from '@/components/Checkin/CheckinDetail/CheckinDetailChart.vue';
 
 @Component({
   head() {

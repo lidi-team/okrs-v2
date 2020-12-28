@@ -153,9 +153,9 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import { EvaluationCriteriaEnum } from '@/constants/app.enum';
 import { ParamsQuery } from '@/constants/DTO/common';
-import CommonPagination from '@/components/Commons/CommonPagination.vue';
-import CfrsCreateFeedback from '@/components/cfrs/feedback/CreateFeedback.vue';
-import CfrsDetailFeedback from '@/components/cfrs/feedback/DetailFeedback.vue';
+import CommonPagination from '@/components/Common/CommonPagination.vue';
+import CfrsCreateFeedback from '@/components/CFR/CFRsFeedback/CFRsFeedbackCreate.vue';
+import CfrsDetailFeedback from '@/components/CFR/CFRsFeedback/CFRsFeedbackDetail.vue';
 
 @Component<Feedback>({
   name: 'Feedback',

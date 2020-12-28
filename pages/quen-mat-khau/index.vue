@@ -1,17 +1,22 @@
 <template>
-<div class="-display-flex -justify-content-center -align-items-center -h-100vh">
+  <div
+    class="-display-flex -justify-content-center -align-items-center -h-100vh"
+  >
     <div class="-align-items-center">
-      <img src="@/assets/images/account/tiny-forgot-password.png" alt="login image" />
+      <img
+        src="@/assets/images/account/tiny-forgot-password.png"
+        alt="login image"
+      />
     </div>
     <div class="-align-items-center">
-      <account-forgot-password class="box-wrap"/>
+      <account-forgot-password class="box-wrap" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import AccountForgotPassword from '@/components/Accounts/AccountForgotPassword.vue';
+import AccountForgotPassword from '@/components/Account/AccountForgotPassword.vue';
 @Component<ForgotPasswordPage>({
   name: 'ForgotPasswordPage',
   layout: 'empty',

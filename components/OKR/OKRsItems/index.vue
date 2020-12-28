@@ -157,12 +157,12 @@
 <script lang="ts">
 import { Component, Vue, Prop } from 'vue-property-decorator';
 import IconEllipse from '@/assets/images/okrs/ellipse.svg';
-import ActionTooltip from '@/components/okrs/common/ActionTooltip.vue';
-import ButtonCreateOkr from '@/components/okrs/common/Button.vue';
+import ActionTooltip from '@/components/Common/CommonOKRsTooltipAction.vue';
+import ButtonCreateOkr from '@/components/Common/CommonOKRsButtonCreate.vue';
 import { ObjectiveDTO } from '@/constants/DTO/okrs';
 import { DispatchAction } from '@/constants/app.vuex';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import RootOkrsDialog from '@/components/okrs/add-update/RootOKRs.vue';
+import RootOkrsDialog from '@/components/OKR/OKRsManagement/index.vue';
 
 @Component<OKRsItem>({
   name: 'OKRsItem',

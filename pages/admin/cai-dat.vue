@@ -56,16 +56,16 @@
 </template>
 <script lang="ts">
 import { Component, Vue, Watch } from 'vue-property-decorator';
-import ManageCycleOkrs from '@/components/admin/CycleOkrs.vue';
-import ManageMeasureUnit from '@/components/admin/MeasureUnit.vue';
-import ManageDepartment from '@/components/admin/Department.vue';
-import ManageEvaluationCriteria from '@/components/admin/EvaluationCriteria.vue';
-import ManageJobPosition from '@/components/admin/JobPosition.vue';
-import NewCycleOkrsDialog from '@/components/admin/dialog/NewCycleOkrsDialog.vue';
-import NewUnitDialog from '@/components/admin/dialog/NewUnitDialog.vue';
-import NewDepartmentDialog from '@/components/admin/dialog/NewDepartmentDialog.vue';
-import NewCriteriaDialog from '@/components/admin/dialog/NewCriteriaDialog.vue';
-import NewJobDialog from '@/components/admin/dialog/NewJobDialog.vue';
+import ManageCycle from '@/components/Admins/AdminCycle.vue';
+import ManageMeasureUnit from '@/components/Admins/AdminMeasureUnit.vue';
+import ManageDepartment from '@/components/Admins/AdminDepartment.vue';
+import ManageEvaluationCriteria from '@/components/Admins/AdminEvaluationCriteria.vue';
+import ManageJobPosition from '@/components/Admins/AdminJobPosition.vue';
+import NewCycleDialog from '@/components/Admins/AdminDialog/AdminDialogCycle.vue';
+import NewUnitDialog from '@/components/Admins/AdminDialog/AdminDialogMeasureUnit.vue';
+import NewDepartmentDialog from '@/components/Admins/AdminDialog/AdminDialogDepartment.vue';
+import NewCriteriaDialog from '@/components/Admins/AdminDialog/AdminDialogCriteria.vue';
+import NewJobDialog from '@/components/Admins/AdminDialog/AdminDialogJob.vue';
 import TeamRepository from '@/repositories/TeamRepository';
 import CycleRepository from '@/repositories/CycleRepository';
 import JobRepository from '@/repositories/JobRepository';
@@ -212,7 +212,7 @@ export default class SettingCompanyPage extends Vue {
       this.$route.query.tab === undefined ||
       this.$route.query.tab === AdminTabsEn.CycleOKR
     ) {
-      return ManageCycleOkrs;
+      return ManageCycle;
     } else if (this.$route.query.tab === AdminTabsEn.Department) {
       return ManageDepartment;
     } else if (this.$route.query.tab === AdminTabsEn.JobPosition) {
@@ -226,7 +226,7 @@ export default class SettingCompanyPage extends Vue {
 
   private get currentDialogComponent() {
     if (this.topChange!.tab === 1) {
-      return NewCycleOkrsDialog;
+      return NewCycleDialog;
     } else if (this.topChange!.tab === 2) {
       return NewDepartmentDialog;
     } else if (this.topChange!.tab === 3) {

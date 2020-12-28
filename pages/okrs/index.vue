@@ -81,11 +81,11 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { MutationState, GetterState } from '@/constants/app.vuex';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import CycleRepository from '@/repositories/CycleRepository';
-import AddOkrs from '@/components/okrs/add-update/index.vue';
-import ButtonCreateOkr from '@/components/okrs/common/Button.vue';
-import ItemOkrs from '@/components/okrs/ItemOkrs.vue';
-import DetailKeyresult from '@/components/okrs/dialog/DetailKeyresult.vue';
-import RootOkrsDialog from '@/components/okrs/add-update/RootOKRs.vue';
+import AddOkrs from '@/components/OKR/OKRsManagement/index.vue';
+import ButtonCreateOkr from '@/components/Common/CommonOKRsButtonCreate.vue';
+import ItemOkrs from '@/components/OKR/OKRsItems/index.vue';
+import DetailKeyresult from '@/components/OKR/OKRsDialog/OKRsDialogKeyresult.vue';
+import RootOkrsDialog from '@/components/OKR/OKRsManagement/index.vue';
 
 @Component<OKRsPage>({
   name: 'OKRsPage',
@@ -178,8 +178,8 @@ export default class OKRsPage extends Vue {
       cycleId: this.$route.query.cycleId
         ? this.$route.query.cycleId
         : this.$store.state.cycle.cycleCurrent,
-    })
-    this.okrsCompany = res.data
+    });
+    this.okrsCompany = res.data;
     this.loading = false;
   }
 

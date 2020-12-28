@@ -1,5 +1,7 @@
 <template>
-  <div class="-display-flex -justify-content-center -align-items-center -h-100vh">
+  <div
+    class="-display-flex -justify-content-center -align-items-center -h-100vh"
+  >
     <div class="-align-items-center">
       <img src="@/assets/images/account/tiny-login.png" alt="login image" />
     </div>
@@ -11,7 +13,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import AccountLogin from '@/components/Accounts/AccountLogin.vue';
+import AccountLogin from '@/components/Account/AccountLogin.vue';
 @Component<LoginPage>({
   components: {
     AccountLogin,

@@ -16,35 +16,6 @@
         />
       </el-select>
     </el-col>
-    <!--<el-col :xs="12" :sm="12" :md="12" :lg="12">
-      <el-autocomplete
-        v-model="textSearch"
-        prefix-icon="el-icon-search"
-        :fetch-suggestions="querySearch"
-        :trigger-on-focus="true"
-        placeholder="Tìm kiếm CFRs của"
-        @select="handleSearchSelect"
-      >
-        <template v-slot="{ item }">
-          <div class="navbar-history__search">
-            <el-avatar :size="40">
-              <img
-                :src="item.avatarURL | filterImage"
-                alt="avatar"
-              />
-            </el-avatar>
-            <div class="navbar-history__search&#45;&#45;info">
-              <b class="navbar-history__search&#45;&#45;info&#45;&#45;fullName">{{
-                item.fullName
-              }}</b>
-              <p class="navbar-history__search&#45;&#45;info&#45;&#45;department">
-                {{ getInforUser(item) }}
-              </p>
-            </div>
-          </div>
-        </template>
-      </el-autocomplete>
-    </el-col>-->
   </el-row>
 </template>
 <script lang="ts">

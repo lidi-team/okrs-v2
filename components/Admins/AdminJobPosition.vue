@@ -11,7 +11,11 @@
       </el-table-column>-->
       <el-table-column label="Thao tác" align="center">
         <template v-slot="{ row }">
-          <el-tooltip class="job-admin__icon" content="Cập nhật" placement="top">
+          <el-tooltip
+            class="job-admin__icon"
+            content="Cập nhật"
+            placement="top"
+          >
             <i
               class="el-icon-edit icon--info"
               @click="handleOpenDialogUpdate(row)"
@@ -91,15 +95,13 @@ import { Component, Vue, Prop, PropSync } from 'vue-property-decorator';
 import { Form } from 'element-ui';
 
 import { max255Char } from '@/constants/account.constant';
-import {
-  confirmWarningConfig,
-} from '@/constants/app.constant';
+import { confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { JobPositionDTO } from '@/constants/app.interface';
 import JobRepository from '@/repositories/JobRepository';
 import { AdminTabsEn } from '@/constants/app.enum';
 
-import CommonPagination from '@/components/Commons/CommonPagination.vue';
+import CommonPagination from '@/components/Common/CommonPagination.vue';
 
 @Component<ManageJobPosition>({
   name: 'ManageJobPosition',
@@ -170,8 +172,7 @@ export default class ManageJobPosition extends Vue {
             ...confirmWarningConfig,
           }).then(async () => {
             try {
-              await JobRepository.update(this.tempUpdateJob).then((res) => {
-              });
+              await JobRepository.update(this.tempUpdateJob).then((res) => {});
               this.loading = false;
               this.reloadData();
               this.dialogUpdateVisible = false;
@@ -192,8 +193,7 @@ export default class ManageJobPosition extends Vue {
       ...confirmWarningConfig,
     }).then(async () => {
       try {
-        await JobRepository.delete(row.id).then((res) => {
-        });
+        await JobRepository.delete(row.id).then((res) => {});
         this.reloadData();
       } catch (error) {}
     });

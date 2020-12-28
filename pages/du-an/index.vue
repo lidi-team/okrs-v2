@@ -52,11 +52,11 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { ProjectStatus } from '@/constants/app.enum';
 import { ParamsProject } from '@/constants/DTO/common';
 import { pageLimit } from '@/constants/app.constant';
-import CommonPagination from '@/components/Commons/CommonPagination.vue';
+import CommonPagination from '@/components/Common/CommonPagination.vue';
 import ProjectRepository from '@/repositories/ProjectRepository';
 import HeadProject from '@/components/Projects/ProjectHeader.vue';
 import ProjectAll from '@/components/Projects/ProjectList.vue';
-import ProjectDialog from '@/components/admin/dialog/NewProjectDialog.vue';
+import ProjectDialog from '@/components/Admins/AdminDialog/AdminDialogProject.vue';
 import { mapGetters } from 'vuex';
 import { GetterState } from '@/constants/app.vuex';
 
