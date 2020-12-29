@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, PropSync, Vue } from 'vue-property-decorator';
+import { Component, Prop, PropSync, Vue, Watch } from 'vue-property-decorator';
 import { confirmWarningConfig } from '@/constants/app.constant';
 import { Maps, Rule } from '@/constants/app.type';
 import { max255Char } from '@/constants/account.constant';
@@ -124,7 +124,13 @@ export default class RootOKRs extends Vue {
         keyResults: [],
       };
 
+  @Watch('okr')
+  private updateOkrTemp() {
+    this.tempOkrs = { ...this.okr };
+  }
+
   private handleCloseDialog() {
+    console.log('this.okr: ', this.okr);
     this.$confirm(
       'Bạn có chắc chắn muốn thoát, hệ thống sẽ không lưu lại các giá trị cũ?',
       { ...confirmWarningConfig },

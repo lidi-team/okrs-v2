@@ -2,7 +2,11 @@
   <div>
     <el-page-header title="Quay lại" @back="goBack" />
     <h1 class="-title-1">Chi tiết dự án</h1>
-    <div v-if="!!projectData" class="box-wrap">
+    <div
+      v-if="!!projectData"
+      class="box-wrap"
+      v-loading.fullscreen.lock="isloading"
+    >
       <h2 class="-title-2">
         {{ projectData.name }}
       </h2>
