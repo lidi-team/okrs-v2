@@ -151,8 +151,7 @@ export default class CycleOkrsDialog extends Vue {
               startDate: formatDateToYYYY(this.temCreateCycle.startDate),
               endDate: formatDateToYYYY(this.temCreateCycle.endDate),
             };
-            await CycleRepository.post(tempCycle).then((res) => {
-            });
+            await CycleRepository.post(tempCycle).then((res) => {});
             this.loading = false;
             this.clearForm();
             this.reloadData();

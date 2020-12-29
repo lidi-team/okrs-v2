@@ -107,10 +107,7 @@
                     </el-col>
                     <el-col :sm="24" :md="12">
                       <el-form-item prop="position" label="Vai trò">
-                        <div
-                          v-bind:key="role"
-                          v-for="role in profileForm.roles"
-                        >
+                        <div :key="role" v-for="role in profileForm.roles">
                           <el-tag>
                             {{ getRole(role) }}
                           </el-tag>

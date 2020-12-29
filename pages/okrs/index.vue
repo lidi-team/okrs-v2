@@ -87,7 +87,7 @@ import OkrsRepository from '@/repositories/OkrsRepository';
 import CycleRepository from '@/repositories/CycleRepository';
 import AddOkrs from '@/components/OKRs/OkrsKeyResult/index.vue';
 import ItemOkrs from '@/components/OKRs/OkrsItems/index.vue';
-import DetailKeyresult from '@/components/OKRs/OkrsDialog/OkrsDialogCompany.vue';
+import DetailKeyresult from '@/components/OKRs/OkrsDialog/OkrsDialogKeyresult.vue';
 import RootOkrsDialog from '@/components/OKRs/OkrsDialog/OkrsDialogCompany.vue';
 
 @Component<OKRsPage>({
@@ -151,7 +151,7 @@ export default class OKRsPage extends Vue {
   }
 
   @Watch('loading')
-  private async changeLoading(value: any) {
+  private changeLoading(value: any) {
     if (value === true) {
       this.currentCycleId = 'Đang tải...';
     } else {

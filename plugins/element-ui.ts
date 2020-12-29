@@ -290,11 +290,11 @@ Vue.component(
 );
 Vue.component(
   elComponent.ElBadge,
-  () => 
+  () =>
     import(
       /* webpackChunkName: 'element-ui-back-top' */ 'element-ui/lib/badge'
-    )
-)
+    ),
+);
 
 // import prototype Vue
 Vue.use(Loading.directive);

@@ -88,14 +88,14 @@ export default class CreateAlignObjective extends Vue {
     this.$store.commit(MutationState.SET_OBJECTIVE, {
       alignmentObjectives: alignObjectives,
     });
-    console.log(JSON.stringify(this.$store.state.okrs.objective))
+    console.log(JSON.stringify(this.$store.state.okrs.objective));
     await OkrsRepository.createOrUpdateOkrs(
-      this.$store.state.okrs.objective)
-      .then((res) => {
+      this.$store.state.okrs.objective,
+    ).then((res) => {
       this.$store.dispatch(DispatchAction.CLOSE_DIALOG_OKRS);
       this.$store.commit(MutationState.OKRS_SET_FLAG);
       this.syncActive = 0;
-      });
+    });
     this.loading = false;
   }
 

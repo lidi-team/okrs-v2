@@ -233,9 +233,9 @@ import { formatDateToDD, compareTwoDate } from '@/utils/dateParser';
         id = null,
         nextCheckinDate,
       } = this.syncCheckin.checkin;
-      nextCheckinDate
-        ? (this.nextCheckinDate = new Date(nextCheckinDate))
-        : null;
+      if (nextCheckinDate) {
+        this.nextCheckinDate = new Date(nextCheckinDate);
+      }
       this.checkinStatus = status;
       this.idCheckin = id;
     }
