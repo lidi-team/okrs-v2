@@ -93,7 +93,7 @@ import DrillDownItem from '@/components/DrillDown/DrillDownItem.vue';
 import DrillDownRepository from '@/repositories/DrillDownRepository';
 import { filterKeyresults } from '@/utils/filters';
 import KeyResult from '@/components/OKRs/OkrsManagement/OkrsManagementStepKeyResult/OkrsManagementStepKeyResultItem.vue';
-import DetailKeyresult from '@/components/OKRs/OkrsDialog/OKRsDialogKeyresult.vue';
+import DetailKeyresult from '@/components/OKRs/OkrsDialog/OkrsDialogKeyresult.vue';
 
 @Component<DrillDownPage>({
   name: 'DrillDownPage',

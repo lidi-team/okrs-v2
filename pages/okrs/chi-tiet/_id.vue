@@ -149,7 +149,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import OkrsRepository from '@/repositories/OkrsRepository';
-import DetailOkrs from '@/components/OKRs/OKRsDetail/OKRsDetailKeyResults.vue';
+import DetailOkrs from '@/components/OKRs/OkrsDetail/OkrsDetailKeyResults.vue';
 
 @Component<OkrsDetailPage>({
   head() {

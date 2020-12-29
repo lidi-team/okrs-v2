@@ -161,7 +161,7 @@ import { ObjectiveDTO } from '@/constants/DTO/okrs';
 import { DispatchAction } from '@/constants/app.vuex';
 import OkrsRepository from '@/repositories/OkrsRepository';
 import RootOkrsDialog from '@/components/OKRs/OkrsDialog/OkrsDialogCompany.vue';
-import ActionTooltip from '@/components/Common/CommonOKRsTooltipAction.vue';
+import ActionTooltip from '@/components/Common/CommonOkrsTooltipAction.vue';
 import CommonOkrsButtonCreate from '@/components/Common/CommonOkrsButtonCreate.vue';
 
 @Component<OKRsItem>({
