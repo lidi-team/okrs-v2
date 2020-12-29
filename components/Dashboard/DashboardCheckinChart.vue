@@ -4,8 +4,9 @@
 
 <script>
 import { init, registerTheme } from 'echarts';
-require('echarts/theme/macarons');
 import resize from '@/mixins/resize';
+require('echarts/theme/macarons');
+
 export default {
   mixins: [resize],
   props: {
@@ -35,17 +36,17 @@ export default {
       chart: null,
     };
   },
-  mounted() {
-    registerTheme('macarons', {
-      color: ['#32C8FF', '#FF106E', '#FFC832'],
-    });
-  },
   watch: {
-    loading: function (value) {
+    loading(value) {
       if (value === false) {
         this.initChart();
       }
     },
+  },
+  mounted() {
+    registerTheme('macarons', {
+      color: ['#32C8FF', '#FF106E', '#FFC832'],
+    });
   },
   beforeDestroy() {
     if (!this.chart) {

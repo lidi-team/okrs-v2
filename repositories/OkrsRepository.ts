@@ -5,7 +5,8 @@ export const enpoint = {
   listOkrByCycleId: 'objective/project-list',
   createOrUpdateOkrs: 'objective/add',
   getDetailOkrsById: 'objective/detail',
-  getObjectiveCompany: 'objective/company'
+  getObjectiveCompany: 'objective/company',
+  getDashboaard: 'objective/dashboard/progress',
 };
 export default class OkrsRepository {
   public static getListOkrsByCycleId(
@@ -23,6 +24,10 @@ export default class OkrsRepository {
   }
 
   public static getObjectiveCompany(params: any): Promise<AxiosResponse<any>> {
+    return baseUrl.get(enpoint.getObjectiveCompany, { params });
+  }
+
+  public static getDashboard(params: any): Promise<AxiosResponse<any>> {
     return baseUrl.get(enpoint.getObjectiveCompany, { params });
   }
 }

@@ -179,9 +179,11 @@ export default {
     },
     ki: {
       default: 0,
+      type: Number,
     },
     value: {
       default: true,
+      type: Boolean,
     },
     url: {
       type: String,

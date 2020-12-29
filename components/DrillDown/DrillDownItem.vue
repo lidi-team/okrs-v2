@@ -114,7 +114,7 @@ import KeyResult from '@/components/OKRs/OkrsKeyResult/OkrsKeyResultOverview.vue
   filters: {
     filterKeyresults,
   },
-  async mounted() {
+  mounted() {
     this.currentCycleId =
       this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
     this.getDrillDown(this.currentCycleId, this.idSelected);
@@ -133,7 +133,7 @@ export default class DrillDownObject extends Vue {
   private currentCycleId: string = '0';
 
   @Watch('idSelected')
-  private async change(id: any) {
+  private change(id: any) {
     this.getDrillDown(this.currentCycleId, id);
   }
 

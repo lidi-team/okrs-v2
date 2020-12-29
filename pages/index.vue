@@ -19,7 +19,8 @@
       </el-select>
     </div>
     <el-row :gutter="20">
-      <el-col :span="24">
+      <el-col :span="16">hello</el-col>
+      <el-col :span="8">
         <div class="box-wrap">
           <h2 class="-title-2 -border-header">Tình trạng cập nhật tiến độ</h2>
           <dashboard-checkin-chart
@@ -29,7 +30,6 @@
           />
         </div>
       </el-col>
-      <!-- <el-col :span="12">hello</el-col> -->
     </el-row>
     <el-row :gutter="20">
       <el-col :span="12">
@@ -115,7 +115,7 @@ export default class HomePage extends Vue {
   private loadingCurrentRanking: boolean = false;
 
   @Watch('$route.query')
-  private async getData(query: any) {
+  private getData(query: any) {
     this.getRankingOnCycle(query.cycleId);
   }
 

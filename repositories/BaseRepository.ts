@@ -37,7 +37,7 @@ baseUrl.interceptors.response.use(
   },
   (error) => {
     switch (error.response.status) {
-       case 401:
+      case 401:
         Notification.error({
           ...notificationConfig,
           message: error.response.data.message,

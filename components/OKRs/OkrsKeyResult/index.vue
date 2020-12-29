@@ -21,10 +21,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { mapGetters } from 'vuex';
-import {
-  DispatchAction,
-  GetterState,
-} from '@/constants/app.vuex';
+import { DispatchAction, GetterState } from '@/constants/app.vuex';
 import { confirmWarningConfig } from '@/constants/app.constant';
 import StepObjective from '@/components/OKRs/OkrsManagement/OkrsManagementStepObjective/index.vue';
 import StepKeyResult from '@/components/OKRs/OkrsManagement/OkrsManagementStepKeyResult/index.vue';

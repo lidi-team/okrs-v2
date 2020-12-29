@@ -99,8 +99,7 @@ export default class JobDialog extends Vue {
       async (isValid: boolean, invalidatedFields: object) => {
         if (isValid) {
           try {
-            await JobRepository.post(this.tempCreateJob).then((res) => {
-            });
+            await JobRepository.post(this.tempCreateJob).then((res) => {});
             this.clearForm();
             this.loading = false;
             this.reloadData();

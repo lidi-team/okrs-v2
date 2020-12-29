@@ -105,7 +105,7 @@ import DetailKeyresult from '@/components/OKRs/OkrsDialog/OkrsDialogKeyresult.vu
   filters: {
     filterKeyresults,
   },
-  async mounted() {
+  mounted() {
     const currentCycleId =
       this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
     this.getDrillDown(currentCycleId);
@@ -120,7 +120,7 @@ export default class DrillDownPage extends Vue {
   private dataObjectives: any = [];
 
   @Watch('$route.query')
-  private async getData(query: any) {
+  private getData(query: any) {
     this.getDrillDown(query.cycleId);
   }
 
