@@ -63,6 +63,7 @@ import { max255Char } from '@/constants/account.constant';
 import { LoginDTO } from '@/constants/DTO/auth';
 import { Maps, Rule } from '@/constants/app.type';
 import { DispatchAction } from '@/constants/app.vuex';
+
 @Component<LoginComponent>({
   name: 'LoginSComponent',
 })
@@ -70,8 +71,8 @@ export default class LoginComponent extends Vue {
   private loading: boolean = false;
   private rememberPassword: boolean = false;
   public loginForm: LoginDTO = {
-    email: 'namnhse05817@fpt.edu.vn', // sontung199x@gmail.com
-    password: '123@123a',
+    email: '',
+    password: '',
   };
 
   public rules: Maps<Rule[]> = {

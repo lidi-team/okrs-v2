@@ -246,7 +246,9 @@ import { formatDateToDD, compareTwoDate } from '@/utils/dateParser';
     if (role === 'guest') {
       this.isDisable = true;
     } else if (role === 'user') {
-      this.checkinStatus === 'Draft' || this.checkinStatus === 'Overdue'
+      this.checkinStatus === 'Draft' ||
+      this.checkinStatus === 'Overdue' ||
+      this.checkinStatus === 'Reviewed'
         ? (this.isDisable = false)
         : (this.isDisable = true);
     } else if (role === 'reviewer') {

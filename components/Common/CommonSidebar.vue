@@ -262,9 +262,10 @@ export default class SideBar extends Vue {
 }
 
 .sidebar__link__tab {
+  transition: 1s;
   &:hover {
-    transition-duration: 1s;
     .sidebar__link__tab__icon {
+      transition: 1s;
       transform: translateY(-5px);
     }
   }

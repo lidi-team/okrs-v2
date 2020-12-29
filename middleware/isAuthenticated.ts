@@ -15,7 +15,7 @@ export default async function ({ redirect, store, query }) {
       if (store.state.auth.user === null) {
         const [user, currentCycle] = await Promise.all([
           UserRepository.me(),
-          CycleRepository.getCycleCurrent(query.cycleId ? query.cycleId : 5),
+          CycleRepository.getCycleCurrent(query.cycleId ? query.cycleId : 4),
         ]);
         store.commit(MutationState.SET_USER, user.data);
         store.commit(MutationState.SET_CURRENT_CYCLE, currentCycle.data.id);

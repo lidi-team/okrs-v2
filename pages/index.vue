@@ -20,7 +20,7 @@
     </div>
     <el-row :gutter="20">
       <el-col :span="16">
-        <div class="box-wrap">
+        <div class="box-wrap -mh-405">
           <h2 class="-title-2 -border-header">Tiến độ OKRs</h2>
           <el-row :gutter="20">
             <el-col :span="6"> OKRs Công ty </el-col>
@@ -70,8 +70,8 @@
       </el-col>
     </el-row>
     <el-row :gutter="20">
-      <el-col :span="12">
-        <div class="box-wrap">
+      <el-col :span="8">
+        <div class="box-wrap -mh-405">
           <h2 class="-title-2 -border-header">Top sao trong kỳ</h2>
           <div v-loading="loadingCurrentRanking">
             <p v-if="!currentRanking.length" class="history__col__empty">
@@ -86,8 +86,8 @@
           </div>
         </div>
       </el-col>
-      <el-col :span="12">
-        <div class="box-wrap">
+      <el-col :span="8">
+        <div class="box-wrap -mh-405">
           <h2 class="-title-2 -border-header">Top sao công ty</h2>
           <div v-loading="loadingCurrentRanking">
             <p v-if="!accumulatedRanking.length" class="history__col__empty">
@@ -101,6 +101,13 @@
               :rankData="item"
             ></rank-item>
           </div>
+        </div>
+      </el-col>
+      <el-col :span="8">
+        <div
+          class="box-wrap -mh-405 -display-flex -justify-content-center -align-items-center"
+        >
+          <img src="@/assets/images/dashboard/icon.png" alt="thayacac" />
         </div>
       </el-col>
     </el-row>
