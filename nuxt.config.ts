@@ -7,11 +7,7 @@ const nuxtConfig: NuxtConfig = {
    */
   generate: {
     cache: {
-      ignore: [
-        '.vscode',
-        '.github',
-        '.docker',
-      ],
+      ignore: ['.vscode', '.github', '.docker'],
     },
     fallback: '404.html',
   },
@@ -42,7 +38,7 @@ const nuxtConfig: NuxtConfig = {
    * @docs https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s | Hệ thống quản lý OKRs',
+    titleTemplate: '%s | Công cụ quản trị mục tiêu',
     title: 'Trang chủ',
     meta: [
       { charset: 'utf-8' },
@@ -170,12 +166,12 @@ const nuxtConfig: NuxtConfig = {
       }
       if (isDev && isClient && module) {
         // Enabling eslint:
-        // module.rules.push({
-        //   enforce: 'pre',
-        //   test: /\.(js|ts|vue)$/u,
-        //   loader: 'eslint-loader',
-        //   exclude: /(node_modules)/u,
-        // });
+        module.rules.push({
+          enforce: 'pre',
+          test: /\.(js|ts|vue)$/u,
+          loader: 'eslint-loader',
+          exclude: /(node_modules)/u,
+        });
       }
     },
   },

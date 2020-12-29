@@ -159,10 +159,9 @@ export default class CriteriaDialog extends Vue {
       async (isValid: boolean, invalidatedFields: object) => {
         if (isValid) {
           try {
-            await CriteriaRepository.post(this.tempCreateCriteria).then(
-              (res) => {
-              },
-            );
+            await CriteriaRepository.post(
+              this.tempCreateCriteria,
+            ).then((res) => {});
             this.loading = false;
             this.clearForm();
             this.reloadData();

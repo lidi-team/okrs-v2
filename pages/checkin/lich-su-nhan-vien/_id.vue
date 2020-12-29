@@ -81,8 +81,10 @@ export default class HistoryCheckinEmployee extends Vue {
   }
   private async getList() {
     this.loading = true;
-    const { data } = await CheckinRepository.getHistory(Number(this.$route.params.id))
-    this.historyCheckins = data
+    const { data } = await CheckinRepository.getHistory(
+      Number(this.$route.params.id),
+    );
+    this.historyCheckins = data;
     this.loading = false;
   }
 }

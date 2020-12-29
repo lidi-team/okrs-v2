@@ -93,7 +93,7 @@ import DrillDownItem from '@/components/DrillDown/DrillDownItem.vue';
 import DrillDownRepository from '@/repositories/DrillDownRepository';
 import { filterKeyresults } from '@/utils/filters';
 import KeyResult from '@/components/OKRs/OkrsManagement/OkrsManagementStepKeyResult/OkrsManagementStepKeyResultItem.vue';
-import DetailKeyresult from '@/components/OKRs/OkrsDialog/OKRsDialogKeyresult.vue';
+import DetailKeyresult from '@/components/OKRs/OkrsDialog/OkrsDialogKeyresult.vue';
 
 @Component<DrillDownPage>({
   name: 'DrillDownPage',
@@ -105,7 +105,7 @@ import DetailKeyresult from '@/components/OKRs/OkrsDialog/OKRsDialogKeyresult.vu
   filters: {
     filterKeyresults,
   },
-  async mounted() {
+  mounted() {
     const currentCycleId =
       this.$route.query.cycleId || String(this.$store.state.cycle.cycleCurrent);
     this.getDrillDown(currentCycleId);
@@ -120,7 +120,7 @@ export default class DrillDownPage extends Vue {
   private dataObjectives: any = [];
 
   @Watch('$route.query')
-  private async getData(query: any) {
+  private getData(query: any) {
     this.getDrillDown(query.cycleId);
   }
 

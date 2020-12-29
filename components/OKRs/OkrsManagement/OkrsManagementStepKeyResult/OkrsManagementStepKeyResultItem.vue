@@ -234,7 +234,7 @@ export default class KeyResult extends Vue {
 
   private units: any[] = [];
 
-  private async deleteKr(keyResult: any) {
+  private deleteKr(keyResult: any) {
     if (keyResult.id) {
       if (this.indexKrForm === 0) {
         this.popoverVisisble = false;

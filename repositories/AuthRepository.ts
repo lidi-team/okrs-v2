@@ -1,9 +1,5 @@
 import { AxiosResponse } from 'axios';
-import {
-  RegisterDTO,
-  MailResetPassDTO,
-  LoginDTO,
-} from '@/constants/DTO/auth';
+import { RegisterDTO, MailResetPassDTO, LoginDTO } from '@/constants/DTO/auth';
 import { baseUrl } from './BaseRepository';
 
 export const enpoint = {

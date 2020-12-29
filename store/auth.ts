@@ -15,7 +15,7 @@ export interface AuthState {
 }
 
 export interface AuthActions<S, R> extends ActionTree<S, R> {
-  logout(): Promise<void>;
+  logout(): any;
   login(context: ActionContext<S, R>, credentials: LoginDTO): Promise<any>;
   clear(context: ActionContext<S, R>): void;
 }
@@ -57,10 +57,8 @@ export const actions: AuthActions<AuthState, RootState> = {
     }
   },
 
-  async logout() {
-    try {
-      removeTokenCookie();
-    } catch (error) {}
+  logout() {
+    removeTokenCookie();
   },
 
   clear({ commit }) {

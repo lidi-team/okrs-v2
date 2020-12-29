@@ -103,8 +103,9 @@ export default class TeamDialog extends Vue {
       async (isValid: boolean, invalidatedFields: object) => {
         if (isValid) {
           try {
-            await TeamRepository.post(this.tempCreateDepartment).then((res) => {
-            });
+            await TeamRepository.post(
+              this.tempCreateDepartment,
+            ).then((res) => {});
             this.loading = false;
             this.clearForm();
             this.reloadData();

@@ -102,10 +102,9 @@ export default class MeasureUnitDialog extends Vue {
       async (isValid: boolean, invalidatedFields: object) => {
         if (isValid) {
           try {
-            await MeasureUnitRepository.post(this.tempCreateUnit).then(
-              (res) => {
-              },
-            );
+            await MeasureUnitRepository.post(
+              this.tempCreateUnit,
+            ).then((res) => {});
             this.clearForm();
             this.loading = false;
             this.reloadData();

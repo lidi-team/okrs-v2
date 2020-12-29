@@ -25,6 +25,11 @@ module.exports = {
     'lines-between-class-members': 0,
     'vue/attribute-hyphenation': 0,
     'vue/attributes-order': 0,
+    'no-useless-escape': 0,
+    'no-unneeded-ternar': 0,
+    'no-prototype-builtins': 0,
+    'no-useless-return': 0,
+    'no-unneeded-ternary': 0,
     'prettier/prettier': [
       'error',
       {
