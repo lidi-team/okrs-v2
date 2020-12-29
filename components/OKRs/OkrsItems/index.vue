@@ -71,7 +71,7 @@
                       class="expand__infor--action__tooltip"
                       :isManage="true"
                       :canDelete="objective.delete"
-                      :canUpdate="row.update"
+                      :canUpdate="objective.update"
                       @updateOKRs="updateOKRs(objective)"
                     />
                   </div>
