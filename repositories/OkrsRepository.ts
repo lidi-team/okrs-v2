@@ -28,6 +28,6 @@ export default class OkrsRepository {
   }
 
   public static getDashboard(params: any): Promise<AxiosResponse<any>> {
-    return baseUrl.get(enpoint.getObjectiveCompany, { params });
+    return baseUrl.get(enpoint.getDashboaard, { params });
   }
 }

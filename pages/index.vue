@@ -19,7 +19,45 @@
       </el-select>
     </div>
     <el-row :gutter="20">
-      <el-col :span="16">hello</el-col>
+      <el-col :span="16">
+        <div class="box-wrap">
+          <h2 class="-title-2 -border-header">Tiến độ OKRs</h2>
+          <el-row :gutter="20">
+            <el-col :span="6"> OKRs Công ty </el-col>
+            <el-col :span="18">
+              <el-progress
+                :percentage="+okrsDashboard.company | round"
+                :color="+okrsDashboard.company | customColors"
+                :text-inside="true"
+                :stroke-width="26"
+              />
+            </el-col>
+          </el-row>
+          <div v-for="project in okrsDashboard.projects" :key="project.id">
+            <el-row :gutter="20" class="-mt-3">
+              <el-col :span="6"> OKRs {{ project.name }} </el-col>
+              <el-col :span="9">
+                <el-progress
+                  :format="formatProject"
+                  :percentage="+project.projectProgress | round"
+                  :color="+project.projectProgress | customColors"
+                  :text-inside="true"
+                  :stroke-width="26"
+                />
+              </el-col>
+              <el-col :span="9">
+                <el-progress
+                  :format="formatPersonal"
+                  :percentage="+project.personalProgress | round"
+                  :color="+project.personalProgress | customColors"
+                  :text-inside="true"
+                  :stroke-width="26"
+                />
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+      </el-col>
       <el-col :span="8">
         <div class="box-wrap">
           <h2 class="-title-2 -border-header">Tình trạng cập nhật tiến độ</h2>
@@ -79,6 +117,7 @@ import CheckinRepository from '@/repositories/CheckinRepository';
 import CfrsRepository from '@/repositories/CfrsRepository';
 import RankItem from '@/components/CFRs/CFRsRank/CFRsRankItem.vue';
 import DrillDownList from '@/components/DrillDown/DrillDownList.vue';
+import OkrsRepository from '@/repositories/OkrsRepository';
 
 @Component<HomePage>({
   head() {
@@ -103,6 +142,7 @@ import DrillDownList from '@/components/DrillDown/DrillDownList.vue';
     await this.getCycles();
     await this.getCheckinChart();
     await this.getListDataRanking();
+    await this.getOkrsDashboard(this.currentCycleId);
   },
 })
 export default class HomePage extends Vue {
@@ -113,10 +153,23 @@ export default class HomePage extends Vue {
   private accumulatedRanking: any = [];
   private currentRanking: any = [];
   private loadingCurrentRanking: boolean = false;
+  private okrsDashboard: any = {
+    company: 0,
+    projects: [],
+  };
 
   @Watch('$route.query')
   private getData(query: any) {
     this.getRankingOnCycle(query.cycleId);
+    this.getOkrsDashboard(query.cycleId);
+  }
+
+  private formatProject(percentage) {
+    return `Dự án: ${percentage}%`;
+  }
+
+  private formatPersonal(percentage) {
+    return `Cá nhân: ${percentage}%`;
   }
 
   private async getCycles() {
@@ -131,6 +184,13 @@ export default class HomePage extends Vue {
     });
     this.checkinChart = data;
     this.loading = false;
+  }
+
+  private async getOkrsDashboard(cycleId: number) {
+    const { data } = await OkrsRepository.getDashboard({ cycleId });
+    if (data) {
+      this.okrsDashboard = data;
+    }
   }
 
   private async getListDataRanking() {

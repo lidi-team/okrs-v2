@@ -4,7 +4,7 @@ Vue.filter('round', function (value: number): number {
   return Math.round(value * 100) / 100;
 });
 
-Vue.filter('isUpProgress', function (value: Number): string {
+Vue.filter('isUpProgress', function (value: number): string {
   return value > 0 ? 'happy' : 'sad';
 });
 

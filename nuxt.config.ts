@@ -38,7 +38,7 @@ const nuxtConfig: NuxtConfig = {
    * @docs https://nuxtjs.org/api/configuration-head
    */
   head: {
-    titleTemplate: '%s | Hệ thống quản lý OKRs',
+    titleTemplate: '%s | Công cụ quản trị mục tiêu',
     title: 'Trang chủ',
     meta: [
       { charset: 'utf-8' },
