@@ -318,7 +318,7 @@ export default class DetailHistory extends Vue {
             );
           }
           const payload = {
-            id: this.idCheckin,
+            id: status === 'Pending' ? null : this.idCheckin,
             objectiveId: objective.id,
             nextCheckinDate: formatDateToDD(this.nextCheckinDate),
             progress: this.progress,
